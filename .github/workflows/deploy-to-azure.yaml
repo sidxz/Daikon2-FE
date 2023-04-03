@@ -2,23 +2,15 @@ name: DAIKON_frontend_workflow
 
 # !TODO! Create new Github Actions secrets and assign the secret.* value here to these env assignments:
 env:
-  AZURE_CLIENT_SECRET: IBE8Q~ZfwnFgsyiZtrVxyxLZwUe5k.c85sPzZbIk
+  
   CONTAINER_REGISTRY_PASSWORD: l2y8V2Q+ocsWlPRKEZProVxF8rR1CTWIekBGebcB9e+ACRAIQcVU
-  AZURE_CLIENT_ID: 8a8ecadf-698c-4954-8128-6125d9fa73de
-
+  
   # These can be left inline and changed as needed  (if only one pipeline per env)
   ENVIRONMENT: prd
   APP_VERSION: rc1-postbeta
-  APP_SERVICE_NAME: daikon-prd-backend
-  AZURE_TENANT_ID: 296b3838-4bd5-496c-bd4b-f456ea743b74
-  AZURE_SUBSCRIPTION_ID: 692efea0-2038-48e2-bf74-a333fef44d58
   CONTAINER_REGISTRY_SERVER: daikonacrprd.azurecr.io
   CONTAINER_REGISTRY_USER: daikonacrprd
-  PGSQL_CONNECTION_STRING: Host=daikon-prd-psql.postgres.database.azure.com;Port=5432;Database=tpt_db;Ssl Mode=VerifyFull;Timeout=120;Command Timeout=60
-  CORS_ORIGINS: https://daikon-prd-backend.azurewebsites.net
-  CONTAINER_IMAGE_NAME: daikon-backend
   RESOURCE_GROUP: daikon-prd-rg
-  WEB_APP_NAME: daikon-prd-backend
 
 on:
   workflow_dispatch:
@@ -40,7 +32,7 @@ jobs:
       - name: "Login via Azure CLI"
         uses: azure/login@v1
         with:
-          creds: '{"clientId": "${{ env.AZURE_CLIENT_ID }}","clientSecret": "${{ env.AZURE_CLIENT_SECRET }}","tenantId": "${{ env.AZURE_TENANT_ID }}",  "subscriptionId": "${{ env.AZURE_SUBSCRIPTION_ID }}" }'
+          creds: '${{ secrets.AZURE_CREDENTIALS }}'
       - name: "Build and push image"
         uses: azure/docker-login@v1
         with:
