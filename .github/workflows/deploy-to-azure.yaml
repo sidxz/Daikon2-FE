@@ -35,7 +35,7 @@ jobs:
         uses: azure/docker-login@v1
         with:
           login-server: ${{ secrets.REGISTRY_SERVER }}
-          username: ${{ secrets.REGISTRY_USER }}
+          username: ${{ secrets. REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - run: |
           echo 'export const appConfig = {
@@ -60,7 +60,7 @@ jobs:
           dns-name-label: ${{ env.RESOURCE_GROUP }}${{ github.run_number }}
           image: ${{ secrets.REGISTRY_SERVER }}/daikon-frontend:${{ env.APP_VERSION }}-${{ github.sha }}
           registry-login-server: ${{ secrets.REGISTRY_SERVER }}
-          registry-username: ${{ secrets.REGISTRY_USER }}
+          registry-username: ${{ secrets. REGISTRY_USERNAME }}
           registry-password: ${{ secrets.REGISTRY_PASSWORD }}
           name: daikon-frontend
           location: "west us 2"
