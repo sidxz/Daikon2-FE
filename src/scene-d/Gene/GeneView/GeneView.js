@@ -77,18 +77,18 @@ const GeneView = () => {
         },
       ],
     },
-    {
-      label: "Actions",
-      items: [
-        {
-          label: "Promote to Target",
-          icon: "pi pi-external-link",
-          command: (event) => {
-            setDisplayPromotionDialog(true);
-          },
-        },
-      ],
-    },
+    // {
+    //   label: "Actions",
+    //   items: [
+    //     {
+    //       label: "Promote to Target",
+    //       icon: "pi pi-external-link",
+    //       command: (event) => {
+    //         setDisplayPromotionDialog(true);
+    //       },
+    //     },
+    //   ],
+    // },
   ];
 
   if (user.roles.includes("admin")) {
