@@ -54,7 +54,7 @@ const ValidatedHits = ({ TargetName }) => {
     {
       label: TargetName,
       command: () => {
-        navigate(`/d/screen/${TargetName}`);
+        navigate(`/d/screen/target-based/${TargetName}`);
       },
     },
     {

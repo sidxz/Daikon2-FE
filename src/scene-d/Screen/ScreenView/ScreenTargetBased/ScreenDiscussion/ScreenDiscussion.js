@@ -1,10 +1,9 @@
-import { BreadCrumb } from 'primereact/breadcrumb';
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import Discussion from '../../../../../app/common/Discussion/Discussion';
-import SectionHeading from '../../../../../app/common/SectionHeading/SectionHeading';
-import { appColors } from '../../../../../colors';
-
+import { BreadCrumb } from "primereact/breadcrumb";
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import Discussion from "../../../../../app/common/Discussion/Discussion";
+import SectionHeading from "../../../../../app/common/SectionHeading/SectionHeading";
+import { appColors } from "../../../../../colors";
 
 const ScreenDiscussion = ({ TargetName }) => {
   const navigate = useNavigate();
@@ -19,8 +18,8 @@ const ScreenDiscussion = ({ TargetName }) => {
     {
       label: TargetName,
       command: () => {
-        navigate(`/d/screen/${TargetName}`);
-      }
+        navigate(`/d/screen/target-based/${TargetName}`);
+      },
     },
     { label: "Discussion" },
   ];
@@ -39,12 +38,11 @@ const ScreenDiscussion = ({ TargetName }) => {
           color={appColors.sectionHeadingBg.screen}
         />
       </div>
-      <div className='flex w-full'>
-        <Discussion reference={TargetName}
-          section={"Screen"} />
+      <div className="flex w-full">
+        <Discussion reference={TargetName} section={"Screen"} />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ScreenDiscussion
+export default ScreenDiscussion;

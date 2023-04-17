@@ -66,7 +66,7 @@ const PhenotypicValidatedHits = ({ baseScreenName }) => {
       {
         label: baseScreenName,
         command: () => {
-          navigate(`/d/screen/${baseScreenName}`);
+          navigate(`/d/screen/phenotypic/${baseScreenName}`);
         },
       },
       {
