@@ -304,7 +304,7 @@ const Screen = {
     requests.post(`/elevated/screen/${id}/edit`, editedScreen),
   editRow: (id, editedScreenRow) =>
     requests.post(
-      `/screen/${editedScreenRow.screenId}/editRow/id`,
+      `/screen/${editedScreenRow.screenId}/edit-sequence/id`,
       editedScreenRow
     ),
 };
