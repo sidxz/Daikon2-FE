@@ -1,8 +1,11 @@
 import { observer } from "mobx-react-lite";
+import { AutoComplete } from "primereact/autocomplete";
 import { Button } from "primereact/button";
+import { Calendar } from "primereact/calendar";
 import { Chip } from "primereact/chip";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
+import { InputText } from "primereact/inputtext";
 import { OverlayPanel } from "primereact/overlaypanel";
 import { Sidebar } from "primereact/sidebar";
 import React, { useContext, useEffect, useRef, useState } from "react";
@@ -20,13 +23,19 @@ const ScreenSequence = ({ screenId }) => {
 
   /* MobX Store */
   const rootStore = useContext(RootStoreContext);
+  const { appVars } = rootStore.generalStore;
   const {
     loadingFetchScreen,
     fetchScreen,
     selectedScreen,
     addScreeenSequence,
     loadingScreenSequence,
+    editScreenRow,
+    editingScreenRow,
   } = rootStore.screenStore;
+
+  const [filteredResearchers, setFilteredResearchers] = useState([]);
+
   useEffect(() => {
     if (selectedScreen === null || selectedScreen.id !== screenId)
       fetchScreen(screenId);
@@ -118,81 +127,168 @@ const ScreenSequence = ({ screenId }) => {
       );
     };
 
-    return (
-      <div>
-        <OverlayPanel
-          ref={op}
-          showCloseIcon
-          id="overlay_panel"
-          dismissable
-          style={{ width: "450px" }}
-        >
-          <pre
-            style={{
-              maxWidth: "450px",
-              overflow: "auto",
-              whiteSpace: "pre-wrap",
-              wordWrap: "break-word",
-            }}
-          >
-            {selectedProtocol}
-          </pre>
-        </OverlayPanel>
-        <Sidebar
-          visible={displayAddDialog}
-          position="right"
-          // style={{ width: "50%", overflowX: "auto" }}
+    /* Row edit functions */
+    const textEditor = (options) => {
+      return (
+        <InputText
+          type="text"
+          value={options.value}
+          onChange={(e) => options.editorCallback(e.target.value)}
+        />
+      );
+    };
 
-          onHide={() => setDisplayAddDialog(false)}
-          className="p-sidebar-md"
-        >
-          <div className="card">
-            <h3>{selectedScreen?.screenName}</h3>
-            <i className="icon icon-common icon-plus-circle"></i> &nbsp; Add
-            screening information
-            <hr />
-            <br />
-          </div>
-          <ScreenSequenceAddForm
-            screenId={screenId}
-            onAdd={(newSequence) => {
-              addScreeenSequence(newSequence);
-              setDisplayAddDialog(false);
-            }}
-            loading={loadingScreenSequence}
+    const dateEditor = (options) => {
+      return (
+        <div className="p-float-label">
+          <Calendar
+            inputId="edit_date"
+            value={options.value}
+            onChange={(e) => options.editorCallback(e.target.value)}
           />
-        </Sidebar>
-        <div className="card">
-          <DataTable
-            ref={dt}
-            value={selectedScreen.screenSequences}
-            header={tableHeader}
-            exportFilename={`Screen-${selectedScreen.screenName}-${selectedScreen.method}.csv`}
-          >
-            <Column field="library" header="Library" />
-
-            <Column
-              field={"protocol"}
-              body={protocolBodyTemplate}
-              header="Protocol"
-            />
-            <Column field="concentration" header="Inhibitor C (&micro;M)" />
-            <Column field="noOfCompoundsScreened" header="No. of Compounds" />
-            <Column
-              field="scientist"
-              header="Scientist"
-              style={{ wordWrap: "break-word" }}
-            />
-            <Column
-              field="startDate"
-              header="Start Date"
-              body={StartDateTemplate}
-            />
-            <Column field="endDate" header="End Date" body={EndDateTemplate} />
-            <Column field="unverifiedHitCount" header="Hit Count" />
-          </DataTable>
+          <label htmlFor="edit_date">
+            <FDate timestamp={options.value} hideTime={true} />
+          </label>
         </div>
-      </div>
+      );
+    };
+
+    const scientistEditor = (options) => {
+      return (
+        <AutoComplete
+          value={options.value}
+          delay={1500}
+          suggestions={filteredResearchers}
+          completeMethod={searchScientist}
+          onChange={(e) => options.editorCallback(e.target.value)}
+          dropdown
+        />
+      );
+    };
+
+    const searchScientist = (event) => {
+      const query = event.query;
+      const filteredResults = appVars.appUsersFlattened.filter((username) =>
+        username.toLowerCase().includes(query.toLowerCase())
+      );
+      setFilteredResearchers(filteredResults);
+    };
+
+    let saveEdits = (e) => {
+      let { newData } = e;
+      editScreenRow(newData);
+    };
+
+    return (
+      <React.Fragment>
+        <div>
+          <OverlayPanel
+            ref={op}
+            showCloseIcon
+            id="overlay_panel"
+            dismissable
+            style={{ width: "450px" }}
+          >
+            <pre
+              style={{
+                maxWidth: "450px",
+                overflow: "auto",
+                whiteSpace: "pre-wrap",
+                wordWrap: "break-word",
+              }}
+            >
+              {selectedProtocol}
+            </pre>
+          </OverlayPanel>
+          <Sidebar
+            visible={displayAddDialog}
+            position="right"
+            // style={{ width: "50%", overflowX: "auto" }}
+
+            onHide={() => setDisplayAddDialog(false)}
+            className="p-sidebar-md"
+          >
+            <div className="card">
+              <h3>{selectedScreen?.screenName}</h3>
+              <i className="icon icon-common icon-plus-circle"></i> &nbsp; Add
+              screening information
+              <hr />
+              <br />
+            </div>
+            <ScreenSequenceAddForm
+              screenId={screenId}
+              onAdd={(newSequence) => {
+                addScreeenSequence(newSequence);
+                setDisplayAddDialog(false);
+              }}
+              loading={loadingScreenSequence}
+            />
+          </Sidebar>
+          <div className="card p-fluid">
+            <DataTable
+              ref={dt}
+              value={selectedScreen.screenSequences}
+              header={tableHeader}
+              editMode="row"
+              onRowEditComplete={saveEdits}
+              loading={editingScreenRow}
+              exportFilename={`Screen-${selectedScreen.screenName}-${selectedScreen.method}.csv`}
+            >
+              <Column
+                field="library"
+                header="Library"
+                editor={(options) => textEditor(options)}
+              />
+
+              <Column
+                field={"protocol"}
+                body={protocolBodyTemplate}
+                header="Protocol"
+                editor={(options) => textEditor(options)}
+              />
+              <Column
+                field="concentration"
+                header="Inhibitor C (&micro;M)"
+                editor={(options) => textEditor(options)}
+              />
+              <Column
+                field="noOfCompoundsScreened"
+                header="No. of Compounds"
+                editor={(options) => textEditor(options)}
+              />
+              <Column
+                field="scientist"
+                header="Scientist"
+                editor={(options) => scientistEditor(options)}
+                style={{ wordWrap: "break-word" }}
+              />
+              <Column
+                field="startDate"
+                header="Start Date"
+                editor={(options) => dateEditor(options)}
+                body={StartDateTemplate}
+              />
+              <Column
+                field="endDate"
+                header="End Date"
+                editor={(options) => dateEditor(options)}
+                body={EndDateTemplate}
+              />
+              <Column
+                field="unverifiedHitCount"
+                header="Hit Count"
+                editor={(options) => textEditor(options)}
+              />
+
+              <Column
+                rowEditor
+                headerStyle={{ width: "10%", minWidth: "8rem" }}
+                bodyStyle={{ textAlign: "center" }}
+              />
+            </DataTable>
+          </div>
+        </div>
+      </React.Fragment>
     );
   }
 
