@@ -41,6 +41,8 @@ export default class ScreenStore {
 
   editingScreen = false;
 
+  editingScreenRow = false;
+
   constructor(rootStore) {
     this.rootStore = rootStore;
     makeObservable(this, {
@@ -93,7 +95,10 @@ export default class ScreenStore {
       editScreen: action,
       editingScreen: observable,
 
+
       fetchScreenSilent: action,
+      editScreenRow: action,
+      editingScreenRow: observable,
     });
   }
 
@@ -344,6 +349,26 @@ export default class ScreenStore {
     } finally {
       runInAction(() => {
         this.editingScreen = false;
+      });
+    }
+    return res;
+  };
+
+  editScreenRow = async (editedScreenRow) => {
+    this.editingScreenRow = true;
+    let res = null;
+    // send to server
+    try {
+      res = await agent.Screen.editRow(editedScreenRow.id, editedScreenRow);
+      runInAction(() => {
+        toast.success("Saved");
+        this.fetchScreen(editedScreenRow.screenId, true);
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      runInAction(() => {
+        this.editingScreenRow = false;
       });
     }
     return res;
