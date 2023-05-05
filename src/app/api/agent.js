@@ -302,6 +302,11 @@ const Screen = {
   merge: (mergeIds) => requests.post(`/elevated/screen/merge`, mergeIds),
   edit: (id, editedScreen) =>
     requests.post(`/elevated/screen/${id}/edit`, editedScreen),
+  editRow: (id, editedScreenRow) =>
+    requests.post(
+      `/screen/${editedScreenRow.screenId}/editRow/id`,
+      editedScreenRow
+    ),
 };
 
 const Hit = {
