@@ -302,9 +302,9 @@ const Screen = {
   merge: (mergeIds) => requests.post(`/elevated/screen/merge`, mergeIds),
   edit: (id, editedScreen) =>
     requests.post(`/elevated/screen/${id}/edit`, editedScreen),
-  editRow: (id, editedScreenRow) =>
+  editRow: (screenRowId, editedScreenRow) =>
     requests.post(
-      `/screen/${editedScreenRow.screenId}/edit-sequence/id`,
+      `/screenSequence/${editedScreenRow.screenId}/edit-sequence/${screenRowId}`,
       editedScreenRow
     ),
 };

@@ -30,6 +30,8 @@ const ScreenSequence = ({ screenId }) => {
     selectedScreen,
     addScreeenSequence,
     loadingScreenSequence,
+    editScreenRow,
+    editingScreenRow,
   } = rootStore.screenStore;
 
   const [filteredResearchers, setFilteredResearchers] = useState([]);
@@ -174,7 +176,7 @@ const ScreenSequence = ({ screenId }) => {
 
     let saveEdits = (e) => {
       let { newData } = e;
-      console.log(newData);
+      editScreenRow(newData);
     };
 
     return (
