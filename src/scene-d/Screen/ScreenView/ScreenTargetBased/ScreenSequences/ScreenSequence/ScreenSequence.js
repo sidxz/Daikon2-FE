@@ -231,6 +231,7 @@ const ScreenSequence = ({ screenId }) => {
               header={tableHeader}
               editMode="row"
               onRowEditComplete={saveEdits}
+              loading={editingScreenRow}
               exportFilename={`Screen-${selectedScreen.screenName}-${selectedScreen.method}.csv`}
             >
               <Column
