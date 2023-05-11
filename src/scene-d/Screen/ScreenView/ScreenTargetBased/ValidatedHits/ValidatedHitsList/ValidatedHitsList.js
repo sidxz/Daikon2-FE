@@ -319,6 +319,7 @@ const ValidatedHitsList = ({ screenId }) => {
               header="IC50 (&micro;M) "
               body={EnzymeActivityBodyTemplate}
               style={{ width: "50px" }}
+              sortable
             />
             {/* <Column
               field="Method"
