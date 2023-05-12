@@ -42,7 +42,7 @@ const BugReport = () => {
 
   return (
     <div className="flex w-full flex-column pl-6">
-      <h2>Bug Report Template</h2>
+      <h2>Bug Report</h2>
       <EmbeddedHelp>
         Thank you for your time! Feedbacks helps us improve.
       </EmbeddedHelp>
@@ -53,10 +53,14 @@ const BugReport = () => {
       </EmbeddedHelp>
       <p>
         - Please <b> fill</b> the <b> 'bug description'</b> and the{" "}
-        <b>'steps to reproduce'</b> sections. <br />- click on 'COPY Text'
-        button to copy the filled template.
+        <b>'steps to reproduce'</b> sections.
+        <br />- Click on 'COPY Text' button to copy the filled template.
         <br />- Click on 'Open GitHub Issues Page' give a title, paste the
         content to comments, and create an issue.
+        <br />- Or to contact our team directly, please email us at
+        <b> sid@tamu.edu</b>,<b> panda@tamu.edu</b>,
+        <b> steve.berthel@panoramaglobal.org</b> and paste the content to the
+        email.
       </p>
       <div className="flex">
         <div className="flex pr-2 pb-2">

@@ -41,6 +41,8 @@ export default class ScreenStore {
 
   editingScreen = false;
 
+  editingScreenRow = false;
+
   constructor(rootStore) {
     this.rootStore = rootStore;
     makeObservable(this, {
@@ -92,6 +94,11 @@ export default class ScreenStore {
 
       editScreen: action,
       editingScreen: observable,
+
+
+      fetchScreenSilent: action,
+      editScreenRow: action,
+      editingScreenRow: observable,
     });
   }
 
@@ -232,6 +239,27 @@ export default class ScreenStore {
     }
   };
 
+  fetchScreenSilent = async (id, invalidateCache = false) => {
+    // first check cache
+    let fetchedScreen = this.screenRegistryExpanded.get(id);
+    if (!invalidateCache && fetchedScreen) {
+      this.selectedScreen = fetchedScreen;
+    }
+    // if not found fetch from api
+    else {
+      try {
+        fetchedScreen = await agent.Screen.details(id);
+        runInAction(() => {
+          this.selectedScreen = fetchedScreen;
+          this.screenRegistryExpanded.set(id, fetchedScreen);
+        });
+      } catch (error) {
+        console.error(error);
+      } finally {
+      }
+    }
+  };
+
   addScreeenSequence = async (newSequence) => {
     this.loadingScreenSequence = true;
     let res = null;
@@ -321,6 +349,26 @@ export default class ScreenStore {
     } finally {
       runInAction(() => {
         this.editingScreen = false;
+      });
+    }
+    return res;
+  };
+
+  editScreenRow = async (editedScreenRow) => {
+    this.editingScreenRow = true;
+    let res = null;
+    // send to server
+    try {
+      res = await agent.Screen.editRow(editedScreenRow.id, editedScreenRow);
+      runInAction(() => {
+        toast.success("Saved");
+        this.fetchScreen(editedScreenRow.screenId, true);
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      runInAction(() => {
+        this.editingScreenRow = false;
       });
     }
     return res;
