@@ -9,7 +9,7 @@ import RichTextDisplay from "../RichTextDisplay/RichTextDisplay";
 const RichTextEditHistory = ({
   historyDisplayLoading,
   history,
-  selectedId,
+  dataSelector,
   fetchHistory,
 }) => {
   useEffect(() => {
@@ -19,13 +19,6 @@ const RichTextEditHistory = ({
     }
   }, [historyDisplayLoading, history]);
 
-  console.log(
-    "RichTextEditHistory: historyDisplayLoading: ",
-    historyDisplayLoading
-  );
-  console.log("RichTextEditHistory: history: ", history);
-  console.log("RichTextEditHistory: selectedId: ", selectedId);
-
   if (historyDisplayLoading) {
     return (
       <React.Fragment>
@@ -34,7 +27,7 @@ const RichTextEditHistory = ({
     );
   } else {
     if (history !== null) {
-      let historyId = _.upperFirst(_.camelCase(selectedId));
+      let historyId = _.upperFirst(_.camelCase(dataSelector));
       let historyQuery = "[*propertyName=" + historyId + "]";
       let historyResult = JsonQuery(historyQuery, { data: history }).value;
 

@@ -161,7 +161,7 @@ const RichTextEdit = ({
             fetchHistory={fetchHistory}
             historyDisplayLoading={historyDisplayLoading}
             history={history}
-            selectedId={dataSelector}
+            dataSelector={dataSelector}
           />
         </div>
       </Sidebar>
