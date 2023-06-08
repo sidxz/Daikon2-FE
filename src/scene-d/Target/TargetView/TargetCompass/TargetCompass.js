@@ -4,6 +4,7 @@ import { ScrollPanel } from "primereact/scrollpanel";
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import KeyValList from "../../../../app/common/KeyValList/KeyValList";
+import RichTextEdit from "../../../../app/common/RichTextEdit/RichTextEdit";
 import SectionHeading from "../../../../app/common/SectionHeading/SectionHeading";
 import { RootStoreContext } from "../../../../app/stores/rootStore";
 import { appColors } from "../../../../colors";
@@ -70,23 +71,14 @@ const TargetCompass = () => {
                 <h2>Background</h2>
               </center>
               <ScrollPanel style={{ width: "100%", height: "200px" }}>
-                <KeyValList
+                <RichTextEdit
                   data={target}
-                  filter={["background"]}
-                  hideKey={true}
+                  dataSelector={"background"}
                   fetchHistory={() => fetchTargetHistory()}
                   historyDisplayLoading={historyDisplayLoading}
                   history={targetHistory}
-                  editFunc={
-                    user.roles.includes("user")
-                      ? () => editTargetSummary()
-                      : undefined
-                  }
-                  cancelEdit={
-                    user.roles.includes("user")
-                      ? () => cancelEditTargetSummary()
-                      : undefined
-                  }
+                  editFunc={() => editTargetSummary()}
+                  cancelEdit={() => cancelEditTargetSummary()}
                 />
               </ScrollPanel>
             </div>
