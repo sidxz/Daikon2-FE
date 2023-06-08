@@ -64,8 +64,8 @@ jobs:
       - name: "Deploy to Azure Container Instances"
         uses: "azure/aci-deploy@v1"
         with:
-          resource-group: ${{ env.AZURE-RESOURCE-GROUP }}
-          dns-name-label: ${{ env.AZURE-RESOURCE-GROUP }}${{ github.run_number }}
+          resource-group: ${{ steps.azure-keyvault.outputs.AZURE-RESOURCE-GROUP }}
+          dns-name-label: ${{ steps.azure-keyvault.outputs.AZURE-RESOURCE-GROUP }}${{ github.run_number }}
           image: ${{ steps.azure-keyvault.outputs.github-actions-registry-login-server }}/daikon-frontend:${{ env.APP_VERSION }}-${{ github.sha }}
           registry-login-server: ${{ steps.azure-keyvault.outputs.github-actions-registry-login-server }}
           registry-username: ${{ steps.azure-keyvault.outputs.github-actions-registry-username }}
