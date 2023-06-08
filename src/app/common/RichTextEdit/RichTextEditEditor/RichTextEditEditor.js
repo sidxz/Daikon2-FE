@@ -1,3 +1,4 @@
+import { observer } from "mobx-react-lite";
 import { Editor } from "primereact/editor";
 import React, { useState } from "react";
 
@@ -25,10 +26,9 @@ const RichTextEditEditor = ({ data, dataSelector }) => {
           setDescription(e.htmlValue);
           data[dataSelector] = e.htmlValue;
         }}
-        //readOnly={postingDiscussion}
       />
     </div>
   );
 };
 
-export default RichTextEditEditor;
+export default observer(RichTextEditEditor);

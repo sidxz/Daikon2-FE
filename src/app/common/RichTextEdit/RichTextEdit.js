@@ -1,16 +1,41 @@
 import _ from "lodash";
+import { observer } from "mobx-react-lite";
+import { Button } from "primereact/button";
 import { ContextMenu } from "primereact/contextmenu";
+import { Dialog } from "primereact/dialog";
+import { Sidebar } from "primereact/sidebar";
 import React, { useRef, useState } from "react";
 import { StartCase } from "react-lodash";
-
-import { Button } from "primereact/button";
-import { Dialog } from "primereact/dialog";
 import RichTextDisplay from "./RichTextDisplay/RichTextDisplay";
 import RichTextEditEditor from "./RichTextEditEditor/RichTextEditEditor";
+import RichTextEditHistory from "./RichTextEditHistory/RichTextEditHistory";
 
-const RichTextEdit = ({ data, dataSelector, editFunc, cancelEdit }) => {
+const RichTextEdit = ({
+  data,
+  dataSelector,
+  editFunc,
+  cancelEdit,
+  fetchHistory,
+  historyDisplayLoading,
+  history,
+}) => {
   const cm = useRef(null);
   const [displayEditContainer, setDisplayEditContainer] = useState(false);
+  const [displayHistorySideBar, setDisplayHistorySideBar] = useState(false);
+  const [fetchHistoryCalled, setFetchHistoryCalled] = useState(false);
+
+  // useEffect(() => {
+  //   if (
+  //     !fetchHistoryCalled &&
+  //     (JSON.parse(localStorage.getItem("_local_HighlightAllChanges")) ||
+  //       JSON.parse(localStorage.getItem("_local_HighlightRecentChanges")))
+  //   ) {
+  //     _.isFunction(fetchHistory) && fetchHistory();
+  //     setFetchHistoryCalled(true);
+  //   }
+
+  //   return () => {};
+  // }, [fetchHistory, setFetchHistoryCalled, fetchHistoryCalled]);
 
   // check if data is null
   if (!data) {
@@ -40,6 +65,19 @@ const RichTextEdit = ({ data, dataSelector, editFunc, cancelEdit }) => {
       label: "Edit",
       icon: "pi pi-tablet",
       command: () => setDisplayEditContainer(true),
+    });
+    contextMenuItems.push({
+      separator: true,
+    });
+  }
+
+  if (_.isFunction(fetchHistory)) {
+    contextMenuItems.push({
+      label: "Fetch History",
+      icon: "icon icon-common icon-history",
+      command: () => {
+        setDisplayHistorySideBar(true);
+      },
     });
     contextMenuItems.push({
       separator: true,
@@ -87,6 +125,7 @@ const RichTextEdit = ({ data, dataSelector, editFunc, cancelEdit }) => {
       <RichTextDisplay data={data[dataSelector]} />
       <ContextMenu model={contextMenuItems} ref={cm}></ContextMenu>
 
+      {/* Edit Dialog */}
       <Dialog
         header={editDialogHeader}
         visible={displayEditContainer}
@@ -98,13 +137,36 @@ const RichTextEdit = ({ data, dataSelector, editFunc, cancelEdit }) => {
       >
         <RichTextEditEditor
           data={data}
-          dataSelector={"background"}
+          dataSelector={dataSelector}
           editFunc={editFunc}
           cancelEdit={cancelEdit}
         />
       </Dialog>
+
+      {/* History Sidebar */}
+      <Sidebar
+        visible={displayHistorySideBar}
+        position="right"
+        style={{ width: "50%", overflowX: "auto" }}
+        onHide={() => setDisplayHistorySideBar(false)}
+      >
+        <div style={{ margin: "15px" }}>
+          <h2>
+            <i className="icon icon-common icon-history"></i> History
+          </h2>
+          <h1>
+            <StartCase string={dataSelector} />
+          </h1>
+          <RichTextEditHistory
+            fetchHistory={fetchHistory}
+            historyDisplayLoading={historyDisplayLoading}
+            history={history}
+            selectedId={dataSelector}
+          />
+        </div>
+      </Sidebar>
     </div>
   );
 };
 
-export default RichTextEdit;
+export default observer(RichTextEdit);

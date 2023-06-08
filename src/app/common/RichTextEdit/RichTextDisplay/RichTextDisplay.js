@@ -1,5 +1,6 @@
 import DOMPurify from "dompurify";
 import parse from "html-react-parser";
+import { observer } from "mobx-react-lite";
 import React from "react";
 
 const RichTextDisplay = ({ data }) => {
@@ -17,4 +18,4 @@ const RichTextDisplay = ({ data }) => {
   return <div>{cleanupAndParse(data)}</div>;
 };
 
-export default RichTextDisplay;
+export default observer(RichTextDisplay);
