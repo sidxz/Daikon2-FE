@@ -267,12 +267,14 @@ const ScreenSequence = ({ screenId }) => {
                 header="Start Date"
                 editor={(options) => dateEditor(options)}
                 body={StartDateTemplate}
+                sortable
               />
               <Column
                 field="endDate"
                 header="End Date"
                 editor={(options) => dateEditor(options)}
                 body={EndDateTemplate}
+                sortable
               />
               <Column
                 field="unverifiedHitCount"
