@@ -8,11 +8,12 @@ export function generateVoteScore(screen) {
     // check if vote object exists
     if (!validatedHit.hasOwnProperty("vote")) return;
 
+    // assigning inverted scoring as React Table sorts descending by default
     validatedHit["voteScore"] =
-      2 * validatedHit.vote.positive +
-      1 * validatedHit.vote.neutral -
-      2 * validatedHit.vote.negative;
-    console.log(validatedHit);
+      -1 *
+      (2 * validatedHit.vote.positive +
+        1 * validatedHit.vote.neutral -
+        2 * validatedHit.vote.negative);
   });
   return screen;
 }
