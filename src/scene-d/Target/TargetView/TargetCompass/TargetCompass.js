@@ -3,7 +3,7 @@ import { BreadCrumb } from "primereact/breadcrumb";
 import { ScrollPanel } from "primereact/scrollpanel";
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import KeyValList from "../../../../app/common/KeyValList/KeyValList";
+import RichTextEdit from "../../../../app/common/RichTextEdit/RichTextEdit";
 import SectionHeading from "../../../../app/common/SectionHeading/SectionHeading";
 import { RootStoreContext } from "../../../../app/stores/rootStore";
 import { appColors } from "../../../../colors";
@@ -67,26 +67,18 @@ const TargetCompass = () => {
               }}
             >
               <center>
-                <h2>Background</h2>
+                <h2 style={{ margin: 0, padding: 0 }}>Background</h2>
+                <hr />
               </center>
-              <ScrollPanel style={{ width: "100%", height: "200px" }}>
-                <KeyValList
+              <ScrollPanel style={{ width: "100%", height: "250px" }}>
+                <RichTextEdit
                   data={target}
-                  filter={["background"]}
-                  hideKey={true}
+                  dataSelector={"background"}
                   fetchHistory={() => fetchTargetHistory()}
                   historyDisplayLoading={historyDisplayLoading}
                   history={targetHistory}
-                  editFunc={
-                    user.roles.includes("user")
-                      ? () => editTargetSummary()
-                      : undefined
-                  }
-                  cancelEdit={
-                    user.roles.includes("user")
-                      ? () => cancelEditTargetSummary()
-                      : undefined
-                  }
+                  editFunc={() => editTargetSummary()}
+                  cancelEdit={() => cancelEditTargetSummary()}
                 />
               </ScrollPanel>
             </div>
@@ -98,26 +90,18 @@ const TargetCompass = () => {
               }}
             >
               <center>
-                <h2>Enablement</h2>
+                <h2 style={{ margin: 0, padding: 0 }}>Enablement</h2>
+                <hr />
               </center>
-              <ScrollPanel style={{ width: "100%", height: "200px" }}>
-                <KeyValList
+              <ScrollPanel style={{ width: "100%", height: "250px" }}>
+                <RichTextEdit
                   data={target}
-                  filter={["enablement"]}
-                  hideKey={true}
+                  dataSelector={"enablement"}
                   fetchHistory={() => fetchTargetHistory()}
                   historyDisplayLoading={historyDisplayLoading}
                   history={targetHistory}
-                  editFunc={
-                    user.roles.includes("user")
-                      ? () => editTargetSummary()
-                      : undefined
-                  }
-                  cancelEdit={
-                    user.roles.includes("user")
-                      ? () => cancelEditTargetSummary()
-                      : undefined
-                  }
+                  editFunc={() => editTargetSummary()}
+                  cancelEdit={() => cancelEditTargetSummary()}
                 />
               </ScrollPanel>
             </div>
@@ -132,26 +116,18 @@ const TargetCompass = () => {
               }}
             >
               <center>
-                <h2>Strategy</h2>
+                <h2 style={{ margin: 0, padding: 0 }}>Strategy</h2>
+                <hr />
               </center>
-              <ScrollPanel style={{ width: "100%", height: "200px" }}>
-                <KeyValList
+              <ScrollPanel style={{ width: "100%", height: "250px" }}>
+                <RichTextEdit
                   data={target}
-                  filter={["strategy"]}
-                  hideKey={true}
+                  dataSelector={"strategy"}
                   fetchHistory={() => fetchTargetHistory()}
                   historyDisplayLoading={historyDisplayLoading}
                   history={targetHistory}
-                  editFunc={
-                    user.roles.includes("user")
-                      ? () => editTargetSummary()
-                      : undefined
-                  }
-                  cancelEdit={
-                    user.roles.includes("user")
-                      ? () => cancelEditTargetSummary()
-                      : undefined
-                  }
+                  editFunc={() => editTargetSummary()}
+                  cancelEdit={() => cancelEditTargetSummary()}
                 />
               </ScrollPanel>
             </div>
@@ -164,26 +140,18 @@ const TargetCompass = () => {
               }}
             >
               <center>
-                <h2>Challenges</h2>
+                <h2 style={{ margin: 0, padding: 0 }}>Challenges</h2>
+                <hr />
               </center>
-              <ScrollPanel style={{ width: "100%", height: "200px" }}>
-                <KeyValList
+              <ScrollPanel style={{ width: "100%", height: "250px" }}>
+                <RichTextEdit
                   data={target}
-                  filter={["challenges"]}
-                  hideKey={true}
+                  dataSelector={"challenges"}
                   fetchHistory={() => fetchTargetHistory()}
                   historyDisplayLoading={historyDisplayLoading}
                   history={targetHistory}
-                  editFunc={
-                    user.roles.includes("user")
-                      ? () => editTargetSummary()
-                      : undefined
-                  }
-                  cancelEdit={
-                    user.roles.includes("user")
-                      ? () => cancelEditTargetSummary()
-                      : undefined
-                  }
+                  editFunc={() => editTargetSummary()}
+                  cancelEdit={() => cancelEditTargetSummary()}
                 />
               </ScrollPanel>
             </div>
