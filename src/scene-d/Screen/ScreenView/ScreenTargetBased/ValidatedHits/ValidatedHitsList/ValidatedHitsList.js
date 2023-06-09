@@ -341,10 +341,11 @@ const ValidatedHitsList = ({ screenId }) => {
               sortable
             />
             <Column
-              field="Vote"
+              field="voteScore"
               header="Vote"
               body={VoteBodyTemplate}
               style={{ minWidth: "200px" }}
+              sortable
             />
           </DataTable>
         </div>

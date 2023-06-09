@@ -8,6 +8,7 @@ import {
 import { toast } from "react-toastify";
 
 import agent from "../api/agent";
+import { generateVoteScore } from "./screenStore_Helper";
 
 export default class ScreenStore {
   rootStore;
@@ -94,7 +95,6 @@ export default class ScreenStore {
 
       editScreen: action,
       editingScreen: observable,
-
 
       fetchScreenSilent: action,
       editScreenRow: action,
@@ -226,6 +226,7 @@ export default class ScreenStore {
       try {
         fetchedScreen = await agent.Screen.details(id);
         runInAction(() => {
+          fetchedScreen = generateVoteScore(fetchedScreen);
           this.selectedScreen = fetchedScreen;
           this.screenRegistryExpanded.set(id, fetchedScreen);
         });
@@ -250,6 +251,7 @@ export default class ScreenStore {
       try {
         fetchedScreen = await agent.Screen.details(id);
         runInAction(() => {
+          fetchedScreen = generateVoteScore(fetchedScreen);
           this.selectedScreen = fetchedScreen;
           this.screenRegistryExpanded.set(id, fetchedScreen);
         });
