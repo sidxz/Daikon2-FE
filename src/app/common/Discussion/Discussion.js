@@ -346,7 +346,7 @@ const Discussion = ({ reference, section, tagsFilters = [] }) => {
 
         <Tag
           style={{
-            background: "#CCCCCC",
+            background: "#76CE86",
             padding: "0.1rem 0.5rem",
             fontSize: "x-large",
           }}
