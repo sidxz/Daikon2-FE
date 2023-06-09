@@ -49,12 +49,6 @@ const RichTextEdit = ({
     return <div></div>;
   }
 
-  // check if dataSelector is not found in data object
-  if (!data[dataSelector]) {
-    console.error("RichTextEdit dataSelector not found in data object");
-    return <div></div>;
-  }
-
   /* * * * * * *
   /* * * Begin construction context menu
   */
@@ -121,7 +115,10 @@ const RichTextEdit = ({
   );
 
   return (
-    <div onContextMenu={(e) => cm.current.show(e)}>
+    <div
+      onContextMenu={(e) => cm.current.show(e)}
+      className="flex flex-wrap w-full h-full"
+    >
       <RichTextDisplay data={data[dataSelector]} />
       <ContextMenu model={contextMenuItems} ref={cm}></ContextMenu>
 
@@ -149,14 +146,16 @@ const RichTextEdit = ({
         position="right"
         style={{ width: "50%", overflowX: "auto" }}
         onHide={() => setDisplayHistorySideBar(false)}
+        icons={() => (
+          <div>
+            <i className="icon icon-common icon-history"></i> History
+          </div>
+        )}
       >
         <div style={{ margin: "15px" }}>
           <h2>
-            <i className="icon icon-common icon-history"></i> History
-          </h2>
-          <h1>
             <StartCase string={dataSelector} />
-          </h1>
+          </h2>
           <RichTextEditHistory
             fetchHistory={fetchHistory}
             historyDisplayLoading={historyDisplayLoading}

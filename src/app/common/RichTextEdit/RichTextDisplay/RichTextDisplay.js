@@ -4,6 +4,9 @@ import { observer } from "mobx-react-lite";
 import React from "react";
 
 const RichTextDisplay = ({ data }) => {
+  if (data === null || data === "") {
+    data = "<p>Not Available</p>";
+  }
   let sanitizeHtml = (text) =>
     DOMPurify.sanitize(text, {
       ALLOWED_TAGS: ["strong", "p", "em", "u", "s", "a", "ul", "li"],

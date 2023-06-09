@@ -68,9 +68,9 @@ const TargetCompass = () => {
               }}
             >
               <center>
-                <h2>Background</h2>
+                <h2 style={{ margin: 0, padding: 0 }}>Background</h2>
               </center>
-              <ScrollPanel style={{ width: "100%", height: "200px" }}>
+              <ScrollPanel style={{ width: "100%", height: "250px" }}>
                 <RichTextEdit
                   data={target}
                   dataSelector={"background"}

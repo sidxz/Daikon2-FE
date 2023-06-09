@@ -17,7 +17,7 @@ const RichTextEditEditor = ({ data, dataSelector }) => {
   );
 
   return (
-    <div>
+    <div className="flex flex-wrap text-base border-2">
       <Editor
         style={{ height: "320px" }}
         headerTemplate={headerOfTextEditor}
