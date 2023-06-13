@@ -155,6 +155,7 @@ const ValidatedHitsList = ({ screenId }) => {
           id={rowData.vote.id}
           voteData={rowData.vote}
           callBack={() => fetchScreenSilent(screenId, true)}
+          revealVote={revealVoteEnabled}
         />
       </div>
     );
