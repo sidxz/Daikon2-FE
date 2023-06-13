@@ -1,9 +1,11 @@
+import { Button } from "primereact/button";
 import { confirmDialog } from "primereact/confirmdialog";
-import React, { useContext } from "react";
+import { Dialog } from "primereact/dialog";
+import React, { useContext, useState } from "react";
 import { RootStoreContext } from "../../stores/rootStore";
 import VotingButtonPanel from "./VoteComponents/VotingButtonPanel";
 import VotingChartPanel from "./VoteComponents/VotingChartPanel";
-
+import VotingDiscussion from "./VoteComponents/VotingDiscussion";
 /*
 Usage: 
 The voting module requires the parent module to import ConfirmDialog.
@@ -11,10 +13,19 @@ This is to prevent multiple binding of the ConfirmDialog if more than
 one voting element is present in the screen.
 */
 
-const Vote = ({ id, voteData, callBack, revealVote = false }) => {
+const Vote = ({
+  id,
+  voteData,
+  callBack,
+  revealVote = false,
+  discussionReference,
+  discussionTags,
+}) => {
+  console.log("Vote.js: voteData", voteData);
   /* MobX Store */
   const rootStore = useContext(RootStoreContext);
   const { voting, vote } = rootStore.votingStore;
+  const [showVotingComment, setShowVotingComment] = useState(false);
 
   if (id && voteData) {
     let votes = {
@@ -92,11 +103,29 @@ const Vote = ({ id, voteData, callBack, revealVote = false }) => {
           </div>
           <div className="flex">{generateOptions()}</div>
           <div className="flex justify-content-center ">
-            <p style={{ fontSize: "small", color: "#999" }}>
-              <i class="icon icon-common icon-comments"></i> Comments
-            </p>
+            <Button
+              label="Comments"
+              icon="pi pi-comments"
+              onClick={() => setShowVotingComment(true)}
+              className="p-button-sm p-button-plain p-button-text"
+            />
           </div>
         </div>
+        <Dialog
+          //header=""
+          //className="w-full"
+          //footer={footer}
+          //icons={myIcon}
+          visible={showVotingComment}
+          style={{ width: "90vw", height: "90vh" }}
+          modal
+          onHide={() => setShowVotingComment(false)}
+        >
+          <VotingDiscussion
+            reference={discussionReference}
+            tagsFilters={discussionTags}
+          />
+        </Dialog>
       </React.Fragment>
     );
   }
