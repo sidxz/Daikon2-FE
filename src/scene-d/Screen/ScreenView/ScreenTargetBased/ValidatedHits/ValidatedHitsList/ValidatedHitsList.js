@@ -1,11 +1,11 @@
 import { observer } from "mobx-react-lite";
-import { Button } from "primereact/button";
+import { Menubar } from "primereact/menubar";
+
 import { Chip } from "primereact/chip";
 import { Column } from "primereact/column";
 import { ConfirmDialog } from "primereact/confirmdialog";
 import { DataTable } from "primereact/datatable";
 import { Dialog } from "primereact/dialog";
-import { TieredMenu } from "primereact/tieredmenu";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import SectionHeading from "../../../../../../app/common/SectionHeading/SectionHeading";
@@ -30,7 +30,7 @@ const ValidatedHitsList = ({ screenId }) => {
   const [displayHitsImportSidebar, setDisplayHitsImportSidebar] =
     useState(false);
 
-  const [displayEnableSelection, setDisplayEnableSelection] = useState(false);
+  const [selectionEnabled, setSelectionEnabled] = useState(false);
   const [selectedCompounds, setSelectedCompounds] = useState(null);
   const [displayPromoteToHAEntry, setDisplayPromoteToHAEntry] = useState(false);
 
@@ -75,7 +75,7 @@ const ValidatedHitsList = ({ screenId }) => {
       (selectedCompound) => selectedCompound.voteId
     );
 
-    enableVoting(voteIds).then(() => setDisplayEnableSelection(false));
+    enableVoting(voteIds).then(() => setSelectionEnabled(false));
   };
 
   let validateFreezeVoting = () => {
@@ -90,7 +90,7 @@ const ValidatedHitsList = ({ screenId }) => {
       (selectedCompound) => selectedCompound.voteId
     );
 
-    freezeVoting(voteIds).then(() => setDisplayEnableSelection(false));
+    freezeVoting(voteIds).then(() => setSelectionEnabled(false));
   };
 
   /* End Local functions */
@@ -158,47 +158,46 @@ const ValidatedHitsList = ({ screenId }) => {
       </div>
     );
   };
+
+  var tableHeaderMenuitems = [...tableMenuItems];
+
   const tableHeader = (
-    <div className="flex justify-content-end">
+    <div className="flex w-full">
       <div className="flex">
-        {displayEnableSelection && (
-          <Button
-            type="button"
-            icon="pi pi-times-circle"
-            label="Cancel Selection"
-            className="p-button-text"
-            style={{ height: "30px", marginRight: "5px" }}
-            onClick={() => setDisplayEnableSelection(false)}
-          />
-        )}
-      </div>
-      <div className="flex gap-5">
-        <Chip label={selectedScreen?.org.name} icon="ri-organization-chart" />
-        <Chip
-          label={selectedScreen?.method}
-          icon="icon icon-common icon-circle-notch"
-        />
-        <TieredMenu
+        <Menubar
           model={tableMenuItems}
-          popup
-          ref={tableMenu}
-          id="overlay_tmenu"
+          style={{ position: "sticky", zIndex: 2 }}
         />
-        <Button
-          icon="pi pi-bars"
-          onClick={(event) => {
-            tableMenu.current.toggle(event);
-          }}
-          aria-haspopup
-          className="p-button-info ml-auto"
-          aria-controls="overlay_tmenu"
-        />
+      </div>
+      <div className="flex ml-auto gap-2">
+        <div className="flex">
+          <Chip label={selectedScreen?.org.name} icon="ri-organization-chart" />
+        </div>
+        <div className="flex">
+          <Chip
+            label={selectedScreen?.method}
+            icon="icon icon-common icon-circle-notch"
+          />
+        </div>
       </div>
     </div>
   );
+
   /* End Table Body Templates */
 
   /* Construct table menu items */
+
+  if (selectedScreen.validatedHits.length !== 0) {
+    let selectItem = {
+      label: selectionEnabled ? "Cancel Selection" : "Select Rows",
+      icon: selectionEnabled ? "pi pi-times-circle" : "pi pi-check-square",
+      command: () => {
+        setSelectionEnabled(!selectionEnabled);
+      },
+    };
+    tableMenuItems.push(selectItem);
+  }
+
   if (!loadingFetchScreen && selectedScreen) {
     let itm = {
       label: "Hits Management",
@@ -220,18 +219,8 @@ const ValidatedHitsList = ({ screenId }) => {
     // Admin section
     if (user.roles.includes("admin")) {
       if (selectedScreen.validatedHits.length !== 0) {
-        let selectItem = {
-          label: "Enable Selection",
-          icon: "pi pi-check-square",
-          command: () => {
-            setDisplayEnableSelection(true);
-            tableMenu.current.toggle();
-          },
-        };
-        tableMenuItems.push(selectItem);
-
         let votingItem = {
-          label: "Voting",
+          label: "Votes Management",
           items: [
             {
               label: "Enable Voting",
@@ -246,15 +235,28 @@ const ValidatedHitsList = ({ screenId }) => {
           ],
         };
         tableMenuItems.push(votingItem);
-
-        let promotionItem = {
-          label: "Promote To Hit Assessment",
-          icon: "pi pi-arrow-right",
-          command: () => validatePromoteToHA(),
-        };
-
-        tableMenuItems.push(promotionItem);
       }
+    }
+
+    if (selectedScreen.validatedHits.length !== 0) {
+      let showVotesItem = {
+        label: "Reveal Votes",
+        icon: "pi pi-eye",
+        command: () => {
+          console.log("Reveal Votes");
+        },
+      };
+      tableMenuItems.push(showVotesItem);
+    }
+
+    if (selectedScreen.validatedHits.length !== 0) {
+      let promotionItem = {
+        label: "Promote To HA",
+        icon: "pi pi-arrow-right",
+        command: () => validatePromoteToHA(),
+      };
+
+      tableMenuItems.push(promotionItem);
     }
   }
   /* END Construct table menu items */
@@ -276,14 +278,14 @@ const ValidatedHitsList = ({ screenId }) => {
             resizableColumns
             columnResizeMode="fit"
             size="large"
-            //showGridlines
+            showGridlines
             responsiveLayout="scroll"
             selection={selectedCompounds}
             onSelectionChange={(e) => setSelectedCompounds(e.value)}
             dataKey="id"
             exportFilename={`Hits-${selectedScreen.screenName}-${selectedScreen.method}.csv`}
           >
-            {displayEnableSelection && (
+            {selectionEnabled && (
               <Column
                 selectionMode="multiple"
                 headerStyle={{ width: "3em" }}
