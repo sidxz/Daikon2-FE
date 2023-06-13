@@ -38,7 +38,7 @@ const Discussion = ({ reference, section, tagsFilters = [] }) => {
   /* local variables */
 
   const [displayDiscussionDialog, setDisplayDiscussionDialog] = useState(false);
-  const [userReplyValue, setuserReplyValue] = useState({});
+  const [userReplyValue, setUserReplyValue] = useState({});
   const [displayReplyBox, setDisplayReplyBox] = useState({});
 
   const [displayEditBox, setDisplayEditBox] = useState({});
@@ -53,8 +53,6 @@ const Discussion = ({ reference, section, tagsFilters = [] }) => {
   if (loadingDiscussions) {
     return <Loading />;
   }
-
-  console.log(discussions);
 
   let sanitizeHtml = (text) =>
     DOMPurify.sanitize(text, {
@@ -81,7 +79,7 @@ const Discussion = ({ reference, section, tagsFilters = [] }) => {
   let mapReplyValues = (id, value) => {
     let tempValue = { ...userReplyValue };
     tempValue[id] = value;
-    setuserReplyValue(tempValue);
+    setUserReplyValue(tempValue);
   };
 
   let mapDisplayReplyBox = (id, value) => {
@@ -181,6 +179,36 @@ const Discussion = ({ reference, section, tagsFilters = [] }) => {
             {generateTags(discussion)}
           </div>
         </sup>
+      </div>
+    );
+  };
+
+  let StartDiscussionHeader = () => {
+    return (
+      <div className="flex flex-column">
+        <div className="flex flex-row gap-1">
+          <div className="flex inline">
+            <Tag
+              style={{
+                background: "#76CE86",
+                padding: "0.1rem 0.5rem",
+                fontSize: "x-large",
+              }}
+              value={section}
+            />
+          </div>
+          <div className="flex inline">
+            <Tag
+              style={{
+                background: "#28477f",
+                padding: "0.1rem 0.5rem",
+                fontSize: "x-large",
+                marginLeft: "1rem",
+              }}
+              value={reference}
+            />
+          </div>
+        </div>
       </div>
     );
   };
@@ -331,7 +359,16 @@ const Discussion = ({ reference, section, tagsFilters = [] }) => {
         );
       })
     ) : (
-      <React.Fragment />
+      <div className="flex flex-column w-full">
+        <div className="flex justify-content-center">
+          <p style={{ fontSize: "small" }}> - Nothing here yet -</p>
+        </div>
+        <div className="flex justify-content-center">
+          <p style={{ fontSize: "small" }}>
+            Click on 'Add a New Topic' to start a discussion.
+          </p>
+        </div>
+      </div>
     );
 
   return (
@@ -342,29 +379,10 @@ const Discussion = ({ reference, section, tagsFilters = [] }) => {
         style={{ width: "30em", overflowX: "auto" }}
         onHide={() => setDisplayDiscussionDialog(false)}
       >
-        <h2>Start a new topic.</h2>
-
-        <Tag
-          style={{
-            background: "#76CE86",
-            padding: "0.1rem 0.5rem",
-            fontSize: "x-large",
-          }}
-          value={section}
-        />
-        <Tag
-          style={{
-            background: "#28477f",
-            padding: "0.1rem 0.5rem",
-            fontSize: "x-large",
-            marginLeft: "1rem",
-          }}
-          value={reference}
-        />
-        <br />
-        <br />
+        {StartDiscussionHeader()}
         <StartDiscussion
           reference={reference}
+          tagsFilters={tagsFilters}
           section={section}
           newDiscussion={newDiscussion}
           postingDiscussion={postingDiscussion}
