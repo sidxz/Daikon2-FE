@@ -31,6 +31,7 @@ const ValidatedHitsList = ({ screenId }) => {
     useState(false);
 
   const [selectionEnabled, setSelectionEnabled] = useState(false);
+  const [revealVoteEnabled, setRevealVoteEnabled] = useState(false);
   const [selectedCompounds, setSelectedCompounds] = useState(null);
   const [displayPromoteToHAEntry, setDisplayPromoteToHAEntry] = useState(false);
 
@@ -240,10 +241,11 @@ const ValidatedHitsList = ({ screenId }) => {
 
     if (selectedScreen.validatedHits.length !== 0) {
       let showVotesItem = {
-        label: "Reveal Votes",
-        icon: "pi pi-eye",
+        label: revealVoteEnabled ? "Hide Votes" : "Reveal Votes",
+        icon: revealVoteEnabled ? "pi pi-eye-slash" : "pi pi-eye",
         command: () => {
-          console.log("Reveal Votes");
+          setRevealVoteEnabled(!revealVoteEnabled);
+          console.log(revealVoteEnabled);
         },
       };
       tableMenuItems.push(showVotesItem);
