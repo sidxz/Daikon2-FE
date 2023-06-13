@@ -21,7 +21,6 @@ const Vote = ({
   discussionReference,
   discussionTags,
 }) => {
-  console.log("Vote.js: voteData", voteData);
   /* MobX Store */
   const rootStore = useContext(RootStoreContext);
   const { voting, vote } = rootStore.votingStore;
