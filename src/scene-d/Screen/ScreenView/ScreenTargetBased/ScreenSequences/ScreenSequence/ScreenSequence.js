@@ -228,6 +228,7 @@ const ScreenSequence = ({ screenId }) => {
             <DataTable
               ref={dt}
               value={selectedScreen.screenSequences}
+              showGridlines
               header={tableHeader}
               editMode="row"
               onRowEditComplete={saveEdits}
