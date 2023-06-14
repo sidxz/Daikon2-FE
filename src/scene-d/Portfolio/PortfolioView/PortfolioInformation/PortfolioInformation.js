@@ -88,7 +88,7 @@ const PortfolioInformation = ({ id, project }) => {
                   ? false
                   : true
               }
-              enableEdit={user.roles.includes("admin")}
+              enableEdit={true}
             />
           </Fieldset>
         </div>
