@@ -1,9 +1,11 @@
-import ReactECharts from "echarts-for-react";
 import { Button } from "primereact/button";
 import { confirmDialog } from "primereact/confirmdialog";
-import React, { useContext } from "react";
+import { Dialog } from "primereact/dialog";
+import React, { useContext, useState } from "react";
 import { RootStoreContext } from "../../stores/rootStore";
-
+import VotingButtonPanel from "./VoteComponents/VotingButtonPanel";
+import VotingChartPanel from "./VoteComponents/VotingChartPanel";
+import VotingDiscussion from "./VoteComponents/VotingDiscussion";
 /*
 Usage: 
 The voting module requires the parent module to import ConfirmDialog.
@@ -11,10 +13,18 @@ This is to prevent multiple binding of the ConfirmDialog if more than
 one voting element is present in the screen.
 */
 
-const Vote = ({ id, voteData, callBack }) => {
+const Vote = ({
+  id,
+  voteData,
+  callBack,
+  revealVote = false,
+  discussionReference,
+  discussionTags,
+}) => {
   /* MobX Store */
   const rootStore = useContext(RootStoreContext);
   const { voting, vote } = rootStore.votingStore;
+  const [showVotingComment, setShowVotingComment] = useState(false);
 
   if (id && voteData) {
     let votes = {
@@ -22,50 +32,6 @@ const Vote = ({ id, voteData, callBack }) => {
       Neutral: voteData.neutral,
       Negative: voteData.negative,
     };
-    // let votes =
-    // {
-    //   Positive: 0,
-    //   Neutral: 0,
-    //   Negative: 0,
-    // }
-
-    const votingButtonPanel = (
-      <div className="flex justify-content-center" style={{ width: "10rem" }}>
-        <div className="flex">
-          <Button
-            icon="icon icon-common icon-thumbs-up"
-            className="p-button-rounded p-button-text p-button-lg"
-            tooltip="Vote Positive"
-            tooltipOptions={{ position: "bottom" }}
-            style={{ color: "#76D7C4" }}
-            loading={voting}
-            onClick={(e) => voteButtonClicked(e, "Positive")}
-          />
-        </div>
-        <div className="flex">
-          <Button
-            icon="icon icon-common icon-hand-rock"
-            className="p-button-rounded p-button-text p-button-lg"
-            tooltip="Vote Neutral"
-            tooltipOptions={{ position: "bottom" }}
-            style={{ color: "#F7DC6F" }}
-            onClick={(e) => voteButtonClicked(e, "Neutral")}
-            loading={voting}
-          />
-        </div>
-        <div className="flex">
-          <Button
-            icon="icon icon-common icon-thumbs-down"
-            className="p-button-rounded p-button-text p-button-lg"
-            tooltip="Vote Negative"
-            tooltipOptions={{ position: "bottom" }}
-            style={{ color: "#F1948A" }}
-            onClick={(e) => voteButtonClicked(e, "Negative")}
-            loading={voting}
-          />
-        </div>
-      </div>
-    );
 
     const generateUserVotedPanel = () => {
       return (
@@ -81,12 +47,15 @@ const Vote = ({ id, voteData, callBack }) => {
       if (voteData.hasUserVoted) {
         return generateUserVotedPanel();
       } else {
-        if (voteData.isVotingAllowed) return votingButtonPanel;
+        if (voteData.isVotingAllowed)
+          return (
+            <VotingButtonPanel castVote={confirmCastVote} loading={voting} />
+          );
       }
     };
 
-    let voteButtonClicked = (e, selectedVote) => {
-      let vobj = {
+    let confirmCastVote = (e, selectedVote) => {
+      let vData = {
         voteId: voteData.id,
         voteButton: selectedVote,
       };
@@ -99,7 +68,7 @@ const Vote = ({ id, voteData, callBack }) => {
         acceptLabel: "Vote " + selectedVote,
         rejectLabel: "Cancel",
         accept: () =>
-          vote(vobj).then(() => {
+          vote(vData).then(() => {
             /* CALL BACK will call a function that has been passed as a prop */
             if (callBack !== undefined) callBack();
           }),
@@ -107,74 +76,20 @@ const Vote = ({ id, voteData, callBack }) => {
       });
     };
 
-    let option = {
-      grid: {
-        left: "3%",
-        right: "3%",
-        bottom: "0%",
-        containLabel: false,
-      },
-      xAxis: {
-        type: "value",
-        show: false,
-      },
-      yAxis: {
-        type: "category",
-        data: ["Votes"],
-        show: false,
-      },
-
-      series: [
-        {
-          name: "Positive",
-          type: "bar",
-          stack: "total",
-          label: {
-            show: true,
-          },
-          itemStyle: {
-            color: "#76D7C4",
-          },
-          data: [votes.Positive],
-        },
-        {
-          name: "Neutral",
-          type: "bar",
-          stack: "total",
-          label: {
-            show: true,
-          },
-          itemStyle: {
-            color: "#F7DC6F",
-          },
-          data: [votes.Neutral],
-        },
-        {
-          name: "Negative",
-          type: "bar",
-          stack: "total",
-          label: {
-            show: true,
-          },
-          itemStyle: {
-            color: "#F1948A",
-          },
-          data: [votes.Negative],
-        },
-      ],
-    };
-
-    let renderVotingChartOrNoVotes = () => {
-      if (votes.Positive === 0 && votes.Neutral === 0 && votes.Negative === 0) {
-        return <p style={{ fontSize: "small" }}>No votes submitted</p>;
-      } else {
+    let renderVotingChart = () => {
+      if (!revealVote)
         return (
-          <ReactECharts
-            option={option}
-            // onEvents={onEvents}
-            style={{ height: "6rem", width: "10rem" }}
-          />
+          <div className="flex w-auto justify-content-center">
+            <p style={{ fontSize: "small" }}>
+              <i className="pi pi-eye-slash" /> Votes Hidden
+            </p>
+          </div>
         );
+
+      if (votes.Positive === 0 && votes.Neutral === 0 && votes.Negative === 0) {
+        return <p style={{ fontSize: "small" }}> - No votes submitted -</p>;
+      } else {
+        return <VotingChartPanel votes={votes} />;
       }
     };
 
@@ -182,9 +97,34 @@ const Vote = ({ id, voteData, callBack }) => {
     return (
       <React.Fragment>
         <div className="flex flex-column w-auto min-w-10">
-          <div className="flex">{renderVotingChartOrNoVotes()}</div>
+          <div className="flex w-auto justify-content-center">
+            {renderVotingChart()}
+          </div>
           <div className="flex">{generateOptions()}</div>
+          <div className="flex justify-content-center ">
+            <Button
+              label="Comments"
+              icon="pi pi-comments"
+              onClick={() => setShowVotingComment(true)}
+              className="p-button-sm p-button-plain p-button-text"
+            />
+          </div>
         </div>
+        <Dialog
+          //header=""
+          //className="w-full"
+          //footer={footer}
+          //icons={myIcon}
+          visible={showVotingComment}
+          style={{ width: "90vw", height: "90vh" }}
+          modal
+          onHide={() => setShowVotingComment(false)}
+        >
+          <VotingDiscussion
+            reference={discussionReference}
+            tagsFilters={discussionTags}
+          />
+        </Dialog>
       </React.Fragment>
     );
   }

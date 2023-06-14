@@ -17,7 +17,7 @@ const SectionHeading = ({
 }) => {
   const headerTemplate = (options) => {
     const toggleIcon = options.collapsed
-      ? "icon icon-common icon-ellipsis-h"
+      ? "icon icon-common icon-bars"
       : "pi pi-chevron-up";
     let background = color ? color : "#332288";
     let htextColor = textColor ? textColor : "#ffffff";

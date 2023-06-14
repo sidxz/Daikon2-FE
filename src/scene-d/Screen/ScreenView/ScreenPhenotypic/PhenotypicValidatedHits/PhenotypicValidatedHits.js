@@ -11,6 +11,8 @@ import ValidatedHitsList from "../../ScreenTargetBased/ValidatedHits/ValidatedHi
 
 const PhenotypicValidatedHits = ({ baseScreenName }) => {
   /* MobX Store */
+
+  console.log("PhenotypicValidatedHits.js: baseScreenName: ", baseScreenName);
   const rootStore = useContext(RootStoreContext);
   const {
     filterPhenotypicScreensByBaseScreenName,
@@ -96,7 +98,7 @@ const PhenotypicValidatedHits = ({ baseScreenName }) => {
           <SectionHeading
             icon="icon icon-common icon-search"
             heading={"Screens of " + baseScreenName}
-            baseScreenName={baseScreenName}
+            targetName={baseScreenName}
             displayHorizon={true}
             color={appColors.sectionHeadingBg.screen}
           />
