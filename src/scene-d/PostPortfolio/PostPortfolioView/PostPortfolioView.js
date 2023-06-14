@@ -84,7 +84,7 @@ const PostPortfolioView = () => {
       items: [],
     };
 
-    if (user.roles.includes("admin")) {
+    if (user.roles.includes("admin") || user.roles.includes("projectManager")) {
       if (selectedProject.currentStage === "IND") {
         actions.items.push({
           label: "Promote to P1",

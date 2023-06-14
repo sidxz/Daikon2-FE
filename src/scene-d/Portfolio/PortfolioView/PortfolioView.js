@@ -89,7 +89,7 @@ const PortfolioView = () => {
       items: [],
     };
 
-    if (user.roles.includes("admin")) {
+    if (user.roles.includes("admin") || user.roles.includes("projectManager")) {
       if (selectedProject.currentStage === "H2L") {
         actions.items.push({
           label: "Promote to LO",
