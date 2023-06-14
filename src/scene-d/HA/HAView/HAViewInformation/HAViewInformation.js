@@ -100,7 +100,7 @@ const HAViewInformation = ({ id, project }) => {
                 project={project}
                 stageFilter="HA"
                 disableAdd={project.currentStage !== "HA" ? true : false}
-                enableEdit={user.roles.includes("admin")}
+                enableEdit={true}
               />
             </Fieldset>
           </div>
