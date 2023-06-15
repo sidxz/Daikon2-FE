@@ -96,7 +96,7 @@ const HAView = () => {
       });
     }
 
-    if (user.roles.includes("admin")) {
+    if (user.roles.includes("admin") || user.roles.includes("projectManager")) {
       actions.items.push({
         label: "Project Settings",
         icon: "icon icon-common icon-asterisk",

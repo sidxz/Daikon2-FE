@@ -5,18 +5,16 @@
   justify-content: center;
 }
 .LandingWrap {
-  
   position: relative;
-  background: linear-gradient(to right, #30CFD0 0%, #332288 100%);
+  background: linear-gradient(to right, #30cfd0 0%, #332288 100%);
   width: 610px;
   height: 310px;
 }
 
-.LandingLoginBox  {
+.LandingLoginBox {
   background: #ffffff;
   margin: 5px 5px 5px 5px;
   padding: 20px;
   width: 600px;
   height: 300px;
-  
 }

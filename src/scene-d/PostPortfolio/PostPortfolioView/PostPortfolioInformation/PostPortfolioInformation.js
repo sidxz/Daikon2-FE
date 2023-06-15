@@ -86,7 +86,7 @@ const PostPortfolioInformation = ({ id, project }) => {
               disableAdd={
                 ["IND", "P1"].includes(project.currentStage) ? false : true
               }
-              enableEdit={user.roles.includes("admin")}
+              enableEdit={true}
             />
           </Fieldset>
         </div>

@@ -1,6 +1,8 @@
 import { Button } from "primereact/button";
+import { Chips } from "primereact/chips";
 import { Editor } from "primereact/editor";
 import { InputText } from "primereact/inputtext";
+
 import React, { useState } from "react";
 
 const StartDiscussion = ({
@@ -8,10 +10,12 @@ const StartDiscussion = ({
   reference,
   newDiscussion,
   postingDiscussion,
+  tagsFilters = [],
   close,
 }) => {
   const [topic, setTopic] = useState("");
   const [description, setDescription] = useState("");
+  const [tags, setTags] = useState([...tagsFilters]);
 
   let submitNewDiscussion = () => {
     let formatedDiscussion = {
@@ -20,7 +24,7 @@ const StartDiscussion = ({
       topic: topic,
       description: description,
       mentions: [],
-      tags: [],
+      tags: [...tags],
     };
 
     newDiscussion(formatedDiscussion).then((res) => {
@@ -43,26 +47,18 @@ const StartDiscussion = ({
     <div className="flex flex-column w-full">
       <div className="card">
         <h3>(Topic) What is it about?</h3>
-        <p>A one line summary of the question or the discussion.</p>
         <InputText
           value={topic}
+          placeholder="A one line summary of the question/discussion."
           onChange={(e) => setTopic(e.target.value)}
           style={{ width: "100%" }}
           readOnly={postingDiscussion}
         />
 
         <h3>Description</h3>
-        <p>Include detailed information that is relevant to the topic</p>
-        {/* <InputTextarea
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          rows={10}
-          style={{ width: "100%" }}
-          autoResize
-          readonly={postingDiscussion}
-        /> */}
+        <p>Include detailed information that is relevant to the topic.</p>
         <Editor
-          style={{ height: "320px" }}
+          style={{ height: "200px" }}
           headerTemplate={headerOfTextEditor}
           value={description}
           onTextChange={(e) => {
@@ -82,12 +78,25 @@ const StartDiscussion = ({
           itemTemplate={itemTemplate}
         /> */}
         <br />
+        <Chips
+          value={tags}
+          onChange={(e) => setTags(e.target.value)}
+          separator=","
+          placeholder="Add tags if required"
+          allowDuplicate={false}
+        ></Chips>
+
+        <br />
         <br />
 
         <Button
           label="Post"
           icon="pi pi-comment"
-          style={{ background: "#28477f", border: "0px solid #28477f" }}
+          style={{
+            background: "#28477f",
+            border: "0px solid #28477f",
+            width: "100%",
+          }}
           loading={postingDiscussion}
           onClick={() => submitNewDiscussion()}
         />

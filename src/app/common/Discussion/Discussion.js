@@ -4,18 +4,20 @@ import { observer } from "mobx-react-lite";
 import { Avatar } from "primereact/avatar";
 import { Button } from "primereact/button";
 import { Card } from "primereact/card";
+import { Chips } from "primereact/chips";
 import { Divider } from "primereact/divider";
 import { Editor } from "primereact/editor";
 import { Fieldset } from "primereact/fieldset";
+import { OverlayPanel } from "primereact/overlaypanel";
 import { Sidebar } from "primereact/sidebar";
 import { Tag } from "primereact/tag";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import Loading from "../../layout/Loading/Loading";
 import { RootStoreContext } from "../../stores/rootStore";
 import FDate from "../FDate/FDate";
 import StartDiscussion from "./StartDiscussion";
 
-const Discussion = ({ reference, section }) => {
+const Discussion = ({ reference, section, tagsFilters = [] }) => {
   const rootStore = useContext(RootStoreContext);
   const {
     fetchDiscussions,
@@ -36,11 +38,13 @@ const Discussion = ({ reference, section }) => {
   /* local variables */
 
   const [displayDiscussionDialog, setDisplayDiscussionDialog] = useState(false);
-  const [userReplyValue, setuserReplyValue] = useState({});
+  const [userReplyValue, setUserReplyValue] = useState({});
   const [displayReplyBox, setDisplayReplyBox] = useState({});
 
   const [displayEditBox, setDisplayEditBox] = useState({});
   const [editBoxValue, setEditBoxValue] = useState({});
+  const [tagsFilter, setTagsFilter] = useState([...tagsFilters]);
+  const opFilters = useRef(null);
 
   const displayAllDiscussions = () => {
     setDisplayDiscussionDialog(true);
@@ -49,6 +53,7 @@ const Discussion = ({ reference, section }) => {
   if (loadingDiscussions) {
     return <Loading />;
   }
+
   let sanitizeHtml = (text) =>
     DOMPurify.sanitize(text, {
       ALLOWED_TAGS: ["strong", "p", "em", "u", "s", "a", "ul", "li"],
@@ -74,7 +79,7 @@ const Discussion = ({ reference, section }) => {
   let mapReplyValues = (id, value) => {
     let tempValue = { ...userReplyValue };
     tempValue[id] = value;
-    setuserReplyValue(tempValue);
+    setUserReplyValue(tempValue);
   };
 
   let mapDisplayReplyBox = (id, value) => {
@@ -142,23 +147,89 @@ const Discussion = ({ reference, section }) => {
     });
   };
 
+  // from the discussion tags property generate the list of tags
+  let generateTags = (discussion) => {
+    let tags = discussion.tags;
+    let formattedTags = tags.map((tag) => {
+      return (
+        <div className="flex inline">
+          <Tag
+            style={{ background: "#828AAD", padding: "0.1rem 0.2rem" }}
+            value={tag}
+            key={tag}
+          ></Tag>
+        </div>
+      );
+    });
+    return formattedTags;
+  };
+
   let titleTemplate = (discussion) => {
     return (
-      <div>
+      <div className="flex flex-row gap-2">
         {discussion.topic}{" "}
         <sup>
-          <Tag
-            style={{ background: "#CCCCCC", padding: "0.1rem 0.2rem" }}
-            value={discussion.section}
-          ></Tag>
+          <div className="inline flex flex-row gap-2">
+            <div className="flex inline">
+              <Tag
+                style={{ background: "#76CE86", padding: "0.1rem 0.2rem" }}
+                value={discussion.section}
+              />
+            </div>
+            {generateTags(discussion)}
+          </div>
         </sup>
       </div>
     );
   };
 
-  let formatteddiscussions =
+  let StartDiscussionHeader = () => {
+    return (
+      <div className="flex flex-column">
+        <div className="flex flex-row gap-1">
+          <div className="flex inline">
+            <Tag
+              style={{
+                background: "#76CE86",
+                padding: "0.1rem 0.5rem",
+                fontSize: "x-large",
+              }}
+              value={section}
+            />
+          </div>
+          <div className="flex inline">
+            <Tag
+              style={{
+                background: "#28477f",
+                padding: "0.1rem 0.5rem",
+                fontSize: "x-large",
+                marginLeft: "1rem",
+              }}
+              value={reference}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  let formattedDiscussions =
     discussions.length > 0 ? (
       discussions.map((discussion) => {
+        // filter by tags
+        if (tagsFilter.length > 0) {
+          let tags = discussion.tags;
+          let found = false;
+          tags.forEach((tag) => {
+            if (tagsFilter.includes(tag)) {
+              found = true;
+            }
+          });
+          if (!found) {
+            return <React.Fragment />;
+          }
+        }
+
         let formattedReplies = <React.Fragment />;
         if (discussion.replies.length > 0) {
           formattedReplies = discussion.replies.map((reply) => {
@@ -288,7 +359,16 @@ const Discussion = ({ reference, section }) => {
         );
       })
     ) : (
-      <React.Fragment />
+      <div className="flex flex-column w-full">
+        <div className="flex justify-content-center">
+          <p style={{ fontSize: "small" }}> - Nothing here yet -</p>
+        </div>
+        <div className="flex justify-content-center">
+          <p style={{ fontSize: "small" }}>
+            Click on 'Add a New Topic' to start a discussion.
+          </p>
+        </div>
+      </div>
     );
 
   return (
@@ -299,29 +379,10 @@ const Discussion = ({ reference, section }) => {
         style={{ width: "30em", overflowX: "auto" }}
         onHide={() => setDisplayDiscussionDialog(false)}
       >
-        <h2>Start a new topic.</h2>
-
-        <Tag
-          style={{
-            background: "#CCCCCC",
-            padding: "0.1rem 0.5rem",
-            fontSize: "x-large",
-          }}
-          value={section}
-        />
-        <Tag
-          style={{
-            background: "#28477f",
-            padding: "0.1rem 0.5rem",
-            fontSize: "x-large",
-            marginLeft: "1rem",
-          }}
-          value={reference}
-        />
-        <br />
-        <br />
+        {StartDiscussionHeader()}
         <StartDiscussion
           reference={reference}
+          tagsFilters={tagsFilters}
           section={section}
           newDiscussion={newDiscussion}
           postingDiscussion={postingDiscussion}
@@ -331,17 +392,41 @@ const Discussion = ({ reference, section }) => {
 
       <div className="flex w-full">
         <Fieldset legend="Discussion board" className="w-full">
-          <div className="flex w-full justify-content-end">
-            <Button
-              className="scalein animation-duration-500 p-button p-button-info"
-              icon="pi pi-plus"
-              label="Add a New Topic"
-              onClick={displayAllDiscussions}
-              style={{ background: "#28477f", border: "0px solid #28477f" }}
-            />
+          <div className="flex gap-1 w-full justify-content-end">
+            <div className="flex">
+              <Button
+                className="scalein animation-duration-500 p-button p-button-info"
+                style={{ background: "#28477f", border: "0px solid #28477f" }}
+                type="button"
+                icon="icon icon-common icon-filter"
+                onClick={(e) => opFilters.current.toggle(e)}
+                aria-haspopup
+                aria-controls="overlay_panel"
+              />
+              <OverlayPanel ref={opFilters} id="overlay_panel">
+                <div className="flex block flex-row gap-2">
+                  <Chips
+                    value={tagsFilter}
+                    onChange={(e) => setTagsFilter(e.value)}
+                    separator=","
+                    placeholder="Filter by tags."
+                    allowDuplicate={false}
+                  ></Chips>
+                </div>
+              </OverlayPanel>
+            </div>
+            <div className="flex">
+              <Button
+                className="scalein animation-duration-500 p-button p-button-info"
+                icon="pi pi-plus"
+                label="Add a New Topic"
+                onClick={displayAllDiscussions}
+                style={{ background: "#28477f", border: "0px solid #28477f" }}
+              />
+            </div>
           </div>
 
-          {formatteddiscussions}
+          {formattedDiscussions}
         </Fieldset>
       </div>
 
