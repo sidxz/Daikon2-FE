@@ -2,8 +2,11 @@
 
 ## [v1.2.0]
 
--
+### Added
+
 - 'New' changed to 'New Library Screen' in Screens
+### Fixed
+- Bug Fix: Phenotypic screen now opens when viewed from Horizon view.
 
 ## [v1.1.0]
 
