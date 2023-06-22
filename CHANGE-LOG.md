@@ -3,6 +3,7 @@
 ## [v1.2.0]
 
 -
+- 'New' changed to 'New Library Screen' in Screens
 
 ## [v1.1.0]
 
