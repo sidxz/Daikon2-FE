@@ -5,7 +5,10 @@
 ### Added
 
 - 'New' changed to 'New Library Screen' in Screens
+- HA can be created with basic user permissions
+
 ### Fixed
+
 - Bug Fix: Phenotypic screen now opens when viewed from Horizon view.
 
 ## [v1.1.0]
