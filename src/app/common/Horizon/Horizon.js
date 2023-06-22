@@ -6,7 +6,10 @@ import FailedLoading from "../FailedLoading/FailedLoading";
 import PleaseWait from "../PleaseWait/PleaseWait";
 import HorizonNode from "./HorizonNode/HorizonNode";
 
-const Horizon = ({ accessionNumber, targetName }) => {
+const Horizon = ({ accessionNumber, entryPoint }) => {
+  console.log("Horizon.js: accessionNumber: ", accessionNumber);
+  console.log("Horizon.js: entryPoint: ", entryPoint);
+
   const rootStore = useContext(RootStoreContext);
   const {
     generatingHorizon,
@@ -17,12 +20,12 @@ const Horizon = ({ accessionNumber, targetName }) => {
   } = rootStore.generalStore;
 
   useEffect(() => {
-    if (targetName) {
+    if (entryPoint) {
       if (
         selectedHorizon === null ||
-        selectedHorizon.attributes.targetName !== targetName
+        selectedHorizon.attributes.entryPoint !== entryPoint
       ) {
-        targetName && fetchHorizon(targetName);
+        entryPoint && fetchHorizon(entryPoint);
       }
     }
 
@@ -35,14 +38,14 @@ const Horizon = ({ accessionNumber, targetName }) => {
       }
     }
   }, [
-    targetName,
+    entryPoint,
     accessionNumber,
     fetchHorizon,
     fetchHorizonByAccession,
     selectedHorizon,
   ]);
 
-  if (targetName === null || targetName === "undefined") {
+  if (entryPoint === null || entryPoint === "undefined") {
     return <>Nothing</>;
   }
 

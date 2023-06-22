@@ -47,7 +47,7 @@ const PostPortfolioInformation = ({ id, project }) => {
           <SectionHeading
             icon="icon icon-common icon-drug"
             heading={project.projectName + " | " + project?.currentStage}
-            targetName={
+            entryPoint={
               project.targetName || project.screenName || project.projectName
             }
             displayHorizon={true}

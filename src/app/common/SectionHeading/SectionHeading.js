@@ -11,7 +11,7 @@ const SectionHeading = ({
   color,
   textColor,
   accessionNumber,
-  targetName,
+  entryPoint,
   projectName,
   customButtons,
 }) => {
@@ -105,7 +105,7 @@ const SectionHeading = ({
     >
       <Horizon
         accessionNumber={accessionNumber}
-        targetName={targetName || projectName}
+        entryPoint={entryPoint || projectName}
       />
     </Panel>
   );

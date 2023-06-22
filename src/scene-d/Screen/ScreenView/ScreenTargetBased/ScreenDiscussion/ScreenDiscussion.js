@@ -33,7 +33,7 @@ const ScreenDiscussion = ({ TargetName }) => {
         <SectionHeading
           icon="icon icon-common icon-target"
           heading={TargetName}
-          targetName={TargetName}
+          entryPoint={TargetName}
           displayHorizon={true}
           color={appColors.sectionHeadingBg.screen}
         />

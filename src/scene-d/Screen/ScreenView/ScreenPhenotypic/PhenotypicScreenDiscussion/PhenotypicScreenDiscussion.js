@@ -33,7 +33,7 @@ const PhenotypicScreenDiscussion = ({ baseScreenName }) => {
         <SectionHeading
           icon="icon icon-common icon-target"
           heading={baseScreenName}
-          //targetName={baseScreenName}
+          //entryPoint={baseScreenName}
           displayHorizon={false}
           color={appColors.sectionHeadingBg.screen}
         />
