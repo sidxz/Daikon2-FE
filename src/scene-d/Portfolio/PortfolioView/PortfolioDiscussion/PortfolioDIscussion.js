@@ -2,6 +2,7 @@ import { BreadCrumb } from "primereact/breadcrumb";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import Discussion from "../../../../app/common/Discussion/Discussion";
+import { ExtractBaseScreenNameFromScreen } from "../../../../app/common/Functions/Formats";
 import SectionHeading from "../../../../app/common/SectionHeading/SectionHeading";
 import { appColors } from "../../../../colors";
 
@@ -34,7 +35,9 @@ const PortfolioDiscussion = ({ project }) => {
           icon="icon icon-common icon-analyse"
           heading={project.projectName + " | " + project?.currentStage}
           entryPoint={
-            project.targetName || project.screenName || project.projectName
+            project.targetName ||
+            ExtractBaseScreenNameFromScreen(project.screenName) ||
+            project.projectName
           }
           displayHorizon={true}
           color={appColors.sectionHeadingBg.portfolio}

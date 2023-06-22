@@ -15,6 +15,7 @@ import HAInformationGeneralInformation from "./LocalComponents/HAInformationGene
 import HAOrgs from "./LocalComponents/HAOrgs";
 import HAStatus from "./LocalComponents/HAStatus";
 
+import { ExtractBaseScreenNameFromScreen } from "../../../../app/common/Functions/Formats";
 import "./ScrollPanel.css";
 
 const HAViewInformation = ({ id, project }) => {
@@ -69,7 +70,9 @@ const HAViewInformation = ({ id, project }) => {
               icon="icon icon-conceptual icon-chemical"
               heading={project.projectName}
               entryPoint={
-                project.targetName || project.screenName || project.projectName
+                project.targetName ||
+                ExtractBaseScreenNameFromScreen(project.screenName) ||
+                project.projectName
               }
               projectName={project.projectName}
               displayHorizon={true}
