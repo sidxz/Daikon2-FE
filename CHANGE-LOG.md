@@ -1,7 +1,13 @@
 # Change Log
 
+## [v1.2.0]
+
+-
+
 ## [v1.1.0]
+
 ### Added
+
 - Compass view now supports Rich Text formatting.
 - Ability to hide votes for improved privacy.
 - Ability to sort votes for better organization.
