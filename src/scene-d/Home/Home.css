@@ -4,7 +4,7 @@
 .Home h1 {
   font-size: 20px;
   text-align: center;
-  background: linear-gradient(to right, #30cfd0 0%, #332288 100%);
+  background: linear-gradient(to right, #578a95 0%, #332288 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
