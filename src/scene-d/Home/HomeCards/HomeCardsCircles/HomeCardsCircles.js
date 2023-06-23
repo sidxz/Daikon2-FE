@@ -8,7 +8,7 @@ const HomeCardsCircles = ({ icon, total, active }) => {
   );
   let totalComponent = (
     <div className="flex">
-      <h3 style={{ margin: "0", padding: "0" }}>{total}</h3>
+      <h3 style={{ margin: "0", padding: "0", color: "#808080" }}>{total}</h3>
     </div>
   );
   return (
@@ -20,7 +20,7 @@ const HomeCardsCircles = ({ icon, total, active }) => {
               <div className="flex align-items-center pt-3 pb-2">
                 <i
                   className={icon}
-                  style={{ fontSize: "xx-large", color: "#332288" }}
+                  style={{ fontSize: "xx-large", color: "#3c83bd" }}
                 ></i>
               </div>
               {total && totalComponent}
