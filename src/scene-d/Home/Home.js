@@ -3,22 +3,18 @@ import "./Home.css";
 import HomeCards from "./HomeCards/HomeCards";
 
 const Home = () => {
-
   return (
-    <div className="Home">
-      <h1>Data Acquisition, Integration and Knowledge capture application (DAIKON)</h1>
-      <div className="subtext">
-        <p>
-          Daikon is a tool for visualizing and
-          managing targets, pre-projects and projects within the TBDA and its
-          discovery portfolio.
-        </p>
-        <p>
-          This is intended to be used by Program and Portfolio Managers, Project
-          Managers, and Scientists.
-        </p>
+    <div className="Home flex flex-column align-items-center w-full pb-4">
+      <div className="flex">
+        <h1>
+          Data Acquisition, Integration and Knowledge capture application
+          (DAIKON)
+        </h1>
       </div>
-      <HomeCards />
+      <div className="flex">
+        <HomeCards />
+      </div>
+      <div className="flex"></div>
     </div>
   );
 };

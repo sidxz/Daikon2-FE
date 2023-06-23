@@ -1,10 +1,9 @@
 import { Card } from "primereact/card";
-import React, { useContext } from 'react';
+import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
-import { RootStoreContext } from '../../../app/stores/rootStore';
+import { RootStoreContext } from "../../../app/stores/rootStore";
 
 const HomeCards = () => {
-
   //const header = <img alt="Card" src="/images/usercard.png" />;
   const header = null;
 
@@ -18,7 +17,7 @@ const HomeCards = () => {
           <NavLink to="/d/gene/" style={{ textDecoration: "None" }}>
             <Card
               title="Genes"
-              subTitle={'(' + appVars.appCount.geneCount + ')'}
+              subTitle={"(" + appVars.appCount.geneCount + ")"}
               style={{ width: "18em" }}
               header={header}
             >
@@ -33,7 +32,7 @@ const HomeCards = () => {
           <NavLink to="/d/target/" style={{ textDecoration: "None" }}>
             <Card
               title="Targets"
-              subTitle={'(' + appVars.appCount.targetCount + ')'}
+              subTitle={"(" + appVars.appCount.targetCount + ")"}
               style={{ width: "18em" }}
               header={header}
             >
@@ -48,7 +47,7 @@ const HomeCards = () => {
           <NavLink to="/d/screen/" style={{ textDecoration: "None" }}>
             <Card
               title="Screens"
-              subTitle={'(' + appVars.appCount.screenCount + ')'}
+              subTitle={"(" + appVars.appCount.screenCount + ")"}
               style={{ width: "18em" }}
               header={header}
             >
@@ -61,12 +60,11 @@ const HomeCards = () => {
         </div>
       </div>
       <div className="flex justify-content-center gap-3">
-
         <div className="flex">
           <NavLink to="/d/ha/" style={{ textDecoration: "None" }}>
             <Card
               title="HAs"
-              subTitle={'(' + appVars.appCount.haCount + ')'}
+              subTitle={"(" + appVars.appCount.haCount + ")"}
               style={{ width: "18em" }}
               header={header}
             >
@@ -81,7 +79,7 @@ const HomeCards = () => {
           <NavLink to="/d/portfolio/" style={{ textDecoration: "None" }}>
             <Card
               title="Portfolio"
-              subTitle={'(' + appVars.appCount.portfolioCount + ')'}
+              subTitle={"(" + appVars.appCount.portfolioCount + ")"}
               style={{ width: "18em" }}
               header={header}
             >
@@ -96,7 +94,7 @@ const HomeCards = () => {
           <NavLink to="/d/post-portfolio/" style={{ textDecoration: "None" }}>
             <Card
               title="Post Portfolio"
-              subTitle={'(' + appVars.appCount.postPortfolioCount + ')'}
+              subTitle={"(" + appVars.appCount.postPortfolioCount + ")"}
               style={{ width: "18em" }}
               header={header}
             >
@@ -109,7 +107,7 @@ const HomeCards = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default HomeCards
+export default HomeCards;
