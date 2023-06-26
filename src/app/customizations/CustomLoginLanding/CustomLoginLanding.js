@@ -8,30 +8,30 @@ import "./CustomLoginLanding.css";
 /* Custom Login Landing Page for Daikon Enterprise TBDA */
 
 const CustomLoginLanding = ({ loginButtonClicked }) => {
-  const [termsAgreed, setTermsAgreed] = useState(false);
-  const [rememberChoice, setRememberChoice] = useState(false);
+  // Get values from local storage
+  const storedRememberChoice = JSON.parse(
+    localStorage.getItem("Login_RememberChoice")
+  );
+  const storedTermsAgreed = JSON.parse(
+    localStorage.getItem("Login_TermsAgreed")
+  );
+
+  // set states from local storage values, so that the checkbox is checked if the user has previously
+  // agreed to the terms. or false if local storage is empty
+  const [termsAgreed, setTermsAgreed] = useState(storedTermsAgreed || false);
+  const [rememberChoice, setRememberChoice] = useState(
+    storedRememberChoice || false
+  );
 
   useEffect(() => {
-    // Fetch the values from local storage on component mount
-    const storedRememberChoice = localStorage.getItem("Login_RememberChoice");
-    const storedTermsAgreed = localStorage.getItem("Login_TermsAgreed");
-
-    // If values exist in local storage, update the states with them
-    if (storedRememberChoice !== null && storedTermsAgreed !== null) {
-      if (storedRememberChoice === "true") {
-        setRememberChoice(JSON.parse(storedRememberChoice));
-        setTermsAgreed(JSON.parse(storedTermsAgreed));
-      }
+    // only remember Login_TermsAgreed if the user has checked the remember choice checkbox
+    if (rememberChoice) {
+      localStorage.setItem("Login_TermsAgreed", JSON.stringify(termsAgreed));
     }
-  }, []);
-
-  useEffect(() => {
-    // Update local storage whenever the states change
     localStorage.setItem(
       "Login_RememberChoice",
       JSON.stringify(rememberChoice)
     );
-    localStorage.setItem("Login_TermsAgreed", JSON.stringify(termsAgreed));
   }, [rememberChoice, termsAgreed]);
 
   return (
