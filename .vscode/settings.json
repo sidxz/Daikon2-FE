@@ -8,6 +8,7 @@
     "formik",
     "inputtext",
     "inputtextarea",
-    "primereact"
+    "primereact",
+    "TBDA"
   ]
 }

@@ -1,9 +1,12 @@
 import { Tag } from "primereact/tag";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { appVersion } from "../../../appVersion";
 import cssClass from "./Footer.module.css";
 
 const Footer = () => {
+  const navigate = useNavigate();
+
   return (
     <div className={cssClass.Footer}>
       <hr className={cssClass.Hr} />
@@ -19,9 +22,16 @@ const Footer = () => {
           <Tag
             value="Cite DAIKON"
             severity="success"
-            onClick={() => console.log("/cite")}
+            onClick={() =>
+              window.open("https://pubs.acs.org/doi/10.1021/acsptsci.3c00034")
+            }
+            style={{ cursor: "pointer" }}
           />
-          <Tag value="TBDA Confidential" severity="danger" />
+          <Tag
+            value="TBDA Confidential"
+            severity="danger"
+            style={{ cursor: "pointer" }}
+          />
         </div>
       </div>
     </div>
