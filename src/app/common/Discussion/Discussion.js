@@ -17,7 +17,13 @@ import { RootStoreContext } from "../../stores/rootStore";
 import FDate from "../FDate/FDate";
 import StartDiscussion from "./StartDiscussion";
 
-const Discussion = ({ reference, section, tagsFilters = [] }) => {
+const Discussion = ({
+  reference,
+  section,
+  tagsFilters = [],
+  filterById,
+  disableAddNewPost,
+}) => {
   const rootStore = useContext(RootStoreContext);
   const {
     fetchDiscussions,
@@ -229,6 +235,9 @@ const Discussion = ({ reference, section, tagsFilters = [] }) => {
             return <React.Fragment />;
           }
         }
+        if (filterById && filterById !== discussion.id) {
+          return <React.Fragment />;
+        }
 
         let formattedReplies = <React.Fragment />;
         if (discussion.replies.length > 0) {
@@ -392,39 +401,43 @@ const Discussion = ({ reference, section, tagsFilters = [] }) => {
 
       <div className="flex w-full">
         <Fieldset legend="Discussion board" className="w-full">
-          <div className="flex gap-1 w-full justify-content-end">
-            <div className="flex">
-              <Button
-                className="scalein animation-duration-500 p-button p-button-info"
-                style={{ background: "#28477f", border: "0px solid #28477f" }}
-                type="button"
-                icon="icon icon-common icon-filter"
-                onClick={(e) => opFilters.current.toggle(e)}
-                aria-haspopup
-                aria-controls="overlay_panel"
-              />
-              <OverlayPanel ref={opFilters} id="overlay_panel">
-                <div className="flex block flex-row gap-2">
-                  <Chips
-                    value={tagsFilter}
-                    onChange={(e) => setTagsFilter(e.value)}
-                    separator=","
-                    placeholder="Filter by tags."
-                    allowDuplicate={false}
-                  ></Chips>
-                </div>
-              </OverlayPanel>
+          {!disableAddNewPost ? (
+            <div className="flex gap-1 w-full justify-content-end">
+              <div className="flex">
+                <Button
+                  className="scalein animation-duration-500 p-button p-button-info"
+                  style={{ background: "#28477f", border: "0px solid #28477f" }}
+                  type="button"
+                  icon="icon icon-common icon-filter"
+                  onClick={(e) => opFilters.current.toggle(e)}
+                  aria-haspopup
+                  aria-controls="overlay_panel"
+                />
+                <OverlayPanel ref={opFilters} id="overlay_panel">
+                  <div className="flex block flex-row gap-2">
+                    <Chips
+                      value={tagsFilter}
+                      onChange={(e) => setTagsFilter(e.value)}
+                      separator=","
+                      placeholder="Filter by tags."
+                      allowDuplicate={false}
+                    ></Chips>
+                  </div>
+                </OverlayPanel>
+              </div>
+              <div className="flex">
+                <Button
+                  className="scalein animation-duration-500 p-button p-button-info"
+                  icon="pi pi-plus"
+                  label="Add a New Topic"
+                  onClick={displayAllDiscussions}
+                  style={{ background: "#28477f", border: "0px solid #28477f" }}
+                />
+              </div>
             </div>
-            <div className="flex">
-              <Button
-                className="scalein animation-duration-500 p-button p-button-info"
-                icon="pi pi-plus"
-                label="Add a New Topic"
-                onClick={displayAllDiscussions}
-                style={{ background: "#28477f", border: "0px solid #28477f" }}
-              />
-            </div>
-          </div>
+          ) : (
+            <></>
+          )}
 
           {formattedDiscussions}
         </Fieldset>

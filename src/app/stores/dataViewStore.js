@@ -8,12 +8,19 @@ export default class DataViewStore {
   loadingTargetDash = false;
   targetDash = null;
 
+  fetchingLatestDiscussions = false;
+  latestDiscussions = [];
+
   constructor(rootStore) {
     this.rootStore = rootStore;
     makeObservable(this, {
       loadingTargetDash: observable,
       targetDash: observable,
       loadTargetDash: action,
+
+      fetchLatestDiscussions: action,
+      fetchingLatestDiscussions: observable,
+      latestDiscussions: observable,
     });
   }
 
@@ -33,6 +40,19 @@ export default class DataViewStore {
       }
     } else {
       this.loadingTargetDash = false;
+    }
+  };
+
+  fetchLatestDiscussions = async () => {
+    this.fetchingLatestDiscussions = true;
+    try {
+      this.latestDiscussions = await agent.DataView.latestDiscussions();
+    } catch (error) {
+      console.err(error);
+    } finally {
+      runInAction(() => {
+        this.fetchingLatestDiscussions = false;
+      });
     }
   };
 }
