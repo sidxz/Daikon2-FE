@@ -1,5 +1,6 @@
 import { observer } from "mobx-react-lite";
 import { Dialog } from "primereact/dialog";
+import { ProgressSpinner } from "primereact/progressspinner";
 import React, { useContext, useState } from "react";
 import { RootStoreContext } from "../../../app/stores/rootStore";
 import HomeLatestDiscussionBlock from "./HomeLatestDiscussionBlock/HomeLatestDiscussionBlock";
@@ -21,6 +22,10 @@ const HomeLatestDiscussions = () => {
   useState(() => {
     fetchLatestDiscussions();
   }, [fetchLatestDiscussions]);
+
+  if (fetchingLatestDiscussions) {
+    return <ProgressSpinner />;
+  }
 
   // Create a list of the latest discussions
   // Loop around the latest discussions and create a list of them
