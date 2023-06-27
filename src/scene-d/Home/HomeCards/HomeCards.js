@@ -1,3 +1,4 @@
+import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { RootStoreContext } from "../../../app/stores/rootStore";
@@ -66,4 +67,4 @@ const HomeCards = () => {
   );
 };
 
-export default HomeCards;
+export default observer(HomeCards);
