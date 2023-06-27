@@ -1,7 +1,9 @@
 import { observer } from "mobx-react-lite";
+import { Dialog } from "primereact/dialog";
 import React, { useContext, useState } from "react";
 import { RootStoreContext } from "../../../app/stores/rootStore";
 import HomeLatestDiscussionBlock from "./HomeLatestDiscussionBlock/HomeLatestDiscussionBlock";
+import HomeLatestDiscussionView from "./HomeLatestDiscussionView/HomeLatestDiscussionView";
 
 const HomeLatestDiscussions = () => {
   // Fetch the latest discussions from the API
@@ -12,6 +14,9 @@ const HomeLatestDiscussions = () => {
     fetchingLatestDiscussions,
     latestDiscussions,
   } = rootStore.dataViewStore;
+
+  const [showDiscussionThread, setShowDiscussionThread] = useState(false);
+  const [selectedDiscussion, setSelectedDiscussion] = useState({});
 
   useState(() => {
     fetchLatestDiscussions();
@@ -24,10 +29,17 @@ const HomeLatestDiscussions = () => {
     if (!fetchingLatestDiscussions && latestDiscussions.length > 0) {
       return latestDiscussions.map((discussion) => {
         return (
-          <HomeLatestDiscussionBlock
-            id={discussion.id}
-            discussion={discussion}
-          />
+          <div
+            onClick={() => {
+              setSelectedDiscussion(discussion);
+              setShowDiscussionThread(true);
+            }}
+          >
+            <HomeLatestDiscussionBlock
+              id={discussion.id}
+              discussion={discussion}
+            />
+          </div>
         );
       });
     }
@@ -38,6 +50,15 @@ const HomeLatestDiscussions = () => {
   return (
     <div className="flex flex-column card-container justify-content-center gap-0 w-full">
       {renderLatestDiscussions()}
+
+      <Dialog
+        visible={showDiscussionThread}
+        style={{ width: "90vw", height: "90vh" }}
+        modal
+        onHide={() => setShowDiscussionThread(false)}
+      >
+        <HomeLatestDiscussionView discussion={selectedDiscussion} />
+      </Dialog>
     </div>
   );
 };

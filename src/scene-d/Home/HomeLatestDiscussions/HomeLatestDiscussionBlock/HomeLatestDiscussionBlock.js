@@ -30,7 +30,7 @@ const HomeLatestDiscussionBlock = ({ id, discussion }) => {
 
   return (
     <div
-      id={id}
+      id={"_discussion_" + id}
       className="surface-50 border-round flex pl-2 pr-2 mt-1 gap-2 align-items-center border-top-1 border-black-alpha-50 "
     >
       <div className="flex w-2">
@@ -44,7 +44,7 @@ const HomeLatestDiscussionBlock = ({ id, discussion }) => {
           <i className={sectionIcon(discussion.section)}></i>
         </p>
       </div>
-      <div className="flex w-8">
+      <div className="flex w-8 cursor-pointer">
         <p>{discussion.topic}</p>
       </div>
       <div className="flex w-2 justify-content-center align-items-center gap-1">
