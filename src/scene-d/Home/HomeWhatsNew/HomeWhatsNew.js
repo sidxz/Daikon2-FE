@@ -27,15 +27,15 @@ const HomeWhatsNew = () => {
         title={cardTitle("Featured Additions")}
         style={{ fontSize: "small" }}
       >
-        <p>
+        <p className="justify-content-center">
           We've taken your feedback to heart and implemented some powerful
           upgrades.{" "}
         </p>
         <p className="m-0 p-0">
           <ul>
             <li>
-              👉 Introducing "One-Click Voting": Say goodbye to the tedious
-              voting confirmation dialog!
+              👉 Introducing "One-Click Voting" for convenient voting by passing
+              the confirmation dialog box!
             </li>
             <li>🚀 Revamped Landing Page to explore the latest discussions.</li>
             <li>
