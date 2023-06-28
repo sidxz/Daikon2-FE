@@ -4,12 +4,14 @@
 
 ### Added
 
-- 'New' changed to 'New Library Screen' in Screens
-- HA can be created with basic user permissions
-
+- Revamped the Landing Page to showcase the latest discussions and enhanced visual updates.
+- Introduced "One-Click Voting" that allows users to bypass the voting confirmation dialog with a single click. 
+- Renamed 'New' to 'New Library Screen' in the Screens section.
+- Introduced the ability to create HA (Hit Assessment) with basic user permissions.
+- Implemented a confidentiality agreement on the home page and footer.
+- Provided the option to customize the Login page by overriding the default component.
 ### Fixed
-
-- Bug Fix: Phenotypic screen now opens when viewed from Horizon view.
+- Bug Fix: The issue where the phenotypic screen was not opening when viewed from the Horizon view has been resolved.
 
 ## [v1.1.0]
 

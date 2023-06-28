@@ -34,6 +34,7 @@ const ValidatedHitsList = ({ screenId }) => {
   const [revealVoteEnabled, setRevealVoteEnabled] = useState(false);
   const [selectedCompounds, setSelectedCompounds] = useState(null);
   const [displayPromoteToHAEntry, setDisplayPromoteToHAEntry] = useState(false);
+  const [enableOneCLickVoting, setEnableOneCLickVoting] = useState(false);
 
   let tableMenuItems = [];
 
@@ -158,6 +159,7 @@ const ValidatedHitsList = ({ screenId }) => {
           revealVote={revealVoteEnabled}
           discussionReference={selectedScreen.screenName}
           discussionTags={[rowData.compound.externalCompoundIds]}
+          enableOneCLickVoting={enableOneCLickVoting}
         />
       </div>
     );
@@ -221,25 +223,53 @@ const ValidatedHitsList = ({ screenId }) => {
     tableMenuItems.push(itm);
 
     // Admin section
-    if (user.roles.includes("admin")) {
-      if (selectedScreen.validatedHits.length !== 0) {
-        let votingItem = {
-          label: "Votes Management",
-          items: [
-            {
-              label: "Enable Voting",
-              icon: "pi pi-check",
-              command: () => enableVotingCalled(),
-            },
-            {
-              label: "Freeze Voting",
-              icon: "pi pi-pause",
-              command: () => validateFreezeVoting(),
-            },
-          ],
-        };
-        tableMenuItems.push(votingItem);
+
+    if (selectedScreen.validatedHits.length !== 0) {
+      let votingItem = {
+        label: "Votes Management",
+        items: [],
+      };
+
+      votingItem.items.push({
+        label: enableOneCLickVoting
+          ? "Disable One Click Voting"
+          : "Enable One Click Voting",
+        icon: enableOneCLickVoting
+          ? "pi pi-times"
+          : "icon icon-common icon-hand-pointer",
+        command: () => {
+          if (!enableOneCLickVoting) {
+            toast.warning(
+              "One-click voting is currently enabled, which means that there won't be any confirmation dialog when you vote. Please exercise caution when using this feature.",
+              { autoClose: false }
+            );
+            setEnableOneCLickVoting(true);
+          }
+          if (enableOneCLickVoting) {
+            toast.info(
+              "One click voting is disabled. You will be prompted to confirm your vote."
+            );
+            setEnableOneCLickVoting(false);
+          }
+        },
+      });
+
+      if (user.roles.includes("admin")) {
+        votingItem.items.push(
+          {
+            label: "Enable Voting",
+            icon: "pi pi-check",
+            command: () => enableVotingCalled(),
+          },
+          {
+            label: "Freeze Voting",
+            icon: "pi pi-pause",
+            command: () => validateFreezeVoting(),
+          }
+        );
       }
+
+      tableMenuItems.push(votingItem);
     }
 
     if (selectedScreen.validatedHits.length !== 0) {
