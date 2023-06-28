@@ -3,6 +3,7 @@ import React from "react";
 import "./Home.css";
 import HomeCards from "./HomeCards/HomeCards";
 import HomeLatestDiscussions from "./HomeLatestDiscussions/HomeLatestDiscussions";
+import HomeWhatsNew from "./HomeWhatsNew/HomeWhatsNew";
 
 const Home = () => {
   let generateCardTitle = (icon, title) => {
@@ -60,7 +61,7 @@ const Home = () => {
             )}
             className="w-full min-h-full"
           >
-            New Stuff
+            <HomeWhatsNew />
           </Card>
         </div>
       </div>
