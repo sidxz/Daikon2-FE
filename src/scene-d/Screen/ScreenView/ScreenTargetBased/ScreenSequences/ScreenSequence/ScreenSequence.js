@@ -235,6 +235,8 @@ const ScreenSequence = ({ screenId }) => {
               showGridlines
               header={tableHeader}
               editMode="row"
+              sortField="startDate"
+              sortOrder={-1}
               onRowEditComplete={saveEdits}
               loading={editingScreenRow}
               exportFilename={`Screen-${selectedScreen.screenName}-${selectedScreen.method}.csv`}
