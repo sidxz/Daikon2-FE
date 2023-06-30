@@ -20,6 +20,7 @@ const Vote = ({
   revealVote = false,
   discussionReference,
   discussionTags,
+  enableOneCLickVoting = false,
 }) => {
   /* MobX Store */
   const rootStore = useContext(RootStoreContext);
@@ -59,6 +60,15 @@ const Vote = ({
         voteId: voteData.id,
         voteButton: selectedVote,
       };
+
+      /* Skip confirmation if one click voting is enabled */
+      if (enableOneCLickVoting) {
+        vote(vData).then(() => {
+          /* CALL BACK will call a function that has been passed as a prop */
+          if (callBack !== undefined) callBack();
+        });
+        return;
+      }
 
       confirmDialog({
         message:

@@ -1,7 +1,22 @@
 # Change Log
 
-## [v1.1.0]
+## [v1.2.0]
+
 ### Added
+
+- Revamped the Landing Page to showcase the latest discussions and enhanced visual updates.
+- Introduced "One-Click Voting" that allows users to bypass the voting confirmation dialog with a single click. 
+- Renamed 'New' to 'New Library Screen' in the Screens section.
+- Introduced the ability to create HA (Hit Assessment) with basic user permissions.
+- Implemented a confidentiality agreement on the home page and footer.
+- Provided the option to customize the Login page by overriding the default component.
+### Fixed
+- Bug Fix: The issue where the phenotypic screen was not opening when viewed from the Horizon view has been resolved.
+
+## [v1.1.0]
+
+### Added
+
 - Compass view now supports Rich Text formatting.
 - Ability to hide votes for improved privacy.
 - Ability to sort votes for better organization.

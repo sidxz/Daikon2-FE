@@ -223,7 +223,7 @@ const TargetPromotionFormEdit = ({ data, selectedTarget }) => {
           <SectionHeading
             icon="icon icon-common icon-target"
             heading={selectedTarget.name}
-            targetName={selectedTarget.name}
+            entryPoint={selectedTarget.name}
             displayHorizon={true}
             color={appColors.sectionHeadingBg.target}
           />

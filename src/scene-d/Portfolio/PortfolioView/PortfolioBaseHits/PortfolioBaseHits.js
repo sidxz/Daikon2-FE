@@ -70,7 +70,7 @@ const PortfolioBaseHits = ({ project }) => {
           <SectionHeading
             icon="icon icon-common icon-analyse"
             heading={project.projectName + " | " + project?.currentStage}
-            targetName={project.targetName}
+            entryPoint={project.targetName}
             displayHorizon={true}
             color={appColors.sectionHeadingBg.portfolio}
           />

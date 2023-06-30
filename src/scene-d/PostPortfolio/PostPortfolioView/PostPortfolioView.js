@@ -166,7 +166,7 @@ const PostPortfolioView = () => {
                     " | " +
                     selectedProject?.currentStage
                   }
-                  targetName={selectedProject.targetName}
+                  entryPoint={selectedProject.targetName}
                   displayHorizon={true}
                   color={appColors.sectionHeadingBg.postPortfolio}
                 />

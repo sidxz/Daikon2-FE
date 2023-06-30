@@ -1,66 +1,21 @@
-import { Button } from "primereact/button";
-import "./Login.css";
+import React from "react";
+import DefaultLogin from "./DefaultLogin/DefaultLogin";
 
-// const Login = ({ loginButtonClicked }) => {
-//   return (
-//     <div className="BackgroundLogin" >
-//       <div className="LandingLogin">
-//         <div className="LandingWrap">
-//           <div className="LandingLoginBox">
-//             <h1>Target & Project Tracker</h1>
-//             <h5>[LOGIN]</h5>
-//             <p>Please login with your BMGF ID to continue</p>
-//             <Button
-//               label="Login with SSO"
-//               onClick={() => loginButtonClicked()}
-//             ></Button>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
+let CustomLoginLanding;
+try {
+  CustomLoginLanding =
+    require("../../app/customizations/CustomLoginLanding/CustomLoginLanding").default;
+} catch (error) {
+  console.error("Failed to import CustomLoginLanding:", error);
+  CustomLoginLanding = DefaultLogin;
+}
 
-const Login = ({ loginButtonClicked }) => {
-  return (
-    <div className="BackgroundLogin">
-      {/* <div className="LoginLeft">
-        <div className="centered"></div>
-      </div> */}
+const Login = (props) => {
+  const { loginButtonClicked } = props;
 
-      <div className="LoginRight">
-        <div className="LoginCentered">
-          <div className="LoginLanding">
-            <div>
-              <div className="LoginLoginBox" id="loginButton">
-                <h1>D A I K O N</h1>
+  const LoginComponent = CustomLoginLanding;
 
-                <h5>[LOGIN]</h5>
-                <p>
-                  This computer system and the data herein are available only
-                  for authorized purposes by authorized users: use for any other
-                  purpose is prohibited and may result in administrative/
-                  disciplinary actions or criminal prosecution against the user.
-                  Usage may be subject to security testing and monitoring to
-                  ensure compliance with the policies of the Organization. There
-                  is no expectation of privacy on this system except as
-                  otherwise provided by applicable privacy laws. Users should
-                  refer to Rules for Responsible Computing, for guidance on the
-                  appropriate use of the Organization's information resources.
-                </p>
-                <br />
-                <Button
-                  label="Login with SSO"
-                  onClick={() => loginButtonClicked()}
-                ></Button>
-                {/* <Footer /> */}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  return <LoginComponent {...props} />;
 };
 
 export default Login;

@@ -67,7 +67,7 @@ const ProjectSettings = ({ id, project }) => {
             <SectionHeading
               icon="icon icon-common icon-briefcase"
               heading={project.projectName + " | " + project?.currentStage}
-              targetName={project.targetName}
+              entryPoint={project.targetName}
               displayHorizon={true}
               color={appColors.sectionHeadingBg.project}
             />

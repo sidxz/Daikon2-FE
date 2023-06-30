@@ -3,6 +3,7 @@ import { Fieldset } from "primereact/fieldset";
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import CompoundEvolutionTimeline from "../../../../app/common/CompoundEvolutionTimeline/CompoundEvolutionTimeline";
+import { ExtractBaseScreenNameFromScreen } from "../../../../app/common/Functions/Formats";
 import SectionHeading from "../../../../app/common/SectionHeading/SectionHeading";
 import { RootStoreContext } from "../../../../app/stores/rootStore";
 import { appColors } from "../../../../colors";
@@ -47,8 +48,10 @@ const PostPortfolioInformation = ({ id, project }) => {
           <SectionHeading
             icon="icon icon-common icon-drug"
             heading={project.projectName + " | " + project?.currentStage}
-            targetName={
-              project.targetName || project.screenName || project.projectName
+            entryPoint={
+              project.targetName ||
+              ExtractBaseScreenNameFromScreen(project.screenName) ||
+              project.projectName
             }
             displayHorizon={true}
             color={appColors.sectionHeadingBg.postPortfolio}

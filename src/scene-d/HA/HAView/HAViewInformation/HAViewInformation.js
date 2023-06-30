@@ -15,6 +15,7 @@ import HAInformationGeneralInformation from "./LocalComponents/HAInformationGene
 import HAOrgs from "./LocalComponents/HAOrgs";
 import HAStatus from "./LocalComponents/HAStatus";
 
+import { ExtractBaseScreenNameFromScreen } from "../../../../app/common/Functions/Formats";
 import "./ScrollPanel.css";
 
 const HAViewInformation = ({ id, project }) => {
@@ -55,6 +56,8 @@ const HAViewInformation = ({ id, project }) => {
       { label: "Information" },
     ];
 
+    console.log("HAViewInformation.js: project: ", project);
+
     return (
       <React.Fragment>
         <div className="flex flex-column gap-2 w-full">
@@ -66,8 +69,10 @@ const HAViewInformation = ({ id, project }) => {
             <SectionHeading
               icon="icon icon-conceptual icon-chemical"
               heading={project.projectName}
-              targetName={
-                project.targetName || project.screenName || project.projectName
+              entryPoint={
+                project.targetName ||
+                ExtractBaseScreenNameFromScreen(project.screenName) ||
+                project.projectName
               }
               projectName={project.projectName}
               displayHorizon={true}

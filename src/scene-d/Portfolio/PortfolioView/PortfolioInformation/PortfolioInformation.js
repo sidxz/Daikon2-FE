@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import { BreadCrumb } from "primereact/breadcrumb";
 import CompoundEvolutionTimeline from "../../../../app/common/CompoundEvolutionTimeline/CompoundEvolutionTimeline";
+import { ExtractBaseScreenNameFromScreen } from "../../../../app/common/Functions/Formats";
 import SectionHeading from "../../../../app/common/SectionHeading/SectionHeading";
 import { RootStoreContext } from "../../../../app/stores/rootStore";
 import { appColors } from "../../../../colors";
@@ -47,8 +48,10 @@ const PortfolioInformation = ({ id, project }) => {
           <SectionHeading
             icon="icon icon-common icon-analyse"
             heading={project.projectName + " | " + project?.currentStage}
-            targetName={
-              project.targetName || project.screenName || project.projectName
+            entryPoint={
+              project.targetName ||
+              ExtractBaseScreenNameFromScreen(project.screenName) ||
+              project.projectName
             }
             displayHorizon={true}
             color={appColors.sectionHeadingBg.portfolio}

@@ -52,23 +52,27 @@ const ScreenSequence = ({ screenId }) => {
   const tableHeader = (
     <div className="flex w-full">
       <div className="flex w-6">
-        <div className="flex gap-5">
-          <Button
-            type="button"
-            icon="icon icon-common icon-plus-circle"
-            label="New"
-            className="p-button-text"
-            style={{ height: "30px" }}
-            onClick={() => setDisplayAddDialog(true)}
-          />
-          <Button
-            type="button"
-            icon="icon icon-fileformats icon-CSV"
-            label="Export"
-            className="p-button-text"
-            style={{ height: "30px" }}
-            onClick={() => exportCSV(false)}
-          />
+        <div className="flex gap-2">
+          <div className="flex">
+            <Button
+              type="button"
+              icon="icon icon-common icon-plus-circle"
+              label="New Library Screen"
+              className="p-button-text"
+              style={{ height: "30px" }}
+              onClick={() => setDisplayAddDialog(true)}
+            />
+          </div>
+          <div className="flex">
+            <Button
+              type="button"
+              icon="icon icon-fileformats icon-CSV"
+              label="Export"
+              className="p-button-text"
+              style={{ height: "30px" }}
+              onClick={() => exportCSV(false)}
+            />
+          </div>
         </div>
       </div>
 
@@ -211,7 +215,7 @@ const ScreenSequence = ({ screenId }) => {
             <div className="card">
               <h3>{selectedScreen?.screenName}</h3>
               <i className="icon icon-common icon-plus-circle"></i> &nbsp; Add
-              screening information
+              library screening information
               <hr />
               <br />
             </div>
@@ -231,6 +235,8 @@ const ScreenSequence = ({ screenId }) => {
               showGridlines
               header={tableHeader}
               editMode="row"
+              sortField="startDate"
+              sortOrder={-1}
               onRowEditComplete={saveEdits}
               loading={editingScreenRow}
               exportFilename={`Screen-${selectedScreen.screenName}-${selectedScreen.method}.csv`}

@@ -98,7 +98,7 @@ const PhenotypicValidatedHits = ({ baseScreenName }) => {
           <SectionHeading
             icon="icon icon-common icon-search"
             heading={"Screens of " + baseScreenName}
-            targetName={baseScreenName}
+            entryPoint={baseScreenName}
             displayHorizon={true}
             color={appColors.sectionHeadingBg.screen}
           />
