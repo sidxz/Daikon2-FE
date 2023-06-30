@@ -1,3 +1,4 @@
+import { Button } from "primereact/button";
 import { Card } from "primereact/card";
 import React from "react";
 
@@ -13,7 +14,7 @@ const HomeWhatsNew = () => {
 
   return (
     <div className="surface-50 border-round m-0 p-0">
-      <Card
+      {/* <Card
         title={cardTitle("📣 Attention TBDA Group!🔬")}
         style={{ fontSize: "small", marginBottom: "6px" }}
       >
@@ -22,7 +23,7 @@ const HomeWhatsNew = () => {
           make DAIKON impactful. We invite you to contribute all available data
           on your screening efforts and validated hits achieved thus far.
         </p>
-      </Card>
+      </Card> */}
       <Card
         title={cardTitle("Featured Additions")}
         style={{ fontSize: "small" }}
@@ -44,6 +45,29 @@ const HomeWhatsNew = () => {
               in meaningful discussions by leaving comments.
             </li>
           </ul>
+        </p>
+      </Card>
+      <Card
+        title={cardTitle("Publications")}
+        style={{ fontSize: "small", marginTop: "6px" }}
+      >
+        <p
+          className="align-items-center m-0 p-0"
+          style={{ fontSize: "large", fontFamily: "Helvetica" }}
+        >
+          <center>
+            <Button
+              label=" DAIKON Paper"
+              className="p-button-info p-button-sm"
+              onClick={() =>
+                window.open("https://pubs.acs.org/doi/10.1021/acsptsci.3c00034")
+              }
+            />
+          </center>
+        </p>
+        <p>
+          We kindly request all users to cite our work when referencing our app.
+          Thank you for your support!{" "}
         </p>
       </Card>
     </div>
