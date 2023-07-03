@@ -20,20 +20,18 @@ const ScreenOverview = () => {
           <div className="flex ">
             <div className="flex w-full">
               <ScreenOverviewActiveScreens
-                screensActive={["DnaE1", "DapE", "RNAP"]}
+                screensActive={["DnaE1", "DapE", "Rho"]}
               />
             </div>
             <div className="flex w-full flex-column">
               <div className="flex w-full ">
                 <ScreenOverviewPlannedScreens
-                  screensPlanned={["AccD6", "Pks13", "Rho"]}
+                  screensPlanned={["AccD6", "Pks13", "LysA"]}
                 />
               </div>
               <div className="flex w-full flex-column">
                 <div className="flex w-full ">
-                  <ScreenOverviewVotingReady
-                    votingReady={["DnaE1", "RNAP", "LysA"]}
-                  />
+                  <ScreenOverviewVotingReady votingReady={["DnaE1", "PknB"]} />
                 </div>
               </div>
             </div>

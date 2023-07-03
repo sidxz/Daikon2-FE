@@ -4,9 +4,10 @@ const ScreenOverviewPlannedScreens = ({ screensPlanned }) => {
   let screensPlannedComponent = screensPlanned.map((screenPlanned) => {
     return (
       <div
-        className="flex justify-content-center"
+        className="flex justify-content-center bg-blue-100 p-2"
         style={{
           fontSize: "medium",
+          minWidth: "4rem",
         }}
       >
         {screenPlanned}
@@ -15,7 +16,7 @@ const ScreenOverviewPlannedScreens = ({ screensPlanned }) => {
   });
 
   return (
-    <div className="flex bg-white w-full flex-column ml-2  gap-2">
+    <div className="flex bg-white w-full flex-column ml-2 ">
       <div
         className="flex p-2 bg-blue-100 justify-content-center "
         style={{
@@ -24,7 +25,7 @@ const ScreenOverviewPlannedScreens = ({ screensPlanned }) => {
       >
         PLANNED SCREENS
       </div>
-      <div className="flex gap-5 m-5 justify-content-center">
+      <div className="flex flex-wrap gap-4 ml-1 mr-1 mt-3 mb-5 justify-content-center">
         {screensPlannedComponent}{" "}
       </div>
     </div>

@@ -4,7 +4,9 @@ const ScreenOverviewVotingReady = ({ votingReady }) => {
   let votingReadyComponent = votingReady.map((voteReady) => {
     return (
       <div className="border-circle w-5rem h-5rem ml-1 mr-1 bg-white flex items-center justify-content-center ">
-        <div className="flex align-items-center">{voteReady}</div>
+        <div className="flex align-items-center" style={{ fontSize: "small" }}>
+          {voteReady}
+        </div>
       </div>
     );
   });
@@ -19,7 +21,7 @@ const ScreenOverviewVotingReady = ({ votingReady }) => {
       >
         VOTING READY
       </div>
-      <div className="flex gap-2 mb-2 justify-content-center">
+      <div className="flex flex-wrap gap-2 mb-2 justify-content-center">
         {votingReadyComponent}{" "}
       </div>
     </div>
