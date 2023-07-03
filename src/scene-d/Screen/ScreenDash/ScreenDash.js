@@ -10,6 +10,7 @@ import { RootStoreContext } from "../../../app/stores/rootStore";
 import { appColors } from "../../../colors";
 import ScreenDashAddPhenotypic from "./ScreenDashAddPhenotypic/ScreenDashAddPhenotypic";
 import "./ScreenDashDataTable.css";
+import ScreenOverview from "./ScreenOverview/ScreenOverview";
 
 const ScreenDash = () => {
   const rootStore = useContext(RootStoreContext);
@@ -102,6 +103,9 @@ const ScreenDash = () => {
         </div>
         <div className="flex w-full">
           <TabView className="w-full">
+            <TabPanel header="Overview">
+              <ScreenOverview></ScreenOverview>
+            </TabPanel>
             <TabPanel header="Target Based">
               <div className="datatable-screens">
                 <DataTable
