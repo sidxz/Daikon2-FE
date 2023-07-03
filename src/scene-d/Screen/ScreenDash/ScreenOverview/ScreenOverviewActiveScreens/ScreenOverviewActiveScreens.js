@@ -10,7 +10,7 @@ const ScreenOverviewActiveScreens = ({ screensActive }) => {
         }}
       >
         <div
-          className="flex surface-100 pl-4 pr-4 justify-content-center"
+          className="flex bg-teal-100 pl-4 pr-4 justify-content-center"
           style={{
             minWidth: "7rem",
           }}
@@ -24,7 +24,7 @@ const ScreenOverviewActiveScreens = ({ screensActive }) => {
   return (
     <div className="flex bg-white w-full flex-column ml-2 mr-1 mb-3 gap-4 ">
       <div
-        className="flex p-2 surface-300 justify-content-center "
+        className="flex p-2 bg-teal-100 justify-content-center "
         style={{
           fontSize: "medium",
         }}

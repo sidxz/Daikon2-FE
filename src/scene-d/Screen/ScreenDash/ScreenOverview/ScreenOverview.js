@@ -7,9 +7,9 @@ const ScreenOverview = () => {
   return (
     <div className="card">
       <div className="flex card-container ">
-        <div className="flex flex-column w-full surface-ground gap-3  border-round ">
+        <div className="flex flex-column w-full surface-ground gap-3 font border-round ">
           <div
-            className="flex p-2 bg-yellow-100 justify-content-center "
+            className="flex p-2 bg-indigo-700  text-white justify-content-center "
             style={{
               fontSize: "medium",
               fontFamily: "sans-serif",
@@ -38,8 +38,35 @@ const ScreenOverview = () => {
           </div>
         </div>
 
-        <div className="flex w-full surface-ground text-black font-bold text-center  border-round mx-4 ">
-          Phenotypic
+        <div className="flex flex-column w-full surface-ground gap-3 ml-2 border-round ">
+          <div
+            className="flex p-2 bg-indigo-700 text-white justify-content-center "
+            style={{
+              fontSize: "medium",
+              fontFamily: "sans-serif",
+            }}
+          >
+            PHENOTYPIC
+          </div>
+          <div className="flex ">
+            <div className="flex w-full">
+              <ScreenOverviewActiveScreens
+                screensActive={["485", "326", "4-acylpyrazolones"]}
+              />
+            </div>
+            <div className="flex w-full flex-column">
+              <div className="flex w-full ">
+                <ScreenOverviewPlannedScreens
+                  screensPlanned={["ACU", "BAY10", "DAP"]}
+                />
+              </div>
+              <div className="flex w-full flex-column">
+                <div className="flex w-full ">
+                  <ScreenOverviewVotingReady votingReady={["979", "DAP"]} />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div className="flex flex-column card-container mt-4 pr-4">

@@ -16,7 +16,7 @@ const ScreenOverviewPlannedScreens = ({ screensPlanned }) => {
   });
 
   return (
-    <div className="flex bg-white w-full flex-column ml-2 ">
+    <div className="flex bg-white w-full flex-column ml-2 mr-2">
       <div
         className="flex p-2 bg-blue-100 justify-content-center "
         style={{

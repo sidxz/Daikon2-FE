@@ -12,7 +12,7 @@ const ScreenOverviewVotingReady = ({ votingReady }) => {
   });
 
   return (
-    <div className="flex ml-2 mt-2 w-full surface-400 flex-column gap-2 mb-3">
+    <div className="flex ml-2 mt-2 w-full surface-400 flex-column gap-2 mb-3 mr-2">
       <div
         className="flex p-2 bg-green-100 justify-content-center "
         style={{
