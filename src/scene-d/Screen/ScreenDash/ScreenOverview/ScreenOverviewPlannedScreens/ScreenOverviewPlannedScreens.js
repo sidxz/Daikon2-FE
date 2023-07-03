@@ -1,33 +1,32 @@
 import React from "react";
 
 const ScreenOverviewPlannedScreens = ({ screensPlanned }) => {
+  // check if screensPlanned is empty or not set or null
+  if (!screensPlanned) return <React.Fragment></React.Fragment>;
+
   let screensPlannedComponent = screensPlanned.map((screenPlanned) => {
     return (
       <div
-        className="flex justify-content-center bg-blue-100 p-2"
+        className="flex justify-content-center"
         style={{
-          fontSize: "medium",
-          minWidth: "4rem",
+          fontSize: "large",
         }}
       >
-        {screenPlanned}
+        <div
+          className="flex bg-purple-50 p-3 justify-content-center shadow-1 hover:shadow-3"
+          style={{
+            minWidth: "7rem",
+          }}
+        >
+          {screenPlanned}
+        </div>
       </div>
     );
   });
 
   return (
-    <div className="flex bg-white w-full flex-column ml-2 mr-2">
-      <div
-        className="flex p-2 bg-blue-100 justify-content-center "
-        style={{
-          fontSize: "medium",
-        }}
-      >
-        PLANNED SCREENS
-      </div>
-      <div className="flex flex-wrap gap-4 ml-1 mr-1 mt-3 mb-5 justify-content-center">
-        {screensPlannedComponent}{" "}
-      </div>
+    <div className="flex flex-wrap w-full gap-3 p-1 align-items-center justify-content-center">
+      {screensPlannedComponent}
     </div>
   );
 };

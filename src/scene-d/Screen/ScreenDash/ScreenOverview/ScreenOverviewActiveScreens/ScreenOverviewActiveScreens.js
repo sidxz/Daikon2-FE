@@ -1,16 +1,19 @@
 import React from "react";
 
 const ScreenOverviewActiveScreens = ({ screensActive }) => {
+  // check if screensActive is empty or not set or null
+  if (!screensActive) return <React.Fragment></React.Fragment>;
+
   let screensActiveComponent = screensActive.map((screenActive) => {
     return (
       <div
-        className="flex  justify-content-center"
+        className="flex justify-content-center"
         style={{
           fontSize: "large",
         }}
       >
         <div
-          className="flex bg-teal-100 pl-4 pr-4 justify-content-center"
+          className="flex bg-cyan-50 p-3 justify-content-center shadow-1 hover:shadow-3"
           style={{
             minWidth: "7rem",
           }}
@@ -22,15 +25,7 @@ const ScreenOverviewActiveScreens = ({ screensActive }) => {
   });
 
   return (
-    <div className="flex bg-white w-full flex-column ml-2 mr-1 mb-3 gap-4 ">
-      <div
-        className="flex p-2 bg-teal-100 justify-content-center "
-        style={{
-          fontSize: "medium",
-        }}
-      >
-        ACTIVE SCREEN CAMPAIGNS
-      </div>
+    <div className="flex flex-wrap w-full gap-3 p-1 align-items-center justify-content-center">
       {screensActiveComponent}
     </div>
   );

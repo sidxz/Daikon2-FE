@@ -104,7 +104,7 @@ const ScreenDash = () => {
         <div className="flex w-full">
           <TabView className="w-full">
             <TabPanel header="Overview">
-              <ScreenOverview></ScreenOverview>
+              <ScreenOverview />
             </TabPanel>
             <TabPanel header="Target Based">
               <div className="datatable-screens">

@@ -1,29 +1,20 @@
 import React from "react";
 
 const ScreenOverviewVotingReady = ({ votingReady }) => {
+  // check if screensActive is empty or not set or null
+  if (!votingReady) return <React.Fragment></React.Fragment>;
+
   let votingReadyComponent = votingReady.map((voteReady) => {
     return (
-      <div className="border-circle w-5rem h-5rem ml-1 mr-1 bg-white flex items-center justify-content-center ">
-        <div className="flex align-items-center" style={{ fontSize: "small" }}>
-          {voteReady}
-        </div>
+      <div className="border-circle bg-green-300 w-6rem h-6rem flex items-center justify-content-center shadow-1 hover:shadow-3">
+        <div className="flex align-items-center">{voteReady}</div>
       </div>
     );
   });
 
   return (
-    <div className="flex ml-2 mt-2 w-full surface-400 flex-column gap-2 mb-3 mr-2">
-      <div
-        className="flex p-2 bg-green-100 justify-content-center "
-        style={{
-          fontSize: "medium",
-        }}
-      >
-        VOTING READY
-      </div>
-      <div className="flex flex-wrap gap-2 mb-2 justify-content-center">
-        {votingReadyComponent}{" "}
-      </div>
+    <div className="flex flex-wrap w-full gap-3 p-1 align-items-center justify-content-center">
+      {votingReadyComponent}{" "}
     </div>
   );
 };
