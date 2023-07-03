@@ -1,5 +1,6 @@
 import React from "react";
 import ScreenOverviewActiveScreens from "./ScreenOverviewActiveScreens/ScreenOverviewActiveScreens";
+import ScreenOverviewPlannedScreens from "./ScreenOverviewPlannedScreens/ScreenOverviewPlannedScreens";
 
 const ScreenOverview = () => {
   return (
@@ -21,26 +22,11 @@ const ScreenOverview = () => {
                 screensActive={["DnaE1", "DapE", "RNAP"]}
               />
             </div>
-            <div className="flex w-full flex-column ml-2 mr-2">
-              <div className="flex w-full bg-white flex-column gap-4 mb-3">
-                <div
-                  className="flex p-2 bg-blue-100 justify-content-center "
-                  style={{
-                    fontSize: "medium",
-                    fontFamily: "sans-serif",
-                  }}
-                >
-                  PLANNED SCREENS
-                </div>
-                <div
-                  className="flex justify-content-center"
-                  style={{
-                    fontSize: "medium",
-                    fontFamily: "sans-serif",
-                  }}
-                >
-                  <p>AccD6, Pks13, Pks13</p>
-                </div>
+            <div className="flex w-full flex-column">
+              <div className="flex w-full ">
+                <ScreenOverviewPlannedScreens
+                  screensPlanned={["AccD6", "Pks13", "Rho"]}
+                />
               </div>
               <div className="flex w-full surface-400 flex-column gap-3 mb-3">
                 <div
