@@ -1,6 +1,7 @@
 import React from "react";
 import ScreenOverviewActiveScreens from "./ScreenOverviewActiveScreens/ScreenOverviewActiveScreens";
 import ScreenOverviewPlannedScreens from "./ScreenOverviewPlannedScreens/ScreenOverviewPlannedScreens";
+import ScreenOverviewVotingReady from "./ScreenOverviewVotingReady/ScreenOverviewVotingReady";
 
 const ScreenOverview = () => {
   return (
@@ -28,24 +29,11 @@ const ScreenOverview = () => {
                   screensPlanned={["AccD6", "Pks13", "Rho"]}
                 />
               </div>
-              <div className="flex w-full surface-400 flex-column gap-3 mb-3">
-                <div
-                  className="flex p-2 bg-green-100 justify-content-center "
-                  style={{
-                    fontSize: "medium",
-                    fontFamily: "sans-serif",
-                  }}
-                >
-                  VOTING READY
-                </div>
-                <div
-                  className="flex justify-content-center"
-                  style={{
-                    fontSize: "medium",
-                    fontFamily: "sans-serif",
-                  }}
-                >
-                  <p>DnaE1, RNAP, LysA</p>
+              <div className="flex w-full flex-column">
+                <div className="flex w-full ">
+                  <ScreenOverviewVotingReady
+                    votingReady={["DnaE1", "RNAP", "LysA"]}
+                  />
                 </div>
               </div>
             </div>
