@@ -6,7 +6,7 @@ const ScreenOverviewVotingReady = ({ votingReady }) => {
 
   let votingReadyComponent = votingReady.map((voteReady) => {
     return (
-      <div className="border-circle bg-green-300 w-6rem h-6rem flex items-center justify-content-center shadow-1 hover:shadow-3">
+      <div className="border-circle bg-green-300 w-5rem h-5rem flex items-center justify-content-center shadow-1 hover:shadow-3">
         <div className="flex align-items-center">{voteReady}</div>
       </div>
     );
