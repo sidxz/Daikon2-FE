@@ -16,6 +16,7 @@ const ScreenOverviewPlannedScreens = ({ screensPlanned }) => {
           className="flex bg-purple-50 p-3 justify-content-center shadow-1 hover:shadow-3"
           style={{
             minWidth: "7rem",
+            color: "#5D3891",
           }}
         >
           {screenPlanned}

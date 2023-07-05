@@ -16,6 +16,7 @@ const ScreenOverviewActiveScreens = ({ screensActive }) => {
           className="flex bg-cyan-50 p-3 justify-content-center shadow-1 hover:shadow-3"
           style={{
             minWidth: "7rem",
+            color: "#0e7994",
           }}
         >
           {screenActive}
