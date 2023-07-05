@@ -2,6 +2,7 @@ import React from "react";
 import { FcNeutralTrading, FcPlanner } from "react-icons/fc";
 import { GiVote } from "react-icons/gi";
 import ScreenOverviewActiveScreens from "./ScreenOverviewActiveScreens/ScreenOverviewActiveScreens";
+import ScreenOverviewAllScreens from "./ScreenOverviewAllScreens/ScreenOverviewAllScreens";
 import ScreenOverviewPlannedScreens from "./ScreenOverviewPlannedScreens/ScreenOverviewPlannedScreens";
 import ScreenOverviewVotingReady from "./ScreenOverviewVotingReady/ScreenOverviewVotingReady";
 
@@ -108,6 +109,9 @@ const ScreenOverview = () => {
         <div className="flex w-full border-1 border-100 bg-white">
           <ScreenOverviewPlannedScreens screensPlanned={["ISA", "326"]} />
         </div>
+      </div>
+      <div className="flex w-full mt-4">
+        <ScreenOverviewAllScreens />
       </div>
     </div>
   );
