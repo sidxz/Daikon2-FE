@@ -6,11 +6,17 @@ const ScreenOverviewVotingReady = ({ votingReady }) => {
 
   let votingReadyComponent = votingReady.map((voteReady) => {
     return (
-      <div className="border-circle bg-green-300 w-6rem h-6rem flex items-center justify-content-center shadow-1 hover:shadow-3">
+      <div
+        className="flex justify-content-center"
+        style={{
+          fontSize: "large",
+        }}
+      >
         <div
-          className="flex align-items-center"
+          className="flex bg-red-50 p-3 text-red-400 justify-content-center shadow-1 hover:shadow-3"
           style={{
-            color: "#306844",
+            minWidth: "7rem",
+            color: "#5D3891",
           }}
         >
           {voteReady}
