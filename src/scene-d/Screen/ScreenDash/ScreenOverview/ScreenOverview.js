@@ -21,21 +21,7 @@ const ScreenOverview = () => {
         >
           &nbsp;
         </div>
-        <div className="flex w-full">
-          <div
-            className="flex p-1 align-items-center justify-content-center w-full text-lg  border-1 border-0 gap-2"
-            style={{
-              color: "#3c83bd",
-            }}
-          >
-            <div className="flex text-green-500">
-              <WiMoonFull />
-            </div>
-            <div className="flex">
-              <b>RECENTLY COMPLETED SCREENS</b>
-            </div>
-          </div>
-        </div>
+
         <div className="flex w-full">
           <div
             className="flex p-1 align-items-center justify-content-center w-full text-lg  border-1 border-0 gap-2"
@@ -81,6 +67,21 @@ const ScreenOverview = () => {
             </div>
           </div>
         </div>
+        <div className="flex w-full">
+          <div
+            className="flex p-1 align-items-center justify-content-center w-full text-lg  border-1 border-0 gap-2"
+            style={{
+              color: "#3c83bd",
+            }}
+          >
+            <div className="flex text-green-500">
+              <WiMoonFull />
+            </div>
+            <div className="flex">
+              <b>RECENTLY COMPLETED SCREENS</b>
+            </div>
+          </div>
+        </div>
       </div>
       <div className="flex w-full">
         <div
@@ -93,11 +94,7 @@ const ScreenOverview = () => {
         >
           TARGET BASED
         </div>
-        <div className="flex w-full border-1 border-100  bg-white">
-          <ScreenOverviewRecentlyCompleted
-            screensRecentlyCompleted={["AccD6", "Pks13"]}
-          />
-        </div>
+
         <div className="flex w-full border-1 border-100  bg-white">
           <ScreenOverviewPlannedScreens screensPlanned={["AccD6", "Pks13"]} />
         </div>
@@ -106,6 +103,11 @@ const ScreenOverview = () => {
         </div>
         <div className="flex w-full border-1 border-100  bg-white">
           <ScreenOverviewVotingReady votingReady={["Rho"]} />
+        </div>
+        <div className="flex w-full border-1 border-100  bg-white">
+          <ScreenOverviewRecentlyCompleted
+            screensRecentlyCompleted={["AccD6", "Pks13"]}
+          />
         </div>
       </div>
       <div className="flex w-full">
@@ -119,11 +121,7 @@ const ScreenOverview = () => {
         >
           PHENOTYPIC
         </div>
-        <div className="flex w-full border-1 border-100  bg-white">
-          <ScreenOverviewRecentlyCompleted
-            screensRecentlyCompleted={["AccD6", "Pks13"]}
-          />
-        </div>
+
         <div className="flex w-full border-1 border-100 bg-white">
           <ScreenOverviewPlannedScreens screensPlanned={["ISA", "326"]} />
         </div>
@@ -132,6 +130,11 @@ const ScreenOverview = () => {
         </div>
         <div className="flex w-full border-1 border-100 bg-white">
           <ScreenOverviewVotingReady votingReady={["ACU", "BAY10"]} />
+        </div>
+        <div className="flex w-full border-1 border-100  bg-white">
+          <ScreenOverviewRecentlyCompleted
+            screensRecentlyCompleted={["AccD6", "Pks13"]}
+          />
         </div>
       </div>
     </div>
