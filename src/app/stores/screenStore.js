@@ -80,7 +80,7 @@ export default class ScreenStore {
       selectedPhenotypicScreen: observable,
       fetchScreensPhenotypic: action,
       screensPhenotypic: computed,
-      groupScreensPhenotypic: computed,
+      // groupScreensPhenotypic: computed,
 
       loadingFilterPhenotypicScreensByBaseScreenName: observable,
       selectedPhenotypicScreenFilter: observable,
@@ -157,6 +157,7 @@ export default class ScreenStore {
   }
 
   get screensPhenotypic() {
+    console.log("get screensPhenotypic");
     return Array.from(this.screenPhenotypicRegistry.values());
   }
 
@@ -169,16 +170,16 @@ export default class ScreenStore {
     return Array.from(targetsScreened.values());
   }
 
-  get groupScreensPhenotypic() {
-    let pScreened = new Map();
+  // get groupScreensPhenotypic() {
+  //   let pScreened = new Map();
 
-    this.screenPhenotypicRegistry.forEach((value) => {
-      let lastIndex = value.screenName.lastIndexOf("-");
-      let screenName = value.screenName.slice(0, lastIndex);
-      pScreened.set(screenName, { screenName: screenName, notes: value.notes });
-    });
-    return Array.from(pScreened.values());
-  }
+  //   this.screenPhenotypicRegistry.forEach((value) => {
+  //     let lastIndex = value.screenName.lastIndexOf("-");
+  //     let screenName = value.screenName.slice(0, lastIndex);
+  //     pScreened.set(screenName, { screenName: screenName, notes: value.notes });
+  //   });
+  //   return Array.from(pScreened.values());
+  // }
 
   filterScreensByTarget = (targetName) => {
     this.loadingFilterScreensByTargetName = true;

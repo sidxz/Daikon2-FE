@@ -58,12 +58,12 @@ const AppDefault = () => {
           {/* Temporarily disable phenotypic screens for all except for screening group */}
           {user.roles.includes("screener") ? (
             <Route
-              path="screen/phenotypic/:baseScreenName/*"
+              path="screen/phenotypic/:id/*"
               element={<PhenotypicScreenView />}
             />
           ) : (
             <Route
-              path="screen/phenotypic/:baseScreenName/*"
+              path="screen/phenotypic/:screenName/*"
               element={<DataReorganizationInProgress />}
             />
           )}

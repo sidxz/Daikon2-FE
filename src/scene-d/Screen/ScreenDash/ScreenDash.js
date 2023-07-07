@@ -20,7 +20,7 @@ const ScreenDash = () => {
     screenRegistry,
     fetchScreens,
     uniqueScreens,
-    groupScreensPhenotypic,
+    screensPhenotypic,
     loadingFetchScreensPhenotypic,
     screenPhenotypicRegistry,
     fetchScreensPhenotypic,
@@ -68,7 +68,7 @@ const ScreenDash = () => {
       return (
         <React.Fragment>
           <span className="p-column-title">Target</span>
-          <NavLink to={"./phenotypic/" + rowData.screenName}>
+          <NavLink to={"./phenotypic/" + rowData.id}>
             {rowData.screenName}
           </NavLink>
         </React.Fragment>
@@ -146,7 +146,7 @@ const ScreenDash = () => {
                 <div className="datatable-screens">
                   <DataTable
                     ref={dt}
-                    value={groupScreensPhenotypic}
+                    value={screensPhenotypic}
                     paginator
                     rows={20}
                     className="p-datatable-screens"
