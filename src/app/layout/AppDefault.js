@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import React from "react";
+import React, { useContext } from "react";
 import { Route, Routes } from "react-router-dom";
 import Home from "../../scene-d/Home/Home";
 import MenuBar from "./MenuBar/MenuBar";
@@ -13,19 +13,23 @@ import TargetView from "../../scene-d/Target/TargetView/TargetView";
 import ScreenDash from "../../scene-d/Screen/ScreenDash/ScreenDash";
 import ScreenView from "../../scene-d/Screen/ScreenView/ScreenTargetBased/ScreenView";
 
-import HADash from "../../scene-d/HA/HADash/HADash";
-import HAView from "../../scene-d/HA/HAView/HAView";
-
 import GeneGroups from "../../scene-d/Gene/GeneView/GeneGroups/GeneGroups";
 import GenePromotionRequests from "../../scene-d/Gene/GeneView/GenePromotionRequests/GenePromotionRequests";
+import HADash from "../../scene-d/HA/HADash/HADash";
+import HAView from "../../scene-d/HA/HAView/HAView";
 import PortfolioDash from "../../scene-d/Portfolio/PortfolioDash/PortfolioDash";
 import PortfolioView from "../../scene-d/Portfolio/PortfolioView/PortfolioView";
 import PostPortfolioDash from "../../scene-d/PostPortfolio/PostPortfolioDash/PostPortfolioDash";
 import PostPortfolioView from "../../scene-d/PostPortfolio/PostPortfolioView/PostPortfolioView";
 import PhenotypicScreenView from "../../scene-d/Screen/ScreenView/ScreenPhenotypic/PhenotypicScreenView";
+import { DataReorganizationInProgress } from "../common/DataReorganizationInProgress/DataReorganizationInProgress";
+import { RootStoreContext } from "../stores/rootStore";
 import NotFound from "./NotFound/NotFound";
 
 const AppDefault = () => {
+  const rootStore = useContext(RootStoreContext);
+  const { user } = rootStore.userStore;
+
   return (
     <div className="flex flex-column">
       <div className="block mb-2">
@@ -44,31 +48,35 @@ const AppDefault = () => {
           {/* <Route path={"gene/promote/:ptarget"} element={<GenePromote />} /> */}
           <Route path={"gene/promote/:ptarget"} element={<NotFound />} />
           <Route path={"gene/:id/*"} element={<GeneView />} />
-
           {/*Target Routes*/}
           <Route path="target/" element={<TargetDash />} />
           <Route path="target/:id/*" element={<TargetView />} />
-
           {/*Screen Routes */}
           <Route path="screen/" element={<ScreenDash />} />
           <Route path="screen/target-based/:id/*" element={<ScreenView />} />
-          <Route
-            path="screen/phenotypic/:baseScreenName/*"
-            element={<PhenotypicScreenView />}
-          />
+
+          {/* Temporarily disable phenotypic screens for all except for screening group */}
+          {user.roles.includes("screener") ? (
+            <Route
+              path="screen/phenotypic/:baseScreenName/*"
+              element={<PhenotypicScreenView />}
+            />
+          ) : (
+            <Route
+              path="screen/phenotypic/:baseScreenName/*"
+              element={<DataReorganizationInProgress />}
+            />
+          )}
 
           {/* Hit Assessment Routes */}
           <Route path="ha" element={<HADash />} />
           <Route path="ha/:id/*" element={<HAView />} />
-
           {/* Portfolio Routes */}
           <Route path="portfolio" element={<PortfolioDash />} />
           <Route path="portfolio/:id/*" element={<PortfolioView />} />
-
           {/* Post Portfolio Routes */}
           <Route path="post-portfolio" element={<PostPortfolioDash />} />
           <Route path="post-portfolio/:id/*" element={<PostPortfolioView />} />
-
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>

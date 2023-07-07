@@ -4,6 +4,7 @@ import { DataTable } from "primereact/datatable";
 import { TabPanel, TabView } from "primereact/tabview";
 import React, { useContext, useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
+import { DataReorganizationInProgress } from "../../../app/common/DataReorganizationInProgress/DataReorganizationInProgress";
 import SectionHeading from "../../../app/common/SectionHeading/SectionHeading";
 import Loading from "../../../app/layout/Loading/Loading";
 import { RootStoreContext } from "../../../app/stores/rootStore";
@@ -139,38 +140,43 @@ const ScreenDash = () => {
                 </DataTable>
               </div>
             </TabPanel>
+
             <TabPanel header="Phenotypic">
-              <div className="datatable-screens">
-                <DataTable
-                  ref={dt}
-                  value={groupScreensPhenotypic}
-                  paginator
-                  rows={20}
-                  className="p-datatable-screens"
-                  //globalFilter={globalFilter}
-                  emptyMessage="No Phenotypic Screens found."
-                  filterDisplay="row"
-                >
-                  <Column
-                    field="screenName"
-                    header="Name"
-                    body={PhenotypicScreenNameBodyTemplate}
-                    filter
-                    filterMatchMode="contains"
-                    filterPlaceholder="Search by Screen Name"
-                    className="min-w-max"
-                    // style={{minWidth: "50rem"}}
-                  />
+              {user.roles.includes("screener") ? (
+                <div className="datatable-screens">
+                  <DataTable
+                    ref={dt}
+                    value={groupScreensPhenotypic}
+                    paginator
+                    rows={20}
+                    className="p-datatable-screens"
+                    //globalFilter={globalFilter}
+                    emptyMessage="No Phenotypic Screens found."
+                    filterDisplay="row"
+                  >
+                    <Column
+                      field="screenName"
+                      header="Name"
+                      body={PhenotypicScreenNameBodyTemplate}
+                      filter
+                      filterMatchMode="contains"
+                      filterPlaceholder="Search by Screen Name"
+                      className="min-w-max"
+                      // style={{minWidth: "50rem"}}
+                    />
 
-                  {/* <Column field="status" header="Status" body={StatusBodyTemplate} /> */}
+                    {/* <Column field="status" header="Status" body={StatusBodyTemplate} /> */}
 
-                  <Column
-                    field="notes"
-                    header="Notes"
-                    body={NotesBodyTemplate}
-                  />
-                </DataTable>
-              </div>
+                    <Column
+                      field="notes"
+                      header="Notes"
+                      body={NotesBodyTemplate}
+                    />
+                  </DataTable>
+                </div>
+              ) : (
+                <DataReorganizationInProgress />
+              )}
             </TabPanel>
             {user.roles.includes("admin") && (
               <TabPanel header="+">
