@@ -249,6 +249,11 @@ const PhenotypicScreenSequenceTable = ({ screenId }) => {
               header="Library"
               editor={(options) => textEditor(options)}
             />
+            <Column
+              field="librarySize"
+              header="Library Size"
+              editor={(options) => textEditor(options)}
+            />
 
             <Column
               field={"protocol"}
@@ -256,11 +261,7 @@ const PhenotypicScreenSequenceTable = ({ screenId }) => {
               header="Protocol"
               editor={(options) => textEditor(options)}
             />
-            <Column
-              field="concentration"
-              header="Inhibitor C (&micro;M)"
-              editor={(options) => textEditor(options)}
-            />
+
             <Column
               field="noOfCompoundsScreened"
               header="No. of Compounds"
@@ -288,7 +289,22 @@ const PhenotypicScreenSequenceTable = ({ screenId }) => {
             />
             <Column
               field="unverifiedHitCount"
-              header="Hit Count"
+              header="Initial Hit Count"
+              editor={(options) => textEditor(options)}
+            />
+            <Column
+              field="hitRate"
+              header="Hit Rate"
+              editor={(options) => textEditor(options)}
+            />
+            <Column
+              field="primaryHitCount"
+              header="Primary Hit Count"
+              editor={(options) => textEditor(options)}
+            />
+            <Column
+              field="confirmedHitCount"
+              header="Confirmed Hit Count"
               editor={(options) => textEditor(options)}
             />
 

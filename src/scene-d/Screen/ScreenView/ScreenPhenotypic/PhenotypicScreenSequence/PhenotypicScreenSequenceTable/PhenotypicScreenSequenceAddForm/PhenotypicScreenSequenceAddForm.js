@@ -25,20 +25,27 @@ const PhenotypicScreenSequenceAddForm = ({ screenId, onAdd, loading }) => {
   const formik = useFormik({
     initialValues: {
       library: "",
+      librarySize: "",
       startDate: "",
       endDate: undefined,
       scientist: "",
       protocol: "",
-      concentration: "",
+      // concentration: "",
       noOfCompoundsScreened: "",
       comment: "",
       unverifiedHitCount: "",
+      hitRate: "",
+      primaryHitCount: "",
+      confirmedHitCount: "",
     },
     validate: (data) => {
       let errors = {};
 
       if (!data.library) {
         errors.library = "Library is required.";
+      }
+      if (!data.library) {
+        errors.library = "Library Size is required.";
       }
 
       if (!data.startDate) {
@@ -49,9 +56,9 @@ const PhenotypicScreenSequenceAddForm = ({ screenId, onAdd, loading }) => {
         errors.protocol = "Protocol is required.";
       }
 
-      if (!data.concentration) {
-        errors.concentration = "Concentration is required.";
-      }
+      // if (!data.concentration) {
+      //   errors.concentration = "Concentration is required.";
+      // }
 
       if (!data.scientist) {
         errors.scientist = "Scientist is required.";
@@ -62,7 +69,16 @@ const PhenotypicScreenSequenceAddForm = ({ screenId, onAdd, loading }) => {
       }
 
       if (!data.unverifiedHitCount) {
-        errors.unverifiedHitCount = "Hit Count is required.";
+        errors.unverifiedHitCount = "Initial Hit Count is required.";
+      }
+      if (!data.library) {
+        errors.library = "Hit Rate is required.";
+      }
+      if (!data.library) {
+        errors.library = "Primary Hit Count is required.";
+      }
+      if (!data.library) {
+        errors.library = "Confirmed Hit Count is required.";
       }
 
       return errors;
@@ -110,6 +126,29 @@ const PhenotypicScreenSequenceAddForm = ({ screenId, onAdd, loading }) => {
             />
 
             {getFormErrorMessage("library")}
+          </div>
+
+          <div className="field">
+            <label
+              htmlFor="librarySize"
+              className={classNames({
+                "p-error": isFormFieldValid("librarySize"),
+              })}
+            >
+              Library Size
+            </label>
+            <InputText
+              id="librarySize"
+              answer="librarySize"
+              value={formik.values.librarySize}
+              onChange={formik.handleChange}
+              className={classNames({
+                "p-invalid": isFormFieldValid("librarySize"),
+              })}
+              autoFocus
+            />
+
+            {getFormErrorMessage("librarySize")}
           </div>
 
           <div className="field">
@@ -194,7 +233,7 @@ const PhenotypicScreenSequenceAddForm = ({ screenId, onAdd, loading }) => {
                 "p-error": isFormFieldValid("unverifiedHitCount"),
               })}
             >
-              Hit Count
+              Initial Hit Count
             </label>
             <InputText
               id="unverifiedHitCount"
@@ -210,6 +249,72 @@ const PhenotypicScreenSequenceAddForm = ({ screenId, onAdd, loading }) => {
           </div>
 
           <div className="field">
+            <label
+              htmlFor="hitRate"
+              className={classNames({
+                "p-error": isFormFieldValid("hitRate"),
+              })}
+            >
+              Hit Rate
+            </label>
+            <InputText
+              id="hitRate"
+              answer="hitRate"
+              value={formik.values.hitRate}
+              onChange={formik.handleChange}
+              className={classNames({
+                "p-invalid": isFormFieldValid("hitRate"),
+              })}
+            />
+
+            {getFormErrorMessage("hitRate")}
+          </div>
+
+          <div className="field">
+            <label
+              htmlFor="primaryHitCount"
+              className={classNames({
+                "p-error": isFormFieldValid("primaryHitCount"),
+              })}
+            >
+              Primary Hit Count
+            </label>
+            <InputText
+              id="primaryHitCount"
+              answer="primaryHitCount"
+              value={formik.values.primaryHitCount}
+              onChange={formik.handleChange}
+              className={classNames({
+                "p-invalid": isFormFieldValid("primaryHitCount"),
+              })}
+            />
+
+            {getFormErrorMessage("primaryHitCount")}
+          </div>
+
+          <div className="field">
+            <label
+              htmlFor="confirmedHitCount"
+              className={classNames({
+                "p-error": isFormFieldValid("confirmedHitCount"),
+              })}
+            >
+              Confirmed Hit Count
+            </label>
+            <InputText
+              id="confirmedHitCount"
+              answer="confirmedHitCount"
+              value={formik.values.confirmedHitCount}
+              onChange={formik.handleChange}
+              className={classNames({
+                "p-invalid": isFormFieldValid("confirmedHitCount"),
+              })}
+            />
+
+            {getFormErrorMessage("confirmedHitCount")}
+          </div>
+
+          {/* <div className="field">
             <label
               htmlFor="concentration"
               className={classNames({
@@ -229,7 +334,7 @@ const PhenotypicScreenSequenceAddForm = ({ screenId, onAdd, loading }) => {
             />
 
             {getFormErrorMessage("concentration")}
-          </div>
+          </div> */}
 
           <div className="field">
             <label
