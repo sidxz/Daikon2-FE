@@ -110,8 +110,8 @@ const Vote = ({
           <div className="flex w-auto justify-content-center">
             {renderVotingChart()}
           </div>
-          <div className="flex">{generateOptions()}</div>
-          <div className="flex justify-content-center ">
+          <div className="flex justify-content-center">{generateOptions()}</div>
+          <div className="flex justify-content-center">
             <Button
               label="Comments"
               icon="pi pi-comments"

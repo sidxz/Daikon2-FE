@@ -3,7 +3,10 @@ import React from "react";
 
 const VotingButtonPanel = ({ castVote, loading }) => {
   return (
-    <div className="flex justify-content-center" style={{ width: "10rem" }}>
+    <div
+      className="flex justify-content-center border-1 border-200"
+      style={{ width: "10rem" }}
+    >
       <div className="flex">
         <Button
           icon="icon icon-common icon-thumbs-up"
