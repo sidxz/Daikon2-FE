@@ -36,7 +36,7 @@
     "react-transition-group": "~4.4.5",
     "remixicon": "~3.4.0",
     "revalidate": "~1.2.0",
-    "smiles-drawer": "~1.2.0",
+    "smiles-drawer": "~2.1.7",
     "web-vitals": "~3.1.1",
     "xml-js": "~1.6.11",
     "xml2json": "~0.12.0",
