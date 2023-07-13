@@ -335,9 +335,7 @@ const HorizonNode = (dataObj) => {
                 <b>HA</b> <br />
                 {dataObj.dataObj.attributes.projectName}
                 <br />
-                {dataObj.dataObj.attributes.status === "Terminated"
-                  ? "Terminated"
-                  : ""}
+                {dataObj.dataObj.attributes.orgAlias}
               </p>
             </div>
           </foreignObject>

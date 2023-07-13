@@ -1,15 +1,12 @@
 import { observer } from "mobx-react-lite";
-import React, { useContext, useEffect } from "react";
-import Tree from "react-d3-tree";
+import React, { useContext, useEffect, useMemo } from "react";
+import { Tree } from "react-d3-tree";
 import { RootStoreContext } from "../../stores/rootStore";
 import FailedLoading from "../FailedLoading/FailedLoading";
 import PleaseWait from "../PleaseWait/PleaseWait";
 import HorizonNode from "./HorizonNode/HorizonNode";
 
 const Horizon = ({ accessionNumber, entryPoint }) => {
-  console.log("Horizon.js: accessionNumber: ", accessionNumber);
-  console.log("Horizon.js: entryPoint: ", entryPoint);
-
   const rootStore = useContext(RootStoreContext);
   const {
     generatingHorizon,
@@ -20,30 +17,43 @@ const Horizon = ({ accessionNumber, entryPoint }) => {
   } = rootStore.generalStore;
 
   useEffect(() => {
-    if (entryPoint) {
-      if (
-        selectedHorizon === null ||
-        selectedHorizon.attributes.entryPoint !== entryPoint
-      ) {
-        entryPoint && fetchHorizon(entryPoint);
-      }
-    }
-
-    if (accessionNumber) {
-      if (
-        selectedHorizon === null ||
-        selectedHorizon.attributes.accessionNumber !== accessionNumber
-      ) {
-        accessionNumber && fetchHorizonByAccession(accessionNumber);
-      }
+    if (
+      !generatingHorizon &&
+      entryPoint &&
+      (!selectedHorizon || selectedHorizon.attributes.entryPoint !== entryPoint)
+    ) {
+      fetchHorizon(entryPoint);
+    } else if (
+      !generatingHorizon &&
+      accessionNumber &&
+      (!selectedHorizon ||
+        selectedHorizon.attributes.accessionNumber !== accessionNumber)
+    ) {
+      fetchHorizonByAccession(accessionNumber);
     }
   }, [
     entryPoint,
     accessionNumber,
     fetchHorizon,
-    fetchHorizonByAccession,
     selectedHorizon,
+    generatingHorizon,
   ]);
+
+  const nodeSize = useMemo(() => ({ x: 230, y: 100 }), []);
+  const textLayout = useMemo(
+    () => ({ textAnchor: "start", x: 30, y: -10 }),
+    []
+  );
+  const foreignObjectProps = useMemo(
+    () => ({ width: nodeSize.x, height: nodeSize.y, x: 20 }),
+    [nodeSize]
+  );
+  const translate = useMemo(() => {
+    const horizonMatches = (
+      JSON.stringify(selectedHorizon).match(/[^\\]":/g) || []
+    ).length;
+    return { x: 50, y: (horizonMatches / 2) * 5 };
+  }, [selectedHorizon]);
 
   if (entryPoint === null || entryPoint === "undefined") {
     return <>Nothing</>;
@@ -53,37 +63,19 @@ const Horizon = ({ accessionNumber, entryPoint }) => {
     return <PleaseWait />;
   }
 
+  console.log(selectedHorizon);
+
   if (!generatingHorizon && selectedHorizon !== null) {
-    const nodeSize = {
-      x: 230,
-      y: 200,
-    };
-
-    const textLayout = {
-      textAnchor: "start",
-      x: 30,
-      y: -10,
-    };
-
-    let translate = {
-      x: 50,
-      y: (JSON.stringify(selectedHorizon).match(/[^\\]":/g).length / 2) * 8,
-    };
-
-    const foreignObjectProps = {
-      width: nodeSize.x,
-      height: nodeSize.y,
-      x: 20,
-    };
-
     return (
-      // `<Tree />` will fill width/height of its container; in this case `#treeWrapper`.
-      <div>
-        <div id="treeWrapper" style={{ width: "100%", height: horizonLength }}>
+      <div className="flex flex-column w-full">
+        <div
+          className="flex w-full"
+          id="treeWrapper"
+          style={{ height: horizonLength }}
+        >
           <Tree
             data={selectedHorizon}
             nodeSize={nodeSize}
-            //nodeSvgShape={nodeSvgShape}
             textLayout={textLayout}
             translate={translate}
             zoom="0.9"
@@ -98,12 +90,8 @@ const Horizon = ({ accessionNumber, entryPoint }) => {
             )}
           />
         </div>
-        <div
-          style={{ float: "right", marginTop: "-50px", paddingRight: "50px" }}
-        >
-          <h1 style={{ color: "#CCCCCC", fontStyle: "italic" }}>
-            Horizon View
-          </h1>
+        <div className="flex justify-content-end pr-5 w-full">
+          <p class="text-4xl text-500 font-italic m-0 p-0">Horizon View</p>
         </div>
       </div>
     );

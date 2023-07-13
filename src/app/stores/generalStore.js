@@ -37,7 +37,7 @@ export default class GeneralStore {
     if (fetchedHorizon) {
       this.selectedHorizon = fetchedHorizon;
       this.horizonLength =
-        JSON.stringify(fetchedHorizon).match(/[^\\]":/g).length * 0.6 + "rem";
+        JSON.stringify(fetchedHorizon).match(/[^\\]":/g).length * 0.35 + "rem";
       this.generatingHorizon = false;
     }
     // if not found fetch from api
@@ -48,7 +48,7 @@ export default class GeneralStore {
           this.horizonRegistry.set(targetName, fetchedHorizon);
           this.selectedHorizon = fetchedHorizon;
           this.horizonLength =
-            JSON.stringify(fetchedHorizon).match(/[^\\]":/g).length * 0.6 +
+            JSON.stringify(fetchedHorizon).match(/[^\\]":/g).length * 0.35 +
             "rem";
         });
       } catch (error) {
