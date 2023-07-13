@@ -11,6 +11,7 @@ import { Sidebar } from "primereact/sidebar";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import FDate from "../../../../../../app/common/FDate/FDate";
 import PleaseWait from "../../../../../../app/common/PleaseWait/PleaseWait";
+import ScreenStatus from "../../../../../../app/common/ScreenStatus/ScreenStatus";
 import Loading from "../../../../../../app/layout/Loading/Loading";
 import { RootStoreContext } from "../../../../../../app/stores/rootStore";
 import PhenotypicScreenSequenceAddForm from "./PhenotypicScreenSequenceAddForm/PhenotypicScreenSequenceAddForm";
@@ -81,6 +82,10 @@ const PhenotypicScreenSequenceTable = ({ screenId }) => {
 
       <div className="flex w-6 justify-content-end gap-5">
         <div className="flex mr-6 gap-5">
+          <ScreenStatus
+            id={selectedScreen.id}
+            status={selectedScreen?.status}
+          />
           <Chip label={selectedScreen?.org.name} icon="ri-organization-chart" />
           <Chip
             label={selectedScreen?.method}

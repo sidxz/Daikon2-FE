@@ -1,21 +1,19 @@
+import { observer } from "mobx-react-lite";
 import { Dropdown } from "primereact/dropdown";
-import React, { useContext } from "react";
+
+import { ConfirmDialog } from "primereact/confirmdialog";
+import React, { useContext, useState } from "react";
 import { FcDataSheet, FcNeutralTrading, FcOk, FcPlanner } from "react-icons/fc";
 import { GiVote } from "react-icons/gi";
 import { RootStoreContext } from "../../stores/rootStore";
 import "./ScreenStatus.css";
 
-const ScreenStatus = ({ status }) => {
+const ScreenStatus = ({ id, status }) => {
+  const [confirmDialogVisible, setConfirmDialogVisible] = useState(false);
+  const [selectedStatus, setSelectedStatus] = useState(false);
   const rootStore = useContext(RootStoreContext);
-  const { appVars } = rootStore.generalStore;
 
-  let indexMap = {
-    Planned: 0,
-    "Assay Development": 1,
-    Ongoing: 2,
-    "Voting Ready": 3,
-    Completed: 4,
-  };
+  const { updatingScreenStatus, updateScreenStatus } = rootStore.screenStore;
 
   const optionsWithIcons = [
     { name: "Planned", icon: <FcPlanner /> },
@@ -36,19 +34,37 @@ const ScreenStatus = ({ status }) => {
     }
   };
 
+  let onStatusDropdownChange = (e) => {
+    setSelectedStatus(e.value);
+    setConfirmDialogVisible(true);
+  };
+
   return (
     <div className="flex">
       <Dropdown
-        value="Planned"
+        value={status}
         optionLabel="name"
         optionValue="name"
         options={optionsWithIcons}
         placeholder="Set Status"
         itemTemplate={selectedItemTemplate}
         valueTemplate={selectedItemTemplate}
+        disabled={updatingScreenStatus}
+        onChange={(e) => {
+          onStatusDropdownChange(e);
+        }}
+      />
+      <ConfirmDialog
+        visible={confirmDialogVisible}
+        onHide={() => setConfirmDialogVisible(false)}
+        message={`Are you sure you want to change the status to ${selectedStatus}?`}
+        header={`Confirmation -> ${selectedStatus}`}
+        icon="icon icon-common icon-file-signature"
+        accept={() => updateScreenStatus(id, selectedStatus)}
+        reject={() => setConfirmDialogVisible(false)}
       />
     </div>
   );
 };
 
-export default ScreenStatus;
+export default observer(ScreenStatus);

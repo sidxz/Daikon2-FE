@@ -295,6 +295,8 @@ const Screen = {
   listPhenotypic: () => requests.get(`/screen/phenotypic`),
   details: (id) => requests.get(`/screen/${id}`),
   create: (newScreen) => requests.post(`/screen`, newScreen),
+  updateStatus: (id, status) =>
+    requests.post(`/screen/${id}/update-status`, status),
   createPhenotypic: (newScreen) =>
     requests.post(`/screen/phenotypic`, newScreen),
   createSequence: (screenId, newSequence) =>
@@ -302,6 +304,10 @@ const Screen = {
   merge: (mergeIds) => requests.post(`/elevated/screen/merge`, mergeIds),
   edit: (id, editedScreen) =>
     requests.post(`/elevated/screen/${id}/edit`, editedScreen),
+  mergePhenotypic: (mergeIds) =>
+    requests.post(`/elevated/screenPhenotypic/merge`, mergeIds),
+  editPhenotypic: (id, editedScreen) =>
+    requests.post(`/elevated/screenPhenotypic/${id}/edit`, editedScreen),
   editRow: (screenRowId, editedScreenRow) =>
     requests.post(
       `/screenSequence/${editedScreenRow.screenId}/edit-sequence/${screenRowId}`,

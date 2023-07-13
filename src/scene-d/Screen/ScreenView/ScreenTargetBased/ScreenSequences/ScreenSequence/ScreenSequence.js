@@ -79,7 +79,10 @@ const ScreenSequence = ({ screenId }) => {
 
       <div className="flex w-6 justify-content-end gap-5">
         <div className="flex mr-6 gap-5">
-          <ScreenStatus status={selectedScreen?.status} />
+          <ScreenStatus
+            id={selectedScreen.id}
+            status={selectedScreen?.status}
+          />
           <Chip label={selectedScreen?.org.name} icon="ri-organization-chart" />
           <Chip
             label={selectedScreen?.method}
