@@ -10,7 +10,7 @@ import { RootStoreContext } from "../../../../../app/stores/rootStore";
 
 const ScreenEdit = ({ selectedScreenTargetFilter, close }) => {
   const rootStore = useContext(RootStoreContext);
-  const { selectedScreen, editScreen } = rootStore.screenStore;
+  const { selectedScreen, editScreen } = rootStore.screenTStore;
   const { fetchOrgs, Orgs } = rootStore.adminStore;
   const { appVars } = rootStore.generalStore;
 

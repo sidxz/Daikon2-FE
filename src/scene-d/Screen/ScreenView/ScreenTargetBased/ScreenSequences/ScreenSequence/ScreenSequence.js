@@ -33,7 +33,7 @@ const ScreenSequence = ({ screenId }) => {
     loadingScreenSequence,
     editScreenRow,
     editingScreenRow,
-  } = rootStore.screenStore;
+  } = rootStore.screenTStore;
 
   const [filteredResearchers, setFilteredResearchers] = useState([]);
 

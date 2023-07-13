@@ -1,11 +1,9 @@
-import { observer } from "mobx-react-lite";
-import { Menubar } from "primereact/menubar";
-
 import { Chip } from "primereact/chip";
 import { Column } from "primereact/column";
 import { ConfirmDialog } from "primereact/confirmdialog";
 import { DataTable } from "primereact/datatable";
 import { Dialog } from "primereact/dialog";
+import { Menubar } from "primereact/menubar";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import SectionHeading from "../../../../../../app/common/SectionHeading/SectionHeading";
@@ -13,11 +11,10 @@ import SmilesViewWithDetails from "../../../../../../app/common/SmilesViewWithDe
 import Vote from "../../../../../../app/common/Vote/Vote";
 import Loading from "../../../../../../app/layout/Loading/Loading";
 import { RootStoreContext } from "../../../../../../app/stores/rootStore";
-import "./ValidatedHitsDataTable.css";
-import ValidatedHitsImporter from "./ValidatedHitsImporter/ValidatedHitsImporter";
-import ValidatedHitsPromoteToHAEntry from "./ValidatedHitsPromoteToHAEntry/ValidatedHitsPromoteToHAEntry";
-
-const ValidatedHitsList = ({ screenId }) => {
+import "../PhenotypicValidatedHitsList/PhenotypicValidatedHitsDataTable.css";
+import PhenotypicValidatedHitsImporter from "../PhenotypicValidatedHitsList/PhenotypicValidatedHitsImporter/PhenotypicValidatedHitsImporter";
+import PhenotypicValidatedHitsPromoteToHAEntry from "../PhenotypicValidatedHitsList/PhenotypicValidatedHitsPromoteToHAEntry/PhenotypicValidatedHitsPromoteToHAEntry";
+const PhenotypicValidatedHitTable = ({ screenId }) => {
   const dt = useRef(null);
   const tableMenu = useRef(null);
   /* MobX Store */
@@ -370,13 +367,7 @@ const ValidatedHitsList = ({ screenId }) => {
               body={MICBodyTemplate}
               style={{ width: "50px" }}
             />
-            <Column
-              field="clusterGroup"
-              header="Cluster"
-              body={ClusterBodyTemplate}
-              style={{ width: "90px" }}
-              sortable
-            />
+
             <Column
               field="voteScore"
               header="Vote"
@@ -403,7 +394,7 @@ const ValidatedHitsList = ({ screenId }) => {
             textColor={"#000000"}
           />
           <br />
-          <ValidatedHitsImporter
+          <PhenotypicValidatedHitsImporter
             screenId={selectedScreen.id}
             existingHits={selectedScreen.validatedHits}
           />
@@ -418,7 +409,7 @@ const ValidatedHitsList = ({ screenId }) => {
         style={{ width: "90%" }}
         maximizable={true}
       >
-        <ValidatedHitsPromoteToHAEntry
+        <PhenotypicValidatedHitsPromoteToHAEntry
           compounds={selectedCompounds}
           screen={selectedScreen}
           close={() => setDisplayPromoteToHAEntry(false)}
@@ -429,4 +420,4 @@ const ValidatedHitsList = ({ screenId }) => {
   );
 };
 
-export default observer(ValidatedHitsList);
+export default PhenotypicValidatedHitTable;

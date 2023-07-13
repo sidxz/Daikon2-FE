@@ -20,7 +20,7 @@ const ValidatedHits = ({ TargetName }) => {
     setValidatedHitsIndex,
     selectedScreenTargetFilter,
     screenRegistryCacheValid,
-  } = rootStore.screenStore;
+  } = rootStore.screenTStore;
 
   const navigate = useNavigate();
 

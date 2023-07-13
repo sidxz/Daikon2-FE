@@ -13,7 +13,7 @@ const ScreenMerge = ({ screens, close }) => {
   const [confirm, setConfirm] = useState("");
 
   const rootStore = useContext(RootStoreContext);
-  const { mergingScreen, mergeScreen } = rootStore.screenStore;
+  const { mergingScreen, mergeScreen } = rootStore.screenTStore;
 
   let dataOnSubmitValidate = () => {
     let screen1 = screens.find(({ id }) => id === screen1Id);

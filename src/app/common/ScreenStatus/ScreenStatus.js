@@ -8,14 +8,30 @@ import { GiVote } from "react-icons/gi";
 import { RootStoreContext } from "../../stores/rootStore";
 import "./ScreenStatus.css";
 
-const ScreenStatus = ({ id, status }) => {
+/**
+ * ScreenStatus component allows users to update the status of a screen.
+ * The status of the screen can be updated to a predefined set of options,
+ * with each option associated with an icon.
+ * @param {Object} props - The properties passed to the component.
+ * @param {string} props.id - The id of the screen.
+ * @param {string} props.status - The current status of the screen.
+ * @param {boolean} props.readOnly - Whether the status can be updated or not.
+ */
+const ScreenStatus = ({ id, status, readOnly = false }) => {
+  // Local state for managing the visibility of the confirm dialog
+  // and the selected status
   const [confirmDialogVisible, setConfirmDialogVisible] = useState(false);
-  const [selectedStatus, setSelectedStatus] = useState(false);
+  const [selectedStatus, setSelectedStatus] = useState(status);
+
+  // Accessing the necessary properties from the screenTStore
   const rootStore = useContext(RootStoreContext);
+  const { updatingScreenStatus, updateScreenStatus } = rootStore.screenTStore;
 
-  const { updatingScreenStatus, updateScreenStatus } = rootStore.screenStore;
+  // Parameter check
+  if (!id || !status) return <></>;
 
-  const optionsWithIcons = [
+  // The set of available options for the status of a screen
+  const statusOptions = [
     { name: "Planned", icon: <FcPlanner /> },
     { name: "Assay Development", icon: <FcDataSheet /> },
     { name: "Ongoing", icon: <FcNeutralTrading /> },
@@ -23,7 +39,8 @@ const ScreenStatus = ({ id, status }) => {
     { name: "Completed", icon: <FcOk /> },
   ];
 
-  const selectedItemTemplate = (option) => {
+  // Template for rendering a selected status option
+  const optionTemplate = (option) => {
     if (option) {
       return (
         <div className="flex align-items-center gap-2">
@@ -34,25 +51,40 @@ const ScreenStatus = ({ id, status }) => {
     }
   };
 
-  let onStatusDropdownChange = (e) => {
+  // Event handler for updating the selected status
+  // and making the confirm dialog visible
+  const handleStatusChange = (e) => {
     setSelectedStatus(e.value);
     setConfirmDialogVisible(true);
   };
 
+  // Render the component based on readOnly flag
+  // Temporarily handle new status as NA
+  if (readOnly) {
+    return (
+      <div className="flex align-items-center gap-2 bg-white p-2 border-1 border-100 m-0">
+        <div className="flex flex-column">
+          {statusOptions.find((option) => option.name === status)?.icon}
+        </div>
+        <div className="flex flex-column">
+          {status === "New" ? "NA" : status}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex">
       <Dropdown
-        value={status}
+        value={selectedStatus}
+        options={statusOptions}
         optionLabel="name"
         optionValue="name"
-        options={optionsWithIcons}
         placeholder="Set Status"
-        itemTemplate={selectedItemTemplate}
-        valueTemplate={selectedItemTemplate}
+        itemTemplate={optionTemplate}
+        valueTemplate={optionTemplate}
         disabled={updatingScreenStatus}
-        onChange={(e) => {
-          onStatusDropdownChange(e);
-        }}
+        onChange={handleStatusChange}
       />
       <ConfirmDialog
         visible={confirmDialogVisible}

@@ -34,7 +34,7 @@ const ScreenView = () => {
     selectedScreenTargetFilter,
     filterScreensByTarget,
     filteredScreens,
-  } = rootStore.screenStore;
+  } = rootStore.screenTStore;
   const { user } = rootStore.userStore;
 
   useEffect(() => {

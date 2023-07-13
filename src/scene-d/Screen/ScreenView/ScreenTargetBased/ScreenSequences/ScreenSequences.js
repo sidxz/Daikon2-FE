@@ -20,7 +20,7 @@ const ScreenSequences = ({ TargetName }) => {
     setScreenSequenceIndex,
     selectedScreenTargetFilter,
     screenRegistryCacheValid,
-  } = rootStore.screenStore;
+  } = rootStore.screenTStore;
 
   const navigate = useNavigate();
 
