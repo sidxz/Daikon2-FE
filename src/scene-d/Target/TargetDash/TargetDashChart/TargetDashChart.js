@@ -12,23 +12,27 @@ import { appColors } from "../../../../colors";
 const TargetDashChart = () => {
   const navigate = useNavigate();
 
-  /* MobX Store */
+  // Get the root store using the RootStoreContext
   const rootStore = useContext(RootStoreContext);
   const { loadingTargetDash, targetDash, loadTargetDash } =
     rootStore.dataViewStore;
 
+  // Load target dash data when the component mounts
   useEffect(() => {
     if (targetDash === null) loadTargetDash();
   }, [targetDash, loadTargetDash]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // State for filter values and label visibility
   const [likeScoreCutoff, setLikeScoreCutoff] = useState(0.02);
   const [impactScoreCutoff, setImpactScoreCutoff] = useState(0.02);
   const [showLabel, setShowLabel] = useState(true);
-  /** Loading Overlay */
+
+  // Render loading indicator if data is being loaded
   if (loadingTargetDash) {
     return <Loading />;
   }
 
+  // Prepare data and options for the chart
   let nodeColors = {
     target: appColors.horizonText.target,
     screen: appColors.horizonText.screen,
@@ -37,6 +41,7 @@ const TargetDashChart = () => {
     postPortfolio: appColors.horizonText.postPortfolio,
   };
 
+  // Function to generate a color gradient
   let ColorLuminance = (hex, lum) => {
     // validate hex string
     hex = String(hex).replace(/[^0-9a-f]/gi, "");
@@ -56,6 +61,7 @@ const TargetDashChart = () => {
     return rgb;
   };
 
+  // Function to generate a gradient for the chart
   let generateGradient = (color) => {
     return new echarts.graphic.RadialGradient(0.4, 0.3, 1, [
       {
@@ -69,12 +75,14 @@ const TargetDashChart = () => {
     ]);
   };
 
+  // Prepare data arrays for different stages
   var targetData = [];
   var screenData = [];
   var haData = [];
   var portfolioData = [];
   var postPortfolioData = [];
 
+  // Filter and populate data arrays based on cutoff values
   if (!loadingTargetDash && targetDash !== null) {
     targetDash.forEach((element) => {
       if (
@@ -139,6 +147,7 @@ const TargetDashChart = () => {
       }
     });
 
+    // Configure options for the chart
     let option = {
       backgroundColor: new echarts.graphic.RadialGradient(0.3, 0.3, 0.8, [
         {
@@ -342,14 +351,17 @@ const TargetDashChart = () => {
       ],
     };
 
+    // Function to handle chart click events
     let onChartClick = (params) => {
       navigate(params.data[2]);
     };
 
+    // Attach click event listener to the chart
     let onEvents = {
       click: onChartClick,
     };
 
+    // Render the TargetDashChart component
     return (
       <React.Fragment>
         <div className="flex flex-column w-full">
@@ -419,7 +431,9 @@ const TargetDashChart = () => {
     );
   }
 
+  // Render "Wait.." message while data is being loaded
   return <h2>Wait..</h2>;
 };
 
+// Wrap the TargetDashChart component with the MobX observer to automatically re-render on store updates
 export default observer(TargetDashChart);

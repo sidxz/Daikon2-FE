@@ -7,22 +7,23 @@ import { appColors } from "../../../colors";
 import TargetDashChart from "./TargetDashChart/TargetDashChart";
 import TargetDashTable from "./TargetDashTable/TargetDashTable";
 const TargetDash = () => {
-  /* MobX Store */
+  // Get the root store using the RootStoreContext
   const rootStore = useContext(RootStoreContext);
   const { fetchTargetList, displayLoading, targets } = rootStore.targetStore;
 
-  /* Local State Management */
+  // Fetch the target list when the component mounts
 
   useEffect(() => {
+    // Only fetch the target list if it's not already loaded
     if (targets.length === 0) fetchTargetList();
   }, [fetchTargetList, targets]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  /** Loading Overlay */
+  // Render a loading indicator if data is being loaded
   if (displayLoading) {
     return <Loading />;
   }
 
-  //
+  // Render the TargetDash component
 
   return (
     <div className="flex flex-column w-full fadein animation-duration-500">
@@ -44,5 +45,5 @@ const TargetDash = () => {
     </div>
   );
 };
-
+// Wrap the TargetDash component with the MobX observer to automatically re-render on store updates
 export default observer(TargetDash);

@@ -11,6 +11,7 @@ const TargetDashTable = ({ targets }) => {
 
   /* Table Body Templates */
 
+  // Template for rendering the Target Name column
   const TargetNameBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
@@ -20,8 +21,8 @@ const TargetDashTable = ({ targets }) => {
     );
   };
 
+  // Template for rendering the Associated Genes column
   const AssociatedGenesBodyTemplate = (rowData) => {
-
     if (rowData.targetGenesAccesionNumbers.length > 2) {
       return (
         <React.Fragment>
@@ -41,6 +42,7 @@ const TargetDashTable = ({ targets }) => {
     }
   };
 
+  // Template for rendering the Impact Score column
   const ImpactScoreBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
@@ -50,6 +52,7 @@ const TargetDashTable = ({ targets }) => {
     );
   };
 
+  // Template for rendering the Likelihood Score column
   const LikeScoreBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
@@ -59,6 +62,7 @@ const TargetDashTable = ({ targets }) => {
     );
   };
 
+  // Template for rendering the Bucket Score column
   const BucketScoreBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
@@ -84,7 +88,7 @@ const TargetDashTable = ({ targets }) => {
   // );
 
   return (
-    <div >
+    <div>
       <div className="card">
         <DataTable
           ref={dt}
