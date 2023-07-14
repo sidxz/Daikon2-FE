@@ -11,6 +11,7 @@
     "dompurify": "~3.0.5",
     "echarts": "~5.4.2",
     "echarts-for-react": "~3.0.2",
+    "file-saver": "~2.0.5",
     "formik": "~2.4.2",
     "history": "~5.3.0",
     "html-react-parser": "~4.0.0",
@@ -37,6 +38,7 @@
     "revalidate": "~1.2.0",
     "smiles-drawer": "~2.1.7",
     "web-vitals": "~3.1.1",
+    "exceljs": "~4.3.0",
     "xml-js": "~1.6.11",
     "xml2json": "~0.12.0",
     "yup": "1.0.2"

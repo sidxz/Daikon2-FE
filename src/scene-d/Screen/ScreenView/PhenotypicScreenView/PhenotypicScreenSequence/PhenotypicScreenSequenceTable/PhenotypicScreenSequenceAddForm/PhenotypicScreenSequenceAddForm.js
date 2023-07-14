@@ -6,14 +6,21 @@ import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
 import { classNames } from "primereact/utils";
 import React, { useContext, useState } from "react";
+import * as Yup from "yup";
 import { RootStoreContext } from "../../../../../../../app/stores/rootStore";
 
+/*
+ * Component: PhenotypicScreenSequenceAddForm
+ */
 const PhenotypicScreenSequenceAddForm = ({ screenId, onAdd, loading }) => {
+  // State for filtered researchers
   const [filteredResearchers, setFilteredResearchers] = useState([]);
 
+  // Accessing the root store and appVars from the general store
   const rootStore = useContext(RootStoreContext);
   const { appVars } = rootStore.generalStore;
 
+  // Handler for researcher search
   const searchResearcher = (event) => {
     const query = event.query;
     const filteredResults = appVars.appUsersFlattened.filter((username) =>
@@ -22,6 +29,7 @@ const PhenotypicScreenSequenceAddForm = ({ screenId, onAdd, loading }) => {
     setFilteredResearchers(filteredResults);
   };
 
+  // Formik configuration
   const formik = useFormik({
     initialValues: {
       library: "",
@@ -30,7 +38,6 @@ const PhenotypicScreenSequenceAddForm = ({ screenId, onAdd, loading }) => {
       endDate: undefined,
       scientist: "",
       protocol: "",
-      // concentration: "",
       noOfCompoundsScreened: "",
       comment: "",
       unverifiedHitCount: "",
@@ -38,371 +45,194 @@ const PhenotypicScreenSequenceAddForm = ({ screenId, onAdd, loading }) => {
       primaryHitCount: "",
       confirmedHitCount: "",
     },
-    validate: (data) => {
-      let errors = {};
-
-      if (!data.library) {
-        errors.library = "Library is required.";
-      }
-      if (!data.library) {
-        errors.library = "Library Size is required.";
-      }
-
-      if (!data.startDate) {
-        errors.startDate = "Start Date is required.";
-      }
-
-      if (!data.protocol) {
-        errors.protocol = "Protocol is required.";
-      }
-
-      // if (!data.concentration) {
-      //   errors.concentration = "Concentration is required.";
-      // }
-
-      if (!data.scientist) {
-        errors.scientist = "Scientist is required.";
-      }
-
-      if (!data.noOfCompoundsScreened) {
-        errors.noOfCompoundsScreened = "No of Compounds screened is required.";
-      }
-
-      if (!data.unverifiedHitCount) {
-        errors.unverifiedHitCount = "Initial Hit Count is required.";
-      }
-      if (!data.library) {
-        errors.library = "Hit Rate is required.";
-      }
-      if (!data.library) {
-        errors.library = "Primary Hit Count is required.";
-      }
-      if (!data.library) {
-        errors.library = "Confirmed Hit Count is required.";
-      }
-
-      return errors;
-    },
+    validationSchema: Yup.object({
+      library: Yup.string().required("Library is required."),
+    }),
     onSubmit: (data) => {
       data["screenId"] = screenId;
-
       onAdd(data);
       formik.resetForm();
     },
   });
 
-  const isFormFieldValid = (name) =>
-    !!(formik.touched[name] && formik.errors[name]);
-  const getFormErrorMessage = (name) => {
-    return (
-      isFormFieldValid(name) && (
-        <small className="p-error">{formik.errors[name]}</small>
-      )
-    );
-  };
-
   return (
     <div className="flex p-2">
       <div className="card w-full">
         <form onSubmit={formik.handleSubmit} className="p-fluid">
+          {/* Library field */}
           <div className="field">
-            <label
-              htmlFor="library"
-              className={classNames({
-                "p-error": isFormFieldValid("library"),
-              })}
-            >
-              Library
-            </label>
+            <label htmlFor="library">Library</label>
             <InputText
               id="library"
-              answer="library"
-              value={formik.values.library}
-              onChange={formik.handleChange}
+              name="library"
+              type="text"
               className={classNames({
-                "p-invalid": isFormFieldValid("library"),
+                "p-invalid": formik.errors.library,
               })}
+              {...formik.getFieldProps("library")}
               autoFocus
             />
-
-            {getFormErrorMessage("library")}
           </div>
 
+          {/* Library Size field */}
           <div className="field">
-            <label
-              htmlFor="librarySize"
-              className={classNames({
-                "p-error": isFormFieldValid("librarySize"),
-              })}
-            >
-              Library Size
-            </label>
+            <label htmlFor="librarySize">Library Size</label>
             <InputText
               id="librarySize"
-              answer="librarySize"
-              value={formik.values.librarySize}
-              onChange={formik.handleChange}
+              name="librarySize"
+              type="text"
               className={classNames({
-                "p-invalid": isFormFieldValid("librarySize"),
+                "p-invalid": formik.errors.librarySize,
               })}
-              autoFocus
+              {...formik.getFieldProps("librarySize")}
             />
-
-            {getFormErrorMessage("librarySize")}
           </div>
 
+          {/* Protocol field */}
           <div className="field">
-            <label
-              htmlFor="startDate"
-              className={classNames({
-                "p-error": isFormFieldValid("startDate"),
-              })}
-            >
-              Start Date
-            </label>
-            <Calendar
-              id="startDate"
-              name="startDate"
-              value={formik.values.startDate}
-              onChange={formik.handleChange}
-              dateFormat="dd/mm/yy"
-              mask="99/99/9999"
-              showIcon
-              className={classNames({
-                "p-invalid": isFormFieldValid("startDate"),
-              })}
-            />
-
-            {getFormErrorMessage("startDate")}
-          </div>
-
-          <div className="field">
-            <label
-              htmlFor="endDate"
-              className={classNames({
-                "p-error": isFormFieldValid("endDate"),
-              })}
-            >
-              End Date
-            </label>
-
-            <Calendar
-              id="endDate"
-              name="endDate"
-              value={formik.values.endDate}
-              onChange={formik.handleChange}
-              dateFormat="dd/mm/yy"
-              mask="99/99/9999"
-              showIcon
-              className={classNames({
-                "p-invalid": isFormFieldValid("endDate"),
-              })}
-            />
-
-            {getFormErrorMessage("endDate")}
-          </div>
-
-          <div className="field">
-            <label
-              htmlFor="protocol"
-              className={classNames({
-                "p-error": isFormFieldValid("protocol"),
-              })}
-            >
-              Protocol
-            </label>
-
+            <label htmlFor="protocol">Protocol</label>
             <InputTextarea
               rows={5}
               id="protocol"
-              answer="protocol"
-              value={formik.values.protocol}
-              onChange={formik.handleChange}
+              name="protocol"
               className={classNames({
-                "p-invalid": isFormFieldValid("protocol"),
+                "p-invalid": formik.errors.protocol,
               })}
+              {...formik.getFieldProps("protocol")}
             />
-
-            {getFormErrorMessage("protocol")}
           </div>
 
+          {/* No of Compounds Screened field */}
           <div className="field">
-            <label
-              htmlFor="unverifiedHitCount"
-              className={classNames({
-                "p-error": isFormFieldValid("unverifiedHitCount"),
-              })}
-            >
-              Initial Hit Count
-            </label>
-            <InputText
-              id="unverifiedHitCount"
-              answer="unverifiedHitCount"
-              value={formik.values.unverifiedHitCount}
-              onChange={formik.handleChange}
-              className={classNames({
-                "p-invalid": isFormFieldValid("unverifiedHitCount"),
-              })}
-            />
-
-            {getFormErrorMessage("unverifiedHitCount")}
-          </div>
-
-          <div className="field">
-            <label
-              htmlFor="hitRate"
-              className={classNames({
-                "p-error": isFormFieldValid("hitRate"),
-              })}
-            >
-              Hit Rate
-            </label>
-            <InputText
-              id="hitRate"
-              answer="hitRate"
-              value={formik.values.hitRate}
-              onChange={formik.handleChange}
-              className={classNames({
-                "p-invalid": isFormFieldValid("hitRate"),
-              })}
-            />
-
-            {getFormErrorMessage("hitRate")}
-          </div>
-
-          <div className="field">
-            <label
-              htmlFor="primaryHitCount"
-              className={classNames({
-                "p-error": isFormFieldValid("primaryHitCount"),
-              })}
-            >
-              Primary Hit Count
-            </label>
-            <InputText
-              id="primaryHitCount"
-              answer="primaryHitCount"
-              value={formik.values.primaryHitCount}
-              onChange={formik.handleChange}
-              className={classNames({
-                "p-invalid": isFormFieldValid("primaryHitCount"),
-              })}
-            />
-
-            {getFormErrorMessage("primaryHitCount")}
-          </div>
-
-          <div className="field">
-            <label
-              htmlFor="confirmedHitCount"
-              className={classNames({
-                "p-error": isFormFieldValid("confirmedHitCount"),
-              })}
-            >
-              Confirmed Hit Count
-            </label>
-            <InputText
-              id="confirmedHitCount"
-              answer="confirmedHitCount"
-              value={formik.values.confirmedHitCount}
-              onChange={formik.handleChange}
-              className={classNames({
-                "p-invalid": isFormFieldValid("confirmedHitCount"),
-              })}
-            />
-
-            {getFormErrorMessage("confirmedHitCount")}
-          </div>
-
-          {/* <div className="field">
-            <label
-              htmlFor="concentration"
-              className={classNames({
-                "p-error": isFormFieldValid("concentration"),
-              })}
-            >
-              Inhibitor Concentration (&micro;M)
-            </label>
-            <InputText
-              id="concentration"
-              answer="concentration"
-              value={formik.values.concentration}
-              onChange={formik.handleChange}
-              className={classNames({
-                "p-invalid": isFormFieldValid("concentration"),
-              })}
-            />
-
-            {getFormErrorMessage("concentration")}
-          </div> */}
-
-          <div className="field">
-            <label
-              htmlFor="noOfCompoundsScreened"
-              className={classNames({
-                "p-error": isFormFieldValid("noOfCompoundsScreened"),
-              })}
-            >
-              No of Compounds Screened
+            <label htmlFor="noOfCompoundsScreened">
+              Total Compounds Screened
             </label>
             <InputText
               id="noOfCompoundsScreened"
-              answer="noOfCompoundsScreened"
-              value={formik.values.noOfCompoundsScreened}
-              onChange={formik.handleChange}
+              name="noOfCompoundsScreened"
               className={classNames({
-                "p-invalid": isFormFieldValid("noOfCompoundsScreened"),
+                "p-invalid": formik.errors.noOfCompoundsScreened,
               })}
+              {...formik.getFieldProps("noOfCompoundsScreened")}
             />
-
-            {getFormErrorMessage("noOfCompoundsScreened")}
           </div>
 
+          {/* Initial Hit Count field */}
           <div className="field">
-            <label
-              htmlFor="scientist"
+            <label htmlFor="unverifiedHitCount">Initial Hit Count</label>
+            <InputText
+              id="unverifiedHitCount"
+              name="unverifiedHitCount"
               className={classNames({
-                "p-error": isFormFieldValid("scientist"),
+                "p-invalid": formik.errors.unverifiedHitCount,
               })}
-            >
-              Scientist (Screened By)
-            </label>
+              {...formik.getFieldProps("unverifiedHitCount")}
+            />
+          </div>
+
+          {/* Primary Hit Count field */}
+          <div className="field">
+            <label htmlFor="primaryHitCount">Primary Hit Count</label>
+            <InputText
+              id="primaryHitCount"
+              name="primaryHitCount"
+              className={classNames({
+                "p-invalid": formik.errors.primaryHitCount,
+              })}
+              {...formik.getFieldProps("primaryHitCount")}
+            />
+          </div>
+
+          {/* Confirmed Hit Count field */}
+          <div className="field">
+            <label htmlFor="confirmedHitCount">Confirmed Hit Count</label>
+            <InputText
+              id="confirmedHitCount"
+              name="confirmedHitCount"
+              className={classNames({
+                "p-invalid": formik.errors.confirmedHitCount,
+              })}
+              {...formik.getFieldProps("confirmedHitCount")}
+            />
+          </div>
+
+          {/* Hit Rate field */}
+          <div className="field">
+            <label htmlFor="hitRate">Hit Rate</label>
+            <InputText
+              id="hitRate"
+              name="hitRate"
+              className={classNames({
+                "p-invalid": formik.errors.hitRate,
+              })}
+              {...formik.getFieldProps("hitRate")}
+            />
+          </div>
+
+          {/* Scientist (Screened By) field */}
+          <div className="field">
+            <label htmlFor="scientist">Scientist (Screened By)</label>
             <AutoComplete
               id="scientist"
-              value={formik.values.scientist}
+              name="scientist"
               delay={1500}
               suggestions={filteredResearchers}
               completeMethod={searchResearcher}
-              onChange={formik.handleChange}
               dropdown
               forceSelection={false}
               className={classNames({
-                "p-invalid": isFormFieldValid("scientist"),
+                "p-invalid": formik.errors.scientist,
               })}
+              {...formik.getFieldProps("scientist")}
             />
-
-            {getFormErrorMessage("scientist")}
           </div>
 
+          {/* Start Date field */}
           <div className="field">
-            <label
-              htmlFor="comment"
+            <label htmlFor="startDate">Start Date</label>
+            <Calendar
+              id="startDate"
+              name="startDate"
+              dateFormat="dd/mm/yy"
+              mask="99/99/9999"
+              showIcon
               className={classNames({
-                "p-error": isFormFieldValid("comment"),
+                "p-invalid": formik.errors.startDate,
               })}
-            >
-              Comments
-            </label>
+              {...formik.getFieldProps("startDate")}
+            />
+          </div>
+
+          {/* End Date field */}
+          <div className="field">
+            <label htmlFor="endDate">End Date</label>
+            <Calendar
+              id="endDate"
+              name="endDate"
+              dateFormat="dd/mm/yy"
+              mask="99/99/9999"
+              showIcon
+              className={classNames({
+                "p-invalid": formik.errors.endDate,
+              })}
+              {...formik.getFieldProps("endDate")}
+            />
+          </div>
+
+          {/* Comments field */}
+          <div className="field">
+            <label htmlFor="comment">Comments</label>
             <InputText
               id="comment"
-              answer="comment"
-              value={formik.values.comment}
-              onChange={formik.handleChange}
+              name="comment"
               className={classNames({
-                "p-invalid": isFormFieldValid("comment"),
+                "p-invalid": formik.errors.comment,
               })}
+              {...formik.getFieldProps("comment")}
             />
           </div>
+
+          {/* Submit button */}
           <Button
             icon="icon icon-common icon-database-submit"
             type="submit"

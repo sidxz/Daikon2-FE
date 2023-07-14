@@ -15,7 +15,6 @@ import PhenotypicScreenSequenceTable from "./PhenotypicScreenSequenceTable/Pheno
  * @param {string} props.screenId - The id of the phenotypic screen.
  */
 const PhenotypicScreenSequence = ({ screenId }) => {
-  // Accessing the necessary properties from the rootStore
   const rootStore = useContext(RootStoreContext);
   const {
     isLoadingPhenotypicScreen,

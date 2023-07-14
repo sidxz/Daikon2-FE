@@ -6,7 +6,9 @@ import { DataTable } from "primereact/datatable";
 import { OverlayPanel } from "primereact/overlaypanel";
 import { Sidebar } from "primereact/sidebar";
 import React, { useContext, useEffect, useRef, useState } from "react";
+import { SiMicrosoftexcel } from "react-icons/si";
 import FDate from "../../../../../../app/common/FDate/FDate";
+import ExportToExcel from "../../../../../../app/common/Functions/Excel";
 import {
   DateEditor,
   PersonNameEditor,
@@ -63,6 +65,21 @@ const PhenotypicScreenSequenceTable = ({ screenId }) => {
       dt.current.exportCSV({ selectionOnly });
     };
 
+    // Map Data fields to Column Name
+    const fieldToColumnName = {
+      library: "Library",
+      librarySize: "Library Size",
+      protocol: "Protocol",
+      noOfCompoundsScreened: "Total Compounds Screened",
+      unverifiedHitCount: "Initial Hit Count",
+      primaryHitCount: "Primary Hit Count",
+      confirmedHitCount: "Confirmed Hit Count",
+      hitRate: "Hit Rate",
+      scientist: "Scientist",
+      startDate: "Start Date",
+      endDate: "End Date",
+    };
+
     // Table header template
 
     const tableHeader = (
@@ -82,11 +99,22 @@ const PhenotypicScreenSequenceTable = ({ screenId }) => {
             <div className="flex">
               <Button
                 type="button"
-                icon="icon icon-fileformats icon-CSV"
+                icon={
+                  <div className="flex pr-2">
+                    <SiMicrosoftexcel />
+                  </div>
+                }
                 label="Export"
                 className="p-button-text"
                 style={{ height: "30px" }}
-                onClick={() => exportCSV(false)}
+                //onClick={() => exportCSV(false)}
+                onClick={() =>
+                  ExportToExcel({
+                    jsonData: selectedPhenotypicScreen.screenSequences,
+                    fileName: selectedPhenotypicScreen.screenName,
+                    headerMap: fieldToColumnName,
+                  })
+                }
               />
             </div>
           </div>
@@ -208,6 +236,8 @@ const PhenotypicScreenSequenceTable = ({ screenId }) => {
         <div className="card flex w-full max-w-full">
           <DataTable
             className="p-datatable-gridlines w-full"
+            size="small"
+            resizableColumns
             ref={dt}
             value={selectedPhenotypicScreen.screenSequences}
             showGridlines
@@ -221,28 +251,48 @@ const PhenotypicScreenSequenceTable = ({ screenId }) => {
           >
             <Column
               field="library"
-              header="Library"
+              header={fieldToColumnName["library"]}
               editor={(options) => TextEditor(options)}
             />
             <Column
               field="librarySize"
-              header="Library Size"
+              header={fieldToColumnName["librarySize"]}
               editor={(options) => TextEditor(options)}
             />
             <Column
               field={"protocol"}
               body={protocolBodyTemplate}
-              header="Protocol"
+              header={fieldToColumnName["protocol"]}
               editor={(options) => TextEditor(options)}
             />
             <Column
               field="noOfCompoundsScreened"
-              header="No. of Compounds"
+              header={fieldToColumnName["noOfCompoundsScreened"]}
+              editor={(options) => TextEditor(options)}
+            />
+            <Column
+              field="unverifiedHitCount"
+              header={fieldToColumnName["unverifiedHitCount"]}
+              editor={(options) => TextEditor(options)}
+            />
+            <Column
+              field="primaryHitCount"
+              header={fieldToColumnName["primaryHitCount"]}
+              editor={(options) => TextEditor(options)}
+            />
+            <Column
+              field="confirmedHitCount"
+              header={fieldToColumnName["confirmedHitCount"]}
+              editor={(options) => TextEditor(options)}
+            />
+            <Column
+              field="hitRate"
+              header={fieldToColumnName["hitRate"]}
               editor={(options) => TextEditor(options)}
             />
             <Column
               field="scientist"
-              header="Scientist"
+              header={fieldToColumnName["scientist"]}
               editor={(options) =>
                 PersonNameEditor(
                   options,
@@ -254,38 +304,19 @@ const PhenotypicScreenSequenceTable = ({ screenId }) => {
             />
             <Column
               field="startDate"
-              header="Start Date"
+              header={fieldToColumnName["startDate"]}
               editor={(options) => DateEditor(options)}
               body={StartDateTemplate}
               sortable
             />
             <Column
               field="endDate"
-              header="End Date"
+              header={fieldToColumnName["endDate"]}
               editor={(options) => DateEditor(options)}
               body={EndDateTemplate}
               sortable
             />
-            <Column
-              field="unverifiedHitCount"
-              header="Initial Hit Count"
-              editor={(options) => TextEditor(options)}
-            />
-            <Column
-              field="hitRate"
-              header="Hit Rate"
-              editor={(options) => TextEditor(options)}
-            />
-            <Column
-              field="primaryHitCount"
-              header="Primary Hit Count"
-              editor={(options) => TextEditor(options)}
-            />
-            <Column
-              field="confirmedHitCount"
-              header="Confirmed Hit Count"
-              editor={(options) => TextEditor(options)}
-            />
+
             <Column
               rowEditor
               headerStyle={{ width: "10%", minWidth: "8rem" }}
