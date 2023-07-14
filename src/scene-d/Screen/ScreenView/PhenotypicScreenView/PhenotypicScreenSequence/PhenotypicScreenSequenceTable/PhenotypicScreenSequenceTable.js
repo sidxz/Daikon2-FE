@@ -3,12 +3,14 @@ import { Button } from "primereact/button";
 import { Chip } from "primereact/chip";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
+import { FileUpload } from "primereact/fileupload";
 import { OverlayPanel } from "primereact/overlaypanel";
 import { Sidebar } from "primereact/sidebar";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { SiMicrosoftexcel } from "react-icons/si";
 import FDate from "../../../../../../app/common/FDate/FDate";
-import ExportToExcel from "../../../../../../app/common/Functions/Excel";
+import ExportToExcel from "../../../../../../app/common/Functions/Excel/ExportToExcel";
+import ImportFromExcel from "../../../../../../app/common/Functions/Excel/ImportFromExcel";
 import {
   DateEditor,
   PersonNameEditor,
@@ -85,7 +87,7 @@ const PhenotypicScreenSequenceTable = ({ screenId }) => {
     const tableHeader = (
       <div className="flex w-full">
         <div className="flex w-6">
-          <div className="flex gap-2">
+          <div className="flex gap-2 align-items-center">
             <div className="flex">
               <Button
                 type="button"
@@ -94,6 +96,36 @@ const PhenotypicScreenSequenceTable = ({ screenId }) => {
                 className="p-button-text"
                 style={{ height: "30px" }}
                 onClick={() => setDisplayAddDialog(true)}
+              />
+            </div>
+            <div className="flex">
+              <FileUpload
+                name="excelFile"
+                accept=".xls,.xlsx,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                maxFileSize={1000000}
+                mode="basic"
+                chooseLabel="Import"
+                chooseOptions={{
+                  icon: (
+                    <div className="flex pr-2">
+                      <SiMicrosoftexcel />
+                    </div>
+                  ),
+
+                  className: "p-button-text m-0 p-1",
+                }}
+                className="p-button-text"
+                style={{ height: "30px" }}
+                customUpload={true}
+                uploadHandler={async (e) => {
+                  const file = e.files[0];
+                  const jsonData = await ImportFromExcel({
+                    file: file,
+                    headerMap: fieldToColumnName,
+                  });
+                  console.log(jsonData);
+                }}
+                auto
               />
             </div>
             <div className="flex">
