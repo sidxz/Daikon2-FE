@@ -11,7 +11,7 @@ import { appColors } from "../../../../colors";
 import GenePromoteSummaryAnswers from "../../../Gene/GenePromote/GenePromoteSummary/GenePromoteSummaryAnswers/GenePromoteSummaryAnswers";
 
 const TargetPromotionForm = ({ data, selectedTarget }) => {
-  /* MobX Store */
+  // Get the MobX Store
   const rootStore = useContext(RootStoreContext);
   const geneStore = rootStore.geneStore;
 
@@ -34,6 +34,7 @@ const TargetPromotionForm = ({ data, selectedTarget }) => {
   ];
 
   useEffect(() => {
+    // Fetch promotion questions if not already loaded
     if (geneStore.promotionQuestionsRegistry.size === 0) {
       geneStore.getPromotionQuestions();
     }
@@ -51,6 +52,7 @@ const TargetPromotionForm = ({ data, selectedTarget }) => {
     !geneStore.promotionQuestionsDisplayLoading &&
     geneStore.promotionQuestionsRegistry.size !== 0
   ) {
+    // Convert data to answers object
     let answers = {};
     data.forEach((ele) => {
       answers[ele.question.identification] = {
@@ -62,6 +64,7 @@ const TargetPromotionForm = ({ data, selectedTarget }) => {
     let sections = TargetPromotionInfoUserSection;
 
     let generateUI = () => {
+      // Generate the UI based on sections, subsections, and questions
       return sections.map((section) => {
         let generateSubsections = section.subSections.map((subSection) => {
           let generateQuestions = subSection.questions.map((questionId) => {
