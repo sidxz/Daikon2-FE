@@ -8,6 +8,7 @@ import { OverlayPanel } from "primereact/overlaypanel";
 import { Sidebar } from "primereact/sidebar";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { SiMicrosoftexcel } from "react-icons/si";
+import DataPreviewDialog from "../../../../../../app/common/DataPreviewDialog/DataPreviewDialog";
 import FDate from "../../../../../../app/common/FDate/FDate";
 import ExportToExcel from "../../../../../../app/common/Functions/Excel/ExportToExcel";
 import ImportFromExcel from "../../../../../../app/common/Functions/Excel/ImportFromExcel";
@@ -34,6 +35,9 @@ const PhenotypicScreenSequenceTable = ({ screenId }) => {
   const [selectedProtocol, setSelectedProtocol] = useState("");
   const op = useRef(null);
   const dt = useRef(null);
+  const fileUpload = useRef(null);
+  const [dataPreview, setDataPreview] = useState(null);
+  const [showDialog, setShowDialog] = useState(false);
 
   // Accessing the necessary properties from the rootStore
   const rootStore = useContext(RootStoreContext);
@@ -48,6 +52,7 @@ const PhenotypicScreenSequenceTable = ({ screenId }) => {
   } = rootStore.screenPStore;
 
   const [filteredResearchers, setFilteredResearchers] = useState([]);
+  const [showExcelImporter, setShowExcelImporter] = useState(false);
 
   useEffect(() => {
     if (
@@ -123,7 +128,8 @@ const PhenotypicScreenSequenceTable = ({ screenId }) => {
                     file: file,
                     headerMap: fieldToColumnName,
                   });
-                  console.log(jsonData);
+                  setDataPreview(jsonData);
+                  setShowDialog(true);
                 }}
                 auto
               />
@@ -356,6 +362,16 @@ const PhenotypicScreenSequenceTable = ({ screenId }) => {
             />
           </DataTable>
         </div>
+        <DataPreviewDialog
+          headerMap={fieldToColumnName}
+          existingData={selectedPhenotypicScreen.screenSequences}
+          data={dataPreview}
+          visible={showDialog}
+          onHide={() => {
+            setShowDialog(false);
+            setDataPreview(null);
+          }}
+        />
       </React.Fragment>
     );
   }

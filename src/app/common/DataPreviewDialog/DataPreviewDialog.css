@@ -1,0 +1,7 @@
+.new-row {
+  background-color: lightgreen !important;
+}
+
+.changed-cell {
+  background-color: yellow;
+}
