@@ -5,7 +5,9 @@ import StageTag from "../../../../../app/common/StageTag/StageTag";
 import TagGeneral from "../../../../../app/common/TagGeneral/TagGeneral";
 import "./LocalComponents.css";
 
+// Component for displaying general project information
 const PortfolioInformationGeneralInformation = ({ project }) => {
+  // Create an array of data objects to be displayed in the DataTable
   let data = [
     {
       name: "Id",
@@ -44,6 +46,8 @@ const PortfolioInformationGeneralInformation = ({ project }) => {
       ),
     },
   ];
+
+  // Check if LO (Line of Business) is enabled for the project
   if (project.loEnabled) {
     data.push({
       name: "LO Description",
@@ -57,6 +61,8 @@ const PortfolioInformationGeneralInformation = ({ project }) => {
       ),
     });
   }
+
+  // Check if SP (Service Provider) is enabled for the project
   if (project.spEnabled) {
     data.push({
       name: "SP Description",
@@ -73,6 +79,7 @@ const PortfolioInformationGeneralInformation = ({ project }) => {
 
   return (
     <div className="flex flex-column flex-wrap card-container min-w-max">
+      {/* Render the DataTable component to display the project information */}
       <DataTable className="noDataTableHeader" value={data}>
         <Column field="name"></Column>
         <Column field="value"></Column>

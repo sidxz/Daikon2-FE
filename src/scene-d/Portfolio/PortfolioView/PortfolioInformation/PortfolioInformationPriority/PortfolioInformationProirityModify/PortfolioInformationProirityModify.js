@@ -8,8 +8,10 @@ import React, { useContext } from "react";
 import { RootStoreContext } from "../../../../../../app/stores/rootStore";
 
 const PortfolioInformationProirityModify = ({ closeSidebar }) => {
-  /* MobX Store */
+  // MobX Store //
   const rootStore = useContext(RootStoreContext);
+
+  // Destructuring properties from rootStore.projectStore
   const {
     setPriorityProbability,
     settingPriorityProbability,
@@ -17,6 +19,7 @@ const PortfolioInformationProirityModify = ({ closeSidebar }) => {
     loadingProject,
   } = rootStore.projectStore;
 
+  // Using useFormik hook to manage form state
   const formik = useFormik({
     initialValues: {
       teamPriority: selectedProject.teamPriority,
@@ -36,12 +39,14 @@ const PortfolioInformationProirityModify = ({ closeSidebar }) => {
       return errors;
     },
     onSubmit: (data) => {
+      // Creating submitData object with updated values
       var submitData = {
         id: selectedProject.id,
         teamPriority: data.teamPriority,
         teamProbability: data.teamProbability,
       };
 
+      // Calling setPriorityProbability function and handling the response
       setPriorityProbability(submitData).then((res) => {
         if (res !== null) {
           closeSidebar();
@@ -54,8 +59,11 @@ const PortfolioInformationProirityModify = ({ closeSidebar }) => {
     },
   });
 
+  // Function to check if form field is valid
   const isFormFieldValid = (field) =>
     !!(formik.touched[field] && formik.errors[field]);
+
+  // Function to get form error message
   const getFormErrorMessage = (field) => {
     return (
       isFormFieldValid(field) && (

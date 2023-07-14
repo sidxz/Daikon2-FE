@@ -9,6 +9,7 @@ import { appColors } from "../../../../colors";
 const PortfolioDiscussion = ({ project }) => {
   const navigate = useNavigate();
 
+  // Define the breadcrumb items for navigation
   const breadCrumbItems = [
     {
       label: "Portfolio",
@@ -28,9 +29,11 @@ const PortfolioDiscussion = ({ project }) => {
   return (
     <div className="flex flex-column w-full">
       <div className="flex w-full pb-2">
+        {/* Render the breadcrumb component */}
         <BreadCrumb model={breadCrumbItems} />
       </div>
       <div className="flex w-full">
+        {/* Render the section heading component */}
         <SectionHeading
           icon="icon icon-common icon-analyse"
           heading={project.projectName + " | " + project?.currentStage}
@@ -44,6 +47,7 @@ const PortfolioDiscussion = ({ project }) => {
         />
       </div>
       <div className="flex w-full">
+        {/* Render the discussion component */}
         <Discussion
           reference={project.targetName || project.projectName}
           section={project?.currentStage || "Portfolio"}

@@ -11,6 +11,7 @@ const PortfolioBaseHits = ({ project }) => {
   const dt = useRef(null);
   const navigate = useNavigate();
 
+  // Define breadcrumb items
   const breadCrumbItems = [
     {
       label: "Portfolio",
@@ -29,6 +30,7 @@ const PortfolioBaseHits = ({ project }) => {
 
   let tableData = [];
 
+  // Convert project base hits into table data
   if (project?.baseHits.length !== 0) {
     project.baseHits.forEach((baseHit) => {
       tableData.push({
@@ -43,6 +45,7 @@ const PortfolioBaseHits = ({ project }) => {
     });
   }
 
+  // Template for rendering structure body
   const StructureBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
@@ -53,6 +56,7 @@ const PortfolioBaseHits = ({ project }) => {
     );
   };
 
+  // Template for rendering compound ID body
   const CompoundIdBodyTemplate = (rowData) => {
     return <React.Fragment>{rowData?.externalCompoundIds}</React.Fragment>;
   };

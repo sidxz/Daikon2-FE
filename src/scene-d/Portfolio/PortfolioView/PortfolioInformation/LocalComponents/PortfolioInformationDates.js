@@ -3,16 +3,25 @@ import { Dialog } from "primereact/dialog";
 import { Timeline } from "primereact/timeline";
 import React, { useRef, useState } from "react";
 import EmbeddedHelp from "../../../../../app/common/EmbeddedHelp/EmbeddedHelp";
-import FailedLoading from "../../../../../app/common/FailedLoading/FailedLoading";
 import FDate from "../../../../../app/common/FDate/FDate";
+import FailedLoading from "../../../../../app/common/FailedLoading/FailedLoading";
 import PredictedDateEditor from "../../../../../app/common/PredictedDateEditor/PredictedDateEditor";
 import StageTag from "../../../../../app/common/StageTag/StageTag";
+
+/**
+ * Component that displays the timeline of project events and allows editing of predicted start dates.
+ * @param {Object} props - The component props.
+ * @param {Object} props.project - The project object.
+ * @returns {JSX.Element} - The rendered component.
+ */
 
 const PortfolioInformationDates = ({ project }) => {
   const cm = useRef(null);
   const [displayEditContainer, setDisplayEditContainer] = useState(false);
 
   if (!project) return <FailedLoading />;
+
+  // Prepare timeline events based on project stages and settings
   let timelineEvents = [];
 
   if (project.haEnabled) {
@@ -29,6 +38,8 @@ const PortfolioInformationDates = ({ project }) => {
       date: project.h2LStart,
       predictedDateNextStage: project.loPredictedStart,
     });
+
+    // Add LO stage if not terminated and LO stage is not enabled
     if (project.status !== "Terminated" && !project.loEnabled) {
       timelineEvents.push({
         stage: "LO",
@@ -44,6 +55,8 @@ const PortfolioInformationDates = ({ project }) => {
       date: project.loStart,
       predictedDateNextStage: project.spPredictedStart,
     });
+
+    // Add SP stage if not terminated and SP stage is not enabled
     if (project.status !== "Terminated" && !project.spEnabled) {
       timelineEvents.push({
         stage: "SP",
@@ -59,6 +72,8 @@ const PortfolioInformationDates = ({ project }) => {
       date: project.spStart,
       predictedDateNextStage: project.indPredictedStart,
     });
+
+    // Add IND stage if not terminated and IND stage is not enabled
     if (project.status !== "Terminated" && !project.indEnabled) {
       timelineEvents.push({
         stage: "IND",
@@ -67,12 +82,17 @@ const PortfolioInformationDates = ({ project }) => {
       });
     }
   }
-
+  // Add Terminated stage if project is terminated
   if (project.status === "Terminated") {
     timelineEvents.push({
       stage: "Terminated",
     });
   }
+
+  /**
+   * Generates the context menu items for the timeline.
+   * @type {Array} - The array of context menu items.
+   */
 
   const contextMenuItems = [
     {
@@ -82,6 +102,10 @@ const PortfolioInformationDates = ({ project }) => {
     },
   ];
 
+  /**
+   * Renders the header of the edit dialog.
+   * @returns {JSX.Element} - The rendered header.
+   */
   let headerEditDialog = () => (
     <React.Fragment>
       <i className="icon icon-common icon-database"></i> &nbsp; Editing
@@ -89,6 +113,11 @@ const PortfolioInformationDates = ({ project }) => {
     </React.Fragment>
   );
 
+  /**
+   * Generates a date item for the timeline.
+   * @param {Object} item - The timeline item.
+   * @returns {JSX.Element} - The rendered date item.
+   */
   let generateDateItem = (item) => {
     return (
       <div onContextMenu={(e) => item.isPredicted && cm.current.show(e)}>
@@ -100,6 +129,11 @@ const PortfolioInformationDates = ({ project }) => {
     );
   };
 
+  /**
+   * Customizes the marker based on the timeline item.
+   * @param {Object} item - The timeline item.
+   * @returns {JSX.Element} - The rendered marker.
+   */
   const customizedMarker = (item) => {
     if (item.isPredicted) {
       return (
@@ -138,6 +172,11 @@ const PortfolioInformationDates = ({ project }) => {
     );
   };
 
+  /**
+   * Generates a stage tag based on the timeline item.
+   * @param {Object} item - The timeline item.
+   * @returns {JSX.Element} - The rendered stage tag.
+   */
   const tagGenerator = (item) => {
     if (item.isPredicted) {
       return <StageTag stage={"Dotted"} stageName={item.stage} />;
