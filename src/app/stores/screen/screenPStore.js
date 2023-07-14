@@ -46,6 +46,7 @@ export default class ScreenPStore {
   isLoadingPhenotypicScreenSequence = false;
   isEditingPhenotypicScreenSequence = false;
   isUpdatingPhenotypicScreenStatus = false;
+  isBatchInsertingPhenotypicScreenSequence = false;
 
   constructor(rootStore) {
     this.rootStore = rootStore;
@@ -67,6 +68,8 @@ export default class ScreenPStore {
       isAddingPhenotypicScreen: observable,
       isEditingPhenotypicScreenSequence: observable,
       isUpdatingPhenotypicScreenStatus: observable,
+      isBatchInsertingPhenotypicScreenSequence: observable,
+      batchInsertPhenotypicScreenSequence: action,
     });
   }
 
@@ -180,8 +183,12 @@ export default class ScreenPStore {
    * Adds a new phenotypic screen sequence and updates the state accordingly.
    * @param {object} newSequence - The new sequence details to add.
    * @returns {object} The response from the API.
+   * @param {boolean} shouldDisplayToast - If true, displays the success toast
    */
-  addPhenotypicScreenSequence = async (newSequence) => {
+  addPhenotypicScreenSequence = async (
+    newSequence,
+    shouldDisplayToast = true
+  ) => {
     this.isLoadingPhenotypicScreenSequence = true;
     let res = null;
 
@@ -191,7 +198,8 @@ export default class ScreenPStore {
         newSequence
       );
       runInAction(() => {
-        toast.success("New screen sequence has been added successfully");
+        shouldDisplayToast &&
+          toast.success("New screen sequence has been added successfully");
 
         // Removing the specific id from phenotypicScreenExpandedRegistry
         this.phenotypicScreenExpandedRegistry.delete(newSequence.screenId);
@@ -211,14 +219,19 @@ export default class ScreenPStore {
    * Edits a phenotypic screen sequence and updates the state accordingly.
    * @param {object} editedScreenRow - The details of the screen row to edit.
    * @returns {object} The response from the API.
+   * @param {boolean} shouldDisplayToast - If true, displays the success toast
    */
-  editPhenotypicScreenSequence = async (editedScreenRow) => {
+  editPhenotypicScreenSequence = async (
+    editedScreenRow,
+    shouldDisplayToast = true
+  ) => {
     this.isEditingPhenotypicScreenSequence = true;
     let res = null;
     try {
       res = await agent.Screen.editRow(editedScreenRow.id, editedScreenRow);
       runInAction(() => {
-        toast.success("Screen sequence has been updated successfully");
+        shouldDisplayToast &&
+          toast.success("Screen sequence has been updated successfully");
         this.fetchPhenotypicScreen(editedScreenRow.screenId, true);
       });
     } catch (error) {
@@ -229,6 +242,39 @@ export default class ScreenPStore {
       });
     }
     return res;
+  };
+
+  /**
+   * Batch insert a phenotypic screen sequence.
+   * Adds new if ID is null, updates if ID is not null.
+   * @param {object} editedScreenRows - The details of the screen rows to edit.
+   */
+  batchInsertPhenotypicScreenSequence = async (editedScreenRows) => {
+    this.isBatchInsertingPhenotypicScreenSequence = true;
+
+    try {
+      const promises = editedScreenRows.map(async (editedScreenRow) => {
+        editedScreenRow.screenId = this.selectedPhenotypicScreen.id;
+        if (editedScreenRow.status === "New") {
+          console.log("Adding new row");
+          console.log(editedScreenRow);
+          return await this.addPhenotypicScreenSequence(editedScreenRow);
+        } else if (editedScreenRow.status === "Modified") {
+          console.log("Editing row");
+          console.log(editedScreenRow);
+          return await this.editPhenotypicScreenSequence(editedScreenRow);
+        }
+      });
+
+      await Promise.all(promises);
+      toast.success("Batch insertion/update completed successfully");
+    } catch (error) {
+      console.error(error);
+    } finally {
+      runInAction(() => {
+        this.isBatchInsertingPhenotypicScreenSequence = false;
+      });
+    }
   };
 
   /**

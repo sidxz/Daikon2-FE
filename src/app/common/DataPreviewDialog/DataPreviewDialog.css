@@ -1,7 +1,7 @@
 .new-row {
-  background-color: lightgreen !important;
+  background-color: #c7d59f !important;
 }
 
 .changed-cell {
-  background-color: yellow;
+  background-color: #e1bb80;
 }

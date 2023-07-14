@@ -1,9 +1,11 @@
 import "./DataPreviewDialog.css";
 
+import { Button } from "primereact/button";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { Dialog } from "primereact/dialog";
 import React, { useMemo } from "react";
+import SectionHeading from "../SectionHeading/SectionHeading";
 
 const DataPreviewDialog = ({
   headerMap,
@@ -11,12 +13,36 @@ const DataPreviewDialog = ({
   existingData,
   visible,
   onHide,
+  onSave,
+  isSaving = false,
 }) => {
   // Dialog footer with a close button
   const dialogFooter = (
-    <button onClick={onHide} className="p-button-text p-button-plain">
-      Close
-    </button>
+    <div className="flex justify-content-end w-full">
+      <div className="flex">
+        <Button
+          icon="pi pi-times"
+          type="submit"
+          label="Discard"
+          className="p-mt-2"
+          loading={isSaving}
+          onClick={() => onHide()}
+        />
+      </div>
+      <div className="flex">
+        <Button
+          icon="icon icon-common icon-database-submit"
+          type="submit"
+          label="Add to database"
+          className="p-mt-2"
+          loading={isSaving}
+          onClick={() => {
+            onSave(dataWithStatus.filter((d) => d.status !== "Unchanged"));
+            onHide();
+          }}
+        />
+      </div>
+    </div>
   );
 
   const dataWithStatus = useMemo(() => {
@@ -51,7 +77,7 @@ const DataPreviewDialog = ({
         }
         if (!status) {
           // Existing row with no changes
-          status = "No Change";
+          status = "Unchanged";
         }
       }
 
@@ -73,7 +99,7 @@ const DataPreviewDialog = ({
       rowData.status === "Modified"
     ) {
       // Existing cell with changed data
-      return "changed-cell";
+      return "flex w-full p-1 m-0 changed-cell border-1 border-yellow-700";
     }
 
     // Existing cell with no changes or new row
@@ -83,29 +109,58 @@ const DataPreviewDialog = ({
   const bodyTemplate = (field) => {
     return (rowData) => {
       return (
-        <span className={cellClassName(rowData, field)}>{rowData[field]}</span>
+        <div
+          style={{ height: "100%", width: "100%" }}
+          className={cellClassName(rowData, field)}
+        >
+          {rowData[field]}
+        </div>
       );
     };
   };
 
   return (
-    <Dialog visible={visible} onHide={onHide} footer={dialogFooter}>
-      <DataTable value={dataWithStatus} rowClassName={rowClassName}>
-        <Column
-          field="status"
-          header="Status"
-          body={bodyTemplate("status")}
-        ></Column>
-        {headerMap &&
-          Object.keys(headerMap).map((headerKey) => (
+    <Dialog
+      visible={visible}
+      onHide={onHide}
+      footer={dialogFooter}
+      header={<div>Excel Import</div>}
+      maximizable
+      className="w-11"
+    >
+      <div className="flex flex-column">
+        <div className="flex">
+          <SectionHeading
+            icon="icon icon-common icon-exchange-alt"
+            heading="Data Preview: Comparison with Existing Data"
+            color="#8D99AE"
+          />
+        </div>
+        <div className="flex">
+          <DataTable
+            value={dataWithStatus}
+            rowClassName={rowClassName}
+            size="small"
+            resizableColumns
+            loading={isSaving}
+          >
             <Column
-              field={headerKey}
-              header={headerMap[headerKey]}
-              key={headerKey}
-              body={bodyTemplate(headerKey)}
+              field="status"
+              header="Status"
+              body={bodyTemplate("status")}
             ></Column>
-          ))}
-      </DataTable>
+            {headerMap &&
+              Object.keys(headerMap).map((headerKey) => (
+                <Column
+                  field={headerKey}
+                  header={headerMap[headerKey]}
+                  key={headerKey}
+                  body={bodyTemplate(headerKey)}
+                ></Column>
+              ))}
+          </DataTable>
+        </div>
+      </div>
     </Dialog>
   );
 };

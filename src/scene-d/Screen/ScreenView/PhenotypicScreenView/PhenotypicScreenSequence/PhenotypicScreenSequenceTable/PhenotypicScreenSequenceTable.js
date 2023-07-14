@@ -7,6 +7,7 @@ import { FileUpload } from "primereact/fileupload";
 import { OverlayPanel } from "primereact/overlaypanel";
 import { Sidebar } from "primereact/sidebar";
 import React, { useContext, useEffect, useRef, useState } from "react";
+import { ImDownload } from "react-icons/im";
 import { SiMicrosoftexcel } from "react-icons/si";
 import DataPreviewDialog from "../../../../../../app/common/DataPreviewDialog/DataPreviewDialog";
 import FDate from "../../../../../../app/common/FDate/FDate";
@@ -37,7 +38,7 @@ const PhenotypicScreenSequenceTable = ({ screenId }) => {
   const dt = useRef(null);
   const fileUpload = useRef(null);
   const [dataPreview, setDataPreview] = useState(null);
-  const [showDialog, setShowDialog] = useState(false);
+  const [showDataPreviewDialog, setShowDataPreviewDialog] = useState(false);
 
   // Accessing the necessary properties from the rootStore
   const rootStore = useContext(RootStoreContext);
@@ -49,6 +50,8 @@ const PhenotypicScreenSequenceTable = ({ screenId }) => {
     isLoadingPhenotypicScreenSequence,
     editPhenotypicScreenSequence,
     isEditingPhenotypicScreenSequence,
+    batchInsertPhenotypicScreenSequence,
+    isBatchInsertingPhenotypicScreenSequence,
   } = rootStore.screenPStore;
 
   const [filteredResearchers, setFilteredResearchers] = useState([]);
@@ -119,17 +122,23 @@ const PhenotypicScreenSequenceTable = ({ screenId }) => {
 
                   className: "p-button-text m-0 p-1",
                 }}
+                cancelOptions={{
+                  label: "Cancel",
+                  icon: "pi pi-times",
+                  className: "p-button-danger",
+                }}
                 className="p-button-text"
                 style={{ height: "30px" }}
                 customUpload={true}
                 uploadHandler={async (e) => {
-                  const file = e.files[0];
+                  let file = e.files[0];
                   const jsonData = await ImportFromExcel({
                     file: file,
                     headerMap: fieldToColumnName,
                   });
+                  e.files = null;
                   setDataPreview(jsonData);
-                  setShowDialog(true);
+                  setShowDataPreviewDialog(true);
                 }}
                 auto
               />
@@ -139,7 +148,7 @@ const PhenotypicScreenSequenceTable = ({ screenId }) => {
                 type="button"
                 icon={
                   <div className="flex pr-2">
-                    <SiMicrosoftexcel />
+                    <ImDownload />
                   </div>
                 }
                 label="Export"
@@ -362,15 +371,19 @@ const PhenotypicScreenSequenceTable = ({ screenId }) => {
             />
           </DataTable>
         </div>
+
+        {/* Data preview dialog, used when a excel file is uploaded */}
         <DataPreviewDialog
           headerMap={fieldToColumnName}
           existingData={selectedPhenotypicScreen.screenSequences}
           data={dataPreview}
-          visible={showDialog}
+          visible={showDataPreviewDialog}
           onHide={() => {
-            setShowDialog(false);
+            setShowDataPreviewDialog(false);
             setDataPreview(null);
           }}
+          onSave={batchInsertPhenotypicScreenSequence}
+          isSaving={isBatchInsertingPhenotypicScreenSequence}
         />
       </React.Fragment>
     );
