@@ -19,6 +19,7 @@ const PostPortfolioInformation = ({ id, project }) => {
 
   const navigate = useNavigate();
 
+  // BreadCrumb items
   const breadCrumbItems = [
     {
       label: "Post Portfolio",
@@ -40,10 +41,12 @@ const PostPortfolioInformation = ({ id, project }) => {
       {/* First div for general information and dates */}
 
       <div className="flex flex-column gap-2 w-full">
+        {/* BreadCrumb */}
         <div className="flex w-full pb-2">
           <BreadCrumb model={breadCrumbItems} />
         </div>
 
+        {/* Section Heading */}
         <div className="flex w-full">
           <SectionHeading
             icon="icon icon-common icon-drug"
@@ -58,11 +61,14 @@ const PostPortfolioInformation = ({ id, project }) => {
           />
         </div>
         <div className="flex w-full">
+          {/* Project Information */}
           <div className="flex">
             <Fieldset legend="Project Information">
               <PostPortfolioInformationGeneralInformation project={project} />
             </Fieldset>
           </div>
+
+          {/* Project Dates and Team */}
           <div className="flex-column w-full">
             <div className="flex w-full pb-2">
               <Fieldset className="w-full" legend="Project Dates">
@@ -76,12 +82,15 @@ const PostPortfolioInformation = ({ id, project }) => {
             </div>
           </div>
         </div>
+
+        {/* Participating Organizations */}
         <div className="flex w-full">
           <Fieldset legend="Participating Organizations">
             <PostPortfolioInformationOrgs project={project} />
           </Fieldset>
         </div>
 
+        {/* Compound Evolution */}
         <div className="flex w-full">
           <Fieldset legend="Compound Evolution">
             <CompoundEvolutionTimeline

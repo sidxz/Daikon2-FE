@@ -23,7 +23,7 @@ const PostPortfolioDash = () => {
     rootStore.projectStore;
 
   const { filterPostPortfolioProjects } = rootStore.postPortfolioStore;
-  /* Local State Management */
+  // Fetch projects only if the projectRegistry is empty
 
   useEffect(() => {
     if (projectRegistry.size === 0) {
@@ -31,7 +31,7 @@ const PostPortfolioDash = () => {
     }
   }, [fetchProjects, projectRegistry]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  /* local variables */
+  /* Local State Management */
 
   const dt = useRef(null);
 
@@ -39,12 +39,14 @@ const PostPortfolioDash = () => {
 
   const stages = ["IND", "P1"];
 
+  // Template for rendering stage items
   const stageItemTemplate = (option) => {
     return <StageTag stage={option} />;
   };
 
   let todaysDate = new Date().setHours(0, 0, 0, 0);
 
+  // Stage filter component
   const stageFilter = (options) => (
     <MultiSelect
       value={options.value}
@@ -59,6 +61,8 @@ const PostPortfolioDash = () => {
 
   /* STATUS FILTER */
   const statuses = ["Active", "Terminated"];
+
+  // Status filter component
   const statusFilter = (options) => (
     <SelectButton
       value={options.value}
@@ -300,6 +304,7 @@ const PostPortfolioDash = () => {
       </div>
     );
   }
+  // Render the loading state if projects are still being loaded
   return <Loading />;
 };
 
