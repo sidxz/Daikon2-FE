@@ -3,6 +3,12 @@ import { Sidebar } from "primereact/sidebar";
 import React, { useState } from "react";
 import PortfolioInformationProirityModify from "./PortfolioInformationProirityModify/PortfolioInformationProirityModify";
 
+/**
+ * Renders the component for displaying project priority information.
+ * @param {Object} project - The project object containing priority information.
+ * @returns {JSX.Element} The rendered component.
+ */
+
 const PortfolioInformationPriority = ({ project }) => {
   const [visible, setVisible] = useState(false);
 
@@ -13,6 +19,7 @@ const PortfolioInformationPriority = ({ project }) => {
           className="flex flex-column m-3 p-3"
           style={{ textAlign: "center", lineHeight: "0.5" }}
         >
+          {/* Display the priority */}
           Priority
           <h3>{project.teamPriority}</h3>
         </div>
@@ -20,6 +27,7 @@ const PortfolioInformationPriority = ({ project }) => {
           className="flex flex-column m-3 p-3"
           style={{ textAlign: "center", lineHeight: "0.5" }}
         >
+          {/* Display the probability */}
           Probability
           <h3>{project.teamProbability}</h3>
         </div>
@@ -27,6 +35,7 @@ const PortfolioInformationPriority = ({ project }) => {
           className="flex flex-column m-3 p-3"
           style={{ textAlign: "center", lineHeight: "0.5" }}
         >
+          {/* Button to open the sidebar */}
           <Button
             icon="pi pi-arrow-left"
             onClick={() => setVisible(true)}
@@ -35,6 +44,7 @@ const PortfolioInformationPriority = ({ project }) => {
         </div>
       </div>
 
+      {/* Sidebar for modifying the priority information */}
       <Sidebar
         visible={visible}
         position="right"

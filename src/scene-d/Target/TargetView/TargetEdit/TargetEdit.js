@@ -26,6 +26,7 @@ const TargetEdit = ({ id }) => {
   } = rootStore.targetStoreAdmin;
 
   useEffect(() => {
+    // Fetch target when the component mounts or when the selected target changes
     if (selectedTarget === null || selectedTarget.id !== id) {
       fetchTargetAdmin(id);
     }
@@ -154,6 +155,7 @@ const TargetEdit = ({ id }) => {
                           {errors.bucket && touched.bucket && errors.bucket}
                         </div>
 
+                        {/* Repeat the above pattern for other fields */}
                         <div className="field">
                           <label htmlFor="likeScore">Like Score</label>
                           <InputText

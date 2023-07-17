@@ -17,6 +17,7 @@ const PostPortfolioInformationProirityModify = ({ closeSidebar }) => {
     loadingProject,
   } = rootStore.projectStore;
 
+  // Initialize Formik
   const formik = useFormik({
     initialValues: {
       teamPriority: selectedProject.teamPriority,

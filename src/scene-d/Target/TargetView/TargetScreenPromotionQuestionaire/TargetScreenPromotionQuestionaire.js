@@ -9,8 +9,13 @@ import { classNames } from "primereact/utils";
 import React, { useContext, useState } from "react";
 import { RootStoreContext } from "../../../../app/stores/rootStore";
 
+/**
+ * Component for the target screen promotion questionnaire.
+ * @param {function} closeSidebar - Function to close the sidebar.
+ */
+
 const TargetScreenPromotionQuestionaire = ({ closeSidebar }) => {
-  /* MobX Store */
+  // Get the MobX Store instance from the context
   const rootStore = useContext(RootStoreContext);
   const {
     selectedTarget,
@@ -19,9 +24,10 @@ const TargetScreenPromotionQuestionaire = ({ closeSidebar }) => {
   } = rootStore.targetStore;
 
   const { appVars } = rootStore.generalStore;
-
+  // State to control whether to show the success message
   const [showMessage, setShowMessage] = useState(false);
 
+  // Initialize formik hook
   const formik = useFormik({
     initialValues: {
       org: "",
@@ -46,6 +52,7 @@ const TargetScreenPromotionQuestionaire = ({ closeSidebar }) => {
       data["targetID"] = selectedTarget.id;
       data["orgId"] = data.org.id;
 
+      // Promote target to screen and close the sidebar on success
       promoteTargetToScreen(data).then((res) => {
         if (res !== null) {
           closeSidebar();
@@ -57,8 +64,19 @@ const TargetScreenPromotionQuestionaire = ({ closeSidebar }) => {
     },
   });
 
+  /**
+   * Checks if a form field is valid.
+   * @param {string} library - The form field library.
+   * @returns {boolean} - True if the form field is valid, false otherwise.
+   */
   const isFormFieldValid = (library) =>
     !!(formik.touched[library] && formik.errors[library]);
+
+  /**
+   * Retrieves the error message for a form field.
+   * @param {string} library - The form field library.
+   * @returns {JSX.Element} - The error message element.
+   */
   const getFormErrorMessage = (library) => {
     return (
       isFormFieldValid(library) && (

@@ -28,19 +28,20 @@ const PostPortfolioView = () => {
   const [displayEOLDialog, setDisplayEOLDialog] = useState(false);
   const toast = useRef(null);
 
-  /* MobX Store */
+  // MobX Store
   const rootStore = useContext(RootStoreContext);
   const { user } = rootStore.userStore;
   const { loadingProject, fetchProject, selectedProject } =
     rootStore.projectStore;
 
   useEffect(() => {
+    // Fetch project if it is not already loaded or the selected project has changed
     if (selectedProject === null || selectedProject.id !== params.id) {
       fetchProject(params.id);
     }
   }, [params.id, selectedProject, fetchProject]);
 
-  /** Loading Overlay */
+  // Loading Overlay
   if (loadingProject) {
     return <Loading />;
   }
@@ -50,6 +51,7 @@ const PostPortfolioView = () => {
     selectedProject !== null &&
     selectedProject.id === params.id
   ) {
+    // Sidebar menu items
     const sideMenuItems = [
       {
         label: "Sections",
@@ -78,7 +80,7 @@ const PostPortfolioView = () => {
         ],
       },
     ];
-
+    // Actions for admin and project manager
     var actions = {
       label: "Actions",
       items: [],

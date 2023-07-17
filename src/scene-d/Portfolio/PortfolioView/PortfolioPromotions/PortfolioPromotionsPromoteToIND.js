@@ -9,17 +9,20 @@ import React, { useContext } from "react";
 import { RootStoreContext } from "../../../../app/stores/rootStore";
 
 const PortfolioPromotionsPromoteToIND = ({ closeSidebar }) => {
-  /* MobX Store */
+  // Access MobX Store
   const rootStore = useContext(RootStoreContext);
   const { loadingProject, selectedProject } = rootStore.projectStore;
 
   const { creatingIND, createIND } = rootStore.postPortfolioStore;
+
+  // Initialize formik
 
   const formik = useFormik({
     initialValues: {
       iNDStart: "",
       iNDDescription: "",
     },
+    // Validate form fields
     validate: (data) => {
       let errors = {};
 
@@ -29,6 +32,7 @@ const PortfolioPromotionsPromoteToIND = ({ closeSidebar }) => {
 
       return errors;
     },
+    // Handle form submission
     onSubmit: (data) => {
       data["id"] = selectedProject.id;
 
@@ -43,8 +47,11 @@ const PortfolioPromotionsPromoteToIND = ({ closeSidebar }) => {
     },
   });
 
+  // Check if form field is valid
   const isFormFieldValid = (field) =>
     !!(formik.touched[field] && formik.errors[field]);
+
+  // Get form field error message
   const getFormErrorMessage = (field) => {
     return (
       isFormFieldValid(field) && (

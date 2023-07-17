@@ -9,6 +9,7 @@ import { appColors } from "../../../../colors";
 const PostPortfolioDiscussion = ({ project }) => {
   const navigate = useNavigate();
 
+  // Array of breadcrumb items
   const breadCrumbItems = [
     {
       label: "Post Portfolio",
@@ -27,10 +28,12 @@ const PostPortfolioDiscussion = ({ project }) => {
 
   return (
     <div className="flex flex-column w-full">
+      {/* Breadcrumb */}
       <div className="flex w-full pb-2">
         <BreadCrumb model={breadCrumbItems} />
       </div>
       <div className="flex w-full">
+        {/* Section heading */}
         <SectionHeading
           icon="icon icon-common icon-drug"
           heading={project.projectName + " | " + project?.currentStage}
@@ -44,6 +47,7 @@ const PostPortfolioDiscussion = ({ project }) => {
         />
       </div>
       <div className="flex w-full">
+        {/* Discussion component */}
         <Discussion
           reference={project.targetName || project.projectName}
           section={project?.currentStage || "Post-Portfolio"}

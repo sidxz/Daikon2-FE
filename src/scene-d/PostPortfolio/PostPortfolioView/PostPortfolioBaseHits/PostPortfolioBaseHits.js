@@ -11,7 +11,7 @@ const PostPortfolioBaseHits = ({ project }) => {
   const dt = useRef(null);
 
   const navigate = useNavigate();
-
+  // Array of breadcrumb items
   const breadCrumbItems = [
     {
       label: "Post Portfolio",
@@ -28,6 +28,7 @@ const PostPortfolioBaseHits = ({ project }) => {
     { label: "Base Hits" },
   ];
 
+  // Prepare table data from project.baseHits
   let tableData = [];
 
   if (project?.baseHits.length !== 0) {
@@ -43,7 +44,7 @@ const PostPortfolioBaseHits = ({ project }) => {
       });
     });
   }
-
+  // Custom body template for structure column
   const StructureBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
@@ -54,6 +55,7 @@ const PostPortfolioBaseHits = ({ project }) => {
     );
   };
 
+  // Custom body template for compound ID column
   const CompoundIdBodyTemplate = (rowData) => {
     return <React.Fragment>{rowData?.externalCompoundIds}</React.Fragment>;
   };

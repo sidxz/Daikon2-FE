@@ -22,6 +22,10 @@ import TargetPromotionFormEdit from "./TargetPromotionForm/TargetPromotionFormEd
 import TargetScorecard from "./TargetScorecard/TargetScorecard";
 import TargetScreenPromotionQuestionaire from "./TargetScreenPromotionQuestionaire/TargetScreenPromotionQuestionaire";
 
+/**
+ * Component for viewing the target details.
+ */
+
 const TargetView = () => {
   const params = useParams();
   const navigate = useNavigate();
@@ -34,6 +38,7 @@ const TargetView = () => {
   const { user } = rootStore.userStore;
 
   useEffect(() => {
+    // Fetch target details when the component mounts or when the target ID changes
     if (target === null || target.id !== params.id) {
       fetchTarget(params.id);
     }
