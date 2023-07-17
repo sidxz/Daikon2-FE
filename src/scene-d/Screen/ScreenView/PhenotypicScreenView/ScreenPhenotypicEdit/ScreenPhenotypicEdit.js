@@ -63,6 +63,12 @@ const ScreenPhenotypicEdit = ({ screenId }) => {
     },
     {
       label: selectedPhenotypicScreen.screenName,
+      command: () => {
+        navigate("/d/screen/phenotypic/" + selectedPhenotypicScreen.id);
+      },
+    },
+    {
+      label: "Edit",
     },
   ];
 
@@ -74,7 +80,9 @@ const ScreenPhenotypicEdit = ({ screenId }) => {
       <div className="flex w-full">
         <SectionHeading
           icon="icon icon-common icon-search"
-          heading={"Screens " + selectedPhenotypicScreen.screenName}
+          heading={
+            "Screens " + selectedPhenotypicScreen.screenName + " [ Edit ]"
+          }
           entryPoint={selectedPhenotypicScreen.screenName}
           displayHorizon={true}
           color={appColors.sectionHeadingBg.screen}

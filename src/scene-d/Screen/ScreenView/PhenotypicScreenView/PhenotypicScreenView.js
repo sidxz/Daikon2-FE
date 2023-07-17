@@ -13,6 +13,7 @@ import { RootStoreContext } from "../../../../app/stores/rootStore";
 import PhenotypicDisclosedHit from "./PhenotypicDisclosedHit/PhenotypicDisclosedHit";
 import PhenotypicScreenSequence from "./PhenotypicScreenSequence/PhenotypicScreenSequence";
 import ScreenPhenotypicEdit from "./ScreenPhenotypicEdit/ScreenPhenotypicEdit";
+import ScreenPhenotypicMerge from "./ScreenPhenotypicMerge/ScreenPhenotypicMerge";
 
 /**
  * PhenotypicScreenView component displays the view of a phenotypic screen.
@@ -72,7 +73,9 @@ const PhenotypicScreenView = () => {
         {
           label: "Merge Screens",
           icon: "icon icon-common icon-compress",
-          command: () => {},
+          command: () => {
+            navigate("merge/");
+          },
         },
       ],
     };
@@ -102,6 +105,10 @@ const PhenotypicScreenView = () => {
             <Route
               path="edit/"
               element={<ScreenPhenotypicEdit screenId={params.id} />}
+            />
+            <Route
+              path="merge/"
+              element={<ScreenPhenotypicMerge screenId={params.id} />}
             />
             {/* 
             <Route

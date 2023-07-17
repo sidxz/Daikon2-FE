@@ -18,7 +18,7 @@
  * @property {boolean} isEditingPhenotypicScreenSequence - Observable, controls the state of editing a screen sequence.
  * @property {boolean} isUpdatingPhenotypicScreen - Observable, controls the state of updating screen status.
  * @property {boolean} isBatchInsertingPhenotypicScreenSequence - Observable, controls the state of batch inserting screen sequences.
- *
+ * @property {boolean} isMergingPhenotypicScreen - Observable, controls the state of merging screens.
  */
 
 import {
@@ -51,6 +51,7 @@ export default class ScreenPStore {
   isUpdatingPhenotypicScreenStatus = false;
   isBatchInsertingPhenotypicScreenSequence = false;
   isUpdatingPhenotypicScreen = false;
+  isMergingPhenotypicScreen = false;
 
   constructor(rootStore) {
     this.rootStore = rootStore;
@@ -76,6 +77,8 @@ export default class ScreenPStore {
       batchInsertPhenotypicScreenSequence: action,
       updatePhenotypicScreen: action,
       isUpdatingPhenotypicScreen: observable,
+      isMergingPhenotypicScreen: observable,
+      mergePhenotypicScreen: action,
     });
   }
 
@@ -196,6 +199,31 @@ export default class ScreenPStore {
   };
 
   /**
+   * Merge a phenotypic screen with another phenotypic screen. | UPDATE |
+   * @param {object} mergeDTO - The edited screen details to update.
+   * @returns {object} The response from the API.
+   */
+  mergePhenotypicScreen = async (mergeDTO) => {
+    this.isMergingPhenotypicScreen = true;
+    let res = null;
+    try {
+      res = await agent.Screen.mergePhenotypic(mergeDTO);
+      runInAction(() => {
+        toast.success("Screen has been merged successfully");
+        this.isPhenCacheValid = false;
+        this.selectedPhenotypicScreen = null;
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      runInAction(() => {
+        this.isMergingPhenotypicScreen = false;
+      });
+    }
+    return res;
+  };
+
+  /**
    * Adds a new phenotypic screen and updates the state accordingly. | CREATE |
    * @param {object} newScreen - The new screen details to add.
    * @returns {object} The response from the API.
@@ -219,8 +247,6 @@ export default class ScreenPStore {
     }
     return res;
   };
-
-  // TODO: Update
 
   // TODO : Delete
 
