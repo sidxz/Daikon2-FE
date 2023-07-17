@@ -16,6 +16,9 @@
  * @property {boolean} isLoadingPhenotypicScreen - Observable, controls the loading state of fetching a specific screen.
  * @property {boolean} isLoadingPhenotypicScreenSequence - Observable, controls the loading state of adding a new screen sequence.
  * @property {boolean} isEditingPhenotypicScreenSequence - Observable, controls the state of editing a screen sequence.
+ * @property {boolean} isUpdatingPhenotypicScreen - Observable, controls the state of updating screen status.
+ * @property {boolean} isBatchInsertingPhenotypicScreenSequence - Observable, controls the state of batch inserting screen sequences.
+ *
  */
 
 import {
@@ -47,6 +50,7 @@ export default class ScreenPStore {
   isEditingPhenotypicScreenSequence = false;
   isUpdatingPhenotypicScreenStatus = false;
   isBatchInsertingPhenotypicScreenSequence = false;
+  isUpdatingPhenotypicScreen = false;
 
   constructor(rootStore) {
     this.rootStore = rootStore;
@@ -70,6 +74,8 @@ export default class ScreenPStore {
       isUpdatingPhenotypicScreenStatus: observable,
       isBatchInsertingPhenotypicScreenSequence: observable,
       batchInsertPhenotypicScreenSequence: action,
+      updatePhenotypicScreen: action,
+      isUpdatingPhenotypicScreen: observable,
     });
   }
 
@@ -122,7 +128,12 @@ export default class ScreenPStore {
     if (shouldSetLoadingState) {
       this.isLoadingPhenotypicScreen = true;
     }
-    // Checking cache first
+
+    // check if cache is valid
+    if (!this.isPhenCacheValid) {
+      invalidateCache = true;
+    }
+    // Checking cache first if it is valid
     let fetchedScreen = this.phenotypicScreenExpandedRegistry.get(id);
     if (!invalidateCache && fetchedScreen) {
       this.selectedPhenotypicScreen = fetchedScreen;
@@ -148,6 +159,40 @@ export default class ScreenPStore {
         }
       }
     }
+  };
+
+  /**
+   * Update a phenotypic screen and updates the state accordingly. | UPDATE |
+   * @param {object} editedScreen - The edited screen details to update.
+   * @returns {object} The response from the API.
+   */
+  updatePhenotypicScreen = async (
+    editedScreen,
+    shouldSetLoadingState = true
+  ) => {
+    this.isUpdatingPhenotypicScreen = true;
+    let res = null;
+    try {
+      res = await agent.Screen.editPhenotypic(editedScreen.id, editedScreen);
+      runInAction(() => {
+        if (shouldSetLoadingState) {
+          toast.success("Screen has been updated successfully");
+        }
+        this.isPhenCacheValid = false;
+        this.selectedPhenotypicScreen = null;
+        console.log(
+          "ScreenPStore.js: this.selectedPhenotypicScreen ",
+          this.selectedPhenotypicScreen
+        );
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      runInAction(() => {
+        this.isUpdatingPhenotypicScreen = false;
+      });
+    }
+    return res;
   };
 
   /**

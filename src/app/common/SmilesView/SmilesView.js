@@ -63,7 +63,7 @@ const SmilesView = ({ smiles, compoundId, width = 200, height = 200 }) => {
   }
 
   return (
-    <div className="flex min-w-max">
+    <div className="flex min-w-max justify-content-center align-items-center">
       <ContextMenu model={contextMenuItems} ref={cm} />
       <svg
         id={canId}

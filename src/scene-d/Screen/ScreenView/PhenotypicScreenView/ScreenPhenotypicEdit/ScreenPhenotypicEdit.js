@@ -17,26 +17,42 @@ const ScreenPhenotypicEdit = ({ screenId }) => {
   const rootStore = useContext(RootStoreContext);
   const { appVars } = rootStore.generalStore;
   const { fetchOrgs, Orgs } = rootStore.adminStore;
-  const { loadingFetchScreen, fetchScreen, selectedScreen } =
-    rootStore.screenTStore;
+  const {
+    isLoadingPhenotypicScreen,
+    fetchPhenotypicScreen,
+    selectedPhenotypicScreen,
+    updatePhenotypicScreen,
+    isUpdatingPhenotypicScreen,
+  } = rootStore.screenPStore;
 
   const navigate = useNavigate();
 
+  // Fetch the phenotypic screen data on component mount or when screenId changes
   useEffect(() => {
-    console.log("PhenotypicScreenSequence.js: useEffect screenId: ", screenId);
-    if (selectedScreen === null || selectedScreen.id !== screenId) {
-      fetchScreen(screenId);
+    if (
+      selectedPhenotypicScreen === null ||
+      selectedPhenotypicScreen.id !== screenId
+    ) {
+      fetchPhenotypicScreen(screenId);
     }
-    if (Orgs.length === 0) {
-      fetchOrgs();
-    }
-  }, [selectedScreen, fetchScreen, screenId, fetchOrgs, Orgs]);
+    if (Orgs.length === 0) fetchOrgs();
+  }, [
+    selectedPhenotypicScreen,
+    fetchPhenotypicScreen,
+    screenId,
+    Orgs,
+    fetchOrgs,
+  ]);
 
-  if (loadingFetchScreen || selectedScreen === null) {
+  // Display a loading message while data is being fetched
+  if (isLoadingPhenotypicScreen || selectedPhenotypicScreen === null) {
     return <PleaseWait />;
   }
 
-  console.log("ScreenPhenotypicEdit.js: selectedScreen: ", selectedScreen);
+  console.log(
+    "ScreenPhenotypicEdit.js: selectedPhenotypicScreen: ",
+    selectedPhenotypicScreen
+  );
 
   const breadCrumbItems = [
     {
@@ -46,10 +62,7 @@ const ScreenPhenotypicEdit = ({ screenId }) => {
       },
     },
     {
-      label: selectedScreen.screenName,
-      command: () => {
-        // navigate(`/d/gene/${gene.id}`);
-      },
+      label: selectedPhenotypicScreen.screenName,
     },
   ];
 
@@ -61,8 +74,8 @@ const ScreenPhenotypicEdit = ({ screenId }) => {
       <div className="flex w-full">
         <SectionHeading
           icon="icon icon-common icon-search"
-          heading={"Screens " + selectedScreen.screenName}
-          entryPoint={selectedScreen.screenName}
+          heading={"Screens " + selectedPhenotypicScreen.screenName}
+          entryPoint={selectedPhenotypicScreen.screenName}
           displayHorizon={true}
           color={appColors.sectionHeadingBg.screen}
         />
@@ -71,10 +84,10 @@ const ScreenPhenotypicEdit = ({ screenId }) => {
       <div className="flex w-full m-2 p-2">
         <Formik
           initialValues={{
-            screenName: selectedScreen.screenName,
-            method: selectedScreen.method,
-            org: selectedScreen.org,
-            promotionDate: new Date(selectedScreen.promotionDate),
+            screenName: selectedPhenotypicScreen.screenName,
+            method: selectedPhenotypicScreen.method,
+            org: selectedPhenotypicScreen.org,
+            promotionDate: new Date(selectedPhenotypicScreen.promotionDate),
           }}
           validate={(values) => {
             const errors = {};
@@ -92,8 +105,14 @@ const ScreenPhenotypicEdit = ({ screenId }) => {
             }
             return errors;
           }}
-          onSubmit={(values) => {
-            console.log("ScreenPhenotypicEdit.js: onSubmit: values: ", values);
+          onSubmit={(updatedScreen) => {
+            updatedScreen.id = selectedPhenotypicScreen.id;
+            updatedScreen.orgId = updatedScreen.org.id;
+            console.log(
+              "ScreenPhenotypicEdit.js: onSubmit: values: ",
+              updatedScreen
+            );
+            updatePhenotypicScreen(updatedScreen);
           }}
         >
           {({
@@ -188,7 +207,8 @@ const ScreenPhenotypicEdit = ({ screenId }) => {
                       label="Save"
                       className="p-button-success"
                       type="submit"
-                      // onClick={() => handleSubmit()}
+                      onClick={() => handleSubmit()}
+                      loading={isUpdatingPhenotypicScreen}
                     />
                   </div>
                 </div>

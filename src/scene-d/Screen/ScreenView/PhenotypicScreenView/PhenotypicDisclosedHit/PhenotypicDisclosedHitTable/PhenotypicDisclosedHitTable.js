@@ -11,55 +11,59 @@ import SmilesViewWithDetails from "../../../../../../app/common/SmilesViewWithDe
 import Vote from "../../../../../../app/common/Vote/Vote";
 import Loading from "../../../../../../app/layout/Loading/Loading";
 import { RootStoreContext } from "../../../../../../app/stores/rootStore";
-import "../PhenotypicValidatedHitsList/PhenotypicValidatedHitsDataTable.css";
-import PhenotypicValidatedHitsImporter from "../PhenotypicValidatedHitsList/PhenotypicValidatedHitsImporter/PhenotypicValidatedHitsImporter";
-import PhenotypicValidatedHitsPromoteToHAEntry from "../PhenotypicValidatedHitsList/PhenotypicValidatedHitsPromoteToHAEntry/PhenotypicValidatedHitsPromoteToHAEntry";
-const PhenotypicValidatedHitTable = ({ screenId }) => {
+import PhenotypicValidatedHitsImporter from "./PhenotypicValidatedHitsImporter/PhenotypicValidatedHitsImporter";
+import PhenotypicValidatedHitsPromoteToHAEntry from "./PhenotypicValidatedHitsPromoteToHAEntry/PhenotypicValidatedHitsPromoteToHAEntry";
+
+const PhenotypicDisclosedHitTable = ({ screenId }) => {
+  // Data Table Ref
   const dt = useRef(null);
-  const tableMenu = useRef(null);
+
   /* MobX Store */
   const rootStore = useContext(RootStoreContext);
-  const { loadingFetchScreen, fetchScreen, selectedScreen, fetchScreenSilent } =
-    rootStore.screenTStore;
+  const {
+    isLoadingPhenotypicScreen,
+    fetchPhenotypicScreen,
+    selectedPhenotypicScreen,
+    fetchScreenSilent,
+  } = rootStore.screenPStore;
   const { user } = rootStore.userStore;
   const { enableVoting, freezeVoting } = rootStore.votingStore;
 
+  /* Local state management */
+
   const [displayHitsImportSidebar, setDisplayHitsImportSidebar] =
     useState(false);
-
-  const [selectionEnabled, setSelectionEnabled] = useState(false);
-  const [revealVoteEnabled, setRevealVoteEnabled] = useState(false);
+  // state variable to allow row selection in the table
+  const [allowRowSelection, setAllowRowSelection] = useState(false);
+  // state variable to reveal votes
+  const [isVoteRevealed, setIsVoteRevealed] = useState(false);
+  // state variable to store selected compounds
   const [selectedCompounds, setSelectedCompounds] = useState(null);
-  const [displayPromoteToHAEntry, setDisplayPromoteToHAEntry] = useState(false);
-  const [enableOneCLickVoting, setEnableOneCLickVoting] = useState(false);
+  // state variable to show the promote to HA dialog
+  const [isPromoteToHAEntryVisible, setIsPromoteToHAEntryVisible] =
+    useState(false);
+  // state variable to enable one click voting
+  const [isOneClickVotingEnabled, setIsOneClickVotingEnabled] = useState(false);
 
-  let tableMenuItems = [];
+  /* Fetch the phenotypic screen data on component mount or when screenId changes */
 
   useEffect(() => {
-    fetchScreen(screenId);
-  }, [fetchScreen, screenId]);
+    fetchPhenotypicScreen(screenId);
+  }, [fetchPhenotypicScreen, screenId]);
 
-  if (loadingFetchScreen || selectedScreen === null) {
+  if (isLoadingPhenotypicScreen || selectedPhenotypicScreen === null) {
     return <Loading />;
   }
 
-  if (!loadingFetchScreen && selectedScreen) {
+  if (!isLoadingPhenotypicScreen && selectedPhenotypicScreen) {
   }
+
+  let tableMenuItems = [];
 
   /* Local functions */
 
   const exportCSV = (selectionOnly) => {
     dt.current.exportCSV({ selectionOnly });
-  };
-
-  let validatePromoteToHA = () => {
-    if (selectedCompounds === null) {
-      toast.warning(
-        "No rows selected. Please select some rows to promote them."
-      );
-      return;
-    }
-    setDisplayPromoteToHAEntry(true);
   };
 
   let enableVotingCalled = () => {
@@ -69,12 +73,10 @@ const PhenotypicValidatedHitTable = ({ screenId }) => {
       );
       return;
     }
-    // create guids
     var voteIds = selectedCompounds.map(
       (selectedCompound) => selectedCompound.voteId
     );
-
-    enableVoting(voteIds).then(() => setSelectionEnabled(false));
+    enableVoting(voteIds).then(() => setAllowRowSelection(false));
   };
 
   let validateFreezeVoting = () => {
@@ -89,26 +91,12 @@ const PhenotypicValidatedHitTable = ({ screenId }) => {
       (selectedCompound) => selectedCompound.voteId
     );
 
-    freezeVoting(voteIds).then(() => setSelectionEnabled(false));
+    freezeVoting(voteIds).then(() => setAllowRowSelection(false));
   };
 
   /* End Local functions */
 
   /* Table Body Templates */
-
-  // const SourceBodyTemplate = (rowData) => {
-  //   return <React.Fragment>{rowData.source}</React.Fragment>;
-  // };
-
-  const LibraryBodyTemplate = (rowData) => {
-    return (
-      <React.Fragment>
-        {rowData.library}
-        <br />
-        {rowData.source}
-      </React.Fragment>
-    );
-  };
 
   const CompoundIdBodyTemplate = (rowData) => {
     return (
@@ -130,39 +118,21 @@ const PhenotypicValidatedHitTable = ({ screenId }) => {
     );
   };
 
-  const EnzymeActivityBodyTemplate = (rowData) => {
-    return <React.Fragment>{rowData.iC50}</React.Fragment>;
-  };
-
-  // const MethodBodyTemplate = (rowData) => {
-  //   return <React.Fragment>{rowData.method}</React.Fragment>;
-  // };
-
-  const MICBodyTemplate = (rowData) => {
-    return <React.Fragment>{rowData.mic}</React.Fragment>;
-  };
-
-  const ClusterBodyTemplate = (rowData) => {
-    return <React.Fragment>{rowData.clusterGroup}</React.Fragment>;
-  };
-
   const VoteBodyTemplate = (rowData) => {
     return (
       <div style={{ padding: "10px" }}>
         <Vote
           id={rowData.vote.id}
           voteData={rowData.vote}
-          callBack={() => fetchScreenSilent(screenId, true)}
-          revealVote={revealVoteEnabled}
-          discussionReference={selectedScreen.screenName}
+          callBack={() => fetchPhenotypicScreen(screenId, true, false)}
+          revealVote={isVoteRevealed}
+          discussionReference={selectedPhenotypicScreen.screenName}
           discussionTags={[rowData.compound.externalCompoundIds]}
-          enableOneCLickVoting={enableOneCLickVoting}
+          isOneClickVotingEnabled={isOneClickVotingEnabled}
         />
       </div>
     );
   };
-
-  var tableHeaderMenuitems = [...tableMenuItems];
 
   const tableHeader = (
     <div className="flex w-full">
@@ -174,11 +144,14 @@ const PhenotypicValidatedHitTable = ({ screenId }) => {
       </div>
       <div className="flex ml-auto gap-2">
         <div className="flex">
-          <Chip label={selectedScreen?.org.name} icon="ri-organization-chart" />
+          <Chip
+            label={selectedPhenotypicScreen?.org.name}
+            icon="ri-organization-chart"
+          />
         </div>
         <div className="flex">
           <Chip
-            label={selectedScreen?.method}
+            label={selectedPhenotypicScreen?.method}
             icon="icon icon-common icon-circle-notch"
           />
         </div>
@@ -190,18 +163,18 @@ const PhenotypicValidatedHitTable = ({ screenId }) => {
 
   /* Construct table menu items */
 
-  if (selectedScreen.validatedHits.length !== 0) {
+  if (selectedPhenotypicScreen.validatedHits.length !== 0) {
     let selectItem = {
-      label: selectionEnabled ? "Cancel Selection" : "Select Rows",
-      icon: selectionEnabled ? "pi pi-times-circle" : "pi pi-check-square",
+      label: allowRowSelection ? "Cancel Selection" : "Select Rows",
+      icon: allowRowSelection ? "pi pi-times-circle" : "pi pi-check-square",
       command: () => {
-        setSelectionEnabled(!selectionEnabled);
+        setAllowRowSelection(!allowRowSelection);
       },
     };
     tableMenuItems.push(selectItem);
   }
 
-  if (!loadingFetchScreen && selectedScreen) {
+  if (!isLoadingPhenotypicScreen && selectedPhenotypicScreen) {
     let itm = {
       label: "Hits Management",
       items: [
@@ -219,34 +192,31 @@ const PhenotypicValidatedHitTable = ({ screenId }) => {
     };
     tableMenuItems.push(itm);
 
-    // Admin section
-
-    if (selectedScreen.validatedHits.length !== 0) {
+    if (selectedPhenotypicScreen.validatedHits.length !== 0) {
       let votingItem = {
         label: "Votes Management",
         items: [],
       };
-
       votingItem.items.push({
-        label: enableOneCLickVoting
+        label: isOneClickVotingEnabled
           ? "Disable One Click Voting"
           : "Enable One Click Voting",
-        icon: enableOneCLickVoting
+        icon: isOneClickVotingEnabled
           ? "pi pi-times"
           : "icon icon-common icon-hand-pointer",
         command: () => {
-          if (!enableOneCLickVoting) {
+          if (!isOneClickVotingEnabled) {
             toast.warning(
               "One-click voting is currently enabled, which means that there won't be any confirmation dialog when you vote. Please exercise caution when using this feature.",
               { autoClose: false }
             );
-            setEnableOneCLickVoting(true);
+            setIsOneClickVotingEnabled(true);
           }
-          if (enableOneCLickVoting) {
+          if (isOneClickVotingEnabled) {
             toast.info(
               "One click voting is disabled. You will be prompted to confirm your vote."
             );
-            setEnableOneCLickVoting(false);
+            setIsOneClickVotingEnabled(false);
           }
         },
       });
@@ -269,25 +239,32 @@ const PhenotypicValidatedHitTable = ({ screenId }) => {
       tableMenuItems.push(votingItem);
     }
 
-    if (selectedScreen.validatedHits.length !== 0) {
+    if (selectedPhenotypicScreen.validatedHits.length !== 0) {
       let showVotesItem = {
-        label: revealVoteEnabled ? "Hide Votes" : "Reveal Votes",
-        icon: revealVoteEnabled ? "pi pi-eye-slash" : "pi pi-eye",
+        label: isVoteRevealed ? "Hide Votes" : "Reveal Votes",
+        icon: isVoteRevealed ? "pi pi-eye-slash" : "pi pi-eye",
         command: () => {
-          setRevealVoteEnabled(!revealVoteEnabled);
-          console.log(revealVoteEnabled);
+          setIsVoteRevealed(!isVoteRevealed);
+          console.log(isVoteRevealed);
         },
       };
       tableMenuItems.push(showVotesItem);
     }
 
-    if (selectedScreen.validatedHits.length !== 0) {
+    if (selectedPhenotypicScreen.validatedHits.length !== 0) {
       let promotionItem = {
         label: "Promote To HA",
         icon: "pi pi-arrow-right",
-        command: () => validatePromoteToHA(),
+        command: () => {
+          if (!selectedCompounds) {
+            toast.warning(
+              "No rows selected. Please select some rows to promote them."
+            );
+            return;
+          }
+          setIsPromoteToHAEntryVisible(true);
+        },
       };
-
       tableMenuItems.push(promotionItem);
     }
   }
@@ -299,25 +276,24 @@ const PhenotypicValidatedHitTable = ({ screenId }) => {
         <div className="card">
           <DataTable
             ref={dt}
-            value={selectedScreen.validatedHits}
+            value={selectedPhenotypicScreen.validatedHits}
             // paginator
             scrollable
             // rows={50}
             header={tableHeader}
-            //className="p-datatable-screen-table"
             //globalFilter={globalFilter}
             emptyMessage="No hits found."
             resizableColumns
             columnResizeMode="fit"
-            size="large"
+            size="small"
             showGridlines
             responsiveLayout="scroll"
             selection={selectedCompounds}
             onSelectionChange={(e) => setSelectedCompounds(e.value)}
             dataKey="id"
-            exportFilename={`Hits-${selectedScreen.screenName}-${selectedScreen.method}.csv`}
+            exportFilename={`Hits-${selectedPhenotypicScreen.screenName}-${selectedPhenotypicScreen.method}.csv`}
           >
-            {selectionEnabled && (
+            {allowRowSelection && (
               <Column
                 selectionMode="multiple"
                 headerStyle={{ width: "3em" }}
@@ -333,38 +309,34 @@ const PhenotypicValidatedHitTable = ({ screenId }) => {
               field={(rowData) => rowData?.compound?.smile}
               header="Structure"
               body={StructureBodyTemplate}
-              style={{ minWidth: "300px" }}
+              style={{ minWidth: "150px" }}
             />
             <Column
-              field={(rowData) => rowData?.library + "|" + rowData.source}
-              header="Library|Source"
-              body={LibraryBodyTemplate}
+              field={(rowData) => rowData?.library}
+              header="Library"
+              style={{ minWidth: "130px" }}
+            />
+            <Column
+              field={(rowData) => rowData?.source}
+              header="Source"
               style={{ minWidth: "130px" }}
             />
             <Column
               field={(rowData) => rowData?.compound?.externalCompoundIds}
               header="Compound Id"
-              body={CompoundIdBodyTemplate}
               style={{ minWidth: "150px" }}
             />
 
             <Column
               field="iC50"
               header="IC50 (&micro;M) "
-              body={EnzymeActivityBodyTemplate}
               style={{ width: "50px" }}
               sortable
             />
-            {/* <Column
-              field="Method"
-              header="Method"
-              body={MethodBodyTemplate}
-              style={{ width: "120px" }}
-            /> */}
+
             <Column
               field="mic"
               header="MIC (&micro;M)"
-              body={MICBodyTemplate}
               style={{ width: "50px" }}
             />
 
@@ -395,24 +367,24 @@ const PhenotypicValidatedHitTable = ({ screenId }) => {
           />
           <br />
           <PhenotypicValidatedHitsImporter
-            screenId={selectedScreen.id}
-            existingHits={selectedScreen.validatedHits}
+            screenId={selectedPhenotypicScreen.id}
+            existingHits={selectedPhenotypicScreen.validatedHits}
           />
         </div>
       </Dialog>
       <Dialog
         header="Promote to Hit Assessment"
-        visible={displayPromoteToHAEntry}
+        visible={isPromoteToHAEntryVisible}
         //style={{ width: "50vw" }}
         //footer={renderFooter("displayBasic2")}
-        onHide={() => setDisplayPromoteToHAEntry(false)}
+        onHide={() => setIsPromoteToHAEntryVisible(false)}
         style={{ width: "90%" }}
         maximizable={true}
       >
         <PhenotypicValidatedHitsPromoteToHAEntry
           compounds={selectedCompounds}
-          screen={selectedScreen}
-          close={() => setDisplayPromoteToHAEntry(false)}
+          screen={selectedPhenotypicScreen}
+          close={() => setIsPromoteToHAEntryVisible(false)}
         />
       </Dialog>
       <ConfirmDialog />
@@ -420,4 +392,4 @@ const PhenotypicValidatedHitTable = ({ screenId }) => {
   );
 };
 
-export default PhenotypicValidatedHitTable;
+export default PhenotypicDisclosedHitTable;

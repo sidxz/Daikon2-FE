@@ -10,11 +10,13 @@ import PhenotypicScreenSequenceTable from "./PhenotypicScreenSequenceTable/Pheno
 
 /**
  * PhenotypicScreenSequence component displays the screen sequence of a phenotypic screen.
- * The actual table is rendered by a sub component PhenotypicScreenSequenceTable component.
+ * The actual table is rendered by the PhenotypicScreenSequenceTable component.
+ * related to a phenotypic screen.
  * @param {Object} props - The properties passed to the component.
  * @param {string} props.screenId - The id of the phenotypic screen.
  */
 const PhenotypicScreenSequence = ({ screenId }) => {
+  // Accessing the necessary properties from the rootStore
   const rootStore = useContext(RootStoreContext);
   const {
     isLoadingPhenotypicScreen,
@@ -29,8 +31,13 @@ const PhenotypicScreenSequence = ({ screenId }) => {
     if (
       selectedPhenotypicScreen === null ||
       selectedPhenotypicScreen.id !== screenId
-    )
+    ) {
+      console.log(
+        "PhenotypicScreenSequence.js: fetchPhenotypicScreen: ",
+        screenId
+      );
       fetchPhenotypicScreen(screenId);
+    }
   }, [selectedPhenotypicScreen, fetchPhenotypicScreen, screenId]);
 
   // Display a loading message while data is being fetched

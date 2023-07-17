@@ -10,8 +10,8 @@ import {
   useParams,
 } from "react-router-dom";
 import { RootStoreContext } from "../../../../app/stores/rootStore";
+import PhenotypicDisclosedHit from "./PhenotypicDisclosedHit/PhenotypicDisclosedHit";
 import PhenotypicScreenSequence from "./PhenotypicScreenSequence/PhenotypicScreenSequence";
-import PhenotypicValidatedHit from "./PhenotypicValidatedHit/PhenotypicValidatedHit";
 import ScreenPhenotypicEdit from "./ScreenPhenotypicEdit/ScreenPhenotypicEdit";
 
 /**
@@ -97,7 +97,7 @@ const PhenotypicScreenView = () => {
             />
             <Route
               path="disclosed-hit/"
-              element={<PhenotypicValidatedHit screenId={params.id} />}
+              element={<PhenotypicDisclosedHit screenId={params.id} />}
             />
             <Route
               path="edit/"

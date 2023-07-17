@@ -6,27 +6,30 @@ import PleaseWait from "../../../../../app/common/PleaseWait/PleaseWait";
 import SectionHeading from "../../../../../app/common/SectionHeading/SectionHeading";
 import { RootStoreContext } from "../../../../../app/stores/rootStore";
 import { appColors } from "../../../../../colors";
-import PhenotypicValidatedHitTable from "./PhenotypicValidatedHitTable/PhenotypicValidatedHitTable";
+import PhenotypicValidatedHitTable from "./PhenotypicDisclosedHitTable/PhenotypicDisclosedHitTable";
 
-const PhenotypicValidatedHit = ({ screenId }) => {
+const PhenotypicDisclosedHit = ({ screenId }) => {
   /* MobX Store */
   const rootStore = useContext(RootStoreContext);
-  const { appVars } = rootStore.generalStore;
-  const { loadingFetchScreen, fetchScreen, selectedScreen } =
-    rootStore.screenTStore;
+
+  const {
+    isLoadingPhenotypicScreen,
+    fetchPhenotypicScreen,
+    selectedPhenotypicScreen,
+  } = rootStore.screenPStore;
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(
-      "PhenotypicScreenValdiatedHit.js: useEffect screenId: ",
-      screenId
-    );
-    if (selectedScreen === null || selectedScreen.id !== screenId)
-      fetchScreen(screenId);
-  }, [selectedScreen, fetchScreen, screenId]);
+    if (
+      selectedPhenotypicScreen === null ||
+      selectedPhenotypicScreen.id !== screenId
+    )
+      fetchPhenotypicScreen(screenId);
+  }, [selectedPhenotypicScreen, fetchPhenotypicScreen, screenId]);
 
-  if (loadingFetchScreen || selectedScreen === null) {
+  // Display a loading message while data is being fetched
+  if (isLoadingPhenotypicScreen || selectedPhenotypicScreen === null) {
     return <PleaseWait />;
   }
 
@@ -38,10 +41,7 @@ const PhenotypicValidatedHit = ({ screenId }) => {
       },
     },
     {
-      label: selectedScreen.screenName,
-      command: () => {
-        // navigate(`/d/gene/${gene.id}`);
-      },
+      label: selectedPhenotypicScreen.screenName,
     },
   ];
 
@@ -53,8 +53,8 @@ const PhenotypicValidatedHit = ({ screenId }) => {
       <div className="flex w-full">
         <SectionHeading
           icon="icon icon-common icon-search"
-          heading={"Disclosed Hits " + selectedScreen.screenName}
-          entryPoint={selectedScreen.screenName}
+          heading={"Disclosed Hits " + selectedPhenotypicScreen.screenName}
+          entryPoint={selectedPhenotypicScreen.screenName}
           displayHorizon={true}
           color={appColors.sectionHeadingBg.screen}
         />
@@ -67,4 +67,4 @@ const PhenotypicValidatedHit = ({ screenId }) => {
   );
 };
 
-export default observer(PhenotypicValidatedHit);
+export default observer(PhenotypicDisclosedHit);
