@@ -6,10 +6,10 @@ import { Dialog } from "primereact/dialog";
 import { Menubar } from "primereact/menubar";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
+import PleaseWait from "../../../../../../app/common/PleaseWait/PleaseWait";
 import SectionHeading from "../../../../../../app/common/SectionHeading/SectionHeading";
 import SmilesViewWithDetails from "../../../../../../app/common/SmilesViewWithDetails/SmilesViewWithDetails";
 import Vote from "../../../../../../app/common/Vote/Vote";
-import Loading from "../../../../../../app/layout/Loading/Loading";
 import { RootStoreContext } from "../../../../../../app/stores/rootStore";
 import PhenotypicValidatedHitsImporter from "./PhenotypicValidatedHitsImporter/PhenotypicValidatedHitsImporter";
 import PhenotypicValidatedHitsPromoteToHAEntry from "./PhenotypicValidatedHitsPromoteToHAEntry/PhenotypicValidatedHitsPromoteToHAEntry";
@@ -48,14 +48,18 @@ const PhenotypicDisclosedHitTable = ({ screenId }) => {
   /* Fetch the phenotypic screen data on component mount or when screenId changes */
 
   useEffect(() => {
-    fetchPhenotypicScreen(screenId);
-  }, [fetchPhenotypicScreen, screenId]);
+    if (
+      selectedPhenotypicScreen === null ||
+      selectedPhenotypicScreen.id !== screenId
+    ) {
+      console.log("PhenotypicDisclosedHit.js: screenId: ", screenId);
+      fetchPhenotypicScreen(screenId);
+    }
+  }, [selectedPhenotypicScreen, fetchPhenotypicScreen, screenId]);
 
+  // Display a loading message while data is being fetched
   if (isLoadingPhenotypicScreen || selectedPhenotypicScreen === null) {
-    return <Loading />;
-  }
-
-  if (!isLoadingPhenotypicScreen && selectedPhenotypicScreen) {
+    return <PleaseWait />;
   }
 
   let tableMenuItems = [];

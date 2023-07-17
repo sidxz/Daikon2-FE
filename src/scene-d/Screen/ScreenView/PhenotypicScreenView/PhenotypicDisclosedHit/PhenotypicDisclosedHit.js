@@ -6,7 +6,7 @@ import PleaseWait from "../../../../../app/common/PleaseWait/PleaseWait";
 import SectionHeading from "../../../../../app/common/SectionHeading/SectionHeading";
 import { RootStoreContext } from "../../../../../app/stores/rootStore";
 import { appColors } from "../../../../../colors";
-import PhenotypicValidatedHitTable from "./PhenotypicDisclosedHitTable/PhenotypicDisclosedHitTable";
+import PhenotypicDisclosedHitTable from "./PhenotypicDisclosedHitTable/PhenotypicDisclosedHitTable";
 
 const PhenotypicDisclosedHit = ({ screenId }) => {
   /* MobX Store */
@@ -24,14 +24,21 @@ const PhenotypicDisclosedHit = ({ screenId }) => {
     if (
       selectedPhenotypicScreen === null ||
       selectedPhenotypicScreen.id !== screenId
-    )
+    ) {
+      console.log("PhenotypicDisclosedHit.js: screenId: ", screenId);
       fetchPhenotypicScreen(screenId);
+    }
   }, [selectedPhenotypicScreen, fetchPhenotypicScreen, screenId]);
 
   // Display a loading message while data is being fetched
   if (isLoadingPhenotypicScreen || selectedPhenotypicScreen === null) {
     return <PleaseWait />;
   }
+
+  console.log(
+    "PhenotypicDisclosedHit.js: selectedPhenotypicScreen: " +
+      selectedPhenotypicScreen.id
+  );
 
   const breadCrumbItems = [
     {
@@ -61,7 +68,7 @@ const PhenotypicDisclosedHit = ({ screenId }) => {
       </div>
 
       <div className="flex w-full">
-        <PhenotypicValidatedHitTable screenId={screenId} />
+        <PhenotypicDisclosedHitTable screenId={selectedPhenotypicScreen.id} />
       </div>
     </div>
   );
