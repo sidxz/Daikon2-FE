@@ -17,7 +17,7 @@ import PostPortfolioDash from "../../scene-d/PostPortfolio/PostPortfolioDash/Pos
 import PostPortfolioView from "../../scene-d/PostPortfolio/PostPortfolioView/PostPortfolioView";
 import ScreenDashboard from "../../scene-d/Screen/ScreenDashboard/ScreenDashboard";
 import PhenotypicScreenView from "../../scene-d/Screen/ScreenView/PhenotypicScreenView/PhenotypicScreenView";
-import ScreenView from "../../scene-d/Screen/ScreenView/ScreenTargetBased/ScreenView";
+import ScreenView from "../../scene-d/Screen/ScreenView/TargetBasedScreenView/ScreenView";
 import TargetDash from "../../scene-d/Target/TargetDash/TargetDash";
 import TargetView from "../../scene-d/Target/TargetView/TargetView";
 import { DataReorganizationInProgress } from "../common/DataReorganizationInProgress/DataReorganizationInProgress";
