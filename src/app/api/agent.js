@@ -396,6 +396,7 @@ const Vote = {
 const DataView = {
   targetDash: () => requests.get(`/data-view/VTarget/dash-view`),
   latestDiscussions: () => requests.get(`/data-view/Discussion/latest`),
+  screenDash: () => requests.get(`/data-view/VScreen/dash-view`),
 };
 
 const Compounds = {
