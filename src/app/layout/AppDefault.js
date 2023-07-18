@@ -24,6 +24,7 @@ import { DataReorganizationInProgress } from "../common/DataReorganizationInProg
 import { RootStoreContext } from "../stores/rootStore";
 
 // Importing other components
+import GenePromote from "../../scene-d/Gene/GenePromote/GenePromote";
 import MenuBar from "./MenuBar/MenuBar";
 import NotFound from "./NotFound/NotFound";
 
@@ -53,8 +54,14 @@ const AppDefault = () => {
             path="gene/gene-promotion-requests"
             element={<GenePromotionRequests />}
           />
-          {/* <Route path="gene/promote/:ptarget" element={<GenePromote />} /> */}
-          <Route path="gene/promote/:ptarget" element={<NotFound />} />{" "}
+          {/* Currently disabled for all except for admin */}
+          <Route
+            path="gene/promote/:ptarget"
+            element={
+              user.roles.includes("admin") ? <GenePromote /> : <NotFound />
+            }
+          />
+
           {/* Fallback for an invalid path */}
           <Route path="gene/:id/*" element={<GeneView />} />
           {/* Target related routes */}
