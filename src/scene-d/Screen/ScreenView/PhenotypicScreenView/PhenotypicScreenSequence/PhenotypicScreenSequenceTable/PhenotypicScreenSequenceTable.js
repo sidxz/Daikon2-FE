@@ -158,7 +158,7 @@ const PhenotypicScreenSequenceTable = ({ screenId }) => {
                 onClick={() =>
                   ExportToExcel({
                     jsonData: selectedPhenotypicScreen.screenSequences,
-                    fileName: selectedPhenotypicScreen.screenName,
+                    fileName: selectedPhenotypicScreen.screenName + "-Screens",
                     headerMap: fieldToColumnName,
                   })
                 }

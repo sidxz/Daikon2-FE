@@ -5,7 +5,9 @@ import { DataTable } from "primereact/datatable";
 import { Dialog } from "primereact/dialog";
 import { Menubar } from "primereact/menubar";
 import React, { useContext, useEffect, useRef, useState } from "react";
+import { ImDownload } from "react-icons/im";
 import { toast } from "react-toastify";
+import ExportToExcel from "../../../../../../app/common/Functions/Excel/ExportToExcel";
 import PleaseWait from "../../../../../../app/common/PleaseWait/PleaseWait";
 import SectionHeading from "../../../../../../app/common/SectionHeading/SectionHeading";
 import SmilesViewWithDetails from "../../../../../../app/common/SmilesViewWithDetails/SmilesViewWithDetails";
@@ -13,7 +15,6 @@ import Vote from "../../../../../../app/common/Vote/Vote";
 import { RootStoreContext } from "../../../../../../app/stores/rootStore";
 import PhenotypicValidatedHitsImporter from "./PhenotypicValidatedHitsImporter/PhenotypicValidatedHitsImporter";
 import PhenotypicValidatedHitsPromoteToHAEntry from "./PhenotypicValidatedHitsPromoteToHAEntry/PhenotypicValidatedHitsPromoteToHAEntry";
-
 const PhenotypicDisclosedHitTable = ({ screenId }) => {
   // Data Table Ref
   const dt = useRef(null);
@@ -68,6 +69,18 @@ const PhenotypicDisclosedHitTable = ({ screenId }) => {
 
   const exportCSV = (selectionOnly) => {
     dt.current.exportCSV({ selectionOnly });
+  };
+
+  // Map Data fields to Column Name
+  const fieldToColumnName = {
+    structure: "Structure",
+    library: "Library",
+    source: "Source",
+    compoundExternalId: "Compound Id",
+    ic50: "IC50",
+    mic: "MIC",
+    molWeight: "Mol. Weight",
+    molArea: "Mol. Area",
   };
 
   let enableVotingCalled = () => {
@@ -189,8 +202,29 @@ const PhenotypicDisclosedHitTable = ({ screenId }) => {
         },
         {
           label: "Export Hits",
-          icon: "icon icon-fileformats icon-CSV",
-          command: () => exportCSV(false),
+          icon: (
+            <div className="flex pr-2">
+              <ImDownload />
+            </div>
+          ),
+          command: () =>
+            ExportToExcel({
+              jsonData: selectedPhenotypicScreen.validatedHits.map((hit) => {
+                // Need to flatten the object for export
+                return {
+                  structure: hit.compound.smile,
+                  library: hit.library,
+                  source: hit.source,
+                  compoundExternalId: hit.compound.externalCompoundIds,
+                  ic50: hit.iC50,
+                  mic: hit.mic,
+                  molWeight: hit.compound.molWeight,
+                  molArea: hit.compound.molArea,
+                };
+              }),
+              fileName: selectedPhenotypicScreen.screenName + "-Disclosed-Hits",
+              headerMap: fieldToColumnName,
+            }),
         },
       ],
     };
