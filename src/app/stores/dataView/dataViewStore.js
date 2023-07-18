@@ -7,9 +7,12 @@ export default class DataViewStore {
 
   loadingTargetDash = false;
   targetDash = null;
+  screenDash = null;
 
   fetchingLatestDiscussions = false;
   latestDiscussions = [];
+
+  isLoadingScreenDash = false;
 
   constructor(rootStore) {
     this.rootStore = rootStore;
@@ -21,6 +24,10 @@ export default class DataViewStore {
       fetchLatestDiscussions: action,
       fetchingLatestDiscussions: observable,
       latestDiscussions: observable,
+
+      isLoadingScreenDash: observable,
+      screenDash: observable,
+      loadScreenDash: action,
     });
   }
 
@@ -52,6 +59,19 @@ export default class DataViewStore {
     } finally {
       runInAction(() => {
         this.fetchingLatestDiscussions = false;
+      });
+    }
+  };
+
+  loadScreenDash = async () => {
+    this.isLoadingScreenDash = true;
+    try {
+      this.screenDash = await agent.DataView.screenDash();
+    } catch (error) {
+      console.error(error);
+    } finally {
+      runInAction(() => {
+        this.isLoadingScreenDash = false;
       });
     }
   };
