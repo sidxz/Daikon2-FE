@@ -11,6 +11,7 @@ import {
 } from "react-router-dom";
 import { RootStoreContext } from "../../../../app/stores/rootStore";
 import PhenotypicDisclosedHit from "./PhenotypicDisclosedHit/PhenotypicDisclosedHit";
+import PhenotypicScreenDiscussion from "./PhenotypicScreenDiscussion/PhenotypicScreenDiscussion";
 import PhenotypicScreenSequence from "./PhenotypicScreenSequence/PhenotypicScreenSequence";
 import ScreenPhenotypicEdit from "./ScreenPhenotypicEdit/ScreenPhenotypicEdit";
 import ScreenPhenotypicMerge from "./ScreenPhenotypicMerge/ScreenPhenotypicMerge";
@@ -110,15 +111,11 @@ const PhenotypicScreenView = () => {
               path="merge/"
               element={<ScreenPhenotypicMerge screenId={params.id} />}
             />
-            {/* 
+
             <Route
               path="discussion/"
-              element={
-                <PhenotypicScreenDiscussion
-                  baseScreenName={params.baseScreenName}
-                />
-              }
-            /> */}
+              element={<PhenotypicScreenDiscussion screenId={params.id} />}
+            />
           </Routes>
         </div>
       </div>

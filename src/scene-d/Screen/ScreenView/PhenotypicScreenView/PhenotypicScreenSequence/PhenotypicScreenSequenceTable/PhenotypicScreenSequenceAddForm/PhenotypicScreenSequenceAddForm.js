@@ -33,17 +33,17 @@ const PhenotypicScreenSequenceAddForm = ({ screenId, onAdd, loading }) => {
   const formik = useFormik({
     initialValues: {
       library: "",
-      librarySize: "",
+      librarySize: 0,
       startDate: "",
       endDate: undefined,
       scientist: "",
       protocol: "",
-      noOfCompoundsScreened: "",
+      noOfCompoundsScreened: 0,
       comment: "",
-      unverifiedHitCount: "",
-      hitRate: "",
-      primaryHitCount: "",
-      confirmedHitCount: "",
+      unverifiedHitCount: 0,
+      hitRate: 0,
+      primaryHitCount: 0,
+      confirmedHitCount: 0,
     },
     validationSchema: Yup.object({
       library: Yup.string().required("Library is required."),
@@ -80,7 +80,7 @@ const PhenotypicScreenSequenceAddForm = ({ screenId, onAdd, loading }) => {
             <InputText
               id="librarySize"
               name="librarySize"
-              type="text"
+              type="number"
               className={classNames({
                 "p-invalid": formik.errors.librarySize,
               })}
