@@ -13,25 +13,46 @@ const ScreenOverviewRecentlyCompleted = ({ screensRecentlyCompleted }) => {
   let screensRecentlyCompletedComponent = screensRecentlyCompleted.map(
     (screenRecentlyCompleted) => {
       return (
-        <div
-          className="flex justify-content-center cursor-pointer"
-          style={{
-            fontSize: "large",
-          }}
-          onClick={() => {
-            navigate(
-              `/d/screen/target-based/${screenRecentlyCompleted.targetName}/screen-sequence/`
-            );
-          }}
-        >
+        <div className="flex flex-column bg-green-50 text-green-700 justify-content-center shadow-1 hover:shadow-3">
+          <div className="flex align-items-end justify-content-end">
+            <div
+              className="flex p-1 justify-content-center bg-green-100 text-green-700 text-xs"
+              style={{
+                minWidth: "4rem",
+              }}
+            >
+              {screenRecentlyCompleted.method}
+            </div>
+
+            <div
+              className="flex p-1 ml-1 justify-content-center bg-yellow-400 text-yellow-800 text-xs"
+              style={{
+                minWidth: "4rem",
+              }}
+            >
+              {screenRecentlyCompleted.org.alias}
+            </div>
+          </div>
+
           <div
-            className="flex bg-green-50 p-3 text-green-700 justify-content-center shadow-1 hover:shadow-3"
+            className="flex justify-content-center cursor-pointer"
             style={{
-              minWidth: "7rem",
-              color: "#5D3891",
+              fontSize: "large",
+            }}
+            onClick={() => {
+              navigate(
+                `/d/screen/target-based/${screenRecentlyCompleted.targetName}/screen-sequence/`
+              );
             }}
           >
-            {screenRecentlyCompleted.screenName}
+            <div
+              className="flex p-2 justify-content-center text-green-700 "
+              style={{
+                minWidth: "7rem",
+              }}
+            >
+              {screenRecentlyCompleted.screenName}
+            </div>
           </div>
         </div>
       );
