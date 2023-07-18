@@ -15,6 +15,7 @@ const DataPreviewDialog = ({
   onHide,
   onSave,
   isSaving = false,
+  comparatorKey = "id",
 }) => {
   // Dialog footer with a close button
   const dialogFooter = (
@@ -58,7 +59,9 @@ const DataPreviewDialog = ({
 
     return data.map((rowData) => {
       // Find the existing row with the same ID
-      let existingRow = existingData.find((d) => d.id === rowData.id);
+      let existingRow = existingData.find(
+        (d) => d[comparatorKey] === rowData[comparatorKey]
+      );
       let status = "";
       let className = "";
 
@@ -91,7 +94,9 @@ const DataPreviewDialog = ({
 
   const cellClassName = (rowData, field) => {
     // Find the existing row with the same ID
-    let existingRow = existingData.find((d) => d.id === rowData.id);
+    let existingRow = existingData.find(
+      (d) => d[comparatorKey] === rowData[comparatorKey]
+    );
 
     if (
       existingRow &&
