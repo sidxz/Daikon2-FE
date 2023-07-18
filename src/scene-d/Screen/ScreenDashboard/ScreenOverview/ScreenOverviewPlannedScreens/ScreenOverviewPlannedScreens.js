@@ -1,15 +1,27 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const ScreenOverviewPlannedScreens = ({ screensPlanned }) => {
+  const navigate = useNavigate();
   // check if screensPlanned is empty or not set or null
-  if (!screensPlanned) return <React.Fragment></React.Fragment>;
+  if (!screensPlanned || screensPlanned.length === 0)
+    return (
+      <div className="flex justify-content-center align-items-center w-full text-sm	text-color-secondary">
+        - No screens are planned -
+      </div>
+    );
 
   let screensPlannedComponent = screensPlanned.map((screenPlanned) => {
     return (
       <div
-        className="flex justify-content-center"
+        className="flex justify-content-center cursor-pointer"
         style={{
           fontSize: "large",
+        }}
+        onClick={() => {
+          navigate(
+            `/d/screen/target-based/${screenPlanned.targetName}/screen-sequence/`
+          );
         }}
       >
         <div
@@ -19,7 +31,7 @@ const ScreenOverviewPlannedScreens = ({ screensPlanned }) => {
             color: "#5D3891",
           }}
         >
-          {screenPlanned}
+          {screenPlanned.screenName}
         </div>
       </div>
     );

@@ -1,16 +1,27 @@
 import React from "react";
-
+import { useNavigate } from "react-router-dom";
 const ScreenOverviewRecentlyCompleted = ({ screensRecentlyCompleted }) => {
+  const navigate = useNavigate();
   // check if screensPlanned is empty or not set or null
-  if (!screensRecentlyCompleted) return <React.Fragment></React.Fragment>;
+  if (!screensRecentlyCompleted || screensRecentlyCompleted.length === 0)
+    return (
+      <div className="flex justify-content-center align-items-center w-full text-sm	text-color-secondary">
+        - No screens are active -
+      </div>
+    );
 
   let screensRecentlyCompletedComponent = screensRecentlyCompleted.map(
     (screenRecentlyCompleted) => {
       return (
         <div
-          className="flex justify-content-center"
+          className="flex justify-content-center cursor-pointer"
           style={{
             fontSize: "large",
+          }}
+          onClick={() => {
+            navigate(
+              `/d/screen/target-based/${screenRecentlyCompleted.targetName}/screen-sequence/`
+            );
           }}
         >
           <div
@@ -20,7 +31,7 @@ const ScreenOverviewRecentlyCompleted = ({ screensRecentlyCompleted }) => {
               color: "#5D3891",
             }}
           >
-            {screenRecentlyCompleted}
+            {screenRecentlyCompleted.screenName}
           </div>
         </div>
       );

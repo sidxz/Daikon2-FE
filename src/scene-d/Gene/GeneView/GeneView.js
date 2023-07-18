@@ -77,24 +77,19 @@ const GeneView = () => {
         },
       ],
     },
-    // {
-    //   label: "Actions",
-    //   items: [
-    //     {
-    //       label: "Promote to Target",
-    //       icon: "pi pi-external-link",
-    //       command: (event) => {
-    //         setDisplayPromotionDialog(true);
-    //       },
-    //     },
-    //   ],
-    // },
   ];
 
   if (user.roles.includes("admin")) {
     const adminActions = {
       label: "Admin Section",
       items: [
+        {
+          label: "Promote to Target",
+          icon: "pi pi-external-link",
+          command: (event) => {
+            setDisplayPromotionDialog(true);
+          },
+        },
         {
           label: "Gene Groups",
           icon: "icon icon-common icon-object-group",

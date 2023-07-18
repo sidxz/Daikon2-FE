@@ -1,15 +1,27 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const ScreenOverviewVotingReady = ({ votingReady }) => {
+  const navigate = useNavigate();
   // check if screensActive is empty or not set or null
-  if (!votingReady) return <React.Fragment></React.Fragment>;
+  if (!votingReady || votingReady.length === 0)
+    return (
+      <div className="flex justify-content-center align-items-center w-full text-sm	text-color-secondary">
+        - No screens are active -
+      </div>
+    );
 
   let votingReadyComponent = votingReady.map((voteReady) => {
     return (
       <div
-        className="flex justify-content-center"
+        className="flex justify-content-center cursor-pointer"
         style={{
           fontSize: "large",
+        }}
+        onClick={() => {
+          navigate(
+            `/d/screen/target-based/${voteReady.targetName}/screen-sequence/`
+          );
         }}
       >
         <div
@@ -19,7 +31,7 @@ const ScreenOverviewVotingReady = ({ votingReady }) => {
             color: "#5D3891",
           }}
         >
-          {voteReady}
+          {voteReady.screenName}
         </div>
       </div>
     );
@@ -27,7 +39,7 @@ const ScreenOverviewVotingReady = ({ votingReady }) => {
 
   return (
     <div className="flex flex-wrap w-full gap-3 p-1 align-items-center justify-content-center">
-      {votingReadyComponent}{" "}
+      {votingReadyComponent}
     </div>
   );
 };

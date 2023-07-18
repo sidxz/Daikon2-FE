@@ -1,13 +1,35 @@
-import React from "react";
+import { observer } from "mobx-react-lite";
+import React, { useContext, useEffect } from "react";
+
 import { FcNeutralTrading, FcPlanner } from "react-icons/fc";
 import { GiVote } from "react-icons/gi";
 import { WiMoonFull } from "react-icons/wi";
+import { DataReorganizationInProgress } from "../../../../app/common/DataReorganizationInProgress/DataReorganizationInProgress";
+import { RootStoreContext } from "../../../../app/stores/rootStore";
 import ScreenOverviewActiveScreens from "./ScreenOverviewActiveScreens/ScreenOverviewActiveScreens";
 import ScreenOverviewPlannedScreens from "./ScreenOverviewPlannedScreens/ScreenOverviewPlannedScreens";
 import ScreenOverviewRecentlyCompleted from "./ScreenOverviewRecentlyCompleted/ScreenOverviewRecentlyCompleted";
 import ScreenOverviewVotingReady from "./ScreenOverviewVotingReady/ScreenOverviewVotingReady";
 
 const ScreenOverview = () => {
+  // root store context
+  var rootStore = useContext(RootStoreContext);
+  var { screenDash, isLoadingScreenDash, loadScreenDash } =
+    rootStore.dataViewStore;
+
+  // load screen dash
+  useEffect(() => {
+    if (!isLoadingScreenDash && screenDash === null) {
+      loadScreenDash();
+    }
+  }, [loadScreenDash, isLoadingScreenDash, screenDash]);
+
+  console.log("screenDash", screenDash);
+
+  if (isLoadingScreenDash || screenDash === null) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="flex flex-column w-full">
       <div className="flex w-full surface-50">
@@ -85,7 +107,7 @@ const ScreenOverview = () => {
       </div>
       <div className="flex w-full">
         <div
-          className="flex w-1 p-4 align-items-center bg-teal-400 text-white"
+          className="flex max-w-1 p-4 align-items-center bg-teal-400 text-white"
           style={{
             textOrientation: "sideways-right",
             writingMode: "vertical-rl",
@@ -96,23 +118,29 @@ const ScreenOverview = () => {
         </div>
 
         <div className="flex w-full border-1 border-100  bg-white">
-          <ScreenOverviewPlannedScreens screensPlanned={["AccD6", "Pks13"]} />
+          <ScreenOverviewPlannedScreens
+            screensPlanned={screenDash.plannedTargetBased}
+          />
         </div>
         <div className="flex w-full border-1 border-100  bg-white">
-          <ScreenOverviewActiveScreens screensActive={["DnaE1", "DapE"]} />
+          <ScreenOverviewActiveScreens
+            screensActive={screenDash.activeTargetBased}
+          />
         </div>
         <div className="flex w-full border-1 border-100  bg-white">
-          <ScreenOverviewVotingReady votingReady={["Rho"]} />
+          <ScreenOverviewVotingReady
+            votingReady={screenDash.votingReadyTargetBased}
+          />
         </div>
         <div className="flex w-full border-1 border-100  bg-white">
           <ScreenOverviewRecentlyCompleted
-            screensRecentlyCompleted={["AccD6", "Pks13"]}
+            screensRecentlyCompleted={screenDash.recentlyCompletedTargetBased}
           />
         </div>
       </div>
       <div className="flex w-full">
         <div
-          className="flex w-1 p-4 align-items-center bg-bluegray-400 text-white"
+          className="flex max-w-1 p-4 align-items-center bg-bluegray-400 text-white"
           style={{
             textOrientation: "sideways-right",
             writingMode: "vertical-rl",
@@ -121,8 +149,11 @@ const ScreenOverview = () => {
         >
           PHENOTYPIC
         </div>
-
         <div className="flex w-full border-1 border-100 bg-white">
+          <DataReorganizationInProgress />
+        </div>
+
+        {/* <div className="flex w-full border-1 border-100 bg-white">
           <ScreenOverviewPlannedScreens screensPlanned={["ISA", "326"]} />
         </div>
         <div className="flex w-full border-1 border-100 bg-white">
@@ -135,10 +166,10 @@ const ScreenOverview = () => {
           <ScreenOverviewRecentlyCompleted
             screensRecentlyCompleted={["AccD6", "Pks13"]}
           />
-        </div>
+        </div> */}
       </div>
     </div>
   );
 };
 
-export default ScreenOverview;
+export default observer(ScreenOverview);
