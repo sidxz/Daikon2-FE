@@ -4,12 +4,15 @@ import { Button } from "primereact/button";
 import { Calendar } from "primereact/calendar";
 import { Chip } from "primereact/chip";
 import { Column } from "primereact/column";
+import { ImDownload } from "react-icons/im";
+
 import { DataTable } from "primereact/datatable";
 import { InputText } from "primereact/inputtext";
 import { OverlayPanel } from "primereact/overlaypanel";
 import { Sidebar } from "primereact/sidebar";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import FDate from "../../../../../../app/common/FDate/FDate";
+import ExportToExcel from "../../../../../../app/common/Functions/Excel/ExportToExcel";
 import PleaseWait from "../../../../../../app/common/PleaseWait/PleaseWait";
 import ScreenStatus from "../../../../../../app/common/ScreenStatus/ScreenStatus";
 import Loading from "../../../../../../app/layout/Loading/Loading";
@@ -50,17 +53,28 @@ const ScreenSequence = ({ screenId }) => {
     dt.current.exportCSV({ selectionOnly });
   };
 
+  // Map Data fields to Column Name
+  const fieldToColumnName = {
+    library: "Library",
+    protocol: "Protocol",
+    concentration: "Inhibitor Concentration",
+    noOfCompoundsScreened: "Total Compounds Screened",
+    scientist: "Scientist",
+    startDate: "Start Date",
+    endDate: "End Date",
+    unverifiedHitCount: "Hit Count",
+  };
+
   const tableHeader = (
     <div className="flex w-full">
-      <div className="flex w-6">
-        <div className="flex gap-2">
+      <div className="flex w-full">
+        <div className="flex gap-1">
           <div className="flex">
             <Button
               type="button"
               icon="icon icon-common icon-plus-circle"
               label="New Library Screen"
               className="p-button-text"
-              style={{ height: "30px" }}
               onClick={() => setDisplayAddDialog(true)}
             />
           </div>
@@ -68,22 +82,44 @@ const ScreenSequence = ({ screenId }) => {
             <Button
               type="button"
               icon="icon icon-fileformats icon-CSV"
+              label="Import"
+              className="p-button-text"
+              onClick={() => exportCSV(false)}
+            />
+          </div>
+          <div className="flex">
+            <Button
+              type="button"
+              icon={
+                <div className="flex pr-2">
+                  <ImDownload />
+                </div>
+              }
               label="Export"
               className="p-button-text"
-              style={{ height: "30px" }}
-              onClick={() => exportCSV(false)}
+              onClick={() =>
+                ExportToExcel({
+                  jsonData: selectedScreen.screenSequences,
+                  fileName: selectedScreen.screenName + "-Screens",
+                  headerMap: fieldToColumnName,
+                })
+              }
             />
           </div>
         </div>
       </div>
 
-      <div className="flex w-6 justify-content-end gap-5">
-        <div className="flex mr-6 gap-5">
+      <div className="flex w-full justify-content-end gap-2">
+        <div className="flex">
           <ScreenStatus
             id={selectedScreen.id}
             status={selectedScreen?.status}
           />
+        </div>
+        <div className="flex">
           <Chip label={selectedScreen?.org.name} icon="ri-organization-chart" />
+        </div>
+        <div className="flex">
           <Chip
             label={selectedScreen?.method}
             icon="icon icon-common icon-circle-notch"
@@ -235,6 +271,8 @@ const ScreenSequence = ({ screenId }) => {
           </Sidebar>
           <div className="card p-fluid">
             <DataTable
+              className="p-datatable-gridlines w-full"
+              size="small"
               ref={dt}
               value={selectedScreen.screenSequences}
               showGridlines

@@ -301,6 +301,8 @@ const ValidatedHitsList = ({ screenId }) => {
       <div className="datatable-validated-hits">
         <div className="card">
           <DataTable
+            className="p-datatable-gridlines w-full"
+            size="small"
             ref={dt}
             value={selectedScreen.validatedHits}
             // paginator
@@ -312,7 +314,6 @@ const ValidatedHitsList = ({ screenId }) => {
             emptyMessage="No hits found."
             resizableColumns
             columnResizeMode="fit"
-            size="large"
             showGridlines
             responsiveLayout="scroll"
             selection={selectedCompounds}

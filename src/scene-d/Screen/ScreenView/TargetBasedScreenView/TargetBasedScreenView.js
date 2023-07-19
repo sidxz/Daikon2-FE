@@ -19,7 +19,7 @@ import ScreenMerge from "./ScreenMerge/ScreenMerge";
 import ScreenSequences from "./ScreenSequences/ScreenSequences";
 import ValidatedHits from "./ValidatedHits/ValidatedHits";
 
-const ScreenView = () => {
+const TargetBasedScreenView = () => {
   const params = useParams();
   const navigate = useNavigate();
 
@@ -194,4 +194,4 @@ const ScreenView = () => {
   return <Loading />;
 };
 
-export default observer(ScreenView);
+export default observer(TargetBasedScreenView);

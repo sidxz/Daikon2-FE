@@ -17,7 +17,6 @@ import PostPortfolioDash from "../../scene-d/PostPortfolio/PostPortfolioDash/Pos
 import PostPortfolioView from "../../scene-d/PostPortfolio/PostPortfolioView/PostPortfolioView";
 import ScreenDashboard from "../../scene-d/Screen/ScreenDashboard/ScreenDashboard";
 import PhenotypicScreenView from "../../scene-d/Screen/ScreenView/PhenotypicScreenView/PhenotypicScreenView";
-import ScreenView from "../../scene-d/Screen/ScreenView/TargetBasedScreenView/ScreenView";
 import TargetDash from "../../scene-d/Target/TargetDash/TargetDash";
 import TargetView from "../../scene-d/Target/TargetView/TargetView";
 import { DataReorganizationInProgress } from "../common/DataReorganizationInProgress/DataReorganizationInProgress";
@@ -25,6 +24,7 @@ import { RootStoreContext } from "../stores/rootStore";
 
 // Importing other components
 import GenePromote from "../../scene-d/Gene/GenePromote/GenePromote";
+import TargetBasedScreenView from "../../scene-d/Screen/ScreenView/TargetBasedScreenView/TargetBasedScreenView";
 import MenuBar from "./MenuBar/MenuBar";
 import NotFound from "./NotFound/NotFound";
 
@@ -69,7 +69,10 @@ const AppDefault = () => {
           <Route path="target/:id/*" element={<TargetView />} />
           {/* Screen related routes */}
           <Route path="screen/*" element={<ScreenDashboard />} />
-          <Route path="screen/target-based/:id/*" element={<ScreenView />} />
+          <Route
+            path="screen/target-based/:id/*"
+            element={<TargetBasedScreenView />}
+          />
           {/* Phenotypic Screen Routes */}
           {/* Currently disabled for all except for screening group */}
           <Route
