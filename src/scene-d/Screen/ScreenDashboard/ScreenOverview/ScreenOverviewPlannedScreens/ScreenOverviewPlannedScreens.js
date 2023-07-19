@@ -16,7 +16,7 @@ const ScreenOverviewPlannedScreens = ({ screensPlanned }) => {
       <div className="flex flex-column bg-purple-50 justify-content-center shadow-1 hover:shadow-3">
         <div className="flex align-items-end justify-content-end">
           <div
-            className="flex p-1 justify-content-center bg-purple-100 text-purple-700 text-xs"
+            className="flex p-1 justify-content-center bg-white text-700 text-xs border-1 border-purple-100"
             style={{
               minWidth: "4rem",
             }}
@@ -25,7 +25,7 @@ const ScreenOverviewPlannedScreens = ({ screensPlanned }) => {
           </div>
 
           <div
-            className="flex p-1 ml-1 justify-content-center bg-yellow-400 text-yellow-800 text-xs"
+            className="flex p-1 ml-1 justify-content-center bg-white text-700 text-xs border-1 border-purple-100"
             style={{
               minWidth: "4rem",
             }}
