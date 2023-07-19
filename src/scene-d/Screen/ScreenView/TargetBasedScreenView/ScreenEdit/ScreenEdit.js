@@ -15,8 +15,10 @@ const ScreenEdit = ({ selectedScreenTargetFilter, close }) => {
   const { appVars } = rootStore.generalStore;
 
   useEffect(() => {
-    fetchOrgs();
-  }, [fetchOrgs]);
+    if (Orgs.length === 0) fetchOrgs();
+  }, [fetchOrgs, Orgs]);
+
+  console.log(selectedScreen);
 
   const formik = useFormik({
     initialValues: {
@@ -24,6 +26,9 @@ const ScreenEdit = ({ selectedScreenTargetFilter, close }) => {
       promotionDate: new Date(selectedScreen.promotionDate),
       notes: selectedScreen.notes,
       method: selectedScreen.method,
+      statusDate: selectedScreen.statusDate
+        ? new Date(selectedScreen.statusDate)
+        : null,
     },
     validate: (data) => {
       let errors = {};
@@ -169,6 +174,31 @@ const ScreenEdit = ({ selectedScreenTargetFilter, close }) => {
                 "p-invalid": isFormFieldValid("notes"),
               })}
             />
+          </div>
+
+          <div className="field">
+            <label
+              htmlFor="statusDate"
+              className={classNames({
+                "p-error": isFormFieldValid("promotionDate"),
+              })}
+            >
+              Last Status Date (Override)
+            </label>
+
+            <Calendar
+              id="statusDate"
+              name="statusDate"
+              value={formik.values.statusDate}
+              onChange={formik.handleChange}
+              dateFormat="dd/mm/yy"
+              mask="99/99/9999"
+              showIcon
+              className={classNames({
+                "p-invalid": isFormFieldValid("statusDate"),
+              })}
+            />
+            {getFormErrorMessage("statusDate")}
           </div>
 
           <div className="flex gap-4 align-content-right align-items-right">

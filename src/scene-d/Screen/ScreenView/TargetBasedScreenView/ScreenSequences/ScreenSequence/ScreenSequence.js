@@ -78,15 +78,7 @@ const ScreenSequence = ({ screenId }) => {
               onClick={() => setDisplayAddDialog(true)}
             />
           </div>
-          <div className="flex">
-            <Button
-              type="button"
-              icon="icon icon-fileformats icon-CSV"
-              label="Import"
-              className="p-button-text"
-              onClick={() => exportCSV(false)}
-            />
-          </div>
+          <div className="flex">{/*Todo: Import */}</div>
           <div className="flex">
             <Button
               type="button"

@@ -96,6 +96,9 @@ const ScreenPhenotypicEdit = ({ screenId }) => {
             method: selectedPhenotypicScreen.method,
             org: selectedPhenotypicScreen.org,
             promotionDate: new Date(selectedPhenotypicScreen.promotionDate),
+            statusDate: selectedPhenotypicScreen.statusDate
+              ? new Date(selectedPhenotypicScreen.statusDate)
+              : null,
           }}
           validate={(values) => {
             const errors = {};
@@ -206,6 +209,27 @@ const ScreenPhenotypicEdit = ({ screenId }) => {
                     {errors.promotionDate &&
                       touched.promotionDate &&
                       errors.promotionDate}
+                  </div>
+                </div>
+
+                <div className="flex flex-column w-full">
+                  <div className="field">
+                    <label htmlFor="statusDate">
+                      Last Status Date (Override)
+                    </label>
+                    <Calendar
+                      id="statusDate"
+                      name="statusDate"
+                      value={values.statusDate}
+                      dateFormat="dd/mm/yy"
+                      mask="99/99/9999"
+                      showIcon
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                    />
+                    {errors.statusDate &&
+                      touched.statusDate &&
+                      errors.statusDate}
                   </div>
                 </div>
 
