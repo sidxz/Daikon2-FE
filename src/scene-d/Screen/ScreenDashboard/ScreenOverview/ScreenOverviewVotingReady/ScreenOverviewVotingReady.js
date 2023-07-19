@@ -13,10 +13,10 @@ const ScreenOverviewVotingReady = ({ votingReady }) => {
 
   let votingReadyComponent = votingReady.map((voteReady) => {
     return (
-      <div className="flex flex-column bg-red-50 justify-content-center shadow-1 hover:shadow-3">
+      <div className="flex flex-column bg-orange-50 justify-content-center shadow-1 hover:shadow-3">
         <div className="flex align-items-end justify-content-end">
           <div
-            className="flex p-1 justify-content-center bg-red-100 text-red-700 text-xs"
+            className="flex p-1 justify-content-center bg-white text-700 text-xs border-1 border-orange-100"
             style={{
               minWidth: "4rem",
             }}
@@ -25,7 +25,7 @@ const ScreenOverviewVotingReady = ({ votingReady }) => {
           </div>
 
           <div
-            className="flex p-1 ml-1 justify-content-center bg-yellow-400 text-yellow-800 text-xs"
+            className="flex p-1 ml-1 justify-content-center bg-white text-700 text-xs border-1 border-orange-100"
             style={{
               minWidth: "4rem",
             }}
@@ -45,7 +45,7 @@ const ScreenOverviewVotingReady = ({ votingReady }) => {
           }}
         >
           <div
-            className="flex p-2 justify-content-center text-pink-600"
+            className="flex p-2 justify-content-center text-orange-600"
             style={{
               minWidth: "7rem",
             }}
