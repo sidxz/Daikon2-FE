@@ -1,3 +1,4 @@
+import { observer } from "mobx-react-lite";
 import { Chip } from "primereact/chip";
 import { Column } from "primereact/column";
 import { ConfirmDialog } from "primereact/confirmdialog";
@@ -13,11 +14,9 @@ import DataPreviewDialog from "../../../../../../app/common/DataPreviewDialog/Da
 import ExportToExcel from "../../../../../../app/common/Functions/Excel/ExportToExcel";
 import ImportFromExcel from "../../../../../../app/common/Functions/Excel/ImportFromExcel";
 import PleaseWait from "../../../../../../app/common/PleaseWait/PleaseWait";
-import SectionHeading from "../../../../../../app/common/SectionHeading/SectionHeading";
 import SmilesViewWithDetails from "../../../../../../app/common/SmilesViewWithDetails/SmilesViewWithDetails";
 import Vote from "../../../../../../app/common/Vote/Vote";
 import { RootStoreContext } from "../../../../../../app/stores/rootStore";
-import PhenotypicValidatedHitsImporter from "./PhenotypicValidatedHitsImporter/PhenotypicValidatedHitsImporter";
 import PhenotypicValidatedHitsPromoteToHAEntry from "./PhenotypicValidatedHitsPromoteToHAEntry/PhenotypicValidatedHitsPromoteToHAEntry";
 const PhenotypicDisclosedHitTable = ({ screenId }) => {
   // Data Table Ref
@@ -41,8 +40,6 @@ const PhenotypicDisclosedHitTable = ({ screenId }) => {
 
   /* Local state management */
 
-  const [displayHitsImportSidebar, setDisplayHitsImportSidebar] =
-    useState(false);
   // state variable to allow row selection in the table
   const [allowRowSelection, setAllowRowSelection] = useState(false);
   // state variable to reveal votes
@@ -402,28 +399,7 @@ const PhenotypicDisclosedHitTable = ({ screenId }) => {
           </DataTable>
         </div>
       </div>
-      <Dialog
-        visible={displayHitsImportSidebar}
-        style={{ width: "90%" }}
-        maximizable={true}
-        maximized={true}
-        onHide={() => setDisplayHitsImportSidebar(false)}
-        className="p-sidebar-lg"
-      >
-        <div className="card">
-          <SectionHeading
-            icon="icon icon-conceptual icon-structures-3d"
-            heading={"Import Validated Hits"}
-            color={"#f4f4f4"}
-            textColor={"#000000"}
-          />
-          <br />
-          <PhenotypicValidatedHitsImporter
-            screenId={selectedPhenotypicScreen.id}
-            existingHits={selectedPhenotypicScreen.validatedHits}
-          />
-        </div>
-      </Dialog>
+
       <Dialog
         header="Promote to Hit Assessment"
         visible={isPromoteToHAEntryVisible}
@@ -479,6 +455,7 @@ const PhenotypicDisclosedHitTable = ({ screenId }) => {
             e.files = null;
             jsonData.forEach((row) => {
               row.screenId = selectedPhenotypicScreen.id;
+              row.screenType = "Phenotypic";
               // fetch the row id if it exists in selectedPhenotypicScreen.validatedHits
               // let existingRow = selectedPhenotypicScreen.validatedHits.find(
               //   (d) => d.compound.externalCompoundIds === row.compoundExternalId
@@ -502,6 +479,7 @@ const PhenotypicDisclosedHitTable = ({ screenId }) => {
           return {
             id: hit.id,
             screenId: selectedPhenotypicScreen.id,
+            screenType: "Phenotypic",
             smile: hit.compound.smile,
             library: hit.library,
             source: hit.source,
@@ -526,4 +504,4 @@ const PhenotypicDisclosedHitTable = ({ screenId }) => {
   );
 };
 
-export default PhenotypicDisclosedHitTable;
+export default observer(PhenotypicDisclosedHitTable);

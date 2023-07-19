@@ -67,6 +67,13 @@ export default class HitsStore {
       response = await agent.Hit.create(hit);
       runInAction(() => {
         // Additional actions after hit creation can be added here.
+        if (hit.screenType === "Phenotypic") {
+          this.rootStore.screenPStore.fetchPhenotypicScreen(
+            hit.screenId,
+            true,
+            false
+          );
+        }
       });
     } catch (error) {
       console.error(error);
@@ -101,6 +108,14 @@ export default class HitsStore {
       // Send hit to server for update
       response = await agent.Hit.update(hit.Id, hit);
       runInAction(() => {
+        // silently fetch the new screen
+        if (hit.screenType === "Phenotypic") {
+          this.rootStore.screenPStore.fetchPhenotypicScreen(
+            hit.screenId,
+            true,
+            false
+          );
+        }
         // Additional actions after hit update can be added here.
       });
     } catch (error) {
