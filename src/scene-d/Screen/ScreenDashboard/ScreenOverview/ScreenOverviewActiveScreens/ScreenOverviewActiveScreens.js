@@ -13,25 +13,47 @@ const ScreenOverviewActiveScreens = ({ screensActive }) => {
 
   let screensActiveComponent = screensActive.map((screenActive) => {
     return (
-      <div
-        className="flex justify-content-center cursor-pointer"
-        style={{
-          fontSize: "large",
-        }}
-        onClick={() => {
-          navigate(
-            `/d/screen/target-based/${screenActive.targetName}/screen-sequence/`
-          );
-        }}
-      >
+      <div className="flex flex-column bg-cyan-50  justify-content-center shadow-1 hover:shadow-3">
+        <div className="flex align-items-end justify-content-end">
+          <div
+            className="flex p-1 justify-content-center bg-cyan-100 text-cyan-700 text-xs"
+            style={{
+              minWidth: "4rem",
+            }}
+          >
+            {screenActive.method}
+          </div>
+
+          <div
+            className="flex p-1 ml-1 justify-content-center bg-yellow-400 text-yellow-800 text-xs"
+            style={{
+              minWidth: "4rem",
+            }}
+          >
+            {screenActive.org.alias}
+          </div>
+        </div>
+
         <div
-          className="flex bg-cyan-50 p-3 justify-content-center shadow-1 hover:shadow-3"
+          className="flex justify-content-center cursor-pointer"
           style={{
-            minWidth: "7rem",
-            color: "#0e7994",
+            fontSize: "large",
+          }}
+          onClick={() => {
+            navigate(
+              `/d/screen/target-based/${screenActive.targetName}/screen-sequence/`
+            );
           }}
         >
-          {screenActive.screenName}
+          <div
+            className="flex p-2 justify-content-center"
+            style={{
+              minWidth: "7rem",
+              color: "#0e7994",
+            }}
+          >
+            {screenActive.screenName}
+          </div>
         </div>
       </div>
     );

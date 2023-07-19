@@ -13,25 +13,46 @@ const ScreenOverviewPlannedScreens = ({ screensPlanned }) => {
 
   let screensPlannedComponent = screensPlanned.map((screenPlanned) => {
     return (
-      <div
-        className="flex justify-content-center cursor-pointer"
-        style={{
-          fontSize: "large",
-        }}
-        onClick={() => {
-          navigate(
-            `/d/screen/target-based/${screenPlanned.targetName}/screen-sequence/`
-          );
-        }}
-      >
+      <div className="flex flex-column bg-purple-50 justify-content-center shadow-1 hover:shadow-3">
+        <div className="flex align-items-end justify-content-end">
+          <div
+            className="flex p-1 justify-content-center bg-purple-100 text-purple-700 text-xs"
+            style={{
+              minWidth: "4rem",
+            }}
+          >
+            {screenPlanned.method}
+          </div>
+
+          <div
+            className="flex p-1 ml-1 justify-content-center bg-yellow-400 text-yellow-800 text-xs"
+            style={{
+              minWidth: "4rem",
+            }}
+          >
+            {screenPlanned.org.alias}
+          </div>
+        </div>
         <div
-          className="flex bg-purple-50 p-3 justify-content-center shadow-1 hover:shadow-3"
+          className="flex justify-content-center cursor-pointer"
           style={{
-            minWidth: "7rem",
-            color: "#5D3891",
+            fontSize: "large",
+          }}
+          onClick={() => {
+            navigate(
+              `/d/screen/target-based/${screenPlanned.targetName}/screen-sequence/`
+            );
           }}
         >
-          {screenPlanned.screenName}
+          <div
+            className="flex p-2 justify-content-center"
+            style={{
+              minWidth: "7rem",
+              color: "#5D3891",
+            }}
+          >
+            {screenPlanned.screenName}
+          </div>
         </div>
       </div>
     );

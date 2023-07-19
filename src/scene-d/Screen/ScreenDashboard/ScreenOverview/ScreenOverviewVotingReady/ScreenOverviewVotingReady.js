@@ -13,25 +13,45 @@ const ScreenOverviewVotingReady = ({ votingReady }) => {
 
   let votingReadyComponent = votingReady.map((voteReady) => {
     return (
-      <div
-        className="flex justify-content-center cursor-pointer"
-        style={{
-          fontSize: "large",
-        }}
-        onClick={() => {
-          navigate(
-            `/d/screen/target-based/${voteReady.targetName}/screen-sequence/`
-          );
-        }}
-      >
+      <div className="flex flex-column bg-red-50 justify-content-center shadow-1 hover:shadow-3">
+        <div className="flex align-items-end justify-content-end">
+          <div
+            className="flex p-1 justify-content-center bg-red-100 text-red-700 text-xs"
+            style={{
+              minWidth: "4rem",
+            }}
+          >
+            {voteReady.method}
+          </div>
+
+          <div
+            className="flex p-1 ml-1 justify-content-center bg-yellow-400 text-yellow-800 text-xs"
+            style={{
+              minWidth: "4rem",
+            }}
+          >
+            {voteReady.org.alias}
+          </div>
+        </div>
         <div
-          className="flex bg-red-50 p-3 text-red-400 justify-content-center shadow-1 hover:shadow-3"
+          className="flex justify-content-center cursor-pointer"
           style={{
-            minWidth: "7rem",
-            color: "#5D3891",
+            fontSize: "large",
+          }}
+          onClick={() => {
+            navigate(
+              `/d/screen/target-based/${voteReady.targetName}/screen-sequence/`
+            );
           }}
         >
-          {voteReady.screenName}
+          <div
+            className="flex p-2 justify-content-center text-pink-600"
+            style={{
+              minWidth: "7rem",
+            }}
+          >
+            {voteReady.screenName}
+          </div>
         </div>
       </div>
     );
