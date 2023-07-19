@@ -72,8 +72,27 @@ const DataPreviewDialog = ({
       } else {
         // Check if any values are different
         for (let key of Object.keys(rowData)) {
+          // console log for debug
+
+          // check if both are null or undefined, then skip
+          if (
+            (rowData[key] === null ||
+              rowData[key] === undefined ||
+              rowData[key] === "") &&
+            (existingRow[key] === null ||
+              existingRow[key] === undefined ||
+              existingRow[key] === "")
+          ) {
+            console.log("both are null or undefined, skipping");
+            rowData[key] = existingRow[key];
+            continue; // skip
+          }
+
           if (String(rowData[key]) !== String(existingRow[key])) {
             // Existing cell with changed data
+            console.log("key: " + key);
+            console.log("rowData[key]: " + rowData[key]);
+            console.log("existingRow[key]: " + existingRow[key]);
             status = "Modified";
             break;
           }

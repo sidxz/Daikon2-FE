@@ -55,7 +55,8 @@ const ValidatedHitsImporter = ({ screenId, existingHits }) => {
 
   /* MobX Store */
   const rootStore = useContext(RootStoreContext);
-  const { newHit, postingHit, updateHit, updatingHit } = rootStore.hitsStore;
+  const { createHit, isCreatingHit, updateHit, isUpdatingHit } =
+    rootStore.hitsStore;
 
   let handleOnError = (err, file, inputElem, reason) => {
     console.error(err);
@@ -185,7 +186,7 @@ const ValidatedHitsImporter = ({ screenId, existingHits }) => {
 
     // New Hits
     for (let i = 0; i < hitsToAdd.length; i++) {
-      let res = await newHit(hitsToAdd[i]);
+      let res = await createHit(hitsToAdd[i]);
       if (res !== null) {
         setImportingLogs("Imported " + hitsToAdd[i].ExternalCompoundIds);
         successList.push(hitsToAdd[i].ExternalCompoundIds);
@@ -324,7 +325,7 @@ const ValidatedHitsImporter = ({ screenId, existingHits }) => {
   let importContainer = (
     <React.Fragment>
       <Fieldset legend="Step 4 : Import Status">
-        {(postingHit || updatingHit) && (
+        {(isCreatingHit || isUpdatingHit) && (
           <React.Fragment>
             <h2>Step 4 : Importing...</h2>
             <ProgressBar mode="indeterminate" style={{ height: "6px" }} />

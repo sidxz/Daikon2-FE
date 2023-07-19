@@ -316,7 +316,7 @@ const Screen = {
 };
 
 const Hit = {
-  create: (newHit) => requests.post(`/hit/`, newHit),
+  create: (createHit) => requests.post(`/hit/`, createHit),
   update: (hitId, updatedHit) => requests.post(`/hit/${hitId}`, updatedHit),
 };
 

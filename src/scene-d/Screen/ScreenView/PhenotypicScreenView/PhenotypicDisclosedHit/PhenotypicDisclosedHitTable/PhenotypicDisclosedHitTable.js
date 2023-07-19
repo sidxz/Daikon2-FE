@@ -3,11 +3,15 @@ import { Column } from "primereact/column";
 import { ConfirmDialog } from "primereact/confirmdialog";
 import { DataTable } from "primereact/datatable";
 import { Dialog } from "primereact/dialog";
+import { FileUpload } from "primereact/fileupload";
 import { Menubar } from "primereact/menubar";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { ImDownload } from "react-icons/im";
+import { SiMicrosoftexcel } from "react-icons/si";
 import { toast } from "react-toastify";
+import DataPreviewDialog from "../../../../../../app/common/DataPreviewDialog/DataPreviewDialog";
 import ExportToExcel from "../../../../../../app/common/Functions/Excel/ExportToExcel";
+import ImportFromExcel from "../../../../../../app/common/Functions/Excel/ImportFromExcel";
 import PleaseWait from "../../../../../../app/common/PleaseWait/PleaseWait";
 import SectionHeading from "../../../../../../app/common/SectionHeading/SectionHeading";
 import SmilesViewWithDetails from "../../../../../../app/common/SmilesViewWithDetails/SmilesViewWithDetails";
@@ -18,6 +22,9 @@ import PhenotypicValidatedHitsPromoteToHAEntry from "./PhenotypicValidatedHitsPr
 const PhenotypicDisclosedHitTable = ({ screenId }) => {
   // Data Table Ref
   const dt = useRef(null);
+  const [dataPreview, setDataPreview] = useState(null);
+  const [showDataPreviewDialog, setShowDataPreviewDialog] = useState(false);
+  const [showFileUploadDialog, setShowFileUploadDialog] = useState(false);
 
   /* MobX Store */
   const rootStore = useContext(RootStoreContext);
@@ -27,6 +34,8 @@ const PhenotypicDisclosedHitTable = ({ screenId }) => {
     selectedPhenotypicScreen,
     fetchScreenSilent,
   } = rootStore.screenPStore;
+
+  const { batchInsertHits, isBatchInsertingHits } = rootStore.hitsStore;
   const { user } = rootStore.userStore;
   const { enableVoting, freezeVoting } = rootStore.votingStore;
 
@@ -73,10 +82,10 @@ const PhenotypicDisclosedHitTable = ({ screenId }) => {
 
   // Map Data fields to Column Name
   const fieldToColumnName = {
-    structure: "Structure",
+    smile: "Structure",
     library: "Library",
     source: "Source",
-    compoundExternalId: "Compound Id",
+    externalCompoundIds: "Compound Id",
     ic50: "IC50",
     mic: "MIC",
     molWeight: "Mol. Weight",
@@ -197,8 +206,12 @@ const PhenotypicDisclosedHitTable = ({ screenId }) => {
       items: [
         {
           label: "Import Hits",
-          icon: "icon icon-common icon-plus-circle",
-          command: () => setDisplayHitsImportSidebar(true),
+          icon: (
+            <div className="flex pr-2">
+              <SiMicrosoftexcel />
+            </div>
+          ),
+          command: () => setShowFileUploadDialog(true),
         },
         {
           label: "Export Hits",
@@ -212,10 +225,11 @@ const PhenotypicDisclosedHitTable = ({ screenId }) => {
               jsonData: selectedPhenotypicScreen.validatedHits.map((hit) => {
                 // Need to flatten the object for export
                 return {
-                  structure: hit.compound.smile,
+                  id: hit.id,
+                  smile: hit.compound.smile,
                   library: hit.library,
                   source: hit.source,
-                  compoundExternalId: hit.compound.externalCompoundIds,
+                  externalCompoundIds: hit.compound.externalCompoundIds,
                   ic50: hit.iC50,
                   mic: hit.mic,
                   molWeight: hit.compound.molWeight,
@@ -426,6 +440,88 @@ const PhenotypicDisclosedHitTable = ({ screenId }) => {
         />
       </Dialog>
       <ConfirmDialog />
+
+      {/* File upload Dialog */}
+      <Dialog
+        header="Import Hits"
+        visible={showFileUploadDialog}
+        onHide={() => setShowFileUploadDialog(false)}
+      >
+        <FileUpload
+          name="excelFile"
+          accept=".xls,.xlsx,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          maxFileSize={1000000}
+          mode="basic"
+          chooseLabel="Select Excel File"
+          chooseOptions={{
+            icon: (
+              <div className="flex pr-2">
+                <SiMicrosoftexcel />
+              </div>
+            ),
+
+            className: "p-button-text m-0 p-1 p-button-secondary",
+          }}
+          cancelOptions={{
+            label: "Cancel",
+            icon: "pi pi-times",
+            className: "p-button-danger",
+          }}
+          className="p-button-text p-button-secondary"
+          style={{ height: "30px" }}
+          customUpload={true}
+          uploadHandler={async (e) => {
+            let file = e.files[0];
+            const jsonData = await ImportFromExcel({
+              file: file,
+              headerMap: fieldToColumnName,
+            });
+            e.files = null;
+            jsonData.forEach((row) => {
+              row.screenId = selectedPhenotypicScreen.id;
+              // fetch the row id if it exists in selectedPhenotypicScreen.validatedHits
+              // let existingRow = selectedPhenotypicScreen.validatedHits.find(
+              //   (d) => d.compound.externalCompoundIds === row.compoundExternalId
+              // );
+              // if (existingRow) {
+              //   row.id = existingRow.id;
+              // }
+            });
+            setDataPreview(jsonData);
+            setShowDataPreviewDialog(true);
+            setShowFileUploadDialog(false);
+          }}
+          auto
+        />
+      </Dialog>
+      {/* Data preview dialog, used when a excel file is uploaded */}
+      <DataPreviewDialog
+        headerMap={fieldToColumnName}
+        existingData={selectedPhenotypicScreen.validatedHits.map((hit) => {
+          // Need to flatten the object for export
+          return {
+            id: hit.id,
+            screenId: selectedPhenotypicScreen.id,
+            smile: hit.compound.smile,
+            library: hit.library,
+            source: hit.source,
+            externalCompoundIds: hit.compound.externalCompoundIds,
+            ic50: hit.iC50,
+            mic: hit.mic,
+            molWeight: hit.compound.molWeight,
+            molArea: hit.compound.molArea,
+          };
+        })}
+        //comparatorKey="externalCompoundIds"
+        data={dataPreview}
+        visible={showDataPreviewDialog}
+        onHide={() => {
+          setShowDataPreviewDialog(false);
+          setDataPreview(null);
+        }}
+        onSave={batchInsertHits}
+        isSaving={isBatchInsertingHits}
+      />
     </div>
   );
 };
