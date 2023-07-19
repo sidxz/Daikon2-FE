@@ -1,3 +1,4 @@
+import _ from "lodash";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 const ScreenOverviewRecentlyCompleted = ({ screensRecentlyCompleted }) => {
@@ -16,16 +17,16 @@ const ScreenOverviewRecentlyCompleted = ({ screensRecentlyCompleted }) => {
         <div className="flex flex-column bg-green-50 text-green-700 justify-content-center shadow-1 hover:shadow-3">
           <div className="flex align-items-end justify-content-end">
             <div
-              className="flex p-1 justify-content-center bg-white text-700 text-xs border-1 border-green-100"
+              className="flex p-1 justify-content-center bg-white text-700 text-xs border-right-1 border-green-100"
               style={{
                 minWidth: "4rem",
               }}
             >
-              {screenRecentlyCompleted.method}
+              {_.startCase(screenRecentlyCompleted.method)}
             </div>
 
             <div
-              className="flex p-1 ml-1 justify-content-center bg-white text-700 text-xs border-1 border-green-100"
+              className="flex p-1 justify-content-center bg-white text-700 text-xs border-green-100"
               style={{
                 minWidth: "4rem",
               }}

@@ -1,3 +1,4 @@
+import _ from "lodash";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -16,16 +17,16 @@ const ScreenOverviewActiveScreens = ({ screensActive }) => {
       <div className="flex flex-column bg-cyan-50  justify-content-center shadow-1 hover:shadow-3">
         <div className="flex align-items-end justify-content-end">
           <div
-            className="flex p-1 justify-content-center bg-white text-700 text-xs border-1 border-cyan-100"
+            className="flex p-1 justify-content-center bg-white text-700 text-xs border-right-1 border-cyan-100"
             style={{
               minWidth: "4rem",
             }}
           >
-            {screenActive.method}
+            {_.startCase(screenActive.method)}
           </div>
 
           <div
-            className="flex p-1 ml-1 justify-content-center bg-white text-700 text-xs border-1 border-cyan-100"
+            className="flex p-1 justify-content-center bg-white text-700 text-xs"
             style={{
               minWidth: "4rem",
             }}
