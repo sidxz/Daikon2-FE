@@ -10,19 +10,23 @@ on:
   workflow_dispatch:
   push:
     branches:
-    - main
+    - master
+    tags:
+    - '*'
   pull_request:
     branches:
-    - main
+    - master
+    tags:
+    - '*'
 
 jobs:
  build-and-deploy-dev:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
       # checkout the repo
       - name: "Checkout GitHub Action"
-        uses: actions/checkout@main
+        uses: actions/checkout@master
       - name: "Set variables for DEV environment"
         run: |
           echo "ENVIRONMENT=dev" >> $GITHUB_ENV
@@ -70,7 +74,7 @@ jobs:
       runs-on: ubuntu-latest
       steps:
         - name: "Checkout GitHub Action"
-          uses: actions/checkout@main
+          uses: actions/checkout@master
         - name: "Set variables for PRD environment"
           run: |
             echo "ENVIRONMENT=prd" >> $GITHUB_ENV
