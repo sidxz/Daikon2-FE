@@ -4,14 +4,17 @@ import React from "react";
 import PleaseWait from "../../../../../app/common/PleaseWait/PleaseWait";
 import "./TargetGrid.css";
 
+// Component to display the TargetGrid
 const TargetGrid = ({ questions, target }) => {
   let answers = {};
 
+  // Check if questions or target data is not available
   if (questions.size === 0 || target === null) {
     return <PleaseWait />;
   }
-
+  // Iterate over targetScoreCardValues
   target.targetScorecard.targetScoreCardValues.forEach((ans) => {
+    // Set appropriate answer color based on the answer value
     if (ans.answer === "Active" || ans.answer === "Yes") {
       answers[ans.questionIdentification] = "greenCell";
     }
@@ -50,6 +53,7 @@ const TargetGrid = ({ questions, target }) => {
 
   return (
     <div className="targetGrid">
+      {/* Tooltip component */}
       <Tooltip target=".questionTooltip" mouseTrack mouseTrackLeft={10} />
       <table>
         <tbody>
@@ -126,6 +130,7 @@ const TargetGrid = ({ questions, target }) => {
               2a5
             </td>
           </tr>
+          {/* Rest of the table rows */}
           <tr>
             <td>On replicating Mtb in vitro</td>
             <td>

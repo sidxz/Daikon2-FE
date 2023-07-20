@@ -1,28 +1,24 @@
 import { ContextMenu } from "primereact/contextmenu";
 import React, { useEffect, useRef } from "react";
+import { FcPrivacy } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import SmilesDrawer from "smiles-drawer";
 
 const SmilesView = ({ smiles, compoundId, width = 200, height = 200 }) => {
+  const svgElementRef = useRef(null);
   const cm = useRef(null);
 
   let canId = smiles + Date.now() + Math.floor(Math.random() * 100);
 
   useEffect(() => {
-    let options = { width: width, height: height, bondThickness: 1.0 };
+    let SETTINGS = { width: width, height: height, bondThickness: 1.0 };
 
     // Initialize the drawer to draw to canvas
-    let smilesDrawer = new SmilesDrawer.Drawer(options);
-    SmilesDrawer.parse(
-      smiles,
-      function (tree) {
-        smilesDrawer.draw(tree, canId, "light", false);
-      },
-      function (err) {
-        console.error(err);
-      }
-    );
+    const drawer = new SmilesDrawer.SvgDrawer(SETTINGS);
+    SmilesDrawer.parse(smiles, (tree) => {
+      drawer.draw(tree, svgElementRef.current, "light");
+    });
   }, [height, smiles, width, canId]);
 
   const navigate = useNavigate();
@@ -47,10 +43,35 @@ const SmilesView = ({ smiles, compoundId, width = 200, height = 200 }) => {
     });
   }
 
+  if (
+    smiles === "c1ccccc1" ||
+    smiles === "C1CCCCC1" ||
+    smiles === null ||
+    smiles === "" ||
+    smiles === "ND"
+  ) {
+    return (
+      <div className="flex min-w-max justify-content-center">
+        <div className="flex flex-row justify-content-center gap-2">
+          <div className="flex">
+            <FcPrivacy />
+          </div>
+          <div className="flex align-items-center">UNDISCLOSED</div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div style={{ width: width, height: height }}>
+    <div className="flex min-w-max justify-content-center align-items-center">
       <ContextMenu model={contextMenuItems} ref={cm} />
-      <canvas id={canId} onContextMenu={(e) => cm.current.show(e)} />
+      <svg
+        id={canId}
+        ref={svgElementRef}
+        data-smiles={smiles}
+        onContextMenu={(e) => cm.current.show(e)}
+        style={{ width: width, height: height }}
+      />
     </div>
   );
 };

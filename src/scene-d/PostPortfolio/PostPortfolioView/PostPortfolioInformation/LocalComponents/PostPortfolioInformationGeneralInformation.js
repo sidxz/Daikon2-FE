@@ -6,6 +6,7 @@ import TagGeneral from "../../../../../app/common/TagGeneral/TagGeneral";
 import "./LocalComponents.css";
 
 const PostPortfolioInformationGeneralInformation = ({ project }) => {
+  // Prepare data for the DataTable
   let data = [
     {
       name: "Id",
@@ -44,6 +45,8 @@ const PostPortfolioInformationGeneralInformation = ({ project }) => {
       ),
     },
   ];
+
+  // Add P1 Description if clinicalP1Enabled is true
   if (project.clinicalP1Enabled) {
     data.push({
       name: "P1 Description",

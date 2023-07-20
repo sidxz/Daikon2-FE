@@ -1,66 +1,86 @@
+/**
+ * RootStore: Main MobX store that includes all the sub-stores.
+ *
+ * @class RootStore
+ */
+
 import { configure } from "mobx";
 import { createContext } from "react";
-import AdminStore from "./adminStore";
-import AppSettingsStore from "./appSettingsStore";
-import CompoundStore from "./compoundStore";
-import DataViewStore from "./dataViewStore";
-import DiscussionStore from "./discussionStore";
-import GeneralStore from "./generalStore";
-import GeneStore from "./geneStore";
-import GeneStoreAdmin from "./geneStoreAdmin";
-import HAStore from "./haStore";
-import HitsStore from "./hitsStore";
-import MsStore from "./msStore";
-import PortfolioStore from "./portfolioStore";
-import PostPortfolioStore from "./postPortfolioStore";
-import ProjectStore from "./projectStore";
-import ScreenStore from "./screenStore";
-import TargetStore from "./targetStore";
-import TargetStoreAdmin from "./targetStoreAdmin";
-import UserStore from "./userStore";
-import VotingStore from "./VotingStore";
+import AdminStore from "./admin/adminStore";
+import CompoundStore from "./compound/compoundStore";
+import DataViewStore from "./dataView/dataViewStore";
+import DiscussionStore from "./discussion/discussionStore";
+import GeneStore from "./gene/geneStore";
+import GeneStoreAdmin from "./gene/geneStoreAdmin";
+import HAStore from "./project/haStore";
+import PortfolioStore from "./project/portfolioStore";
+import PostPortfolioStore from "./project/postPortfolioStore";
+import ProjectStore from "./project/projectStore";
+import HitsStore from "./screen/hitsStore";
+import ScreenPStore from "./screen/screenPStore";
+import ScreenTStore from "./screen/screenTStore";
+import AppSettingsStore from "./settings/appSettingsStore";
+import GeneralStore from "./settings/generalStore";
+import MsStore from "./settings/msStore";
+import TargetStore from "./target/targetStore";
+import TargetStoreAdmin from "./target/targetStoreAdmin";
+import UserStore from "./user/userStore";
+import VotingStore from "./voting/VotingStore";
 
+// Enforcing that all state changes are done through actions
 configure({ enforceActions: "always" });
 
 export class RootStore {
-  geneStore;
-  userStore;
-  commonStore;
+  // Declaring the store variables
   adminStore;
-  msStore;
-  targetStore;
-  portfolioStore;
   appSettingsStore;
-  geneStoreAdmin;
-  targetStoreAdmin;
-  hitsStore;
+  compoundStore;
+  dataViewStore;
   discussionStore;
   generalStore;
+  geneStore;
+  geneStoreAdmin;
   haStore;
+  hitsStore;
+  msStore;
+  portfolioStore;
+  postPortfolioStore;
   projectStore;
+  screenPStore;
+  screenTStore;
+  targetStore;
+  targetStoreAdmin;
+  userStore;
   votingStore;
-  compoundStore;
 
+  /**
+   * constructor: Initializes the sub-stores.
+   *
+   * @param {none}
+   */
   constructor() {
-    this.appSettingsStore = new AppSettingsStore(this);
-    this.msStore = new MsStore(this);
-    this.geneStore = new GeneStore(this);
-    this.targetStore = new TargetStore(this);
-    this.userStore = new UserStore(this);
     this.adminStore = new AdminStore(this);
-    this.screenStore = new ScreenStore(this);
-    this.hitsStore = new HitsStore(this);
-    this.portfolioStore = new PortfolioStore(this);
-    this.geneStoreAdmin = new GeneStoreAdmin(this);
-    this.targetStoreAdmin = new TargetStoreAdmin(this);
-    this.postPortfolioStore = new PostPortfolioStore(this);
+    this.appSettingsStore = new AppSettingsStore(this);
+    this.compoundStore = new CompoundStore(this);
+    this.dataViewStore = new DataViewStore(this);
     this.discussionStore = new DiscussionStore(this);
     this.generalStore = new GeneralStore(this);
+    this.geneStore = new GeneStore(this);
+    this.geneStoreAdmin = new GeneStoreAdmin(this);
     this.haStore = new HAStore(this);
+    this.hitsStore = new HitsStore(this);
+    this.msStore = new MsStore(this);
+    this.portfolioStore = new PortfolioStore(this);
+    this.postPortfolioStore = new PostPortfolioStore(this);
     this.projectStore = new ProjectStore(this);
+    this.screenPStore = new ScreenPStore(this);
+    this.screenTStore = new ScreenTStore(this);
+    this.targetStore = new TargetStore(this);
+    this.targetStoreAdmin = new TargetStoreAdmin(this);
+    this.userStore = new UserStore(this);
     this.votingStore = new VotingStore(this);
-    this.dataViewStore = new DataViewStore(this);
-    this.compoundStore = new CompoundStore(this);
   }
 }
+
+// Exporting an instance of RootStore as a context
 export const RootStoreContext = createContext(new RootStore());

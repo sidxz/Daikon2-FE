@@ -9,7 +9,7 @@ import React, { useContext } from "react";
 import { RootStoreContext } from "../../../../app/stores/rootStore";
 
 const PostPortfolioPromotionsPromoteToP1 = ({ closeSidebar }) => {
-  /* MobX Store */
+  // MobX Store
   const rootStore = useContext(RootStoreContext);
   const { loadingProject, selectedProject } = rootStore.projectStore;
 
@@ -54,6 +54,7 @@ const PostPortfolioPromotionsPromoteToP1 = ({ closeSidebar }) => {
   };
 
   if (!creatingP1 && !loadingProject) {
+    // Render the form if not creating P1 and project is not loading
     return (
       <div className="flex flex-column w-full">
         <div>
@@ -119,6 +120,7 @@ const PostPortfolioPromotionsPromoteToP1 = ({ closeSidebar }) => {
     );
   }
 
+  // Render a progress bar if creating P1 or project is loading
   return <ProgressBar mode="indeterminate" style={{ height: "6px" }} />;
 };
 

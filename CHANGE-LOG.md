@@ -1,5 +1,24 @@
 # Change Log
 
+## [v1.3.0]
+
+### Added
+
+- Updated core libraries and packages and refactored the UI for improved performance.
+- Added a new multi-variable Status column in the Screens component to track the progress of screens. The status options include 'Planned', 'Assay Development', 'Ongoing', 'Voting Ready', and 'Completed'.
+- Revamped the Screen Landing Page to showcase all Planned, Active, Voting Ready, and Recently Completed screens for better visibility and accessibility.
+- Updated the Phenotypic List Page to display screen names instead of screen tab names, along with the new Status column for easy reference.
+- Introduced data cleaning tools that allow users to edit and merge phenotypic screens, enhancing data management capabilities.
+- Implemented 'Import' and 'Export' Excel functionality for Phenotypic screens, enabling seamless data transfer.
+- Restricted the visibility of the Phenotypic screen component to 'admin' and 'screen' user groups, ensuring appropriate access control.
+- Updated the 'Data Restructuring in progress' webpage for the Phenotypic Screen component, making it visible only to 'admin' and 'screen' user groups.
+- Restored the Target questionnaire promotion form for Genes, making it accessible exclusively to 'admin' users.
+- Replaced the previously displayed undisclosed compounds, represented as benzene ring structures, with the term 'UNDISCLOSED' for enhanced clarity and transparency.
+
+### Fixed
+- Bug Fix: Resolved an issue where the success message while promoting to H2L from HA incorrectly displayed 'Promoted to HA' instead of 'Promoted to H2L'.
+
+  
 ## [v1.2.0]
 
 ### Added

@@ -9,7 +9,7 @@ import React, { useContext } from "react";
 import { RootStoreContext } from "../../../../app/stores/rootStore";
 
 const PortfolioPromotionsPromoteToSP = ({ closeSidebar }) => {
-  /* MobX Store */
+  // Accessing MobX Store
   const rootStore = useContext(RootStoreContext);
   const { loadingProject, selectedProject } = rootStore.projectStore;
 
@@ -53,6 +53,7 @@ const PortfolioPromotionsPromoteToSP = ({ closeSidebar }) => {
     );
   };
 
+  // Render form or progress bar based on loading state
   if (!creatingSP && !loadingProject) {
     return (
       <div className="flex flex-column w-full">

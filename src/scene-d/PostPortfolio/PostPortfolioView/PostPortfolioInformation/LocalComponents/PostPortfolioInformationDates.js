@@ -3,29 +3,35 @@ import { Dialog } from "primereact/dialog";
 import { Timeline } from "primereact/timeline";
 import React, { useRef, useState } from "react";
 import EmbeddedHelp from "../../../../../app/common/EmbeddedHelp/EmbeddedHelp";
-import FailedLoading from "../../../../../app/common/FailedLoading/FailedLoading";
 import FDate from "../../../../../app/common/FDate/FDate";
+import FailedLoading from "../../../../../app/common/FailedLoading/FailedLoading";
 import PredictedDateEditor from "../../../../../app/common/PredictedDateEditor/PredictedDateEditor";
 import StageTag from "../../../../../app/common/StageTag/StageTag";
 
 const PostPortfolioInformationDates = ({ project }) => {
-  const cm = useRef(null);
-  const [displayEditContainer, setDisplayEditContainer] = useState(false);
-  if (!project) return <FailedLoading />;
+  const cm = useRef(null); // Ref for ContextMenu
+  const [displayEditContainer, setDisplayEditContainer] = useState(false); // State for Dialog display
+  if (!project) return <FailedLoading />; // If project is not available, show FailedLoading component
+
+  // Array to store timeline events
   let timelineEvents = [];
 
+  // Push Portfolio event to timelineEvents array
   timelineEvents.push({
     stage: "Portfolio",
     date: project.spStart,
     predictedDateNextStage: project.h2LPredictedStart,
   });
 
+  // Push IND event to timelineEvents array if indEnabled is true
   if (project.indEnabled) {
     timelineEvents.push({
       stage: "IND",
       date: project.indStart,
       predictedDateNextStage: project.clinicalP1PredictedStart,
     });
+
+    // Push P1 event to timelineEvents array if status is not "Terminated" and clinicalP1Enabled is false
     if (project.status !== "Terminated" && !project.clinicalP1Enabled) {
       timelineEvents.push({
         stage: "P1",
@@ -35,12 +41,14 @@ const PostPortfolioInformationDates = ({ project }) => {
     }
   }
 
+  // Push P1 event to timelineEvents array if clinicalP1Enabled is true
   if (project.clinicalP1Enabled) {
     timelineEvents.push({
       stage: "P1",
       date: project.clinicalP1Start,
     });
   }
+  // Push Terminated event to timelineEvents array if status is "Terminated"
   if (project.status === "Terminated") {
     timelineEvents.push({
       stage: "Terminated",
@@ -55,6 +63,7 @@ const PostPortfolioInformationDates = ({ project }) => {
     },
   ];
 
+  // Function to generate header for the edit dialog
   let headerEditDialog = () => (
     <React.Fragment>
       <i className="icon icon-common icon-database"></i> &nbsp; Editing
@@ -62,6 +71,7 @@ const PostPortfolioInformationDates = ({ project }) => {
     </React.Fragment>
   );
 
+  // Function to generate date item for each event
   let generateDateItem = (item) => {
     return (
       <div onContextMenu={(e) => item.isPredicted && cm.current.show(e)}>
@@ -73,6 +83,7 @@ const PostPortfolioInformationDates = ({ project }) => {
     );
   };
 
+  // Function to customize marker for each event in the timeline
   const customizedMarker = (item) => {
     if (item.isPredicted) {
       return (
@@ -111,6 +122,7 @@ const PostPortfolioInformationDates = ({ project }) => {
     );
   };
 
+  // Function to generate tag for each event
   const tagGenerator = (item) => {
     if (item.isPredicted) {
       return <StageTag stage={"Dotted"} stageName={item.stage} />;

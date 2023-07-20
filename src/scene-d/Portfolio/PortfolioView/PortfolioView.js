@@ -22,9 +22,11 @@ import PortfolioPromotionsPromoteToLO from "./PortfolioPromotions/PortfolioPromo
 import PortfolioPromotionsPromoteToSP from "./PortfolioPromotions/PortfolioPromotionsPromoteToSP";
 
 const PortfolioView = () => {
+  // Get parameters and navigate function from react-router
   const params = useParams();
   const navigate = useNavigate();
 
+  // State variables
   const [displayLOPromotionDialog, setDisplayLOPromotionDialog] =
     useState(false);
   const [displaySPPromotionDialog, setDisplaySPPromotionDialog] =
@@ -33,13 +35,14 @@ const PortfolioView = () => {
     useState(false);
   const toast = useRef(null);
 
-  /* MobX Store */
+  // MobX Store
   const rootStore = useContext(RootStoreContext);
   const { user } = rootStore.userStore;
   const { loadingProject, fetchProject, selectedProject } =
     rootStore.projectStore;
 
   useEffect(() => {
+    // Fetch project when the component mounts or the project ID changes
     if (selectedProject === null || selectedProject.id !== params.id) {
       fetchProject(params.id);
     }
@@ -47,6 +50,7 @@ const PortfolioView = () => {
 
   /** Loading Overlay */
   if (loadingProject) {
+    // Show loading indicator if project is still loading
     return <Loading />;
   }
 
@@ -55,6 +59,7 @@ const PortfolioView = () => {
     selectedProject !== null &&
     selectedProject.id === params.id
   ) {
+    // Build side menu items
     const sideMenuItems = [
       {
         label: "Sections",
@@ -84,11 +89,13 @@ const PortfolioView = () => {
       },
     ];
 
+    // Create actions menu item
     var actions = {
       label: "Actions",
       items: [],
     };
 
+    // Check user roles to determine available actions
     if (user.roles.includes("admin") || user.roles.includes("projectManager")) {
       if (selectedProject.currentStage === "H2L") {
         actions.items.push({
@@ -241,6 +248,7 @@ const PortfolioView = () => {
     );
   }
 
+  // Show failed loading if project could not be loaded
   return <FailedLoading />;
 };
 

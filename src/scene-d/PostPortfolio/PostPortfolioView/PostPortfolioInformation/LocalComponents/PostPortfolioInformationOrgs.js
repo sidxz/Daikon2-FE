@@ -5,10 +5,10 @@ const PostPortfolioInformationOrgs = ({ project }) => {
   return (
     <div className="flex flex-column">
       <OrgChart
-        projectId={project.id}
-        activeOrgs={project?.supportingOrgs}
-        primary={project?.primaryOrg?.alias}
-        allowEdit={true}
+        projectId={project.id} // Pass the project ID to the OrgChart component
+        activeOrgs={project?.supportingOrgs} // Pass the supportingOrgs as activeOrgs
+        primary={project?.primaryOrg?.alias} // Pass the primaryOrg's alias as primary
+        allowEdit={true} // Enable editing in the OrgChart
       />
     </div>
   );

@@ -6,16 +6,17 @@ import { InputTextarea } from "primereact/inputtextarea";
 import { ProgressBar } from "primereact/progressbar";
 import { classNames } from "primereact/utils";
 import React, { useContext } from "react";
-
 import { RootStoreContext } from "../../../../app/stores/rootStore";
 
+// Component for promoting a portfolio to LO
 const PortfolioPromotionsPromoteToLO = ({ closeSidebar }) => {
-  /* MobX Store */
+  // Accessing MobX Store
   const rootStore = useContext(RootStoreContext);
   const { loadingProject, selectedProject } = rootStore.projectStore;
 
   const { creatingLO, createLO } = rootStore.portfolioStore;
 
+  // Initialize Formik for form management
   const formik = useFormik({
     initialValues: {
       loStart: "",
@@ -33,6 +34,7 @@ const PortfolioPromotionsPromoteToLO = ({ closeSidebar }) => {
     onSubmit: (data) => {
       data["id"] = selectedProject.id;
 
+      // Create LO and handle result
       createLO(data).then((res) => {
         if (res !== null) {
           closeSidebar();
@@ -44,8 +46,11 @@ const PortfolioPromotionsPromoteToLO = ({ closeSidebar }) => {
     },
   });
 
+  // Check if form field is valid
   const isFormFieldValid = (field) =>
     !!(formik.touched[field] && formik.errors[field]);
+
+  // Get form field error message
   const getFormErrorMessage = (field) => {
     return (
       isFormFieldValid(field) && (
@@ -54,12 +59,14 @@ const PortfolioPromotionsPromoteToLO = ({ closeSidebar }) => {
     );
   };
 
+  // Render form or progress bar based on state
   if (!creatingLO && !loadingProject) {
     return (
       <div className="flex flex-column w-full">
         <div>
           <div className="card w-full">
             <form onSubmit={formik.handleSubmit} className="p-fluid">
+              {/* LO Start Date Field */}
               <div className="field">
                 <label
                   htmlFor="loStart"
@@ -86,6 +93,7 @@ const PortfolioPromotionsPromoteToLO = ({ closeSidebar }) => {
                 {getFormErrorMessage("loStart")}
               </div>
 
+              {/* LO Description Field */}
               <div className="field">
                 <label
                   htmlFor="loDescription"
@@ -105,6 +113,7 @@ const PortfolioPromotionsPromoteToLO = ({ closeSidebar }) => {
                   })}
                 />
               </div>
+              {/* Submit Button */}
               <div className="field">
                 <Button
                   icon="icon icon-common icon-database-submit"

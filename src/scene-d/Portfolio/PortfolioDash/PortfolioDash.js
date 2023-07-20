@@ -16,21 +16,21 @@ import { appColors } from "../../../colors";
 import "./PortfolioDashDataTable.css";
 
 const PortfolioDash = () => {
-  /* MobX Store */
+  // MobX Store
   const rootStore = useContext(RootStoreContext);
   const { loadingProjects, fetchProjects, projectRegistry } =
     rootStore.projectStore;
 
   const { filterPortfolioProjects } = rootStore.portfolioStore;
-  /* Local State Management */
 
   useEffect(() => {
+    // Fetch projects if projectRegistry is empty
     if (projectRegistry.size === 0) {
       fetchProjects();
     }
   }, [fetchProjects, projectRegistry]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  /* local variables */
+  /* Local State Management */
 
   const dt = useRef(null);
 
@@ -39,10 +39,12 @@ const PortfolioDash = () => {
   const stages = ["H2L", "LO", "SP"];
   let todaysDate = new Date().setHours(0, 0, 0, 0);
 
+  // Stage item template for MultiSelect
   const stageItemTemplate = (option) => {
     return <StageTag stage={option} />;
   };
 
+  // Stage filter component for DataTable
   const stageFilter = (options) => (
     <MultiSelect
       value={options.value}
@@ -59,6 +61,7 @@ const PortfolioDash = () => {
   /* STATUS FILTER */
   const statuses = ["Active", "Terminated"];
 
+  // Status filter component for DataTable
   const statusFilter = (options) => (
     <SelectButton
       value={options.value}
@@ -69,6 +72,7 @@ const PortfolioDash = () => {
   );
   /* END STATUS FILTER */
 
+  // Body template for "Target" column in DataTable
   const TargetBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
@@ -78,6 +82,7 @@ const PortfolioDash = () => {
     );
   };
 
+  // Body template for "Project No" column in DataTable
   const ProjectNoBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
@@ -88,6 +93,7 @@ const PortfolioDash = () => {
     );
   };
 
+  // Body template for "Project Name" column in DataTable
   const ProjectNameBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
@@ -99,6 +105,7 @@ const PortfolioDash = () => {
     );
   };
 
+  // Body template for "Primary Organization" column in DataTable
   const PrimaryOrganizationBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
@@ -108,10 +115,12 @@ const PortfolioDash = () => {
     );
   };
 
+  // Body template for "Status" column in DataTable
   const StatusBodyTemplate = (rowData) => {
     return <TagGeneral tag={rowData.status} />;
   };
 
+  // Body template for "Date" column in DataTable
   const DateBodyTemplate = (rowData) => {
     let inputDate = new Date(rowData.h2LPredictedStart).setHours(0, 0, 0, 0);
     let stageDate = rowData.h2LPredictedStart;
@@ -187,6 +196,7 @@ const PortfolioDash = () => {
     );
   };
 
+  // Body template for "Current Stage" column in DataTable
   const StageBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
@@ -296,6 +306,7 @@ const PortfolioDash = () => {
       </div>
     );
   }
+  // Return loading state if projects are still loading
   return <Loading />;
 };
 

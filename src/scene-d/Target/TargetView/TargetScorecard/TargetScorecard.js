@@ -14,6 +14,8 @@ import TargetGrid from "./TargetGrid/TargetGrid";
 const TargetScorecard = () => {
   const toast = useRef(null);
 
+  // Get the root store and target store from MobX
+
   const rootStore = useContext(RootStoreContext);
   const {
     selectedTarget,
@@ -24,6 +26,7 @@ const TargetScorecard = () => {
 
   // const [state, setstate] = useState(initialState);
   useEffect(() => {
+    // Fetch questions on component mount
     fetchQuestions();
   }, [fetchQuestions]);
 

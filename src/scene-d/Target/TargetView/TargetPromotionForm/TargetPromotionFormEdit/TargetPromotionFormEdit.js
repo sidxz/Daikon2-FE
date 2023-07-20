@@ -12,12 +12,13 @@ import { RootStoreContext } from "../../../../../app/stores/rootStore";
 import { appColors } from "../../../../../colors";
 
 const TargetPromotionFormEdit = ({ data, selectedTarget }) => {
-  /* MobX Store */
+  // MobX Store
   const rootStore = useContext(RootStoreContext);
   const geneStore = rootStore.geneStore;
   const { editTargetPromotionInfo, editingTargetPromotionInfo } =
     rootStore.targetStore;
 
+  // Convert data to answers object
   let answers = {};
   data.forEach((ele) => {
     answers[ele.question.identification] = {
@@ -57,6 +58,7 @@ const TargetPromotionFormEdit = ({ data, selectedTarget }) => {
   ];
 
   useEffect(() => {
+    // Fetch promotion questions if not already loaded
     if (geneStore.promotionQuestionsRegistry.size === 0) {
       geneStore.getPromotionQuestions();
     }
@@ -75,6 +77,7 @@ const TargetPromotionFormEdit = ({ data, selectedTarget }) => {
     geneStore.promotionQuestionsRegistry.size !== 0
   ) {
     const updateTargetPromotionFormValue = (e) => {
+      // Update the form value based on user input
       var location = null;
       var newFormValue = null;
       var newField = null;
@@ -100,6 +103,7 @@ const TargetPromotionFormEdit = ({ data, selectedTarget }) => {
 
     let sections = TargetPromotionInfoUserSection;
     let generateForm = () => {
+      // Generate the form based on the sections, subsections, and questions
       return sections.map((section) => {
         let generateSubsections = section.subSections.map((subSection) => {
           let generateQuestions = subSection.questions.map((questionId) => {
@@ -153,6 +157,7 @@ const TargetPromotionFormEdit = ({ data, selectedTarget }) => {
     };
 
     let submitTargetPromotionFormValueForm = () => {
+      // Submit the form with the edited values
       var validationFail = false;
       var t_validationFails = [];
       Object.keys(targetPromotionFormValue).map((key) => {

@@ -10,7 +10,7 @@ import { appColors } from "../../../../colors";
 import cssClass from "./TargetCompass.module.css";
 
 const TargetCompass = () => {
-  /* MobX Store */
+  // Get the MobX root store
   const rootStore = useContext(RootStoreContext);
   const {
     target,
@@ -23,8 +23,10 @@ const TargetCompass = () => {
   } = rootStore.targetStore;
   const { user } = rootStore.userStore;
 
+  // Use the React Router hook for navigation
   const navigate = useNavigate();
 
+  // Define the breadcrumb items
   const breadCrumbItems = [
     {
       label: "Targets",
@@ -43,10 +45,12 @@ const TargetCompass = () => {
 
   return (
     <div className="flex flex-column w-full">
+      {/* Breadcrumb */}
       <div className="flex w-full pb-2">
         <BreadCrumb model={breadCrumbItems} />
       </div>
 
+      {/* Section Heading */}
       <div className="flex w-full">
         <SectionHeading
           icon="icon icon-common icon-target"
@@ -56,8 +60,11 @@ const TargetCompass = () => {
           color={appColors.sectionHeadingBg.target}
         />
       </div>
+
+      {/* Target Compass Quadrants */}
       <div className="flex w-full">
         <div className={[cssClass.QuadMain].join(" ")}>
+          {/* Quadrant 1 - Background */}
           <div className={[cssClass.QuadRow].join(" ")}>
             <div
               className={[cssClass.QuadColumn].join(" ")}
@@ -82,6 +89,8 @@ const TargetCompass = () => {
                 />
               </ScrollPanel>
             </div>
+
+            {/* Quadrant 2 - Enablement */}
             <div
               className={[cssClass.QuadColumn].join(" ")}
               style={{
@@ -106,7 +115,9 @@ const TargetCompass = () => {
               </ScrollPanel>
             </div>
           </div>
+
           <div className={[cssClass.QuadRow].join(" ")}>
+            {/* Quadrant 3 - Strategy */}
             <div
               className={[cssClass.QuadColumn].join(" ")}
               style={{
@@ -131,6 +142,7 @@ const TargetCompass = () => {
                 />
               </ScrollPanel>
             </div>
+            {/* Quadrant 4 - Challenges */}
             <div
               className={[cssClass.QuadColumn].join(" ")}
               style={{

@@ -9,6 +9,7 @@ const PostPortfolioInformationPriority = ({ project }) => {
   return (
     <React.Fragment>
       <div className="flex">
+        {/* Priority */}
         <div
           className="flex flex-column m-3 p-3"
           style={{ textAlign: "center", lineHeight: "0.5" }}
@@ -16,6 +17,7 @@ const PostPortfolioInformationPriority = ({ project }) => {
           Priority
           <h3>{project.teamPriority}</h3>
         </div>
+        {/* Probability */}
         <div
           className="flex flex-column m-3 p-3"
           style={{ textAlign: "center", lineHeight: "0.5" }}
@@ -23,6 +25,7 @@ const PostPortfolioInformationPriority = ({ project }) => {
           Probability
           <h3>{project.teamProbability}</h3>
         </div>
+        {/* Sidebar Toggle Button */}
         <div
           className="flex flex-column m-3 p-3"
           style={{ textAlign: "center", lineHeight: "0.5" }}
@@ -34,12 +37,13 @@ const PostPortfolioInformationPriority = ({ project }) => {
           />
         </div>
       </div>
-
+      {/* Sidebar */}
       <Sidebar
         visible={visible}
         position="right"
         onHide={() => setVisible(false)}
       >
+        {/* Priority Modification Form */}
         <PostPortfolioInformationProirityModify
           closeSidebar={() => setVisible(false)}
         />

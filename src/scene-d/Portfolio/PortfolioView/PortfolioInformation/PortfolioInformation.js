@@ -41,10 +41,12 @@ const PortfolioInformation = ({ id, project }) => {
 
       <div className="flex flex-column gap-2 w-full">
         <div className="flex w-full pb-2">
+          {/* Breadcrumb */}
           <BreadCrumb model={breadCrumbItems} />
         </div>
 
         <div className="flex w-full">
+          {/* Section heading */}
           <SectionHeading
             icon="icon icon-common icon-analyse"
             heading={project.projectName + " | " + project?.currentStage}
@@ -57,6 +59,7 @@ const PortfolioInformation = ({ id, project }) => {
             color={appColors.sectionHeadingBg.portfolio}
           />
         </div>
+        {/* Project information and dates */}
         <div className="flex w-full">
           <div className="flex">
             <Fieldset legend="Project Information">
@@ -76,12 +79,15 @@ const PortfolioInformation = ({ id, project }) => {
             </div>
           </div>
         </div>
+
+        {/* Participating organizations */}
         <div className="flex w-full">
           <Fieldset legend="Participating Organizations">
             <PortfolioInformationOrgs project={project} />
           </Fieldset>
         </div>
 
+        {/* Compound evolution */}
         <div className="flex w-full">
           <Fieldset legend="Compound Evolution">
             <CompoundEvolutionTimeline
