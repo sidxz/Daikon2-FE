@@ -11,13 +11,15 @@ on:
   push:
     branches:
     - master
+    - Release-v**
     tags:
-    - '*'
+    - 'Release-v**'
   pull_request:
     branches:
     - master
+    - Release-v**
     tags:
-    - '*'
+    - 'Release-v**'
 
 jobs:
  build-and-deploy-dev:
@@ -70,7 +72,7 @@ jobs:
           docker build . -t ${{ steps.azure-keyvault.outputs.github-actions-registry-login-server }}/daikon-frontend:${{ github.sha }} -t ${{ steps.azure-keyvault.outputs.github-actions-registry-login-server }}/daikon-frontend:latest
           docker push --all-tags ${{ steps.azure-keyvault.outputs.github-actions-registry-login-server }}/daikon-frontend
  build-and-deploy-prd:
-      if: startsWith(github.ref, 'refs/tags/Release-v')
+      if: $ {{ (startsWith(github.ref, 'refs/tags/Release-v')) || (startsWith(github.ref, 'refs/heads/Release-v') }}
       runs-on: ubuntu-latest
       steps:
         - name: "Checkout GitHub Action"
