@@ -12,14 +12,7 @@ const CustomFooterConfidentialTag = () => {
         </p>
         <ol>
           <li>
-            Information contained in any TBDA supported data repository
-            including but not limited to TBDA SharePoint site, CDD TBDA
-            disclosure vaults (for example the “TBDA Disclosed Compounds”
-            vault), TBDA Teams Sites, DAIKON, and any Disclosed Compounds”
-            vault), TBDA Teams Sites, DAIKON, and any other TBDA related
-            repositories, should be treated as TBDA Confidential unless the
-            content has been disclosed publicly or unless the content originator
-            has agreed that the information can be more widely shared or used.
+            Information contained in any TBDA supported data repository including but not limited to TBDA SharePoint site, CDD TBDA disclosure vaults (for example the “TBDA Disclosed Compounds” vault), TBDA Teams Sites, DAIKON, and any other TBDA related repositories, should be treated as TBDA Confidential  unless the content has been disclosed publicly or unless the content originator has agreed that the information can be more widely shared or used.
           </li>
           <li>
             Content deposited by another party (including presentations,

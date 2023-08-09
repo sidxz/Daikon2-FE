@@ -29,7 +29,7 @@ const Footer = () => {
           />
 
           <Dialog
-            header="Confidentiality Agreement"
+            header="TBDA Informatics Systems Acknowledgment"
             visible={showConfidentialAgreement}
             onHide={() => setShowConfidentialAgreement(false)}
             style={{ width: "70vw" }}
