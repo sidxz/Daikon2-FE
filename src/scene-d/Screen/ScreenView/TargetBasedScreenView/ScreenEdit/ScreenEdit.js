@@ -18,7 +18,7 @@ const ScreenEdit = ({ selectedScreenTargetFilter, close }) => {
     if (Orgs.length === 0) fetchOrgs();
   }, [fetchOrgs, Orgs]);
 
-  console.log(selectedScreen);
+  //console.log(selectedScreen);
 
   const formik = useFormik({
     initialValues: {

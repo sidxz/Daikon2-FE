@@ -25,7 +25,7 @@ const PhenotypicDisclosedHit = ({ screenId }) => {
       selectedPhenotypicScreen === null ||
       selectedPhenotypicScreen.id !== screenId
     ) {
-      console.log("PhenotypicDisclosedHit.js: screenId: ", screenId);
+      //console.log("PhenotypicDisclosedHit.js: screenId: ", screenId);
       fetchPhenotypicScreen(screenId);
     }
   }, [selectedPhenotypicScreen, fetchPhenotypicScreen, screenId]);
@@ -35,10 +35,10 @@ const PhenotypicDisclosedHit = ({ screenId }) => {
     return <PleaseWait />;
   }
 
-  console.log(
-    "PhenotypicDisclosedHit.js: selectedPhenotypicScreen: " +
-      selectedPhenotypicScreen.id
-  );
+  // console.log(
+  //   "PhenotypicDisclosedHit.js: selectedPhenotypicScreen: " +
+  //     selectedPhenotypicScreen.id
+  // );
 
   const breadCrumbItems = [
     {

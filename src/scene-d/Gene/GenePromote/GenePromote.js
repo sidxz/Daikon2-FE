@@ -110,7 +110,7 @@ const GenePromote = () => {
     Object.keys(targetPromotionFormValue).map((key) => {
       if (targetPromotionFormValue[key].answer === "") {
         console.error("Validation fail, blank answer");
-        console.log(targetPromotionFormValue[key]);
+        //console.log(targetPromotionFormValue[key]);
         validationFail = true;
       }
       if (
@@ -121,7 +121,7 @@ const GenePromote = () => {
         targetPromotionFormValue[key].description === ""
       ) {
         console.error("Validation fail, blank description");
-        console.log(targetPromotionFormValue[key]);
+        //console.log(targetPromotionFormValue[key]);
         validationFail = true;
       }
     });

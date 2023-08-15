@@ -162,7 +162,7 @@ export default class ScreenTStore {
   }
 
   get screensPhenotypic() {
-    console.log("get screensPhenotypic");
+    //console.log("get screensPhenotypic");
     return Array.from(this.screenPhenotypicRegistry.values());
   }
 

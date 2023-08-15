@@ -278,7 +278,7 @@ const ValidatedHitsList = ({ screenId }) => {
         icon: revealVoteEnabled ? "pi pi-eye-slash" : "pi pi-eye",
         command: () => {
           setRevealVoteEnabled(!revealVoteEnabled);
-          console.log(revealVoteEnabled);
+          //console.log(revealVoteEnabled);
         },
       };
       tableMenuItems.push(showVotesItem);

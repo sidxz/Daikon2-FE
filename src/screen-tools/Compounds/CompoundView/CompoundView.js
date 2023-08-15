@@ -40,7 +40,7 @@ const CompoundView = () => {
     selectedCompound !== null &&
     selectedCompound.id === params.id
   ) {
-    console.log(selectedCompound);
+    //console.log(selectedCompound);
     const sideMenuItems = [
       {
         label: "Sections",

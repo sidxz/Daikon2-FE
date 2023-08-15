@@ -59,7 +59,7 @@ const PhenotypicDisclosedHitTable = ({ screenId }) => {
       selectedPhenotypicScreen === null ||
       selectedPhenotypicScreen.id !== screenId
     ) {
-      console.log("PhenotypicDisclosedHit.js: screenId: ", screenId);
+      //console.log("PhenotypicDisclosedHit.js: screenId: ", screenId);
       fetchPhenotypicScreen(screenId);
     }
   }, [selectedPhenotypicScreen, fetchPhenotypicScreen, screenId]);
@@ -294,7 +294,7 @@ const PhenotypicDisclosedHitTable = ({ screenId }) => {
         icon: isVoteRevealed ? "pi pi-eye-slash" : "pi pi-eye",
         command: () => {
           setIsVoteRevealed(!isVoteRevealed);
-          console.log(isVoteRevealed);
+          //console.log(isVoteRevealed);
         },
       };
       tableMenuItems.push(showVotesItem);

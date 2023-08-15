@@ -49,10 +49,10 @@ const ScreenPhenotypicEdit = ({ screenId }) => {
     return <PleaseWait />;
   }
 
-  console.log(
-    "ScreenPhenotypicEdit.js: selectedPhenotypicScreen: ",
-    selectedPhenotypicScreen
-  );
+  // console.log(
+  //   "ScreenPhenotypicEdit.js: selectedPhenotypicScreen: ",
+  //   selectedPhenotypicScreen
+  // );
 
   const breadCrumbItems = [
     {
@@ -119,10 +119,10 @@ const ScreenPhenotypicEdit = ({ screenId }) => {
           onSubmit={(updatedScreen) => {
             updatedScreen.id = selectedPhenotypicScreen.id;
             updatedScreen.orgId = updatedScreen.org.id;
-            console.log(
-              "ScreenPhenotypicEdit.js: onSubmit: values: ",
-              updatedScreen
-            );
+            // console.log(
+            //   "ScreenPhenotypicEdit.js: onSubmit: values: ",
+            //   updatedScreen
+            // );
             updatePhenotypicScreen(updatedScreen);
           }}
         >

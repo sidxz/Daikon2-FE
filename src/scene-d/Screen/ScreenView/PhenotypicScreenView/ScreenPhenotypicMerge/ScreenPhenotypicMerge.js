@@ -59,10 +59,10 @@ const ScreenPhenotypicMerge = ({ screenId }) => {
     return <PleaseWait />;
   }
 
-  console.log(
-    "ScreenPhenotypicEdit.js: selectedPhenotypicScreen: ",
-    selectedPhenotypicScreen
-  );
+  // console.log(
+  //   "ScreenPhenotypicEdit.js: selectedPhenotypicScreen: ",
+  //   selectedPhenotypicScreen
+  // );
 
   const breadCrumbItems = [
     {
@@ -99,7 +99,7 @@ const ScreenPhenotypicMerge = ({ screenId }) => {
       MergeScreenId: screen2.id,
     };
 
-    console.log("ScreenPhenotypicMerge.js: MERGE: ", dto);
+    //console.log("ScreenPhenotypicMerge.js: MERGE: ", dto);
     mergePhenotypicScreen(dto);
   };
 

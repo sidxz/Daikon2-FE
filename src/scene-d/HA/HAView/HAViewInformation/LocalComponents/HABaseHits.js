@@ -23,7 +23,7 @@ const HABaseHits = ({ project }) => {
   }
 
   const StructureBodyTemplate = (rowData) => {
-    console.log(rowData);
+    //console.log(rowData);
     return (
       <React.Fragment>
         <div>

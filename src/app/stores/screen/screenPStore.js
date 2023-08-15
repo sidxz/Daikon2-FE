@@ -113,7 +113,7 @@ export default class ScreenPStore {
    * @returns {array} An array of all phenotypic screens.
    */
   get phenotypicScreens() {
-    console.log("Fetching all phenotypic screens");
+    //console.log("Fetching all phenotypic screens");
     return Array.from(this.phenotypicScreenRegistry.values());
   }
 
@@ -183,10 +183,10 @@ export default class ScreenPStore {
         }
         this.isPhenCacheValid = false;
         this.selectedPhenotypicScreen = null;
-        console.log(
-          "ScreenPStore.js: this.selectedPhenotypicScreen ",
-          this.selectedPhenotypicScreen
-        );
+        // console.log(
+        //   "ScreenPStore.js: this.selectedPhenotypicScreen ",
+        //   this.selectedPhenotypicScreen
+        // );
       });
     } catch (error) {
       console.error(error);
@@ -327,12 +327,12 @@ export default class ScreenPStore {
       const promises = editedScreenRows.map(async (editedScreenRow) => {
         editedScreenRow.screenId = this.selectedPhenotypicScreen.id;
         if (editedScreenRow.status === "New") {
-          console.log("Adding new row");
-          console.log(editedScreenRow);
+          //console.log("Adding new row");
+          //console.log(editedScreenRow);
           return await this.addPhenotypicScreenSequence(editedScreenRow);
         } else if (editedScreenRow.status === "Modified") {
-          console.log("Editing row");
-          console.log(editedScreenRow);
+          //console.log("Editing row");
+          //console.log(editedScreenRow);
           return await this.editPhenotypicScreenSequence(editedScreenRow);
         }
       });

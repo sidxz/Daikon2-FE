@@ -1,48 +1,44 @@
 import { ErrorMessage, Form, Formik } from "formik";
+import { observer } from "mobx-react-lite";
 import { Button } from "primereact/button";
 import { Checkbox } from "primereact/checkbox";
 import { InputText } from "primereact/inputtext";
-import React, { useContext, useState } from "react";
+import { ProgressBar } from "primereact/progressbar";
+import React, { useCallback, useContext, useState } from "react";
 import * as Yup from "yup";
 import { RootStoreContext } from "../../../../app/stores/rootStore";
 import AppAdminTargetTPTPossibleAnswerEditor from "./AppAdminTargetTPTPossibleAnswerEditor";
 
 const AppAdminTargetTPTQuestionEditor = ({ question, closeEditDialog }) => {
   const rootStore = useContext(RootStoreContext);
-  const {
-    fetchQuestions,
-    questions,
-    isFetchingQuestions,
-    isEditingQuestions,
-    addOrEditQuestions,
-  } = rootStore.targetPTQuestionnaireMetaStore;
+  const { isEditingQuestions, addOrEditQuestions } =
+    rootStore.targetPTQuestionnaireMetaStore;
 
-  const initialAnswers = question.possibleAnswers || [];
+  const initialAnswers = question.possibleAnswerWithDesc || [];
 
-  const [answers, setAnswers] = useState(initialAnswers);
+  const [answers, setAnswers] = useState(
+    initialAnswers.slice().sort((a, b) => a.answer.localeCompare(b.answer))
+  );
+  //console.log(answers);
 
-  const handleAnswerChange = (e) => {
+  const handleAnswerChange = useCallback((e) => {
     const { id, name, value } = e.target;
-    setAnswers((prevAnswers) => {
-      return prevAnswers.map((answer) => {
-        if (answer.id.toString() === id) {
-          return { ...answer, [name]: value };
-        }
-        return answer;
-      });
-    });
-  };
+    setAnswers((prevAnswers) =>
+      prevAnswers.map((answer) =>
+        answer.id.toString() === id ? { ...answer, [name]: value } : answer
+      )
+    );
+  }, []);
 
   const handleSubmit = (values) => {
-    values.id = question.id;
-    values.identification = question.identification;
-    values.answers = answers;
-    // Handle form submission here
-    console.log([values]);
-    addOrEditQuestions([values]).then(() => {
-      // close the closeEditDialog if success
-      closeEditDialog();
+    Object.assign(values, {
+      id: question.id,
+      identification: question.identification,
+      PossibleAnswerWithDesc: answers,
     });
+
+    //console.log(values);
+    addOrEditQuestions([values]).then(closeEditDialog);
   };
 
   const validationSchema = Yup.object().shape({
@@ -76,6 +72,18 @@ const AppAdminTargetTPTQuestionEditor = ({ question, closeEditDialog }) => {
     toolTip: question.toolTip || "",
     weight: question.weight || 0,
   };
+
+  if (isEditingQuestions) {
+    return (
+      <div className="flex w-full">
+        <ProgressBar
+          mode="indeterminate"
+          className="w-full"
+          style={{ height: "10rem" }}
+        />
+      </div>
+    );
+  }
 
   return (
     <Formik
@@ -231,4 +239,4 @@ const AppAdminTargetTPTQuestionEditor = ({ question, closeEditDialog }) => {
   );
 };
 
-export default AppAdminTargetTPTQuestionEditor;
+export default observer(AppAdminTargetTPTQuestionEditor);

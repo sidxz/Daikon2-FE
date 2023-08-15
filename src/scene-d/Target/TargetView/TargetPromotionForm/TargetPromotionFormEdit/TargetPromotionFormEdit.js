@@ -98,7 +98,7 @@ const TargetPromotionFormEdit = ({ data, selectedTarget }) => {
         setTargetPromotionFormValue(newFormValue);
       }
 
-      //console.log(targetPromotionFormValue);
+      ////console.log(targetPromotionFormValue);
     };
 
     let sections = TargetPromotionInfoUserSection;
@@ -166,7 +166,7 @@ const TargetPromotionFormEdit = ({ data, selectedTarget }) => {
           targetPromotionFormValue[key].answer === null
         ) {
           console.error("Validation fail, blank answer");
-          console.log(key);
+          //console.log(key);
           validationFail = true;
           t_validationFails.push(key);
         }
@@ -178,7 +178,7 @@ const TargetPromotionFormEdit = ({ data, selectedTarget }) => {
           targetPromotionFormValue[key].description === ""
         ) {
           console.error("Validation fail, blank decription");
-          console.log(key);
+          //console.log(key);
           validationFail = true;
           t_validationFails.push(key);
         }

@@ -67,7 +67,7 @@ export default class CompoundStore {
         this.displayLoading = false;
       });
       toast.error("Problem loading compounds");
-      console.log(error);
+      //console.log(error);
     }
   };
 

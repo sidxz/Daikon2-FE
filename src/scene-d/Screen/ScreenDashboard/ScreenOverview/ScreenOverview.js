@@ -24,7 +24,7 @@ const ScreenOverview = () => {
     }
   }, [loadScreenDash, isLoadingScreenDash, screenDash]);
 
-  console.log("screenDash", screenDash);
+  //console.log("screenDash", screenDash);
 
   if (isLoadingScreenDash || screenDash === null) {
     return <div>Loading...</div>;
