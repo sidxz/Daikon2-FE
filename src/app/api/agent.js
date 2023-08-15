@@ -407,6 +407,12 @@ const Compounds = {
     requests.post(`/compound/${id}/edit-external-id`, compound),
 };
 
+const TargetPromotionToolQuestionnaire = {
+  list: () => requests.get(`/elevated/TargetPromotionToolQuestionnaire`),
+  edit: (questions) =>
+    requests.post(`/elevated/TargetPromotionToolQuestionnaire`, questions),
+};
+
 const exports = {
   AppPrecheck,
   AuthServiceInstance,
@@ -426,6 +432,7 @@ const exports = {
   Vote,
   DataView,
   Compounds,
+  TargetPromotionToolQuestionnaire,
 };
 
 export default exports;

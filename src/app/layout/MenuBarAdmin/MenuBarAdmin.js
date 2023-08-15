@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 // import "./MenuBarAdmin.css";
-import { TabMenu } from 'primereact/tabmenu';
+import { TabMenu } from "primereact/tabmenu";
 const MenuBarAdmin = () => {
   const navigate = useNavigate();
   let location = useLocation();
@@ -11,7 +11,11 @@ const MenuBarAdmin = () => {
 
   useEffect(() => {
     if (location.pathname.includes("/admin/user-manager/")) setActiveIndex(1);
-    else if (location.pathname.includes("/admin/app-imports")) setActiveIndex(3);
+    else if (location.pathname.includes("/admin/target-promotion-tool"))
+      setActiveIndex(2);
+    else if (location.pathname.includes("/admin/settings")) setActiveIndex(3);
+    else if (location.pathname.includes("/admin/app-imports"))
+      setActiveIndex(4);
     else if (location.pathname.includes("/admin")) setActiveIndex(0);
   }, [location, setActiveIndex]);
 
@@ -27,6 +31,11 @@ const MenuBarAdmin = () => {
       command: () => navigate("/admin/user-manager/"),
     },
     {
+      label: "Target Promotion Tool",
+      icon: "icon icon-common icon-dot-circle",
+      command: () => navigate("/admin/target-promotion-tool/"),
+    },
+    {
       label: "App Settings",
       icon: "icon icon-common icon-cogs",
       command: () => navigate("/admin/settings"),
@@ -36,11 +45,7 @@ const MenuBarAdmin = () => {
       icon: "icon icon-common icon-gavel",
       command: () => navigate("/admin/app-imports"),
     },
-
-
-
   ];
-
 
   return (
     <div className="flex justify-content-center flex-wrap">
@@ -52,7 +57,6 @@ const MenuBarAdmin = () => {
         />
       </div>
     </div>
-
   );
 };
 
