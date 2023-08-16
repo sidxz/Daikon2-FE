@@ -86,13 +86,15 @@ const GenePromoteQuestionnaire = ({
             color={appColors.sectionHeadingBg.gene}
             customButtons={[
               {
-                label: "Save",
+                label: "Save Progress in Browser",
+                className: "p-button-secondary",
                 action: () => {
                   saveFormToLocalStorage();
                 },
               },
               {
                 label: "Reset",
+                className: "p-button-warning",
                 action: () => {
                   resetFormLocalStorage();
                 },

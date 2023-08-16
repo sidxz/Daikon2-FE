@@ -15,8 +15,6 @@ const GenePromote = () => {
 
   const params = useParams();
 
-  const { submitPromotionQuestionaire } = rootStore.geneStore;
-
   const {
     questions,
     isFetchingQuestions,
@@ -24,6 +22,8 @@ const GenePromote = () => {
     questionsRegistry,
     isCacheValid,
     getGenePromotionDataObj,
+    isPromotionQuestionnaireSubmitting,
+    submitPromotionQuestionnaire,
   } = rootStore.genePromotionStore;
 
   const [targetPromotionFormValue, setTargetPromotionFormValue] = useState({});
@@ -110,7 +110,7 @@ const GenePromote = () => {
       }
       if (
         !(
-          targetPromotionFormValue[key].answer === "Unknown" ||
+          targetPromotionFormValue[key].answer === "UNKNOWN" ||
           targetPromotionFormValue[key].answer === "NA"
         ) &&
         targetPromotionFormValue[key].description === ""
@@ -122,12 +122,8 @@ const GenePromote = () => {
     });
 
     if (validationFail) {
-      toast.current.show({
-        severity: "error",
-        summary: "Error Submitting",
-        detail: "Required fields are missing.",
-        life: 3000,
-      });
+      toast.warning("Required fields are missing");
+
       return;
     }
 
@@ -144,11 +140,13 @@ const GenePromote = () => {
       });
     });
 
-    submitPromotionQuestionaire(params.proposedTargetName, data).then((res) => {
-      if (res !== null) {
-        setFormSuccess(true);
+    submitPromotionQuestionnaire(params.proposedTargetName, data).then(
+      (res) => {
+        if (res !== null) {
+          setFormSuccess(true);
+        }
       }
-    });
+    );
   };
 
   if (formSuccess) {
@@ -159,6 +157,10 @@ const GenePromote = () => {
         message={"Thank you, Target WG will review & assigns a bucket."}
       />
     );
+  }
+
+  if (isPromotionQuestionnaireSubmitting) {
+    return <Loading />;
   }
 
   return (
@@ -183,6 +185,9 @@ const GenePromote = () => {
           questions={questions}
           targetPromotionFormValue={targetPromotionFormValue}
           promotionQuestionsRegistry={questionsRegistry}
+          submitTargetPromotionFormValueForm={() =>
+            submitTargetPromotionFormValueForm()
+          }
         />
       </Dialog>
     </>

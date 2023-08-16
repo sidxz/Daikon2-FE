@@ -13,6 +13,8 @@ export default class GenePromotionStore {
   isFetchingQuestions = false;
   isCacheValid = false;
 
+  isPromotionQuestionnaireSubmitting = false;
+
   genePromotionDataObj = {};
 
   constructor(rootStore) {
@@ -30,6 +32,9 @@ export default class GenePromotionStore {
       genePromotionDataObj: observable,
       saveGenePromotionDataObj: action,
       getGenePromotionDataObj: action,
+
+      submitPromotionQuestionnaire: action,
+      isPromotionQuestionnaireSubmitting: observable,
     });
   }
 
@@ -84,5 +89,23 @@ export default class GenePromotionStore {
 
   getGenePromotionDataObj = () => {
     return this.genePromotionDataObj;
+  };
+
+  /* submit Promotion Questionnaire from API */
+  submitPromotionQuestionnaire = async (targetName, data) => {
+    this.isPromotionQuestionnaireSubmitting = true;
+    let res = null;
+
+    // send to server
+    try {
+      res = await agent.Gene.submitPromotionQuestionnaire(targetName, data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      runInAction(() => {
+        this.isPromotionQuestionnaireSubmitting = false;
+      });
+    }
+    return res;
   };
 }
