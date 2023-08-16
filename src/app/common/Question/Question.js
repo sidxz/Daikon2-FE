@@ -19,6 +19,32 @@ const Question = ({ question, updateObject, readObject, highlightRed }) => {
       ]);
     return borderCssClass.join(" ");
   };
+
+  const selectedOptionTemplate = (option, props) => {
+    if (option) {
+      return (
+        <div className="flex flex-column max-w-30rem flex-wrap justify-content-center">
+          {option.answer}
+        </div>
+      );
+    }
+
+    return <span>{props.placeholder}</span>;
+  };
+
+  const optionTemplate = (option) => {
+    return (
+      <div className="flex flex-column gap-1 max-w-30rem flex-wrap pt-1">
+        <div className="flex font-bold text-md border-400 surface-300 p-1">
+          {option.answer}
+        </div>
+        <div className="flex flex-wrap white-space-normal ml-4">
+          {option.description}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className={getBorderCssClass()}>
       <div className="flex align-items-center">
@@ -48,8 +74,11 @@ const Question = ({ question, updateObject, readObject, highlightRed }) => {
         <Dropdown
           id={question.identification}
           style={{ width: "9rem", height: "2.5rem" }}
-          options={question.possibleAnswers}
+          options={question.possibleAnswerWithDesc}
+          valueTemplate={selectedOptionTemplate}
+          itemTemplate={optionTemplate}
           value={readObject?.[question.identification]?.answer}
+          optionLabel="answer"
           onChange={(e) => updateObject(e)}
         />
       </div>
