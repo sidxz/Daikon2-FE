@@ -10,6 +10,7 @@ export default class GenePromotionStore {
   rootStore;
 
   questionsRegistry = new Map();
+  adminQuestionsRegistry = new Map();
   isFetchingQuestions = false;
   isCacheValid = false;
 
@@ -25,6 +26,7 @@ export default class GenePromotionStore {
       isFetchingQuestions: observable,
       fetchQuestions: action,
       questionsRegistry: observable,
+      adminQuestionsRegistry: observable,
       questions: computed,
       questionsGrouped: computed,
       isCacheValid: observable,
@@ -35,6 +37,9 @@ export default class GenePromotionStore {
 
       submitPromotionQuestionnaire: action,
       isPromotionQuestionnaireSubmitting: observable,
+
+      adminQuestions: computed,
+      adminQuestionsGrouped: computed,
     });
   }
 
@@ -45,7 +50,11 @@ export default class GenePromotionStore {
       let res = await agent.TargetPromotionToolQuestionnaire.list();
       runInAction(() => {
         res.forEach((question) => {
-          this.questionsRegistry.set(question.identification, question);
+          if (question.isAdminOnly) {
+            this.adminQuestionsRegistry.set(question.identification, question);
+          } else {
+            this.questionsRegistry.set(question.identification, question);
+          }
         });
       });
     } catch (error) {
@@ -62,10 +71,35 @@ export default class GenePromotionStore {
     return Array.from(this.questionsRegistry.values());
   }
 
+  get adminQuestions() {
+    return Array.from(this.adminQuestionsRegistry.values());
+  }
+
   get questionsGrouped() {
     let groupedObject = {};
 
     for (let obj of this.questions) {
+      let section = obj.section;
+      let subSection = obj.subSection;
+
+      if (!groupedObject[section]) {
+        groupedObject[section] = {};
+      }
+
+      if (!groupedObject[section][subSection]) {
+        groupedObject[section][subSection] = [];
+      }
+
+      groupedObject[section][subSection].push(obj);
+    }
+
+    return groupedObject;
+  }
+
+  get adminQuestionsGrouped() {
+    let groupedObject = {};
+
+    for (let obj of this.adminQuestions) {
       let section = obj.section;
       let subSection = obj.subSection;
 
