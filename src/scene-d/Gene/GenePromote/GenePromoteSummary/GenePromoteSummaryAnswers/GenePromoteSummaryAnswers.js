@@ -1,14 +1,20 @@
 import React from "react";
 
+/**
+ * GenePromoteSummaryAnswers Component: Displays questions and their answers.
+ * Highlights any missing answers or descriptions.
+ *
+ * @param {string} oKey - The object key for the current question.
+ * @param {Map} questionObj - Map of questions.
+ * @param {Object} ansObj - Object of answers and descriptions.
+ */
 const GenePromoteSummaryAnswers = ({ oKey, questionObj, ansObj }) => {
-  console.log("ansObj", ansObj);
-  let qClass =
-    ansObj[oKey] === undefined || ansObj[oKey].answer === ""
-      ? "flex align-items-center w-2 pl-2 border-1 border-round border-red-500 surface-overlay"
-      : "flex align-items-center w-2 pl-2 border-1 border-round";
+  // Check if the answer for the given key is missing.
+  const isAnswerMissing = () => !ansObj[oKey]?.answer;
 
-  let dClass = () => {
-    let allowedAns = [
+  // Check if the description for allowed answers is missing.
+  const isDescriptionMissing = () => {
+    const allowedAnswers = [
       "YES",
       "NO",
       "ACTIVE",
@@ -17,38 +23,42 @@ const GenePromoteSummaryAnswers = ({ oKey, questionObj, ansObj }) => {
       "MEDIUM",
       "LOW",
     ];
-
-    if (ansObj[oKey] === undefined || ansObj[oKey].answer === "") {
-      return "flex align-items-center w-6 pl-2 border-1 border-round border-red-500 surface-overlay";
-    }
-    if (
-      allowedAns.includes(ansObj[oKey]?.answer) &&
-      (ansObj[oKey]?.description === undefined ||
-        ansObj[oKey]?.description === "")
-    ) {
-      return "flex align-items-center w-6 pl-2 border-3 border-round border-red-500 surface-overlay";
-    } else {
-      return "flex align-items-center w-6 pl-2 border-1 border-round";
-    }
+    return (
+      allowedAnswers.includes(ansObj[oKey]?.answer) &&
+      !ansObj[oKey]?.description
+    );
   };
 
-  console.log("qClass", qClass);
-  console.log("dClass", dClass());
-
+  // Render the main component.
   return (
     <div className="flex align-content-center gap-2 mb-2 w-full">
       <div className="flex align-items-center w-4 pl-2 border-1 border-round">
         <p>
           <b>{oKey} | </b>
-          {questionObj.get(oKey)?.questionBody} :{" "}
+          {questionObj.get(oKey)?.questionBody}
         </p>
       </div>
-      <div className={qClass}>
+      <div
+        className={
+          isAnswerMissing()
+            ? "flex align-items-center w-2 pl-2 border-3 border-round border-red-500 surface-overlay"
+            : "flex align-items-center w-2 pl-2 border-1 border-round"
+        }
+      >
         <p>{ansObj[oKey]?.answer}</p>
       </div>
-      <div className={dClass()} style={{ overflowWrap: "break-word" }}>
+      <div
+        className={
+          isDescriptionMissing()
+            ? "flex align-items-center w-6 pl-2 border-3 border-round border-red-500 surface-overlay"
+            : "flex align-items-center w-6 pl-2 border-1 border-round"
+        }
+        style={{ overflowWrap: "break-word" }}
+      >
         <p style={{ overflowWrap: "break-word" }}>
-          {ansObj[oKey]?.description}
+          {isDescriptionMissing()
+            ? "Description missing. Kindly provide more details in the form."
+            : ansObj[oKey]?.description}
         </p>
       </div>
     </div>
