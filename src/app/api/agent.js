@@ -151,7 +151,7 @@ const Gene = {
     requests.get(`/gene/by-accession/${accessionNo}`),
   edit: (newGene) => requests.post(`/gene/${newGene.id}`, newGene),
   history: (id) => requests.get(`/gene/${id}/history`),
-  promotionQuestions: () => requests.get(`/geneconfig/promote/questionaire`),
+  promotionQuestions: () => requests.get(`/geneconfig/promote/questionnaire`),
   searchByIdGeneGroup: (geneId) =>
     requests.get(`/geneconfig/groups/search-by-gene-id/${geneId}`),
   submitPromotionQuestionaire: (targetName, data) =>

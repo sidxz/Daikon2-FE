@@ -39,7 +39,7 @@ export function ExportYamlTargetPromoteToolQuestionnaire(jsObj) {
         ? item.possibleAnswerWithDesc.map((answer) => ({
             id: answer.id,
             answer: answer.answer,
-            questionId: answer.QuestionId,
+            questionId: answer.questionId,
             description: answer.description,
           }))
         : [],

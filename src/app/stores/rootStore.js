@@ -10,6 +10,7 @@ import AdminStore from "./admin/adminStore";
 import CompoundStore from "./compound/compoundStore";
 import DataViewStore from "./dataView/dataViewStore";
 import DiscussionStore from "./discussion/discussionStore";
+import GenePromotionStore from "./gene/genePromotionStore";
 import GeneStore from "./gene/geneStore";
 import GeneStoreAdmin from "./gene/geneStoreAdmin";
 import HAStore from "./project/haStore";
@@ -54,6 +55,7 @@ export class RootStore {
   userStore;
   votingStore;
   targetPTQuestionnaireMetaStore;
+  genePromotionStore;
 
   /**
    * constructor: Initializes the sub-stores.
@@ -84,6 +86,7 @@ export class RootStore {
     this.targetPTQuestionnaireMetaStore = new TargetPTQuestionnaireMetaStore(
       this
     );
+    this.genePromotionStore = new GenePromotionStore(this);
   }
 }
 

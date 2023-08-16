@@ -211,7 +211,7 @@ const TargetPromotionFormEdit = ({ data, selectedTarget }) => {
         toast.info("No changes to save.");
       }
 
-      // submitPromotionQuestionaire(params.ptarget, data).then((res) => {
+      // submitPromotionQuestionaire(params.proposedTargetName, data).then((res) => {
       //   if (res !== null) {
       //     setFormSuccess(true);
       //   }

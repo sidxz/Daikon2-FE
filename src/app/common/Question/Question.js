@@ -45,6 +45,15 @@ const Question = ({ question, updateObject, readObject, highlightRed }) => {
     );
   };
 
+  let cautionClass = () => {
+    if (readObject?.[question.identification]?.answer !== "UNKNOWN") {
+      if (readObject?.[question.identification]?.description === "") {
+        return true;
+      }
+    }
+    return false;
+  };
+
   return (
     <div className={getBorderCssClass()}>
       <div className="flex align-items-center">
@@ -79,6 +88,7 @@ const Question = ({ question, updateObject, readObject, highlightRed }) => {
           itemTemplate={optionTemplate}
           value={readObject?.[question.identification]?.answer}
           optionLabel="answer"
+          optionValue="answer"
           onChange={(e) => updateObject(e)}
         />
       </div>
@@ -90,7 +100,12 @@ const Question = ({ question, updateObject, readObject, highlightRed }) => {
             id={question.identification + "Description"}
             value={readObject?.[question.identification]?.description || ""}
             onChange={(e) => updateObject(e)}
-            placeholder="Description"
+            placeholder={
+              cautionClass()
+                ? "Description is required*. Click to edit"
+                : "Description"
+            }
+            className={cautionClass() ? "border-red-500" : ""}
           />
         </span>
       </div>

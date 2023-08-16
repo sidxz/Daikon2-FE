@@ -55,8 +55,6 @@ export default class GeneStore {
 
   promotionQuestionsRegistry = new Map();
 
-  genePromotionDataObj = {};
-
   searchedGeneGroup = null;
 
   constructor(rootStore) {
@@ -134,9 +132,6 @@ export default class GeneStore {
       validateTargetName: action,
       validateTargetNameLoading: observable,
       proposedTargetNameValidated: observable,
-
-      saveGenePromotionDataObj: action,
-      getGenePromotionDataObj: action,
 
       searchingGeneGroup: observable,
       searchedGeneGroup: observable,
@@ -762,14 +757,6 @@ export default class GeneStore {
         this.validateTargetNameLoading = false;
       });
     }
-  };
-
-  saveGenePromotionDataObj = (data) => {
-    this.genePromotionDataObj = { ...data };
-  };
-
-  getGenePromotionDataObj = () => {
-    return this.genePromotionDataObj;
   };
 
   searchGeneGroup = async (geneId) => {

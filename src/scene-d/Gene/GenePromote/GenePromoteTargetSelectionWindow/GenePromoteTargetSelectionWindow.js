@@ -40,12 +40,12 @@ const GenePromoteTargetSelectionWindow = ({
     validateTargetName,
     validateTargetNameLoading,
     proposedTargetNameValidated,
-    saveGenePromotionDataObj,
-    // genePromotionDataObj,
     searchingGeneGroup,
     searchedGeneGroup,
     searchGeneGroup,
   } = rootStore.geneStore;
+
+  const { saveGenePromotionDataObj } = rootStore.genePromotionStore;
 
   let onExit = () => {
     setDisplayPromotionDialog(false);

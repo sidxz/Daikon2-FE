@@ -56,7 +56,7 @@ const AppDefault = () => {
           />
           {/* Currently disabled for all except for admin */}
           <Route
-            path="gene/promote/:ptarget"
+            path="gene/promote/:proposedTargetName"
             element={
               user.roles.includes("admin") ? <GenePromote /> : <NotFound />
             }

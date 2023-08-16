@@ -28,7 +28,7 @@ const GenePromoteFormImpactOfChemInhibit = (props) => {
         <div className="fluid">
           <div className="field">
             <Question
-              question={props.promotionQuestionsRegistry.get("2a1")}
+              question={props.questionsRegistry.get("2a1")}
               updateObject={(e) => props.updateTargetPromotionFormValue(e)}
               readObject={props.targetPromotionFormValue}
             />
@@ -36,7 +36,7 @@ const GenePromoteFormImpactOfChemInhibit = (props) => {
 
           <div className="field">
             <Question
-              question={props.promotionQuestionsRegistry.get("2a1b")}
+              question={props.questionsRegistry.get("2a1b")}
               updateObject={(e) => props.updateTargetPromotionFormValue(e)}
               readObject={props.targetPromotionFormValue}
             />
@@ -44,7 +44,7 @@ const GenePromoteFormImpactOfChemInhibit = (props) => {
 
           <div className="field ">
             <Question
-              question={props.promotionQuestionsRegistry.get("2a2")}
+              question={props.questionsRegistry.get("2a2")}
               updateObject={(e) => props.updateTargetPromotionFormValue(e)}
               readObject={props.targetPromotionFormValue}
             />
@@ -52,7 +52,7 @@ const GenePromoteFormImpactOfChemInhibit = (props) => {
 
           <div className="field ">
             <Question
-              question={props.promotionQuestionsRegistry.get("2a3a")}
+              question={props.questionsRegistry.get("2a3a")}
               updateObject={(e) => props.updateTargetPromotionFormValue(e)}
               readObject={props.targetPromotionFormValue}
             />
@@ -60,7 +60,7 @@ const GenePromoteFormImpactOfChemInhibit = (props) => {
 
           <div className="field ">
             <Question
-              question={props.promotionQuestionsRegistry.get("2a3b")}
+              question={props.questionsRegistry.get("2a3b")}
               updateObject={(e) => props.updateTargetPromotionFormValue(e)}
               readObject={props.targetPromotionFormValue}
             />
@@ -68,7 +68,7 @@ const GenePromoteFormImpactOfChemInhibit = (props) => {
 
           <div className="field ">
             <Question
-              question={props.promotionQuestionsRegistry.get("2a4a")}
+              question={props.questionsRegistry.get("2a4a")}
               updateObject={(e) => props.updateTargetPromotionFormValue(e)}
               readObject={props.targetPromotionFormValue}
             />
@@ -76,7 +76,7 @@ const GenePromoteFormImpactOfChemInhibit = (props) => {
 
           <div className="field ">
             <Question
-              question={props.promotionQuestionsRegistry.get("2a5")}
+              question={props.questionsRegistry.get("2a5")}
               updateObject={(e) => props.updateTargetPromotionFormValue(e)}
               readObject={props.targetPromotionFormValue}
             />
@@ -92,7 +92,7 @@ const GenePromoteFormImpactOfChemInhibit = (props) => {
         <div className="fluid">
           <div className="field ">
             <Question
-              question={props.promotionQuestionsRegistry.get("2b1")}
+              question={props.questionsRegistry.get("2b1")}
               updateObject={(e) => props.updateTargetPromotionFormValue(e)}
               readObject={props.targetPromotionFormValue}
             />
@@ -100,7 +100,7 @@ const GenePromoteFormImpactOfChemInhibit = (props) => {
 
           <div className="field ">
             <Question
-              question={props.promotionQuestionsRegistry.get("2b2")}
+              question={props.questionsRegistry.get("2b2")}
               updateObject={(e) => props.updateTargetPromotionFormValue(e)}
               readObject={props.targetPromotionFormValue}
             />
@@ -108,7 +108,7 @@ const GenePromoteFormImpactOfChemInhibit = (props) => {
 
           <div className="field ">
             <Question
-              question={props.promotionQuestionsRegistry.get("2b4")}
+              question={props.questionsRegistry.get("2b4")}
               updateObject={(e) => props.updateTargetPromotionFormValue(e)}
               readObject={props.targetPromotionFormValue}
             />
@@ -124,7 +124,7 @@ const GenePromoteFormImpactOfChemInhibit = (props) => {
         <div className="fluid">
           <div className="field ">
             <Question
-              question={props.promotionQuestionsRegistry.get("2c1")}
+              question={props.questionsRegistry.get("2c1")}
               updateObject={(e) => props.updateTargetPromotionFormValue(e)}
               readObject={props.targetPromotionFormValue}
             />
@@ -132,7 +132,7 @@ const GenePromoteFormImpactOfChemInhibit = (props) => {
 
           <div className="field ">
             <Question
-              question={props.promotionQuestionsRegistry.get("2c2")}
+              question={props.questionsRegistry.get("2c2")}
               updateObject={(e) => props.updateTargetPromotionFormValue(e)}
               readObject={props.targetPromotionFormValue}
             />
@@ -140,7 +140,7 @@ const GenePromoteFormImpactOfChemInhibit = (props) => {
 
           <div className="field ">
             <Question
-              question={props.promotionQuestionsRegistry.get("2c3")}
+              question={props.questionsRegistry.get("2c3")}
               updateObject={(e) => props.updateTargetPromotionFormValue(e)}
               readObject={props.targetPromotionFormValue}
             />
@@ -148,7 +148,7 @@ const GenePromoteFormImpactOfChemInhibit = (props) => {
 
           <div className="field ">
             <Question
-              question={props.promotionQuestionsRegistry.get("2c4")}
+              question={props.questionsRegistry.get("2c4")}
               updateObject={(e) => props.updateTargetPromotionFormValue(e)}
               readObject={props.targetPromotionFormValue}
             />
@@ -156,7 +156,7 @@ const GenePromoteFormImpactOfChemInhibit = (props) => {
 
           <div className="field ">
             <Question
-              question={props.promotionQuestionsRegistry.get("2c5")}
+              question={props.questionsRegistry.get("2c5")}
               updateObject={(e) => props.updateTargetPromotionFormValue(e)}
               readObject={props.targetPromotionFormValue}
             />

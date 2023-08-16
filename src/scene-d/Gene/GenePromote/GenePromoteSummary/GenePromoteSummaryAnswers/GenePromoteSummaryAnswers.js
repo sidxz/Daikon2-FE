@@ -1,6 +1,7 @@
 import React from "react";
 
 const GenePromoteSummaryAnswers = ({ oKey, questionObj, ansObj }) => {
+  console.log("ansObj", ansObj);
   let qClass =
     ansObj[oKey] === undefined || ansObj[oKey].answer === ""
       ? "flex align-items-center w-2 pl-2 border-1 border-round border-red-500 surface-overlay"
@@ -8,13 +9,13 @@ const GenePromoteSummaryAnswers = ({ oKey, questionObj, ansObj }) => {
 
   let dClass = () => {
     let allowedAns = [
-      "Yes",
-      "No",
-      "Active",
-      "Inactive",
-      "High",
-      "Medium",
-      "Low",
+      "YES",
+      "NO",
+      "ACTIVE",
+      "INACTIVE",
+      "HIGH",
+      "MEDIUM",
+      "LOW",
     ];
 
     if (ansObj[oKey] === undefined || ansObj[oKey].answer === "") {
@@ -25,11 +26,14 @@ const GenePromoteSummaryAnswers = ({ oKey, questionObj, ansObj }) => {
       (ansObj[oKey]?.description === undefined ||
         ansObj[oKey]?.description === "")
     ) {
-      return "flex align-items-center w-6 pl-2 border-1 border-round border-red-500 surface-overlay";
+      return "flex align-items-center w-6 pl-2 border-3 border-round border-red-500 surface-overlay";
     } else {
       return "flex align-items-center w-6 pl-2 border-1 border-round";
     }
   };
+
+  console.log("qClass", qClass);
+  console.log("dClass", dClass());
 
   return (
     <div className="flex align-content-center gap-2 mb-2 w-full">
