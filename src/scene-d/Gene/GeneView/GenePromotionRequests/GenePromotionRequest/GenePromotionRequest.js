@@ -21,13 +21,14 @@ const GenePromotionRequest = ({
 
   const {
     questions,
+    adminQuestions,
     isFetchingQuestions,
     fetchQuestions,
     questionsRegistry,
+    adminQuestionsRegistry,
     isCacheValid,
-    getGenePromotionDataObj,
-    isPromotionQuestionnaireSubmitting,
-    submitPromotionQuestionnaire,
+    questionsGrouped,
+    adminQuestionsGrouped,
   } = rootStore.genePromotionStore;
 
   useEffect(() => {
@@ -118,60 +119,123 @@ const GenePromotionRequest = ({
     }
   };
 
-  /* Generate the user answered values */
-  let userAnsweredQuestions = questions.map((question) => {
-    return (
-      <div className="flex flex-row p-3">
-        <Question
-          question={questionsRegistry.get(question.identification)}
-          updateObject={(e) => updateTargetPromotionFormValue(e)}
-          readObject={targetPromotionReviewFormValue}
-        />
-      </div>
+  /* Generate the user answered question section */
+  let userAnsweredQuestionsGrouped_Render = [];
+  for (var section in questionsGrouped) {
+    // Extract top level sections
+    userAnsweredQuestionsGrouped_Render.push(
+      <div className="flex text-xl">{section}</div>
     );
-  });
+    for (var subSection in questionsGrouped[section]) {
+      // Extract sub sections
+      userAnsweredQuestionsGrouped_Render.push(
+        <div className="flex flex-column ml-2 gap-1">
+          <div className="flex text-lg">{subSection}</div>
+          <div className="flex text-sm p-2">
+            {questionsGrouped[section][subSection][0]["subSectionDescription"]}
+          </div>
+        </div>
+      );
+
+      // extract questions from subsections, use map as it is an array
+      questionsGrouped[section][subSection].map((subSectionQuestion) => {
+        userAnsweredQuestionsGrouped_Render.push(
+          <div className="flex flex-column ml-4 gap-1">
+            <Question
+              question={questionsRegistry.get(
+                subSectionQuestion.identification
+              )}
+              updateObject={(e) => updateTargetPromotionFormValue(e)}
+              readObject={targetPromotionReviewFormValue}
+            />
+          </div>
+        );
+      });
+    }
+  }
+
+  /* Generate the admin question section */
+  let adminQuestionsGrouped_Render = [];
+  for (var section in adminQuestionsGrouped) {
+    // Extract top level sections
+    adminQuestionsGrouped_Render.push(
+      <div className="flex text-xl">{section}</div>
+    );
+    for (var subSection in adminQuestionsGrouped[section]) {
+      // Extract sub sections
+      adminQuestionsGrouped_Render.push(
+        <div className="flex flex-column ml-2 gap-1">
+          <div className="flex text-lg">{subSection}</div>
+          <div className="flex text-sm p-2">
+            {
+              adminQuestionsGrouped[section][subSection][0][
+                "subSectionDescription"
+              ]
+            }
+          </div>
+        </div>
+      );
+
+      // extract questions from subsections, use map as it is an array
+      adminQuestionsGrouped[section][subSection].map((subSectionQuestion) => {
+        adminQuestionsGrouped_Render.push(
+          <div className="flex flex-column ml-4 gap-1">
+            <Question
+              question={adminQuestionsRegistry.get(
+                subSectionQuestion.identification
+              )}
+              updateObject={(e) => updateTargetPromotionFormValue(e)}
+              readObject={targetPromotionReviewFormValue}
+            />
+          </div>
+        );
+      });
+    }
+  }
 
   return (
-    <div>
-      <div className="p-d-flex p-flex-column">
-        <div className="p-mr-2" style={{ minWidth: "1000px" }}>
-          <Panel header="Summary" toggleable>
-            <h4>
-              Target Type :{" "}
-              {userAnsweredTargetPromotionQuestionnaire.targetType}
-            </h4>
-            <h4>
-              Target Name :{" "}
-              {userAnsweredTargetPromotionQuestionnaire.targetName}
-            </h4>
-            <h4>Genes : {getGeneInformation()}</h4>
-            <h4>
-              Submitted by :{" "}
-              {
-                userAnsweredTargetPromotionQuestionnaire.answers[
-                  Object.keys(
-                    userAnsweredTargetPromotionQuestionnaire.answers
-                  )[0]
-                ]["answeredBy"]
-              }
-            </h4>
-          </Panel>
-          <br />
-        </div>
-        <div className="p-mr-2" style={{ minWidth: "1000px" }}>
-          <Panel
-            header="Submitted Promotion userAnsweredTargetPromotionQuestionnaire"
-            toggleable
-          >
-            {userAnsweredQuestions}
-            <Button
-              label="Promote"
-              className="p-button-success"
-              style={{ float: "right" }}
-              onClick={() => submitPromoteGeneForm()}
-            />
-          </Panel>
-        </div>
+    <div className="flex flex-column gap-2">
+      <div className="flex w-full">
+        <Panel className="w-full" header="Summary" toggleable>
+          <h4>
+            Target Type : {userAnsweredTargetPromotionQuestionnaire.targetType}
+          </h4>
+          <h4>
+            Target Name : {userAnsweredTargetPromotionQuestionnaire.targetName}
+          </h4>
+          <h4>Genes : {getGeneInformation()}</h4>
+          <h4>
+            Submitted by :{" "}
+            {
+              userAnsweredTargetPromotionQuestionnaire.answers[
+                Object.keys(userAnsweredTargetPromotionQuestionnaire.answers)[0]
+              ]["answeredBy"]
+            }
+          </h4>
+        </Panel>
+      </div>
+      <div className="flex w-full" style={{ minWidth: "1000px" }}>
+        <Panel className="w-full" header="User Questionnaire" toggleable>
+          <div className="flex flex-column gap-2">
+            {userAnsweredQuestionsGrouped_Render}
+          </div>
+        </Panel>
+      </div>
+
+      <div className="flex w-full" style={{ minWidth: "1000px" }}>
+        <Panel className="w-full" header="Admin Questionnaire" toggleable>
+          <div className="flex flex-column gap-2">
+            {adminQuestionsGrouped_Render}
+          </div>
+        </Panel>
+      </div>
+
+      <div className="flex w-full justify-content-end border-200 surface-ground	 mt-2 p-2">
+        <Button
+          label="Promote Target"
+          className="p-button-success"
+          onClick={() => submitPromoteGeneForm()}
+        />
       </div>
     </div>
   );

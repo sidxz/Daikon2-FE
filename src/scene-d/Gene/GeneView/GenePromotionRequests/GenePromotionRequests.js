@@ -17,14 +17,10 @@ const GenePromotionRequests = () => {
     rootStore.geneStoreAdmin;
   const geneStore = rootStore.geneStore;
   const {
-    questions,
     isFetchingQuestions,
     fetchQuestions,
     questionsRegistry,
     isCacheValid,
-    getGenePromotionDataObj,
-    isPromotionQuestionnaireSubmitting,
-    submitPromotionQuestionnaire,
   } = rootStore.genePromotionStore;
 
   const { user } = rootStore.userStore;
@@ -67,7 +63,7 @@ const GenePromotionRequests = () => {
     { label: "Gene Promotion Requests" },
   ];
 
-  if (geneStore.displayLoading || displayLoading) {
+  if (geneStore.displayLoading || displayLoading || isFetchingQuestions) {
     return <Loading />;
   }
 

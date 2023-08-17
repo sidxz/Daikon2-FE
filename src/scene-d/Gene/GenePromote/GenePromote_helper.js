@@ -10,8 +10,6 @@ export function _defaultFormData(promotionQuestionsRegistry) {
     );
   };
 
-  console.log("promotionQuestionsRegistry", promotionQuestionsRegistry);
-
   promotionQuestionsRegistry.forEach((value, key) => {
     formData[key] = {
       answer: containsUnknownAsAnswer(value) ? "UNKNOWN" : "",
