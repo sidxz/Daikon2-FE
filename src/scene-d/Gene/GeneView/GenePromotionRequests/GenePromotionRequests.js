@@ -12,31 +12,40 @@ import GeneAdminPromotionRequest from "./GenePromotionRequest/GenePromotionReque
 const GenePromotionRequests = () => {
   const navigate = useNavigate();
   const rootStore = useContext(RootStoreContext);
+
   const { fetchGenePromotionList, displayLoading, genePromotionRegistry } =
     rootStore.geneStoreAdmin;
   const geneStore = rootStore.geneStore;
+  const {
+    questions,
+    isFetchingQuestions,
+    fetchQuestions,
+    questionsRegistry,
+    isCacheValid,
+    getGenePromotionDataObj,
+    isPromotionQuestionnaireSubmitting,
+    submitPromotionQuestionnaire,
+  } = rootStore.genePromotionStore;
+
   const { user } = rootStore.userStore;
 
   useEffect(() => {
     if (geneStore.genes.length === 0) {
       geneStore.fetchGeneList();
     }
-    if (geneStore.promotionQuestionsRegistry.size === 0) {
-      geneStore.getPromotionQuestions();
+    if (!isCacheValid) {
+      fetchQuestions();
     }
     fetchGenePromotionList();
     return () => {
       //cleanup
     };
   }, [
-    geneStore,
-    genePromotionRegistry,
-    fetchGenePromotionList,
-    geneStore.genes,
+    geneStore.genes.length,
     geneStore.fetchGeneList,
-    geneStore.promotionQuestionsDisplayLoading,
-    geneStore.getPromotionQuestions,
-    geneStore.promotionQuestionsRegistry,
+    isCacheValid,
+    fetchQuestions,
+    fetchGenePromotionList,
   ]);
 
   const [activeIndex, setActiveIndex] = useState(0);
@@ -74,7 +83,7 @@ const GenePromotionRequests = () => {
               GenePromotionRequest={value}
               TargetName={value.targetName}
               AnswerRegistry={genePromotionRegistry}
-              QuestionsRegistry={geneStore.promotionQuestionsRegistry}
+              QuestionsRegistry={questionsRegistry}
               GeneRegistry={geneStore.geneRegistry}
             />
           </div>

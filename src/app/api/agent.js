@@ -155,7 +155,7 @@ const Gene = {
   searchByIdGeneGroup: (geneId) =>
     requests.get(`/geneconfig/groups/search-by-gene-id/${geneId}`),
   submitPromotionQuestionnaire: (targetName, data) =>
-    requests.post(`/gene/promotionrequest/${targetName}`, data),
+    requests.post(`/gene/promotion-request/${targetName}`, data),
   editEssentiality: (geneId, essentialityId, modEssentiality) =>
     requests.post(
       `/gene/${geneId}/essentiality/${essentialityId}`,

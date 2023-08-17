@@ -78,7 +78,6 @@ const GenePromote = () => {
       newFormValue[location] = newField;
       setTargetPromotionFormValue(newFormValue);
     }
-    console.log("newFormValue", newFormValue);
   };
 
   const saveFormToLocalStorage = () => {
@@ -139,6 +138,9 @@ const GenePromote = () => {
         description: targetPromotionFormValue[key].description,
       });
     });
+
+    console.log("===SUBMIT===");
+    console.log(data);
 
     submitPromotionQuestionnaire(params.proposedTargetName, data).then(
       (res) => {

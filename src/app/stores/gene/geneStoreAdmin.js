@@ -36,8 +36,8 @@ export default class GeneStoreAdmin {
         resp.forEach((fetchedPromotionRequest) => {
           let formattedPromotionRequest = {
             targetName: fetchedPromotionRequest.targetName,
-            genePromtionRequestGenes:
-              fetchedPromotionRequest.genePromtionRequestGenes,
+            genePromotionRequestGenes:
+              fetchedPromotionRequest.genePromotionRequestGenes,
             targetType: fetchedPromotionRequest.targetType,
             answers: {},
           };
@@ -46,7 +46,7 @@ export default class GeneStoreAdmin {
               formattedPromotionRequest.answers[value.question.identification] =
                 {
                   answer: value.answer,
-                  answeredBy: value.answerdBy,
+                  answeredBy: value.answeredBy,
                   description: value.description,
                 };
             }
