@@ -85,7 +85,9 @@ const GenePromotionRequest = ({
 
     Object.keys(targetPromotionReviewFormValue).map((key) => {
       promotionReqData.genePromotionRequestValues.push({
-        questionId: QuestionsRegistry.get(key).id,
+        questionId: QuestionsRegistry.get(key)
+          ? QuestionsRegistry.get(key).id
+          : adminQuestionsRegistry.get(key).id,
         answer: targetPromotionReviewFormValue[key].answer,
         description: targetPromotionReviewFormValue[key].description,
       });
