@@ -1,4 +1,5 @@
 import { Dropdown } from "primereact/dropdown";
+import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
 import { Tooltip } from "primereact/tooltip";
 import React from "react";
@@ -80,17 +81,40 @@ const Question = ({ question, updateObject, readObject, highlightRed }) => {
         </div>
       </div>
       <div className="flex align-items-center">
-        <Dropdown
-          id={question.identification}
-          style={{ width: "9rem", height: "2.5rem" }}
-          options={question.possibleAnswerWithDesc}
-          valueTemplate={selectedOptionTemplate}
-          itemTemplate={optionTemplate}
-          value={readObject?.[question.identification]?.answer}
-          optionLabel="answer"
-          optionValue="answer"
-          onChange={(e) => updateObject(e)}
-        />
+        {question.questionType === "MultipleChoice" && (
+          <Dropdown
+            id={question.identification}
+            style={{ width: "9rem", height: "2.5rem" }}
+            options={question.possibleAnswerWithDesc}
+            valueTemplate={selectedOptionTemplate}
+            itemTemplate={optionTemplate}
+            value={readObject?.[question.identification]?.answer}
+            optionLabel="answer"
+            optionValue="answer"
+            onChange={(e) => updateObject(e)}
+          />
+        )}
+        {question.questionType === "Text" && (
+          <InputText
+            id={question.identification}
+            style={{ width: "9rem", height: "2.5rem" }}
+            value={readObject?.[question.identification]?.answer}
+            optionLabel="answer"
+            optionValue="answer"
+            onChange={(e) => updateObject(e)}
+          />
+        )}
+        {question.questionType === "" && (
+          <InputText
+            id={question.identification}
+            style={{ width: "9rem", height: "2.5rem" }}
+            value={readObject?.[question.identification]?.answer}
+            optionLabel="answer"
+            optionValue="answer"
+            readOnly={true}
+            onChange={(e) => updateObject(e)}
+          />
+        )}
       </div>
       <div className="flex align-items-center">
         <span className="float-label">
