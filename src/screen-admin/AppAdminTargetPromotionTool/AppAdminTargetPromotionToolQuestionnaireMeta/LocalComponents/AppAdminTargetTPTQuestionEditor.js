@@ -4,6 +4,7 @@ import { Button } from "primereact/button";
 import { Checkbox } from "primereact/checkbox";
 import { InputText } from "primereact/inputtext";
 import { ProgressBar } from "primereact/progressbar";
+import { RadioButton } from "primereact/radiobutton";
 import React, { useCallback, useContext, useState } from "react";
 import * as Yup from "yup";
 import { RootStoreContext } from "../../../../app/stores/rootStore";
@@ -71,6 +72,7 @@ const AppAdminTargetTPTQuestionEditor = ({ question, closeEditDialog }) => {
     subSectionDescription: question.subSectionDescription || "",
     toolTip: question.toolTip || "",
     weight: question.weight || 0,
+    questionType: question.questionType || "MultipleChoice",
   };
 
   if (isEditingQuestions) {
@@ -221,15 +223,53 @@ const AppAdminTargetTPTQuestionEditor = ({ question, closeEditDialog }) => {
               </div>
             </div>
 
-            <div className="flex flex-column gap-1 border-1 border-50	p-1 w-full ">
-              <h3>Possible Answers</h3>
-            </div>
             <div className="flex flex-column gap-1 border-1 border-50	p-2 w-full ">
-              <AppAdminTargetTPTPossibleAnswerEditor
-                handleChange={handleAnswerChange}
-                answers={answers}
-              />
+              <div className="flex flex-row w-full align-items-center">
+                <div className="flex w-3">Question Type</div>
+                <div className="flex w-9 gap-2">
+                  <div className="flex align-items-center">
+                    <RadioButton
+                      inputId="MultipleChoice"
+                      name="questionType"
+                      value="MultipleChoice"
+                      onChange={handleChange}
+                      checked={values.questionType === "MultipleChoice"}
+                    />
+                    <label htmlFor="MultipleChoice" className="ml-2">
+                      Multiple Choice
+                    </label>
+                  </div>
+                  <div className="flex align-items-center">
+                    <RadioButton
+                      inputId="Text"
+                      name="questionType"
+                      value="Text"
+                      onChange={handleChange}
+                      checked={values.questionType === "Text"}
+                    />
+                    <label htmlFor="Text" className="ml-2">
+                      Text
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div className="flex w-full text-sm	font-bold	text-red-600 text-right">
+                <ErrorMessage name="weight" component="span" />
+              </div>
             </div>
+            {values.questionType === "MultipleChoice" && (
+              <>
+                <div className="flex flex-column gap-1 border-1 border-50	p-1 w-full ">
+                  <h3>Possible Answers</h3>
+                </div>
+                <div className="flex flex-column gap-1 border-1 border-50	p-2 w-full ">
+                  <AppAdminTargetTPTPossibleAnswerEditor
+                    handleChange={handleAnswerChange}
+                    answers={answers}
+                  />
+                </div>
+              </>
+            )}
 
             <Button type="submit" label="Submit" />
           </Form>
