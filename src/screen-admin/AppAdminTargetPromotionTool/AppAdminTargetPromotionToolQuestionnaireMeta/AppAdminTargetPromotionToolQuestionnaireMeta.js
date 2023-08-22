@@ -77,7 +77,7 @@ const AppAdminTargetPromotionToolQuestionnaireMeta = () => {
           </div>
           <div className="flex w-full">
             <SectionHeading
-              icon="ri-user-settings-fill"
+              icon="icon icon-common icon-cubes"
               heading={"Promotion Questionnaire Meta"}
               customButtons={[
                 {

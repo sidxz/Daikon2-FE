@@ -3,6 +3,7 @@ import { Menu } from "primereact/menu";
 import { Toast } from "primereact/toast";
 import React, { useRef } from "react";
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import AppAdminTargetPromotionToolDataManagement from "./AppAdminTargetPromotionToolDataManagement/AppAdminTargetPromotionToolDataManagement";
 import AppAdminTargetPromotionToolQuestionnaireMeta from "./AppAdminTargetPromotionToolQuestionnaireMeta/AppAdminTargetPromotionToolQuestionnaireMeta";
 
 const AppAdminTargetPromotionTool = () => {
@@ -16,9 +17,16 @@ const AppAdminTargetPromotionTool = () => {
       items: [
         {
           label: "Promotion Questionnaire Meta",
-          icon: "icon icon-common icon-users",
+          icon: "icon icon-common icon-cubes",
           command: () => {
             navigate("questionnaire-meta/");
+          },
+        },
+        {
+          label: "Data Management",
+          icon: "icon icon-common icon-exchange-alt",
+          command: () => {
+            navigate("data-management/");
           },
         },
       ],
@@ -40,6 +48,10 @@ const AppAdminTargetPromotionTool = () => {
             <Route
               path="questionnaire-meta/"
               element={<AppAdminTargetPromotionToolQuestionnaireMeta />}
+            />
+            <Route
+              path="data-management/"
+              element={<AppAdminTargetPromotionToolDataManagement />}
             />
           </Routes>
         </div>

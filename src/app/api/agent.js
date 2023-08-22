@@ -413,6 +413,12 @@ const TargetPromotionToolQuestionnaire = {
     requests.post(`/elevated/TargetPromotionToolQuestionnaire`, questions),
 };
 
+const TargetPromotionToolDataManagement = {
+  exportData: () => requests.get(`/elevated/TargetPromotionToolDataManagement`),
+  importData: (data) =>
+    requests.post(`/elevated/TargetPromotionToolDataManagement`, data),
+};
+
 const exports = {
   AppPrecheck,
   AuthServiceInstance,
@@ -433,6 +439,7 @@ const exports = {
   DataView,
   Compounds,
   TargetPromotionToolQuestionnaire,
+  TargetPromotionToolDataManagement,
 };
 
 export default exports;
