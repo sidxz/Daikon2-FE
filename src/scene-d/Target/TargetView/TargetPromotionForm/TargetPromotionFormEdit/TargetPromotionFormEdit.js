@@ -70,6 +70,9 @@ const TargetPromotionFormEdit = ({ data, selectedTarget }) => {
     };
   });
 
+  console.log("initialFormValues");
+  console.log(initialFormValues);
+
   const [targetPromotionToolFormValue, setTargetPromotionToolFormValue] =
     useState({ ...initialFormValues });
 
@@ -121,7 +124,8 @@ const TargetPromotionFormEdit = ({ data, selectedTarget }) => {
           targetPromotionToolFormValue[key].answer === "UNKNOWN" ||
           targetPromotionToolFormValue[key].answer === "NA"
         ) &&
-        targetPromotionToolFormValue[key].description === ""
+        (!targetPromotionToolFormValue[key].description ||
+          targetPromotionToolFormValue[key].description === "")
       ) {
         console.error("Validation fail, blank description");
         //console.log(key);
@@ -138,17 +142,20 @@ const TargetPromotionFormEdit = ({ data, selectedTarget }) => {
 
     var data = [];
 
-    Object.keys(targetPromotionToolFormValue).map((key) => {
+    Object.keys(targetPromotionToolFormValue).forEach((key) => {
       if (
+        !(key in initialFormValues) ||
         initialFormValues[key].answer !==
           targetPromotionToolFormValue[key].answer ||
-        initialFormValues[key].description !=
+        initialFormValues[key].description !==
           targetPromotionToolFormValue[key].description
       ) {
+        const questionId = questionsRegistry.get(key)
+          ? questionsRegistry.get(key).id
+          : adminQuestionsRegistry.get(key).id;
+
         data.push({
-          questionId: questionsRegistry.get(key)
-            ? questionsRegistry.get(key).id
-            : adminQuestionsRegistry.get(key).id,
+          questionId: questionId,
           answer: targetPromotionToolFormValue[key].answer,
           description: targetPromotionToolFormValue[key].description,
         });
