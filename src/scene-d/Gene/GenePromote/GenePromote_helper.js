@@ -1,16 +1,25 @@
 export function _defaultFormData(promotionQuestionsRegistry) {
   let formData = {};
 
+  console.log("_defaultFormData");
+  console.log(promotionQuestionsRegistry);
+
   let containsUnknownAsAnswer = (question) => {
-    if (!question.possibleAnswers) {
+    if (!question.possibleAnswerWithDesc) {
       return "false";
     }
-    return question.possibleAnswers.some(
+    return question.possibleAnswerWithDesc.some(
       (answerObj) => answerObj.answer === "UNKNOWN"
     );
   };
 
   promotionQuestionsRegistry.forEach((value, key) => {
+    console.log(key);
+    console.log(value);
+    console.log(
+      "containsUnknownAsAnswer(value) " + containsUnknownAsAnswer(value)
+    );
+
     formData[key] = {
       answer: containsUnknownAsAnswer(value) ? "UNKNOWN" : "",
       description: "",

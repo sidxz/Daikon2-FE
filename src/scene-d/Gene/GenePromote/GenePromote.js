@@ -141,7 +141,7 @@ const GenePromote = () => {
 
     console.log("===SUBMIT===");
     console.log(data);
-
+    return;
     submitPromotionQuestionnaire(params.proposedTargetName, data).then(
       (res) => {
         if (res !== null) {
