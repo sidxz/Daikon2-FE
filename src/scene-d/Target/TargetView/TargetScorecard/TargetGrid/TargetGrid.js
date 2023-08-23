@@ -55,7 +55,7 @@ const TargetGrid = ({ questions, target }) => {
   return (
     <div className="targetGrid">
       {/* Tooltip component */}
-      <Tooltip target=".questionTooltip" mouseTrack mouseTrackLeft={10} />
+      <Tooltip target=".questionTooltip" />
       <table>
         <tbody>
           <tr>
@@ -124,9 +124,6 @@ const TargetGrid = ({ questions, target }) => {
             >
               2a5
             </td>
-
-
-
           </tr>
           {/* Rest of the table rows */}
           <tr>

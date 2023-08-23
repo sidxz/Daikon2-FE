@@ -25,6 +25,7 @@ const TargetScorecard = () => {
     fetchQuestions,
     questionsRegistry,
     isCacheValid,
+    adminQuestionsRegistry,
     getGenePromotionDataObj,
     isPromotionQuestionnaireSubmitting,
     submitPromotionQuestionnaire,
@@ -97,7 +98,9 @@ const TargetScorecard = () => {
           <div className="flex w-full">
             <Fieldset legend="Scorecard">
               <TargetGrid
-                questions={questionsRegistry}
+                questions={
+                  new Map([...questionsRegistry, ...adminQuestionsRegistry])
+                }
                 target={selectedTarget}
               />
             </Fieldset>
