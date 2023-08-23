@@ -6,7 +6,7 @@ import "./TargetGrid.css";
 
 // Component to display the TargetGrid
 const TargetGrid = ({ questions, target }) => {
-  console.log(questions);
+  //console.log(questions);
   let answers = {};
 
   // Check if questions or target data is not available

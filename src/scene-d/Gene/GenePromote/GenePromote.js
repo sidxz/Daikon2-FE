@@ -48,17 +48,17 @@ const GenePromote = () => {
   ) {
     let targetNameKey = "promote_" + params.proposedTargetName;
     let storedFormData = localStorage.getItem(targetNameKey);
-    console.log("_defaultFormData", _defaultFormData(questionsRegistry));
+    //console.log("_defaultFormData", _defaultFormData(questionsRegistry));
     setTargetPromotionFormValue(_defaultFormData(questionsRegistry));
-    console.log("storedFormData", storedFormData);
-    console.log("targetPromotionFormValue", targetPromotionFormValue);
+    //console.log("storedFormData", storedFormData);
+    //console.log("targetPromotionFormValue", targetPromotionFormValue);
     if (storedFormData !== null) {
       setTargetPromotionFormValue(JSON.parse(storedFormData));
     }
   }
 
   const updateTargetPromotionFormValue = (e) => {
-    console.log(e);
+    //console.log(e);
     var location = null;
     var newFormValue = null;
     var newField = null;
@@ -139,8 +139,8 @@ const GenePromote = () => {
       });
     });
 
-    console.log("===SUBMIT===");
-    console.log(data);
+    //console.log("===SUBMIT===");
+    //console.log(data);
     return;
     submitPromotionQuestionnaire(params.proposedTargetName, data).then(
       (res) => {

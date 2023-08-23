@@ -5,9 +5,6 @@ import { Tooltip } from "primereact/tooltip";
 import React from "react";
 
 const Question = ({ question, updateObject, readObject, highlightRed }) => {
-  console.log("Question");
-  console.log(question["identification"]);
-  console.log(question);
   if (typeof question?.identification === "undefined")
     return <React.Fragment />;
 

@@ -14,7 +14,7 @@ const GenePromoteQuestionnaireSection = ({
   for (let subSection in section) {
     if (section.hasOwnProperty(subSection)) {
       // It's a good practice to check if the key is a direct property of the object
-      console.log(subSection, section[subSection]);
+      //console.log(subSection, section[subSection]);
       subSections.push(
         <div className="flex flex-row p-1">
           <GenePromoteQuestionnaireSubSection

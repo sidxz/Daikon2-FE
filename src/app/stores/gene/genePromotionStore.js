@@ -47,7 +47,8 @@ export default class GenePromotionStore {
     this.isFetchingQuestions = true;
     try {
       if (this.isCacheValid) return;
-      let res = await agent.TargetPromotionToolQuestionnaire.list();
+      this.adminQuestionsRegistry.clear();
+      let res = await agent.Gene.promotionQuestions();
       runInAction(() => {
         res.forEach((question) => {
           if (question.isAdminOnly) {

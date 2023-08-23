@@ -35,7 +35,7 @@ const AppAdminTargetPromotionToolQuestionnaireMeta = () => {
   if (isFetchingQuestions) {
     return <Loading />;
   } else if (!isFetchingQuestions) {
-    console.log(questions);
+    //console.log(questions);
 
     const breadCrumbItems = [
       {

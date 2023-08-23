@@ -70,8 +70,8 @@ const TargetPromotionFormEdit = ({ data, selectedTarget }) => {
     };
   });
 
-  console.log("initialFormValues");
-  console.log(initialFormValues);
+  //console.log("initialFormValues");
+  //console.log(initialFormValues);
 
   const [targetPromotionToolFormValue, setTargetPromotionToolFormValue] =
     useState({ ...initialFormValues });
@@ -83,7 +83,7 @@ const TargetPromotionFormEdit = ({ data, selectedTarget }) => {
   }
 
   const updateTargetPromotionFormValue = (e) => {
-    console.log(e);
+    //console.log(e);
     var location = null;
     var newFormValue = null;
     var newField = null;

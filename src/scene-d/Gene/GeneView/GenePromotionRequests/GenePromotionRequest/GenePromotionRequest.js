@@ -48,7 +48,7 @@ const GenePromotionRequest = ({
     useState(userAnsweredTargetPromotionQuestionnaire.answers);
 
   const updateTargetPromotionFormValue = (e) => {
-    console.log(e);
+    //console.log(e);
     var location = null;
     var newFormValue = null;
     var newField = null;
@@ -102,7 +102,7 @@ const GenePromotionRequest = ({
   };
 
   const getGeneInformation = () => {
-    console.log("f -> getGeneInformation()");
+    //console.log("f -> getGeneInformation()");
     if (!userAnsweredTargetPromotionQuestionnaire.genePromotionRequestGenes) {
       return <h2>Failed. No Genes</h2>;
     } else {
