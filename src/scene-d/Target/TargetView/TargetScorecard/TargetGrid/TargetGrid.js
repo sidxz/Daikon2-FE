@@ -124,6 +124,9 @@ const TargetGrid = ({ questions, target }) => {
             >
               2a5
             </td>
+
+
+
           </tr>
           {/* Rest of the table rows */}
           <tr>
@@ -177,7 +180,7 @@ const TargetGrid = ({ questions, target }) => {
             >
               2c5
             </td>
-            <td colSpan="3">&nbsp;</td>
+            <td colSpan="6">&nbsp;</td>
           </tr>
           <tr>
             <td colSpan="2">
@@ -425,6 +428,7 @@ const TargetGrid = ({ questions, target }) => {
             >
               6a7
             </td>
+            <td colSpan="4">&nbsp;</td>
           </tr>
           <tr>
             <td rowSpan="6">Structure based feasibility</td>
@@ -474,6 +478,7 @@ const TargetGrid = ({ questions, target }) => {
             >
               6b1b2a
             </td>
+            <td colSpan="2">&nbsp;</td>
           </tr>
           <tr>
             <td></td>
@@ -646,6 +651,7 @@ const TargetGrid = ({ questions, target }) => {
             >
               6b4c
             </td>
+            <td colSpan="4">&nbsp;</td>
           </tr>
           <tr>
             <td></td>
@@ -670,6 +676,7 @@ const TargetGrid = ({ questions, target }) => {
             >
               6b5b
             </td>
+            <td colSpan="5">&nbsp;</td>
           </tr>
 
           <tr>
@@ -706,6 +713,7 @@ const TargetGrid = ({ questions, target }) => {
             >
               6c4
             </td>
+            <td colSpan="4">&nbsp;</td>
           </tr>
           <tr>
             <td></td>
