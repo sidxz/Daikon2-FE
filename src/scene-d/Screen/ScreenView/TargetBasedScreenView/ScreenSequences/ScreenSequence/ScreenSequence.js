@@ -392,7 +392,13 @@ const ScreenSequence = ({ screenId }) => {
               />
               <Column
                 field="unverifiedHitCount"
-                header="Hit Count"
+                header="Initial Hit Count"
+                editor={(options) => textEditor(options)}
+              />
+
+              <Column
+                field="validatedHitCount"
+                header="Validated Hit Count"
                 editor={(options) => textEditor(options)}
               />
 
