@@ -161,7 +161,7 @@ const ScreenSequence = ({ screenId }) => {
               onClick={() =>
                 ExportToExcel({
                   jsonData: GenerateTemplate(fieldToColumnName),
-                  fileName: selectedTargetBasedScreen.screenName + "-Screens",
+                  fileName: "TargetBased-Screens-Template",
                   headerMap: fieldToColumnName,
                 })
               }
