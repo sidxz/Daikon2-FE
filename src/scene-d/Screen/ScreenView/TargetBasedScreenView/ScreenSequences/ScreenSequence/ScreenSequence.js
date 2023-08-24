@@ -21,7 +21,9 @@ import ScreenSequenceAddForm from "./ScreenSequenceAddForm/ScreenSequenceAddForm
 
 import { FileUpload } from "primereact/fileupload";
 import { SiMicrosoftexcel } from "react-icons/si";
+import { TbBookDownload } from "react-icons/tb";
 import DataPreviewDialog from "../../../../../../app/common/DataPreviewDialog/DataPreviewDialog";
+import { GenerateTemplate } from "../../../../../../app/common/Functions/Excel/GenerateTemplate";
 import ImportFromExcel from "../../../../../../app/common/Functions/Excel/ImportFromExcel";
 
 const ScreenSequence = ({ screenId }) => {
@@ -81,7 +83,7 @@ const ScreenSequence = ({ screenId }) => {
     <div className="flex w-full">
       <div className="flex w-full">
         <div className="flex gap-1">
-          <div className="flex">
+          <div className="flex align-items-center">
             <Button
               type="button"
               icon="icon icon-common icon-plus-circle"
@@ -90,7 +92,7 @@ const ScreenSequence = ({ screenId }) => {
               onClick={() => setDisplayAddDialog(true)}
             />
           </div>
-          <div className="flex">
+          <div className="flex align-items-center">
             <FileUpload
               name="excelFile"
               accept=".xls,.xlsx,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
@@ -127,7 +129,7 @@ const ScreenSequence = ({ screenId }) => {
               auto
             />
           </div>
-          <div className="flex">
+          <div className="flex align-items-center">
             <Button
               type="button"
               icon={
@@ -140,6 +142,25 @@ const ScreenSequence = ({ screenId }) => {
               onClick={() =>
                 ExportToExcel({
                   jsonData: selectedTargetBasedScreen.screenSequences,
+                  fileName: selectedTargetBasedScreen.screenName + "-Screens",
+                  headerMap: fieldToColumnName,
+                })
+              }
+            />
+          </div>
+          <div className="flex align-items-center">
+            <Button
+              type="button"
+              icon={
+                <div className="flex pr-1">
+                  <TbBookDownload />
+                </div>
+              }
+              label="Template"
+              className="p-button-text"
+              onClick={() =>
+                ExportToExcel({
+                  jsonData: GenerateTemplate(fieldToColumnName),
                   fileName: selectedTargetBasedScreen.screenName + "-Screens",
                   headerMap: fieldToColumnName,
                 })

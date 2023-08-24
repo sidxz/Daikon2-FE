@@ -9,9 +9,11 @@ import { Sidebar } from "primereact/sidebar";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { ImDownload } from "react-icons/im";
 import { SiMicrosoftexcel } from "react-icons/si";
+import { TbBookDownload } from "react-icons/tb";
 import DataPreviewDialog from "../../../../../../app/common/DataPreviewDialog/DataPreviewDialog";
 import FDate from "../../../../../../app/common/FDate/FDate";
 import ExportToExcel from "../../../../../../app/common/Functions/Excel/ExportToExcel";
+import { GenerateTemplate } from "../../../../../../app/common/Functions/Excel/GenerateTemplate";
 import ImportFromExcel from "../../../../../../app/common/Functions/Excel/ImportFromExcel";
 import {
   DateEditor,
@@ -163,6 +165,25 @@ const PhenotypicScreenSequenceTable = ({ screenId }) => {
                   })
                 }
               />
+              <div className="flex align-items-center">
+                <Button
+                  type="button"
+                  icon={
+                    <div className="flex pr-1">
+                      <TbBookDownload />
+                    </div>
+                  }
+                  label="Template"
+                  className="p-button-text"
+                  onClick={() =>
+                    ExportToExcel({
+                      jsonData: GenerateTemplate(fieldToColumnName),
+                      fileName: "Phenotypic-Screen-Template",
+                      headerMap: fieldToColumnName,
+                    })
+                  }
+                />
+              </div>
             </div>
           </div>
         </div>

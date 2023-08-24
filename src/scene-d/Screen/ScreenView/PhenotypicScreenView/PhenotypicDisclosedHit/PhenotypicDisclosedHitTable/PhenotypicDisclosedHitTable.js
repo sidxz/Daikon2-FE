@@ -9,9 +9,11 @@ import { Menubar } from "primereact/menubar";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { ImDownload } from "react-icons/im";
 import { SiMicrosoftexcel } from "react-icons/si";
+import { TbBookDownload } from "react-icons/tb";
 import { toast } from "react-toastify";
 import DataPreviewDialog from "../../../../../../app/common/DataPreviewDialog/DataPreviewDialog";
 import ExportToExcel from "../../../../../../app/common/Functions/Excel/ExportToExcel";
+import { GenerateTemplate } from "../../../../../../app/common/Functions/Excel/GenerateTemplate";
 import ImportFromExcel from "../../../../../../app/common/Functions/Excel/ImportFromExcel";
 import PleaseWait from "../../../../../../app/common/PleaseWait/PleaseWait";
 import SmilesViewWithDetails from "../../../../../../app/common/SmilesViewWithDetails/SmilesViewWithDetails";
@@ -233,6 +235,21 @@ const PhenotypicDisclosedHitTable = ({ screenId }) => {
                 };
               }),
               fileName: selectedPhenotypicScreen.screenName + "-Disclosed-Hits",
+              headerMap: fieldToColumnName,
+            }),
+        },
+        {
+          label: "Download Template",
+          icon: (
+            <div className="flex pr-2">
+              <TbBookDownload />
+            </div>
+          ),
+          command: () =>
+            ExportToExcel({
+              jsonData: GenerateTemplate(fieldToColumnName),
+
+              fileName: "Phenotypic-Validated-Hits-Template",
               headerMap: fieldToColumnName,
             }),
         },
