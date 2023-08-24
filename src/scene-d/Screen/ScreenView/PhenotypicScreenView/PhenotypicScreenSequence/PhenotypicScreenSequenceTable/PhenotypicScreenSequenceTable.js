@@ -82,10 +82,9 @@ const PhenotypicScreenSequenceTable = ({ screenId }) => {
       library: "Library",
       librarySize: "Library Size",
       protocol: "Protocol",
-      noOfCompoundsScreened: "Total Compounds Screened",
-      unverifiedHitCount: "Initial Hit Count",
-      primaryHitCount: "Primary Hit Count",
-      confirmedHitCount: "Confirmed Hit Count",
+      noOfCompoundsScreened: "Compounds Screened",
+      unverifiedHitCount: "Initial Hits",
+      confirmedHitCount: "Confirmed Hits",
       hitRate: "Hit Rate",
       scientist: "Scientist",
       startDate: "Start Date",
@@ -343,11 +342,7 @@ const PhenotypicScreenSequenceTable = ({ screenId }) => {
               header={fieldToColumnName["unverifiedHitCount"]}
               editor={(options) => TextEditor(options)}
             />
-            <Column
-              field="primaryHitCount"
-              header={fieldToColumnName["primaryHitCount"]}
-              editor={(options) => TextEditor(options)}
-            />
+
             <Column
               field="confirmedHitCount"
               header={fieldToColumnName["confirmedHitCount"]}

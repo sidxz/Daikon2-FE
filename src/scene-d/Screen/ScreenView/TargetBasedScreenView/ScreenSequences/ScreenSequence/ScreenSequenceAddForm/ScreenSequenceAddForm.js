@@ -33,6 +33,7 @@ const ScreenSequenceAddForm = ({ screenId, onAdd, loading }) => {
       noOfCompoundsScreened: "",
       comment: "",
       unverifiedHitCount: "",
+      confirmedHitCount: "",
     },
     validate: (data) => {
       let errors = {};
@@ -194,7 +195,7 @@ const ScreenSequenceAddForm = ({ screenId, onAdd, loading }) => {
                 "p-error": isFormFieldValid("unverifiedHitCount"),
               })}
             >
-              Hit Count
+              Initial Hit Count
             </label>
             <InputText
               id="unverifiedHitCount"
@@ -207,6 +208,28 @@ const ScreenSequenceAddForm = ({ screenId, onAdd, loading }) => {
             />
 
             {getFormErrorMessage("unverifiedHitCount")}
+          </div>
+
+          <div className="field">
+            <label
+              htmlFor="confirmedHitCount"
+              className={classNames({
+                "p-error": isFormFieldValid("confirmedHitCount"),
+              })}
+            >
+              Validated Hit Count
+            </label>
+            <InputText
+              id="confirmedHitCount"
+              answer="confirmedHitCount"
+              value={formik.values.confirmedHitCount}
+              onChange={formik.handleChange}
+              className={classNames({
+                "p-invalid": isFormFieldValid("confirmedHitCount"),
+              })}
+            />
+
+            {getFormErrorMessage("confirmedHitCount")}
           </div>
 
           <div className="field">

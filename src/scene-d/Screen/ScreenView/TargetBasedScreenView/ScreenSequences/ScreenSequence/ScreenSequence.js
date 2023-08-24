@@ -77,6 +77,7 @@ const ScreenSequence = ({ screenId }) => {
     startDate: "Start Date",
     endDate: "End Date",
     unverifiedHitCount: "Hit Count",
+    confirmedHitCount: "Validated Hit Count",
   };
 
   const tableHeader = (
@@ -397,7 +398,7 @@ const ScreenSequence = ({ screenId }) => {
               />
 
               <Column
-                field="validatedHitCount"
+                field="confirmedHitCount"
                 header="Validated Hit Count"
                 editor={(options) => textEditor(options)}
               />
