@@ -3,12 +3,12 @@ import { BreadCrumb } from "primereact/breadcrumb";
 import { TabPanel, TabView } from "primereact/tabview";
 import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { FormatScreenName } from "../../../../../app/common/Functions/Formats";
 import SectionHeading from "../../../../../app/common/SectionHeading/SectionHeading";
 import Loading from "../../../../../app/layout/Loading/Loading";
 import { RootStoreContext } from "../../../../../app/stores/rootStore";
 import { appColors } from "../../../../../colors";
 import ValidatedHitsList from "./ValidatedHitsList/ValidatedHitsList";
-
 const ValidatedHits = ({ TargetName }) => {
   /* MobX Store */
   const rootStore = useContext(RootStoreContext);
@@ -69,7 +69,7 @@ const ValidatedHits = ({ TargetName }) => {
     filteredScreens.forEach((screen) => {
       tabs.push(
         <TabPanel
-          header={screen.screenName}
+          header={FormatScreenName(screen)}
           key={screen.id}
           className="max-w-screen"
         >

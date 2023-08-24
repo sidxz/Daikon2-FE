@@ -74,6 +74,13 @@ export default class HitsStore {
             false
           );
         }
+        if (hit.screenType === "TargetBased") {
+          this.rootStore.screenTStore.fetchTargetBasedScreen(
+            hit.screenId,
+            true,
+            false
+          );
+        }
       });
     } catch (error) {
       console.error(error);
@@ -116,6 +123,14 @@ export default class HitsStore {
             false
           );
         }
+        if (hit.screenType === "TargetBased") {
+          this.rootStore.screenTStore.fetchTargetBasedScreen(
+            hit.screenId,
+            true,
+            false
+          );
+        }
+
         // Additional actions after hit update can be added here.
       });
     } catch (error) {

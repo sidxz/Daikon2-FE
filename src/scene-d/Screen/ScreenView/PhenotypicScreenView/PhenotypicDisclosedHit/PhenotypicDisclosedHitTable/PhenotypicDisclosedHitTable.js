@@ -31,7 +31,6 @@ const PhenotypicDisclosedHitTable = ({ screenId }) => {
     isLoadingPhenotypicScreen,
     fetchPhenotypicScreen,
     selectedPhenotypicScreen,
-    fetchTargetBasedScreenSilently,
   } = rootStore.screenPStore;
 
   const { batchInsertHits, isBatchInsertingHits } = rootStore.hitsStore;

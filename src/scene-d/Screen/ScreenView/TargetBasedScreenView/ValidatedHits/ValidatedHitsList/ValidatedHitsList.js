@@ -6,8 +6,16 @@ import { Column } from "primereact/column";
 import { ConfirmDialog } from "primereact/confirmdialog";
 import { DataTable } from "primereact/datatable";
 import { Dialog } from "primereact/dialog";
+import { FileUpload } from "primereact/fileupload";
 import React, { useContext, useEffect, useRef, useState } from "react";
+import { ImDownload } from "react-icons/im";
+import { SiMicrosoftexcel } from "react-icons/si";
+import { TbBookDownload } from "react-icons/tb";
 import { toast } from "react-toastify";
+import DataPreviewDialog from "../../../../../../app/common/DataPreviewDialog/DataPreviewDialog";
+import ExportToExcel from "../../../../../../app/common/Functions/Excel/ExportToExcel";
+import { GenerateTemplate } from "../../../../../../app/common/Functions/Excel/GenerateTemplate";
+import ImportFromExcel from "../../../../../../app/common/Functions/Excel/ImportFromExcel";
 import SectionHeading from "../../../../../../app/common/SectionHeading/SectionHeading";
 import SmilesViewWithDetails from "../../../../../../app/common/SmilesViewWithDetails/SmilesViewWithDetails";
 import Vote from "../../../../../../app/common/Vote/Vote";
@@ -26,10 +34,10 @@ const ValidatedHitsList = ({ screenId }) => {
     isLoadingTargetBasedScreen,
     fetchTargetBasedScreen,
     selectedTargetBasedScreen,
-    fetchTargetBasedScreenSilently,
   } = rootStore.screenTStore;
   const { user } = rootStore.userStore;
   const { enableVoting, freezeVoting } = rootStore.votingStore;
+  const { batchInsertHits, isBatchInsertingHits } = rootStore.hitsStore;
 
   const [displayHitsImportSidebar, setDisplayHitsImportSidebar] =
     useState(false);
@@ -39,6 +47,9 @@ const ValidatedHitsList = ({ screenId }) => {
   const [selectedCompounds, setSelectedCompounds] = useState(null);
   const [displayPromoteToHAEntry, setDisplayPromoteToHAEntry] = useState(false);
   const [enableOneCLickVoting, setEnableOneCLickVoting] = useState(false);
+  const [dataPreview, setDataPreview] = useState(null);
+  const [showDataPreviewDialog, setShowDataPreviewDialog] = useState(false);
+  const [showFileUploadDialog, setShowFileUploadDialog] = useState(false);
 
   let tableMenuItems = [];
 
@@ -52,6 +63,17 @@ const ValidatedHitsList = ({ screenId }) => {
 
   if (!isLoadingTargetBasedScreen && selectedTargetBasedScreen) {
   }
+
+  // Map Data fields to Column Name
+  const fieldToColumnName = {
+    smile: "Structure",
+    library: "Library",
+    source: "Source",
+    externalCompoundIds: "Compound Id",
+    ic50: "IC50",
+    mic: "MIC",
+    clusterGroup: "Cluster Group",
+  };
 
   /* Local functions */
 
@@ -159,7 +181,7 @@ const ValidatedHitsList = ({ screenId }) => {
         <Vote
           id={rowData.vote.id}
           voteData={rowData.vote}
-          callBack={() => fetchTargetBasedScreenSilently(screenId, true)}
+          callBack={() => fetchTargetBasedScreen(screenId, true, true)}
           revealVote={revealVoteEnabled}
           discussionReference={selectedTargetBasedScreen.screenName}
           discussionTags={[rowData.compound.externalCompoundIds]}
@@ -217,13 +239,54 @@ const ValidatedHitsList = ({ screenId }) => {
       items: [
         {
           label: "Import Hits",
-          icon: "icon icon-common icon-plus-circle",
-          command: () => setDisplayHitsImportSidebar(true),
+          icon: (
+            <div className="flex pr-2">
+              <SiMicrosoftexcel />
+            </div>
+          ),
+          command: () => setShowFileUploadDialog(true),
         },
         {
           label: "Export Hits",
-          icon: "icon icon-fileformats icon-CSV",
-          command: () => exportCSV(false),
+          icon: (
+            <div className="flex pr-2">
+              <ImDownload />
+            </div>
+          ),
+          command: () =>
+            ExportToExcel({
+              jsonData: selectedTargetBasedScreen.validatedHits.map((hit) => {
+                // Need to flatten the object for export
+                return {
+                  id: hit.id,
+                  smile: hit.compound.smile,
+                  library: hit.library,
+                  source: hit.source,
+                  clusterGroup: hit.clusterGroup,
+                  externalCompoundIds: hit.compound.externalCompoundIds,
+                  ic50: hit.iC50,
+                  mic: hit.mic,
+                };
+              }),
+              fileName:
+                selectedTargetBasedScreen.screenName + "-Validated-Hits",
+              headerMap: fieldToColumnName,
+            }),
+        },
+        {
+          label: "Download Template",
+          icon: (
+            <div className="flex pr-2">
+              <TbBookDownload />
+            </div>
+          ),
+          command: () =>
+            ExportToExcel({
+              jsonData: GenerateTemplate(fieldToColumnName),
+
+              fileName: "TargetBased-Validated-Hits-Template",
+              headerMap: fieldToColumnName,
+            }),
         },
       ],
     };
@@ -433,6 +496,87 @@ const ValidatedHitsList = ({ screenId }) => {
         />
       </Dialog>
       <ConfirmDialog />
+      {/* File upload Dialog */}
+      <Dialog
+        header="Import Hits"
+        visible={showFileUploadDialog}
+        onHide={() => setShowFileUploadDialog(false)}
+      >
+        <FileUpload
+          name="excelFile"
+          accept=".xls,.xlsx,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          maxFileSize={1000000}
+          mode="basic"
+          chooseLabel="Select Excel File"
+          chooseOptions={{
+            icon: (
+              <div className="flex pr-2">
+                <SiMicrosoftexcel />
+              </div>
+            ),
+
+            className: "p-button-text m-0 p-1 p-button-secondary",
+          }}
+          cancelOptions={{
+            label: "Cancel",
+            icon: "pi pi-times",
+            className: "p-button-danger",
+          }}
+          className="p-button-text p-button-secondary"
+          style={{ height: "30px" }}
+          customUpload={true}
+          uploadHandler={async (e) => {
+            let file = e.files[0];
+            const jsonData = await ImportFromExcel({
+              file: file,
+              headerMap: fieldToColumnName,
+            });
+            e.files = null;
+            jsonData.forEach((row) => {
+              row.screenId = selectedTargetBasedScreen.id;
+              row.screenType = "TargetBased";
+              // fetch the row id if it exists in selectedPhenotypicScreen.validatedHits
+              // let existingRow = selectedPhenotypicScreen.validatedHits.find(
+              //   (d) => d.compound.externalCompoundIds === row.compoundExternalId
+              // );
+              // if (existingRow) {
+              //   row.id = existingRow.id;
+              // }
+            });
+            setDataPreview(jsonData);
+            setShowDataPreviewDialog(true);
+            setShowFileUploadDialog(false);
+          }}
+          auto
+        />
+      </Dialog>
+      <DataPreviewDialog
+        headerMap={fieldToColumnName}
+        existingData={selectedTargetBasedScreen.validatedHits.map((hit) => {
+          // Need to flatten the object for export
+          return {
+            id: hit.id,
+            screenId: selectedTargetBasedScreen.id,
+            screenType: "TargetBased",
+            smile: hit.compound.smile,
+            library: hit.library,
+            source: hit.source,
+            clusterGroup: hit.clusterGroup,
+            externalCompoundIds: hit.compound.externalCompoundIds,
+            ic50: hit.iC50,
+            mic: hit.mic,
+          };
+        })}
+        //comparatorKey="externalCompoundIds"
+        data={dataPreview}
+        visible={showDataPreviewDialog}
+        onHide={() => {
+          setShowDataPreviewDialog(false);
+          setDataPreview(null);
+        }}
+        onSave={batchInsertHits}
+        isSaving={isBatchInsertingHits}
+      />
     </div>
   );
 };

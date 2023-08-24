@@ -75,7 +75,6 @@ export default class ScreenTStore {
       setScreenSequenceIndex: action,
       mergeScreen: action,
       editScreen: action,
-      fetchTargetBasedScreenSilently: action,
       editScreenSequence: action,
       updateScreenStatus: action,
       batchInsertTargetBasedScreenSequence: action,
@@ -138,14 +137,22 @@ export default class ScreenTStore {
   };
 
   // Fetch a specific screen based on ID from the API
-  fetchTargetBasedScreen = async (id, invalidateCache = false) => {
-    this.isLoadingTargetBasedScreen = true;
+  fetchTargetBasedScreen = async (
+    id,
+    invalidateCache = false,
+    shouldSetLoadingState = true
+  ) => {
+    if (shouldSetLoadingState) {
+      this.isLoadingTargetBasedScreen = true;
+    }
 
     // First check the cache
     let fetchedScreen = this.targetBasedScreenRegistryExpanded.get(id);
     if (!invalidateCache && fetchedScreen) {
       this.selectedTargetBasedScreen = fetchedScreen;
-      this.isLoadingTargetBasedScreen = false;
+      if (shouldSetLoadingState) {
+        this.isLoadingTargetBasedScreen = false;
+      }
     } else {
       // If not in cache, fetch from the API
       try {
@@ -159,27 +166,10 @@ export default class ScreenTStore {
         console.error(error);
       } finally {
         runInAction(() => {
-          this.isLoadingTargetBasedScreen = false;
+          if (shouldSetLoadingState) {
+            this.isLoadingTargetBasedScreen = false;
+          }
         });
-      }
-    }
-  };
-
-  // Similar to the above function but without changing loading state, meant for silent operations
-  fetchTargetBasedScreenSilently = async (id, invalidateCache = false) => {
-    let fetchedScreen = this.targetBasedScreenRegistryExpanded.get(id);
-    if (!invalidateCache && fetchedScreen) {
-      this.selectedTargetBasedScreen = fetchedScreen;
-    } else {
-      try {
-        fetchedScreen = await agent.Screen.details(id);
-        runInAction(() => {
-          fetchedScreen = generateVoteScore(fetchedScreen);
-          this.selectedTargetBasedScreen = fetchedScreen;
-          this.targetBasedScreenRegistryExpanded.set(id, fetchedScreen);
-        });
-      } catch (error) {
-        console.error(error);
       }
     }
   };
