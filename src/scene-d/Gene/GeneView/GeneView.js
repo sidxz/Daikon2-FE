@@ -77,11 +77,8 @@ const GeneView = () => {
         },
       ],
     },
-  ];
-
-  if (user.roles.includes("admin")) {
-    const adminActions = {
-      label: "Admin Section",
+    {
+      label: "Actions",
       items: [
         {
           label: "Promote to Target",
@@ -90,6 +87,14 @@ const GeneView = () => {
             setDisplayPromotionDialog(true);
           },
         },
+      ],
+    },
+  ];
+
+  if (user.roles.includes("admin")) {
+    const adminActions = {
+      label: "Admin Section",
+      items: [
         {
           label: "Gene Groups",
           icon: "icon icon-common icon-object-group",
@@ -115,7 +120,7 @@ const GeneView = () => {
   }
   if (gene !== null) {
     return (
-      <div className="flex  max-w-full">
+      <div className="flex w-full">
         <Toast ref={toast} />
 
         <div className="flex gap-2 w-full">
