@@ -3,6 +3,7 @@ import { BreadCrumb } from "primereact/breadcrumb";
 import { TabPanel, TabView } from "primereact/tabview";
 import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { FormatScreenName } from "../../../../../app/common/Functions/Formats";
 import SectionHeading from "../../../../../app/common/SectionHeading/SectionHeading";
 import Loading from "../../../../../app/layout/Loading/Loading";
 import { RootStoreContext } from "../../../../../app/stores/rootStore";
@@ -13,13 +14,13 @@ const ScreenSequences = ({ TargetName }) => {
   /* MobX Store */
   const rootStore = useContext(RootStoreContext);
   const {
-    filterScreensByTarget,
+    filterTargetBasedScreensByTarget,
     filteredScreens,
     displayLoading,
     screenSequenceIndex,
     setScreenSequenceIndex,
     selectedScreenTargetFilter,
-    screenRegistryCacheValid,
+    isTgScreenRegistryCacheValid,
   } = rootStore.screenTStore;
 
   const navigate = useNavigate();
@@ -29,14 +30,14 @@ const ScreenSequences = ({ TargetName }) => {
       filteredScreens === null ||
       filteredScreens.length === 0 ||
       selectedScreenTargetFilter !== TargetName ||
-      !screenRegistryCacheValid
+      !isTgScreenRegistryCacheValid
     )
-      filterScreensByTarget(TargetName);
+      filterTargetBasedScreensByTarget(TargetName);
   }, [
     filteredScreens,
-    filterScreensByTarget,
+    filterTargetBasedScreensByTarget,
     TargetName,
-    screenRegistryCacheValid,
+    isTgScreenRegistryCacheValid,
     selectedScreenTargetFilter,
   ]);
 
@@ -68,7 +69,7 @@ const ScreenSequences = ({ TargetName }) => {
     if (tabs.length === 0 && filteredScreens.length > 0) {
       filteredScreens.forEach((screen) => {
         tabs.push(
-          <TabPanel header={screen.screenName} key={screen.id}>
+          <TabPanel header={FormatScreenName(screen)} key={screen.id}>
             <ScreenSequence screenId={screen.id} />
           </TabPanel>
         );

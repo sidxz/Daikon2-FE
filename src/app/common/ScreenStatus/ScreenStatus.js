@@ -25,7 +25,7 @@ const ScreenStatus = ({ id, status, readOnly = false }) => {
 
   // Accessing the necessary properties from the screenTStore
   const rootStore = useContext(RootStoreContext);
-  const { updatingScreenStatus, updateScreenStatus } = rootStore.screenTStore;
+  const { isUpdatingScreenStatus, updateScreenStatus } = rootStore.screenTStore;
 
   // Parameter check
   if (!id || !status) return <></>;
@@ -83,7 +83,7 @@ const ScreenStatus = ({ id, status, readOnly = false }) => {
         placeholder="Set Status"
         itemTemplate={optionTemplate}
         valueTemplate={optionTemplate}
-        disabled={updatingScreenStatus}
+        disabled={isUpdatingScreenStatus}
         onChange={handleStatusChange}
       />
       <ConfirmDialog

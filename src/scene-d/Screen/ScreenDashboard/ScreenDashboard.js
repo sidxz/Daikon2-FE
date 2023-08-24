@@ -16,21 +16,25 @@ import ScreenOverview from "./ScreenOverview/ScreenOverview";
 
 const ScreenDashboard = () => {
   const rootStore = useContext(RootStoreContext);
-  const { loadingFetchScreens, screenRegistry, fetchScreens, uniqueScreens } =
-    rootStore.screenTStore;
+  const {
+    isLoadingTargetBasedScreens,
+    targetBasedScreenRegistry,
+    fetchTargetBasedScreens,
+    targetBasedUniqueScreens,
+  } = rootStore.screenTStore;
   const { user } = rootStore.userStore;
 
   /* Local State Management */
 
   useEffect(() => {
-    if (screenRegistry.size === 0) fetchScreens();
-  }, [screenRegistry, fetchScreens]); // eslint-disable-line react-hooks/exhaustive-deps
+    if (targetBasedScreenRegistry.size === 0) fetchTargetBasedScreens();
+  }, [targetBasedScreenRegistry, fetchTargetBasedScreens]); // eslint-disable-line react-hooks/exhaustive-deps
 
   /* local variables */
 
   const dt = useRef(null);
 
-  if (!loadingFetchScreens) {
+  if (!isLoadingTargetBasedScreens) {
     /* Table Body Templates */
 
     const TargetNameBodyTemplate = (rowData) => {
@@ -71,7 +75,7 @@ const ScreenDashboard = () => {
               <div className="datatable-screens">
                 <DataTable
                   ref={dt}
-                  value={uniqueScreens}
+                  value={targetBasedUniqueScreens}
                   paginator
                   rows={20}
                   className="p-datatable-screens"

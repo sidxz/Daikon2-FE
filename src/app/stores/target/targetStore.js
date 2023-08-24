@@ -147,7 +147,7 @@ export default class TargetStore {
       console.error(error);
     } finally {
       runInAction(() => {
-        this.rootStore.screenTStore.screenRegistryCacheValid = false;
+        this.rootStore.screenTStore.isTgScreenRegistryCacheValid = false;
         this.promoteTargetToScreenDisplayLoading = false;
       });
     }

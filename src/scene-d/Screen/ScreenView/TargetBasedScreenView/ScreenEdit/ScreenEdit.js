@@ -10,7 +10,7 @@ import { RootStoreContext } from "../../../../../app/stores/rootStore";
 
 const ScreenEdit = ({ selectedScreenTargetFilter, close }) => {
   const rootStore = useContext(RootStoreContext);
-  const { selectedScreen, editScreen } = rootStore.screenTStore;
+  const { selectedTargetBasedScreen, editScreen } = rootStore.screenTStore;
   const { fetchOrgs, Orgs } = rootStore.adminStore;
   const { appVars } = rootStore.generalStore;
 
@@ -18,16 +18,16 @@ const ScreenEdit = ({ selectedScreenTargetFilter, close }) => {
     if (Orgs.length === 0) fetchOrgs();
   }, [fetchOrgs, Orgs]);
 
-  //console.log(selectedScreen);
+  //console.log(selectedTargetBasedScreen);
 
   const formik = useFormik({
     initialValues: {
-      org: selectedScreen.org,
-      promotionDate: new Date(selectedScreen.promotionDate),
-      notes: selectedScreen.notes,
-      method: selectedScreen.method,
-      statusDate: selectedScreen.statusDate
-        ? new Date(selectedScreen.statusDate)
+      org: selectedTargetBasedScreen.org,
+      promotionDate: new Date(selectedTargetBasedScreen.promotionDate),
+      notes: selectedTargetBasedScreen.notes,
+      method: selectedTargetBasedScreen.method,
+      statusDate: selectedTargetBasedScreen.statusDate
+        ? new Date(selectedTargetBasedScreen.statusDate)
         : null,
     },
     validate: (data) => {
@@ -44,7 +44,7 @@ const ScreenEdit = ({ selectedScreenTargetFilter, close }) => {
       return errors;
     },
     onSubmit: (data) => {
-      data["id"] = selectedScreen.id;
+      data["id"] = selectedTargetBasedScreen.id;
       data["orgId"] = data.org.id;
 
       editScreen(data).then((res) => {
@@ -67,8 +67,8 @@ const ScreenEdit = ({ selectedScreenTargetFilter, close }) => {
   };
 
   if (
-    selectedScreen === null ||
-    selectedScreen.targetName !== selectedScreenTargetFilter
+    selectedTargetBasedScreen === null ||
+    selectedTargetBasedScreen.targetName !== selectedScreenTargetFilter
   ) {
     return (
       <div>
@@ -79,7 +79,7 @@ const ScreenEdit = ({ selectedScreenTargetFilter, close }) => {
 
   return (
     <div>
-      <h2>{selectedScreen.screenName}</h2>
+      <h2>{selectedTargetBasedScreen.screenName}</h2>
       <div className="card w-full">
         <form onSubmit={formik.handleSubmit} className="p-fluid">
           <div className="field">

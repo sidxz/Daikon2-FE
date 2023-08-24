@@ -22,8 +22,12 @@ const ValidatedHitsList = ({ screenId }) => {
   const tableMenu = useRef(null);
   /* MobX Store */
   const rootStore = useContext(RootStoreContext);
-  const { loadingFetchScreen, fetchScreen, selectedScreen, fetchScreenSilent } =
-    rootStore.screenTStore;
+  const {
+    isLoadingTargetBasedScreen,
+    fetchTargetBasedScreen,
+    selectedTargetBasedScreen,
+    fetchTargetBasedScreenSilently,
+  } = rootStore.screenTStore;
   const { user } = rootStore.userStore;
   const { enableVoting, freezeVoting } = rootStore.votingStore;
 
@@ -39,14 +43,14 @@ const ValidatedHitsList = ({ screenId }) => {
   let tableMenuItems = [];
 
   useEffect(() => {
-    fetchScreen(screenId);
-  }, [fetchScreen, screenId]);
+    fetchTargetBasedScreen(screenId);
+  }, [fetchTargetBasedScreen, screenId]);
 
-  if (loadingFetchScreen || selectedScreen === null) {
+  if (isLoadingTargetBasedScreen || selectedTargetBasedScreen === null) {
     return <Loading />;
   }
 
-  if (!loadingFetchScreen && selectedScreen) {
+  if (!isLoadingTargetBasedScreen && selectedTargetBasedScreen) {
   }
 
   /* Local functions */
@@ -155,9 +159,9 @@ const ValidatedHitsList = ({ screenId }) => {
         <Vote
           id={rowData.vote.id}
           voteData={rowData.vote}
-          callBack={() => fetchScreenSilent(screenId, true)}
+          callBack={() => fetchTargetBasedScreenSilently(screenId, true)}
           revealVote={revealVoteEnabled}
-          discussionReference={selectedScreen.screenName}
+          discussionReference={selectedTargetBasedScreen.screenName}
           discussionTags={[rowData.compound.externalCompoundIds]}
           enableOneCLickVoting={enableOneCLickVoting}
         />
@@ -177,11 +181,14 @@ const ValidatedHitsList = ({ screenId }) => {
       </div>
       <div className="flex ml-auto gap-2">
         <div className="flex">
-          <Chip label={selectedScreen?.org.name} icon="ri-organization-chart" />
+          <Chip
+            label={selectedTargetBasedScreen?.org.name}
+            icon="ri-organization-chart"
+          />
         </div>
         <div className="flex">
           <Chip
-            label={selectedScreen?.method}
+            label={selectedTargetBasedScreen?.method}
             icon="icon icon-common icon-circle-notch"
           />
         </div>
@@ -193,7 +200,7 @@ const ValidatedHitsList = ({ screenId }) => {
 
   /* Construct table menu items */
 
-  if (selectedScreen.validatedHits.length !== 0) {
+  if (selectedTargetBasedScreen.validatedHits.length !== 0) {
     let selectItem = {
       label: selectionEnabled ? "Cancel Selection" : "Select Rows",
       icon: selectionEnabled ? "pi pi-times-circle" : "pi pi-check-square",
@@ -204,7 +211,7 @@ const ValidatedHitsList = ({ screenId }) => {
     tableMenuItems.push(selectItem);
   }
 
-  if (!loadingFetchScreen && selectedScreen) {
+  if (!isLoadingTargetBasedScreen && selectedTargetBasedScreen) {
     let itm = {
       label: "Hits Management",
       items: [
@@ -224,7 +231,7 @@ const ValidatedHitsList = ({ screenId }) => {
 
     // Admin section
 
-    if (selectedScreen.validatedHits.length !== 0) {
+    if (selectedTargetBasedScreen.validatedHits.length !== 0) {
       let votingItem = {
         label: "Votes Management",
         items: [],
@@ -272,7 +279,7 @@ const ValidatedHitsList = ({ screenId }) => {
       tableMenuItems.push(votingItem);
     }
 
-    if (selectedScreen.validatedHits.length !== 0) {
+    if (selectedTargetBasedScreen.validatedHits.length !== 0) {
       let showVotesItem = {
         label: revealVoteEnabled ? "Hide Votes" : "Reveal Votes",
         icon: revealVoteEnabled ? "pi pi-eye-slash" : "pi pi-eye",
@@ -284,7 +291,7 @@ const ValidatedHitsList = ({ screenId }) => {
       tableMenuItems.push(showVotesItem);
     }
 
-    if (selectedScreen.validatedHits.length !== 0) {
+    if (selectedTargetBasedScreen.validatedHits.length !== 0) {
       let promotionItem = {
         label: "Promote To HA",
         icon: "pi pi-arrow-right",
@@ -304,7 +311,7 @@ const ValidatedHitsList = ({ screenId }) => {
             className="p-datatable-gridlines w-full"
             size="small"
             ref={dt}
-            value={selectedScreen.validatedHits}
+            value={selectedTargetBasedScreen.validatedHits}
             // paginator
             scrollable
             // rows={50}
@@ -319,7 +326,7 @@ const ValidatedHitsList = ({ screenId }) => {
             selection={selectedCompounds}
             onSelectionChange={(e) => setSelectedCompounds(e.value)}
             dataKey="id"
-            exportFilename={`Hits-${selectedScreen.screenName}-${selectedScreen.method}.csv`}
+            exportFilename={`Hits-${selectedTargetBasedScreen.screenName}-${selectedTargetBasedScreen.method}.csv`}
           >
             {selectionEnabled && (
               <Column
@@ -405,8 +412,8 @@ const ValidatedHitsList = ({ screenId }) => {
           />
           <br />
           <ValidatedHitsImporter
-            screenId={selectedScreen.id}
-            existingHits={selectedScreen.validatedHits}
+            screenId={selectedTargetBasedScreen.id}
+            existingHits={selectedTargetBasedScreen.validatedHits}
           />
         </div>
       </Dialog>
@@ -421,7 +428,7 @@ const ValidatedHitsList = ({ screenId }) => {
       >
         <ValidatedHitsPromoteToHAEntry
           compounds={selectedCompounds}
-          screen={selectedScreen}
+          screen={selectedTargetBasedScreen}
           close={() => setDisplayPromoteToHAEntry(false)}
         />
       </Dialog>

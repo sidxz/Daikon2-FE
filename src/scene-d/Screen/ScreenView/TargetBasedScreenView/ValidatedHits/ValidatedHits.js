@@ -14,12 +14,12 @@ const ValidatedHits = ({ TargetName }) => {
   const rootStore = useContext(RootStoreContext);
   const {
     displayLoading,
-    filterScreensByTarget,
+    filterTargetBasedScreensByTarget,
     filteredScreens,
     validatedHitsIndex,
     setValidatedHitsIndex,
     selectedScreenTargetFilter,
-    screenRegistryCacheValid,
+    isTgScreenRegistryCacheValid,
   } = rootStore.screenTStore;
 
   const navigate = useNavigate();
@@ -29,14 +29,14 @@ const ValidatedHits = ({ TargetName }) => {
       filteredScreens === null ||
       filteredScreens.length === 0 ||
       selectedScreenTargetFilter !== TargetName ||
-      !screenRegistryCacheValid
+      !isTgScreenRegistryCacheValid
     )
-      filterScreensByTarget(TargetName);
+      filterTargetBasedScreensByTarget(TargetName);
   }, [
     filteredScreens,
-    filterScreensByTarget,
+    filterTargetBasedScreensByTarget,
     TargetName,
-    screenRegistryCacheValid,
+    isTgScreenRegistryCacheValid,
     selectedScreenTargetFilter,
   ]);
 
@@ -62,7 +62,7 @@ const ValidatedHits = ({ TargetName }) => {
     },
   ];
 
-  // let filteredScreensByTarget = filterScreensByTarget(TargetName);
+  // let filteredScreensByTarget = filterTargetBasedScreensByTarget(TargetName);
   let tabs = [];
 
   if (tabs.length === 0 && filteredScreens.length > 0) {
