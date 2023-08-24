@@ -204,7 +204,7 @@ const ValidatedHitsList = ({ screenId }) => {
       <div className="flex ml-auto gap-2">
         <div className="flex">
           <Chip
-            label={selectedTargetBasedScreen?.org.name}
+            label={selectedTargetBasedScreen?.org?.alias}
             icon="ri-organization-chart"
           />
         </div>

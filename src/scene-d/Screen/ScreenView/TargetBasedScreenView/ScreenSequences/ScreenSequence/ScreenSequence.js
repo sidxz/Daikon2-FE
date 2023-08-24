@@ -180,7 +180,7 @@ const ScreenSequence = ({ screenId }) => {
         </div>
         <div className="flex">
           <Chip
-            label={selectedTargetBasedScreen?.org.name}
+            label={selectedTargetBasedScreen?.org?.alias}
             icon="ri-organization-chart"
           />
         </div>

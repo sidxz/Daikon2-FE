@@ -194,7 +194,7 @@ const PhenotypicScreenSequenceTable = ({ screenId }) => {
               status={selectedPhenotypicScreen?.status}
             />
             <Chip
-              label={selectedPhenotypicScreen?.org.name}
+              label={selectedPhenotypicScreen?.org?.alias}
               icon="ri-organization-chart"
             />
             <Chip

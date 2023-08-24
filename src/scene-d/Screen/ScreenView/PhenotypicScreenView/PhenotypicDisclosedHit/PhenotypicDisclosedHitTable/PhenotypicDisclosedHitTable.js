@@ -169,7 +169,7 @@ const PhenotypicDisclosedHitTable = ({ screenId }) => {
       <div className="flex ml-auto gap-2">
         <div className="flex">
           <Chip
-            label={selectedPhenotypicScreen?.org.name}
+            label={selectedPhenotypicScreen?.org?.alias}
             icon="ri-organization-chart"
           />
         </div>

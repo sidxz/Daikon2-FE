@@ -43,7 +43,7 @@ const ScreenStatus = ({ id, status, readOnly = false }) => {
   const optionTemplate = (option) => {
     if (option) {
       return (
-        <div className="flex align-items-center gap-2">
+        <div className="flex align-items-center align-self-center gap-2">
           <div className="flex flex-column">{option.icon}</div>
           <div className="flex flex-column">{option.name}</div>
         </div>
@@ -85,6 +85,7 @@ const ScreenStatus = ({ id, status, readOnly = false }) => {
         valueTemplate={optionTemplate}
         disabled={isUpdatingScreenStatus}
         onChange={handleStatusChange}
+        className="align-items-center"
       />
       <ConfirmDialog
         visible={confirmDialogVisible}
