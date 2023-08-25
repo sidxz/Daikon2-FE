@@ -40,12 +40,12 @@ const GenePromoteTargetSelectionWindow = ({
     validateTargetName,
     validateTargetNameLoading,
     proposedTargetNameValidated,
-    saveGenePromotionDataObj,
-    // genePromotionDataObj,
     searchingGeneGroup,
     searchedGeneGroup,
     searchGeneGroup,
   } = rootStore.geneStore;
+
+  const { saveGenePromotionDataObj } = rootStore.genePromotionStore;
 
   let onExit = () => {
     setDisplayPromotionDialog(false);
@@ -290,7 +290,7 @@ const GenePromoteTargetSelectionWindow = ({
         saveGenePromotionDataObj({
           targetName: proposedTargetName,
           targetType: "simple-protein",
-          genePromtionRequestGenes: [{ GeneId: gene.id }],
+          genePromotionRequestGenes: [{ GeneId: gene.id }],
         });
 
         navigate(`/d/gene/promote/${proposedTargetName}`);
@@ -339,7 +339,7 @@ const GenePromoteTargetSelectionWindow = ({
         saveGenePromotionDataObj({
           targetName: selectedProteinComplexName,
           targetType: "protein-complex",
-          genePromtionRequestGenes: selectedProteinComplexIds,
+          genePromotionRequestGenes: selectedProteinComplexIds,
         });
 
         navigate(`/d/gene/promote/${selectedProteinComplexName}`);

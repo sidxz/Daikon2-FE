@@ -63,7 +63,7 @@ const Horizon = ({ accessionNumber, entryPoint }) => {
     return <PleaseWait />;
   }
 
-  console.log(selectedHorizon);
+  //console.log(selectedHorizon);
 
   if (!generatingHorizon && selectedHorizon !== null) {
     return (

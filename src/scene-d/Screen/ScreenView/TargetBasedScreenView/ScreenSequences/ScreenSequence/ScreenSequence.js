@@ -19,9 +19,18 @@ import Loading from "../../../../../../app/layout/Loading/Loading";
 import { RootStoreContext } from "../../../../../../app/stores/rootStore";
 import ScreenSequenceAddForm from "./ScreenSequenceAddForm/ScreenSequenceAddForm";
 
+import { FileUpload } from "primereact/fileupload";
+import { SiMicrosoftexcel } from "react-icons/si";
+import { TbBookDownload } from "react-icons/tb";
+import DataPreviewDialog from "../../../../../../app/common/DataPreviewDialog/DataPreviewDialog";
+import { GenerateTemplate } from "../../../../../../app/common/Functions/Excel/GenerateTemplate";
+import ImportFromExcel from "../../../../../../app/common/Functions/Excel/ImportFromExcel";
+
 const ScreenSequence = ({ screenId }) => {
   const [displayAddDialog, setDisplayAddDialog] = useState(false);
   const [selectedProtocol, setSelectedProtocol] = useState("");
+  const [dataPreview, setDataPreview] = useState(null);
+  const [showDataPreviewDialog, setShowDataPreviewDialog] = useState(false);
   const op = useRef(null);
   const dt = useRef(null);
 
@@ -29,23 +38,28 @@ const ScreenSequence = ({ screenId }) => {
   const rootStore = useContext(RootStoreContext);
   const { appVars } = rootStore.generalStore;
   const {
-    loadingFetchScreen,
-    fetchScreen,
-    selectedScreen,
-    addScreeenSequence,
-    loadingScreenSequence,
-    editScreenRow,
-    editingScreenRow,
+    isLoadingTargetBasedScreen,
+    fetchTargetBasedScreen,
+    selectedTargetBasedScreen,
+    addScreenSequence,
+    isAddingScreenSequence,
+    editScreenSequence,
+    isEditingScreenSequence,
+    isBatchInsertingTargetBasedScreenSequence,
+    batchInsertTargetBasedScreenSequence,
   } = rootStore.screenTStore;
 
   const [filteredResearchers, setFilteredResearchers] = useState([]);
 
   useEffect(() => {
-    if (selectedScreen === null || selectedScreen.id !== screenId)
-      fetchScreen(screenId);
-  }, [selectedScreen, fetchScreen, screenId]);
+    if (
+      selectedTargetBasedScreen === null ||
+      selectedTargetBasedScreen.id !== screenId
+    )
+      fetchTargetBasedScreen(screenId);
+  }, [selectedTargetBasedScreen, fetchTargetBasedScreen, screenId]);
 
-  if (loadingFetchScreen || selectedScreen === null) {
+  if (isLoadingTargetBasedScreen || selectedTargetBasedScreen === null) {
     return <PleaseWait />;
   }
 
@@ -63,13 +77,14 @@ const ScreenSequence = ({ screenId }) => {
     startDate: "Start Date",
     endDate: "End Date",
     unverifiedHitCount: "Hit Count",
+    confirmedHitCount: "Validated Hit Count",
   };
 
   const tableHeader = (
     <div className="flex w-full">
       <div className="flex w-full">
         <div className="flex gap-1">
-          <div className="flex">
+          <div className="flex align-items-center">
             <Button
               type="button"
               icon="icon icon-common icon-plus-circle"
@@ -78,8 +93,44 @@ const ScreenSequence = ({ screenId }) => {
               onClick={() => setDisplayAddDialog(true)}
             />
           </div>
-          <div className="flex">{/*Todo: Import */}</div>
-          <div className="flex">
+          <div className="flex align-items-center">
+            <FileUpload
+              name="excelFile"
+              accept=".xls,.xlsx,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+              maxFileSize={1000000}
+              mode="basic"
+              chooseLabel="Import"
+              chooseOptions={{
+                icon: (
+                  <div className="flex pr-2">
+                    <SiMicrosoftexcel />
+                  </div>
+                ),
+
+                className: "p-button-text m-0 p-2",
+              }}
+              cancelOptions={{
+                label: "Cancel",
+                icon: "pi pi-times",
+                className: "p-button-danger",
+              }}
+              className="p-button-text"
+              style={{ height: "30px" }}
+              customUpload={true}
+              uploadHandler={async (e) => {
+                let file = e.files[0];
+                const jsonData = await ImportFromExcel({
+                  file: file,
+                  headerMap: fieldToColumnName,
+                });
+                e.files = null;
+                setDataPreview(jsonData);
+                setShowDataPreviewDialog(true);
+              }}
+              auto
+            />
+          </div>
+          <div className="flex align-items-center">
             <Button
               type="button"
               icon={
@@ -91,8 +142,27 @@ const ScreenSequence = ({ screenId }) => {
               className="p-button-text"
               onClick={() =>
                 ExportToExcel({
-                  jsonData: selectedScreen.screenSequences,
-                  fileName: selectedScreen.screenName + "-Screens",
+                  jsonData: selectedTargetBasedScreen.screenSequences,
+                  fileName: selectedTargetBasedScreen.screenName + "-Screens",
+                  headerMap: fieldToColumnName,
+                })
+              }
+            />
+          </div>
+          <div className="flex align-items-center">
+            <Button
+              type="button"
+              icon={
+                <div className="flex pr-1">
+                  <TbBookDownload />
+                </div>
+              }
+              label="Template"
+              className="p-button-text"
+              onClick={() =>
+                ExportToExcel({
+                  jsonData: GenerateTemplate(fieldToColumnName),
+                  fileName: "TargetBased-Screens-Template",
                   headerMap: fieldToColumnName,
                 })
               }
@@ -104,16 +174,19 @@ const ScreenSequence = ({ screenId }) => {
       <div className="flex w-full justify-content-end gap-2">
         <div className="flex">
           <ScreenStatus
-            id={selectedScreen.id}
-            status={selectedScreen?.status}
+            id={selectedTargetBasedScreen.id}
+            status={selectedTargetBasedScreen?.status}
           />
         </div>
         <div className="flex">
-          <Chip label={selectedScreen?.org.name} icon="ri-organization-chart" />
+          <Chip
+            label={selectedTargetBasedScreen?.org?.alias}
+            icon="ri-organization-chart"
+          />
         </div>
         <div className="flex">
           <Chip
-            label={selectedScreen?.method}
+            label={selectedTargetBasedScreen?.method}
             icon="icon icon-common icon-circle-notch"
           />
         </div>
@@ -121,7 +194,7 @@ const ScreenSequence = ({ screenId }) => {
     </div>
   );
 
-  if (!loadingFetchScreen && selectedScreen) {
+  if (!isLoadingTargetBasedScreen && selectedTargetBasedScreen) {
     let protocolBodyTemplate = (rowData) => {
       if (rowData?.protocol === null) {
         return <>Not Available</>;
@@ -213,7 +286,7 @@ const ScreenSequence = ({ screenId }) => {
 
     let saveEdits = (e) => {
       let { newData } = e;
-      editScreenRow(newData);
+      editScreenSequence(newData);
     };
 
     return (
@@ -246,7 +319,7 @@ const ScreenSequence = ({ screenId }) => {
             className="p-sidebar-md"
           >
             <div className="card">
-              <h3>{selectedScreen?.screenName}</h3>
+              <h3>{selectedTargetBasedScreen?.screenName}</h3>
               <i className="icon icon-common icon-plus-circle"></i> &nbsp; Add
               library screening information
               <hr />
@@ -255,10 +328,10 @@ const ScreenSequence = ({ screenId }) => {
             <ScreenSequenceAddForm
               screenId={screenId}
               onAdd={(newSequence) => {
-                addScreeenSequence(newSequence);
+                addScreenSequence(newSequence);
                 setDisplayAddDialog(false);
               }}
-              loading={loadingScreenSequence}
+              loading={isAddingScreenSequence}
             />
           </Sidebar>
           <div className="card p-fluid">
@@ -266,15 +339,15 @@ const ScreenSequence = ({ screenId }) => {
               className="p-datatable-gridlines w-full"
               size="small"
               ref={dt}
-              value={selectedScreen.screenSequences}
+              value={selectedTargetBasedScreen.screenSequences}
               showGridlines
               header={tableHeader}
               editMode="row"
               sortField="startDate"
               sortOrder={-1}
               onRowEditComplete={saveEdits}
-              loading={editingScreenRow}
-              exportFilename={`Screen-${selectedScreen.screenName}-${selectedScreen.method}.csv`}
+              loading={isEditingScreenSequence}
+              exportFilename={`Screen-${selectedTargetBasedScreen.screenName}-${selectedTargetBasedScreen.method}.csv`}
             >
               <Column
                 field="library"
@@ -320,7 +393,13 @@ const ScreenSequence = ({ screenId }) => {
               />
               <Column
                 field="unverifiedHitCount"
-                header="Hit Count"
+                header="Initial Hit Count"
+                editor={(options) => textEditor(options)}
+              />
+
+              <Column
+                field="confirmedHitCount"
+                header="Validated Hit Count"
                 editor={(options) => textEditor(options)}
               />
 
@@ -332,6 +411,19 @@ const ScreenSequence = ({ screenId }) => {
             </DataTable>
           </div>
         </div>
+        {/* Data preview dialog, used when a excel file is uploaded */}
+        <DataPreviewDialog
+          headerMap={fieldToColumnName}
+          existingData={selectedTargetBasedScreen.screenSequences}
+          data={dataPreview}
+          visible={showDataPreviewDialog}
+          onHide={() => {
+            setShowDataPreviewDialog(false);
+            setDataPreview(null);
+          }}
+          onSave={batchInsertTargetBasedScreenSequence}
+          isSaving={isBatchInsertingTargetBasedScreenSequence}
+        />
       </React.Fragment>
     );
   }

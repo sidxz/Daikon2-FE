@@ -1,7 +1,6 @@
 import { Button } from "primereact/button";
-import { Divider } from "primereact/divider";
 import { Panel } from "primereact/panel";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
 import Question from "../../../../../app/common/Question/Question";
@@ -20,31 +19,54 @@ const GenePromotionRequest = ({
   const { displayLoading, genePromotionRegistry, promoteGene } =
     rootStore.geneStoreAdmin;
 
-  const questionaire = AnswerRegistry.get(TargetName);
+  const {
+    questions,
+    adminQuestions,
+    isFetchingQuestions,
+    fetchQuestions,
+    questionsRegistry,
+    adminQuestionsRegistry,
+    isCacheValid,
+    questionsGrouped,
+    adminQuestionsGrouped,
+  } = rootStore.genePromotionStore;
 
-  const [targetPromotionFormValue, setTargetPromotionFormValue] = useState(
-    questionaire.answers
-  );
+  useEffect(() => {
+    if (!isCacheValid) {
+      fetchQuestions();
+    }
+
+    return () => {
+      //cleanup
+    };
+  }, [isCacheValid, fetchQuestions]);
+
+  const userAnsweredTargetPromotionQuestionnaire =
+    AnswerRegistry.get(TargetName);
+
+  const [targetPromotionReviewFormValue, setTargetPromotionReviewFormValue] =
+    useState(userAnsweredTargetPromotionQuestionnaire.answers);
 
   const updateTargetPromotionFormValue = (e) => {
+    //console.log(e);
     var location = null;
     var newFormValue = null;
     var newField = null;
 
     if (e.target.id.endsWith("Description")) {
       location = e.target.id.slice(0, -11);
-      newFormValue = { ...targetPromotionFormValue };
+      newFormValue = { ...targetPromotionReviewFormValue };
       newField = { ...newFormValue[location] };
       newField.description = e.target.value;
       newFormValue[location] = newField;
-      setTargetPromotionFormValue(newFormValue);
+      setTargetPromotionReviewFormValue(newFormValue);
     } else {
       location = e.target.id;
-      newFormValue = { ...targetPromotionFormValue };
+      newFormValue = { ...targetPromotionReviewFormValue };
       newField = { ...newFormValue[location] };
       newField.answer = e.target.value;
       newFormValue[location] = newField;
-      setTargetPromotionFormValue(newFormValue);
+      setTargetPromotionReviewFormValue(newFormValue);
     }
   };
 
@@ -56,16 +78,18 @@ const GenePromotionRequest = ({
     var promotionReqData = {
       targetName: GenePromotionRequest.targetName,
       targetType: GenePromotionRequest.targetType,
-      genePromtionRequestGenes: GenePromotionRequest.genePromtionRequestGenes,
+      genePromotionRequestGenes: GenePromotionRequest.genePromotionRequestGenes,
 
       genePromotionRequestValues: [],
     };
 
-    Object.keys(targetPromotionFormValue).map((key) => {
+    Object.keys(targetPromotionReviewFormValue).map((key) => {
       promotionReqData.genePromotionRequestValues.push({
-        questionId: QuestionsRegistry.get(key).id,
-        answer: targetPromotionFormValue[key].answer,
-        description: targetPromotionFormValue[key].description,
+        questionId: QuestionsRegistry.get(key)
+          ? QuestionsRegistry.get(key).id
+          : adminQuestionsRegistry.get(key).id,
+        answer: targetPromotionReviewFormValue[key].answer,
+        description: targetPromotionReviewFormValue[key].description,
       });
     });
 
@@ -77,558 +101,143 @@ const GenePromotionRequest = ({
     });
   };
 
-  const getGeneInformatin = () => {
-    let genes = questionaire.genePromtionRequestGenes.map((gene) => {
-      return (
-        <NavLink to={`/d/gene/${gene.geneId}`}>
-          {GeneRegistry.get(gene.geneId).accessionNumber + " "}
-        </NavLink>
-      );
-    });
+  const getGeneInformation = () => {
+    //console.log("f -> getGeneInformation()");
+    if (!userAnsweredTargetPromotionQuestionnaire.genePromotionRequestGenes) {
+      return <h2>Failed. No Genes</h2>;
+    } else {
+      let genes =
+        userAnsweredTargetPromotionQuestionnaire.genePromotionRequestGenes.map(
+          (gene) => {
+            return (
+              <NavLink to={`/d/gene/${gene.geneId}`}>
+                {GeneRegistry.get(gene.geneId).accessionNumber + " "}
+              </NavLink>
+            );
+          }
+        );
 
-    return <React.Fragment>{genes}</React.Fragment>;
+      return <React.Fragment>{genes}</React.Fragment>;
+    }
   };
 
+  /* Generate the user answered question section */
+  let userAnsweredQuestionsGrouped_Render = [];
+  for (var section in questionsGrouped) {
+    // Extract top level sections
+    userAnsweredQuestionsGrouped_Render.push(
+      <div className="flex text-xl">{section}</div>
+    );
+    for (var subSection in questionsGrouped[section]) {
+      // Extract sub sections
+      userAnsweredQuestionsGrouped_Render.push(
+        <div className="flex flex-column ml-2 gap-1">
+          <div className="flex text-lg">{subSection}</div>
+          <div className="flex text-sm p-2">
+            {questionsGrouped[section][subSection][0]["subSectionDescription"]}
+          </div>
+        </div>
+      );
+
+      // extract questions from subsections, use map as it is an array
+      questionsGrouped[section][subSection].map((subSectionQuestion) => {
+        userAnsweredQuestionsGrouped_Render.push(
+          <div className="flex flex-column ml-4 gap-1">
+            <Question
+              question={questionsRegistry.get(
+                subSectionQuestion.identification
+              )}
+              updateObject={(e) => updateTargetPromotionFormValue(e)}
+              readObject={targetPromotionReviewFormValue}
+            />
+          </div>
+        );
+      });
+    }
+  }
+
+  /* Generate the admin question section */
+  let adminQuestionsGrouped_Render = [];
+  for (var section in adminQuestionsGrouped) {
+    // Extract top level sections
+    adminQuestionsGrouped_Render.push(
+      <div className="flex text-xl">{section}</div>
+    );
+    for (var subSection in adminQuestionsGrouped[section]) {
+      // Extract sub sections
+      adminQuestionsGrouped_Render.push(
+        <div className="flex flex-column ml-2 gap-1">
+          <div className="flex text-lg">{subSection}</div>
+          <div className="flex text-sm p-2">
+            {
+              adminQuestionsGrouped[section][subSection][0][
+                "subSectionDescription"
+              ]
+            }
+          </div>
+        </div>
+      );
+
+      // extract questions from subsections, use map as it is an array
+      adminQuestionsGrouped[section][subSection].map((subSectionQuestion) => {
+        adminQuestionsGrouped_Render.push(
+          <div className="flex flex-column ml-4 gap-1">
+            <Question
+              question={adminQuestionsRegistry.get(
+                subSectionQuestion.identification
+              )}
+              updateObject={(e) => updateTargetPromotionFormValue(e)}
+              readObject={targetPromotionReviewFormValue}
+            />
+          </div>
+        );
+      });
+    }
+  }
+
   return (
-    <div>
-      <div className="p-d-flex p-flex-column">
-        <div className="p-mr-2" style={{ minWidth: "1000px" }}>
-          <Panel header="Summary" toggleable>
-            <h4>Target Type : {questionaire.targetType}</h4>
-            <h4>Target Name : {questionaire.targetName}</h4>
-            <h4>Genes : {getGeneInformatin()}</h4>
-            <h4>
-              Submitted by :{" "}
-              {
-                questionaire.answers[Object.keys(questionaire.answers)[0]][
-                  "answeredBy"
-                ]
-              }
-            </h4>
-          </Panel>
-          <br />
-        </div>
-        <div className="p-mr-2" style={{ minWidth: "1000px" }}>
-          <Panel header="Submitted Promotion Questionnaire" toggleable>
-            <h2>Impact of chemical inhibition</h2>
-
-            <h5>a) During infections</h5>
-
-            <Question
-              question={QuestionsRegistry.get("2a1")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("2a1b")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("2a2")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("2a3a")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("2a3b")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("2a4a")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("2a5")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <h5>b) on replication Mtb in vitro</h5>
-            <Question
-              question={QuestionsRegistry.get("2b1")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("2b2")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("2b4")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <h5>c) on nonreplicating Mtb in vitro</h5>
-            <Question
-              question={QuestionsRegistry.get("2c1")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("2c2")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("2c3")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("2c4")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("2c5")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Divider />
-
-            <h2>
-              <br />
-              Chemical inhibition
-            </h2>
-            <h5>a) in live Mtb</h5>
-            <Question
-              question={QuestionsRegistry.get("3a1")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("3a2")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("3a3")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("3a4")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <h5>b) in vitro</h5>
-            <Question
-              question={QuestionsRegistry.get("3b1")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("3b2")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Divider />
-
-            <h2>
-              <br />
-              Impact of genetic inhibition
-            </h2>
-            <h5>a) During infections</h5>
-
-            <Question
-              question={QuestionsRegistry.get("4a1")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("4a2a")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("4a2b")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("4a3a")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("4a3b")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("4a4")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <h5>b) on replication Mtb in vitro</h5>
-            <Question
-              question={QuestionsRegistry.get("4b1")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("4b2")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("4b3")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <h5>c) on nonreplicating Mtb in vitro</h5>
-            <Question
-              question={QuestionsRegistry.get("4c1")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("4c2")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("4c3")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("4c4")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("4c5")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Divider />
-
-            <h2>
-              <br />
-              Liabilities
-            </h2>
-
-            <h5>Metabolic liabilities</h5>
-            <Question
-              question={QuestionsRegistry.get("5a1")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("5a2")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <h5>Genetic</h5>
-            <Question
-              question={QuestionsRegistry.get("5a3")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <h5>Other</h5>
-            <Question
-              question={QuestionsRegistry.get("5b1")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Divider />
-
-            <h2>
-              <br />
-              Chemical inhibition
-            </h2>
-            <h5>a) in live Mtb</h5>
-            <Question
-              question={QuestionsRegistry.get("3a1")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("3a2")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("3a3")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("3a4")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <h5>b) in vitro</h5>
-            <Question
-              question={QuestionsRegistry.get("3b1")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("3b2")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Divider />
-
-            <h2>
-              <br />
-              Tractability
-            </h2>
-            <h5>a) High throughput screening feasibility</h5>
-
-            <Question
-              question={QuestionsRegistry.get("6a1")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("6a2")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("6a3")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("6a4")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("6a5")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("6a6")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("6a7")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <h5>b) Structure based feasibility</h5>
-            <Question
-              question={QuestionsRegistry.get("6b1")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("6b2")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("6b3")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("6b4")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("6b5")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <h5>c) Progressibility considerations</h5>
-            <Question
-              question={QuestionsRegistry.get("6c1")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("6c2")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("6c3")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("6c4")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("6c5")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("6c6")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Divider />
-
-            <h5>d) Safety considerations</h5>
-            <Question
-              question={QuestionsRegistry.get("6d1")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("6d2")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("6d3")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Question
-              question={QuestionsRegistry.get("6d4")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-          </Panel>
-          <br />
-        </div>
-        <div className="flex">
-          <Panel header="Additional Questions (Admin only)" toggleable>
-            <h2>Interaction with other drugs/compounds</h2>
-
-            <h5>a) Chemical inhibition during growth in vitro</h5>
-            <Question
-              question={QuestionsRegistry.get("7a1")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-            <Question
-              question={QuestionsRegistry.get("7a2")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <h5>b) Chemical inhibition during infection</h5>
-            <Question
-              question={QuestionsRegistry.get("7b1")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-            <Question
-              question={QuestionsRegistry.get("7b2")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <h5>c) Genetic inhibition during infection</h5>
-            <Question
-              question={QuestionsRegistry.get("7c1")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-            <Question
-              question={QuestionsRegistry.get("7c2")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <h5>d) Genetic inhibition during infection</h5>
-            <Question
-              question={QuestionsRegistry.get("7d1")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-            <Question
-              question={QuestionsRegistry.get("7d2")}
-              updateObject={(e) => updateTargetPromotionFormValue(e)}
-              readObject={targetPromotionFormValue}
-            />
-
-            <Button
-              label="Promote"
-              className="p-button-success"
-              style={{ float: "right" }}
-              onClick={() => submitPromoteGeneForm()}
-            />
-          </Panel>
-        </div>
+    <div className="flex flex-column gap-2">
+      <div className="flex w-full">
+        <Panel className="w-full" header="Summary" toggleable>
+          <h4>
+            Target Type : {userAnsweredTargetPromotionQuestionnaire.targetType}
+          </h4>
+          <h4>
+            Target Name : {userAnsweredTargetPromotionQuestionnaire.targetName}
+          </h4>
+          <h4>Genes : {getGeneInformation()}</h4>
+          <h4>
+            Submitted by :{" "}
+            {
+              userAnsweredTargetPromotionQuestionnaire.answers[
+                Object.keys(userAnsweredTargetPromotionQuestionnaire.answers)[0]
+              ]["answeredBy"]
+            }
+          </h4>
+        </Panel>
+      </div>
+      <div className="flex w-full" style={{ minWidth: "1000px" }}>
+        <Panel className="w-full" header="User Questionnaire" toggleable>
+          <div className="flex flex-column gap-2">
+            {userAnsweredQuestionsGrouped_Render}
+          </div>
+        </Panel>
+      </div>
+
+      <div className="flex w-full" style={{ minWidth: "1000px" }}>
+        <Panel className="w-full" header="Admin Questionnaire" toggleable>
+          <div className="flex flex-column gap-2">
+            {adminQuestionsGrouped_Render}
+          </div>
+        </Panel>
+      </div>
+
+      <div className="flex w-full justify-content-end border-200 surface-ground	 mt-2 p-2">
+        <Button
+          label="Promote Target"
+          className="p-button-success"
+          onClick={() => submitPromoteGeneForm()}
+        />
       </div>
     </div>
   );

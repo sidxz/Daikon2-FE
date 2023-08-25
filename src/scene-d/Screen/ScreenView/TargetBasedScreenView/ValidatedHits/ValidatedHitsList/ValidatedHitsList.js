@@ -6,8 +6,16 @@ import { Column } from "primereact/column";
 import { ConfirmDialog } from "primereact/confirmdialog";
 import { DataTable } from "primereact/datatable";
 import { Dialog } from "primereact/dialog";
+import { FileUpload } from "primereact/fileupload";
 import React, { useContext, useEffect, useRef, useState } from "react";
+import { ImDownload } from "react-icons/im";
+import { SiMicrosoftexcel } from "react-icons/si";
+import { TbBookDownload } from "react-icons/tb";
 import { toast } from "react-toastify";
+import DataPreviewDialog from "../../../../../../app/common/DataPreviewDialog/DataPreviewDialog";
+import ExportToExcel from "../../../../../../app/common/Functions/Excel/ExportToExcel";
+import { GenerateTemplate } from "../../../../../../app/common/Functions/Excel/GenerateTemplate";
+import ImportFromExcel from "../../../../../../app/common/Functions/Excel/ImportFromExcel";
 import SectionHeading from "../../../../../../app/common/SectionHeading/SectionHeading";
 import SmilesViewWithDetails from "../../../../../../app/common/SmilesViewWithDetails/SmilesViewWithDetails";
 import Vote from "../../../../../../app/common/Vote/Vote";
@@ -22,10 +30,14 @@ const ValidatedHitsList = ({ screenId }) => {
   const tableMenu = useRef(null);
   /* MobX Store */
   const rootStore = useContext(RootStoreContext);
-  const { loadingFetchScreen, fetchScreen, selectedScreen, fetchScreenSilent } =
-    rootStore.screenTStore;
+  const {
+    isLoadingTargetBasedScreen,
+    fetchTargetBasedScreen,
+    selectedTargetBasedScreen,
+  } = rootStore.screenTStore;
   const { user } = rootStore.userStore;
   const { enableVoting, freezeVoting } = rootStore.votingStore;
+  const { batchInsertHits, isBatchInsertingHits } = rootStore.hitsStore;
 
   const [displayHitsImportSidebar, setDisplayHitsImportSidebar] =
     useState(false);
@@ -35,19 +47,33 @@ const ValidatedHitsList = ({ screenId }) => {
   const [selectedCompounds, setSelectedCompounds] = useState(null);
   const [displayPromoteToHAEntry, setDisplayPromoteToHAEntry] = useState(false);
   const [enableOneCLickVoting, setEnableOneCLickVoting] = useState(false);
+  const [dataPreview, setDataPreview] = useState(null);
+  const [showDataPreviewDialog, setShowDataPreviewDialog] = useState(false);
+  const [showFileUploadDialog, setShowFileUploadDialog] = useState(false);
 
   let tableMenuItems = [];
 
   useEffect(() => {
-    fetchScreen(screenId);
-  }, [fetchScreen, screenId]);
+    fetchTargetBasedScreen(screenId);
+  }, [fetchTargetBasedScreen, screenId]);
 
-  if (loadingFetchScreen || selectedScreen === null) {
+  if (isLoadingTargetBasedScreen || selectedTargetBasedScreen === null) {
     return <Loading />;
   }
 
-  if (!loadingFetchScreen && selectedScreen) {
+  if (!isLoadingTargetBasedScreen && selectedTargetBasedScreen) {
   }
+
+  // Map Data fields to Column Name
+  const fieldToColumnName = {
+    smile: "Structure",
+    library: "Library",
+    source: "Source",
+    externalCompoundIds: "Compound Id",
+    ic50: "IC50",
+    mic: "MIC",
+    clusterGroup: "Cluster Group",
+  };
 
   /* Local functions */
 
@@ -155,9 +181,9 @@ const ValidatedHitsList = ({ screenId }) => {
         <Vote
           id={rowData.vote.id}
           voteData={rowData.vote}
-          callBack={() => fetchScreenSilent(screenId, true)}
+          callBack={() => fetchTargetBasedScreen(screenId, true, true)}
           revealVote={revealVoteEnabled}
-          discussionReference={selectedScreen.screenName}
+          discussionReference={selectedTargetBasedScreen.screenName}
           discussionTags={[rowData.compound.externalCompoundIds]}
           enableOneCLickVoting={enableOneCLickVoting}
         />
@@ -177,11 +203,14 @@ const ValidatedHitsList = ({ screenId }) => {
       </div>
       <div className="flex ml-auto gap-2">
         <div className="flex">
-          <Chip label={selectedScreen?.org.name} icon="ri-organization-chart" />
+          <Chip
+            label={selectedTargetBasedScreen?.org?.alias}
+            icon="ri-organization-chart"
+          />
         </div>
         <div className="flex">
           <Chip
-            label={selectedScreen?.method}
+            label={selectedTargetBasedScreen?.method}
             icon="icon icon-common icon-circle-notch"
           />
         </div>
@@ -193,7 +222,7 @@ const ValidatedHitsList = ({ screenId }) => {
 
   /* Construct table menu items */
 
-  if (selectedScreen.validatedHits.length !== 0) {
+  if (selectedTargetBasedScreen.validatedHits.length !== 0) {
     let selectItem = {
       label: selectionEnabled ? "Cancel Selection" : "Select Rows",
       icon: selectionEnabled ? "pi pi-times-circle" : "pi pi-check-square",
@@ -204,19 +233,60 @@ const ValidatedHitsList = ({ screenId }) => {
     tableMenuItems.push(selectItem);
   }
 
-  if (!loadingFetchScreen && selectedScreen) {
+  if (!isLoadingTargetBasedScreen && selectedTargetBasedScreen) {
     let itm = {
       label: "Hits Management",
       items: [
         {
           label: "Import Hits",
-          icon: "icon icon-common icon-plus-circle",
-          command: () => setDisplayHitsImportSidebar(true),
+          icon: (
+            <div className="flex pr-2">
+              <SiMicrosoftexcel />
+            </div>
+          ),
+          command: () => setShowFileUploadDialog(true),
         },
         {
           label: "Export Hits",
-          icon: "icon icon-fileformats icon-CSV",
-          command: () => exportCSV(false),
+          icon: (
+            <div className="flex pr-2">
+              <ImDownload />
+            </div>
+          ),
+          command: () =>
+            ExportToExcel({
+              jsonData: selectedTargetBasedScreen.validatedHits.map((hit) => {
+                // Need to flatten the object for export
+                return {
+                  id: hit.id,
+                  smile: hit.compound.smile,
+                  library: hit.library,
+                  source: hit.source,
+                  clusterGroup: hit.clusterGroup,
+                  externalCompoundIds: hit.compound.externalCompoundIds,
+                  ic50: hit.iC50,
+                  mic: hit.mic,
+                };
+              }),
+              fileName:
+                selectedTargetBasedScreen.screenName + "-Validated-Hits",
+              headerMap: fieldToColumnName,
+            }),
+        },
+        {
+          label: "Download Template",
+          icon: (
+            <div className="flex pr-2">
+              <TbBookDownload />
+            </div>
+          ),
+          command: () =>
+            ExportToExcel({
+              jsonData: GenerateTemplate(fieldToColumnName),
+
+              fileName: "TargetBased-Validated-Hits-Template",
+              headerMap: fieldToColumnName,
+            }),
         },
       ],
     };
@@ -224,7 +294,7 @@ const ValidatedHitsList = ({ screenId }) => {
 
     // Admin section
 
-    if (selectedScreen.validatedHits.length !== 0) {
+    if (selectedTargetBasedScreen.validatedHits.length !== 0) {
       let votingItem = {
         label: "Votes Management",
         items: [],
@@ -272,19 +342,19 @@ const ValidatedHitsList = ({ screenId }) => {
       tableMenuItems.push(votingItem);
     }
 
-    if (selectedScreen.validatedHits.length !== 0) {
+    if (selectedTargetBasedScreen.validatedHits.length !== 0) {
       let showVotesItem = {
         label: revealVoteEnabled ? "Hide Votes" : "Reveal Votes",
         icon: revealVoteEnabled ? "pi pi-eye-slash" : "pi pi-eye",
         command: () => {
           setRevealVoteEnabled(!revealVoteEnabled);
-          console.log(revealVoteEnabled);
+          //console.log(revealVoteEnabled);
         },
       };
       tableMenuItems.push(showVotesItem);
     }
 
-    if (selectedScreen.validatedHits.length !== 0) {
+    if (selectedTargetBasedScreen.validatedHits.length !== 0) {
       let promotionItem = {
         label: "Promote To HA",
         icon: "pi pi-arrow-right",
@@ -304,7 +374,7 @@ const ValidatedHitsList = ({ screenId }) => {
             className="p-datatable-gridlines w-full"
             size="small"
             ref={dt}
-            value={selectedScreen.validatedHits}
+            value={selectedTargetBasedScreen.validatedHits}
             // paginator
             scrollable
             // rows={50}
@@ -319,7 +389,7 @@ const ValidatedHitsList = ({ screenId }) => {
             selection={selectedCompounds}
             onSelectionChange={(e) => setSelectedCompounds(e.value)}
             dataKey="id"
-            exportFilename={`Hits-${selectedScreen.screenName}-${selectedScreen.method}.csv`}
+            exportFilename={`Hits-${selectedTargetBasedScreen.screenName}-${selectedTargetBasedScreen.method}.csv`}
           >
             {selectionEnabled && (
               <Column
@@ -405,8 +475,8 @@ const ValidatedHitsList = ({ screenId }) => {
           />
           <br />
           <ValidatedHitsImporter
-            screenId={selectedScreen.id}
-            existingHits={selectedScreen.validatedHits}
+            screenId={selectedTargetBasedScreen.id}
+            existingHits={selectedTargetBasedScreen.validatedHits}
           />
         </div>
       </Dialog>
@@ -421,11 +491,92 @@ const ValidatedHitsList = ({ screenId }) => {
       >
         <ValidatedHitsPromoteToHAEntry
           compounds={selectedCompounds}
-          screen={selectedScreen}
+          screen={selectedTargetBasedScreen}
           close={() => setDisplayPromoteToHAEntry(false)}
         />
       </Dialog>
       <ConfirmDialog />
+      {/* File upload Dialog */}
+      <Dialog
+        header="Import Hits"
+        visible={showFileUploadDialog}
+        onHide={() => setShowFileUploadDialog(false)}
+      >
+        <FileUpload
+          name="excelFile"
+          accept=".xls,.xlsx,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          maxFileSize={1000000}
+          mode="basic"
+          chooseLabel="Select Excel File"
+          chooseOptions={{
+            icon: (
+              <div className="flex pr-2">
+                <SiMicrosoftexcel />
+              </div>
+            ),
+
+            className: "p-button-text m-0 p-1 p-button-secondary",
+          }}
+          cancelOptions={{
+            label: "Cancel",
+            icon: "pi pi-times",
+            className: "p-button-danger",
+          }}
+          className="p-button-text p-button-secondary"
+          style={{ height: "30px" }}
+          customUpload={true}
+          uploadHandler={async (e) => {
+            let file = e.files[0];
+            const jsonData = await ImportFromExcel({
+              file: file,
+              headerMap: fieldToColumnName,
+            });
+            e.files = null;
+            jsonData.forEach((row) => {
+              row.screenId = selectedTargetBasedScreen.id;
+              row.screenType = "TargetBased";
+              // fetch the row id if it exists in selectedPhenotypicScreen.validatedHits
+              // let existingRow = selectedPhenotypicScreen.validatedHits.find(
+              //   (d) => d.compound.externalCompoundIds === row.compoundExternalId
+              // );
+              // if (existingRow) {
+              //   row.id = existingRow.id;
+              // }
+            });
+            setDataPreview(jsonData);
+            setShowDataPreviewDialog(true);
+            setShowFileUploadDialog(false);
+          }}
+          auto
+        />
+      </Dialog>
+      <DataPreviewDialog
+        headerMap={fieldToColumnName}
+        existingData={selectedTargetBasedScreen.validatedHits.map((hit) => {
+          // Need to flatten the object for export
+          return {
+            id: hit.id,
+            screenId: selectedTargetBasedScreen.id,
+            screenType: "TargetBased",
+            smile: hit.compound.smile,
+            library: hit.library,
+            source: hit.source,
+            clusterGroup: hit.clusterGroup,
+            externalCompoundIds: hit.compound.externalCompoundIds,
+            ic50: hit.iC50,
+            mic: hit.mic,
+          };
+        })}
+        //comparatorKey="externalCompoundIds"
+        data={dataPreview}
+        visible={showDataPreviewDialog}
+        onHide={() => {
+          setShowDataPreviewDialog(false);
+          setDataPreview(null);
+        }}
+        onSave={batchInsertHits}
+        isSaving={isBatchInsertingHits}
+      />
     </div>
   );
 };

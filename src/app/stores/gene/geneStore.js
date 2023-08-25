@@ -20,7 +20,6 @@ export default class GeneStore {
   displayLoading = false;
   uniprotDisplayLoading = false;
   historyDisplayLoading = false;
-  promotionQuestionsDisplayLoading = false;
   editingEssentiality = false;
   addingEssentiality = false;
   editingProteinProduction = false;
@@ -53,10 +52,6 @@ export default class GeneStore {
   pdbCrossReferenceRegistry = new Map();
   selectedPdbCrossReference = null;
 
-  promotionQuestionsRegistry = new Map();
-
-  genePromotionDataObj = {};
-
   searchedGeneGroup = null;
 
   constructor(rootStore) {
@@ -65,7 +60,6 @@ export default class GeneStore {
       displayLoading: observable,
       uniprotDisplayLoading: observable,
       historyDisplayLoading: observable,
-      promotionQuestionsDisplayLoading: observable,
 
       genes: computed,
       fetchGeneList: action,
@@ -87,9 +81,6 @@ export default class GeneStore {
 
       editGene: action,
       cancelEditGene: action,
-
-      getPromotionQuestions: action,
-      submitPromotionQuestionaire: action,
 
       addEssentiality: action,
       editEssentiality: action,
@@ -134,9 +125,6 @@ export default class GeneStore {
       validateTargetName: action,
       validateTargetNameLoading: observable,
       proposedTargetNameValidated: observable,
-
-      saveGenePromotionDataObj: action,
-      getGenePromotionDataObj: action,
 
       searchingGeneGroup: observable,
       searchedGeneGroup: observable,
@@ -366,54 +354,6 @@ export default class GeneStore {
 
   cancelEditGene = () => {
     this.selectedGene = this.geneRegistryExpanded.get(this.selectedGene.id);
-  };
-
-  /* get Promotion Questions from API */
-  getPromotionQuestions = async () => {
-    this.promotionQuestionsDisplayLoading = true;
-    // check cache
-    if (!this.promotionQuestionsRegistry.size === 0) {
-      this.promotionQuestionsDisplayLoading = false;
-      return this.promotionQuestionsRegistry;
-    }
-
-    // then fetch
-    try {
-      var resp = await agent.Gene.promotionQuestions();
-      runInAction(() => {
-        resp.forEach((fetchedPromotionQuestion) => {
-          this.promotionQuestionsRegistry.set(
-            fetchedPromotionQuestion.identification,
-            fetchedPromotionQuestion
-          );
-        });
-      });
-    } catch (error) {
-      console.error(error);
-    } finally {
-      runInAction(() => {
-        this.promotionQuestionsDisplayLoading = false;
-        return this.promotionQuestionsRegistry;
-      });
-    }
-  };
-
-  /* submit Promotion Questionnaire from API */
-  submitPromotionQuestionaire = async (targetName, data) => {
-    this.promotionQuestionsDisplayLoading = true;
-    let res = null;
-
-    // send to server
-    try {
-      res = await agent.Gene.submitPromotionQuestionaire(targetName, data);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      runInAction(() => {
-        this.promotionQuestionsDisplayLoading = false;
-      });
-    }
-    return res;
   };
 
   editEssentiality = async (editedEssentiality) => {
@@ -762,14 +702,6 @@ export default class GeneStore {
         this.validateTargetNameLoading = false;
       });
     }
-  };
-
-  saveGenePromotionDataObj = (data) => {
-    this.genePromotionDataObj = { ...data };
-  };
-
-  getGenePromotionDataObj = () => {
-    return this.genePromotionDataObj;
   };
 
   searchGeneGroup = async (geneId) => {

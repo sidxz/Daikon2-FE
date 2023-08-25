@@ -54,12 +54,10 @@ const AppDefault = () => {
             path="gene/gene-promotion-requests"
             element={<GenePromotionRequests />}
           />
-          {/* Currently disabled for all except for admin */}
+
           <Route
-            path="gene/promote/:ptarget"
-            element={
-              user.roles.includes("admin") ? <GenePromote /> : <NotFound />
-            }
+            path="gene/promote/:proposedTargetName"
+            element={<GenePromote />}
           />
 
           {/* Fallback for an invalid path */}

@@ -65,10 +65,10 @@ const ValidatedHitsImporter = ({ screenId, existingHits }) => {
   let handleOnDrop = (r) => {
     var index = 1;
 
-    console.log("handleOnDrop");
+    //console.log("handleOnDrop");
 
     r.data.forEach((hit) => {
-      console.log(hit);
+      //console.log(hit);
       // Return if Id is empty
       if (typeof hit.Id === "undefined" || hit.Id === "") return;
 
@@ -123,7 +123,7 @@ const ValidatedHitsImporter = ({ screenId, existingHits }) => {
           ? parseInt(existingHit.clusterGroup)
           : 0;
 
-        console.log("existingHit", existingHit);
+        //console.log("existingHit", existingHit);
 
         if (
           existingHit.clusterGroup !== hit.ClusterGroup ||

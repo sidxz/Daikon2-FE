@@ -151,11 +151,11 @@ const Gene = {
     requests.get(`/gene/by-accession/${accessionNo}`),
   edit: (newGene) => requests.post(`/gene/${newGene.id}`, newGene),
   history: (id) => requests.get(`/gene/${id}/history`),
-  promotionQuestions: () => requests.get(`/geneconfig/promote/questionaire`),
+  promotionQuestions: () => requests.get(`/geneconfig/promote/questionnaire`),
   searchByIdGeneGroup: (geneId) =>
     requests.get(`/geneconfig/groups/search-by-gene-id/${geneId}`),
-  submitPromotionQuestionaire: (targetName, data) =>
-    requests.post(`/gene/promotionrequest/${targetName}`, data),
+  submitPromotionQuestionnaire: (targetName, data) =>
+    requests.post(`/gene/promotion-request/${targetName}`, data),
   editEssentiality: (geneId, essentialityId, modEssentiality) =>
     requests.post(
       `/gene/${geneId}/essentiality/${essentialityId}`,
@@ -407,6 +407,18 @@ const Compounds = {
     requests.post(`/compound/${id}/edit-external-id`, compound),
 };
 
+const TargetPromotionToolQuestionnaire = {
+  list: () => requests.get(`/elevated/TargetPromotionToolQuestionnaire`),
+  edit: (questions) =>
+    requests.post(`/elevated/TargetPromotionToolQuestionnaire`, questions),
+};
+
+const TargetPromotionToolDataManagement = {
+  exportData: () => requests.get(`/elevated/TargetPromotionToolDataManagement`),
+  importData: (data) =>
+    requests.post(`/elevated/TargetPromotionToolDataManagement`, data),
+};
+
 const exports = {
   AppPrecheck,
   AuthServiceInstance,
@@ -426,6 +438,8 @@ const exports = {
   Vote,
   DataView,
   Compounds,
+  TargetPromotionToolQuestionnaire,
+  TargetPromotionToolDataManagement,
 };
 
 export default exports;

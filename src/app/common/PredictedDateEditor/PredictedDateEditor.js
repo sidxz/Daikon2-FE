@@ -97,7 +97,7 @@ const PredictedDateEditor = ({ project, postSave, onCancel }) => {
   // minDate.setDate(day);
   // minDate.setMonth(prevMonth);
   // minDate.setFullYear(prevYear);
-  console.log(minDate);
+  //console.log(minDate);
 
   return (
     <form onSubmit={formik.handleSubmit}>

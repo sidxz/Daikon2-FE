@@ -15,7 +15,7 @@ const RichTextEditHistory = ({
   useEffect(() => {
     if (!historyDisplayLoading && history === null) {
       fetchHistory();
-      console.log("RichTextEditHistory: history is null");
+      //console.log("RichTextEditHistory: history is null");
     }
   }, [historyDisplayLoading, history]);
 

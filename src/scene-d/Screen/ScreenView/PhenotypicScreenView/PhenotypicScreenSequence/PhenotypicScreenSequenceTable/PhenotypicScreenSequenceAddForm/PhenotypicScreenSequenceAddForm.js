@@ -42,7 +42,7 @@ const PhenotypicScreenSequenceAddForm = ({ screenId, onAdd, loading }) => {
       comment: "",
       unverifiedHitCount: 0,
       hitRate: 0,
-      primaryHitCount: 0,
+
       confirmedHitCount: 0,
     },
     validationSchema: Yup.object({
@@ -127,19 +127,6 @@ const PhenotypicScreenSequenceAddForm = ({ screenId, onAdd, loading }) => {
                 "p-invalid": formik.errors.unverifiedHitCount,
               })}
               {...formik.getFieldProps("unverifiedHitCount")}
-            />
-          </div>
-
-          {/* Primary Hit Count field */}
-          <div className="field">
-            <label htmlFor="primaryHitCount">Primary Hit Count</label>
-            <InputText
-              id="primaryHitCount"
-              name="primaryHitCount"
-              className={classNames({
-                "p-invalid": formik.errors.primaryHitCount,
-              })}
-              {...formik.getFieldProps("primaryHitCount")}
             />
           </div>
 

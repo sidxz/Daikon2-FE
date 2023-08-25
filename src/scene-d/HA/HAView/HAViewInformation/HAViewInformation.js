@@ -56,7 +56,7 @@ const HAViewInformation = ({ id, project }) => {
       { label: "Information" },
     ];
 
-    console.log("HAViewInformation.js: project: ", project);
+    //console.log("HAViewInformation.js: project: ", project);
 
     return (
       <React.Fragment>

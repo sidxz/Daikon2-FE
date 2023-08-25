@@ -55,8 +55,8 @@ export default class HitsStore {
    * @return {Object} The response from the server. | CREATE |
    */
   createHit = async (hit) => {
-    console.log("Creating hit");
-    console.log(hit);
+    //console.log("Creating hit");
+    //console.log(hit);
 
     this.isCreatingHit = true;
 
@@ -69,6 +69,13 @@ export default class HitsStore {
         // Additional actions after hit creation can be added here.
         if (hit.screenType === "Phenotypic") {
           this.rootStore.screenPStore.fetchPhenotypicScreen(
+            hit.screenId,
+            true,
+            false
+          );
+        }
+        if (hit.screenType === "TargetBased") {
+          this.rootStore.screenTStore.fetchTargetBasedScreen(
             hit.screenId,
             true,
             false
@@ -102,8 +109,8 @@ export default class HitsStore {
       } else {
         hit.clusterGroup = 0;
       }
-      console.log("Updating hit");
-      console.log(hit);
+      //console.log("Updating hit");
+      //console.log(hit);
 
       // Send hit to server for update
       response = await agent.Hit.update(hit.Id, hit);
@@ -116,6 +123,14 @@ export default class HitsStore {
             false
           );
         }
+        if (hit.screenType === "TargetBased") {
+          this.rootStore.screenTStore.fetchTargetBasedScreen(
+            hit.screenId,
+            true,
+            false
+          );
+        }
+
         // Additional actions after hit update can be added here.
       });
     } catch (error) {
@@ -134,8 +149,8 @@ export default class HitsStore {
    * @param {object} editedHitRows - The details of the hit rows to edit.
    */
   batchInsertHits = async (editedHitRows) => {
-    console.log("Batch inserting hits");
-    console.log(editedHitRows);
+    //console.log("Batch inserting hits");
+    //console.log(editedHitRows);
     this.isBatchInsertingHits = true;
 
     try {

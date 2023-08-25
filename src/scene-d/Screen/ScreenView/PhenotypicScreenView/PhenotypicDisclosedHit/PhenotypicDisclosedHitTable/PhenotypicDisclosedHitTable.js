@@ -9,9 +9,11 @@ import { Menubar } from "primereact/menubar";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { ImDownload } from "react-icons/im";
 import { SiMicrosoftexcel } from "react-icons/si";
+import { TbBookDownload } from "react-icons/tb";
 import { toast } from "react-toastify";
 import DataPreviewDialog from "../../../../../../app/common/DataPreviewDialog/DataPreviewDialog";
 import ExportToExcel from "../../../../../../app/common/Functions/Excel/ExportToExcel";
+import { GenerateTemplate } from "../../../../../../app/common/Functions/Excel/GenerateTemplate";
 import ImportFromExcel from "../../../../../../app/common/Functions/Excel/ImportFromExcel";
 import PleaseWait from "../../../../../../app/common/PleaseWait/PleaseWait";
 import SmilesViewWithDetails from "../../../../../../app/common/SmilesViewWithDetails/SmilesViewWithDetails";
@@ -31,7 +33,6 @@ const PhenotypicDisclosedHitTable = ({ screenId }) => {
     isLoadingPhenotypicScreen,
     fetchPhenotypicScreen,
     selectedPhenotypicScreen,
-    fetchScreenSilent,
   } = rootStore.screenPStore;
 
   const { batchInsertHits, isBatchInsertingHits } = rootStore.hitsStore;
@@ -59,7 +60,7 @@ const PhenotypicDisclosedHitTable = ({ screenId }) => {
       selectedPhenotypicScreen === null ||
       selectedPhenotypicScreen.id !== screenId
     ) {
-      console.log("PhenotypicDisclosedHit.js: screenId: ", screenId);
+      //console.log("PhenotypicDisclosedHit.js: screenId: ", screenId);
       fetchPhenotypicScreen(screenId);
     }
   }, [selectedPhenotypicScreen, fetchPhenotypicScreen, screenId]);
@@ -168,7 +169,7 @@ const PhenotypicDisclosedHitTable = ({ screenId }) => {
       <div className="flex ml-auto gap-2">
         <div className="flex">
           <Chip
-            label={selectedPhenotypicScreen?.org.name}
+            label={selectedPhenotypicScreen?.org?.alias}
             icon="ri-organization-chart"
           />
         </div>
@@ -237,6 +238,21 @@ const PhenotypicDisclosedHitTable = ({ screenId }) => {
               headerMap: fieldToColumnName,
             }),
         },
+        {
+          label: "Download Template",
+          icon: (
+            <div className="flex pr-2">
+              <TbBookDownload />
+            </div>
+          ),
+          command: () =>
+            ExportToExcel({
+              jsonData: GenerateTemplate(fieldToColumnName),
+
+              fileName: "Phenotypic-Validated-Hits-Template",
+              headerMap: fieldToColumnName,
+            }),
+        },
       ],
     };
     tableMenuItems.push(itm);
@@ -294,7 +310,7 @@ const PhenotypicDisclosedHitTable = ({ screenId }) => {
         icon: isVoteRevealed ? "pi pi-eye-slash" : "pi pi-eye",
         command: () => {
           setIsVoteRevealed(!isVoteRevealed);
-          console.log(isVoteRevealed);
+          //console.log(isVoteRevealed);
         },
       };
       tableMenuItems.push(showVotesItem);

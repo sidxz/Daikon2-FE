@@ -44,7 +44,7 @@ const CompoundOverviewEditExternalId = () => {
         externalCompoundIds: values.externalCompoundIds,
       };
 
-      console.log(formattedCompound);
+      //console.log(formattedCompound);
 
       editCompoundExternalId(formattedCompound).then((res) => {
         if (res !== null) {

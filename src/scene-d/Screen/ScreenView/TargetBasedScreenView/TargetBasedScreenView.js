@@ -28,25 +28,28 @@ const TargetBasedScreenView = () => {
   /* MobX Store */
   const rootStore = useContext(RootStoreContext);
   const {
-    loadingFetchScreens,
-    screenRegistry,
-    fetchScreens,
+    isLoadingTargetBasedScreens,
+    targetBasedScreenRegistry,
+    fetchTargetBasedScreens,
     selectedScreenTargetFilter,
-    filterScreensByTarget,
+    filterTargetBasedScreensByTarget,
     filteredScreens,
   } = rootStore.screenTStore;
   const { user } = rootStore.userStore;
 
   useEffect(() => {
-    if (screenRegistry.size === 0 || selectedScreenTargetFilter !== params.id) {
-      fetchScreens().then(() => {
-        filterScreensByTarget(params.id);
+    if (
+      targetBasedScreenRegistry.size === 0 ||
+      selectedScreenTargetFilter !== params.id
+    ) {
+      fetchTargetBasedScreens().then(() => {
+        filterTargetBasedScreensByTarget(params.id);
       });
     }
   }, [
-    fetchScreens,
-    screenRegistry,
-    filterScreensByTarget,
+    fetchTargetBasedScreens,
+    targetBasedScreenRegistry,
+    filterTargetBasedScreensByTarget,
     params.id,
     selectedScreenTargetFilter,
   ]);
@@ -55,7 +58,7 @@ const TargetBasedScreenView = () => {
     useState(false);
   const [displayEditScreenDialog, setDisplayEditScreenDialog] = useState(false);
 
-  if (!loadingFetchScreens && filteredScreens.length === 0) {
+  if (!isLoadingTargetBasedScreens && filteredScreens.length === 0) {
     return (
       <div className="flex justify-content-center w-full">
         <div className="flex flex-column">
@@ -124,7 +127,7 @@ const TargetBasedScreenView = () => {
     SideMenuItems.push(adminActions);
   }
 
-  if (!loadingFetchScreens && screenRegistry.size >= 0) {
+  if (!isLoadingTargetBasedScreens && targetBasedScreenRegistry.size >= 0) {
     return (
       <React.Fragment>
         <Toast ref={toast} />

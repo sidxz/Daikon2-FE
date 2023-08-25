@@ -1,4 +1,5 @@
 import { Dropdown } from "primereact/dropdown";
+import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
 import { Tooltip } from "primereact/tooltip";
 import React from "react";
@@ -19,6 +20,41 @@ const Question = ({ question, updateObject, readObject, highlightRed }) => {
       ]);
     return borderCssClass.join(" ");
   };
+
+  const selectedOptionTemplate = (option, props) => {
+    if (option) {
+      return (
+        <div className="flex flex-column max-w-30rem flex-wrap justify-content-center">
+          {option.answer}
+        </div>
+      );
+    }
+
+    return <span>{props.placeholder}</span>;
+  };
+
+  const optionTemplate = (option) => {
+    return (
+      <div className="flex flex-column gap-1 max-w-30rem flex-wrap pt-1">
+        <div className="flex font-bold text-md border-400 surface-300 p-1">
+          {option.answer}
+        </div>
+        <div className="flex flex-wrap white-space-normal ml-4">
+          {option.description}
+        </div>
+      </div>
+    );
+  };
+
+  let cautionClass = () => {
+    if (readObject?.[question.identification]?.answer !== "UNKNOWN") {
+      if (readObject?.[question.identification]?.description === "") {
+        return true;
+      }
+    }
+    return false;
+  };
+
   return (
     <div className={getBorderCssClass()}>
       <div className="flex align-items-center">
@@ -45,13 +81,40 @@ const Question = ({ question, updateObject, readObject, highlightRed }) => {
         </div>
       </div>
       <div className="flex align-items-center">
-        <Dropdown
-          id={question.identification}
-          style={{ width: "9rem", height: "2.5rem" }}
-          options={question.possibleAnswers}
-          value={readObject?.[question.identification]?.answer}
-          onChange={(e) => updateObject(e)}
-        />
+        {question.questionType === "MultipleChoice" && (
+          <Dropdown
+            id={question.identification}
+            style={{ width: "9rem", height: "2.5rem" }}
+            options={question.possibleAnswerWithDesc}
+            valueTemplate={selectedOptionTemplate}
+            itemTemplate={optionTemplate}
+            value={readObject?.[question.identification]?.answer}
+            optionLabel="answer"
+            optionValue="answer"
+            onChange={(e) => updateObject(e)}
+          />
+        )}
+        {question.questionType === "Text" && (
+          <InputText
+            id={question.identification}
+            style={{ width: "9rem", height: "2.5rem" }}
+            value={readObject?.[question.identification]?.answer}
+            optionLabel="answer"
+            optionValue="answer"
+            onChange={(e) => updateObject(e)}
+          />
+        )}
+        {question.questionType === "" && (
+          <InputText
+            id={question.identification}
+            style={{ width: "9rem", height: "2.5rem" }}
+            value={readObject?.[question.identification]?.answer}
+            optionLabel="answer"
+            optionValue="answer"
+            readOnly={true}
+            onChange={(e) => updateObject(e)}
+          />
+        )}
       </div>
       <div className="flex align-items-center">
         <span className="float-label">
@@ -61,7 +124,12 @@ const Question = ({ question, updateObject, readObject, highlightRed }) => {
             id={question.identification + "Description"}
             value={readObject?.[question.identification]?.description || ""}
             onChange={(e) => updateObject(e)}
-            placeholder="Description"
+            placeholder={
+              cautionClass()
+                ? "Description is required*. Click to edit"
+                : "Description"
+            }
+            className={cautionClass() ? "border-red-500" : ""}
           />
         </span>
       </div>

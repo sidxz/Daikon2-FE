@@ -25,7 +25,7 @@ const ScreenStatus = ({ id, status, readOnly = false }) => {
 
   // Accessing the necessary properties from the screenTStore
   const rootStore = useContext(RootStoreContext);
-  const { updatingScreenStatus, updateScreenStatus } = rootStore.screenTStore;
+  const { isUpdatingScreenStatus, updateScreenStatus } = rootStore.screenTStore;
 
   // Parameter check
   if (!id || !status) return <></>;
@@ -43,7 +43,7 @@ const ScreenStatus = ({ id, status, readOnly = false }) => {
   const optionTemplate = (option) => {
     if (option) {
       return (
-        <div className="flex align-items-center gap-2">
+        <div className="flex align-items-center align-self-center gap-2">
           <div className="flex flex-column">{option.icon}</div>
           <div className="flex flex-column">{option.name}</div>
         </div>
@@ -83,8 +83,9 @@ const ScreenStatus = ({ id, status, readOnly = false }) => {
         placeholder="Set Status"
         itemTemplate={optionTemplate}
         valueTemplate={optionTemplate}
-        disabled={updatingScreenStatus}
+        disabled={isUpdatingScreenStatus}
         onChange={handleStatusChange}
+        className="align-items-center"
       />
       <ConfirmDialog
         visible={confirmDialogVisible}

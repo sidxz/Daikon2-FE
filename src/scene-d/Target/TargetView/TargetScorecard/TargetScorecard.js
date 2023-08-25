@@ -17,18 +17,26 @@ const TargetScorecard = () => {
   // Get the root store and target store from MobX
 
   const rootStore = useContext(RootStoreContext);
-  const {
-    selectedTarget,
-    questionsLoading,
-    questionsRegistry,
-    fetchQuestions,
-  } = rootStore.targetStore;
+  const { selectedTarget } = rootStore.targetStore;
 
-  // const [state, setstate] = useState(initialState);
+  const {
+    questions,
+    isFetchingQuestions,
+    fetchQuestions,
+    questionsRegistry,
+    isCacheValid,
+    adminQuestionsRegistry,
+    getGenePromotionDataObj,
+    isPromotionQuestionnaireSubmitting,
+    submitPromotionQuestionnaire,
+  } = rootStore.genePromotionStore;
+
   useEffect(() => {
     // Fetch questions on component mount
-    fetchQuestions();
-  }, [fetchQuestions]);
+    if (!isCacheValid) {
+      fetchQuestions();
+    }
+  }, [isCacheValid, fetchQuestions]);
 
   const navigate = useNavigate();
 
@@ -48,7 +56,7 @@ const TargetScorecard = () => {
     { label: "Scorecard" },
   ];
 
-  if (questionsLoading) {
+  if (isFetchingQuestions) {
     return <Loading />;
   }
 
@@ -90,7 +98,9 @@ const TargetScorecard = () => {
           <div className="flex w-full">
             <Fieldset legend="Scorecard">
               <TargetGrid
-                questions={questionsRegistry}
+                questions={
+                  new Map([...questionsRegistry, ...adminQuestionsRegistry])
+                }
                 target={selectedTarget}
               />
             </Fieldset>

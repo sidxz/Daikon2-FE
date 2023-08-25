@@ -50,7 +50,7 @@ const HomeLatestDiscussions = () => {
     }
   };
 
-  console.log(rootStore.dataViewStore.latestDiscussions);
+  //console.log(rootStore.dataViewStore.latestDiscussions);
 
   return (
     <div className="flex flex-column card-container justify-content-center gap-0 w-full">

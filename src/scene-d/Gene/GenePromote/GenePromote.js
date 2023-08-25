@@ -1,64 +1,64 @@
 import { observer } from "mobx-react-lite";
-import { Steps } from "primereact/steps";
-import { Toast } from "primereact/toast";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import { Dialog } from "primereact/dialog";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import SectionHeading from "../../../app/common/SectionHeading/SectionHeading";
+import { toast } from "react-toastify";
 import Success from "../../../app/common/Success/Success";
 import Loading from "../../../app/layout/Loading/Loading";
 import { RootStoreContext } from "../../../app/stores/rootStore";
-import { appColors } from "../../../colors";
-import GenePromoteFormChemicalInhibition from "./GenePromoteFormChemicalInhibition/GenePromoteFormChemicalInhibition";
-import GenePromoteFormImpactOfChemInhibit from "./GenePromoteFormImpactOfChemInhibit/GenePromoteFormImpactOfChemInhibit";
-import GenePromoteFormImpactOfGeneticInhibit from "./GenePromoteFormImpactOfGeneticInhibit/GenePromoteFormImpactOfGeneticInhibit";
-import GenePromoteFormLiabilities from "./GenePromoteFormLiabilities/GenePromoteFormLiabilities";
-import GenePromoteFormTractability from "./GenePromoteFormTractability/GenePromoteFormTractability";
+import GenePromoteQuestionnaire from "./GenePromoteQuestionnaire/GenePromoteQuestionnaire";
 import GenePromoteSummary from "./GenePromoteSummary/GenePromoteSummary";
 import { _defaultFormData } from "./GenePromote_helper";
-import cssClass from "./GenomePromote.module.css";
 
 const GenePromote = () => {
-  const toast = useRef(null);
   const rootStore = useContext(RootStoreContext);
 
   const params = useParams();
 
   const {
-    promotionQuestionsDisplayLoading,
-    getPromotionQuestions,
-    promotionQuestionsRegistry,
-    submitPromotionQuestionaire,
+    questions,
+    isFetchingQuestions,
+    fetchQuestions,
+    questionsRegistry,
+    isCacheValid,
     getGenePromotionDataObj,
-  } = rootStore.geneStore;
+    isPromotionQuestionnaireSubmitting,
+    submitPromotionQuestionnaire,
+  } = rootStore.genePromotionStore;
 
   const [targetPromotionFormValue, setTargetPromotionFormValue] = useState({});
   const [formSuccess, setFormSuccess] = useState(false);
-  const [activeForm, setActiveForm] = useState(0);
+  const [summaryVisible, setSummaryVisible] = useState(false);
 
   useEffect(() => {
-    if (promotionQuestionsRegistry.size === 0) {
-      getPromotionQuestions();
+    if (!isCacheValid) {
+      fetchQuestions();
     }
-  }, [promotionQuestionsRegistry, getPromotionQuestions]);
+  }, [isCacheValid, fetchQuestions]);
 
   /** Loading Overlay */
-  if (promotionQuestionsDisplayLoading) {
+  if (isFetchingQuestions) {
     return <Loading />;
   }
+
   if (
-    !promotionQuestionsDisplayLoading &&
-    promotionQuestionsRegistry.size > 0 &&
-    Object.keys(targetPromotionFormValue).length == 0
+    !isFetchingQuestions &&
+    questionsRegistry.size > 0 &&
+    Object.keys(targetPromotionFormValue).length === 0
   ) {
-    let targetNameKey = "promote_" + params.ptarget;
+    let targetNameKey = "promote_" + params.proposedTargetName;
     let storedFormData = localStorage.getItem(targetNameKey);
-    setTargetPromotionFormValue(_defaultFormData(promotionQuestionsRegistry));
+    //console.log("_defaultFormData", _defaultFormData(questionsRegistry));
+    setTargetPromotionFormValue(_defaultFormData(questionsRegistry));
+    //console.log("storedFormData", storedFormData);
+    //console.log("targetPromotionFormValue", targetPromotionFormValue);
     if (storedFormData !== null) {
       setTargetPromotionFormValue(JSON.parse(storedFormData));
     }
   }
 
   const updateTargetPromotionFormValue = (e) => {
+    //console.log(e);
     var location = null;
     var newFormValue = null;
     var newField = null;
@@ -81,28 +81,22 @@ const GenePromote = () => {
   };
 
   const saveFormToLocalStorage = () => {
-    let targetNameKey = "promote_" + params.ptarget;
+    let targetNameKey = "promote_" + params.proposedTargetName;
     localStorage.setItem(
       targetNameKey,
       JSON.stringify(targetPromotionFormValue)
     );
-    toast.current.show({
-      severity: "success",
-      summary: "Saved Locally",
-      detail: "Saved locally in browser. Please submit the form when complete.",
-      life: 6000,
-    });
+
+    toast.success(
+      "Saved Locally in browser. Please submit the form when complete."
+    );
   };
 
   const resetFormLocalStorage = () => {
-    let targetNameKey = "promote_" + params.ptarget;
+    let targetNameKey = "promote_" + params.proposedTargetName;
     localStorage.removeItem(targetNameKey);
-    setTargetPromotionFormValue(_defaultFormData(promotionQuestionsRegistry));
-    toast.current.show({
-      severity: "success",
-      summary: "Cleared",
-      life: 3000,
-    });
+    setTargetPromotionFormValue(_defaultFormData(questionsRegistry));
+    toast.success("Cleared");
   };
 
   const submitTargetPromotionFormValueForm = () => {
@@ -110,29 +104,25 @@ const GenePromote = () => {
     Object.keys(targetPromotionFormValue).map((key) => {
       if (targetPromotionFormValue[key].answer === "") {
         console.error("Validation fail, blank answer");
-        console.log(targetPromotionFormValue[key]);
+        //console.log(targetPromotionFormValue[key]);
         validationFail = true;
       }
       if (
         !(
-          targetPromotionFormValue[key].answer === "Unknown" ||
+          targetPromotionFormValue[key].answer === "UNKNOWN" ||
           targetPromotionFormValue[key].answer === "NA"
         ) &&
         targetPromotionFormValue[key].description === ""
       ) {
         console.error("Validation fail, blank description");
-        console.log(targetPromotionFormValue[key]);
+        //console.log(targetPromotionFormValue[key]);
         validationFail = true;
       }
     });
 
     if (validationFail) {
-      toast.current.show({
-        severity: "error",
-        summary: "Error Submitting",
-        detail: "Required fields are missing.",
-        life: 3000,
-      });
+      toast.warning("Required fields are missing");
+
       return;
     }
 
@@ -143,31 +133,25 @@ const GenePromote = () => {
 
     Object.keys(targetPromotionFormValue).map((key) => {
       data.genePromotionRequestValues.push({
-        questionId: promotionQuestionsRegistry.get(key).id,
+        questionId: questionsRegistry.get(key).id,
         answer: targetPromotionFormValue[key].answer,
         description: targetPromotionFormValue[key].description,
       });
     });
 
-    submitPromotionQuestionaire(params.ptarget, data).then((res) => {
-      if (res !== null) {
-        setFormSuccess(true);
+    //console.log("===SUBMIT===");
+    //console.log(data);
+    submitPromotionQuestionnaire(params.proposedTargetName, data).then(
+      (res) => {
+        if (res !== null) {
+          setFormSuccess(true);
+        }
       }
-    });
+    );
   };
 
-  const stepItems = [
-    { label: "Impact of chemical inhibition" },
-    { label: "Chemical inhibition" },
-    { label: "Impact of genetic inhibition" },
-    { label: "Liabilities" },
-    //{ label: "Target" },
-    { label: "Tractability" },
-    { label: "Submit" },
-  ];
-
   if (formSuccess) {
-    let targetNameKey = "promote_" + params.ptarget;
+    let targetNameKey = "promote_" + params.proposedTargetName;
     localStorage.removeItem(targetNameKey);
     return (
       <Success
@@ -176,138 +160,38 @@ const GenePromote = () => {
     );
   }
 
-  let formToDisplay = () => {
-    if (!promotionQuestionsDisplayLoading) {
-      switch (activeForm) {
-        case 0:
-          return (
-            <GenePromoteFormImpactOfChemInhibit
-              promotionQuestionsRegistry={promotionQuestionsRegistry}
-              targetPromotionFormValue={targetPromotionFormValue}
-              updateTargetPromotionFormValue={(e) =>
-                updateTargetPromotionFormValue(e)
-              }
-              onFormSet={(active) => setActiveForm(active)}
-              saveFormToLocalStorage={() => saveFormToLocalStorage()}
-              resetFormLocalStorage={() => resetFormLocalStorage()}
-            />
-          );
-
-        case 1:
-          return (
-            <GenePromoteFormChemicalInhibition
-              promotionQuestionsRegistry={promotionQuestionsRegistry}
-              targetPromotionFormValue={targetPromotionFormValue}
-              updateTargetPromotionFormValue={(e) =>
-                updateTargetPromotionFormValue(e)
-              }
-              onFormSet={(active) => setActiveForm(active)}
-              saveFormToLocalStorage={() => saveFormToLocalStorage()}
-              resetFormLocalStorage={() => resetFormLocalStorage()}
-            />
-          );
-
-        case 2:
-          return (
-            <GenePromoteFormImpactOfGeneticInhibit
-              promotionQuestionsRegistry={promotionQuestionsRegistry}
-              targetPromotionFormValue={targetPromotionFormValue}
-              updateTargetPromotionFormValue={(e) =>
-                updateTargetPromotionFormValue(e)
-              }
-              onFormSet={(active) => setActiveForm(active)}
-              saveFormToLocalStorage={() => saveFormToLocalStorage()}
-              resetFormLocalStorage={() => resetFormLocalStorage()}
-            />
-          );
-
-        case 3:
-          return (
-            <GenePromoteFormLiabilities
-              promotionQuestionsRegistry={promotionQuestionsRegistry}
-              targetPromotionFormValue={targetPromotionFormValue}
-              updateTargetPromotionFormValue={(e) =>
-                updateTargetPromotionFormValue(e)
-              }
-              onFormSet={(active) => setActiveForm(active)}
-              saveFormToLocalStorage={() => saveFormToLocalStorage()}
-              resetFormLocalStorage={() => resetFormLocalStorage()}
-            />
-          );
-
-        case 4:
-          return (
-            <GenePromoteFormTractability
-              promotionQuestionsRegistry={promotionQuestionsRegistry}
-              targetPromotionFormValue={targetPromotionFormValue}
-              updateTargetPromotionFormValue={(e) =>
-                updateTargetPromotionFormValue(e)
-              }
-              onFormSet={(active) => setActiveForm(active)}
-              saveFormToLocalStorage={() => saveFormToLocalStorage()}
-              resetFormLocalStorage={() => resetFormLocalStorage()}
-            />
-          );
-
-        case 5:
-          return (
-            <GenePromoteSummary
-              promotionQuestionsRegistry={promotionQuestionsRegistry}
-              targetPromotionFormValue={targetPromotionFormValue}
-              onFormSet={(active) => setActiveForm(active)}
-              onFormSubmit={submitTargetPromotionFormValueForm}
-              saveFormToLocalStorage={() => saveFormToLocalStorage()}
-              resetFormLocalStorage={() => resetFormLocalStorage()}
-            />
-          );
-
-        // case 5:
-        //   return (
-        //     <GenomePromoteFormInteractions
-        //       promotionQuestionsRegistry={promotionQuestionsRegistry}
-        //       targetPromotionFormValue={targetPromotionFormValue}
-        //       updateTargetPromotionFormValue={(e) =>
-        //         updateTargetPromotionFormValue(e)
-        //       }
-        //       onFormSet={(active) => setActiveForm()}
-        //     />
-        //   );
-
-        // case 6:
-        //   return <GenomePromoteBucketScore />;
-
-        default:
-          break;
-      }
-    }
-  };
+  if (isPromotionQuestionnaireSubmitting) {
+    return <Loading />;
+  }
 
   return (
-    <React.Fragment>
-      <Toast ref={toast} />
-      <div className="flex flex-column w-full">
-        <div className="flex w-full">
-          <SectionHeading
-            icon="icon icon-conceptual icon-dna"
-            heading={`Target Promotion Questionnaire for ${params.ptarget}`}
-            color={appColors.sectionHeadingBg.gene}
-          />
-          {/* <h2 className="heading">Target Promotion Questionnaire for {params.ptarget}</h2> */}
-        </div>
-        <div className="flex w-full">
-          <Steps
-            model={stepItems}
-            activeIndex={activeForm}
-            className="w-full"
-          />
-        </div>
-        <div className="flex w-full">
-          <div className={[cssClass.GenomePromoteForm].join(" ")}>
-            {formToDisplay()}
-          </div>
-        </div>
-      </div>
-    </React.Fragment>
+    <>
+      <GenePromoteQuestionnaire
+        proposedTargetName={params.proposedTargetName}
+        targetPromotionFormValue={targetPromotionFormValue}
+        updateTargetPromotionFormValue={(e) =>
+          updateTargetPromotionFormValue(e)
+        }
+        saveFormToLocalStorage={() => saveFormToLocalStorage()}
+        resetFormLocalStorage={() => resetFormLocalStorage()}
+        showSummary={() => setSummaryVisible(true)}
+      />
+      <Dialog
+        header="Summary"
+        visible={summaryVisible}
+        style={{ width: "90vw" }}
+        onHide={() => setSummaryVisible(false)}
+      >
+        <GenePromoteSummary
+          questions={questions}
+          targetPromotionFormValue={targetPromotionFormValue}
+          promotionQuestionsRegistry={questionsRegistry}
+          submitTargetPromotionFormValueForm={() =>
+            submitTargetPromotionFormValueForm()
+          }
+        />
+      </Dialog>
+    </>
   );
 };
 

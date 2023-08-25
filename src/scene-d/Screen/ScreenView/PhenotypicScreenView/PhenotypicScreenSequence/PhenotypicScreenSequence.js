@@ -32,10 +32,10 @@ const PhenotypicScreenSequence = ({ screenId }) => {
       selectedPhenotypicScreen === null ||
       selectedPhenotypicScreen.id !== screenId
     ) {
-      console.log(
-        "PhenotypicScreenSequence.js: fetchPhenotypicScreen: ",
-        screenId
-      );
+      // console.log(
+      //   "PhenotypicScreenSequence.js: fetchPhenotypicScreen: ",
+      //   screenId
+      // );
       fetchPhenotypicScreen(screenId);
     }
   }, [selectedPhenotypicScreen, fetchPhenotypicScreen, screenId]);

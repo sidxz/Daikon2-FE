@@ -9,9 +9,11 @@ import { Sidebar } from "primereact/sidebar";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { ImDownload } from "react-icons/im";
 import { SiMicrosoftexcel } from "react-icons/si";
+import { TbBookDownload } from "react-icons/tb";
 import DataPreviewDialog from "../../../../../../app/common/DataPreviewDialog/DataPreviewDialog";
 import FDate from "../../../../../../app/common/FDate/FDate";
 import ExportToExcel from "../../../../../../app/common/Functions/Excel/ExportToExcel";
+import { GenerateTemplate } from "../../../../../../app/common/Functions/Excel/GenerateTemplate";
 import ImportFromExcel from "../../../../../../app/common/Functions/Excel/ImportFromExcel";
 import {
   DateEditor,
@@ -80,10 +82,9 @@ const PhenotypicScreenSequenceTable = ({ screenId }) => {
       library: "Library",
       librarySize: "Library Size",
       protocol: "Protocol",
-      noOfCompoundsScreened: "Total Compounds Screened",
-      unverifiedHitCount: "Initial Hit Count",
-      primaryHitCount: "Primary Hit Count",
-      confirmedHitCount: "Confirmed Hit Count",
+      noOfCompoundsScreened: "Compounds Screened",
+      unverifiedHitCount: "Initial Hits",
+      confirmedHitCount: "Confirmed Hits",
       hitRate: "Hit Rate",
       scientist: "Scientist",
       startDate: "Start Date",
@@ -163,6 +164,25 @@ const PhenotypicScreenSequenceTable = ({ screenId }) => {
                   })
                 }
               />
+              <div className="flex align-items-center">
+                <Button
+                  type="button"
+                  icon={
+                    <div className="flex pr-1">
+                      <TbBookDownload />
+                    </div>
+                  }
+                  label="Template"
+                  className="p-button-text"
+                  onClick={() =>
+                    ExportToExcel({
+                      jsonData: GenerateTemplate(fieldToColumnName),
+                      fileName: "Phenotypic-Screen-Template",
+                      headerMap: fieldToColumnName,
+                    })
+                  }
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -174,7 +194,7 @@ const PhenotypicScreenSequenceTable = ({ screenId }) => {
               status={selectedPhenotypicScreen?.status}
             />
             <Chip
-              label={selectedPhenotypicScreen?.org.name}
+              label={selectedPhenotypicScreen?.org?.alias}
               icon="ri-organization-chart"
             />
             <Chip
@@ -322,11 +342,7 @@ const PhenotypicScreenSequenceTable = ({ screenId }) => {
               header={fieldToColumnName["unverifiedHitCount"]}
               editor={(options) => TextEditor(options)}
             />
-            <Column
-              field="primaryHitCount"
-              header={fieldToColumnName["primaryHitCount"]}
-              editor={(options) => TextEditor(options)}
-            />
+
             <Column
               field="confirmedHitCount"
               header={fieldToColumnName["confirmedHitCount"]}

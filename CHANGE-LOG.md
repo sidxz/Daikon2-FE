@@ -1,5 +1,23 @@
 # Change Log
 
+## [v1.4.0]
+
+### Added
+
+- Created target promotion editable version for admin.
+- Updated target promotion questions & calculated fields as per the latest questionnaire.
+- Updated Scorecard values.
+- Changed drop downs to include descriptive text in the target promotion questionnaire.
+- Changed the Confidentiality Agreement text.
+- Implemented 'Import' and 'Export' Excel functionality for Target-Based screens, enabling seamless data transfer.
+- Added a download template feature for the tables in Screen component for both target-based and phenotypic.
+- Added validated hit count column in Screen component.
+- Removed primary hit count column from Phenotypic screen component
+- Renamed the Screen tab name as "TargetName-SequenceNo-MethodName".
+- Updated the landing page What's New section to include the latest feature additions
+
+  ### Fixed
+- Bug Fix: Scorecard hover works now.
 ## [v1.3.0]
 
 ### Added

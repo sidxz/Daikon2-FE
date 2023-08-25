@@ -10,6 +10,7 @@ import AdminStore from "./admin/adminStore";
 import CompoundStore from "./compound/compoundStore";
 import DataViewStore from "./dataView/dataViewStore";
 import DiscussionStore from "./discussion/discussionStore";
+import GenePromotionStore from "./gene/genePromotionStore";
 import GeneStore from "./gene/geneStore";
 import GeneStoreAdmin from "./gene/geneStoreAdmin";
 import HAStore from "./project/haStore";
@@ -24,6 +25,8 @@ import GeneralStore from "./settings/generalStore";
 import MsStore from "./settings/msStore";
 import TargetStore from "./target/targetStore";
 import TargetStoreAdmin from "./target/targetStoreAdmin";
+import TargetPTDataManagement from "./targetPromotionTool/targetPTDataManagement";
+import TargetPTQuestionnaireMetaStore from "./targetPromotionTool/targetPTQuestionnaireMetaStore";
 import UserStore from "./user/userStore";
 import VotingStore from "./voting/VotingStore";
 
@@ -52,6 +55,9 @@ export class RootStore {
   targetStoreAdmin;
   userStore;
   votingStore;
+  targetPTQuestionnaireMetaStore;
+  genePromotionStore;
+  targetPTDataManagement;
 
   /**
    * constructor: Initializes the sub-stores.
@@ -79,6 +85,11 @@ export class RootStore {
     this.targetStoreAdmin = new TargetStoreAdmin(this);
     this.userStore = new UserStore(this);
     this.votingStore = new VotingStore(this);
+    this.targetPTQuestionnaireMetaStore = new TargetPTQuestionnaireMetaStore(
+      this
+    );
+    this.genePromotionStore = new GenePromotionStore(this);
+    this.targetPTDataManagement = new TargetPTDataManagement(this);
   }
 }
 

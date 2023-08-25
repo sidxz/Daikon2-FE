@@ -15,8 +15,7 @@ export default class TargetStore {
   targetRegistry = new Map();
   targetRegistryExpanded = new Map();
   selectedTarget = null;
-  questionsRegistry = new Map();
-  questionsLoading = false;
+
   cacheValid = false;
   promoteTargetToScreenDisplayLoading = false;
 
@@ -24,7 +23,7 @@ export default class TargetStore {
   historyDisplayLoading = false;
   targetHistoryRegistry = new Map();
 
-  editingTargetPromotionInfo = false;
+  isEditingTargetPromotionInfo = false;
 
   constructor(rootStore) {
     this.rootStore = rootStore;
@@ -39,9 +38,6 @@ export default class TargetStore {
       fetchTarget: action,
       selectedTarget: observable,
 
-      questionsLoading: observable,
-      fetchQuestions: action,
-
       promoteTargetToScreenDisplayLoading: observable,
       promoteTargetToScreen: action,
 
@@ -54,7 +50,7 @@ export default class TargetStore {
       cancelEditTargetSummary: action,
 
       editTargetPromotionInfo: action,
-      editingTargetPromotionInfo: observable,
+      isEditingTargetPromotionInfo: observable,
     });
   }
 
@@ -134,35 +130,6 @@ export default class TargetStore {
     return this.selectedTarget;
   }
 
-  fetchQuestions = async () => {
-    this.questionsLoading = true;
-    // check cache
-    if (this.questionsRegistry.size !== 0) {
-      this.questionsLoading = false;
-      return this.questionsRegistry;
-    }
-
-    // then fetch
-    try {
-      var resp = await agent.Gene.promotionQuestions();
-      runInAction(() => {
-        resp.forEach((fetchedPromotionQuestion) => {
-          this.questionsRegistry.set(
-            fetchedPromotionQuestion.identification,
-            fetchedPromotionQuestion
-          );
-        });
-      });
-    } catch (error) {
-      console.error(error);
-    } finally {
-      runInAction(() => {
-        this.questionsLoading = false;
-        return this.questionsRegistry;
-      });
-    }
-  };
-
   /* submit Promotion Questionnaire from API */
   promoteTargetToScreen = async (newScreen) => {
     this.promoteTargetToScreenDisplayLoading = true;
@@ -180,7 +147,7 @@ export default class TargetStore {
       console.error(error);
     } finally {
       runInAction(() => {
-        this.rootStore.screenTStore.screenRegistryCacheValid = false;
+        this.rootStore.screenTStore.isTgScreenRegistryCacheValid = false;
         this.promoteTargetToScreenDisplayLoading = false;
       });
     }
@@ -248,7 +215,7 @@ export default class TargetStore {
   };
 
   editTargetPromotionInfo = async (targetPromotionInfoDTO) => {
-    this.editingTargetPromotionInfo = true;
+    this.isEditingTargetPromotionInfo = true;
     let updatedTarget = null;
 
     // send to server
@@ -266,7 +233,7 @@ export default class TargetStore {
       console.error(error);
     } finally {
       runInAction(() => {
-        this.editingTargetPromotionInfo = false;
+        this.isEditingTargetPromotionInfo = false;
       });
     }
   };

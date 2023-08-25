@@ -1,3 +1,4 @@
+// Importing required libraries and components
 import {
   action,
   computed,
@@ -7,398 +8,312 @@ import {
 } from "mobx";
 import { toast } from "react-toastify";
 
-import agent from "../../api/agent";
-import { generateVoteScore } from "./screenStore_Helper";
+import agent from "../../api/agent"; // API agent for making network requests
+import { generateVoteScore } from "./screenStore_Helper"; // Helper function to calculate score
 
+// Main class for ScreenTStore
 export default class ScreenTStore {
-  rootStore;
+  // Properties
 
-  loadingFetchScreens = false;
+  rootStore; // Root store reference
 
-  loadingFilterScreensByTargetName = false;
-  loadingFetchScreen = false;
-  loadingScreenSequence = false;
+  // Flags for various loading states
+  isLoadingTargetBasedScreens = false;
+  isFilteringScreensByTargetName = false;
+  isLoadingTargetBasedScreen = false;
+  isAddingScreenSequence = false;
+  isMergingScreen = false;
+  isEditingScreen = false;
+  isEditingScreenSequence = false;
+  isUpdatingScreenStatus = false;
+  isBatchInsertingTargetBasedScreenSequence = false;
 
-  screenRegistry = new Map();
-  screenRegistryCacheValid = false;
-  screenRegistryExpanded = new Map();
-  selectedScreen = null;
+  // Data stores
+  targetBasedScreenRegistry = new Map();
+  isTgScreenRegistryCacheValid = false;
+  targetBasedScreenRegistryExpanded = new Map();
+  selectedTargetBasedScreen = null;
   selectedScreenTargetFilter = null;
   filteredScreens = [];
 
-  loadingFetchScreensPhenotypic = false;
-  screenPhenotypicRegistry = new Map();
-  screenPhenotypicRegistryCacheValid = false;
-  selectedPhenotypicScreen = null;
-  loadingFilterPhenotypicScreensByBaseScreenName = false;
-  filteredPhenotypicScreens = [];
-  selectedPhenotypicScreenFilter = null;
-
+  // Index properties
   validatedHitsIndex = 0;
   screenSequenceIndex = 0;
   loadingPhenotypicAdd = false;
 
-  mergingScreen = false;
-
-  editingScreen = false;
-
-  editingScreenRow = false;
-
-  updatingScreenStatus = false;
-
+  // Constructor: initialize the observables
   constructor(rootStore) {
     this.rootStore = rootStore;
     makeObservable(this, {
-      loadingFetchScreens: observable,
-      loadingFilterScreensByTargetName: observable,
-      loadingFetchScreen: observable,
-
-      fetchScreens: action,
-      selectedScreen: observable,
-      screens: computed,
-      uniqueScreens: computed,
-      fetchScreen: action,
-      screenRegistry: observable,
-      screenRegistryCacheValid: observable,
-      screenRegistryExpanded: observable,
-
-      addScreeenSequence: action,
-      loadingScreenSequence: observable,
-
-      filterScreensByTarget: action,
+      // Observable properties
+      isLoadingTargetBasedScreens: observable,
+      isFilteringScreensByTargetName: observable,
+      isLoadingTargetBasedScreen: observable,
+      selectedTargetBasedScreen: observable,
+      targetBasedScreenRegistry: observable,
+      isTgScreenRegistryCacheValid: observable,
+      targetBasedScreenRegistryExpanded: observable,
+      isAddingScreenSequence: observable,
       filteredScreens: observable,
-
       validatedHitsIndex: observable,
-      setValidatedHitsIndex: action,
-
       screenSequenceIndex: observable,
-      setScreenSequenceIndex: action,
-
       selectedScreenTargetFilter: observable,
+      isMergingScreen: observable,
+      isEditingScreen: observable,
+      isEditingScreenSequence: observable,
+      isUpdatingScreenStatus: observable,
+      isBatchInsertingTargetBasedScreenSequence: observable,
 
-      loadingFetchScreensPhenotypic: observable,
-      screenPhenotypicRegistry: observable,
-      screenPhenotypicRegistryCacheValid: observable,
-      selectedPhenotypicScreen: observable,
-      fetchScreensPhenotypic: action,
-      screensPhenotypic: computed,
-      // groupScreensPhenotypic: computed,
-
-      loadingFilterPhenotypicScreensByBaseScreenName: observable,
-      selectedPhenotypicScreenFilter: observable,
-      filteredPhenotypicScreens: observable,
-      filterPhenotypicScreensByBaseScreenName: action,
-
-      addScreeenPhenotypic: action,
-      loadingPhenotypicAdd: observable,
-
+      // Actions and computed properties
+      fetchTargetBasedScreens: action,
+      targetBasedScreens: computed,
+      targetBasedUniqueScreens: computed,
+      fetchTargetBasedScreen: action,
+      addScreenSequence: action,
+      filterTargetBasedScreensByTarget: action,
+      setValidatedHitsIndex: action,
+      setScreenSequenceIndex: action,
       mergeScreen: action,
-      mergingScreen: observable,
-
       editScreen: action,
-      editingScreen: observable,
-
-      fetchScreenSilent: action,
-      editScreenRow: action,
-      editingScreenRow: observable,
-
+      editScreenSequence: action,
       updateScreenStatus: action,
-      updatingScreenStatus: observable,
+      batchInsertTargetBasedScreenSequence: action,
     });
   }
 
-  /* Fetch Screen list from API */
-  fetchScreens = async () => {
-    this.loadingFetchScreens = true;
-    if (this.screenRegistryCacheValid && this.screenRegistry.size !== 0) {
-      this.loadingFetchScreens = false;
-      return;
-    }
-    try {
-      var resp = await agent.Screen.list();
-      runInAction(() => {
-        resp.forEach((fetchedScreen) => {
-          this.screenRegistry.set(fetchedScreen.id, fetchedScreen);
-        });
-        this.screenRegistryCacheValid = true;
-      });
-    } catch (error) {
-      console.error(error);
-    } finally {
-      runInAction(() => {
-        this.loadingFetchScreens = false;
-      });
-    }
-  };
+  // Fetch list of screens from the API
+  fetchTargetBasedScreens = async () => {
+    this.isLoadingTargetBasedScreens = true;
 
-  fetchScreensPhenotypic = async () => {
-    this.loadingFetchScreensPhenotypic = true;
+    // Check if the cache is valid and not empty
     if (
-      this.screenPhenotypicRegistryCacheValid &&
-      this.screenPhenotypicRegistry.size !== 0
+      this.isTgScreenRegistryCacheValid &&
+      this.targetBasedScreenRegistry.size !== 0
     ) {
-      this.loadingFetchScreensPhenotypic = false;
+      this.isLoadingTargetBasedScreens = false;
       return;
     }
     try {
-      var resp = await agent.Screen.listPhenotypic();
+      const resp = await agent.Screen.list();
       runInAction(() => {
         resp.forEach((fetchedScreen) => {
-          this.screenPhenotypicRegistry.set(fetchedScreen.id, fetchedScreen);
+          this.targetBasedScreenRegistry.set(fetchedScreen.id, fetchedScreen);
         });
-        this.screenPhenotypicRegistryCacheValid = true;
+        this.isTgScreenRegistryCacheValid = true;
       });
     } catch (error) {
       console.error(error);
     } finally {
       runInAction(() => {
-        this.loadingFetchScreensPhenotypic = false;
+        this.isLoadingTargetBasedScreens = false;
       });
     }
   };
 
-  get screens() {
-    return Array.from(this.screenRegistry.values());
+  // Computed property to get screens from the registry
+  get targetBasedScreens() {
+    return Array.from(this.targetBasedScreenRegistry.values());
   }
 
-  get screensPhenotypic() {
-    console.log("get screensPhenotypic");
-    return Array.from(this.screenPhenotypicRegistry.values());
-  }
-
-  get uniqueScreens() {
-    let targetsScreened = new Map();
-
-    this.screenRegistry.forEach((value) => {
+  // Computed property to get unique screens based on target name
+  get targetBasedUniqueScreens() {
+    const targetsScreened = new Map();
+    this.targetBasedScreenRegistry.forEach((value) => {
       targetsScreened.set(value.targetName, value);
     });
     return Array.from(targetsScreened.values());
   }
 
-  // get groupScreensPhenotypic() {
-  //   let pScreened = new Map();
-
-  //   this.screenPhenotypicRegistry.forEach((value) => {
-  //     let lastIndex = value.screenName.lastIndexOf("-");
-  //     let screenName = value.screenName.slice(0, lastIndex);
-  //     pScreened.set(screenName, { screenName: screenName, notes: value.notes });
-  //   });
-  //   return Array.from(pScreened.values());
-  // }
-
-  filterScreensByTarget = (targetName) => {
-    this.loadingFilterScreensByTargetName = true;
+  // Filter screens by target name
+  filterTargetBasedScreensByTarget = (targetName) => {
+    this.isFilteringScreensByTargetName = true;
     this.selectedScreenTargetFilter = targetName;
     this.filteredScreens = [];
-    this.filteredScreens = Array.from(this.screenRegistry.values()).filter(
-      (screen) => {
-        return screen.targetName === targetName;
-      }
-    );
-    this.loadingFilterScreensByTargetName = false;
-
+    this.filteredScreens = Array.from(
+      this.targetBasedScreenRegistry.values()
+    ).filter((screen) => screen.targetName === targetName);
+    this.isFilteringScreensByTargetName = false;
     return this.filteredScreens;
   };
 
-  filterPhenotypicScreensByBaseScreenName = (baseScreenName) => {
-    this.loadingFilterPhenotypicScreensByBaseScreenName = true;
-    this.selectedPhenotypicScreenFilter = baseScreenName;
-    this.filteredPhenotypicScreens = [];
-    this.filteredPhenotypicScreens = Array.from(
-      this.screenPhenotypicRegistry.values()
-    ).filter((screen) => {
-      let lastIndex = screen.screenName.lastIndexOf("-");
-      let extractedscreenName = screen.screenName.slice(0, lastIndex);
-      return extractedscreenName === baseScreenName;
-    });
-    this.loadingFilterPhenotypicScreensByBaseScreenName = false;
-
-    return this.filteredPhenotypicScreens;
-  };
-
-  /* Fetch specific Screen with id from API */
-
-  fetchScreen = async (id, invalidateCache = false) => {
-    this.loadingFetchScreen = true;
-
-    // first check cache
-    let fetchedScreen = this.screenRegistryExpanded.get(id);
-    if (!invalidateCache && fetchedScreen) {
-      this.selectedScreen = fetchedScreen;
-      this.loadingFetchScreen = false;
+  // Fetch a specific screen based on ID from the API
+  fetchTargetBasedScreen = async (
+    id,
+    invalidateCache = false,
+    shouldSetLoadingState = true
+  ) => {
+    if (shouldSetLoadingState) {
+      this.isLoadingTargetBasedScreen = true;
     }
-    // if not found fetch from api
-    else {
+
+    // First check the cache
+    let fetchedScreen = this.targetBasedScreenRegistryExpanded.get(id);
+    if (!invalidateCache && fetchedScreen) {
+      this.selectedTargetBasedScreen = fetchedScreen;
+      if (shouldSetLoadingState) {
+        this.isLoadingTargetBasedScreen = false;
+      }
+    } else {
+      // If not in cache, fetch from the API
       try {
         fetchedScreen = await agent.Screen.details(id);
         runInAction(() => {
           fetchedScreen = generateVoteScore(fetchedScreen);
-          this.selectedScreen = fetchedScreen;
-          this.screenRegistryExpanded.set(id, fetchedScreen);
+          this.selectedTargetBasedScreen = fetchedScreen;
+          this.targetBasedScreenRegistryExpanded.set(id, fetchedScreen);
         });
       } catch (error) {
         console.error(error);
       } finally {
         runInAction(() => {
-          this.loadingFetchScreen = false;
+          if (shouldSetLoadingState) {
+            this.isLoadingTargetBasedScreen = false;
+          }
         });
       }
     }
   };
 
-  fetchScreenSilent = async (id, invalidateCache = false) => {
-    // first check cache
-    let fetchedScreen = this.screenRegistryExpanded.get(id);
-    if (!invalidateCache && fetchedScreen) {
-      this.selectedScreen = fetchedScreen;
-    }
-    // if not found fetch from api
-    else {
-      try {
-        fetchedScreen = await agent.Screen.details(id);
-        runInAction(() => {
-          fetchedScreen = generateVoteScore(fetchedScreen);
-          this.selectedScreen = fetchedScreen;
-          this.screenRegistryExpanded.set(id, fetchedScreen);
-        });
-      } catch (error) {
-        console.error(error);
-      } finally {
-      }
-    }
-  };
-
-  addScreeenSequence = async (newSequence) => {
-    this.loadingScreenSequence = true;
+  // Edit screen details
+  editScreen = async (editedScreen) => {
+    this.isEditingScreen = true;
     let res = null;
+    try {
+      res = await agent.Screen.edit(editedScreen.id, editedScreen);
+      runInAction(() => {
+        toast.success("Saved");
+        this.fetchTargetBasedScreen(editedScreen.id, true);
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      runInAction(() => {
+        this.isEditingScreen = false;
+      });
+    }
+    return res;
+  };
 
-    // send to server
+  // Add new screen sequence
+  addScreenSequence = async (newSequence) => {
+    this.isAddingScreenSequence = true;
+    let res = null;
     try {
       res = await agent.Screen.createSequence(
         newSequence.screenId,
         newSequence
       );
-
       runInAction(() => {
         toast.success("Successfully added screening information");
-        this.screenRegistryExpanded.clear();
-        this.selectedScreen = null;
+        this.targetBasedScreenRegistryExpanded.clear();
+        this.selectedTargetBasedScreen = null;
       });
     } catch (error) {
       console.error(error);
     } finally {
       runInAction(() => {
-        this.loadingScreenSequence = false;
+        this.isAddingScreenSequence = false;
       });
     }
     return res;
   };
 
-  addScreeenPhenotypic = async (newScreen) => {
-    this.loadingPhenotypicAdd = true;
+  // Edit screen sequence
+  editScreenSequence = async (editedScreenRow) => {
+    this.isEditingScreenSequence = true;
     let res = null;
-    // send to server
-    try {
-      res = await agent.Screen.createPhenotypic(newScreen);
-      runInAction(() => {
-        toast.success("Successfully added screening information");
-        this.screenPhenotypicRegistryCacheValid = false;
-        this.selectedPhenotypicScreen = null;
-      });
-    } catch (error) {
-      console.error(error);
-    } finally {
-      runInAction(() => {
-        this.loadingPhenotypicAdd = false;
-      });
-    }
-    return res;
-  };
-
-  setValidatedHitsIndex = (index) => (this.validatedHitsIndex = index);
-  setScreenSequenceIndex = (index) => (this.screenSequenceIndex = index);
-
-  mergeScreen = async (mergeIDs) => {
-    this.mergingScreen = true;
-    let res = null;
-    // send to server
-    try {
-      res = await agent.Screen.merge(mergeIDs);
-      runInAction(() => {
-        toast.success("Successfully merged screening information");
-        this.screenPhenotypicRegistryCacheValid = false;
-        this.screenRegistryExpanded.clear();
-        this.selectedPhenotypicScreen = null;
-        this.screenRegistryCacheValid = false;
-        this.selectedScreen = null;
-      });
-    } catch (error) {
-      console.error(error);
-    } finally {
-      runInAction(() => {
-        this.mergingScreen = false;
-      });
-    }
-    return res;
-  };
-
-  editScreen = async (edittedScreen) => {
-    this.editingScreen = true;
-    let res = null;
-    // send to server
-    try {
-      res = await agent.Screen.edit(edittedScreen.id, edittedScreen);
-      runInAction(() => {
-        toast.success("Saved");
-        this.fetchScreen(edittedScreen.id, true);
-      });
-    } catch (error) {
-      console.error(error);
-    } finally {
-      runInAction(() => {
-        this.editingScreen = false;
-      });
-    }
-    return res;
-  };
-
-  editScreenRow = async (editedScreenRow) => {
-    this.editingScreenRow = true;
-    let res = null;
-    // send to server
     try {
       res = await agent.Screen.editRow(editedScreenRow.id, editedScreenRow);
       runInAction(() => {
         toast.success("Saved");
-        this.fetchScreen(editedScreenRow.screenId, true);
+        this.fetchTargetBasedScreen(editedScreenRow.screenId, true);
       });
     } catch (error) {
       console.error(error);
     } finally {
       runInAction(() => {
-        this.editingScreenRow = false;
+        this.isEditingScreenSequence = false;
       });
     }
     return res;
   };
 
-  updateScreenStatus = async (id, status) => {
-    this.updatingScreenStatus = true;
-    let res = null;
-    // send to server
+  /**
+   * Batch insert a phenotypic screen sequence.
+   * Adds new if ID is null, updates if ID is not null.
+   * @param {object} editedScreenRows - The details of the screen rows to edit.
+   */
+  batchInsertTargetBasedScreenSequence = async (editedScreenRows) => {
+    this.isBatchInsertingTargetBasedScreenSequence = true;
+
     try {
-      res = await agent.Screen.updateStatus(id, { id: id, status: status });
+      const promises = editedScreenRows.map(async (editedScreenRow) => {
+        editedScreenRow.screenId = this.selectedTargetBasedScreen.id;
+        if (editedScreenRow.status === "New") {
+          //console.log("Adding new row");
+          //console.log(editedScreenRow);
+          return await this.addScreenSequence(editedScreenRow);
+        } else if (editedScreenRow.status === "Modified") {
+          //console.log("Editing row");
+          //console.log(editedScreenRow);
+          return await this.editScreenSequence(editedScreenRow);
+        }
+      });
+
+      await Promise.all(promises);
+      toast.success("Batch insertion/update completed successfully");
+    } catch (error) {
+      console.error(error);
+    } finally {
       runInAction(() => {
-        toast.success("Saved");
-        this.fetchScreen(id, true);
+        this.isBatchInsertingTargetBasedScreenSequence = false;
+      });
+    }
+  };
+
+  // Merge screens
+  mergeScreen = async (mergeIDs) => {
+    this.isMergingScreen = true;
+    let res = null;
+    try {
+      res = await agent.Screen.merge(mergeIDs);
+      runInAction(() => {
+        toast.success("Successfully merged screening information");
+        this.targetBasedScreenRegistryExpanded.clear();
+        this.isTgScreenRegistryCacheValid = false;
+        this.selectedTargetBasedScreen = null;
       });
     } catch (error) {
       console.error(error);
     } finally {
       runInAction(() => {
-        this.updatingScreenStatus = false;
+        this.isMergingScreen = false;
       });
     }
     return res;
   };
+
+  // Update screen status
+  updateScreenStatus = async (id, status) => {
+    this.isUpdatingScreenStatus = true;
+    let res = null;
+    try {
+      res = await agent.Screen.updateStatus(id, { id: id, status: status });
+      runInAction(() => {
+        toast.success("Saved");
+        this.fetchTargetBasedScreen(id, true);
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      runInAction(() => {
+        this.isUpdatingScreenStatus = false;
+      });
+    }
+    return res;
+  };
+
+  // Setters for index properties
+  setValidatedHitsIndex = (index) => (this.validatedHitsIndex = index);
+  setScreenSequenceIndex = (index) => (this.screenSequenceIndex = index);
 }

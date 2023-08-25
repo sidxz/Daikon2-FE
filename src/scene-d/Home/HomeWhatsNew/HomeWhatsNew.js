@@ -29,21 +29,15 @@ const HomeWhatsNew = () => {
         style={{ fontSize: "small" }}
       >
         <p className="justify-content-center">
-          We've taken your feedback to heart and implemented some powerful
-          upgrades.{" "}
+          We're excited to unveil the following additions with our latest update :
         </p>
         <p className="m-0 p-0">
           <ul>
             <li>
-              👉 Introducing "One-Click Voting" for convenient voting by passing
-              the confirmation dialog box!
+              👉 Integrated Target Promotion Questionnaire Tool.
             </li>
-            <li>🚀 Revamped Landing Page to explore the latest discussions.</li>
-            <li>
-              🗳️ Hidden, Sorted, and Commented Votes: Now, you have the ability
-              to hide votes, sort them according to your preferences, and engage
-              in meaningful discussions by leaving comments.
-            </li>
+            <li>🚀 Import & Export Functionality for Screen Component for effortless bulk operations.</li>
+
           </ul>
         </p>
       </Card>

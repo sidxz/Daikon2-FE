@@ -44,6 +44,9 @@ const TargetView = () => {
     }
   }, [params.id, target, fetchTarget]);
 
+  //console.log("++++++++++++++Target");
+  //console.log(target);
+
   const [displayPromotionDialog, setDisplayPromotionDialog] = useState(false);
 
   const items = [

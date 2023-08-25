@@ -13,7 +13,7 @@ const ScreenMerge = ({ screens, close }) => {
   const [confirm, setConfirm] = useState("");
 
   const rootStore = useContext(RootStoreContext);
-  const { mergingScreen, mergeScreen } = rootStore.screenTStore;
+  const { isMergingScreen, mergeScreen } = rootStore.screenTStore;
 
   let dataOnSubmitValidate = () => {
     let screen1 = screens.find(({ id }) => id === screen1Id);
@@ -95,7 +95,7 @@ const ScreenMerge = ({ screens, close }) => {
               label="Merge Screens"
               className="p-button-success"
               disabled={confirm !== "MERGE"}
-              loading={mergingScreen}
+              loading={isMergingScreen}
               onClick={() => dataOnSubmitValidate()}
             />
           </div>
