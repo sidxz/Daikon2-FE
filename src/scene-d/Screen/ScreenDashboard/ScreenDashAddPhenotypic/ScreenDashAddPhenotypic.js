@@ -13,7 +13,8 @@ import { RootStoreContext } from "../../../../app/stores/rootStore";
 const ScreenDashAddPhenotypic = () => {
   const rootStore = useContext(RootStoreContext);
   const { appVars } = rootStore.generalStore;
-  const { addScreeenPhenotypic, loadingPhenotypicAdd } = rootStore.screenTStore;
+  const { addPhenotypicScreen, isAddingPhenotypicScreen } =
+    rootStore.screenPStore;
   const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
@@ -42,10 +43,14 @@ const ScreenDashAddPhenotypic = () => {
 
       data["orgId"] = data.org.id;
       data["Method"] = "Phenotypic";
-      addScreeenPhenotypic(data).then((res) => {
+      console.log("---ADD PHENOTYPIC SCREEN---");
+      console.log(data);
+      addPhenotypicScreen(data).then((res) => {
         if (res !== null) {
           formik.resetForm();
-          navigate("phenotypic/" + data.screenName);
+          console.log("res");
+          console.log(res);
+          navigate("phenotypic/" + res.id);
         }
       });
     },
@@ -184,8 +189,8 @@ const ScreenDashAddPhenotypic = () => {
                 type="submit"
                 label="Add Phenotypic Screen"
                 className="p-mt-2 p-button-secondary"
-                loading={loadingPhenotypicAdd}
-                readOnly={loadingPhenotypicAdd}
+                loading={isAddingPhenotypicScreen}
+                readOnly={isAddingPhenotypicScreen}
               />
             </form>
           </div>
