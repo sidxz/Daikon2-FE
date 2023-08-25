@@ -43,13 +43,11 @@ const ScreenDashAddPhenotypic = () => {
 
       data["orgId"] = data.org.id;
       data["Method"] = "Phenotypic";
-      console.log("---ADD PHENOTYPIC SCREEN---");
-      console.log(data);
+
       addPhenotypicScreen(data).then((res) => {
         if (res !== null) {
           formik.resetForm();
-          console.log("res");
-          console.log(res);
+
           navigate("phenotypic/" + res.id);
         }
       });
