@@ -114,8 +114,9 @@ const ScreenDashboard = () => {
                 <DataReorganizationInProgress />
               )}
             </TabPanel>
-            {user.roles.includes("admin") && (
-              <TabPanel header="+ New">
+            {(user.roles.includes("screener") ||
+              user.roles.includes("admin")) && (
+              <TabPanel header="+ New Phenotypic Screen">
                 <ScreenDashAddPhenotypic />
               </TabPanel>
             )}
