@@ -2,6 +2,10 @@ import React from 'react';
 import { FcNeutralTrading, FcPlanner } from "react-icons/fc";
 import { GiVote } from "react-icons/gi";
 import { WiMoonFull } from "react-icons/wi";
+import HAOverviewActiveHA from './HAOverviewActiveHA/HAOverviewActiveHA';
+import HAOverviewHAEnabledScreens from "./HAOverviewHAEnabledScreens/HAOverviewHAEnabledScreens";
+import HAOverviewInActiveHA from './HAOverviewInActiveHA/HAOverviewInActiveHA';
+import HAOverviewPortfolioReady from './HAOverviewPortfolioReady/HAOverviewPortfolioReady';
 
 const HAOverview = () => {
     return (
@@ -10,7 +14,7 @@ const HAOverview = () => {
             <div className="flex w-full surface-50">
 
 
-                <div className="flex w-full text-sm">
+                <div className="flex w-full flex-column text-sm">
                     <div
                         className="flex p-1 align-items-center justify-content-center w-full text-lg  border-1 border-0 gap-2"
                         style={{
@@ -24,8 +28,21 @@ const HAOverview = () => {
                             <b>HA ENABLED SCREENS</b>
                         </div>
                     </div>
+                    <div className="flex w-full">
+                        <div className="flex w-full  pt-1 border-1 border-100  bg-white">
+                            <HAOverviewHAEnabledScreens />
+
+                        </div>
+                    </div>
                 </div>
-                <div className="flex w-full text-sm">
+
+
+
+
+
+
+
+                <div className="flex w-full flex-column text-sm">
                     <div
                         className="flex p-1 align-items-center justify-content-center w-full text-lg  border-1 border-0 gap-2"
                         style={{
@@ -39,8 +56,16 @@ const HAOverview = () => {
                             <b>ACTIVE HA</b>
                         </div>
                     </div>
+                    <div className="flex w-full">
+                        <div className="flex w-full  pt-1 border-1 border-100  bg-white">
+                            <HAOverviewActiveHA />
+
+                        </div>
+                    </div>
                 </div>
-                <div className="flex w-full text-sm">
+
+
+                <div className="flex w-full flex-column text-sm">
                     <div
                         className="flex p-1 align-items-center justify-content-center w-full text-lg  border-1 border-0 gap-2"
                         style={{
@@ -54,8 +79,16 @@ const HAOverview = () => {
                             <b>INACTIVE HA</b>
                         </div>
                     </div>
+                    <div className="flex w-full">
+                        <div className="flex w-full  pt-1  border-1 border-100  bg-white">
+                            <HAOverviewInActiveHA />
+
+                        </div>
+                    </div>
                 </div>
-                <div className="flex w-full">
+
+
+                <div className="flex w-full flex-column text-sm">
                     <div
                         className="flex p-1 align-items-center justify-content-center w-full text-lg  border-1 border-0 gap-2"
                         style={{
@@ -69,8 +102,17 @@ const HAOverview = () => {
                             <b>PORTFOLIO READY</b>
                         </div>
                     </div>
+                    <div className="flex w-full">
+                        <div className="flex w-full  pt-1 border-1 border-100  bg-white">
+                            <HAOverviewPortfolioReady />
+
+                        </div>
+                    </div>
                 </div>
             </div>
+
+
+
         </div>
 
     )
