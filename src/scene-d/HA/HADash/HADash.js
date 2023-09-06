@@ -2,6 +2,7 @@ import { observer } from "mobx-react-lite";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { SelectButton } from "primereact/selectbutton";
+import { TabPanel, TabView } from "primereact/tabview";
 import React, { useContext, useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
 import FDate from "../../../app/common/FDate/FDate";
@@ -13,6 +14,7 @@ import "./HADashDataTable.css";
 // import "./PortfolioDashDataTable.css";
 import TagGeneral from "../../../app/common/TagGeneral/TagGeneral";
 import { appColors } from "../../../colors";
+import HAOverview from "./HAOverview/HAOverview";
 
 const HADash = () => {
   /* MobX Store */
@@ -162,72 +164,81 @@ const HADash = () => {
           />
         </div>
         <div className="flex w-full">
-          <div className="card w-full">
-            <DataTable
-              ref={dt}
-              value={filterHAProjects()}
-              paginator
-              rows={20}
-              // header={header}
-              className="datatable-ha-dash"
-              //globalFilter={globalFilter}
-              emptyMessage="No HAs found."
-              filterDisplay="row"
-            >
-              <Column
-                field="id"
-                header="Project Id"
-                body={ProjectNoBodyTemplate}
-                filter
-                filterMatchMode="contains"
-                filterPlaceholder="Search by ProjectNo"
-                className="narrow-column"
-              />
+          <TabView className="w-full">
+            <TabPanel header="Overview">
+              <HAOverview />
+            </TabPanel>
+            <TabPanel header="All HA Projects">
 
-              <Column
-                field="projectName"
-                header="Project Name"
-                filter
-                filterMatchMode="contains"
-                filterPlaceholder="Search by ProjectName"
-                body={ProjectNameBodyTemplate}
-              />
+              <div className="card w-full">
+                <DataTable
+                  ref={dt}
+                  value={filterHAProjects()}
+                  paginator
+                  rows={20}
+                  // header={header}
+                  className="datatable-ha-dash"
+                  //globalFilter={globalFilter}
+                  emptyMessage="No HAs found."
+                  filterDisplay="row"
+                >
+                  <Column
+                    field="id"
+                    header="Project Id"
+                    body={ProjectNoBodyTemplate}
+                    filter
+                    filterMatchMode="contains"
+                    filterPlaceholder="Search by ProjectNo"
+                    className="narrow-column"
+                  />
 
-              <Column
-                field="targetName"
-                header="Target"
-                body={TargetBodyTemplate}
-                filter
-                filterMatchMode="contains"
-                filterPlaceholder="Filter by Target"
-                className="narrow-column"
-              />
+                  <Column
+                    field="projectName"
+                    header="Project Name"
+                    filter
+                    filterMatchMode="contains"
+                    filterPlaceholder="Search by ProjectName"
+                    body={ProjectNameBodyTemplate}
+                  />
 
-              <Column
-                field="primaryOrg.alias"
-                header="Primary Organization"
-                filter
-                filterMatchMode="contains"
-                body={PrimaryOrganizationBodyTemplate}
-              />
+                  <Column
+                    field="targetName"
+                    header="Target"
+                    body={TargetBodyTemplate}
+                    filter
+                    filterMatchMode="contains"
+                    filterPlaceholder="Filter by Target"
+                    className="narrow-column"
+                  />
 
-              <Column
-                field="status"
-                header="Status"
-                body={StatusBodyTemplate}
-                filter
-                filterElement={statusFilter}
-                style={{ width: "250px" }}
-                showFilterMenu={false}
-              />
+                  <Column
+                    field="primaryOrg.alias"
+                    header="Primary Organization"
+                    filter
+                    filterMatchMode="contains"
+                    body={PrimaryOrganizationBodyTemplate}
+                  />
 
-              <Column
-                field="Date"
-                header="H2L Predicted Start"
-                body={DateBodyTemplate}
-              />
-            </DataTable>
-          </div>
+                  <Column
+                    field="status"
+                    header="Status"
+                    body={StatusBodyTemplate}
+                    filter
+                    filterElement={statusFilter}
+                    style={{ width: "250px" }}
+                    showFilterMenu={false}
+                  />
+
+                  <Column
+                    field="Date"
+                    header="H2L Predicted Start"
+                    body={DateBodyTemplate}
+                  />
+                </DataTable>
+
+              </div>
+            </TabPanel>
+          </TabView>
         </div>
       </div>
     );
