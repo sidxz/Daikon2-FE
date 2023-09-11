@@ -11,10 +11,10 @@ const HAOverview = () => {
     return (
 
         <div className="flex flex-column w-full">
-            <div className="flex w-full surface-50">
+            <div className="flex w-full ">
 
 
-                <div className="flex w-full flex-column text-sm">
+                <div className="flex w-full flex-column text-sm ">
                     <div
                         className="flex p-1 align-items-center justify-content-center w-full text-lg  border-1 border-0 gap-2"
                         style={{
@@ -24,7 +24,7 @@ const HAOverview = () => {
                         <div className="flex">
                             <FcPlanner />
                         </div>
-                        <div className="flex">
+                        <div className="flex ">
                             <b>HA ENABLED SCREENS</b>
                         </div>
                     </div>
@@ -57,7 +57,7 @@ const HAOverview = () => {
                         </div>
                     </div>
                     <div className="flex w-full">
-                        <div className="flex w-full  pt-1 border-1 border-100  bg-white">
+                        <div className="flex w-full  pt-1 border-1 border-100 bg-white">
                             <HAOverviewActiveHA />
 
                         </div>
