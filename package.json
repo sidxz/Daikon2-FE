@@ -1,6 +1,6 @@
 {
   "name": "daikon-ee",
-  "version": "1.3.0",
+  "version": "1.4.2",
   "private": true,
   "dependencies": {
     "@azure/msal-browser": "~2.38.0",
