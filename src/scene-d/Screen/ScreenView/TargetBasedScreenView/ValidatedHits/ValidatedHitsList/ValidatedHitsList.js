@@ -181,7 +181,7 @@ const ValidatedHitsList = ({ screenId }) => {
         <Vote
           id={rowData.vote.id}
           voteData={rowData.vote}
-          callBack={() => fetchTargetBasedScreen(screenId, true, true)}
+          callBack={() => fetchTargetBasedScreen(screenId, true, false)}
           revealVote={revealVoteEnabled}
           discussionReference={selectedTargetBasedScreen.screenName}
           discussionTags={[rowData.compound.externalCompoundIds]}
