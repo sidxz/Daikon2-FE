@@ -1,10 +1,11 @@
 # Change Log
 
 
-## [v1.4.1]
+## [v1.4.1 - 2]
 
    ### Fixed
-- Phenotypic screens can be created by the screener working group (Permission added)
+- UI issue of automatically scrolling to the top of page after casting a vote in target based hit [.2]
+- Phenotypic screens can be created by the screener working group (Permission added) [.1]
 
 ## [v1.4.0]
 
