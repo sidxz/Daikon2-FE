@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import { Dropdown } from "primereact/dropdown";
 
 import React from "react";
-import { FcDataSheet, FcNeutralTrading, FcOk, FcPlanner } from "react-icons/fc";
+import { FcBearish, FcDeleteDatabase, FcDisapprove, FcNeutralTrading, FcOk, FcShipped } from "react-icons/fc";
 
 /**
  * HAStatusDropDown component allows users to update the status of a HA Project.
@@ -19,10 +19,13 @@ const HAStatusDropDown = (id, status) => {
 
     // The set of available options for the status of a screen
     const haStatusOptions = [
-        { name: "Active", icon: <FcPlanner /> },
-        { name: "Incorrect m/z", icon: <FcDataSheet /> },
-        { name: "Completed", icon: <FcNeutralTrading /> },
-        { name: "Terminated", icon: <FcOk /> },
+        { name: "Ready", value: "HA Ready", icon: <FcShipped /> },
+        { name: "Active", value: "HA Active", icon: <FcNeutralTrading /> },
+        { name: "Incorrect m/z", value: "HA Incorrect m/z", icon: <FcBearish /> },
+        { name: "Known Liability", value: "HA Known Liability", icon: <FcDeleteDatabase /> },
+        { name: "Complete Failed", value: "HA Complete Failed", icon: <FcDisapprove /> },
+        { name: "Complete Success", value: "HA Complete Success", icon: <FcOk /> }
+
     ];
 
     // Template for rendering a selected status option
@@ -44,7 +47,7 @@ const HAStatusDropDown = (id, status) => {
                 value=""
                 options={haStatusOptions}
                 optionLabel="name"
-                optionValue="name"
+                optionValue="value"
                 placeholder="Set Status"
                 itemTemplate={haOptionTemplate}
                 valueTemplate={haOptionTemplate}

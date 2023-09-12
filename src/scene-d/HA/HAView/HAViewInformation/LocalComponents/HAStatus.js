@@ -7,6 +7,7 @@ import EmbeddedHelp from "../../../../../app/common/EmbeddedHelp/EmbeddedHelp";
 import FDate from "../../../../../app/common/FDate/FDate";
 import PredictedDateEditor from "../../../../../app/common/PredictedDateEditor/PredictedDateEditor";
 import TagGeneral from "../../../../../app/common/TagGeneral/TagGeneral";
+import HAStatusDropDown from "./HAStatusDropDown";
 
 const HAStatus = ({ project }) => {
   const cm = useRef(null);
@@ -38,11 +39,17 @@ const HAStatus = ({ project }) => {
                 ? "Ongoing"
                 : "Complete"
               : project.currentStage === "HA"
-              ? "Terminated at HA"
-              : "Complete"
+                ? "Terminated at HA"
+                : "Complete"
           }
         />
       ),
+    },
+    {
+      name: "HA Status Change",
+      value: <HAStatusDropDown id={project.id}
+        status={project?.status} />,
+
     },
     {
       name: "HA Start Date",
