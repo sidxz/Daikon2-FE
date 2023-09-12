@@ -2,7 +2,7 @@ import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import React from "react";
 import TagGeneral from "../../../../../app/common/TagGeneral/TagGeneral";
-import HAStatusDropDown from "./HAStatusDropDown";
+
 import "./LocalComponents.css";
 
 const HAInformationGeneralInformation = ({ project }) => {
@@ -29,12 +29,7 @@ const HAInformationGeneralInformation = ({ project }) => {
       value: <TagGeneral tag={project.status} />,
 
     },
-    {
-      name: "Project Status Change",
-      value: <HAStatusDropDown id={project.id}
-        status={project?.status} />,
 
-    },
     {
       name: "Description",
       value: project.haDescription,
