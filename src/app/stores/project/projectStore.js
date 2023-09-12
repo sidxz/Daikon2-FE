@@ -32,6 +32,8 @@ export default class ProjectStore {
 
   editingPredictedDates = false;
 
+  isUpdatingSubState = false;
+
   constructor(rootStore) {
     this.rootStore = rootStore;
     makeObservable(this, {
@@ -75,6 +77,9 @@ export default class ProjectStore {
 
       editPredictedDates: action,
       editingPredictedDates: observable,
+
+      updateSubState: action,
+      isUpdatingSubState: observable,
     });
   }
 
@@ -371,6 +376,31 @@ export default class ProjectStore {
     } finally {
       runInAction(() => {
         this.editingPredictedDates = false;
+      });
+    }
+    return res;
+  };
+
+  updateSubState = async (subStateDto) => {
+    console.log("updateSubState: ", subStateDto);
+    this.isUpdatingSubState = true;
+    let res = null;
+    // send to server
+    try {
+      res = await agent.Projects.updateSubState(
+        this.selectedProject.id,
+        subStateDto
+      );
+      runInAction(() => {
+        toast.success("Saved.");
+        this.projectRegistryCacheValid = false;
+        this.fetchProject(this.selectedProject.id);
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      runInAction(() => {
+        this.isUpdatingSubState = false;
       });
     }
     return res;

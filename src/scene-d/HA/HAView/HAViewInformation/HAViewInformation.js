@@ -11,9 +11,9 @@ import SectionHeading from "../../../../app/common/SectionHeading/SectionHeading
 import { RootStoreContext } from "../../../../app/stores/rootStore";
 import { appColors } from "../../../../colors";
 import HABaseHits from "./LocalComponents/HABaseHits";
+import HAInformation from "./LocalComponents/HAInformation";
 import HAInformationGeneralInformation from "./LocalComponents/HAInformationGeneralInformation";
 import HAOrgs from "./LocalComponents/HAOrgs";
-import HAStatus from "./LocalComponents/HAStatus";
 
 import { ExtractBaseScreenNameFromScreen } from "../../../../app/common/Functions/Formats";
 import "./ScrollPanel.css";
@@ -81,16 +81,21 @@ const HAViewInformation = ({ id, project }) => {
           </div>
 
           <div className="flex w-full gap-2">
-            <div className="flex">
+            <div className="flex min-w-max">
               <Fieldset legend="HA Information">
+                <HAInformation project={project} />
+              </Fieldset>
+            </div>
+            <div className="flex">
+              <Fieldset legend="Project Information">
                 <HAInformationGeneralInformation project={project} />
               </Fieldset>
             </div>
-            <div className="flex min-w-max">
-              <Fieldset legend="HA Status">
-                <HAStatus project={project} />
-              </Fieldset>
-            </div>
+          </div>
+          <div className="flex w-full">
+            <Fieldset legend="HA Description and Logs">
+              <div className="flex flex-column">{project.haDescription}</div>
+            </Fieldset>
           </div>
 
           <div className="flex w-full">

@@ -567,7 +567,7 @@ const ValidatedHitsList = ({ screenId }) => {
             mic: hit.mic,
           };
         })}
-        //comparatorKey="externalCompoundIds"
+        comparatorKey="id"
         data={dataPreview}
         visible={showDataPreviewDialog}
         onHide={() => {

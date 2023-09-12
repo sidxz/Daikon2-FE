@@ -27,12 +27,6 @@ const HAInformationGeneralInformation = ({ project }) => {
     {
       name: "Project Status",
       value: <TagGeneral tag={project.status} />,
-
-    },
-
-    {
-      name: "Description",
-      value: project.haDescription,
     },
   ];
   return (

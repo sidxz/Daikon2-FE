@@ -6,10 +6,10 @@ import React, { useRef, useState } from "react";
 import EmbeddedHelp from "../../../../../app/common/EmbeddedHelp/EmbeddedHelp";
 import FDate from "../../../../../app/common/FDate/FDate";
 import PredictedDateEditor from "../../../../../app/common/PredictedDateEditor/PredictedDateEditor";
-import TagGeneral from "../../../../../app/common/TagGeneral/TagGeneral";
 import HAStatusDropDown from "./HAStatusDropDown";
 
-const HAStatus = ({ project }) => {
+const HAInformation = ({ project }) => {
+  console.log("HAInformation.js: project: ", project);
   const cm = useRef(null);
   const [displayEditContainer, setDisplayEditContainer] = useState(false);
 
@@ -31,25 +31,7 @@ const HAStatus = ({ project }) => {
   let data = [
     {
       name: "HA Status",
-      value: (
-        <TagGeneral
-          tag={
-            project.status === "Active"
-              ? project.currentStage === "HA"
-                ? "Ongoing"
-                : "Complete"
-              : project.currentStage === "HA"
-                ? "Terminated at HA"
-                : "Complete"
-          }
-        />
-      ),
-    },
-    {
-      name: "HA Status Change",
-      value: <HAStatusDropDown id={project.id}
-        status={project?.status} />,
-
+      value: <HAStatusDropDown id={project.id} status={project?.haStatus} />,
     },
     {
       name: "HA Start Date",
@@ -97,4 +79,4 @@ const HAStatus = ({ project }) => {
   );
 };
 
-export default HAStatus;
+export default HAInformation;

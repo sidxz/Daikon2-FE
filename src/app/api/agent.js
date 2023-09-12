@@ -385,6 +385,8 @@ const Projects = {
     requests.post(`/project/${id}/edit-supporting-org`, editSupportingOrgsDTO),
   editPredictedDated: (id, projectDTO) =>
     requests.post(`/project/${id}/edit-predicted-dates`, projectDTO),
+  updateSubState: (id, projectStateDTO) =>
+    requests.post(`/project/${id}/update-sub-state`, projectStateDTO),
 };
 
 const Vote = {
