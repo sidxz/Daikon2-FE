@@ -1,3 +1,4 @@
+import { Tag } from 'primereact/tag';
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import FDate from "../../../../../app/common/FDate/FDate";
@@ -30,9 +31,9 @@ const HAOverviewInActiveHA = ({ projects }) => {
               navigate(`/d/ha/${project.id}`);
             }}
           >
-            <div className="flex flex-column bg-orange-100  justify-content-center p-1">
+            <div className="flex flex-column bg-red-100  justify-content-center p-1">
               <div
-                className="flex m-2 text-sm text-orange-800"
+                className="flex m-2 text-sm text-red-800"
                 style={{
                   minWidth: "7rem",
                 }}
@@ -41,9 +42,9 @@ const HAOverviewInActiveHA = ({ projects }) => {
               </div>
             </div>
 
-            <div className="flex flex-column bg-orange-50  justify-content-center p-1">
+            <div className="flex flex-column bg-red-50  justify-content-center p-1">
               <div
-                className="flex pl-2 pt-1 text-xs text-orange-600"
+                className="flex pl-2 pt-1 text-xs text-red-600"
                 style={{
                   minWidth: "4rem",
                 }}
@@ -52,7 +53,7 @@ const HAOverviewInActiveHA = ({ projects }) => {
               </div>
 
               <div
-                className="flex pl-2 pt-1 text-xs text-orange-600"
+                className="flex pl-2 pt-1 text-xs text-red-600"
                 style={{
                   minWidth: "4rem",
                 }}
@@ -66,7 +67,7 @@ const HAOverviewInActiveHA = ({ projects }) => {
                   minWidth: "4rem",
                 }}
               >
-                <FDate timestamp={project.haStatusDate} color="#CC5500" />
+                <FDate timestamp={project.haStatusDate} color="#d9362b" />
               </div>
               <div
                 className="flex pl-2 pt-1 text-xs"
@@ -74,7 +75,8 @@ const HAOverviewInActiveHA = ({ projects }) => {
                   minWidth: "4rem",
                 }}
               >
-                {project.haStatus}
+                <Tag className="text-xs" severity="warning" value={project.haStatus}></Tag>
+
               </div>
             </div>
           </div>
