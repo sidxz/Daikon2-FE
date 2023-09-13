@@ -399,6 +399,7 @@ const DataView = {
   targetDash: () => requests.get(`/data-view/VTarget/dash-view`),
   latestDiscussions: () => requests.get(`/data-view/Discussion/latest`),
   screenDash: () => requests.get(`/data-view/VScreen/dash-view`),
+  haDash: () => requests.get(`/data-view/VProject/ha-dash-view`),
 };
 
 const Compounds = {
