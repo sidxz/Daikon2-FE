@@ -66,7 +66,7 @@ const HAOverview = () => {
           </div>
           <div className="flex w-full">
             <div className="flex w-full  pt-1 border-1 border-100 bg-white">
-              <HAOverviewActiveHA />
+              <HAOverviewActiveHA projects={haDash.ongoing} />
             </div>
           </div>
         </div>
@@ -87,7 +87,7 @@ const HAOverview = () => {
           </div>
           <div className="flex w-full">
             <div className="flex w-full  pt-1  border-1 border-100  bg-white">
-              <HAOverviewInActiveHA />
+              <HAOverviewInActiveHA projects={haDash.recentlyCompletedFailed} />
             </div>
           </div>
         </div>
@@ -108,7 +108,7 @@ const HAOverview = () => {
           </div>
           <div className="flex w-full">
             <div className="flex w-full  pt-1 border-1 border-100  bg-white">
-              <HAOverviewPortfolioReady />
+              <HAOverviewPortfolioReady projects={haDash.portfolioReady} />
             </div>
           </div>
         </div>

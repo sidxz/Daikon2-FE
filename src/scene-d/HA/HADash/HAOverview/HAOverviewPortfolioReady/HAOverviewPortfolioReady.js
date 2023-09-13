@@ -1,40 +1,85 @@
-import React from 'react'
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import FDate from "../../../../../app/common/FDate/FDate";
+import SmilesView from "../../../../../app/common/SmilesView/SmilesView";
 
-const HAOverviewPortfolioReady = () => {
+const HAOverviewPortfolioReady = ({ projects }) => {
+  const navigate = useNavigate();
+  // check if projects is empty or not set or null
+  if (!projects || projects.length === 0)
     return (
-        <div className="flex flex-wrap w-full gap-3 p-1 align-items-center justify-content-center">
-            <div className="flex flex-column p-2 mt-3  bg-yellow-50 justify-content-center hover:shadow-3">
+      <div className="flex justify-content-center align-items-center w-full text-sm	text-color-secondary">
+        - No HAs ready for Portfolio -
+      </div>
+    );
 
-                <div
-                    className="flex align-items-end justify-content-end justify-content-center cursor-pointer"
-                    style={{
-                        fontSize: "small",
-                    }}
-
-                >
-
-
-                    <div
-                        className="flex  p-2 text-yellow-700 justify-content-center"
-                        style={{
-                            minWidth: "7rem"
-                        }}
-                    >
-                        HAA (RNA Pol - AAP1 2)
-
-                    </div>
-
-
-
-                </div>
-
-
-
+  let projectsComponent = projects.map((project) => {
+    return (
+      <div className="flex shadow-1 hover:shadow-3 w-full">
+        <div className="flex w-6 justify-content-center ">
+          <SmilesView
+            smiles={project?.latestStructure?.smile}
+            width={"120"}
+            height={"120"}
+          />
+        </div>
+        <div className="flex flex-column w-7">
+          <div
+            className="flex flex-column  justify-content-center cursor-pointer"
+            onClick={() => {
+              navigate(`/d/ha/${project.id}`);
+            }}
+          >
+            <div className="flex flex-column bg-orange-100  justify-content-center p-1">
+              <div
+                className="flex m-2 text-sm text-orange-800"
+                style={{
+                  minWidth: "7rem",
+                }}
+              >
+                {project.projectName}
+              </div>
             </div>
 
+            <div className="flex flex-column bg-orange-50  justify-content-center p-1">
+              <div
+                className="flex pl-2 pt-1 text-xs text-orange-600"
+                style={{
+                  minWidth: "4rem",
+                }}
+              >
+                {project.screenName}
+              </div>
 
+              <div
+                className="flex pl-2 pt-1 text-xs text-orange-600"
+                style={{
+                  minWidth: "4rem",
+                }}
+              >
+                {project.primaryOrg.alias}
+              </div>
+
+              <div
+                className="flex pl-2 pt-1 text-xs"
+                style={{
+                  minWidth: "4rem",
+                }}
+              >
+                <FDate timestamp={project.haStatusDate} color="#CC5500" />
+              </div>
+            </div>
+          </div>
         </div>
-    )
-}
+      </div>
+    );
+  });
 
-export default HAOverviewPortfolioReady
+  return (
+    <div className="flex flex-wrap w-full gap-3 p-1 align-items-center justify-content-center w-full">
+      {projectsComponent}
+    </div>
+  );
+};
+
+export default HAOverviewPortfolioReady;

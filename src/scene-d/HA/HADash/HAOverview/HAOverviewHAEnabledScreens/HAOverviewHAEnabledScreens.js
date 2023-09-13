@@ -18,16 +18,14 @@ const HAOverviewHAEnabledScreens = ({ projects }) => {
       <div className="flex shadow-1 hover:shadow-3 w-full">
         <div className="flex w-6 justify-content-center ">
           <SmilesView
-            smiles="O=S(C1=CN=C(C2=CC=CC=C2)S1)(NC3=NC=C(Cl)C=C3Cl)=O"
+            smiles={project?.latestStructure?.smile}
             width={"120"}
             height={"120"}
           />
         </div>
         <div className="flex flex-column w-7">
-
           <div
             className="flex flex-column  justify-content-center cursor-pointer"
-
             onClick={() => {
               navigate(`/d/ha/${project.id}`);
             }}
@@ -36,7 +34,7 @@ const HAOverviewHAEnabledScreens = ({ projects }) => {
               <div
                 className="flex m-2 text-sm text-orange-800"
                 style={{
-                  minWidth: "7rem"
+                  minWidth: "7rem",
                 }}
               >
                 {project.projectName}
@@ -48,7 +46,6 @@ const HAOverviewHAEnabledScreens = ({ projects }) => {
                 className="flex pl-2 pt-1 text-xs text-orange-600"
                 style={{
                   minWidth: "4rem",
-
                 }}
               >
                 {project.screenName}
@@ -72,8 +69,6 @@ const HAOverviewHAEnabledScreens = ({ projects }) => {
                 <FDate timestamp={project.haStatusDate} color="#CC5500" />
               </div>
             </div>
-
-
           </div>
         </div>
       </div>
