@@ -40,7 +40,7 @@ const HAOverview = () => {
               <FcPlanner />
             </div>
             <div className="flex ">
-              <b>HA ENABLED SCREENS</b>
+              <b>READY FOR HA</b>
             </div>
           </div>
           <div className="flex w-full">

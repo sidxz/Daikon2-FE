@@ -16,58 +16,64 @@ const HAOverviewHAEnabledScreens = ({ projects }) => {
   let projectsComponent = projects.map((project) => {
     return (
       <div className="flex shadow-1 hover:shadow-3 w-full">
-        <div className="flex w-6">
+        <div className="flex w-6 justify-content-center ">
           <SmilesView
             smiles="O=S(C1=CN=C(C2=CC=CC=C2)S1)(NC3=NC=C(Cl)C=C3Cl)=O"
-            width={"150"}
-            height={"150"}
+            width={"120"}
+            height={"120"}
           />
         </div>
-        <div className="flex flex-column w-6 bg-cyan-50 justify-content-center p-1">
+        <div className="flex flex-column w-7">
+
           <div
-            className="flex flex-column justify-content-center cursor-pointer gap-1"
-            style={{
-              fontSize: "large",
-            }}
+            className="flex flex-column  justify-content-center cursor-pointer"
+
             onClick={() => {
               navigate(`/d/ha/${project.id}`);
             }}
           >
-            <div
-              className="flex m-2 justify-content-center"
-              style={{
-                minWidth: "7rem",
-                color: "#0e7994",
-              }}
-            >
-              {project.projectName}
-            </div>
-            <div
-              className="flex pl-3 text-700 text-sm"
-              style={{
-                minWidth: "4rem",
-              }}
-            >
-              {project.screenName}
+            <div className="flex flex-column bg-orange-100  justify-content-center p-1">
+              <div
+                className="flex m-2 text-sm text-orange-800"
+                style={{
+                  minWidth: "7rem"
+                }}
+              >
+                {project.projectName}
+              </div>
             </div>
 
-            <div
-              className="flex pl-3 text-700 text-sm"
-              style={{
-                minWidth: "4rem",
-              }}
-            >
-              {project.primaryOrg.alias}
+            <div className="flex flex-column bg-orange-50  justify-content-center p-1">
+              <div
+                className="flex pl-2 pt-1 text-xs text-orange-600"
+                style={{
+                  minWidth: "4rem",
+
+                }}
+              >
+                {project.screenName}
+              </div>
+
+              <div
+                className="flex pl-2 pt-1 text-xs text-orange-600"
+                style={{
+                  minWidth: "4rem",
+                }}
+              >
+                {project.primaryOrg.alias}
+              </div>
+
+              <div
+                className="flex pl-2 pt-1 text-xs"
+                style={{
+                  minWidth: "4rem",
+                }}
+              >
+                <FDate timestamp={project.haStatusDate} color="#CC5500" />
+              </div>
             </div>
 
-            <div
-              className="flex pl-3 text-700 text-sm"
-              style={{
-                minWidth: "4rem",
-              }}
-            >
-              <FDate timestamp={project.haStatusDate} color={"#616161"} />
-            </div>
+
           </div>
         </div>
       </div>
