@@ -18,7 +18,7 @@ const HAOverviewHAEnabledScreens = ({ projects }) => {
       <div className="flex shadow-1 hover:shadow-3 w-full">
         <div className="flex w-6 justify-content-center ">
           <SmilesView
-            smiles="O=S(C1=CN=C(C2=CC=CC=C2)S1)(NC3=NC=C(Cl)C=C3Cl)=O"
+            smiles={project?.latestStructure?.smile}
             width={"120"}
             height={"120"}
           />

@@ -1,8 +1,7 @@
 import { observer } from "mobx-react-lite";
 import React, { useContext, useEffect } from "react";
-import { FcNeutralTrading, FcPlanner } from "react-icons/fc";
-import { GiVote } from "react-icons/gi";
-import { WiMoonFull } from "react-icons/wi";
+import { FcAlarmClock, FcDisapprove, FcOk, FcWorkflow } from "react-icons/fc";
+
 import { RootStoreContext } from "../../../../app/stores/rootStore";
 import HAOverviewActiveHA from "./HAOverviewActiveHA/HAOverviewActiveHA";
 import HAOverviewHAEnabledScreens from "./HAOverviewHAEnabledScreens/HAOverviewHAEnabledScreens";
@@ -37,7 +36,7 @@ const HAOverview = () => {
             }}
           >
             <div className="flex">
-              <FcPlanner />
+              <FcAlarmClock />
             </div>
             <div className="flex ">
               <b>READY FOR HA</b>
@@ -58,7 +57,7 @@ const HAOverview = () => {
             }}
           >
             <div className="flex">
-              <FcNeutralTrading />
+              <FcWorkflow />
             </div>
             <div className="flex">
               <b>ACTIVE HA</b>
@@ -79,7 +78,7 @@ const HAOverview = () => {
             }}
           >
             <div className="flex text-orange-500">
-              <GiVote />
+              <FcDisapprove />
             </div>
             <div className="flex">
               <b>INACTIVE HA</b>
@@ -100,7 +99,7 @@ const HAOverview = () => {
             }}
           >
             <div className="flex text-green-500">
-              <WiMoonFull />
+              <FcOk />
             </div>
             <div className="flex">
               <b>PORTFOLIO READY</b>
