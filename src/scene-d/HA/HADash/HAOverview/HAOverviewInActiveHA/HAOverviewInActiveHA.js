@@ -75,7 +75,10 @@ const HAOverviewInActiveHA = ({ projects }) => {
                   minWidth: "4rem",
                 }}
               >
-                <Tag className="text-xs" severity="warning" value={project.haStatus}></Tag>
+                <Tag className="text-xs" severity="warning"
+                >
+                  <div className="text-xs text-0">{project.haStatus}</div>
+                </Tag>
 
               </div>
             </div>
