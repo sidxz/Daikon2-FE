@@ -30,9 +30,9 @@ const HAOverviewPortfolioReady = ({ projects }) => {
               navigate(`/d/ha/${project.id}`);
             }}
           >
-            <div className="flex flex-column bg-cyan-100 justify-content-center p-1">
+            <div className="flex flex-column bg-green-100 justify-content-center p-1">
               <div
-                className="flex m-2 text-sm text-cyan-800"
+                className="flex m-2 text-sm text-green-800"
                 style={{
                   minWidth: "7rem",
                 }}
@@ -41,9 +41,9 @@ const HAOverviewPortfolioReady = ({ projects }) => {
               </div>
             </div>
 
-            <div className="flex flex-column bg-cyan-50 justify-content-center p-1">
+            <div className="flex flex-column bg-green-50 justify-content-center p-1">
               <div
-                className="flex pl-2 pt-1 text-xs text-cyan-600"
+                className="flex pl-2 pt-1 text-xs text-green-600"
                 style={{
                   minWidth: "4rem",
                 }}
@@ -52,7 +52,7 @@ const HAOverviewPortfolioReady = ({ projects }) => {
               </div>
 
               <div
-                className="flex pl-2 pt-1 text-xs text-cyan-600"
+                className="flex pl-2 pt-1 text-xs text-green-600"
                 style={{
                   minWidth: "4rem",
                 }}
@@ -66,7 +66,7 @@ const HAOverviewPortfolioReady = ({ projects }) => {
                   minWidth: "4rem",
                 }}
               >
-                <FDate timestamp={project.haStatusDate} color="#00a0b4" />
+                <FDate timestamp={project.haStatusDate} color="#008000" />
               </div>
             </div>
           </div>
