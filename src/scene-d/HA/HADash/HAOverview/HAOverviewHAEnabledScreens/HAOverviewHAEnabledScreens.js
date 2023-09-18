@@ -15,7 +15,6 @@ const HAOverviewHAEnabledScreens = ({ projects }) => {
 
   let projectsComponent = projects.map((project) => {
     return (
-
       <div className="flex flex-column w-full shadow-1 hover:shadow-3">
         <div
           className="flex flex-column  justify-content-center cursor-pointer"
@@ -33,7 +32,6 @@ const HAOverviewHAEnabledScreens = ({ projects }) => {
               {project.projectName}
             </div>
           </div>
-
 
           <div className="flex justify-content-center  border-bottom-1 border-orange-100">
             <div
@@ -66,8 +64,8 @@ const HAOverviewHAEnabledScreens = ({ projects }) => {
           <div className="flex w-full justify-content-center">
             <SmilesView
               smiles={project?.latestStructure?.smile}
-              width={"180"}
-              height={"180"}
+              width={180}
+              height={180}
             />
           </div>
         </div>

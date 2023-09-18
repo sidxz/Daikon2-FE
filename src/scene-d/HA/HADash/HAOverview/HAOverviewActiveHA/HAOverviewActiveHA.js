@@ -64,13 +64,12 @@ const HAOverviewActiveHA = ({ projects }) => {
           <div className="flex w-full justify-content-center">
             <SmilesView
               smiles={project?.latestStructure?.smile}
-              width={"180"}
-              height={"180"}
+              width={180}
+              height={180}
             />
           </div>
         </div>
       </div>
-
     );
   });
 

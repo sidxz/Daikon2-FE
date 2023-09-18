@@ -15,7 +15,6 @@ const HAOverviewInActiveHA = ({ projects }) => {
 
   let projectsComponent = projects.map((project) => {
     return (
-
       <div className="flex flex-column w-full shadow-1 hover:shadow-3">
         <div
           className="flex flex-column  justify-content-center cursor-pointer"
@@ -61,26 +60,24 @@ const HAOverviewInActiveHA = ({ projects }) => {
             >
               <FDate timestamp={project.haStatusDate} color="#d5a326" />
             </div>
-            <div
+            {/* <div
               className="flex justify-content-center w-5 p-2 text-yellow-600 border-right-1 border-yellow-100"
               style={{
                 minWidth: "4rem",
               }}
             >
               {project.haStatus}
-
-            </div>
+            </div> */}
           </div>
           <div className="flex w-full justify-content-center">
             <SmilesView
               smiles={project?.latestStructure?.smile}
-              width={"180"}
-              height={"180"}
+              width={180}
+              height={180}
             />
           </div>
         </div>
       </div>
-
     );
   });
 
@@ -92,5 +89,3 @@ const HAOverviewInActiveHA = ({ projects }) => {
 };
 
 export default HAOverviewInActiveHA;
-
-

@@ -51,8 +51,11 @@ const SmilesView = ({ smiles, compoundId, width = 200, height = 200 }) => {
     smiles === "ND"
   ) {
     return (
-      <div className="flex min-w-max justify-content-center">
-        <div className="flex flex-row justify-content-center gap-2">
+      <div
+        className="flex justify-content-center"
+        style={{ width: width, height: height }}
+      >
+        <div className="flex flex-row align-items-center justify-content-center gap-2">
           <div className="flex">
             <FcPrivacy />
           </div>
