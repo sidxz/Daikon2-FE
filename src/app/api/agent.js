@@ -360,21 +360,25 @@ const Projects = {
     requests.post(`/elevated/project/${id}/createP1`, p1Info),
   list: () => requests.get(`/project`),
   details: (id) => requests.get(`/project/${id}`),
-  getcompoundevolution: (projectId) =>
-    requests.get(`/project/${projectId}/compoundevolution`),
-  addcompoundevolution: (projectId, newCompoundEvolution) =>
+  getCompoundEvolution: (projectId) =>
+    requests.get(`/project/${projectId}/compound-evolution`),
+  addCompoundEvolution: (projectId, newCompoundEvolution) =>
     requests.post(
-      `/project/${projectId}/compoundevolution`,
+      `/project/${projectId}/compound-evolution`,
       newCompoundEvolution
     ),
-  editCompoundevolution: (
+  editCompoundEvolution: (
     projectId,
-    compoundEvoluitionId,
+    compoundEvolutionId,
     editedCompoundEvolution
   ) =>
     requests.post(
-      `/project/${projectId}/compoundevolution/${compoundEvoluitionId}`,
+      `/project/${projectId}/compound-evolution/${compoundEvolutionId}`,
       editedCompoundEvolution
+    ),
+  deleteCompoundEvolution: (projectId, compoundEvolutionId) =>
+    requests.del(
+      `/elevated/project/${projectId}/compound-evolution/${compoundEvolutionId}`
     ),
   setPriorityProbability: (Id, ppDTO) => requests.post(`/project/${Id}`, ppDTO),
   createUnlinked: (newProject) =>

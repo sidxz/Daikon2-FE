@@ -10,12 +10,13 @@ import { Timeline } from "primereact/timeline";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { RootStoreContext } from "../../stores/rootStore";
-import FailedLoading from "../FailedLoading/FailedLoading";
 import FDate from "../FDate/FDate";
+import FailedLoading from "../FailedLoading/FailedLoading";
 import PleaseWait from "../PleaseWait/PleaseWait";
 import SmilesViewWithDetails from "../SmilesViewWithDetails/SmilesViewWithDetails";
 import StageTag from "../StageTag/StageTag";
 import CompoundEvolutionAddNew from "./CompoundEvolutionAddNew/CompoundEvolutionAddNew";
+import CompoundEvolutionDelete from "./CompoundEvolutionDelete/CompoundEvolutionDelete";
 import CompoundEvolutionEdit from "./CompoundEvolutionEdit/CompoundEvolutionEdit";
 import "./CompoundEvolutionTimeline.css";
 const CompoundEvolutionTimeline = ({
@@ -23,26 +24,28 @@ const CompoundEvolutionTimeline = ({
   stageFilter,
   disableAdd,
   enableEdit = false,
+  enableDelete = false,
 }) => {
-  const [displayAddStructureForm, setdisplayAddStructureForm] = useState(false);
-  const rootStore = useContext(RootStoreContext);
   const cmEvolution = useRef(null);
+  const [displayAddStructureForm, setDisplayAddStructureForm] = useState(false);
+  const [selectedCEinCM, setSelectedCEinCM] = useState();
+  const [displayEditContainer, setDisplayEditContainer] = useState(false);
+  const [displayDeleteContainer, setDisplayDeleteContainer] = useState(false);
 
+  const rootStore = useContext(RootStoreContext);
   const {
-    loadingCompoundEvolution,
+    isLoadingCompoundEvolution,
     fetchCompoundEvolution,
     selectedCompoundEvolution,
-    loadingProject,
-  } = rootStore.projectStore;
+  } = rootStore.compoundEvolutionStore;
+
+  const { loadingProject } = rootStore.projectStore;
 
   useEffect(() => {
     fetchCompoundEvolution(project.id);
   }, [fetchCompoundEvolution, project]);
 
-  const [selectedCEinCM, setSelectedCEinCM] = useState();
-  const [displayEditContainer, setDisplayEditContainer] = useState(false);
-
-  if (loadingProject || loadingCompoundEvolution) {
+  if (loadingProject || isLoadingCompoundEvolution) {
     return <PleaseWait />;
   }
 
@@ -52,9 +55,9 @@ const CompoundEvolutionTimeline = ({
     label: "Copy Compound GUID",
     icon: "icon icon-common icon-orcid",
     command: (e) => {
-      let cguid = getCompoundEvolutionEntry(selectedCEinCM).id;
-      navigator.clipboard.writeText(cguid);
-      toast.success("Copied " + cguid + " to clipboard");
+      let cGUID = getCompoundEvolutionEntry(selectedCEinCM).id;
+      navigator.clipboard.writeText(cGUID);
+      toast.success("Copied " + cGUID + " to clipboard");
     },
   });
 
@@ -68,6 +71,16 @@ const CompoundEvolutionTimeline = ({
     });
   }
 
+  if (enableDelete) {
+    cmEvolutionItems.push({
+      label: "Delete",
+      icon: "pi pi-trash",
+      command: (e) => {
+        setDisplayDeleteContainer(true);
+      },
+    });
+  }
+
   let onEvolutionContextMenuShow = (e, id) => {
     cmEvolution.current.show(e);
     setSelectedCEinCM(id);
@@ -76,7 +89,7 @@ const CompoundEvolutionTimeline = ({
   let getCompoundEvolutionEntry = (id) =>
     selectedCompoundEvolution.filter((e) => e.id === id)[0];
 
-  if (!loadingProject && !loadingCompoundEvolution) {
+  if (!loadingProject && !isLoadingCompoundEvolution) {
     let evolutionData = selectedCompoundEvolution;
     if (stageFilter && selectedCompoundEvolution) {
       evolutionData = [
@@ -151,7 +164,7 @@ const CompoundEvolutionTimeline = ({
                 label="Add a compound"
                 icon="pi pi-plus"
                 className="p-button-outlined"
-                onClick={() => setdisplayAddStructureForm(true)}
+                onClick={() => setDisplayAddStructureForm(true)}
                 disabled={disableAdd}
               ></Button>
             </Divider>
@@ -171,7 +184,7 @@ const CompoundEvolutionTimeline = ({
           visible={displayAddStructureForm}
           position="right"
           style={{ width: "30em", overflowX: "auto" }}
-          onHide={() => setdisplayAddStructureForm(false)}
+          onHide={() => setDisplayAddStructureForm(false)}
         >
           <h3>{project.projectName}| Add a compound</h3>
 
@@ -183,7 +196,7 @@ const CompoundEvolutionTimeline = ({
           <br />
           <br />
           <CompoundEvolutionAddNew
-            closeSidebar={() => setdisplayAddStructureForm(false)}
+            closeSidebar={() => setDisplayAddStructureForm(false)}
           />
         </Sidebar>
 
@@ -198,6 +211,21 @@ const CompoundEvolutionTimeline = ({
           <CompoundEvolutionEdit
             evolution={() => getCompoundEvolutionEntry(selectedCEinCM)}
             onHide={() => setDisplayEditContainer(false)}
+          />
+        </Dialog>
+
+        <Dialog
+          className="bg-red-50"
+          header={"Delete Compound Evolution Entry"}
+          visible={displayDeleteContainer}
+          closable={true}
+          draggable={true}
+          style={{ width: "50vw" }}
+          onHide={() => setDisplayDeleteContainer(false)}
+        >
+          <CompoundEvolutionDelete
+            evolution={() => getCompoundEvolutionEntry(selectedCEinCM)}
+            onHide={() => setDisplayDeleteContainer(false)}
           />
         </Dialog>
       </React.Fragment>
