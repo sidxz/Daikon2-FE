@@ -2,12 +2,12 @@ import { observer } from "mobx-react-lite";
 import { ConfirmDialog } from "primereact/confirmdialog";
 import { Dropdown } from "primereact/dropdown";
 
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FcAlarmClock, FcDisapprove, FcOk } from "react-icons/fc";
 
 import { FaExclamationTriangle } from "react-icons/fa";
 import { FcHighPriority, FcWorkflow } from "react-icons/fc";
-import { RootStoreContext } from "../../../../../app/stores/rootStore";
+import { RootStoreContext } from "../../stores/rootStore";
 /**
  * HAStatusDropDown component allows users to update the status of a HA Project.
  * The status of the project can be updated to a predefined set of options,
@@ -17,11 +17,15 @@ import { RootStoreContext } from "../../../../../app/stores/rootStore";
  * @param {string} props.status - The current status of the screen.
  * @param {boolean} props.readOnly - Whether the status can be updated or not.
  */
-const HAStatusDropDown = ({ id, status, readOnly = false }) => {
+const HAStatus = ({ id, status, readOnly = false }) => {
   // Local state for managing the visibility of the confirm dialog
   // and the selected status
   const [confirmDialogVisible, setConfirmDialogVisible] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState(status);
+
+  useEffect(() => {
+    setSelectedStatus(status);
+  }, [status]);
 
   // Accessing the necessary properties from the screenTStore
   const rootStore = useContext(RootStoreContext);
@@ -78,13 +82,11 @@ const HAStatusDropDown = ({ id, status, readOnly = false }) => {
   // Temporarily handle new status as NA
   if (readOnly) {
     return (
-      <div className="flex align-items-center gap-2 bg-white p-2 border-1 border-100 m-0">
+      <div className="flex align-items-center gap-2 bg-white p-2 border-0 border-100 m-0">
         <div className="flex flex-column">
-          {statusOptions.find((option) => option.name === status)?.icon}
+          {statusOptions.find((option) => option.value === status)?.icon}
         </div>
-        <div className="flex flex-column">
-          {status === "New" ? "NA" : status}
-        </div>
+        <div className="flex flex-column">{status}</div>
       </div>
     );
   }
@@ -125,4 +127,4 @@ const HAStatusDropDown = ({ id, status, readOnly = false }) => {
   );
 };
 
-export default observer(HAStatusDropDown);
+export default observer(HAStatus);

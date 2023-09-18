@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import { Dropdown } from "primereact/dropdown";
 
 import { ConfirmDialog } from "primereact/confirmdialog";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FcDataSheet, FcNeutralTrading, FcOk, FcPlanner } from "react-icons/fc";
 import { GiVote } from "react-icons/gi";
 import { RootStoreContext } from "../../stores/rootStore";
@@ -22,6 +22,10 @@ const ScreenStatus = ({ id, status, readOnly = false }) => {
   // and the selected status
   const [confirmDialogVisible, setConfirmDialogVisible] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState(status);
+
+  useEffect(() => {
+    setSelectedStatus(status);
+  }, [status]);
 
   // Accessing the necessary properties from the screenTStore
   const rootStore = useContext(RootStoreContext);

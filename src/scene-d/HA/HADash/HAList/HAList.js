@@ -9,6 +9,7 @@ import Loading from "../../../../app/layout/Loading/Loading";
 import { RootStoreContext } from "../../../../app/stores/rootStore";
 import "./HADashDataTable.css";
 // import "./PortfolioDashDataTable.css";
+import HAStatus from "../../../../app/common/HAStatus/HAStatus";
 import TagGeneral from "../../../../app/common/TagGeneral/TagGeneral";
 
 const HAList = () => {
@@ -103,6 +104,12 @@ const HAList = () => {
 
   const StatusBodyTemplate = (rowData) => {
     return <TagGeneral tag={rowData.status} />;
+  };
+
+  const HAStatusBodyTemplate = (rowData) => {
+    return (
+      <HAStatus id={rowData.id} status={rowData.haStatus} readOnly={true} />
+    );
   };
 
   const DateBodyTemplate = (rowData) => {
@@ -216,7 +223,7 @@ const HAList = () => {
         <Column
           field="haStatus"
           header="HA Status"
-          //body={StatusBodyTemplate}
+          body={HAStatusBodyTemplate}
           //filter
           //filterElement={statusFilter}
 

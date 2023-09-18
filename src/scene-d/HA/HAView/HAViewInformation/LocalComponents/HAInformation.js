@@ -5,8 +5,8 @@ import { Dialog } from "primereact/dialog";
 import React, { useRef, useState } from "react";
 import EmbeddedHelp from "../../../../../app/common/EmbeddedHelp/EmbeddedHelp";
 import FDate from "../../../../../app/common/FDate/FDate";
+import HAStatus from "../../../../../app/common/HAStatus/HAStatus";
 import PredictedDateEditor from "../../../../../app/common/PredictedDateEditor/PredictedDateEditor";
-import HAStatusDropDown from "./HAStatusDropDown";
 
 const HAInformation = ({ project }) => {
   console.log("HAInformation.js: project: ", project);
@@ -31,7 +31,7 @@ const HAInformation = ({ project }) => {
   let data = [
     {
       name: "HA Status",
-      value: <HAStatusDropDown id={project.id} status={project?.haStatus} />,
+      value: <HAStatus id={project.id} status={project?.haStatus} />,
     },
     {
       name: "HA Start Date",
