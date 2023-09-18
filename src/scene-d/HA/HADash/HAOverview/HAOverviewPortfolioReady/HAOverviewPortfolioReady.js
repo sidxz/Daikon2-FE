@@ -15,63 +15,66 @@ const HAOverviewPortfolioReady = ({ projects }) => {
 
   let projectsComponent = projects.map((project) => {
     return (
-      <div className="flex shadow-1 hover:shadow-3 w-full">
-        <div className="flex w-6 justify-content-center ">
-          <SmilesView
-            smiles={project?.latestStructure?.smile}
-            width={"120"}
-            height={"120"}
-          />
-        </div>
-        <div className="flex flex-column w-7">
-          <div
-            className="flex flex-column justify-content-center cursor-pointer"
-            onClick={() => {
-              navigate(`/d/ha/${project.id}`);
-            }}
-          >
-            <div className="flex flex-column bg-green-100 justify-content-center p-1">
-              <div
-                className="flex m-2 text-sm text-green-800"
-                style={{
-                  minWidth: "7rem",
-                }}
-              >
-                {project.projectName}
-              </div>
+
+      <div className="flex flex-column w-full shadow-1 hover:shadow-3">
+        <div
+          className="flex flex-column  justify-content-center cursor-pointer"
+          onClick={() => {
+            navigate(`/d/ha/${project.id}`);
+          }}
+        >
+          <div className="flex flex-column bg-green-100  justify-content-center">
+            <div
+              className="flex p-2 text-lg text-green-800 justify-content-center"
+              style={{
+                minWidth: "7rem",
+              }}
+            >
+              {project.projectName}
+            </div>
+          </div>
+
+          <div className="flex justify-content-center  border-bottom-1 border-green-100">
+            <div
+              className="flex justify-content-center w-4 p-2 text-green-600 border-right-1 border-green-100"
+              style={{
+                minWidth: "4rem",
+              }}
+            >
+              {project.screenName}
             </div>
 
-            <div className="flex flex-column bg-green-50 justify-content-center p-1">
-              <div
-                className="flex pl-2 pt-1 text-xs text-green-600"
-                style={{
-                  minWidth: "4rem",
-                }}
-              >
-                {project.screenName}
-              </div>
-
-              <div
-                className="flex pl-2 pt-1 text-xs text-green-600"
-                style={{
-                  minWidth: "4rem",
-                }}
-              >
-                {project.primaryOrg.alias}
-              </div>
-
-              <div
-                className="flex pl-2 pt-1 text-xs"
-                style={{
-                  minWidth: "4rem",
-                }}
-              >
-                <FDate timestamp={project.haStatusDate} color="#008000" />
-              </div>
+            <div
+              className="flex justify-content-center w-4 p-2 text-green-600 border-right-1 border-green-100"
+              style={{
+                minWidth: "4rem",
+              }}
+            >
+              {project.primaryOrg.alias}
             </div>
+
+            <div
+              className="flex justify-content-center w-4 p-2 text-green-600 border-right-1 border-green-100"
+              style={{
+                minWidth: "4rem",
+              }}
+            >
+              <FDate timestamp={project.haStatusDate} color="#008000" />
+            </div>
+
+          </div>
+          <div className="flex w-full justify-content-center">
+            <SmilesView
+              smiles={project?.latestStructure?.smile}
+              width={"180"}
+              height={"180"}
+            />
           </div>
         </div>
       </div>
+
+
+
     );
   });
 
