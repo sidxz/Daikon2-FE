@@ -11,6 +11,7 @@ export default class TargetStoreAdmin {
 
   isMergingTargets = false;
   isRenamingTargets = false;
+  isUpdatingGeneAssociation = false;
 
   constructor(rootStore) {
     this.rootStore = rootStore;
@@ -29,6 +30,9 @@ export default class TargetStoreAdmin {
 
       renameTarget: action,
       isRenamingTargets: observable,
+
+      updateGeneAssociation: action,
+      isUpdatingGeneAssociation: observable,
     });
   }
   /* Fetch specific TargetAdmin with id from API */
@@ -175,6 +179,30 @@ export default class TargetStoreAdmin {
     } finally {
       runInAction(() => {
         this.isRenamingTargets = false;
+      });
+    }
+    return res;
+  };
+
+  updateGeneAssociation = async (id, newGenes) => {
+    this.isUpdatingGeneAssociation = true;
+
+    let res = null;
+    // send to server
+    try {
+      res = await agent.TargetAdmin.updateGeneAssociation(id, newGenes);
+
+      runInAction(() => {
+        toast.success("Successfully updated gene association");
+        this.isUpdatingGeneAssociation = false;
+        this.rootStore.targetStore.fetchTargets(true);
+        this.rootStore.targetStore.fetchTarget(id, true);
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      runInAction(() => {
+        this.isUpdatingGeneAssociation = false;
       });
     }
     return res;

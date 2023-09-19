@@ -292,6 +292,8 @@ const TargetAdmin = {
     requests.post(`/elevated/target/${baseTargetId}/merge`, targetToMergeDto),
   rename: (id, renameTargetDto) =>
     requests.post(`/elevated/target/${id}/rename`, renameTargetDto),
+  updateGeneAssociation: (id, newGenes) =>
+    requests.post(`/elevated/target/${id}/update-gene-association`, newGenes),
 };
 
 const Screen = {
