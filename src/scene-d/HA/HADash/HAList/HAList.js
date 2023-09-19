@@ -1,6 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
+import { MultiSelect } from "primereact/multiselect";
 import { TriStateCheckbox } from "primereact/tristatecheckbox";
 import React, { useContext, useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
@@ -63,6 +64,27 @@ const HAList = () => {
   };
 
   /* END STATUS FILTER */
+
+  /* HA STATUS FILTER */
+
+  const haStatuses = ["HA Ready", "HA Active", "HA Incorrect m/z", "HA Known Liability", "HA Complete Success", "HA Complete Failed"];
+
+
+
+  // HA Status filter component for DataTable
+  const haStatusFilter = (options) => (
+
+    <MultiSelect
+      value={options.value}
+      options={haStatuses}
+      onChange={(e) => options.filterApplyCallback(e.value)}
+      placeholder="Select HA Status"
+      className="p-column-filter"
+    />
+  );
+
+  /* END HA STATUS FILTER */
+
 
   const TargetBodyTemplate = (rowData) => {
     return (
@@ -224,10 +246,12 @@ const HAList = () => {
           field="haStatus"
           header="HA Status"
           body={HAStatusBodyTemplate}
-          //filter
-          //filterElement={statusFilter}
-
+          filter
+          filterField="haStatus"
+          filterElement={haStatusFilter}
           showFilterMenu={false}
+          filterMatchMode="in"
+
         />
 
         <Column
