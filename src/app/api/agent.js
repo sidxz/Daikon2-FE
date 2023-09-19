@@ -313,6 +313,8 @@ const Screen = {
       `/screenSequence/${editedScreenRow.screenId}/edit-sequence/${screenRowId}`,
       editedScreenRow
     ),
+  deleteRow: (screenId, screenRowId) =>
+    requests.del(`/elevated/screen/${screenId}/delete-sequence/${screenRowId}`),
 };
 
 const Hit = {

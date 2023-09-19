@@ -19,10 +19,12 @@ import Loading from "../../../../../../app/layout/Loading/Loading";
 import { RootStoreContext } from "../../../../../../app/stores/rootStore";
 import ScreenSequenceAddForm from "./ScreenSequenceAddForm/ScreenSequenceAddForm";
 
+import { Dialog } from "primereact/dialog";
 import { FileUpload } from "primereact/fileupload";
 import { SiMicrosoftexcel } from "react-icons/si";
 import { TbBookDownload } from "react-icons/tb";
 import DataPreviewDialog from "../../../../../../app/common/DataPreviewDialog/DataPreviewDialog";
+import DeleteConfirmation from "../../../../../../app/common/DeleteConfirmation/DeleteConfirmation";
 import { GenerateTemplate } from "../../../../../../app/common/Functions/Excel/GenerateTemplate";
 import ImportFromExcel from "../../../../../../app/common/Functions/Excel/ImportFromExcel";
 
@@ -31,6 +33,8 @@ const ScreenSequence = ({ screenId }) => {
   const [selectedProtocol, setSelectedProtocol] = useState("");
   const [dataPreview, setDataPreview] = useState(null);
   const [showDataPreviewDialog, setShowDataPreviewDialog] = useState(false);
+  const [displayDeleteContainer, setDisplayDeleteContainer] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
   const op = useRef(null);
   const dt = useRef(null);
 
@@ -47,7 +51,11 @@ const ScreenSequence = ({ screenId }) => {
     isEditingScreenSequence,
     isBatchInsertingTargetBasedScreenSequence,
     batchInsertTargetBasedScreenSequence,
+    deleteScreenRow,
+    isDeletingScreenRow,
   } = rootStore.screenTStore;
+
+  const { user } = rootStore.userStore;
 
   const [filteredResearchers, setFilteredResearchers] = useState([]);
 
@@ -62,6 +70,8 @@ const ScreenSequence = ({ screenId }) => {
   if (isLoadingTargetBasedScreen || selectedTargetBasedScreen === null) {
     return <PleaseWait />;
   }
+
+  let isDeletingAllowed = user?.roles.includes("admin");
 
   const exportCSV = (selectionOnly) => {
     dt.current.exportCSV({ selectionOnly });
@@ -284,9 +294,32 @@ const ScreenSequence = ({ screenId }) => {
       setFilteredResearchers(filteredResults);
     };
 
+    const deleteBodyTemplate = (rowData) => {
+      return (
+        <Button
+          type="button"
+          icon="pi pi-trash"
+          severity="danger"
+          text
+          onClick={() => {
+            console.log(rowData.id);
+            setDeleteId(rowData.id);
+            setDisplayDeleteContainer(true);
+          }}
+        />
+      );
+    };
+
     let saveEdits = (e) => {
       let { newData } = e;
       editScreenSequence(newData);
+    };
+
+    let deleteRow = () => {
+      deleteScreenRow(deleteId).then(() => {
+        setDisplayDeleteContainer(false);
+        setDeleteId(null);
+      });
     };
 
     return (
@@ -405,9 +438,16 @@ const ScreenSequence = ({ screenId }) => {
 
               <Column
                 rowEditor
-                headerStyle={{ width: "10%", minWidth: "8rem" }}
+                headerStyle={{ minWidth: "4rem" }}
                 bodyStyle={{ textAlign: "center" }}
               />
+              {isDeletingAllowed && (
+                <Column
+                  body={deleteBodyTemplate}
+                  exportable={false}
+                  headerStyle={{ minWidth: "4rem" }}
+                />
+              )}
             </DataTable>
           </div>
         </div>
@@ -424,6 +464,18 @@ const ScreenSequence = ({ screenId }) => {
           onSave={batchInsertTargetBasedScreenSequence}
           isSaving={isBatchInsertingTargetBasedScreenSequence}
         />
+
+        <Dialog
+          className="bg-red-50"
+          header={"Delete Library Screen Entry"}
+          visible={displayDeleteContainer}
+          closable={true}
+          draggable={true}
+          style={{ width: "50vw" }}
+          onHide={() => setDisplayDeleteContainer(false)}
+        >
+          <DeleteConfirmation callBack={deleteRow} />
+        </Dialog>
       </React.Fragment>
     );
   }
