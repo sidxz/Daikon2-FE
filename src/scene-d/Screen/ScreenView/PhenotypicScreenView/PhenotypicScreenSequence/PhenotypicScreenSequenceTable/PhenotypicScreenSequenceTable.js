@@ -3,6 +3,7 @@ import { Button } from "primereact/button";
 import { Chip } from "primereact/chip";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
+import { Dialog } from "primereact/dialog";
 import { FileUpload } from "primereact/fileupload";
 import { OverlayPanel } from "primereact/overlaypanel";
 import { Sidebar } from "primereact/sidebar";
@@ -11,6 +12,7 @@ import { ImDownload } from "react-icons/im";
 import { SiMicrosoftexcel } from "react-icons/si";
 import { TbBookDownload } from "react-icons/tb";
 import DataPreviewDialog from "../../../../../../app/common/DataPreviewDialog/DataPreviewDialog";
+import DeleteConfirmation from "../../../../../../app/common/DeleteConfirmation/DeleteConfirmation";
 import FDate from "../../../../../../app/common/FDate/FDate";
 import ExportToExcel from "../../../../../../app/common/Functions/Excel/ExportToExcel";
 import { GenerateTemplate } from "../../../../../../app/common/Functions/Excel/GenerateTemplate";
@@ -41,6 +43,8 @@ const PhenotypicScreenSequenceTable = ({ screenId }) => {
   const fileUpload = useRef(null);
   const [dataPreview, setDataPreview] = useState(null);
   const [showDataPreviewDialog, setShowDataPreviewDialog] = useState(false);
+  const [displayDeleteContainer, setDisplayDeleteContainer] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
 
   // Accessing the necessary properties from the rootStore
   const rootStore = useContext(RootStoreContext);
@@ -54,7 +58,11 @@ const PhenotypicScreenSequenceTable = ({ screenId }) => {
     isEditingPhenotypicScreenSequence,
     batchInsertPhenotypicScreenSequence,
     isBatchInsertingPhenotypicScreenSequence,
+    deleteScreenRow,
+    isDeletingScreenRow,
   } = rootStore.screenPStore;
+
+  const { user } = rootStore.userStore;
 
   const [filteredResearchers, setFilteredResearchers] = useState([]);
   const [showExcelImporter, setShowExcelImporter] = useState(false);
@@ -73,9 +81,7 @@ const PhenotypicScreenSequenceTable = ({ screenId }) => {
   }
 
   if (!isLoadingPhenotypicScreen && selectedPhenotypicScreen) {
-    const exportCSV = (selectionOnly) => {
-      dt.current.exportCSV({ selectionOnly });
-    };
+    let isDeletingAllowed = user?.roles.includes("admin");
 
     // Map Data fields to Column Name
     const fieldToColumnName = {
@@ -252,10 +258,33 @@ const PhenotypicScreenSequenceTable = ({ screenId }) => {
       );
     };
 
+    const deleteBodyTemplate = (rowData) => {
+      return (
+        <Button
+          type="button"
+          icon="pi pi-trash"
+          severity="danger"
+          text
+          onClick={() => {
+            console.log(rowData.id);
+            setDeleteId(rowData.id);
+            setDisplayDeleteContainer(true);
+          }}
+        />
+      );
+    };
+
     // Function to save edits to the database
     let saveEdits = (e) => {
       let { newData } = e;
       editPhenotypicScreenSequence(newData);
+    };
+
+    let deleteRow = () => {
+      deleteScreenRow(deleteId).then(() => {
+        setDisplayDeleteContainer(false);
+        setDeleteId(null);
+      });
     };
 
     return (
@@ -324,6 +353,7 @@ const PhenotypicScreenSequenceTable = ({ screenId }) => {
             <Column
               field="librarySize"
               header={fieldToColumnName["librarySize"]}
+              headerStyle={{ maxWidth: "4rem", textWrap: "wrap" }}
               editor={(options) => TextEditor(options)}
             />
             <Column
@@ -335,22 +365,26 @@ const PhenotypicScreenSequenceTable = ({ screenId }) => {
             <Column
               field="noOfCompoundsScreened"
               header={fieldToColumnName["noOfCompoundsScreened"]}
+              headerStyle={{ maxWidth: "7rem", textWrap: "wrap" }}
               editor={(options) => TextEditor(options)}
             />
             <Column
               field="unverifiedHitCount"
               header={fieldToColumnName["unverifiedHitCount"]}
+              headerStyle={{ maxWidth: "4rem", textWrap: "wrap" }}
               editor={(options) => TextEditor(options)}
             />
 
             <Column
               field="confirmedHitCount"
               header={fieldToColumnName["confirmedHitCount"]}
+              headerStyle={{ maxWidth: "6rem", textWrap: "wrap" }}
               editor={(options) => TextEditor(options)}
             />
             <Column
               field="hitRate"
               header={fieldToColumnName["hitRate"]}
+              headerStyle={{ maxWidth: "4rem", textWrap: "wrap" }}
               editor={(options) => TextEditor(options)}
             />
             <Column
@@ -382,9 +416,16 @@ const PhenotypicScreenSequenceTable = ({ screenId }) => {
 
             <Column
               rowEditor
-              headerStyle={{ width: "10%", minWidth: "8rem" }}
+              headerStyle={{ width: "10%", minWidth: "4rem" }}
               bodyStyle={{ textAlign: "center" }}
             />
+            {isDeletingAllowed && (
+              <Column
+                body={deleteBodyTemplate}
+                exportable={false}
+                headerStyle={{ minWidth: "4rem" }}
+              />
+            )}
           </DataTable>
         </div>
 
@@ -401,6 +442,18 @@ const PhenotypicScreenSequenceTable = ({ screenId }) => {
           onSave={batchInsertPhenotypicScreenSequence}
           isSaving={isBatchInsertingPhenotypicScreenSequence}
         />
+        {/* Delete confirmation dialog */}
+        <Dialog
+          className="bg-red-50"
+          header={"Delete Library Screen Entry"}
+          visible={displayDeleteContainer}
+          closable={true}
+          draggable={true}
+          style={{ width: "50vw" }}
+          onHide={() => setDisplayDeleteContainer(false)}
+        >
+          <DeleteConfirmation callBack={deleteRow} />
+        </Dialog>
       </React.Fragment>
     );
   }

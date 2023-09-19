@@ -52,6 +52,7 @@ export default class ScreenPStore {
   isBatchInsertingPhenotypicScreenSequence = false;
   isUpdatingPhenotypicScreen = false;
   isMergingPhenotypicScreen = false;
+  isDeletingScreenRow = false;
 
   constructor(rootStore) {
     this.rootStore = rootStore;
@@ -79,6 +80,8 @@ export default class ScreenPStore {
       isUpdatingPhenotypicScreen: observable,
       isMergingPhenotypicScreen: observable,
       mergePhenotypicScreen: action,
+      isDeletingScreenRow: observable,
+      deleteScreenRow: action,
     });
   }
 
@@ -368,6 +371,35 @@ export default class ScreenPStore {
     } finally {
       runInAction(() => {
         this.isUpdatingPhenotypicScreenStatus = false;
+      });
+    }
+    return res;
+  };
+
+  // delete screen row
+  deleteScreenRow = async (id) => {
+    this.isDeletingScreenRow = true;
+    let res = null;
+    // send to server
+    try {
+      res = await agent.Screen.deleteRowPhenotypic(
+        this.selectedPhenotypicScreen.id,
+        id
+      );
+      runInAction(() => {
+        toast.success("Successfully deleted library screen row.");
+        this.isDeletingScreenRow = false;
+        this.fetchPhenotypicScreen(
+          this.selectedPhenotypicScreen.id,
+          true,
+          true
+        );
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      runInAction(() => {
+        this.isDeletingScreenRow = false;
       });
     }
     return res;

@@ -315,6 +315,10 @@ const Screen = {
     ),
   deleteRow: (screenId, screenRowId) =>
     requests.del(`/elevated/screen/${screenId}/delete-sequence/${screenRowId}`),
+  deleteRowPhenotypic: (screenId, screenRowId) =>
+    requests.del(
+      `/elevated/screenPhenotypic/${screenId}/delete-sequence/${screenRowId}`
+    ),
 };
 
 const Hit = {

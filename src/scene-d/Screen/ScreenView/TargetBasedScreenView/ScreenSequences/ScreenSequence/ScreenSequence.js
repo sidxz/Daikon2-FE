@@ -451,6 +451,7 @@ const ScreenSequence = ({ screenId }) => {
             </DataTable>
           </div>
         </div>
+
         {/* Data preview dialog, used when a excel file is uploaded */}
         <DataPreviewDialog
           headerMap={fieldToColumnName}
@@ -465,6 +466,7 @@ const ScreenSequence = ({ screenId }) => {
           isSaving={isBatchInsertingTargetBasedScreenSequence}
         />
 
+        {/* Delete confirmation dialog */}
         <Dialog
           className="bg-red-50"
           header={"Delete Library Screen Entry"}
