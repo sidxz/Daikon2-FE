@@ -403,6 +403,8 @@ const Projects = {
     requests.post(`/project/${id}/edit-predicted-dates`, projectDTO),
   updateSubState: (id, projectStateDTO) =>
     requests.post(`/project/${id}/update-sub-state`, projectStateDTO),
+  rename: (id, updatedProjectName) =>
+    requests.post(`/elevated/project/${id}/rename`, updatedProjectName),
 };
 
 const Vote = {

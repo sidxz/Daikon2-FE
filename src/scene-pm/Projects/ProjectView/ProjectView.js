@@ -11,6 +11,7 @@ import {
 import FailedLoading from "../../../app/common/FailedLoading/FailedLoading";
 import Loading from "../../../app/layout/Loading/Loading";
 import { RootStoreContext } from "../../../app/stores/rootStore";
+import ProjectRename from "../ProjectRename/ProjectRename";
 import ProjectSettings from "./ProjectSettings/ProjectSettings";
 
 const ProjectView = () => {
@@ -56,6 +57,13 @@ const ProjectView = () => {
             },
           },
           {
+            label: "Rename Project",
+            icon: "icon icon-common icon-code-branch",
+            command: () => {
+              navigate("rename/");
+            },
+          },
+          {
             label: "Create Clone",
             icon: "icon icon-common icon-code-branch",
             command: () => {
@@ -76,11 +84,19 @@ const ProjectView = () => {
           <Routes>
             <Route index element={<Navigate replace to="settings/" />} />
             <Route
+              path="rename/"
+              element={
+                <ProjectRename id={params.id} project={selectedProject} />
+              }
+            />
+            <Route
               path="settings/"
               element={
                 <ProjectSettings id={params.id} project={selectedProject} />
               }
             />
+
+
 
             {/* <Route path="discussion" element={<PortfolioDiscussion
             project={selectedProject}
