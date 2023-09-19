@@ -15,10 +15,14 @@ import Loading from "../../../app/layout/Loading/Loading";
 import NotFound from "../../../app/layout/NotFound/NotFound";
 import { RootStoreContext } from "../../../app/stores/rootStore";
 import TargetCompass from "./TargetCompass/TargetCompass";
+import TargetDelete from "./TargetDelete/TargetDelete";
 import TargetDiscussion from "./TargetDiscussion/TargetDiscussion";
 import TargetEdit from "./TargetEdit/TargetEdit";
+import TargetGeneAssociation from "./TargetGeneAssociation/TargetGeneAssociation";
+import TargetMerge from "./TargetMerge/TargetMerge";
 import TargetPromotionForm from "./TargetPromotionForm/TargetPromotionForm";
 import TargetPromotionFormEdit from "./TargetPromotionForm/TargetPromotionFormEdit/TargetPromotionFormEdit";
+import TargetRename from "./TargetRename/TargetRename";
 import TargetScorecard from "./TargetScorecard/TargetScorecard";
 import TargetScreenPromotionQuestionaire from "./TargetScreenPromotionQuestionaire/TargetScreenPromotionQuestionaire";
 
@@ -115,6 +119,34 @@ const TargetView = () => {
             navigate("edit/");
           },
         },
+        {
+          label: "Rename",
+          icon: "icon icon-common icon-edit",
+          command: () => {
+            navigate("rename/");
+          },
+        },
+        {
+          label: "Merge",
+          icon: "icon icon-common icon-compress",
+          command: () => {
+            navigate("merge/");
+          },
+        },
+        {
+          label: "Update Gene Associations",
+          icon: "icon icon-conceptual icon-proteins",
+          command: () => {
+            navigate("update-gene-association/");
+          },
+        },
+        {
+          label: "Delete",
+          icon: "icon icon-common icon-trash",
+          command: () => {
+            navigate("delete/");
+          },
+        },
       ],
     };
     items.push(adminActions);
@@ -196,6 +228,13 @@ const TargetView = () => {
                 element={<TargetDiscussion selectedTarget={target} />}
               />
               <Route path="edit/" element={<TargetEdit id={params.id} />} />
+              <Route path="rename/" element={<TargetRename id={params.id} />} />
+              <Route path="merge/" element={<TargetMerge id={params.id} />} />
+              <Route
+                path="update-gene-association/"
+                element={<TargetGeneAssociation id={params.id} />}
+              />
+              <Route path="delete/" element={<TargetDelete id={params.id} />} />
             </Routes>
           </div>
         </div>
