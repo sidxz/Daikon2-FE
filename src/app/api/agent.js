@@ -290,6 +290,8 @@ const TargetAdmin = {
     requests.post(`/elevated/target/${updatedTarget.id}`, updatedTarget),
   merge: (baseTargetId, targetToMergeDto) =>
     requests.post(`/elevated/target/${baseTargetId}/merge`, targetToMergeDto),
+  rename: (id, renameTargetDto) =>
+    requests.post(`/elevated/target/${id}/rename`, renameTargetDto),
 };
 
 const Screen = {

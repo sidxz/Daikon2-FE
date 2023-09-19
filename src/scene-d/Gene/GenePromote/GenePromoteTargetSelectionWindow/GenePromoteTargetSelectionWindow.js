@@ -273,7 +273,7 @@ const GenePromoteTargetSelectionWindow = ({
       }
     }
 
-    return <p>Tetst</p>;
+    return <p>Failed Loading</p>;
   };
 
   let screenValidateSimpleProteinTargetName = () => {
@@ -304,7 +304,7 @@ const GenePromoteTargetSelectionWindow = ({
               Exists
             </h2>
             <p>
-              A promost request is pending for {proposedTargetName}. Please
+              A promotion request is pending for {proposedTargetName}. Please
               contact an administrator for further details
             </p>
           </React.Fragment>
@@ -353,7 +353,7 @@ const GenePromoteTargetSelectionWindow = ({
               Exists
             </h2>
             <p>
-              A promost request is pending for {proposedTargetName}. Please
+              A promotion request is pending for {proposedTargetName}. Please
               contact an administrator for further details
             </p>
           </React.Fragment>

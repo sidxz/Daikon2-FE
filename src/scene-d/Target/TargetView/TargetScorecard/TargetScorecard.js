@@ -89,7 +89,7 @@ const TargetScorecard = () => {
                 <h4>
                   <i className="icon icon-conceptual icon-proteins"></i>{" "}
                   Associated Genes :{" "}
-                  {selectedTarget.targetGenesAccesionNumbers.join(", ")}
+                  {selectedTarget.targetGenesAccessionNumbers.join(", ")}
                 </h4>
               </div>
             </Fieldset>

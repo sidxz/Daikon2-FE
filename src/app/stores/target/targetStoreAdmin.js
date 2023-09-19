@@ -10,6 +10,7 @@ export default class TargetStoreAdmin {
   selectedTarget = null;
 
   isMergingTargets = false;
+  isRenamingTargets = false;
 
   constructor(rootStore) {
     this.rootStore = rootStore;
@@ -25,6 +26,9 @@ export default class TargetStoreAdmin {
 
       mergeTargets: action,
       isMergingTargets: observable,
+
+      renameTarget: action,
+      isRenamingTargets: observable,
     });
   }
   /* Fetch specific TargetAdmin with id from API */
@@ -135,13 +139,42 @@ export default class TargetStoreAdmin {
       runInAction(() => {
         toast.success("Successfully Merged Targets");
         this.isMergingTargets = false;
-        this.rootStore.targetStore.fetchTargets();
+        this.rootStore.targetStore.fetchTargets(true);
       });
     } catch (error) {
       console.error(error);
     } finally {
       runInAction(() => {
         this.isMergingTargets = false;
+      });
+    }
+    return res;
+  };
+
+  /* Rename Target */
+
+  renameTarget = async (id, newName) => {
+    this.isRenamingTargets = true;
+
+    let res = null;
+    // send to server
+    try {
+      res = await agent.TargetAdmin.rename(id, {
+        id: id,
+        targetNameToSet: newName,
+      });
+
+      runInAction(() => {
+        toast.success("Successfully Renamed Target");
+        this.isRenamingTargets = false;
+        this.rootStore.targetStore.fetchTargets(true);
+        this.rootStore.targetStore.fetchTarget(id, true);
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      runInAction(() => {
+        this.isRenamingTargets = false;
       });
     }
     return res;

@@ -1,10 +1,14 @@
 import { observer } from "mobx-react-lite";
 import { BreadCrumb } from "primereact/breadcrumb";
+import { InputText } from "primereact/inputtext";
 import { Toast } from "primereact/toast";
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import EmbeddedHelp from "../../../../app/common/EmbeddedHelp/EmbeddedHelp";
 import FailedLoading from "../../../../app/common/FailedLoading/FailedLoading";
+import GeneralConfirmation from "../../../../app/common/GeneralConfirmation/GeneralConfirmation";
 import SectionHeading from "../../../../app/common/SectionHeading/SectionHeading";
+import StepsList from "../../../../app/common/StepsList/StepsList";
 import Unauthorized from "../../../../app/common/Unauthorized/Unauthorized";
 import Loading from "../../../../app/layout/Loading/Loading";
 import { RootStoreContext } from "../../../../app/stores/rootStore";
@@ -14,15 +18,18 @@ const TargetRename = ({ id }) => {
   const navigate = useNavigate();
   const toast = useRef(null);
   const rootStore = useContext(RootStoreContext);
+
   const {
     fetchTargetAdmin,
     selectedTarget,
-    editTargetAdmin,
+    isRenamingTargets,
     displayLoading,
-    editingTarget,
+    renameTarget,
   } = rootStore.targetStoreAdmin;
 
   const { user } = rootStore.userStore;
+
+  const [newTargetName, setNewTargetName] = useState("");
 
   useEffect(() => {
     // Fetch target when the component mounts or when the selected target changes
@@ -31,7 +38,7 @@ const TargetRename = ({ id }) => {
     }
   }, [id, selectedTarget, fetchTargetAdmin]);
 
-  if (displayLoading) {
+  if (displayLoading || isRenamingTargets) {
     return <Loading content="Loading Target..." />;
   }
 
@@ -56,6 +63,26 @@ const TargetRename = ({ id }) => {
       },
       { label: "Rename" },
     ];
+
+    const steps = [
+      {
+        value: "The target and all its related data will be renamed.",
+      },
+      {
+        value:
+          "Screens associated with the target will be renamed to reflect the name of the new target.",
+      },
+      {
+        value:
+          "References to the target in discussions will be updated to the name of the new target.",
+      },
+    ];
+
+    let renameAction = () => {
+      console.log("Renaming Target");
+      console.log(selectedTarget.id, newTargetName);
+      renameTarget(selectedTarget.id, newTargetName);
+    };
 
     return (
       <React.Fragment>
@@ -82,6 +109,48 @@ const TargetRename = ({ id }) => {
               color={"#f4f4f4"}
               textColor={"#000000"}
             />
+          </div>
+          <div className="flex w-full pl-4">
+            This module allows you to rename a target. Please note that this
+          </div>
+          <div className="flex pl-2 w-full">
+            <StepsList steps={steps} />
+          </div>
+          <div className="flex w-full border-1 p-2 text-lg mb-2">
+            Current Target Name: {selectedTarget.name}
+          </div>
+          <div className="flex w-full border-1 p-2 gap-2 align-content-center mb-2">
+            <div className="flex text-lg align-items-center">
+              Updated Target Name:{" "}
+            </div>
+            <div className="flex text-lg align-items-center ">
+              <InputText
+                value={newTargetName}
+                onChange={(e) => setNewTargetName(e.target.value)}
+              />
+            </div>
+            <div className="flex flex-column text-lg align-items-center w-4">
+              <EmbeddedHelp>
+                <p>
+                  Consistent protein nomenclature is indispensable for
+                  communication, literature searching and entry retrieval. A
+                  good protein name is one which is unique, unambiguous, can be
+                  attributed to orthologs from other species and follows
+                  official gene nomenclature where applicable. Please adhere to
+                  the{" "}
+                  <a
+                    href="https://www.ncbi.nlm.nih.gov/genome/doc/internatprot_nomenguide"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    International Protein Nomenclature Guidelines.
+                  </a>
+                </p>
+              </EmbeddedHelp>
+            </div>
+          </div>
+          <div className="flex w-full border-1 p-2 text-lg">
+            <GeneralConfirmation callBack={renameAction} />
           </div>
         </div>
       </React.Fragment>
