@@ -94,6 +94,14 @@ const TargetMerge = ({ id }) => {
     ];
 
     let mergeAction = () => {
+      if (selectedTargetToBeMerged === null) {
+        toast.current.show({
+          severity: "error",
+          summary: "Error",
+          detail: "Please select a target to be merged.",
+        });
+        return;
+      }
       console.log("mergeAction");
       console.log(selectedTargetToBeMerged);
       mergeTargets(selectedTarget, selectedTargetToBeMerged);

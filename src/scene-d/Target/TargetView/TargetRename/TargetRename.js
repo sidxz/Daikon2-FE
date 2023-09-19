@@ -79,6 +79,14 @@ const TargetRename = ({ id }) => {
     ];
 
     let renameAction = () => {
+      if (selectedTarget === null || newTargetName === "") {
+        toast.current.show({
+          severity: "error",
+          summary: "Error",
+          detail: "Please enter a valid target name.",
+        });
+        return;
+      }
       console.log("Renaming Target");
       console.log(selectedTarget.id, newTargetName);
       renameTarget(selectedTarget.id, newTargetName);
