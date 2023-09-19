@@ -288,6 +288,8 @@ const TargetAdmin = {
   details: (id) => requests.get(`/target/${id}`),
   edit: (updatedTarget) =>
     requests.post(`/elevated/target/${updatedTarget.id}`, updatedTarget),
+  merge: (baseTargetId, targetToMergeDto) =>
+    requests.post(`/elevated/target/${baseTargetId}/merge`, targetToMergeDto),
 };
 
 const Screen = {

@@ -9,6 +9,8 @@ export default class TargetStoreAdmin {
   targetRegistryAdmin = new Map();
   selectedTarget = null;
 
+  isMergingTargets = false;
+
   constructor(rootStore) {
     this.rootStore = rootStore;
     makeObservable(this, {
@@ -20,6 +22,9 @@ export default class TargetStoreAdmin {
       editTargetAdmin: action,
       importTarget: action,
       importTargetComplex: action,
+
+      mergeTargets: action,
+      isMergingTargets: observable,
     });
   }
   /* Fetch specific TargetAdmin with id from API */
@@ -108,6 +113,35 @@ export default class TargetStoreAdmin {
     } finally {
       runInAction(() => {
         this.displayLoading = false;
+      });
+    }
+    return res;
+  };
+
+  /* Merge Targets */
+
+  mergeTargets = async (targetToBeKept, targetToBeMerged) => {
+    this.isMergingTargets = true;
+    console.log(targetToBeKept.id, targetToBeMerged.id);
+
+    let res = null;
+    // send to server
+    try {
+      res = await agent.TargetAdmin.merge(targetToBeKept.id, {
+        baseTargetId: targetToBeKept.id,
+        targetToMergeId: targetToBeMerged.id,
+      });
+
+      runInAction(() => {
+        toast.success("Successfully Merged Targets");
+        this.isMergingTargets = false;
+        this.rootStore.targetStore.fetchTargets();
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      runInAction(() => {
+        this.isMergingTargets = false;
       });
     }
     return res;

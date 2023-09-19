@@ -1,10 +1,13 @@
 import { observer } from "mobx-react-lite";
 import { BreadCrumb } from "primereact/breadcrumb";
+import { Dropdown } from "primereact/dropdown";
 import { Toast } from "primereact/toast";
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import FailedLoading from "../../../../app/common/FailedLoading/FailedLoading";
+import GeneralConfirmation from "../../../../app/common/GeneralConfirmation/GeneralConfirmation";
 import SectionHeading from "../../../../app/common/SectionHeading/SectionHeading";
+import StepsList from "../../../../app/common/StepsList/StepsList";
 import Unauthorized from "../../../../app/common/Unauthorized/Unauthorized";
 import Loading from "../../../../app/layout/Loading/Loading";
 import { RootStoreContext } from "../../../../app/stores/rootStore";
@@ -17,22 +20,31 @@ const TargetMerge = ({ id }) => {
   const {
     fetchTargetAdmin,
     selectedTarget,
-    editTargetAdmin,
     displayLoading,
-    editingTarget,
+    mergeTargets,
+    isMergingTargets,
   } = rootStore.targetStoreAdmin;
+  const { fetchTargetList, targets } = rootStore.targetStore;
 
   const { user } = rootStore.userStore;
 
+  const [selectedTargetToBeMerged, setSelectedTargetToBeMerged] =
+    useState(null);
+
   useEffect(() => {
+    if (targets.length === 0) fetchTargetList();
     // Fetch target when the component mounts or when the selected target changes
     if (selectedTarget === null || selectedTarget.id !== id) {
       fetchTargetAdmin(id);
     }
   }, [id, selectedTarget, fetchTargetAdmin]);
 
-  if (displayLoading) {
-    return <Loading content="Loading Target..." />;
+  if (
+    displayLoading ||
+    rootStore.targetStore.displayLoading ||
+    isMergingTargets
+  ) {
+    return <Loading />;
   }
 
   /* Only Admins can access this page */
@@ -56,6 +68,36 @@ const TargetMerge = ({ id }) => {
       },
       { label: "Merge" },
     ];
+
+    const steps = [
+      {
+        value:
+          "All associations linked to the 'target to be merged' will be transferred to the 'target to be kept'.",
+      },
+      {
+        value:
+          "Questionnaires, promotion information, compass data, etc., associated with the 'target to be merged' will be deleted.",
+      },
+      {
+        value:
+          "Genes associated with the 'target to be merged' will be transferred to the 'target to be kept'. This may alter the target type to 'protein complex' or 'simple-protein'.",
+      },
+      {
+        value:
+          "Screens linked to the 'target to be merged' will be transferred to the 'target to be kept' and will be renamed to include the name of the 'target to be kept'.",
+      },
+      {
+        value:
+          "Projects linked to the 'target to be merged' will be moved to the 'target to be kept'.",
+      },
+      { value: "The 'target to be merged' will be deleted." },
+    ];
+
+    let mergeAction = () => {
+      console.log("mergeAction");
+      console.log(selectedTargetToBeMerged);
+      mergeTargets(selectedTarget, selectedTargetToBeMerged);
+    };
 
     return (
       <React.Fragment>
@@ -81,6 +123,40 @@ const TargetMerge = ({ id }) => {
               heading={"Merge targets"}
               color={"#f4f4f4"}
               textColor={"#000000"}
+            />
+          </div>
+          <div className="flex w-full pl-4">
+            This module allows you to merge two targets. The following actions
+            will be performed:
+          </div>
+          <div className="flex pl-2 w-full">
+            <StepsList steps={steps} />
+          </div>
+          <div className="flex w-full border-1 p-2 text-lg mb-2">
+            Target to be kept: {selectedTarget.name}
+          </div>
+          <div className="flex w-full border-1 p-2 gap-2 align-content-center mb-2">
+            <div className="flex text-lg align-items-center">
+              Target to be merged:{" "}
+            </div>
+            <div className="flex text-lg align-items-center ">
+              <Dropdown
+                value={selectedTargetToBeMerged}
+                onChange={(e) => setSelectedTargetToBeMerged(e.value)}
+                options={targets}
+                optionLabel="name"
+                placeholder="Select a Target"
+                filter
+                filterBy="name"
+                valueLabel="id"
+                className="w-full md:w-14rem"
+              />
+            </div>
+          </div>
+          <div className="flex w-full border-1 p-2 text-lg">
+            <GeneralConfirmation
+              callBack={mergeAction}
+              loading={isMergingTargets}
             />
           </div>
         </div>
