@@ -1,6 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { Dialog } from "primereact/dialog";
 import { Menu } from "primereact/menu";
+import { Sidebar } from "primereact/sidebar";
 import { Toast } from "primereact/toast";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import {
@@ -13,6 +14,7 @@ import {
 import EmbeddedHelp from "../../../../app/common/EmbeddedHelp/EmbeddedHelp";
 import Loading from "../../../../app/layout/Loading/Loading";
 import { RootStoreContext } from "../../../../app/stores/rootStore";
+import TargetScreenPromotionQuestionaire from "../../../Target/TargetView/TargetScreenPromotionQuestionaire/TargetScreenPromotionQuestionaire";
 import ScreenDiscussion from "./ScreenDiscussion/ScreenDiscussion";
 import ScreenEdit from "./ScreenEdit/ScreenEdit";
 import ScreenMerge from "./ScreenMerge/ScreenMerge";
@@ -55,6 +57,8 @@ const TargetBasedScreenView = () => {
     selectedScreenTargetFilter,
   ]);
 
+  const [displayPromotionDialog, setDisplayPromotionDialog] = useState(false);
+
   const [displayMergeScreenDialog, setDisplayMergeScreenDialog] =
     useState(false);
   const [displayEditScreenDialog, setDisplayEditScreenDialog] = useState(false);
@@ -75,6 +79,7 @@ const TargetBasedScreenView = () => {
       </div>
     );
   }
+
 
   const SideMenuItems = [
     {
@@ -101,6 +106,19 @@ const TargetBasedScreenView = () => {
             navigate("discussion/");
           },
         },
+      ],
+    },
+    {
+      label: "Actions",
+      items: [
+        {
+          label: "Add a Screen",
+          icon: "icon icon-common icon-database-submit",
+          command: () => {
+            setDisplayPromotionDialog(true);
+          },
+        },
+
       ],
     },
   ];
@@ -139,7 +157,36 @@ const TargetBasedScreenView = () => {
     return (
       <React.Fragment>
         <Toast ref={toast} />
+
         <br />
+        <Sidebar
+          visible={displayPromotionDialog}
+          position="right"
+          style={{ width: "30em", overflowX: "auto" }}
+          onHide={() => setDisplayPromotionDialog(false)}
+        >
+          <div className="flex flex-column gap-3 pl-3  w-full">
+            <div className="flex">
+              <h2>
+                <i className="icon icon-common icon-plus-circle"></i> Add a new
+                Screen
+              </h2>
+            </div>
+            <div className="flex">
+              <EmbeddedHelp>
+                This would create a new screening series. If you are intending
+                to add screening information to an existing screening set please
+                add it via the screening tab.
+              </EmbeddedHelp>
+            </div>
+            <div className="flex w-full">
+              <TargetScreenPromotionQuestionaire
+                closeSidebar={() => setDisplayPromotionDialog(false)}
+              />
+            </div>
+          </div>
+        </Sidebar>
+
         <div className="flex gap-2 w-full">
           <div className="flex">
             <Menu model={SideMenuItems} />
