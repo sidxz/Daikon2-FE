@@ -7,6 +7,7 @@ import { ConfirmDialog } from "primereact/confirmdialog";
 import { DataTable } from "primereact/datatable";
 import { Dialog } from "primereact/dialog";
 import { FileUpload } from "primereact/fileupload";
+import { Tag } from "primereact/tag";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { ImDownload } from "react-icons/im";
 import { SiMicrosoftexcel } from "react-icons/si";
@@ -77,10 +78,6 @@ const ValidatedHitsList = ({ screenId }) => {
 
   /* Local functions */
 
-  const exportCSV = (selectionOnly) => {
-    dt.current.exportCSV({ selectionOnly });
-  };
-
   let validatePromoteToHA = () => {
     if (selectedCompounds === null) {
       toast.warning(
@@ -146,14 +143,25 @@ const ValidatedHitsList = ({ screenId }) => {
   };
 
   const StructureBodyTemplate = (rowData) => {
+    console.log(rowData);
     return (
       <React.Fragment>
-        <div>
-          <SmilesViewWithDetails
-            compound={rowData?.compound}
-            width={"220"}
-            height={"220"}
-          />
+        <div
+          className="flex flex-column"
+          style={{ width: "300px", height: "310px" }}
+        >
+          <div className="flex justify-content-end">
+            {rowData.isHitPromoted && (
+              <Tag severity="success" value="Promoted"></Tag>
+            )}
+          </div>
+          <div className="flex">
+            <SmilesViewWithDetails
+              compound={rowData?.compound}
+              width={"300"}
+              height={"300"}
+            />
+          </div>
         </div>
       </React.Fragment>
     );
@@ -397,36 +405,31 @@ const ValidatedHitsList = ({ screenId }) => {
                 headerStyle={{ width: "3em" }}
               ></Column>
             )}
-            {/* <Column
-              field="Source"
-              header="Source"
-              body={SourceBodyTemplate}
-              style={{ width: "12%" }}
-            /> */}
+
             <Column
               field={(rowData) => rowData?.compound?.smile}
               header="Structure"
               body={StructureBodyTemplate}
-              style={{ minWidth: "300px" }}
+              style={{ width: "350px" }}
             />
             <Column
-              field={(rowData) => rowData?.library + "|" + rowData.source}
-              header="Library|Source"
+              field={(rowData) => rowData?.library + " | " + rowData.source}
+              header="Library | Source"
               body={LibraryBodyTemplate}
-              style={{ minWidth: "130px" }}
+              headerStyle={{ width: "8rem", textWrap: "wrap" }}
             />
             <Column
               field={(rowData) => rowData?.compound?.externalCompoundIds}
               header="Compound Id"
               body={CompoundIdBodyTemplate}
-              style={{ minWidth: "150px" }}
+              headerStyle={{ width: "7rem", textWrap: "wrap" }}
             />
 
             <Column
               field="iC50"
               header="IC50 (&micro;M) "
               body={EnzymeActivityBodyTemplate}
-              style={{ width: "50px" }}
+              headerStyle={{ width: "5rem", textWrap: "wrap" }}
               sortable
             />
             {/* <Column
@@ -440,6 +443,8 @@ const ValidatedHitsList = ({ screenId }) => {
               header="MIC (&micro;M)"
               body={MICBodyTemplate}
               style={{ width: "50px" }}
+              headerStyle={{ maxWidth: "5rem", textWrap: "wrap" }}
+              sortable
             />
             <Column
               field="clusterGroup"
