@@ -17,6 +17,7 @@ import ScreenDiscussion from "./ScreenDiscussion/ScreenDiscussion";
 import ScreenEdit from "./ScreenEdit/ScreenEdit";
 import ScreenMerge from "./ScreenMerge/ScreenMerge";
 import ScreenSequences from "./ScreenSequences/ScreenSequences";
+import UpdateTargetAssociation from "./UpdateTargetAssociation/UpdateTargetAssociation";
 import ValidatedHits from "./ValidatedHits/ValidatedHits";
 
 const TargetBasedScreenView = () => {
@@ -109,17 +110,24 @@ const TargetBasedScreenView = () => {
       label: "Admin Section",
       items: [
         {
-          label: "Edit Screen",
+          label: "Edit",
           icon: "icon icon-common icon-edit",
           command: () => {
             setDisplayEditScreenDialog(true);
           },
         },
         {
-          label: "Merge Screens",
+          label: "Merge",
           icon: "icon icon-common icon-compress",
           command: () => {
             setDisplayMergeScreenDialog(true);
+          },
+        },
+        {
+          label: "Update Target Association",
+          icon: "icon icon-common icon-target",
+          command: () => {
+            navigate("update-target-association/");
           },
         },
       ],
@@ -154,6 +162,10 @@ const TargetBasedScreenView = () => {
               <Route
                 path="discussion/"
                 element={<ScreenDiscussion TargetName={params.id} />}
+              />
+              <Route
+                path="update-target-association/"
+                element={<UpdateTargetAssociation TargetName={params.id} />}
               />
             </Routes>
           </div>

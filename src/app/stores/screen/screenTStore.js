@@ -28,6 +28,7 @@ export default class ScreenTStore {
   isUpdatingScreenStatus = false;
   isBatchInsertingTargetBasedScreenSequence = false;
   isDeletingScreenRow = false;
+  isUpdatingTargetAssociation = false;
 
   // Data stores
   targetBasedScreenRegistry = new Map();
@@ -65,6 +66,7 @@ export default class ScreenTStore {
       isUpdatingScreenStatus: observable,
       isBatchInsertingTargetBasedScreenSequence: observable,
       isDeletingScreenRow: observable,
+      isUpdatingTargetAssociation: observable,
 
       // Actions and computed properties
       fetchTargetBasedScreens: action,
@@ -81,6 +83,7 @@ export default class ScreenTStore {
       updateScreenStatus: action,
       batchInsertTargetBasedScreenSequence: action,
       deleteScreenRow: action,
+      updateTargetAssociation: action,
     });
   }
 
@@ -333,6 +336,33 @@ export default class ScreenTStore {
     } finally {
       runInAction(() => {
         this.isDeletingScreenRow = false;
+      });
+    }
+    return res;
+  };
+
+  updateTargetAssociation = async (screenId, updateTargetId) => {
+    this.isUpdatingTargetAssociation = true;
+    let res = null;
+    // send to server
+    try {
+      res = await agent.Screen.updateTargetAssociation(screenId, {
+        screenId: screenId,
+        targetId: updateTargetId,
+      });
+      runInAction(() => {
+        toast.success("Successfully updated target association.");
+        this.isTgScreenRegistryCacheValid = false;
+        this.rootStore.compoundEvolutionStore.isCompoundEvolutionRegistryCacheValid = false;
+        this.fetchTargetBasedScreens();
+        this.fetchTargetBasedScreen(screenId, true);
+        this.isUpdatingTargetAssociation = false;
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      runInAction(() => {
+        this.isUpdatingTargetAssociation = false;
       });
     }
     return res;

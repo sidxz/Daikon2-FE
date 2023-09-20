@@ -325,6 +325,11 @@ const Screen = {
     requests.del(
       `/elevated/screenPhenotypic/${screenId}/delete-sequence/${screenRowId}`
     ),
+  updateTargetAssociation: (screenId, dto) =>
+    requests.post(
+      `/elevated/screen/${screenId}/update-target-association`,
+      dto
+    ),
 };
 
 const Hit = {

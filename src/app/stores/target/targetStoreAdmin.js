@@ -195,6 +195,7 @@ export default class TargetStoreAdmin {
       runInAction(() => {
         toast.success("Successfully updated gene association");
         this.isUpdatingGeneAssociation = false;
+        this.rootStore.compoundEvolutionStore.isCompoundEvolutionRegistryCacheValid = false;
         this.rootStore.targetStore.fetchTargets(true);
         this.rootStore.targetStore.fetchTarget(id, true);
       });
