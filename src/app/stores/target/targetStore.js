@@ -57,9 +57,13 @@ export default class TargetStore {
   /* end helpers */
 
   /* Fetch Target list from API */
-  fetchTargetList = async () => {
+  fetchTargetList = async (invalidateCache = false) => {
     this.displayLoading = true;
-    if (this.targetRegistry.size !== 0) {
+    if (invalidateCache) {
+      this.cacheValid = false;
+    }
+    // first check cache
+    if (this.cacheValid && this.targetRegistry.size !== 0) {
       this.displayLoading = false;
       return;
     }
@@ -69,7 +73,7 @@ export default class TargetStore {
         resp.forEach((fetchedTarget) => {
           fetchedTarget = {
             ...fetchedTarget,
-            targetGenesAccesionNumbers:
+            targetGenesAccessionNumbers:
               _helper_associatedGenesAccessionNumbersToArray(fetchedTarget),
           };
           //
@@ -81,6 +85,7 @@ export default class TargetStore {
       console.error(error);
     } finally {
       runInAction(() => {
+        this.cacheValid = true;
         this.displayLoading = false;
       });
     }
@@ -92,13 +97,16 @@ export default class TargetStore {
 
   /* Fetch specific Target with id from API */
 
-  fetchTarget = async (id) => {
+  fetchTarget = async (id, invalidateCache = false) => {
     this.displayLoading = true;
+    if (invalidateCache) {
+      this.cacheValid = false;
+    }
 
     // first check cache
     let fetchedTarget = this.targetRegistryExpanded.get(id);
 
-    if (fetchedTarget) {
+    if (this.cacheValid && fetchedTarget) {
       this.selectedTarget = fetchedTarget;
       this.displayLoading = false;
     }
@@ -109,7 +117,7 @@ export default class TargetStore {
         runInAction(() => {
           fetchedTarget = {
             ...fetchedTarget,
-            targetGenesAccesionNumbers:
+            targetGenesAccessionNumbers:
               _helper_associatedGenesAccessionNumbersToArray(fetchedTarget),
           };
 
@@ -121,6 +129,7 @@ export default class TargetStore {
       } finally {
         runInAction(() => {
           this.displayLoading = false;
+          this.cacheValid = true;
         });
       }
     }

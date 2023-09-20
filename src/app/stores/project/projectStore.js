@@ -32,6 +32,11 @@ export default class ProjectStore {
 
   editingPredictedDates = false;
 
+  isUpdatingSubState = false;
+
+  isRenamingProjectName = false;
+
+
   constructor(rootStore) {
     this.rootStore = rootStore;
     makeObservable(this, {
@@ -75,6 +80,12 @@ export default class ProjectStore {
 
       editPredictedDates: action,
       editingPredictedDates: observable,
+
+      updateSubState: action,
+      isUpdatingSubState: observable,
+
+      renameProject: action,
+      isRenamingProjectName: observable,
     });
   }
 
@@ -371,6 +382,59 @@ export default class ProjectStore {
     } finally {
       runInAction(() => {
         this.editingPredictedDates = false;
+      });
+    }
+    return res;
+  };
+
+  updateSubState = async (subStateDto) => {
+    console.log("updateSubState: ", subStateDto);
+    this.isUpdatingSubState = true;
+    let res = null;
+    // send to server
+    try {
+      res = await agent.Projects.updateSubState(
+        this.selectedProject.id,
+        subStateDto
+      );
+      runInAction(() => {
+        toast.success("Saved.");
+        this.projectRegistryCacheValid = false;
+        this.fetchProject(this.selectedProject.id);
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      runInAction(() => {
+        this.isUpdatingSubState = false;
+      });
+    }
+    return res;
+  };
+
+  renameProject = async (updatedProjectName) => {
+
+    this.isRenamingProjectName = true;
+    let res = null;
+    // send to server
+    try {
+      res = await agent.Projects.rename(
+        this.selectedProject.id,
+        {
+          id: this.selectedProject.id,
+          updatedName: updatedProjectName
+        }
+      );
+      runInAction(() => {
+        toast.success("Project renamed successfully!");
+        this.projectRegistryCacheValid = false;
+        this.fetchProject(this.selectedProject.id);
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      runInAction(() => {
+        this.isRenamingProjectName = false;
       });
     }
     return res;

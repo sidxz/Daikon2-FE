@@ -1,4 +1,5 @@
 import { useFormik } from "formik";
+import { observer } from "mobx-react-lite";
 import { Button } from "primereact/button";
 import { Calendar } from "primereact/calendar";
 import { InputText } from "primereact/inputtext";
@@ -15,8 +16,13 @@ const CompoundEvolutionEdit = ({ evolution, onHide }) => {
 
   /* MobX Store */
   const rootStore = useContext(RootStoreContext);
-  const { editCompoundEvolution, selectedProject, fetchCompoundEvolution } =
-    rootStore.projectStore;
+  const {
+    editCompoundEvolution,
+    fetchCompoundEvolution,
+    isEditingCompoundEvolution,
+  } = rootStore.compoundEvolutionStore;
+
+  const { selectedProject } = rootStore.projectStore;
 
   const formik = useFormik({
     initialValues: {
@@ -293,6 +299,8 @@ const CompoundEvolutionEdit = ({ evolution, onHide }) => {
                 type="submit"
                 label="Save Changes"
                 className="p-mt-2"
+                loading={isEditingCompoundEvolution}
+                readOnly={isEditingCompoundEvolution}
               />
             </div>
           </form>
@@ -302,4 +310,4 @@ const CompoundEvolutionEdit = ({ evolution, onHide }) => {
   );
 };
 
-export default CompoundEvolutionEdit;
+export default observer(CompoundEvolutionEdit);

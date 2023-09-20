@@ -2,6 +2,7 @@ import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import React from "react";
 import TagGeneral from "../../../../../app/common/TagGeneral/TagGeneral";
+
 import "./LocalComponents.css";
 
 const HAInformationGeneralInformation = ({ project }) => {
@@ -26,10 +27,6 @@ const HAInformationGeneralInformation = ({ project }) => {
     {
       name: "Project Status",
       value: <TagGeneral tag={project.status} />,
-    },
-    {
-      name: "Description",
-      value: project.haDescription,
     },
   ];
   return (

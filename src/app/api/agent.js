@@ -288,6 +288,12 @@ const TargetAdmin = {
   details: (id) => requests.get(`/target/${id}`),
   edit: (updatedTarget) =>
     requests.post(`/elevated/target/${updatedTarget.id}`, updatedTarget),
+  merge: (baseTargetId, targetToMergeDto) =>
+    requests.post(`/elevated/target/${baseTargetId}/merge`, targetToMergeDto),
+  rename: (id, renameTargetDto) =>
+    requests.post(`/elevated/target/${id}/rename`, renameTargetDto),
+  updateGeneAssociation: (id, newGenes) =>
+    requests.post(`/elevated/target/${id}/update-gene-association`, newGenes),
 };
 
 const Screen = {
@@ -312,6 +318,12 @@ const Screen = {
     requests.post(
       `/screenSequence/${editedScreenRow.screenId}/edit-sequence/${screenRowId}`,
       editedScreenRow
+    ),
+  deleteRow: (screenId, screenRowId) =>
+    requests.del(`/elevated/screen/${screenId}/delete-sequence/${screenRowId}`),
+  deleteRowPhenotypic: (screenId, screenRowId) =>
+    requests.del(
+      `/elevated/screenPhenotypic/${screenId}/delete-sequence/${screenRowId}`
     ),
 };
 
@@ -360,21 +372,25 @@ const Projects = {
     requests.post(`/elevated/project/${id}/createP1`, p1Info),
   list: () => requests.get(`/project`),
   details: (id) => requests.get(`/project/${id}`),
-  getcompoundevolution: (projectId) =>
-    requests.get(`/project/${projectId}/compoundevolution`),
-  addcompoundevolution: (projectId, newCompoundEvolution) =>
+  getCompoundEvolution: (projectId) =>
+    requests.get(`/project/${projectId}/compound-evolution`),
+  addCompoundEvolution: (projectId, newCompoundEvolution) =>
     requests.post(
-      `/project/${projectId}/compoundevolution`,
+      `/project/${projectId}/compound-evolution`,
       newCompoundEvolution
     ),
-  editCompoundevolution: (
+  editCompoundEvolution: (
     projectId,
-    compoundEvoluitionId,
+    compoundEvolutionId,
     editedCompoundEvolution
   ) =>
     requests.post(
-      `/project/${projectId}/compoundevolution/${compoundEvoluitionId}`,
+      `/project/${projectId}/compound-evolution/${compoundEvolutionId}`,
       editedCompoundEvolution
+    ),
+  deleteCompoundEvolution: (projectId, compoundEvolutionId) =>
+    requests.del(
+      `/elevated/project/${projectId}/compound-evolution/${compoundEvolutionId}`
     ),
   setPriorityProbability: (Id, ppDTO) => requests.post(`/project/${Id}`, ppDTO),
   createUnlinked: (newProject) =>
@@ -385,6 +401,10 @@ const Projects = {
     requests.post(`/project/${id}/edit-supporting-org`, editSupportingOrgsDTO),
   editPredictedDated: (id, projectDTO) =>
     requests.post(`/project/${id}/edit-predicted-dates`, projectDTO),
+  updateSubState: (id, projectStateDTO) =>
+    requests.post(`/project/${id}/update-sub-state`, projectStateDTO),
+  rename: (id, updatedProjectName) =>
+    requests.post(`/elevated/project/${id}/rename`, updatedProjectName),
 };
 
 const Vote = {
@@ -397,6 +417,7 @@ const DataView = {
   targetDash: () => requests.get(`/data-view/VTarget/dash-view`),
   latestDiscussions: () => requests.get(`/data-view/Discussion/latest`),
   screenDash: () => requests.get(`/data-view/VScreen/dash-view`),
+  haDash: () => requests.get(`/data-view/VProject/ha-dash-view`),
 };
 
 const Compounds = {

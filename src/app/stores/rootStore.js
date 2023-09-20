@@ -13,6 +13,7 @@ import DiscussionStore from "./discussion/discussionStore";
 import GenePromotionStore from "./gene/genePromotionStore";
 import GeneStore from "./gene/geneStore";
 import GeneStoreAdmin from "./gene/geneStoreAdmin";
+import CompoundEvolutionStore from "./project/compoundEvolutionStore";
 import HAStore from "./project/haStore";
 import PortfolioStore from "./project/portfolioStore";
 import PostPortfolioStore from "./project/postPortfolioStore";
@@ -58,6 +59,7 @@ export class RootStore {
   targetPTQuestionnaireMetaStore;
   genePromotionStore;
   targetPTDataManagement;
+  compoundEvolutionStore;
 
   /**
    * constructor: Initializes the sub-stores.
@@ -90,6 +92,7 @@ export class RootStore {
     );
     this.genePromotionStore = new GenePromotionStore(this);
     this.targetPTDataManagement = new TargetPTDataManagement(this);
+    this.compoundEvolutionStore = new CompoundEvolutionStore(this);
   }
 }
 

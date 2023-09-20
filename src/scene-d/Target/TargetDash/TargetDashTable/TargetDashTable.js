@@ -23,20 +23,20 @@ const TargetDashTable = ({ targets }) => {
 
   // Template for rendering the Associated Genes column
   const AssociatedGenesBodyTemplate = (rowData) => {
-    if (rowData.targetGenesAccesionNumbers.length > 2) {
+    if (rowData.targetGenesAccessionNumbers.length > 2) {
       return (
         <React.Fragment>
           <span className="p-column-title">Gene Name</span>
-          {rowData.targetGenesAccesionNumbers[0]},{" "}
-          {rowData.targetGenesAccesionNumbers[1]} and{" "}
-          {rowData.targetGenesAccesionNumbers.length - 2} others
+          {rowData.targetGenesAccessionNumbers[0]},{" "}
+          {rowData.targetGenesAccessionNumbers[1]} and{" "}
+          {rowData.targetGenesAccessionNumbers.length - 2} others
         </React.Fragment>
       );
     } else {
       return (
         <React.Fragment>
           <span className="p-column-title">Gene Name</span>
-          {rowData.targetGenesAccesionNumbers.join(", ")}
+          {rowData.targetGenesAccessionNumbers.join(", ")}
         </React.Fragment>
       );
     }
@@ -114,7 +114,7 @@ const TargetDashTable = ({ targets }) => {
 
           <Column
             field="associatedGenes"
-            filterField="targetGenesAccesionNumbers"
+            filterField="targetGenesAccessionNumbers"
             header="Associated Genes"
             body={AssociatedGenesBodyTemplate}
             filter

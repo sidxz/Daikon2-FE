@@ -9,6 +9,10 @@ export default class TargetStoreAdmin {
   targetRegistryAdmin = new Map();
   selectedTarget = null;
 
+  isMergingTargets = false;
+  isRenamingTargets = false;
+  isUpdatingGeneAssociation = false;
+
   constructor(rootStore) {
     this.rootStore = rootStore;
     makeObservable(this, {
@@ -20,6 +24,15 @@ export default class TargetStoreAdmin {
       editTargetAdmin: action,
       importTarget: action,
       importTargetComplex: action,
+
+      mergeTargets: action,
+      isMergingTargets: observable,
+
+      renameTarget: action,
+      isRenamingTargets: observable,
+
+      updateGeneAssociation: action,
+      isUpdatingGeneAssociation: observable,
     });
   }
   /* Fetch specific TargetAdmin with id from API */
@@ -108,6 +121,88 @@ export default class TargetStoreAdmin {
     } finally {
       runInAction(() => {
         this.displayLoading = false;
+      });
+    }
+    return res;
+  };
+
+  /* Merge Targets */
+
+  mergeTargets = async (targetToBeKept, targetToBeMerged) => {
+    this.isMergingTargets = true;
+    console.log(targetToBeKept.id, targetToBeMerged.id);
+
+    let res = null;
+    // send to server
+    try {
+      res = await agent.TargetAdmin.merge(targetToBeKept.id, {
+        baseTargetId: targetToBeKept.id,
+        targetToMergeId: targetToBeMerged.id,
+      });
+
+      runInAction(() => {
+        toast.success("Successfully Merged Targets");
+        this.isMergingTargets = false;
+        this.rootStore.targetStore.fetchTargets(true);
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      runInAction(() => {
+        this.isMergingTargets = false;
+      });
+    }
+    return res;
+  };
+
+  /* Rename Target */
+
+  renameTarget = async (id, newName) => {
+    this.isRenamingTargets = true;
+
+    let res = null;
+    // send to server
+    try {
+      res = await agent.TargetAdmin.rename(id, {
+        id: id,
+        targetNameToSet: newName,
+      });
+
+      runInAction(() => {
+        toast.success("Successfully Renamed Target");
+        this.isRenamingTargets = false;
+        this.rootStore.targetStore.fetchTargets(true);
+        this.rootStore.targetStore.fetchTarget(id, true);
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      runInAction(() => {
+        this.isRenamingTargets = false;
+      });
+    }
+    return res;
+  };
+
+  updateGeneAssociation = async (id, newGenes) => {
+    this.isUpdatingGeneAssociation = true;
+
+    let res = null;
+    // send to server
+    try {
+      res = await agent.TargetAdmin.updateGeneAssociation(id, newGenes);
+
+      runInAction(() => {
+        toast.success("Successfully updated gene association");
+        this.isUpdatingGeneAssociation = false;
+        this.rootStore.targetStore.fetchTargets(true);
+        this.rootStore.targetStore.fetchTarget(id, true);
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      runInAction(() => {
+        this.isUpdatingGeneAssociation = false;
       });
     }
     return res;

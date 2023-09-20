@@ -1,5 +1,18 @@
 # Change Log
 
+## [v1.5.0]
+
+### Added
+- Introduced a new HA Landing page that showcases all project statuses- Active, Inactive, HA Ready, and Portfolio Ready projects
+- Created HA Status filter to both the HA List and HA Detailed pages
+- Implemented Target Renaming, Merge, Update Gene associations and Delete functionalities in Target component
+- Added Project Renaming feature via Project settings for HA, Portfolio & Post-Portfolio components
+- Added Delete feature for screening records within the Screen component
+- Added Delete option to Compound Evolution in the HA, Portfolio and Post-Portfolio components
+
+ ### Fixed
+- Bug Fix: Resolved an issue where the Screen Status filter did not update values correctly when switching tabs in the Screen component.
+
 
 ## [v1.4.1 - 2]
 

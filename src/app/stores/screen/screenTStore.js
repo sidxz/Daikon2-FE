@@ -27,6 +27,7 @@ export default class ScreenTStore {
   isEditingScreenSequence = false;
   isUpdatingScreenStatus = false;
   isBatchInsertingTargetBasedScreenSequence = false;
+  isDeletingScreenRow = false;
 
   // Data stores
   targetBasedScreenRegistry = new Map();
@@ -63,6 +64,7 @@ export default class ScreenTStore {
       isEditingScreenSequence: observable,
       isUpdatingScreenStatus: observable,
       isBatchInsertingTargetBasedScreenSequence: observable,
+      isDeletingScreenRow: observable,
 
       // Actions and computed properties
       fetchTargetBasedScreens: action,
@@ -78,6 +80,7 @@ export default class ScreenTStore {
       editScreenSequence: action,
       updateScreenStatus: action,
       batchInsertTargetBasedScreenSequence: action,
+      deleteScreenRow: action,
     });
   }
 
@@ -308,6 +311,28 @@ export default class ScreenTStore {
     } finally {
       runInAction(() => {
         this.isUpdatingScreenStatus = false;
+      });
+    }
+    return res;
+  };
+
+  // delete screen row
+  deleteScreenRow = async (id) => {
+    this.isDeletingScreenRow = true;
+    let res = null;
+    // send to server
+    try {
+      res = await agent.Screen.deleteRow(this.selectedTargetBasedScreen.id, id);
+      runInAction(() => {
+        toast.success("Successfully deleted library screen row.");
+        this.isDeletingScreenRow = false;
+        this.fetchTargetBasedScreen(this.selectedTargetBasedScreen.id, true);
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      runInAction(() => {
+        this.isDeletingScreenRow = false;
       });
     }
     return res;

@@ -1,23 +1,23 @@
 import { observer } from "mobx-react-lite";
+import { ConfirmDialog } from "primereact/confirmdialog";
 import { Dropdown } from "primereact/dropdown";
 
-import { ConfirmDialog } from "primereact/confirmdialog";
 import React, { useContext, useEffect, useState } from "react";
-import { FcDataSheet, FcNeutralTrading, FcOk, FcPlanner } from "react-icons/fc";
-import { GiVote } from "react-icons/gi";
-import { RootStoreContext } from "../../stores/rootStore";
-import "./ScreenStatus.css";
+import { FcAlarmClock, FcDisapprove, FcOk } from "react-icons/fc";
 
+import { FaExclamationTriangle } from "react-icons/fa";
+import { FcHighPriority, FcWorkflow } from "react-icons/fc";
+import { RootStoreContext } from "../../stores/rootStore";
 /**
- * ScreenStatus component allows users to update the status of a screen.
- * The status of the screen can be updated to a predefined set of options,
+ * HAStatusDropDown component allows users to update the status of a HA Project.
+ * The status of the project can be updated to a predefined set of options,
  * with each option associated with an icon.
  * @param {Object} props - The properties passed to the component.
  * @param {string} props.id - The id of the screen.
  * @param {string} props.status - The current status of the screen.
  * @param {boolean} props.readOnly - Whether the status can be updated or not.
  */
-const ScreenStatus = ({ id, status, readOnly = false }) => {
+const HAStatus = ({ id, status, readOnly = false }) => {
   // Local state for managing the visibility of the confirm dialog
   // and the selected status
   const [confirmDialogVisible, setConfirmDialogVisible] = useState(false);
@@ -29,20 +29,36 @@ const ScreenStatus = ({ id, status, readOnly = false }) => {
 
   // Accessing the necessary properties from the screenTStore
   const rootStore = useContext(RootStoreContext);
-  const { isUpdatingScreenStatus, updateScreenStatus } = rootStore.screenTStore;
+  const { isUpdatingSubState, updateSubState } = rootStore.projectStore;
+  if (!id) return <></>;
 
-  // Parameter check
-  if (!id || !status) return <></>;
-
-  // The set of available options for the status of a screen
+  // The set of available options for the status of a HA
   const statusOptions = [
-    { name: "Planned", icon: <FcPlanner /> },
-    { name: "Assay Development", icon: <FcDataSheet /> },
-    { name: "Ongoing", icon: <FcNeutralTrading /> },
-    { name: "Voting Ready", icon: <GiVote /> },
-    { name: "Completed", icon: <FcOk /> },
+    { name: "Ready for HA", value: "HA Ready", icon: <FcAlarmClock /> },
+    { name: "Active", value: "HA Active", icon: <FcWorkflow /> },
+    {
+      name: "Incorrect m/z",
+      value: "HA Incorrect m/z",
+      icon: <FaExclamationTriangle />,
+    },
+    {
+      name: "Known Liability",
+      value: "HA Known Liability",
+      icon: <FcHighPriority />,
+    },
+    {
+      name: "Complete - Failed",
+      value: "HA Complete Failed",
+      icon: <FcDisapprove />,
+    },
+    {
+      name: "Complete - Success",
+      value: "HA Complete Success",
+      icon: <FcOk />,
+    },
   ];
 
+  // Template for rendering a selected status option
   // Template for rendering a selected status option
   const optionTemplate = (option) => {
     if (option) {
@@ -66,13 +82,11 @@ const ScreenStatus = ({ id, status, readOnly = false }) => {
   // Temporarily handle new status as NA
   if (readOnly) {
     return (
-      <div className="flex align-items-center gap-2 bg-white p-2 border-1 border-100 m-0">
+      <div className="flex align-items-center gap-2 bg-white p-2 border-0 border-100 m-0">
         <div className="flex flex-column">
-          {statusOptions.find((option) => option.name === status)?.icon}
+          {statusOptions.find((option) => option.value === status)?.icon}
         </div>
-        <div className="flex flex-column">
-          {status === "New" ? "NA" : status}
-        </div>
+        <div className="flex flex-column">{status}</div>
       </div>
     );
   }
@@ -80,14 +94,14 @@ const ScreenStatus = ({ id, status, readOnly = false }) => {
   return (
     <div className="flex">
       <Dropdown
-        value={selectedStatus}
+        value={status}
         options={statusOptions}
         optionLabel="name"
-        optionValue="name"
+        optionValue="value"
         placeholder="Set Status"
         itemTemplate={optionTemplate}
         valueTemplate={optionTemplate}
-        disabled={isUpdatingScreenStatus}
+        disabled={isUpdatingSubState}
         onChange={handleStatusChange}
         className="align-items-center"
       />
@@ -97,11 +111,20 @@ const ScreenStatus = ({ id, status, readOnly = false }) => {
         message={`Are you sure you want to change the status to ${selectedStatus}?`}
         header={`Confirmation -> ${selectedStatus}`}
         icon="icon icon-common icon-file-signature"
-        accept={() => updateScreenStatus(id, selectedStatus)}
-        reject={() => setConfirmDialogVisible(false)}
+        accept={() =>
+          updateSubState({
+            subStateString: selectedStatus,
+            stageString: "HA",
+            projectId: id,
+          })
+        }
+        reject={() => {
+          setConfirmDialogVisible(false);
+          setSelectedStatus(status);
+        }}
       />
     </div>
   );
 };
 
-export default observer(ScreenStatus);
+export default observer(HAStatus);

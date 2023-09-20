@@ -13,12 +13,12 @@ const CompoundEvolutionAddNew = ({ closeSidebar }) => {
   /* MobX Store */
   const rootStore = useContext(RootStoreContext);
   const {
-    addingCompoundEvolution,
+    isAddingCompoundEvolution,
     addCompoundEvolution,
-    selectedProject,
-    loadingProject,
     fetchCompoundEvolution,
-  } = rootStore.projectStore;
+  } = rootStore.compoundEvolutionStore;
+
+  const { selectedProject, loadingProject } = rootStore.projectStore;
 
   const formik = useFormik({
     initialValues: {
@@ -39,6 +39,10 @@ const CompoundEvolutionAddNew = ({ closeSidebar }) => {
 
       if (!data.notes) {
         errors.notes = "A note is required.";
+      }
+
+      if (!data.externalCompoundIds) {
+        errors.externalCompoundIds = "Compound Id is required.";
       }
 
       return errors;
@@ -67,7 +71,7 @@ const CompoundEvolutionAddNew = ({ closeSidebar }) => {
     );
   };
 
-  if (!addingCompoundEvolution && !loadingProject) {
+  if (!isAddingCompoundEvolution && !loadingProject) {
     return (
       <div className="flex flex-column w-full">
         <div>
