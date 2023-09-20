@@ -34,9 +34,12 @@ const HomeWhatsNew = () => {
         <p className="m-0 p-0">
           <ul>
             <li>
-              👉 Integrated Target Promotion Questionnaire Tool.
+              👉 Introducing the HA Landing page to showcase all project statuses, including HA Ready, Active, Inactive, and Portfolio Ready projects, providing a comprehensive overview.
             </li>
-            <li>🚀 Import & Export Functionality for Screen Component for effortless bulk operations.</li>
+            <li>
+              🚀 Featuring Delete options in the Screen and Compound Evolution component to streamline data management tasks.
+            </li>
+
 
           </ul>
         </p>
