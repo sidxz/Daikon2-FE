@@ -4,7 +4,6 @@ import { appConfig } from "../../config";
 import history from "../../history";
 import AppSettingsService from "../../services/AppSettingsService";
 import AuthService from "../../services/AuthService";
-
 /* Check Pre Configuration */
 
 const AppPrecheck = () => {
