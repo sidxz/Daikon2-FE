@@ -80,7 +80,6 @@ const TargetBasedScreenView = () => {
     );
   }
 
-
   const SideMenuItems = [
     {
       label: "Sections",
@@ -118,7 +117,6 @@ const TargetBasedScreenView = () => {
             setDisplayPromotionDialog(true);
           },
         },
-
       ],
     },
   ];
@@ -158,7 +156,36 @@ const TargetBasedScreenView = () => {
       <React.Fragment>
         <Toast ref={toast} />
 
-        <br />
+        <div className="flex gap-1 w-full">
+          <div className="flex">
+            <Menu model={SideMenuItems} />
+          </div>
+
+          <div className="flex w-full w-10">
+            <Routes>
+              <Route
+                index
+                element={<Navigate replace to="screen-sequence/" />}
+              />
+              <Route
+                path="screen-sequence/"
+                element={<ScreenSequences TargetName={params.id} />}
+              />
+              <Route
+                path="validates-hit/"
+                element={<ValidatedHits TargetName={params.id} />}
+              />
+              <Route
+                path="discussion/"
+                element={<ScreenDiscussion TargetName={params.id} />}
+              />
+              <Route
+                path="update-target-association/"
+                element={<UpdateTargetAssociation TargetName={params.id} />}
+              />
+            </Routes>
+          </div>
+        </div>
         <Sidebar
           visible={displayPromotionDialog}
           position="right"
@@ -186,37 +213,6 @@ const TargetBasedScreenView = () => {
             </div>
           </div>
         </Sidebar>
-
-        <div className="flex gap-2 w-full">
-          <div className="flex">
-            <Menu model={SideMenuItems} />
-          </div>
-
-          <div className="flex w-full">
-            <Routes>
-              <Route
-                index
-                element={<Navigate replace to="screen-sequence/" />}
-              />
-              <Route
-                path="screen-sequence/"
-                element={<ScreenSequences TargetName={params.id} />}
-              />
-              <Route
-                path="validates-hit/"
-                element={<ValidatedHits TargetName={params.id} />}
-              />
-              <Route
-                path="discussion/"
-                element={<ScreenDiscussion TargetName={params.id} />}
-              />
-              <Route
-                path="update-target-association/"
-                element={<UpdateTargetAssociation TargetName={params.id} />}
-              />
-            </Routes>
-          </div>
-        </div>
 
         <Dialog
           visible={displayEditScreenDialog}

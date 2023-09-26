@@ -335,6 +335,7 @@ const Screen = {
 const Hit = {
   create: (createHit) => requests.post(`/hit/`, createHit),
   update: (hitId, updatedHit) => requests.post(`/hit/${hitId}`, updatedHit),
+  delete: (hitId) => requests.del(`/elevated/hit/delete-hit/${hitId}`),
 };
 
 const Discussion = {
