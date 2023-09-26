@@ -209,7 +209,7 @@ const ValidatedHitsList = ({ screenId }) => {
     );
   };
 
-  const deleteBodyTemplate = (rowData) => {
+  const DeleteBodyTemplate = (rowData) => {
     return (
       <Button
         type="button"
@@ -495,7 +495,7 @@ const ValidatedHitsList = ({ screenId }) => {
 
             {isDeletingAllowed && (
               <Column
-                body={deleteBodyTemplate}
+                body={DeleteBodyTemplate}
                 exportable={false}
                 headerStyle={{ minWidth: "4rem" }}
               />

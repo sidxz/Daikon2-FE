@@ -20,6 +20,9 @@ import SmilesViewWithDetails from "../../../../../../app/common/SmilesViewWithDe
 import Vote from "../../../../../../app/common/Vote/Vote";
 import { RootStoreContext } from "../../../../../../app/stores/rootStore";
 import PhenotypicValidatedHitsPromoteToHAEntry from "./PhenotypicValidatedHitsPromoteToHAEntry/PhenotypicValidatedHitsPromoteToHAEntry";
+import { Button } from "primereact/button";
+import DeleteConfirmation from "../../../../../../app/common/DeleteConfirmation/DeleteConfirmation";
+import { Tag } from "primereact/tag";
 const PhenotypicDisclosedHitTable = ({ screenId }) => {
   // Data Table Ref
   const dt = useRef(null);
@@ -35,9 +38,15 @@ const PhenotypicDisclosedHitTable = ({ screenId }) => {
     selectedPhenotypicScreen,
   } = rootStore.screenPStore;
 
-  const { batchInsertHits, isBatchInsertingHits } = rootStore.hitsStore;
   const { user } = rootStore.userStore;
   const { enableVoting, freezeVoting } = rootStore.votingStore;
+
+  const {
+    batchInsertHits,
+    isBatchInsertingHits,
+    isDeletingHitRow,
+    deleteHitRow,
+  } = rootStore.hitsStore;
 
   /* Local state management */
 
@@ -52,6 +61,10 @@ const PhenotypicDisclosedHitTable = ({ screenId }) => {
     useState(false);
   // state variable to enable one click voting
   const [isOneClickVotingEnabled, setIsOneClickVotingEnabled] = useState(false);
+
+  // state variable to display the delete container
+  const [displayDeleteContainer, setDisplayDeleteContainer] = useState(false);
+  const [hitToDelete, setHitToDelete] = useState(null);
 
   /* Fetch the phenotypic screen data on component mount or when screenId changes */
 
@@ -69,6 +82,8 @@ const PhenotypicDisclosedHitTable = ({ screenId }) => {
   if (isLoadingPhenotypicScreen || selectedPhenotypicScreen === null) {
     return <PleaseWait />;
   }
+
+  let isDeletingAllowed = user?.roles.includes("admin");
 
   let tableMenuItems = [];
 
@@ -131,12 +146,22 @@ const PhenotypicDisclosedHitTable = ({ screenId }) => {
   const StructureBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
-        <div>
-          <SmilesViewWithDetails
-            compound={rowData?.compound}
-            width={"220"}
-            height={"220"}
-          />
+        <div
+          className="flex flex-column"
+          style={{ width: "300px", height: "310px" }}
+        >
+          <div className="flex justify-content-end">
+            {rowData.isHitPromoted && (
+              <Tag severity="success" value="Promoted"></Tag>
+            )}
+          </div>
+          <div className="flex">
+            <SmilesViewWithDetails
+              compound={rowData?.compound}
+              width={"300"}
+              height={"300"}
+            />
+          </div>
         </div>
       </React.Fragment>
     );
@@ -156,6 +181,28 @@ const PhenotypicDisclosedHitTable = ({ screenId }) => {
         />
       </div>
     );
+  };
+
+  const DeleteBodyTemplate = (rowData) => {
+    return (
+      <Button
+        type="button"
+        icon="pi pi-trash"
+        severity="danger"
+        text
+        onClick={() => {
+          setHitToDelete(rowData);
+          setDisplayDeleteContainer(true);
+        }}
+      />
+    );
+  };
+
+  let deleteRow = () => {
+    deleteHitRow(hitToDelete, "Phenotypic").then(() => {
+      setDisplayDeleteContainer(false);
+      setHitToDelete(null);
+    });
   };
 
   const tableHeader = (
@@ -412,6 +459,14 @@ const PhenotypicDisclosedHitTable = ({ screenId }) => {
               style={{ minWidth: "200px" }}
               sortable
             />
+
+            {isDeletingAllowed && (
+              <Column
+                body={DeleteBodyTemplate}
+                exportable={false}
+                headerStyle={{ minWidth: "4rem" }}
+              />
+            )}
           </DataTable>
         </div>
       </div>
@@ -487,6 +542,20 @@ const PhenotypicDisclosedHitTable = ({ screenId }) => {
           auto
         />
       </Dialog>
+
+      {/* Delete confirmation dialog */}
+      <Dialog
+        className="bg-red-50"
+        header={"Delete Library Screen Entry"}
+        visible={displayDeleteContainer}
+        closable={true}
+        draggable={true}
+        style={{ width: "50vw" }}
+        onHide={() => setDisplayDeleteContainer(false)}
+      >
+        <DeleteConfirmation callBack={deleteRow} />
+      </Dialog>
+
       {/* Data preview dialog, used when a excel file is uploaded */}
       <DataPreviewDialog
         headerMap={fieldToColumnName}
