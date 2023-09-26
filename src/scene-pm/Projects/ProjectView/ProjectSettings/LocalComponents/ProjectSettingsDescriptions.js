@@ -300,7 +300,7 @@ const ProjectSettingsDescriptions = ({ project }) => {
             icon="icon icon-common icon-database-submit"
             type="submit"
             label="Save Description Changes"
-            className="p-button-secondary"
+            className="p-button-secondary p-button-outlined"
             style={{ width: "20rem" }}
             loading={editingProject}
           />

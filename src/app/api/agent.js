@@ -365,6 +365,10 @@ const Projects = {
   edit: (id, project) => requests.post(`/elevated/project/${id}`, project),
   terminate: (id, project) =>
     requests.post(`/elevated/project/${id}/terminate`, project),
+  restore: (id, project) =>
+    requests.post(`/elevated/project/${id}/restore`, project),
+  markDelete: (id, project) =>
+    requests.post(`/elevated/project/${id}/mark-delete`, project),
   createHA: (newHA) => requests.post(`/project`, newHA),
   createH2L: (id, h2lInfo) =>
     requests.post(`/elevated/project/${id}/createH2L`, h2lInfo),

@@ -12,6 +12,7 @@ import ProjectSettingsDates from "./LocalComponents/ProjectSettingsDates";
 import ProjectSettingsDescriptions from "./LocalComponents/ProjectSettingsDescriptions";
 import ProjectSettingsGeneralInformation from "./LocalComponents/ProjectSettingsGeneralInformation";
 import ProjectSettingsPriority from "./LocalComponents/ProjectSettingsPriority";
+import ProjectSettingsRestore from "./LocalComponents/ProjectSettingsRestore";
 import ProjectSettingsStageOverride from "./LocalComponents/ProjectSettingsStageOverride";
 import ProjectSettingsTerminate from "./LocalComponents/ProjectSettingsTerminate";
 
@@ -88,8 +89,13 @@ const ProjectSettings = ({ id, project }) => {
                 </Fieldset>
               </div>
               <div className="flex">
-                <Fieldset className="w-full" legend="End of Lifecycle">
-                  <ProjectSettingsTerminate project={selectedProject} />
+                <Fieldset className="w-full" legend="Lifecycle">
+                  {selectedProject?.status === "Terminated" && (
+                    <ProjectSettingsRestore project={selectedProject} />
+                  )}
+                  {selectedProject?.status === "Active" && (
+                    <ProjectSettingsTerminate project={selectedProject} />
+                  )}
                 </Fieldset>
               </div>
             </div>
