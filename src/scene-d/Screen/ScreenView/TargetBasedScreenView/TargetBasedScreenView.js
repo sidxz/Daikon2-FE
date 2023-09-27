@@ -14,7 +14,8 @@ import {
 import EmbeddedHelp from "../../../../app/common/EmbeddedHelp/EmbeddedHelp";
 import Loading from "../../../../app/layout/Loading/Loading";
 import { RootStoreContext } from "../../../../app/stores/rootStore";
-import TargetScreenPromotionQuestionaire from "../../../Target/TargetView/TargetScreenPromotionQuestionaire/TargetScreenPromotionQuestionaire";
+import ScreenAdd from "./ScreenAdd/ScreenAdd";
+import ScreenDelete from "./ScreenDelete/ScreenDelete";
 import ScreenDiscussion from "./ScreenDiscussion/ScreenDiscussion";
 import ScreenEdit from "./ScreenEdit/ScreenEdit";
 import ScreenMerge from "./ScreenMerge/ScreenMerge";
@@ -146,6 +147,13 @@ const TargetBasedScreenView = () => {
             navigate("update-target-association/");
           },
         },
+        {
+          label: "Delete",
+          icon: "icon icon-common icon-remove",
+          command: () => {
+            navigate("delete/");
+          },
+        },
       ],
     };
     SideMenuItems.push(adminActions);
@@ -183,6 +191,10 @@ const TargetBasedScreenView = () => {
                 path="update-target-association/"
                 element={<UpdateTargetAssociation TargetName={params.id} />}
               />
+              <Route
+                path="delete/"
+                element={<ScreenDelete TargetName={params.id} />}
+              />
             </Routes>
           </div>
         </div>
@@ -207,7 +219,8 @@ const TargetBasedScreenView = () => {
               </EmbeddedHelp>
             </div>
             <div className="flex w-full">
-              <TargetScreenPromotionQuestionaire
+              <ScreenAdd
+                TargetName={params.id}
                 closeSidebar={() => setDisplayPromotionDialog(false)}
               />
             </div>

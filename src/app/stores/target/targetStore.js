@@ -36,6 +36,7 @@ export default class TargetStore {
 
       target: computed,
       fetchTarget: action,
+      fetchTargetByName: action,
       selectedTarget: observable,
 
       promoteTargetToScreenDisplayLoading: observable,
@@ -123,6 +124,46 @@ export default class TargetStore {
 
           this.selectedTarget = fetchedTarget;
           this.targetRegistryExpanded.set(id, fetchedTarget);
+        });
+      } catch (error) {
+        console.error(error);
+      } finally {
+        runInAction(() => {
+          this.displayLoading = false;
+          this.cacheValid = true;
+        });
+      }
+    }
+  };
+
+  fetchTargetByName = async (name, invalidateCache = false) => {
+    this.displayLoading = true;
+    if (invalidateCache) {
+      this.cacheValid = false;
+    }
+
+    // first check cache
+    let fetchedTarget = Array.from(this.targetRegistryExpanded.values()).find(
+      (el) => el.name === name
+    );
+
+    if (this.cacheValid && fetchedTarget) {
+      this.selectedTarget = fetchedTarget;
+      this.displayLoading = false;
+    }
+    // if not found fetch from api
+    else {
+      try {
+        fetchedTarget = await agent.Target.detailsByName(name);
+        runInAction(() => {
+          fetchedTarget = {
+            ...fetchedTarget,
+            targetGenesAccessionNumbers:
+              _helper_associatedGenesAccessionNumbersToArray(fetchedTarget),
+          };
+
+          this.selectedTarget = fetchedTarget;
+          this.targetRegistryExpanded.set(fetchedTarget.id, fetchedTarget);
         });
       } catch (error) {
         console.error(error);

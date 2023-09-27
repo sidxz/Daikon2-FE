@@ -269,6 +269,7 @@ const Accounts = {
 const Target = {
   list: () => requests.get(`/target/`),
   details: (id) => requests.get(`/target/${id}`),
+  detailsByName: (name) => requests.get(`/target/by-name/${name}`),
   history: (id) => requests.get(`/target/${id}/history`),
   editSummary: (updatedTargetSummary) =>
     requests.post(
@@ -300,6 +301,7 @@ const Screen = {
   listPhenotypic: () => requests.get(`/screen/phenotypic`),
   details: (id) => requests.get(`/screen/${id}`),
   create: (newScreen) => requests.post(`/screen`, newScreen),
+  delete: (id) => requests.del(`/elevated/screen/${id}`),
   updateStatus: (id, status) =>
     requests.post(`/screen/${id}/update-status`, status),
   createPhenotypic: (newScreen) =>

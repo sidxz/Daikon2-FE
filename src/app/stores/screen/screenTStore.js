@@ -29,6 +29,7 @@ export default class ScreenTStore {
   isBatchInsertingTargetBasedScreenSequence = false;
   isDeletingScreenRow = false;
   isUpdatingTargetAssociation = false;
+  isDeletingScreen = false;
 
   // Data stores
   targetBasedScreenRegistry = new Map();
@@ -84,6 +85,9 @@ export default class ScreenTStore {
       batchInsertTargetBasedScreenSequence: action,
       deleteScreenRow: action,
       updateTargetAssociation: action,
+
+      isDeletingScreen: observable,
+      deleteScreen: action,
     });
   }
 
@@ -195,6 +199,29 @@ export default class ScreenTStore {
     } finally {
       runInAction(() => {
         this.isEditingScreen = false;
+      });
+    }
+    return res;
+  };
+
+  // delete screen
+  deleteScreen = async (id) => {
+    this.isDeletingScreen = true;
+    let res = null;
+    // send to server
+    try {
+      res = await agent.Screen.delete(id);
+      runInAction(() => {
+        toast.success("Successfully deleted screen.");
+        this.isDeletingScreen = false;
+        this.isTgScreenRegistryCacheValid = false;
+        this.fetchTargetBasedScreens();
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      runInAction(() => {
+        this.isDeletingScreen = false;
       });
     }
     return res;
