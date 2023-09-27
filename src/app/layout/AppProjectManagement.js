@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import ProjectCreate from "../../scene-pm/Projects/ProjectCreate/ProjectCreate";
 import ProjectView from "../../scene-pm/Projects/ProjectView/ProjectView";
 import Projects from "../../scene-pm/Projects/ProjectsList/Projects";
@@ -20,7 +20,7 @@ const AppDefault = () => {
         </div>
         <div className="flex ml-3 mr-3 fadein animation-duration-1000">
           <Routes>
-            <Route index element={<ProjectView />} />
+            <Route index element={<Navigate replace to="project/" />} />
             {/* Projects Route */}
             <Route path={"project/"} element={<Projects />} />
             <Route path={"project/new/"} element={<ProjectCreate />} />
