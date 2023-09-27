@@ -49,27 +49,27 @@ const ProjectView = () => {
               navigate("settings/");
             },
           },
-          {
-            label: "Create New",
-            icon: "icon icon-common icon-plus",
-            command: () => {
-              navigate("/pm/project/new");
-            },
-          },
+          // {
+          //   label: "Create New",
+          //   icon: "icon icon-common icon-plus",
+          //   command: () => {
+          //     navigate("/pm/project/new");
+          //   },
+          // },
           {
             label: "Rename Project",
-            icon: "icon icon-common icon-code-branch",
+            icon: "icon icon-common icon-object-ungroup",
             command: () => {
               navigate("rename/");
             },
           },
-          {
-            label: "Create Clone",
-            icon: "icon icon-common icon-code-branch",
-            command: () => {
-              navigate("/pm/project/new");
-            },
-          },
+          // {
+          //   label: "Create Clone",
+          //   icon: "icon icon-common icon-code-branch",
+          //   command: () => {
+          //     navigate("/pm/project/new");
+          //   },
+          // },
         ],
       },
     ];
@@ -95,8 +95,6 @@ const ProjectView = () => {
                 <ProjectSettings id={params.id} project={selectedProject} />
               }
             />
-
-
 
             {/* <Route path="discussion" element={<PortfolioDiscussion
             project={selectedProject}
