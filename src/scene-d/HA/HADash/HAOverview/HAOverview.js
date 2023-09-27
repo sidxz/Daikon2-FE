@@ -30,7 +30,7 @@ const HAOverview = () => {
       <div className="flex w-full ">
         <div className="flex w-full flex-column text-sm ">
           <div
-            className="flex p-1 align-items-center justify-content-center w-full text-lg  border-1 border-0 gap-2"
+            className="flex p-1 align-items-center justify-content-center w-full text-lg gap-2"
             style={{
               color: "#3c83bd",
             }}
@@ -43,7 +43,7 @@ const HAOverview = () => {
             </div>
           </div>
           <div className="flex w-full">
-            <div className="flex w-full  pt-1 border-1 border-100  bg-white">
+            <div className="flex w-full  pt-1  bg-white">
               <HAOverviewHAEnabledScreens projects={haDash.waiting} />
             </div>
           </div>
@@ -51,7 +51,7 @@ const HAOverview = () => {
 
         <div className="flex w-full flex-column text-sm">
           <div
-            className="flex p-1 align-items-center justify-content-center w-full text-lg  border-1 border-0 gap-2"
+            className="flex p-1 align-items-center justify-content-center w-full text-lg gap-2"
             style={{
               color: "#3c83bd",
             }}
@@ -64,7 +64,7 @@ const HAOverview = () => {
             </div>
           </div>
           <div className="flex w-full">
-            <div className="flex w-full  pt-1 border-1 border-100 bg-white">
+            <div className="flex w-full  pt-1 bg-white">
               <HAOverviewActiveHA projects={haDash.ongoing} />
             </div>
           </div>
@@ -72,7 +72,7 @@ const HAOverview = () => {
 
         <div className="flex w-full flex-column text-sm">
           <div
-            className="flex p-1 align-items-center justify-content-center w-full text-lg  border-1 border-0 gap-2"
+            className="flex p-1 align-items-center justify-content-center w-full text-lg gap-2"
             style={{
               color: "#3c83bd",
             }}
@@ -85,7 +85,7 @@ const HAOverview = () => {
             </div>
           </div>
           <div className="flex w-full">
-            <div className="flex w-full  pt-1  border-1 border-100  bg-white">
+            <div className="flex w-full  pt-1  bg-white">
               <HAOverviewInActiveHA projects={haDash.recentlyCompletedFailed} />
             </div>
           </div>
@@ -93,7 +93,7 @@ const HAOverview = () => {
 
         <div className="flex w-full flex-column text-sm">
           <div
-            className="flex p-1 align-items-center justify-content-center w-full text-lg  border-1 border-0 gap-2"
+            className="flex p-1 align-items-center justify-content-center w-full text-lg gap-2"
             style={{
               color: "#3c83bd",
             }}
@@ -106,7 +106,7 @@ const HAOverview = () => {
             </div>
           </div>
           <div className="flex w-full">
-            <div className="flex w-full  pt-1 border-1 border-100  bg-white">
+            <div className="flex w-full  pt-1 bg-white">
               <HAOverviewPortfolioReady projects={haDash.portfolioReady} />
             </div>
           </div>
