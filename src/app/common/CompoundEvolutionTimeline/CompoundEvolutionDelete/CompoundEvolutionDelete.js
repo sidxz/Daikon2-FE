@@ -3,8 +3,6 @@ import { RootStoreContext } from "../../../stores/rootStore";
 import DeleteConfirmation from "../../DeleteConfirmation/DeleteConfirmation";
 
 const CompoundEvolutionDelete = ({ evolution, onHide }) => {
-  console.log("CompoundEvolutionDelete" + evolution().id);
-
   /* MobX Store */
   const rootStore = useContext(RootStoreContext);
   const {

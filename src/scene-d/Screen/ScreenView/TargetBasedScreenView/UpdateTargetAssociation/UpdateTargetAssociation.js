@@ -100,9 +100,6 @@ const UpdateTargetAssociation = ({ TargetName }) => {
     ];
 
     let updateAction = () => {
-      console.log("updateAction");
-      console.log(selectedScreen.id);
-      console.log(selectedTargetToAssociate.id);
       if (selectedScreen === null || selectedTargetToAssociate === null) {
         toast.current.show({
           severity: "error",

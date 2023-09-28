@@ -102,8 +102,8 @@ const TargetMerge = ({ id }) => {
         });
         return;
       }
-      console.log("mergeAction");
-      console.log(selectedTargetToBeMerged);
+      // console.log("mergeAction");
+      // console.log(selectedTargetToBeMerged);
       mergeTargets(selectedTarget, selectedTargetToBeMerged);
     };
 

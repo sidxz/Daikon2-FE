@@ -95,9 +95,6 @@ const ScreenDelete = ({ TargetName }) => {
     ];
 
     let updateAction = () => {
-      console.log("updateAction");
-      console.log(selectedScreen.id);
-
       if (selectedScreen === null) {
         toast.current.show({
           severity: "error",
@@ -166,6 +163,7 @@ const ScreenDelete = ({ TargetName }) => {
             <GeneralConfirmation
               callBack={updateAction}
               loading={isDeletingScreen}
+              disabled={selectedScreen === null}
             />
           </div>
         </div>

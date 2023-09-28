@@ -10,6 +10,7 @@ const GeneralConfirmation = ({
   btnClass = "p-button-outlined p-button-danger",
   btnLabel = "Confirm",
   callBack,
+  disabled = false,
 }) => {
   const [termTextValue, setTermTextValue] = useState("");
   const [activateButton, setActivateButton] = useState(false);
@@ -41,7 +42,7 @@ const GeneralConfirmation = ({
           <Button
             label={btnLabel}
             className={btnClass}
-            disabled={!activateButton}
+            disabled={!activateButton || disabled}
             loading={loading}
             icon={icon}
             onClick={() => callBack()}
