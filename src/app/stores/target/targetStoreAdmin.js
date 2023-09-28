@@ -13,6 +13,8 @@ export default class TargetStoreAdmin {
   isRenamingTargets = false;
   isUpdatingGeneAssociation = false;
 
+  isBatchUpdatingTargets = false;
+
   constructor(rootStore) {
     this.rootStore = rootStore;
     makeObservable(this, {
@@ -33,20 +35,30 @@ export default class TargetStoreAdmin {
 
       updateGeneAssociation: action,
       isUpdatingGeneAssociation: observable,
+
+      batchUpdateTargets: action,
+      isBatchUpdatingTargets: observable,
     });
   }
   /* Fetch specific TargetAdmin with id from API */
 
-  fetchTargetAdmin = async (id) => {
-    this.displayLoading = true;
+  fetchTargetAdmin = async (
+    id,
+    invalidateCache = false,
+    shouldSetLoadingState = true
+  ) => {
+    if (shouldSetLoadingState) this.displayLoading = true;
 
     // first check cache
     let fetchedTargetAdmin = this.targetRegistryAdmin.get(id);
 
-    if (fetchedTargetAdmin) {
+    if (!invalidateCache && fetchedTargetAdmin) {
       this.selectedTarget = fetchedTargetAdmin;
-      this.displayLoading = false;
+      if (shouldSetLoadingState) {
+        this.displayLoading = false;
+      }
     }
+
     // if not found fetch from api
     else {
       try {
@@ -59,7 +71,7 @@ export default class TargetStoreAdmin {
         console.error(error);
       } finally {
         runInAction(() => {
-          this.displayLoading = false;
+          if (shouldSetLoadingState) this.displayLoading = false;
         });
       }
     }
@@ -90,6 +102,41 @@ export default class TargetStoreAdmin {
       });
     }
     return updatedTarget;
+  };
+
+  /**
+   * Batch update targets
+   * Updates existing targets.
+   * New targets are NOT created.
+   * @param {object} editedScreenRows - The details of the screen rows to edit.
+   */
+  batchUpdateTargets = async (editedTargets) => {
+    this.isBatchUpdatingTargets = true;
+
+    try {
+      const promises = editedTargets.map(async (editedTarget) => {
+        if (editedTarget.status === "New") {
+          //console.log("Adding new row");
+          //console.log(editedTarget);
+          toast.warn(
+            "New targets " + editedTarget.name + "cannot be added in batch mode"
+          );
+        } else if (editedTarget.status === "Modified") {
+          console.log("Editing row");
+          console.log(editedTarget);
+          return await this.editTargetAdmin(editedTarget);
+        }
+      });
+
+      await Promise.all(promises);
+      toast.success("Batch insertion/update completed successfully");
+    } catch (error) {
+      console.error(error);
+    } finally {
+      runInAction(() => {
+        this.isBatchUpdatingTargets = false;
+      });
+    }
   };
 
   importTarget = async (targetEntry) => {
