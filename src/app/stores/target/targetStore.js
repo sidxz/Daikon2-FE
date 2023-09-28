@@ -181,7 +181,7 @@ export default class TargetStore {
   }
 
   /* submit Promotion Questionnaire from API */
-  promoteTargetToScreen = async (newScreen) => {
+  promoteTargetToScreen = async (newScreen, invalidateCache = true) => {
     this.promoteTargetToScreenDisplayLoading = true;
     let res = null;
 
@@ -197,7 +197,10 @@ export default class TargetStore {
       console.error(error);
     } finally {
       runInAction(() => {
-        this.rootStore.screenTStore.isTgScreenRegistryCacheValid = false;
+        if (invalidateCache) {
+          this.rootStore.screenTStore.isTgScreenRegistryCacheValid = false;
+        }
+
         this.promoteTargetToScreenDisplayLoading = false;
       });
     }

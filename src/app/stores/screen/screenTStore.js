@@ -92,8 +92,12 @@ export default class ScreenTStore {
   }
 
   // Fetch list of screens from the API
-  fetchTargetBasedScreens = async () => {
+  fetchTargetBasedScreens = async (invalidateCache = false) => {
     this.isLoadingTargetBasedScreens = true;
+
+    if (invalidateCache) {
+      this.isTgScreenRegistryCacheValid = false;
+    }
 
     // Check if the cache is valid and not empty
     if (
