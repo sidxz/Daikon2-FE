@@ -4,21 +4,13 @@ import { Calendar } from "primereact/calendar";
 import { classNames } from "primereact/utils";
 import React, { useContext } from "react";
 
-import { Inplace, InplaceContent, InplaceDisplay } from 'primereact/inplace';
+import { Inplace, InplaceContent, InplaceDisplay } from "primereact/inplace";
 
 import { RootStoreContext } from "../../../../../app/stores/rootStore";
 
-
-
 const ProjectSettingsDates = ({ project }) => {
-
   const rootStore = useContext(RootStoreContext);
-  const {
-    editProject,
-    editingProject,
-
-  } = rootStore.projectStore;
-
+  const { editProject, editingProject } = rootStore.projectStore;
 
   const formik = useFormik({
     initialValues: {
@@ -39,9 +31,6 @@ const ProjectSettingsDates = ({ project }) => {
 
       clinicalP1Start: new Date(project.clinicalP1Start),
       clinicalP1PredictedStart: new Date(project.clinicalP1PredictedStart),
-
-
-
     },
     validate: (data) => {
       let errors = {};
@@ -97,7 +86,7 @@ const ProjectSettingsDates = ({ project }) => {
       return errors;
     },
     onSubmit: (data) => {
-      var editedProject = { ...project }
+      var editedProject = { ...project };
       editedProject.haStart = data.haStart;
       editedProject.haPredictedStart = data.haPredictedStart;
 
@@ -115,7 +104,7 @@ const ProjectSettingsDates = ({ project }) => {
 
       editedProject.clinicalP1Start = data.clinicalP1Start;
       editedProject.clinicalP1PredictedStart = data.clinicalP1PredictedStart;
-      editProject(editedProject)
+      editProject(editedProject);
     },
   });
 
@@ -134,41 +123,45 @@ const ProjectSettingsDates = ({ project }) => {
       <div className="card w-full">
         <form onSubmit={formik.handleSubmit} className="p-fluid">
           {/* HA DATES */}
-          {project.haEnabled &&
-            <><div className="field grid">
-              <label
-                htmlFor="haStart"
-                style={{ width: '250px' }}
-                className={classNames({
-                  "p-error": isFormFieldValid("haStart"),
-                })}
-              >
-                HA Start Date :
-              </label>
-              <Inplace closable>
-                <InplaceDisplay>
-                  {formik.values.haStart != null ? (formik.values.haStart).toLocaleDateString() : 'Click to Edit'}
-                </InplaceDisplay>
-                <InplaceContent>
-                  <Calendar
-                    id="haStart"
-                    name="haStart"
-                    value={formik.values.haStart}
-                    viewDate={formik.values.haStart}
-                    onChange={formik.handleChange}
-                    style={{ width: '400px' }}
-                    className={classNames({
-                      "p-invalid": isFormFieldValid("haStart"),
-                    })} />
-                </InplaceContent>
-              </Inplace>
-              {getFormErrorMessage("haStart")}
-            </div>
+          {project.haEnabled && (
+            <>
+              <div className="field grid">
+                <label
+                  htmlFor="haStart"
+                  style={{ width: "250px" }}
+                  className={classNames({
+                    "p-error": isFormFieldValid("haStart"),
+                  })}
+                >
+                  HA Start Date :
+                </label>
+                <Inplace closable>
+                  <InplaceDisplay>
+                    {formik.values.haStart != null
+                      ? formik.values.haStart.toLocaleDateString()
+                      : "Click to Edit"}
+                  </InplaceDisplay>
+                  <InplaceContent>
+                    <Calendar
+                      id="haStart"
+                      name="haStart"
+                      value={formik.values.haStart}
+                      viewDate={formik.values.haStart}
+                      onChange={formik.handleChange}
+                      style={{ width: "400px" }}
+                      className={classNames({
+                        "p-invalid": isFormFieldValid("haStart"),
+                      })}
+                    />
+                  </InplaceContent>
+                </Inplace>
+                {getFormErrorMessage("haStart")}
+              </div>
 
               <div className="field grid">
                 <label
                   htmlFor="h2LPredictedStart"
-                  style={{ width: '250px' }}
+                  style={{ width: "250px" }}
                   className={classNames({
                     "p-error": isFormFieldValid("h2LPredictedStart"),
                   })}
@@ -177,7 +170,9 @@ const ProjectSettingsDates = ({ project }) => {
                 </label>
                 <Inplace closable>
                   <InplaceDisplay>
-                    {formik.values.h2LPredictedStart != null ? (formik.values.h2LPredictedStart).toLocaleDateString() : 'Click to Edit'}
+                    {formik.values.h2LPredictedStart != null
+                      ? formik.values.h2LPredictedStart.toLocaleDateString()
+                      : "Click to Edit"}
                   </InplaceDisplay>
                   <InplaceContent>
                     <Calendar
@@ -186,57 +181,63 @@ const ProjectSettingsDates = ({ project }) => {
                       value={formik.values.h2LPredictedStart}
                       viewDate={formik.values.h2LPredictedStart}
                       onChange={formik.handleChange}
-                      style={{ width: '400px' }}
+                      style={{ width: "400px" }}
                       className={classNames({
                         "p-invalid": isFormFieldValid("h2LPredictedStart"),
-                      })} />
+                      })}
+                    />
                   </InplaceContent>
                 </Inplace>
                 {getFormErrorMessage("h2LPredictedStart")}
-              </div></>
-          }
-
+              </div>
+            </>
+          )}
 
           {/* h2L DATES */}
-          {project.h2LEnabled &&
-            <><div className="field grid">
-              <label
-                htmlFor="h2LStart"
-                style={{ width: '250px' }}
-                className={classNames({
-                  "p-error": isFormFieldValid("h2LStart"),
-                })}
-              >
-                H2L Start Date :
-              </label>
-              <Inplace closable>
-                <InplaceDisplay>
-                  {formik.values.h2LStart != null ? (formik.values.h2LStart).toLocaleDateString() : 'Click to Edit'}
-                </InplaceDisplay>
-                <InplaceContent>
-                  <Calendar
-                    id="h2LStart"
-                    name="h2LStart"
-                    value={formik.values.h2LStart}
-                    viewDate={formik.values.h2LStart}
-                    onChange={formik.handleChange}
-                    style={{ width: '400px' }}
-                    className={classNames({
-                      "p-invalid": isFormFieldValid("h2LStart"),
-                    })} />
-                </InplaceContent>
-              </Inplace>
-              {getFormErrorMessage("h2LStart")}
-            </div>
-            </>}
+          {project.h2LEnabled && (
+            <>
+              <div className="field grid">
+                <label
+                  htmlFor="h2LStart"
+                  style={{ width: "250px" }}
+                  className={classNames({
+                    "p-error": isFormFieldValid("h2LStart"),
+                  })}
+                >
+                  H2L Start Date :
+                </label>
+                <Inplace closable>
+                  <InplaceDisplay>
+                    {formik.values.h2LStart != null
+                      ? formik.values.h2LStart.toLocaleDateString()
+                      : "Click to Edit"}
+                  </InplaceDisplay>
+                  <InplaceContent>
+                    <Calendar
+                      id="h2LStart"
+                      name="h2LStart"
+                      value={formik.values.h2LStart}
+                      viewDate={formik.values.h2LStart}
+                      onChange={formik.handleChange}
+                      style={{ width: "400px" }}
+                      className={classNames({
+                        "p-invalid": isFormFieldValid("h2LStart"),
+                      })}
+                    />
+                  </InplaceContent>
+                </Inplace>
+                {getFormErrorMessage("h2LStart")}
+              </div>
+            </>
+          )}
 
           {/* lo DATES */}
-          {project.loEnabled &&
+          {project.loEnabled && (
             <>
               <div className="field grid">
                 <label
                   htmlFor="loPredictedStart"
-                  style={{ width: '250px' }}
+                  style={{ width: "250px" }}
                   className={classNames({
                     "p-error": isFormFieldValid("loPredictedStart"),
                   })}
@@ -245,7 +246,9 @@ const ProjectSettingsDates = ({ project }) => {
                 </label>
                 <Inplace closable>
                   <InplaceDisplay>
-                    {formik.values.loPredictedStart != null ? (formik.values.loPredictedStart).toLocaleDateString() : 'Click to Edit'}
+                    {formik.values.loPredictedStart != null
+                      ? formik.values.loPredictedStart.toLocaleDateString()
+                      : "Click to Edit"}
                   </InplaceDisplay>
                   <InplaceContent>
                     <Calendar
@@ -254,10 +257,11 @@ const ProjectSettingsDates = ({ project }) => {
                       value={formik.values.loPredictedStart}
                       viewDate={formik.values.loPredictedStart}
                       onChange={formik.handleChange}
-                      style={{ width: '400px' }}
+                      style={{ width: "400px" }}
                       className={classNames({
                         "p-invalid": isFormFieldValid("loPredictedStart"),
-                      })} />
+                      })}
+                    />
                   </InplaceContent>
                 </Inplace>
                 {getFormErrorMessage("loPredictedStart")}
@@ -265,7 +269,7 @@ const ProjectSettingsDates = ({ project }) => {
               <div className="field grid">
                 <label
                   htmlFor="loStart"
-                  style={{ width: '250px' }}
+                  style={{ width: "250px" }}
                   className={classNames({
                     "p-error": isFormFieldValid("loStart"),
                   })}
@@ -274,7 +278,9 @@ const ProjectSettingsDates = ({ project }) => {
                 </label>
                 <Inplace closable>
                   <InplaceDisplay>
-                    {formik.values.loStart != null ? (formik.values.loStart).toLocaleDateString() : 'Click to Edit'}
+                    {formik.values.loStart != null
+                      ? formik.values.loStart.toLocaleDateString()
+                      : "Click to Edit"}
                   </InplaceDisplay>
                   <InplaceContent>
                     <Calendar
@@ -283,51 +289,57 @@ const ProjectSettingsDates = ({ project }) => {
                       value={formik.values.loStart}
                       viewDate={formik.values.loStart}
                       onChange={formik.handleChange}
-                      style={{ width: '400px' }}
+                      style={{ width: "400px" }}
                       className={classNames({
                         "p-invalid": isFormFieldValid("loStart"),
-                      })} />
+                      })}
+                    />
                   </InplaceContent>
                 </Inplace>
                 {getFormErrorMessage("loStart")}
               </div>
-            </>}
+            </>
+          )}
 
           {/* sp DATES */}
-          {project.spEnabled &&
-            <><div className="field grid">
-              <label
-                htmlFor="spPredictedStart"
-                style={{ width: '250px' }}
-                className={classNames({
-                  "p-error": isFormFieldValid("spPredictedStart"),
-                })}
-              >
-                SP Predicted Start Date :
-              </label>
-              <Inplace closable>
-                <InplaceDisplay>
-                  {formik.values.spPredictedStart != null ? (formik.values.spPredictedStart).toLocaleDateString() : 'Click to Edit'}
-                </InplaceDisplay>
-                <InplaceContent>
-                  <Calendar
-                    id="spPredictedStart"
-                    name="spPredictedStart"
-                    value={formik.values.spPredictedStart}
-                    viewDate={formik.values.spPredictedStart}
-                    onChange={formik.handleChange}
-                    style={{ width: '400px' }}
-                    className={classNames({
-                      "p-invalid": isFormFieldValid("spPredictedStart"),
-                    })} />
-                </InplaceContent>
-              </Inplace>
-              {getFormErrorMessage("spPredictedStart")}
-            </div>
+          {project.spEnabled && (
+            <>
+              <div className="field grid">
+                <label
+                  htmlFor="spPredictedStart"
+                  style={{ width: "250px" }}
+                  className={classNames({
+                    "p-error": isFormFieldValid("spPredictedStart"),
+                  })}
+                >
+                  SP Predicted Start Date :
+                </label>
+                <Inplace closable>
+                  <InplaceDisplay>
+                    {formik.values.spPredictedStart != null
+                      ? formik.values.spPredictedStart.toLocaleDateString()
+                      : "Click to Edit"}
+                  </InplaceDisplay>
+                  <InplaceContent>
+                    <Calendar
+                      id="spPredictedStart"
+                      name="spPredictedStart"
+                      value={formik.values.spPredictedStart}
+                      viewDate={formik.values.spPredictedStart}
+                      onChange={formik.handleChange}
+                      style={{ width: "400px" }}
+                      className={classNames({
+                        "p-invalid": isFormFieldValid("spPredictedStart"),
+                      })}
+                    />
+                  </InplaceContent>
+                </Inplace>
+                {getFormErrorMessage("spPredictedStart")}
+              </div>
               <div className="field grid">
                 <label
                   htmlFor="spStart"
-                  style={{ width: '250px' }}
+                  style={{ width: "250px" }}
                   className={classNames({
                     "p-error": isFormFieldValid("spStart"),
                   })}
@@ -336,7 +348,9 @@ const ProjectSettingsDates = ({ project }) => {
                 </label>
                 <Inplace closable>
                   <InplaceDisplay>
-                    {formik.values.spStart != null ? (formik.values.spStart).toLocaleDateString() : 'Click to Edit'}
+                    {formik.values.spStart != null
+                      ? formik.values.spStart.toLocaleDateString()
+                      : "Click to Edit"}
                   </InplaceDisplay>
                   <InplaceContent>
                     <Calendar
@@ -345,50 +359,57 @@ const ProjectSettingsDates = ({ project }) => {
                       value={formik.values.spStart}
                       viewDate={formik.values.spStart}
                       onChange={formik.handleChange}
-                      style={{ width: '400px' }}
+                      style={{ width: "400px" }}
                       className={classNames({
                         "p-invalid": isFormFieldValid("spStart"),
-                      })} />
+                      })}
+                    />
                   </InplaceContent>
                 </Inplace>
                 {getFormErrorMessage("spStart")}
-              </div></>}
+              </div>
+            </>
+          )}
 
           {/* ind DATES */}
-          {project.indEnabled &&
-            <><div className="field grid">
-              <label
-                htmlFor="indPredictedStart"
-                style={{ width: '250px' }}
-                className={classNames({
-                  "p-error": isFormFieldValid("indPredictedStart"),
-                })}
-              >
-                IND Predicted Start Date :
-              </label>
-              <Inplace closable>
-                <InplaceDisplay>
-                  {formik.values.indPredictedStart != null ? (formik.values.indPredictedStart).toLocaleDateString() : 'Click to Edit'}
-                </InplaceDisplay>
-                <InplaceContent>
-                  <Calendar
-                    id="indPredictedStart"
-                    name="indPredictedStart"
-                    value={formik.values.indPredictedStart}
-                    viewDate={formik.values.indPredictedStart}
-                    onChange={formik.handleChange}
-                    style={{ width: '400px' }}
-                    className={classNames({
-                      "p-invalid": isFormFieldValid("indPredictedStart"),
-                    })} />
-                </InplaceContent>
-              </Inplace>
-              {getFormErrorMessage("indPredictedStart")}
-            </div>
+          {project.indEnabled && (
+            <>
+              <div className="field grid">
+                <label
+                  htmlFor="indPredictedStart"
+                  style={{ width: "250px" }}
+                  className={classNames({
+                    "p-error": isFormFieldValid("indPredictedStart"),
+                  })}
+                >
+                  IND Predicted Start Date :
+                </label>
+                <Inplace closable>
+                  <InplaceDisplay>
+                    {formik.values.indPredictedStart != null
+                      ? formik.values.indPredictedStart.toLocaleDateString()
+                      : "Click to Edit"}
+                  </InplaceDisplay>
+                  <InplaceContent>
+                    <Calendar
+                      id="indPredictedStart"
+                      name="indPredictedStart"
+                      value={formik.values.indPredictedStart}
+                      viewDate={formik.values.indPredictedStart}
+                      onChange={formik.handleChange}
+                      style={{ width: "400px" }}
+                      className={classNames({
+                        "p-invalid": isFormFieldValid("indPredictedStart"),
+                      })}
+                    />
+                  </InplaceContent>
+                </Inplace>
+                {getFormErrorMessage("indPredictedStart")}
+              </div>
               <div className="field grid">
                 <label
                   htmlFor="indStart"
-                  style={{ width: '250px' }}
+                  style={{ width: "250px" }}
                   className={classNames({
                     "p-error": isFormFieldValid("indStart"),
                   })}
@@ -397,7 +418,9 @@ const ProjectSettingsDates = ({ project }) => {
                 </label>
                 <Inplace closable>
                   <InplaceDisplay>
-                    {formik.values.indStart != null ? (formik.values.indStart).toLocaleDateString() : 'Click to Edit'}
+                    {formik.values.indStart != null
+                      ? formik.values.indStart.toLocaleDateString()
+                      : "Click to Edit"}
                   </InplaceDisplay>
                   <InplaceContent>
                     <Calendar
@@ -406,51 +429,59 @@ const ProjectSettingsDates = ({ project }) => {
                       value={formik.values.indStart}
                       viewDate={formik.values.indStart}
                       onChange={formik.handleChange}
-                      style={{ width: '400px' }}
+                      style={{ width: "400px" }}
                       className={classNames({
                         "p-invalid": isFormFieldValid("indStart"),
-                      })} />
+                      })}
+                    />
                   </InplaceContent>
                 </Inplace>
                 {getFormErrorMessage("indStart")}
               </div>
-            </>}
+            </>
+          )}
 
           {/* clinicalP1 DATES */}
-          {project.clinicalP1Enabled &&
-            <><div className="field grid">
-              <label
-                htmlFor="clinicalP1PredictedStart"
-                style={{ width: '250px' }}
-                className={classNames({
-                  "p-error": isFormFieldValid("clinicalP1PredictedStart"),
-                })}
-              >
-                P1 Predicted Start Date :
-              </label>
-              <Inplace closable>
-                <InplaceDisplay>
-                  {formik.values.clinicalP1PredictedStart != null ? (formik.values.clinicalP1PredictedStart).toLocaleDateString() : 'Click to Edit'}
-                </InplaceDisplay>
-                <InplaceContent>
-                  <Calendar
-                    id="clinicalP1PredictedStart"
-                    name="clinicalP1PredictedStart"
-                    value={formik.values.clinicalP1PredictedStart}
-                    viewDate={formik.values.clinicalP1PredictedStart}
-                    onChange={formik.handleChange}
-                    style={{ width: '400px' }}
-                    className={classNames({
-                      "p-invalid": isFormFieldValid("clinicalP1PredictedStart"),
-                    })} />
-                </InplaceContent>
-              </Inplace>
-              {getFormErrorMessage("clinicalP1PredictedStart")}
-            </div>
+          {project.clinicalP1Enabled && (
+            <>
+              <div className="field grid">
+                <label
+                  htmlFor="clinicalP1PredictedStart"
+                  style={{ width: "250px" }}
+                  className={classNames({
+                    "p-error": isFormFieldValid("clinicalP1PredictedStart"),
+                  })}
+                >
+                  P1 Predicted Start Date :
+                </label>
+                <Inplace closable>
+                  <InplaceDisplay>
+                    {formik.values.clinicalP1PredictedStart != null
+                      ? formik.values.clinicalP1PredictedStart.toLocaleDateString()
+                      : "Click to Edit"}
+                  </InplaceDisplay>
+                  <InplaceContent>
+                    <Calendar
+                      id="clinicalP1PredictedStart"
+                      name="clinicalP1PredictedStart"
+                      value={formik.values.clinicalP1PredictedStart}
+                      viewDate={formik.values.clinicalP1PredictedStart}
+                      onChange={formik.handleChange}
+                      style={{ width: "400px" }}
+                      className={classNames({
+                        "p-invalid": isFormFieldValid(
+                          "clinicalP1PredictedStart"
+                        ),
+                      })}
+                    />
+                  </InplaceContent>
+                </Inplace>
+                {getFormErrorMessage("clinicalP1PredictedStart")}
+              </div>
               <div className="field grid">
                 <label
                   htmlFor="clinicalP1Start"
-                  style={{ width: '250px' }}
+                  style={{ width: "250px" }}
                   className={classNames({
                     "p-error": isFormFieldValid("clinicalP1Start"),
                   })}
@@ -459,7 +490,9 @@ const ProjectSettingsDates = ({ project }) => {
                 </label>
                 <Inplace closable>
                   <InplaceDisplay>
-                    {formik.values.clinicalP1Start != null ? (formik.values.clinicalP1Start).toLocaleDateString() : 'Click to Edit'}
+                    {formik.values.clinicalP1Start != null
+                      ? formik.values.clinicalP1Start.toLocaleDateString()
+                      : "Click to Edit"}
                   </InplaceDisplay>
                   <InplaceContent>
                     <Calendar
@@ -468,21 +501,23 @@ const ProjectSettingsDates = ({ project }) => {
                       value={formik.values.clinicalP1Start}
                       viewDate={formik.values.clinicalP1Start}
                       onChange={formik.handleChange}
-                      style={{ width: '400px' }}
+                      style={{ width: "400px" }}
                       className={classNames({
                         "p-invalid": isFormFieldValid("clinicalP1Start"),
-                      })} />
+                      })}
+                    />
                   </InplaceContent>
                 </Inplace>
                 {getFormErrorMessage("clinicalP1Start")}
               </div>
-            </>}
+            </>
+          )}
           <div className="field grid">
             <Button
               icon="icon icon-common icon-database-submit"
               type="submit"
               label="Save Date Changes"
-              className="p-button-secondary"
+              className="p-button-secondary p-button-outlined"
               style={{ width: "20rem" }}
               loading={editingProject}
             />
@@ -528,7 +563,6 @@ const ProjectSettingsDates = ({ project }) => {
           "clinicalP1PredictedStart",
           "clinicalP1Description",
         ]} /> */}
-
     </React.Fragment>
   );
 };

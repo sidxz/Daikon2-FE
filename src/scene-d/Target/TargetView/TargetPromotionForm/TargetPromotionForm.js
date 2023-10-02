@@ -63,11 +63,11 @@ const TargetPromotionForm = ({ data, selectedTarget }) => {
     };
   });
 
-  console.log("formReadObject");
-  console.log(formReadObject);
+  // console.log("formReadObject");
+  // console.log(formReadObject);
 
   let updateTargetPromotionFormValue = (e) => {
-    console.log(e);
+    //console.log(e);
   };
 
   /* Generate the user answered question section */

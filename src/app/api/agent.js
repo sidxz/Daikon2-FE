@@ -4,7 +4,6 @@ import { appConfig } from "../../config";
 import history from "../../history";
 import AppSettingsService from "../../services/AppSettingsService";
 import AuthService from "../../services/AuthService";
-
 /* Check Pre Configuration */
 
 const AppPrecheck = () => {
@@ -270,6 +269,7 @@ const Accounts = {
 const Target = {
   list: () => requests.get(`/target/`),
   details: (id) => requests.get(`/target/${id}`),
+  detailsByName: (name) => requests.get(`/target/by-name/${name}`),
   history: (id) => requests.get(`/target/${id}/history`),
   editSummary: (updatedTargetSummary) =>
     requests.post(
@@ -301,6 +301,7 @@ const Screen = {
   listPhenotypic: () => requests.get(`/screen/phenotypic`),
   details: (id) => requests.get(`/screen/${id}`),
   create: (newScreen) => requests.post(`/screen`, newScreen),
+  delete: (id) => requests.del(`/elevated/screen/${id}`),
   updateStatus: (id, status) =>
     requests.post(`/screen/${id}/update-status`, status),
   createPhenotypic: (newScreen) =>
@@ -325,11 +326,17 @@ const Screen = {
     requests.del(
       `/elevated/screenPhenotypic/${screenId}/delete-sequence/${screenRowId}`
     ),
+  updateTargetAssociation: (screenId, dto) =>
+    requests.post(
+      `/elevated/screen/${screenId}/update-target-association`,
+      dto
+    ),
 };
 
 const Hit = {
   create: (createHit) => requests.post(`/hit/`, createHit),
   update: (hitId, updatedHit) => requests.post(`/hit/${hitId}`, updatedHit),
+  delete: (hitId) => requests.del(`/elevated/hit/delete-hit/${hitId}`),
 };
 
 const Discussion = {
@@ -359,6 +366,10 @@ const Projects = {
   edit: (id, project) => requests.post(`/elevated/project/${id}`, project),
   terminate: (id, project) =>
     requests.post(`/elevated/project/${id}/terminate`, project),
+  restore: (id, project) =>
+    requests.post(`/elevated/project/${id}/restore`, project),
+  markDelete: (id, project) =>
+    requests.post(`/elevated/project/${id}/mark-delete`, project),
   createHA: (newHA) => requests.post(`/project`, newHA),
   createH2L: (id, h2lInfo) =>
     requests.post(`/elevated/project/${id}/createH2L`, h2lInfo),

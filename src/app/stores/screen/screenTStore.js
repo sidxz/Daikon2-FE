@@ -28,6 +28,8 @@ export default class ScreenTStore {
   isUpdatingScreenStatus = false;
   isBatchInsertingTargetBasedScreenSequence = false;
   isDeletingScreenRow = false;
+  isUpdatingTargetAssociation = false;
+  isDeletingScreen = false;
 
   // Data stores
   targetBasedScreenRegistry = new Map();
@@ -65,6 +67,7 @@ export default class ScreenTStore {
       isUpdatingScreenStatus: observable,
       isBatchInsertingTargetBasedScreenSequence: observable,
       isDeletingScreenRow: observable,
+      isUpdatingTargetAssociation: observable,
 
       // Actions and computed properties
       fetchTargetBasedScreens: action,
@@ -81,12 +84,20 @@ export default class ScreenTStore {
       updateScreenStatus: action,
       batchInsertTargetBasedScreenSequence: action,
       deleteScreenRow: action,
+      updateTargetAssociation: action,
+
+      isDeletingScreen: observable,
+      deleteScreen: action,
     });
   }
 
   // Fetch list of screens from the API
-  fetchTargetBasedScreens = async () => {
+  fetchTargetBasedScreens = async (invalidateCache = false) => {
     this.isLoadingTargetBasedScreens = true;
+
+    if (invalidateCache) {
+      this.isTgScreenRegistryCacheValid = false;
+    }
 
     // Check if the cache is valid and not empty
     if (
@@ -192,6 +203,29 @@ export default class ScreenTStore {
     } finally {
       runInAction(() => {
         this.isEditingScreen = false;
+      });
+    }
+    return res;
+  };
+
+  // delete screen
+  deleteScreen = async (id) => {
+    this.isDeletingScreen = true;
+    let res = null;
+    // send to server
+    try {
+      res = await agent.Screen.delete(id);
+      runInAction(() => {
+        toast.success("Successfully deleted screen.");
+        this.isDeletingScreen = false;
+        this.isTgScreenRegistryCacheValid = false;
+        this.fetchTargetBasedScreens();
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      runInAction(() => {
+        this.isDeletingScreen = false;
       });
     }
     return res;
@@ -333,6 +367,33 @@ export default class ScreenTStore {
     } finally {
       runInAction(() => {
         this.isDeletingScreenRow = false;
+      });
+    }
+    return res;
+  };
+
+  updateTargetAssociation = async (screenId, updateTargetId) => {
+    this.isUpdatingTargetAssociation = true;
+    let res = null;
+    // send to server
+    try {
+      res = await agent.Screen.updateTargetAssociation(screenId, {
+        screenId: screenId,
+        targetId: updateTargetId,
+      });
+      runInAction(() => {
+        toast.success("Successfully updated target association.");
+        this.isTgScreenRegistryCacheValid = false;
+        this.rootStore.compoundEvolutionStore.isCompoundEvolutionRegistryCacheValid = false;
+        this.fetchTargetBasedScreens();
+        this.fetchTargetBasedScreen(screenId, true);
+        this.isUpdatingTargetAssociation = false;
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      runInAction(() => {
+        this.isUpdatingTargetAssociation = false;
       });
     }
     return res;

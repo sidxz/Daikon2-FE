@@ -24,7 +24,7 @@ import TargetPromotionForm from "./TargetPromotionForm/TargetPromotionForm";
 import TargetPromotionFormEdit from "./TargetPromotionForm/TargetPromotionFormEdit/TargetPromotionFormEdit";
 import TargetRename from "./TargetRename/TargetRename";
 import TargetScorecard from "./TargetScorecard/TargetScorecard";
-import TargetScreenPromotionQuestionaire from "./TargetScreenPromotionQuestionaire/TargetScreenPromotionQuestionaire";
+import TargetScreenPromotionQuestionnaire from "./TargetScreenPromotionQuestionnaire/TargetScreenPromotionQuestionnaire";
 
 /**
  * Component for viewing the target details.
@@ -181,7 +181,7 @@ const TargetView = () => {
               </EmbeddedHelp>
             </div>
             <div className="flex w-full">
-              <TargetScreenPromotionQuestionaire
+              <TargetScreenPromotionQuestionnaire
                 closeSidebar={() => setDisplayPromotionDialog(false)}
               />
             </div>

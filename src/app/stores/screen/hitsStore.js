@@ -32,6 +32,13 @@ export default class HitsStore {
   isBatchInsertingHits = false;
 
   /**
+   * Status of whether a hit row is currently being deleted.
+   * @type {boolean}
+   * @default false
+   */
+  isDeletingHitRow = false;
+
+  /**
    * Constructor for the HitsStore class.
    * @param {Object} rootStore - The root store.
    */
@@ -46,6 +53,9 @@ export default class HitsStore {
 
       isBatchInsertingHits: observable,
       batchInsertHits: action,
+
+      isDeletingHitRow: observable,
+      deleteHitRow: action,
     });
   }
 
@@ -171,5 +181,46 @@ export default class HitsStore {
         this.isBatchInsertingHits = false;
       });
     }
+  };
+
+  /**
+   * Delete a hit
+   * @param {number} id - The id of the hit to delete.
+   * @return {Object} The response from the server. | DELETE |
+   */
+
+  deleteHitRow = async (hit, screenType) => {
+    this.isDeletingHitRow = true;
+    let res = null;
+    // send to server
+    try {
+      res = await agent.Hit.delete(hit.id);
+      runInAction(() => {
+        // silently fetch the new screen
+        if (screenType === "Phenotypic") {
+          this.rootStore.screenPStore.fetchPhenotypicScreen(
+            hit.screenId,
+            true,
+            false
+          );
+        }
+        if (screenType === "TargetBased") {
+          this.rootStore.screenTStore.fetchTargetBasedScreen(
+            hit.screenId,
+            true,
+            false
+          );
+        }
+        toast.success("Successfully deleted hit.");
+        this.isDeletingHitRow = false;
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      runInAction(() => {
+        this.isDeletingHitRow = false;
+      });
+    }
+    return res;
   };
 }

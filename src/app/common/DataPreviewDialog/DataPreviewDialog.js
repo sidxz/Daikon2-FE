@@ -90,9 +90,9 @@ const DataPreviewDialog = ({
 
           if (String(rowData[key]) !== String(existingRow[key])) {
             //Existing cell with changed data
-            console.log("key: " + key);
-            console.log("rowData[key]: " + rowData[key]);
-            console.log("existingRow[key]: " + existingRow[key]);
+            // console.log("key: " + key);
+            // console.log("rowData[key]: " + rowData[key]);
+            // console.log("existingRow[key]: " + existingRow[key]);
             status = "Modified";
             break;
           }

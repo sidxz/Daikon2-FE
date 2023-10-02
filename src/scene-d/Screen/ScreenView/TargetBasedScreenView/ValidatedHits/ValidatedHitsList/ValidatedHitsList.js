@@ -1,18 +1,21 @@
 import { observer } from "mobx-react-lite";
 import { Menubar } from "primereact/menubar";
 
+import { Button } from "primereact/button";
 import { Chip } from "primereact/chip";
 import { Column } from "primereact/column";
 import { ConfirmDialog } from "primereact/confirmdialog";
 import { DataTable } from "primereact/datatable";
 import { Dialog } from "primereact/dialog";
 import { FileUpload } from "primereact/fileupload";
+import { Tag } from "primereact/tag";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { ImDownload } from "react-icons/im";
 import { SiMicrosoftexcel } from "react-icons/si";
 import { TbBookDownload } from "react-icons/tb";
 import { toast } from "react-toastify";
 import DataPreviewDialog from "../../../../../../app/common/DataPreviewDialog/DataPreviewDialog";
+import DeleteConfirmation from "../../../../../../app/common/DeleteConfirmation/DeleteConfirmation";
 import ExportToExcel from "../../../../../../app/common/Functions/Excel/ExportToExcel";
 import { GenerateTemplate } from "../../../../../../app/common/Functions/Excel/GenerateTemplate";
 import ImportFromExcel from "../../../../../../app/common/Functions/Excel/ImportFromExcel";
@@ -37,7 +40,12 @@ const ValidatedHitsList = ({ screenId }) => {
   } = rootStore.screenTStore;
   const { user } = rootStore.userStore;
   const { enableVoting, freezeVoting } = rootStore.votingStore;
-  const { batchInsertHits, isBatchInsertingHits } = rootStore.hitsStore;
+  const {
+    batchInsertHits,
+    isBatchInsertingHits,
+    isDeletingHitRow,
+    deleteHitRow,
+  } = rootStore.hitsStore;
 
   const [displayHitsImportSidebar, setDisplayHitsImportSidebar] =
     useState(false);
@@ -50,6 +58,8 @@ const ValidatedHitsList = ({ screenId }) => {
   const [dataPreview, setDataPreview] = useState(null);
   const [showDataPreviewDialog, setShowDataPreviewDialog] = useState(false);
   const [showFileUploadDialog, setShowFileUploadDialog] = useState(false);
+  const [displayDeleteContainer, setDisplayDeleteContainer] = useState(false);
+  const [hitToDelete, setHitToDelete] = useState(null);
 
   let tableMenuItems = [];
 
@@ -64,6 +74,8 @@ const ValidatedHitsList = ({ screenId }) => {
   if (!isLoadingTargetBasedScreen && selectedTargetBasedScreen) {
   }
 
+  let isDeletingAllowed = user?.roles.includes("admin");
+
   // Map Data fields to Column Name
   const fieldToColumnName = {
     smile: "Structure",
@@ -76,10 +88,6 @@ const ValidatedHitsList = ({ screenId }) => {
   };
 
   /* Local functions */
-
-  const exportCSV = (selectionOnly) => {
-    dt.current.exportCSV({ selectionOnly });
-  };
 
   let validatePromoteToHA = () => {
     if (selectedCompounds === null) {
@@ -148,12 +156,22 @@ const ValidatedHitsList = ({ screenId }) => {
   const StructureBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
-        <div>
-          <SmilesViewWithDetails
-            compound={rowData?.compound}
-            width={"220"}
-            height={"220"}
-          />
+        <div
+          className="flex flex-column"
+          style={{ width: "300px", height: "310px" }}
+        >
+          <div className="flex justify-content-end">
+            {rowData.isHitPromoted && (
+              <Tag severity="success" value="Promoted"></Tag>
+            )}
+          </div>
+          <div className="flex">
+            <SmilesViewWithDetails
+              compound={rowData?.compound}
+              width={"300"}
+              height={"300"}
+            />
+          </div>
         </div>
       </React.Fragment>
     );
@@ -189,6 +207,28 @@ const ValidatedHitsList = ({ screenId }) => {
         />
       </div>
     );
+  };
+
+  const DeleteBodyTemplate = (rowData) => {
+    return (
+      <Button
+        type="button"
+        icon="pi pi-trash"
+        severity="danger"
+        text
+        onClick={() => {
+          setHitToDelete(rowData);
+          setDisplayDeleteContainer(true);
+        }}
+      />
+    );
+  };
+
+  let deleteRow = () => {
+    deleteHitRow(hitToDelete, "TargetBased").then(() => {
+      setDisplayDeleteContainer(false);
+      setHitToDelete(null);
+    });
   };
 
   var tableHeaderMenuitems = [...tableMenuItems];
@@ -397,36 +437,31 @@ const ValidatedHitsList = ({ screenId }) => {
                 headerStyle={{ width: "3em" }}
               ></Column>
             )}
-            {/* <Column
-              field="Source"
-              header="Source"
-              body={SourceBodyTemplate}
-              style={{ width: "12%" }}
-            /> */}
+
             <Column
               field={(rowData) => rowData?.compound?.smile}
               header="Structure"
               body={StructureBodyTemplate}
-              style={{ minWidth: "300px" }}
+              style={{ width: "350px" }}
             />
             <Column
-              field={(rowData) => rowData?.library + "|" + rowData.source}
-              header="Library|Source"
+              field={(rowData) => rowData?.library + " | " + rowData.source}
+              header="Library | Source"
               body={LibraryBodyTemplate}
-              style={{ minWidth: "130px" }}
+              headerStyle={{ width: "6rem", textWrap: "wrap" }}
             />
             <Column
               field={(rowData) => rowData?.compound?.externalCompoundIds}
               header="Compound Id"
               body={CompoundIdBodyTemplate}
-              style={{ minWidth: "150px" }}
+              headerStyle={{ width: "7rem", textWrap: "wrap" }}
             />
 
             <Column
               field="iC50"
               header="IC50 (&micro;M) "
               body={EnzymeActivityBodyTemplate}
-              style={{ width: "50px" }}
+              headerStyle={{ width: "5rem", textWrap: "wrap" }}
               sortable
             />
             {/* <Column
@@ -440,12 +475,14 @@ const ValidatedHitsList = ({ screenId }) => {
               header="MIC (&micro;M)"
               body={MICBodyTemplate}
               style={{ width: "50px" }}
+              headerStyle={{ maxWidth: "5rem", textWrap: "wrap" }}
+              sortable
             />
             <Column
               field="clusterGroup"
               header="Cluster"
               body={ClusterBodyTemplate}
-              style={{ width: "90px" }}
+              headerStyle={{ minWidth: "4rem" }}
               sortable
             />
             <Column
@@ -455,6 +492,14 @@ const ValidatedHitsList = ({ screenId }) => {
               style={{ minWidth: "200px" }}
               sortable
             />
+
+            {isDeletingAllowed && (
+              <Column
+                body={DeleteBodyTemplate}
+                exportable={false}
+                headerStyle={{ minWidth: "4rem" }}
+              />
+            )}
           </DataTable>
         </div>
       </div>
@@ -549,6 +594,18 @@ const ValidatedHitsList = ({ screenId }) => {
           }}
           auto
         />
+      </Dialog>
+      {/* Delete confirmation dialog */}
+      <Dialog
+        className="bg-red-50"
+        header={"Delete Library Screen Entry"}
+        visible={displayDeleteContainer}
+        closable={true}
+        draggable={true}
+        style={{ width: "50vw" }}
+        onHide={() => setDisplayDeleteContainer(false)}
+      >
+        <DeleteConfirmation callBack={deleteRow} />
       </Dialog>
       <DataPreviewDialog
         headerMap={fieldToColumnName}

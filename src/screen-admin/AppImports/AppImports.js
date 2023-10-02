@@ -3,6 +3,7 @@ import { Menu } from "primereact/menu";
 import { Toast } from "primereact/toast";
 import React, { useRef } from "react";
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import AppImportTargetValues from "./AppImportTargetValues/AppImportTargetValues";
 import AppImportsTarget from "./AppImportsTarget/AppImportsTarget";
 
 const AppImports = () => {
@@ -21,6 +22,13 @@ const AppImports = () => {
             navigate("targets/");
           },
         },
+        {
+          label: "Target Values",
+          icon: "icon icon-common icon-snowflake",
+          command: () => {
+            navigate("target-values/");
+          },
+        },
       ],
     },
   ];
@@ -35,6 +43,7 @@ const AppImports = () => {
           <Routes>
             <Route index element={<Navigate replace to="targets/" />} />
             <Route path="targets/" element={<AppImportsTarget />} />
+            <Route path="target-values/" element={<AppImportTargetValues />} />
           </Routes>
         </div>
       </div>

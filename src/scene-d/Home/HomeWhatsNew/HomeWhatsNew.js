@@ -34,10 +34,19 @@ const HomeWhatsNew = () => {
         <p className="m-0 p-0">
           <ul>
             <li>
-              👉 Integrated Target Promotion Questionnaire Tool.
+              📊 Introducing the HA Landing page to showcase all project statuses, including HA Ready, Active, Inactive, and Portfolio Ready projects, providing a comprehensive overview.
             </li>
-            <li>🚀 Import & Export Functionality for Screen Component for effortless bulk operations.</li>
-
+            <li>
+              🔍 Highlighting Promoted structures: We've added an indicator to Validated Hits, making it easy to identify and showcase the promoted compounds.
+            </li>
+            <li>
+              🛠️ Improved Target Component: Enhancements include Target Renaming, Merge, Update Gene Associations, and Delete options to streamline data management tasks.
+            </li>
+            <li>
+              🌟 Upgraded Screen component: Introducing new features such as the ability to Update Target Association and utilize Delete options.
+            </li>
+            <li>
+              ⚙️ Expanded Project Settings: We've introduced more features to the Project Settings for HA, Portfolio, and Post-Portfolio components to perform actions like Project Renaming, Restore Terminated Projects, and Permanent Project Deletion for added flexibility and control.</li>
           </ul>
         </p>
       </Card>

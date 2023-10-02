@@ -1,6 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { Dialog } from "primereact/dialog";
 import { Menu } from "primereact/menu";
+import { Sidebar } from "primereact/sidebar";
 import { Toast } from "primereact/toast";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import {
@@ -13,10 +14,13 @@ import {
 import EmbeddedHelp from "../../../../app/common/EmbeddedHelp/EmbeddedHelp";
 import Loading from "../../../../app/layout/Loading/Loading";
 import { RootStoreContext } from "../../../../app/stores/rootStore";
+import ScreenAdd from "./ScreenAdd/ScreenAdd";
+import ScreenDelete from "./ScreenDelete/ScreenDelete";
 import ScreenDiscussion from "./ScreenDiscussion/ScreenDiscussion";
 import ScreenEdit from "./ScreenEdit/ScreenEdit";
 import ScreenMerge from "./ScreenMerge/ScreenMerge";
 import ScreenSequences from "./ScreenSequences/ScreenSequences";
+import UpdateTargetAssociation from "./UpdateTargetAssociation/UpdateTargetAssociation";
 import ValidatedHits from "./ValidatedHits/ValidatedHits";
 
 const TargetBasedScreenView = () => {
@@ -53,6 +57,8 @@ const TargetBasedScreenView = () => {
     params.id,
     selectedScreenTargetFilter,
   ]);
+
+  const [displayPromotionDialog, setDisplayPromotionDialog] = useState(false);
 
   const [displayMergeScreenDialog, setDisplayMergeScreenDialog] =
     useState(false);
@@ -102,6 +108,18 @@ const TargetBasedScreenView = () => {
         },
       ],
     },
+    {
+      label: "Actions",
+      items: [
+        {
+          label: "Add a Screen",
+          icon: "icon icon-common icon-database-submit",
+          command: () => {
+            setDisplayPromotionDialog(true);
+          },
+        },
+      ],
+    },
   ];
 
   if (user.roles.includes("admin")) {
@@ -109,17 +127,31 @@ const TargetBasedScreenView = () => {
       label: "Admin Section",
       items: [
         {
-          label: "Edit Screen",
+          label: "Edit",
           icon: "icon icon-common icon-edit",
           command: () => {
             setDisplayEditScreenDialog(true);
           },
         },
         {
-          label: "Merge Screens",
+          label: "Merge",
           icon: "icon icon-common icon-compress",
           command: () => {
             setDisplayMergeScreenDialog(true);
+          },
+        },
+        {
+          label: "Update Target Association",
+          icon: "icon icon-common icon-target",
+          command: () => {
+            navigate("update-target-association/");
+          },
+        },
+        {
+          label: "Delete",
+          icon: "icon icon-common icon-remove",
+          command: () => {
+            navigate("delete/");
           },
         },
       ],
@@ -131,13 +163,13 @@ const TargetBasedScreenView = () => {
     return (
       <React.Fragment>
         <Toast ref={toast} />
-        <br />
-        <div className="flex gap-2 w-full">
+
+        <div className="flex gap-1 w-full">
           <div className="flex">
             <Menu model={SideMenuItems} />
           </div>
 
-          <div className="flex w-full">
+          <div className="flex w-full w-10">
             <Routes>
               <Route
                 index
@@ -155,9 +187,45 @@ const TargetBasedScreenView = () => {
                 path="discussion/"
                 element={<ScreenDiscussion TargetName={params.id} />}
               />
+              <Route
+                path="update-target-association/"
+                element={<UpdateTargetAssociation TargetName={params.id} />}
+              />
+              <Route
+                path="delete/"
+                element={<ScreenDelete TargetName={params.id} />}
+              />
             </Routes>
           </div>
         </div>
+        <Sidebar
+          visible={displayPromotionDialog}
+          position="right"
+          style={{ width: "30em", overflowX: "auto" }}
+          onHide={() => setDisplayPromotionDialog(false)}
+        >
+          <div className="flex flex-column gap-3 pl-3  w-full">
+            <div className="flex">
+              <h2>
+                <i className="icon icon-common icon-plus-circle"></i> Add a new
+                Screen
+              </h2>
+            </div>
+            <div className="flex">
+              <EmbeddedHelp>
+                This would create a new screening series. If you are intending
+                to add screening information to an existing screening set please
+                add it via the screening tab.
+              </EmbeddedHelp>
+            </div>
+            <div className="flex w-full">
+              <ScreenAdd
+                TargetName={params.id}
+                closeSidebar={() => setDisplayPromotionDialog(false)}
+              />
+            </div>
+          </div>
+        </Sidebar>
 
         <Dialog
           visible={displayEditScreenDialog}

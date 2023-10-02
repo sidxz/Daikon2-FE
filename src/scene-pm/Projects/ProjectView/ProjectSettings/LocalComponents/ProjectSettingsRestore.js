@@ -5,16 +5,15 @@ import { InputText } from "primereact/inputtext";
 import React, { useContext, useState } from "react";
 import { RootStoreContext } from "../../../../../app/stores/rootStore";
 
-const ProjectSettingsTerminate = ({ project }) => {
+const ProjectSettingsRestore = ({ project }) => {
   const rootStore = useContext(RootStoreContext);
-  const { isTerminatingProject, terminateProject } = rootStore.projectStore;
+  const { isRestoringProject, restoreProject } = rootStore.projectStore;
 
-  const [visibleTerminationDialog, setVisibleTerminationDialog] =
-    useState(false);
-  const [termTextValue, setTermTextValue] = useState("");
-  const [activateTerminateButton, setActivateTerminateButton] = useState(false);
+  const [visibleRestoreDialog, setVisibleRestoreDialog] = useState(false);
+  const [restoreTextValue, setRestoreTextValue] = useState("");
+  const [activateRestoreButton, setActivateRestoreButton] = useState(false);
 
-  if (project.status === "Terminated") {
+  if (project.status === "Active") {
     return (
       <div
         style={{
@@ -25,7 +24,7 @@ const ProjectSettingsTerminate = ({ project }) => {
           borderWidth: "1px",
         }}
       >
-        The project is terminated
+        The project is Active
       </div>
     );
   }
@@ -47,65 +46,64 @@ const ProjectSettingsTerminate = ({ project }) => {
   }
 
   var checkTermText = (val) => {
-    setTermTextValue(val);
+    setRestoreTextValue(val);
     if (val === project.projectName) {
-      setActivateTerminateButton(true);
+      setActivateRestoreButton(true);
     } else {
-      setActivateTerminateButton(false);
+      setActivateRestoreButton(false);
     }
   };
 
   return (
     <div>
-      <div className="flex border-1 border-orange-600 border-round">
+      <div className="flex border-1 border-blue-600 border-round">
         <div className="flex flex-column gap-2 p-2">
           <div className="flex">
-            <b>Terminate Project</b>
+            <b>Restore Project</b>
           </div>
           <div className="flex">
-            Terminating this project will end it's lifecycle and the project
-            will be archived.
+            Restore the project to the Active state. This will allow the project
+            to be modified and updated.
           </div>
           <div className="flex">
             <Button
-              label="Terminate"
-              icon="icon icon-common icon-minus-circle"
-              className="p-button-outlined p-button-danger"
+              label="Restore"
+              icon="icon icon-common icon-envelope-open"
+              className="p-button-outlined"
               onClick={() => {
-                setTermTextValue("");
-                setVisibleTerminationDialog(true);
+                setRestoreTextValue("");
+                setVisibleRestoreDialog(true);
               }}
             />
           </div>
         </div>
       </div>
-
       <Dialog
-        visible={visibleTerminationDialog}
+        visible={visibleRestoreDialog}
         style={{ width: "700px" }}
-        onHide={() => setVisibleTerminationDialog(false)}
-        header="Project Termination"
+        onHide={() => setVisibleRestoreDialog(false)}
+        header="Restore Project"
       >
-        Type '<b>{project.projectName}</b>' in the text box and click
-        'Terminate' to terminate the project.
+        Type '<b>{project.projectName}</b>' in the text box and click 'Restore'
+        to restore the project.
         <br />
         <br />
         <div className="formgroup">
           <div className="field w-full">
             <InputText
               className="w-full"
-              value={termTextValue}
+              value={restoreTextValue}
               onChange={(e) => checkTermText(e.target.value)}
             />
           </div>
           <div className="field">
             <Button
-              label="Terminate"
-              className="p-button-outlined p-button-danger"
-              disabled={!activateTerminateButton}
-              loading={isTerminatingProject}
-              icon="icon icon-common icon-minus-circle"
-              onClick={() => terminateProject(project)}
+              label="Restore"
+              className="p-button-outlined p-button-primary"
+              disabled={!activateRestoreButton}
+              loading={isRestoringProject}
+              icon="icon icon-common icon-envelope-open"
+              onClick={() => restoreProject(project)}
             />
           </div>
         </div>
@@ -114,4 +112,4 @@ const ProjectSettingsTerminate = ({ project }) => {
   );
 };
 
-export default observer(ProjectSettingsTerminate);
+export default observer(ProjectSettingsRestore);

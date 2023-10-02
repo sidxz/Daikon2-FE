@@ -1,30 +1,20 @@
 import { useFormik } from "formik";
 import { Button } from "primereact/button";
 import { Dropdown } from "primereact/dropdown";
-import { Inplace, InplaceContent, InplaceDisplay } from 'primereact/inplace';
+import { Inplace, InplaceContent, InplaceDisplay } from "primereact/inplace";
 import { classNames } from "primereact/utils";
 import React, { useContext } from "react";
 
 import { RootStoreContext } from "../../../../../app/stores/rootStore";
 
-
-
 const ProjectSettingsPriority = ({ project }) => {
-
-
-
   const rootStore = useContext(RootStoreContext);
-  const {
-    editProject,
-    editingProject,
-  } = rootStore.projectStore;
-
+  const { editProject, editingProject } = rootStore.projectStore;
 
   const formik = useFormik({
     initialValues: {
       priority: project.priority,
       probability: project.probability,
-
     },
     validate: (data) => {
       let errors = {};
@@ -40,10 +30,10 @@ const ProjectSettingsPriority = ({ project }) => {
       return errors;
     },
     onSubmit: (data) => {
-      var editedProject = { ...project }
+      var editedProject = { ...project };
       editedProject.priority = data.priority;
       editedProject.probability = data.probability;
-      editProject(editedProject)
+      editProject(editedProject);
       // formik.resetForm();
     },
   });
@@ -61,11 +51,10 @@ const ProjectSettingsPriority = ({ project }) => {
   return (
     <div className="card w-full">
       <form onSubmit={formik.handleSubmit} className="p-fluid">
-
         <div className="field grid">
           <label
             htmlFor="priority"
-            style={{ width: '250px' }}
+            style={{ width: "250px" }}
             className={classNames({
               "p-error": isFormFieldValid("priority"),
             })}
@@ -84,7 +73,6 @@ const ProjectSettingsPriority = ({ project }) => {
                 value={formik.values.priority}
                 onChange={formik.handleChange("priority")}
                 placeholder="Select Priority"
-
               />
             </InplaceContent>
           </Inplace>
@@ -94,7 +82,7 @@ const ProjectSettingsPriority = ({ project }) => {
         <div className="field grid">
           <label
             htmlFor="probability"
-            style={{ width: '250px' }}
+            style={{ width: "250px" }}
             className={classNames({
               "p-error": isFormFieldValid("probability"),
             })}
@@ -113,9 +101,7 @@ const ProjectSettingsPriority = ({ project }) => {
                 value={formik.values.probability}
                 onChange={formik.handleChange("probability")}
                 placeholder="Select probability"
-
               />
-              
             </InplaceContent>
           </Inplace>
           {getFormErrorMessage("probability")}
@@ -126,14 +112,13 @@ const ProjectSettingsPriority = ({ project }) => {
             icon="icon icon-common icon-database-submit"
             type="submit"
             label="Save Priority & Probability Changes"
-            className="p-button-secondary"
+            className="p-button-secondary p-button-outlined"
             style={{ width: "20rem" }}
             loading={editingProject}
           />
         </div>
       </form>
     </div>
-
   );
 };
 

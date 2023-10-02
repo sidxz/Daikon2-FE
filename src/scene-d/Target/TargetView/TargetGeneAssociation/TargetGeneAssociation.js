@@ -49,9 +49,6 @@ const TargetGeneAssociation = ({ id }) => {
     return <Loading />;
   }
 
-  console.log("selectedTarget");
-  console.log(selectedTarget);
-
   /* Only Admins can access this page */
   if (!user.roles.includes("admin")) {
     return <Unauthorized />;

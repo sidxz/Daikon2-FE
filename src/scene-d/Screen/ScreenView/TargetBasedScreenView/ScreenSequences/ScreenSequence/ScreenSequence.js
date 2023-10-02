@@ -324,7 +324,7 @@ const ScreenSequence = ({ screenId }) => {
 
     return (
       <React.Fragment>
-        <div>
+        <div className="flex w-full">
           <OverlayPanel
             ref={op}
             showCloseIcon

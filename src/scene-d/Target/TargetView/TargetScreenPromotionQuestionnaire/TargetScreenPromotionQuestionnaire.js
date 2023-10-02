@@ -14,7 +14,7 @@ import { RootStoreContext } from "../../../../app/stores/rootStore";
  * @param {function} closeSidebar - Function to close the sidebar.
  */
 
-const TargetScreenPromotionQuestionaire = ({ closeSidebar }) => {
+const TargetScreenPromotionQuestionnaire = ({ closeSidebar }) => {
   // Get the MobX Store instance from the context
   const rootStore = useContext(RootStoreContext);
   const {
@@ -39,7 +39,7 @@ const TargetScreenPromotionQuestionaire = ({ closeSidebar }) => {
       let errors = {};
 
       if (!data.promotionDate) {
-        errors.promotionDate = "Promotion date  is required.";
+        errors.promotionDate = "Promotion date is required.";
       }
 
       if (data.method === "") {
@@ -55,6 +55,9 @@ const TargetScreenPromotionQuestionaire = ({ closeSidebar }) => {
       // Promote target to screen and close the sidebar on success
       promoteTargetToScreen(data).then((res) => {
         if (res !== null) {
+          console.log(
+            "calling close sidebar from TrackScreenPromotionQuestionnaire"
+          );
           closeSidebar();
         }
       });
@@ -216,4 +219,4 @@ const TargetScreenPromotionQuestionaire = ({ closeSidebar }) => {
   return <ProgressBar mode="indeterminate" style={{ height: "6px" }} />;
 };
 
-export default observer(TargetScreenPromotionQuestionaire);
+export default observer(TargetScreenPromotionQuestionnaire);

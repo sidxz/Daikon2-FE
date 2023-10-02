@@ -9,7 +9,7 @@ export default class ProjectStore {
   loadingProjects = false;
   loadingProject = false;
   editingProject = false;
-  terminatingProject = false;
+  isTerminatingProject = false;
   creatingUnlinkedProject = false;
   projectRegistry = new Map();
   projectRegistryExpanded = new Map();
@@ -36,6 +36,9 @@ export default class ProjectStore {
 
   isRenamingProjectName = false;
 
+  isRestoringProject = false;
+
+  isDeletingProject = false;
 
   constructor(rootStore) {
     this.rootStore = rootStore;
@@ -45,7 +48,7 @@ export default class ProjectStore {
       fetchProjects: action,
       fetchProject: action,
       editingProject: observable,
-      terminatingProject: observable,
+      isTerminatingProject: observable,
       projectRegistry: observable,
       projectRegistryExpanded: observable,
       projectRegistryCacheValid: observable,
@@ -86,6 +89,12 @@ export default class ProjectStore {
 
       renameProject: action,
       isRenamingProjectName: observable,
+
+      isRestoringProject: observable,
+      restoreProject: action,
+
+      isDeletingProject: observable,
+      markDeleteProject: action,
     });
   }
 
@@ -275,7 +284,7 @@ export default class ProjectStore {
   };
 
   terminateProject = async (project) => {
-    this.editingProject = true;
+    this.isTerminatingProject = true;
     let res = null;
     // send to server
     try {
@@ -289,7 +298,7 @@ export default class ProjectStore {
       console.error(error);
     } finally {
       runInAction(() => {
-        this.editingProject = false;
+        this.isTerminatingProject = false;
       });
     }
     return res;
@@ -413,18 +422,14 @@ export default class ProjectStore {
   };
 
   renameProject = async (updatedProjectName) => {
-
     this.isRenamingProjectName = true;
     let res = null;
     // send to server
     try {
-      res = await agent.Projects.rename(
-        this.selectedProject.id,
-        {
-          id: this.selectedProject.id,
-          updatedName: updatedProjectName
-        }
-      );
+      res = await agent.Projects.rename(this.selectedProject.id, {
+        id: this.selectedProject.id,
+        updatedName: updatedProjectName,
+      });
       runInAction(() => {
         toast.success("Project renamed successfully!");
         this.projectRegistryCacheValid = false;
@@ -435,6 +440,48 @@ export default class ProjectStore {
     } finally {
       runInAction(() => {
         this.isRenamingProjectName = false;
+      });
+    }
+    return res;
+  };
+
+  restoreProject = async (project) => {
+    this.isRestoringProject = true;
+    let res = null;
+    // send to server
+    try {
+      res = await agent.Projects.restore(this.selectedProject.id, project);
+      runInAction(() => {
+        toast.success("Project restored successfully!");
+        this.projectRegistryCacheValid = false;
+        this.fetchProject(this.selectedProject.id);
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      runInAction(() => {
+        this.isRestoringProject = false;
+      });
+    }
+    return res;
+  };
+
+  markDeleteProject = async (project) => {
+    this.isDeletingProject = true;
+    let res = null;
+    // send to server
+    try {
+      res = await agent.Projects.markDelete(this.selectedProject.id, project);
+      runInAction(() => {
+        toast.success("Project marked as deleted successfully!");
+        this.projectRegistryCacheValid = false;
+        this.fetchProject(this.selectedProject.id);
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      runInAction(() => {
+        this.isDeletingProject = false;
       });
     }
     return res;

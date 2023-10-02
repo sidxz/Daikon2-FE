@@ -11,7 +11,9 @@ import { appColors } from "../../../../colors";
 import ProjectSettingsDates from "./LocalComponents/ProjectSettingsDates";
 import ProjectSettingsDescriptions from "./LocalComponents/ProjectSettingsDescriptions";
 import ProjectSettingsGeneralInformation from "./LocalComponents/ProjectSettingsGeneralInformation";
+import ProjectSettingsMarkDelete from "./LocalComponents/ProjectSettingsMarkDelete";
 import ProjectSettingsPriority from "./LocalComponents/ProjectSettingsPriority";
+import ProjectSettingsRestore from "./LocalComponents/ProjectSettingsRestore";
 import ProjectSettingsStageOverride from "./LocalComponents/ProjectSettingsStageOverride";
 import ProjectSettingsTerminate from "./LocalComponents/ProjectSettingsTerminate";
 
@@ -88,8 +90,13 @@ const ProjectSettings = ({ id, project }) => {
                 </Fieldset>
               </div>
               <div className="flex">
-                <Fieldset className="w-full" legend="End of Lifecycle">
-                  <ProjectSettingsTerminate project={selectedProject} />
+                <Fieldset className="w-full" legend="Lifecycle">
+                  {selectedProject?.status === "Terminated" && (
+                    <ProjectSettingsRestore project={selectedProject} />
+                  )}
+                  {selectedProject?.status === "Active" && (
+                    <ProjectSettingsTerminate project={selectedProject} />
+                  )}
                 </Fieldset>
               </div>
             </div>
@@ -108,6 +115,11 @@ const ProjectSettings = ({ id, project }) => {
               <div className="flex mb-2" style={{ width: "50rem" }}>
                 <Fieldset className="w-full" legend="Project Team P/P">
                   <ProjectSettingsPriority project={selectedProject} />
+                </Fieldset>
+              </div>
+              <div className="flex mb-2" style={{ width: "50rem" }}>
+                <Fieldset className="w-full" legend="Danger Zone">
+                  <ProjectSettingsMarkDelete project={selectedProject} />
                 </Fieldset>
               </div>
             </div>

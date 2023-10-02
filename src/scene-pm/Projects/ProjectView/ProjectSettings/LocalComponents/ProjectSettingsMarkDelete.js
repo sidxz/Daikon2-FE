@@ -2,19 +2,20 @@ import { observer } from "mobx-react-lite";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
+import { Tag } from "primereact/tag";
 import React, { useContext, useState } from "react";
 import { RootStoreContext } from "../../../../../app/stores/rootStore";
 
-const ProjectSettingsTerminate = ({ project }) => {
+const ProjectSettingsMarkDelete = ({ project }) => {
   const rootStore = useContext(RootStoreContext);
-  const { isTerminatingProject, terminateProject } = rootStore.projectStore;
+  const { isDeletingProject, markDeleteProject } = rootStore.projectStore;
 
   const [visibleTerminationDialog, setVisibleTerminationDialog] =
     useState(false);
-  const [termTextValue, setTermTextValue] = useState("");
-  const [activateTerminateButton, setActivateTerminateButton] = useState(false);
+  const [delTextValue, setDelTextValue] = useState("");
+  const [activateDeleteButton, setActivateDeleteButton] = useState(false);
 
-  if (project.status === "Terminated") {
+  if (project.isDeleted) {
     return (
       <div
         style={{
@@ -25,7 +26,7 @@ const ProjectSettingsTerminate = ({ project }) => {
           borderWidth: "1px",
         }}
       >
-        The project is terminated
+        The project is deleted
       </div>
     );
   }
@@ -47,11 +48,11 @@ const ProjectSettingsTerminate = ({ project }) => {
   }
 
   var checkTermText = (val) => {
-    setTermTextValue(val);
+    setDelTextValue(val);
     if (val === project.projectName) {
-      setActivateTerminateButton(true);
+      setActivateDeleteButton(true);
     } else {
-      setActivateTerminateButton(false);
+      setActivateDeleteButton(false);
     }
   };
 
@@ -60,19 +61,23 @@ const ProjectSettingsTerminate = ({ project }) => {
       <div className="flex border-1 border-orange-600 border-round">
         <div className="flex flex-column gap-2 p-2">
           <div className="flex">
-            <b>Terminate Project</b>
+            <b>Delete Project</b>
           </div>
           <div className="flex">
-            Terminating this project will end it's lifecycle and the project
-            will be archived.
+            <Tag severity="danger" value="Danger"></Tag>
           </div>
+          <div className="flex">
+            Marking this project as deleted will remove it from the projects
+            list.
+          </div>
+          <div className="flex text-red-500	">This action cannot be undone.</div>
           <div className="flex">
             <Button
-              label="Terminate"
-              icon="icon icon-common icon-minus-circle"
+              label="DELETE"
+              icon="icon icon-common icon-close"
               className="p-button-outlined p-button-danger"
               onClick={() => {
-                setTermTextValue("");
+                setDelTextValue("");
                 setVisibleTerminationDialog(true);
               }}
             />
@@ -86,26 +91,28 @@ const ProjectSettingsTerminate = ({ project }) => {
         onHide={() => setVisibleTerminationDialog(false)}
         header="Project Termination"
       >
-        Type '<b>{project.projectName}</b>' in the text box and click
-        'Terminate' to terminate the project.
+        <div className="text-red-500">
+          Type '<b>{project.projectName}</b>' in the text box and click 'Delete'
+          to DELETE the project. This action cannot be undone.
+        </div>
         <br />
         <br />
         <div className="formgroup">
           <div className="field w-full">
             <InputText
               className="w-full"
-              value={termTextValue}
+              value={delTextValue}
               onChange={(e) => checkTermText(e.target.value)}
             />
           </div>
           <div className="field">
             <Button
-              label="Terminate"
+              label="DELETE"
               className="p-button-outlined p-button-danger"
-              disabled={!activateTerminateButton}
-              loading={isTerminatingProject}
-              icon="icon icon-common icon-minus-circle"
-              onClick={() => terminateProject(project)}
+              disabled={!activateDeleteButton}
+              loading={isDeletingProject}
+              icon="icon icon-common icon-close"
+              onClick={() => markDeleteProject(project)}
             />
           </div>
         </div>
@@ -114,4 +121,4 @@ const ProjectSettingsTerminate = ({ project }) => {
   );
 };
 
-export default observer(ProjectSettingsTerminate);
+export default observer(ProjectSettingsMarkDelete);
