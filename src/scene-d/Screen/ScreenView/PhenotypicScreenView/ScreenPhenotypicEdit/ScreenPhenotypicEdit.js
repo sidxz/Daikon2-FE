@@ -112,7 +112,7 @@ const ScreenPhenotypicEdit = ({ screenId }) => {
               errors.org = "Organization is required";
             }
             if (!values.promotionDate) {
-              errors.promotionDate = "Promotion Date is required";
+              errors.promotionDate = "Creation Date is required";
             }
             return errors;
           }}
@@ -195,7 +195,7 @@ const ScreenPhenotypicEdit = ({ screenId }) => {
 
                 <div className="flex flex-column w-full">
                   <div className="field">
-                    <label htmlFor="promotionDate">Promotion Date</label>
+                    <label htmlFor="promotionDate">Creation Date</label>
                     <Calendar
                       id="promotionDate"
                       name="promotionDate"
