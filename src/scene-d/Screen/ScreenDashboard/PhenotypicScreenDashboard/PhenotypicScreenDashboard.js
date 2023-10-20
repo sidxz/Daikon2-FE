@@ -14,9 +14,11 @@ import { RootStoreContext } from "../../../../app/stores/rootStore";
 const PhenotypicScreenDashboard = () => {
   // Extracting necessary properties from the screenPStore
   const rootStore = useContext(RootStoreContext);
+
   const {
     isLoadingPhenotypicScreens,
     phenotypicScreens,
+
     isPhenCacheValid,
     fetchPhenotypicScreens,
   } = rootStore.screenPStore;
@@ -48,6 +50,7 @@ const PhenotypicScreenDashboard = () => {
     phenotypicScreens,
     fetchPhenotypicScreens,
     isPhenCacheValid,
+
     dt,
     defaultNotesFilter,
   ]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -70,6 +73,16 @@ const PhenotypicScreenDashboard = () => {
       </React.Fragment>
     );
   };
+
+  const OrgBodyTemplate = (rowData) => {
+    return (
+      <React.Fragment>
+        <ScreenStatus id={rowData.id} status={rowData?.org?.alias} readOnly={true} />
+      </React.Fragment>
+    );
+  };
+
+
 
   const NotesBodyTemplate = (rowData) => {
     return (
@@ -102,19 +115,33 @@ const PhenotypicScreenDashboard = () => {
           filterMatchMode="contains"
           filterPlaceholder="Search by Screen Name"
           className="min-w-max"
-          // style={{minWidth: "50rem"}}
+        // style={{minWidth: "50rem"}}
         />
 
         <Column
           field="status"
           header="Status"
           body={StatusBodyTemplate}
-          // style={{minWidth: "50rem"}}
+          filter
+          filterMatchMode="contains"
+          filterPlaceholder="Search by Status"
+        // style={{minWidth: "50rem"}}
         />
 
         <Column
+          field="org"
+          header="Organization"
+          body={OrgBodyTemplate}
+          filter
+          filterMatchMode="contains"
+          filterPlaceholder="Search by Org"
+        // style={{minWidth: "50rem"}}
+        />
+
+
+        <Column
           field="notes"
-          header="Notes"
+          header="Notes (by default set to exclude Legacy screens)"
           body={NotesBodyTemplate}
           filter
           filterMatchMode="contains"
