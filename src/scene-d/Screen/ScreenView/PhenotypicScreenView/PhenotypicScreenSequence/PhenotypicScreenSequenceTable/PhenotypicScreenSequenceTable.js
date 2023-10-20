@@ -258,6 +258,18 @@ const PhenotypicScreenSequenceTable = ({ screenId }) => {
       );
     };
 
+    const CompoundsScreenedTemplate = (rowData) => {
+      return rowData.noOfCompoundsScreened !== -1
+        ? rowData.noOfCompoundsScreened
+        : "NA";
+    };
+
+    const UnverifiedHitCountTemplate = (rowData) => {
+      return rowData.noOfCompoundsScreened !== -1
+        ? rowData.noOfCompoundsScreened
+        : "NA";
+    };
+
     const deleteBodyTemplate = (rowData) => {
       return (
         <Button
@@ -367,12 +379,14 @@ const PhenotypicScreenSequenceTable = ({ screenId }) => {
               header={fieldToColumnName["noOfCompoundsScreened"]}
               headerStyle={{ maxWidth: "7rem", textWrap: "wrap" }}
               editor={(options) => TextEditor(options)}
+              body={CompoundsScreenedTemplate}
             />
             <Column
               field="unverifiedHitCount"
               header={fieldToColumnName["unverifiedHitCount"]}
               headerStyle={{ maxWidth: "4rem", textWrap: "wrap" }}
               editor={(options) => TextEditor(options)}
+              body={UnverifiedHitCountTemplate}
             />
 
             <Column
