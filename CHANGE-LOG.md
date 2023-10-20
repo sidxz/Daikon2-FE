@@ -1,5 +1,14 @@
 # Change Log
 
+
+## [v1.5.1 - 2]
+
+### Added
+- Search by organization and status in phenotypic screen list
+- Filter for legacy phenotypic screens
+- Integer fields with -1 rendered as 'NA' in screens
+
+
 ## [v1.5.0]
 
 ### Added
