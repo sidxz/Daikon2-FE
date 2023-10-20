@@ -145,7 +145,7 @@ const ScreenDashAddPhenotypic = () => {
                     "p-error": isFormFieldValid("promotionDate"),
                   })}
                 >
-                  Promotion Date
+                  Creation Date
                 </label>
 
                 <Calendar

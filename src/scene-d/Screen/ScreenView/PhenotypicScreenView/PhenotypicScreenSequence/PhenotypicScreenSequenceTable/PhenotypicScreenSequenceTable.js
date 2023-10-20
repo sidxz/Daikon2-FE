@@ -258,6 +258,36 @@ const PhenotypicScreenSequenceTable = ({ screenId }) => {
       );
     };
 
+    const CompoundsScreenedTemplate = (rowData) => {
+      return rowData.noOfCompoundsScreened !== -1
+        ? rowData.noOfCompoundsScreened
+        : "NA";
+    };
+
+    const LibrarySizeTemplate = (rowData) => {
+      return rowData.librarySize !== -1
+        ? rowData.librarySize
+        : "NA";
+    };
+
+    const UnverifiedHitCountTemplate = (rowData) => {
+      return rowData.unverifiedHitCount !== -1
+        ? rowData.unverifiedHitCount
+        : "NA";
+    };
+
+    const ConfirmedHitCountTemplate = (rowData) => {
+      return rowData.confirmedHitCount !== -1
+        ? rowData.confirmedHitCount
+        : "NA";
+    };
+
+    const HitRateTemplate = (rowData) => {
+      return rowData.hitRate !== -1
+        ? rowData.hitRate
+        : "NA";
+    };
+
     const deleteBodyTemplate = (rowData) => {
       return (
         <Button
@@ -355,6 +385,7 @@ const PhenotypicScreenSequenceTable = ({ screenId }) => {
               header={fieldToColumnName["librarySize"]}
               headerStyle={{ maxWidth: "4rem", textWrap: "wrap" }}
               editor={(options) => TextEditor(options)}
+              body={LibrarySizeTemplate}
             />
             <Column
               field={"protocol"}
@@ -367,12 +398,14 @@ const PhenotypicScreenSequenceTable = ({ screenId }) => {
               header={fieldToColumnName["noOfCompoundsScreened"]}
               headerStyle={{ maxWidth: "7rem", textWrap: "wrap" }}
               editor={(options) => TextEditor(options)}
+              body={CompoundsScreenedTemplate}
             />
             <Column
               field="unverifiedHitCount"
               header={fieldToColumnName["unverifiedHitCount"]}
               headerStyle={{ maxWidth: "4rem", textWrap: "wrap" }}
               editor={(options) => TextEditor(options)}
+              body={UnverifiedHitCountTemplate}
             />
 
             <Column
@@ -380,12 +413,14 @@ const PhenotypicScreenSequenceTable = ({ screenId }) => {
               header={fieldToColumnName["confirmedHitCount"]}
               headerStyle={{ maxWidth: "6rem", textWrap: "wrap" }}
               editor={(options) => TextEditor(options)}
+              body={ConfirmedHitCountTemplate}
             />
             <Column
               field="hitRate"
               header={fieldToColumnName["hitRate"]}
               headerStyle={{ maxWidth: "4rem", textWrap: "wrap" }}
               editor={(options) => TextEditor(options)}
+              body={HitRateTemplate}
             />
             <Column
               field="scientist"

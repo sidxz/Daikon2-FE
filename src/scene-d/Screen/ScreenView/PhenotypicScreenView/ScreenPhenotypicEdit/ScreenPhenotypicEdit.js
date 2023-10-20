@@ -5,6 +5,7 @@ import { Button } from "primereact/button";
 import { Calendar } from "primereact/calendar";
 import { Dropdown } from "primereact/dropdown";
 import { InputText } from "primereact/inputtext";
+import { InputTextarea } from "primereact/inputtextarea";
 import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import PleaseWait from "../../../../../app/common/PleaseWait/PleaseWait";
@@ -49,10 +50,10 @@ const ScreenPhenotypicEdit = ({ screenId }) => {
     return <PleaseWait />;
   }
 
-  // console.log(
-  //   "ScreenPhenotypicEdit.js: selectedPhenotypicScreen: ",
-  //   selectedPhenotypicScreen
-  // );
+  console.log(
+    "ScreenPhenotypicEdit.js: selectedPhenotypicScreen: ",
+    selectedPhenotypicScreen
+  );
 
   const breadCrumbItems = [
     {
@@ -99,6 +100,7 @@ const ScreenPhenotypicEdit = ({ screenId }) => {
             statusDate: selectedPhenotypicScreen.statusDate
               ? new Date(selectedPhenotypicScreen.statusDate)
               : null,
+            notes: selectedPhenotypicScreen.notes,
           }}
           validate={(values) => {
             const errors = {};
@@ -112,7 +114,7 @@ const ScreenPhenotypicEdit = ({ screenId }) => {
               errors.org = "Organization is required";
             }
             if (!values.promotionDate) {
-              errors.promotionDate = "Promotion Date is required";
+              errors.promotionDate = "Creation Date is required";
             }
             return errors;
           }}
@@ -195,7 +197,7 @@ const ScreenPhenotypicEdit = ({ screenId }) => {
 
                 <div className="flex flex-column w-full">
                   <div className="field">
-                    <label htmlFor="promotionDate">Promotion Date</label>
+                    <label htmlFor="promotionDate">Creation Date</label>
                     <Calendar
                       id="promotionDate"
                       name="promotionDate"
@@ -231,6 +233,18 @@ const ScreenPhenotypicEdit = ({ screenId }) => {
                       touched.statusDate &&
                       errors.statusDate}
                   </div>
+                </div>
+
+                <div className="field">
+                  <label htmlFor="notes">Notes</label>
+                  <InputTextarea
+                    id="notes"
+                    answer="notes"
+                    value={values.notes}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                  {errors.notes && touched.notes && errors.notes}
                 </div>
 
                 <div className="flex flex-column w-full">

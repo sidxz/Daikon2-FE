@@ -59,8 +59,8 @@ const PhenotypicScreenView = () => {
     },
   ];
 
-  // If the user is a screener, add admin actions to the side menu
-  if (user.roles.includes("screener")) {
+  // If the user is a admin, add admin actions to the side menu
+  if (user.roles.includes("admin")) {
     const adminActions = {
       label: "Actions",
       items: [
