@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
 import ScreenStatus from "../../../../app/common/ScreenStatus/ScreenStatus";
 import { RootStoreContext } from "../../../../app/stores/rootStore";
@@ -28,10 +28,6 @@ const PhenotypicScreenDashboard = () => {
 
   // Default filter for notes column
   // WORKAROUND : To hide legacy screens from the dashboard
-  const [defaultNotesFilter, setDefaultNotesFilter] = useState({
-    value: "Imported from SharePoint",
-    matchMode: "notContains",
-  });
 
   // On component mount, fetch phenotypic screens if not fetched previously or if cache is invalid
   useEffect(() => {
@@ -39,21 +35,12 @@ const PhenotypicScreenDashboard = () => {
       fetchPhenotypicScreens();
 
     // Set default filter for notes column
-    if (dt && dt.current) {
-      dt.current.filter(
-        defaultNotesFilter.value,
-        "notes",
-        defaultNotesFilter.matchMode
-      );
-    }
-  }, [
-    phenotypicScreens,
-    fetchPhenotypicScreens,
-    isPhenCacheValid,
+    if (phenotypicScreens.length !== 0 && dt && dt.current) {
+      console.log("dt.current", dt.current);
 
-    dt,
-    defaultNotesFilter,
-  ]); // eslint-disable-line react-hooks/exhaustive-deps
+      dt.current.filter("Imported from SharePoint", "notes", "notEquals");
+    }
+  }, [phenotypicScreens, fetchPhenotypicScreens, isPhenCacheValid, dt]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const PhenotypicScreenNameBodyTemplate = (rowData) => {
     return (
@@ -77,12 +64,14 @@ const PhenotypicScreenDashboard = () => {
   const OrgBodyTemplate = (rowData) => {
     return (
       <React.Fragment>
-        <ScreenStatus id={rowData.id} status={rowData?.org?.alias} readOnly={true} />
+        <ScreenStatus
+          id={rowData.id}
+          status={rowData?.org?.alias}
+          readOnly={true}
+        />
       </React.Fragment>
     );
   };
-
-
 
   const NotesBodyTemplate = (rowData) => {
     return (
@@ -115,7 +104,7 @@ const PhenotypicScreenDashboard = () => {
           filterMatchMode="contains"
           filterPlaceholder="Search by Screen Name"
           className="min-w-max"
-        // style={{minWidth: "50rem"}}
+          // style={{minWidth: "50rem"}}
         />
 
         <Column
@@ -125,7 +114,7 @@ const PhenotypicScreenDashboard = () => {
           filter
           filterMatchMode="contains"
           filterPlaceholder="Search by Status"
-        // style={{minWidth: "50rem"}}
+          // style={{minWidth: "50rem"}}
         />
 
         <Column
@@ -135,9 +124,8 @@ const PhenotypicScreenDashboard = () => {
           filter
           filterMatchMode="contains"
           filterPlaceholder="Search by Org"
-        // style={{minWidth: "50rem"}}
+          // style={{minWidth: "50rem"}}
         />
-
 
         <Column
           field="notes"
@@ -146,11 +134,11 @@ const PhenotypicScreenDashboard = () => {
           filter
           filterMatchMode="contains"
           filterPlaceholder="Search by"
-          filterFunction={(value, filter) =>
-            filter.matchMode === "notContains"
-              ? !value.includes(filter.value)
-              : value.includes(filter.value)
-          } // Add the filter function
+          // filterFunction={(value, filter) =>
+          //   filter.matchMode === "notContains"
+          //     ? !value.includes(filter.value)
+          //     : value.includes(filter.value)
+          // } // Add the filter function
         />
       </DataTable>
     </>
