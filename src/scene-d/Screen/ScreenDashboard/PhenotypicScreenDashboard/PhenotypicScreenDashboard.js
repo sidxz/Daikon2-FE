@@ -80,17 +80,17 @@ const PhenotypicScreenDashboard = () => {
           filterMatchMode="contains"
           filterPlaceholder="Search by Screen Name"
           className="min-w-max"
-          // style={{minWidth: "50rem"}}
+        // style={{minWidth: "50rem"}}
         />
 
         <Column
           field="status"
           header="Status"
           body={StatusBodyTemplate}
-          // style={{minWidth: "50rem"}}
+        // style={{minWidth: "50rem"}}
         />
 
-        <Column field="notes" header="Notes" body={NotesBodyTemplate} />
+        <Column field="notes" header="Notes" body={NotesBodyTemplate} filter filterMatchMode="contains" filterPlaceholder="Search by" />
       </DataTable>
     </>
   );
