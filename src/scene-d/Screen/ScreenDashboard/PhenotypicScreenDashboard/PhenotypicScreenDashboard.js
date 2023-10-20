@@ -36,8 +36,6 @@ const PhenotypicScreenDashboard = () => {
 
     // Set default filter for notes column
     if (phenotypicScreens.length !== 0 && dt && dt.current) {
-      console.log("dt.current", dt.current);
-
       dt.current.filter("Imported from SharePoint", "notes", "notEquals");
     }
   }, [phenotypicScreens, fetchPhenotypicScreens, isPhenCacheValid, dt]); // eslint-disable-line react-hooks/exhaustive-deps
