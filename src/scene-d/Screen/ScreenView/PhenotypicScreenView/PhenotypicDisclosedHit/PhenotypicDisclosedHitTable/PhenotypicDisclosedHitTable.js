@@ -167,6 +167,8 @@ const PhenotypicDisclosedHitTable = ({ screenId }) => {
     );
   };
 
+
+
   const VoteBodyTemplate = (rowData) => {
     return (
       <div style={{ padding: "10px" }}>
@@ -380,6 +382,8 @@ const PhenotypicDisclosedHitTable = ({ screenId }) => {
       tableMenuItems.push(promotionItem);
     }
   }
+
+
   /* END Construct table menu items */
 
   return (
@@ -444,6 +448,7 @@ const PhenotypicDisclosedHitTable = ({ screenId }) => {
               header="IC50 (&micro;M) "
               style={{ width: "50px" }}
               sortable
+
             />
 
             <Column
