@@ -24,6 +24,8 @@ const PhenotypicScreenDashboard = () => {
   // Ref for the DataTable component
   const dt = useRef(null);
 
+  // Default filter for notes column
+  // WORKAROUND : To hide legacy screens from the dashboard
   const [defaultNotesFilter, setDefaultNotesFilter] = useState({
     value: "Imported from SharePoint",
     matchMode: "notContains",
