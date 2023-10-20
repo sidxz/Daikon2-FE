@@ -13,7 +13,6 @@ const PhenotypicScreenDiscussion = ({ screenId }) => {
 
   const rootStore = useContext(RootStoreContext);
   const { appVars } = rootStore.generalStore;
-  const { fetchOrgs, Orgs } = rootStore.adminStore;
   const {
     isLoadingPhenotypicScreen,
     fetchPhenotypicScreen,
@@ -28,7 +27,6 @@ const PhenotypicScreenDiscussion = ({ screenId }) => {
     ) {
       fetchPhenotypicScreen(screenId);
     }
-    if (Orgs.length === 0) fetchOrgs();
   }, [selectedPhenotypicScreen, fetchPhenotypicScreen, screenId]);
 
   // Display a loading message while data is being fetched
