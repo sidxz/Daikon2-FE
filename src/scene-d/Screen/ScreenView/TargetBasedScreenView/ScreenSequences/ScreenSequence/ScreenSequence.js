@@ -233,6 +233,26 @@ const ScreenSequence = ({ screenId }) => {
       );
     };
 
+    const CompoundsScreenedTemplate = (rowData) => {
+      return rowData.noOfCompoundsScreened !== -1
+        ? rowData.noOfCompoundsScreened
+        : "NA";
+    };
+
+
+
+    const UnverifiedHitCountTemplate = (rowData) => {
+      return rowData.unverifiedHitCount !== -1
+        ? rowData.unverifiedHitCount
+        : "NA";
+    };
+
+    const ConfirmedHitCountTemplate = (rowData) => {
+      return rowData.confirmedHitCount !== 0
+        ? rowData.confirmedHitCount
+        : "";
+    };
+
     const StartDateTemplate = (rowData) => {
       return <FDate timestamp={rowData.startDate} hideTime={true} />;
     };
@@ -398,11 +418,13 @@ const ScreenSequence = ({ screenId }) => {
                 field="concentration"
                 header="Inhibitor C (&micro;M)"
                 editor={(options) => textEditor(options)}
+
               />
               <Column
                 field="noOfCompoundsScreened"
                 header="No. of Compounds"
                 editor={(options) => textEditor(options)}
+                body={CompoundsScreenedTemplate}
               />
               <Column
                 field="scientist"
@@ -428,12 +450,14 @@ const ScreenSequence = ({ screenId }) => {
                 field="unverifiedHitCount"
                 header="Initial Hit Count"
                 editor={(options) => textEditor(options)}
+                body={UnverifiedHitCountTemplate}
               />
 
               <Column
                 field="confirmedHitCount"
                 header="Validated Hit Count"
                 editor={(options) => textEditor(options)}
+                body={ConfirmedHitCountTemplate}
               />
 
               <Column
