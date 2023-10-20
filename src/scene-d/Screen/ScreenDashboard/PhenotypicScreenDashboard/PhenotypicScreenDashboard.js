@@ -1,6 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
+import { MultiSelect } from "primereact/multiselect";
 import React, { useContext, useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
 import ScreenStatus from "../../../../app/common/ScreenStatus/ScreenStatus";
@@ -60,15 +61,7 @@ const PhenotypicScreenDashboard = () => {
   };
 
   const OrgBodyTemplate = (rowData) => {
-    return (
-      <React.Fragment>
-        <ScreenStatus
-          id={rowData.id}
-          status={rowData?.org?.alias}
-          readOnly={true}
-        />
-      </React.Fragment>
-    );
+    return <React.Fragment>{rowData.org.alias}</React.Fragment>;
   };
 
   const NotesBodyTemplate = (rowData) => {
@@ -79,6 +72,24 @@ const PhenotypicScreenDashboard = () => {
       </React.Fragment>
     );
   };
+
+  // Screen Status filter component for DataTable
+  const screenStatuses = [
+    "Planned",
+    "Assay Development",
+    "Ongoing",
+    "Voting Ready",
+    "Completed",
+  ];
+  const ScreenStatusFilter = (options) => (
+    <MultiSelect
+      value={options.value}
+      options={screenStatuses}
+      onChange={(e) => options.filterApplyCallback(e.value)}
+      placeholder="Select Status"
+      className="p-column-filter"
+    />
+  );
 
   return (
     <>
@@ -110,13 +121,16 @@ const PhenotypicScreenDashboard = () => {
           header="Status"
           body={StatusBodyTemplate}
           filter
-          filterMatchMode="contains"
-          filterPlaceholder="Search by Status"
+          filterField="status"
+          filterElement={ScreenStatusFilter}
+          showFilterMenu={false}
+          filterMatchMode="in"
+
           // style={{minWidth: "50rem"}}
         />
 
         <Column
-          field="org"
+          field="org.alias"
           header="Organization"
           body={OrgBodyTemplate}
           filter
