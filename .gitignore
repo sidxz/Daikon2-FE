@@ -2,7 +2,7 @@
 
 # App Secrets
 /src/config.js
-
+/src/config/authConfig.*
 
 # dependencies
 /node_modules
