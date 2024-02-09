@@ -1,6 +1,6 @@
 import { UserManager } from "oidc-client-ts";
-import authConfig from "../../config/authConfig";
+import { OIDCConfig } from "../../config/authConfig";
 
-const AppUserManager = new UserManager(authConfig);
+const AppUserManager = new UserManager(OIDCConfig);
 
 export default AppUserManager;

@@ -1,18 +1,24 @@
-import React, { useEffect, useState } from "react";
+import { observer } from "mobx-react-lite";
+import React, { useContext, useEffect, useState } from "react";
 import { Navigate, Route, Routes } from "react-router";
 import Login from "../Auth/Login/Login";
-import testToken from "../Auth/api/authApi";
 import Dashboard from "../Dashboard/Dashboard";
+import { RootStoreContext } from "../RootStore";
+
 const Container = ({ userManager }) => {
-  const [user, setUser] = useState(null);
+  const [ssoUser, setSsoUser] = useState(null);
+
+  const rootStore = useContext(RootStoreContext);
+  const { user, fetchUser, isFetchingUser } = rootStore.authStore;
 
   useEffect(() => {
     console.log("Use effect :Container component mounted");
     userManager
       .getUser()
-      .then((user) => {
-        console.log(user);
-        setUser(user);
+      .then((ssoUser) => {
+        console.log(ssoUser);
+        fetchUser();
+        setSsoUser(ssoUser);
       })
       .catch(function (err) {
         console.error(err);
@@ -22,21 +28,17 @@ const Container = ({ userManager }) => {
   const signOutRedirectHandler = async () => {
     try {
       await userManager.signoutRedirect();
-      setUser(null);
+      setSsoUser(null);
     } catch (err) {
       console.error(err);
     }
   };
 
-  if (!user) {
+  if (!ssoUser) {
     console.log("User not logged in -> redirecting to login page");
     return <Login userManager={userManager} />;
   }
 
-  console.log("User logged in via SSO");
-  console.log("Will test token for app authorization");
-
-  testToken();
   return (
     <div className="App">
       <h1>Container</h1>{" "}
@@ -44,10 +46,10 @@ const Container = ({ userManager }) => {
       <hr />
       <Routes>
         <Route index element={<Navigate replace to="d/" />} />
-        <Route path="d" element={<Dashboard user={user} />} />
+        <Route path="d" element={<Dashboard ssoUser={ssoUser} />} />
       </Routes>
     </div>
   );
 };
 
-export default Container;
+export default observer(Container);
