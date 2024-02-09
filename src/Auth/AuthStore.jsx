@@ -1,4 +1,4 @@
-import { action, makeObservable, observable } from "mobx";
+import { action, makeObservable, observable, runInAction } from "mobx";
 import AuthApi from "./api/authApi";
 
 export default class AuthStore {
@@ -10,7 +10,6 @@ export default class AuthStore {
       user: observable,
       isFetchingUser: observable,
       fetchUser: action,
-      loginFlow: action,
       isOIDCLogged: observable,
       isUserValidated: observable,
     });
@@ -28,16 +27,16 @@ export default class AuthStore {
     this.isFetchingUser = true;
     try {
       const user = await AuthApi.validate();
-      console.log("User From Auth Store:", user);
-      this.user = user;
+      runInAction(() => {
+        this.user = user;
+        this.isUserValidated = true;
+      });
     } catch (error) {
       console.error("Error fetching user:", error);
+    } finally {
+      runInAction(() => {
+        this.isFetchingUser = false;
+      });
     }
-    this.isFetchingUser = false;
-  };
-
-  loginFlow = async () => {
-    console.log("Login flow");
-    // Do login
   };
 }

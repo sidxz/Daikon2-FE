@@ -2,6 +2,7 @@ import { observer } from "mobx-react-lite";
 import React, { useContext, useEffect, useState } from "react";
 import { Navigate, Route, Routes } from "react-router";
 import Login from "../Auth/Login/Login";
+import UserNotAuthorized from "../Auth/UserNotAuthorized/UserNotAuthorized";
 import Dashboard from "../Dashboard/Dashboard";
 import { RootStoreContext } from "../RootStore";
 
@@ -17,8 +18,8 @@ const Container = ({ userManager }) => {
       .getUser()
       .then((ssoUser) => {
         console.log(ssoUser);
-        fetchUser();
         setSsoUser(ssoUser);
+        fetchUser();
       })
       .catch(function (err) {
         console.error(err);
@@ -34,9 +35,20 @@ const Container = ({ userManager }) => {
     }
   };
 
+  console.log("user", user);
+
   if (!ssoUser) {
     console.log("User not logged in -> redirecting to login page");
     return <Login userManager={userManager} />;
+  }
+
+  if (isFetchingUser) {
+    return <div>Loading...</div>;
+  }
+
+  if (!isFetchingUser && !user) {
+    console.log("User is not authorized");
+    return <UserNotAuthorized />;
   }
 
   return (

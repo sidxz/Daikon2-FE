@@ -1,3 +1,4 @@
+import { observer } from "mobx-react-lite";
 import React from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Auth from "./Auth/Auth";
@@ -17,4 +18,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default observer(App);
