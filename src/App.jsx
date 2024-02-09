@@ -1,12 +1,11 @@
-import { UserManager } from "oidc-client-ts";
 import React from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Auth from "./Auth/Auth";
+import AppUserManager from "./Auth/components/AppUserManager";
 import Container from "./Container/Container";
-import authConfig from "./config/authConfig";
 
 const App = () => {
-  var userManager = new UserManager(authConfig);
+  var userManager = AppUserManager;
 
   return (
     <Router>

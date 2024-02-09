@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Navigate, Route, Routes } from "react-router";
 import Login from "../Auth/Login/Login";
+import testToken from "../Auth/api/authApi";
 import Dashboard from "../Dashboard/Dashboard";
 const Container = ({ userManager }) => {
   const [user, setUser] = useState(null);
@@ -30,22 +31,23 @@ const Container = ({ userManager }) => {
   if (!user) {
     console.log("User not logged in -> redirecting to login page");
     return <Login userManager={userManager} />;
-  } else {
-    console.log("User logged in");
-    return (
-      <div className="App">
-        <h1>Container</h1>{" "}
-        <button onClick={signOutRedirectHandler}>Logout</button>
-        <hr />
-        <Routes>
-          <Route index element={<Navigate replace to="d/" />} />
-          <Route path="d" element={<Dashboard user={user} />} />
-        </Routes>
-      </div>
-    );
   }
 
-  return <p>No routes found. Terminated</p>;
+  console.log("User logged in via SSO");
+  console.log("Will test token for app authorization");
+
+  testToken();
+  return (
+    <div className="App">
+      <h1>Container</h1>{" "}
+      <button onClick={signOutRedirectHandler}>Logout</button>
+      <hr />
+      <Routes>
+        <Route index element={<Navigate replace to="d/" />} />
+        <Route path="d" element={<Dashboard user={user} />} />
+      </Routes>
+    </div>
+  );
 };
 
 export default Container;
