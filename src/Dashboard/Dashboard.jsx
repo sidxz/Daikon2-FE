@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 
-const Dashboard = ({ ssoUser }) => {
-  return <div>Dashboard : {ssoUser.profile.email}</div>;
+import { RootStoreContext } from "../RootStore";
+
+const Dashboard = () => {
+  const { authStore } = useContext(RootStoreContext);
+  const { user, fetchUser, isFetchingUser } = authStore;
+  return <div>Dashboard : {user.email}</div>;
 };
 
 export default Dashboard;

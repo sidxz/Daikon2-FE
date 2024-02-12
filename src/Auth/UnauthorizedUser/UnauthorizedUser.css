@@ -1,0 +1,68 @@
+.UserUnauthorized .BackgroundLogin {
+  background-image: url("../../assets/Ocean-2.4s-3000px.svg");
+  width: 100%;
+  min-height: 100vh;
+  background-size: cover;
+}
+
+.UserUnauthorized .LoginLanding {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.UserUnauthorized .LoginWrap {
+  position: relative;
+  background: linear-gradient(to right, #44aa99 0%, #332288 100%);
+  width: 810px;
+  height: 610px;
+}
+
+.UserUnauthorized .LoginLoginBox {
+  margin: 5px 5px 5px 5px;
+  padding: 20px;
+  width: 800px;
+  height: 600px;
+}
+
+.UserUnauthorized .LoginLoginBox h1 {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 500;
+  font-size: xx-large;
+  text-align: center;
+  margin-bottom: 5vh;
+  background: linear-gradient(to right, #44aa99 0%, #332288 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.UserUnauthorized .LoginLoginBox p {
+  text-align: left;
+  font-size: medium;
+}
+
+.UserUnauthorized .LoginBox Button {
+  float: right;
+}
+
+.UserUnauthorized #logoutButton {
+  color: #7d1b1b;
+}
+
+.UserUnauthorized #logoutButton .p-button {
+  background: linear-gradient(to right, #44aa99 0%, #332288 100%) !important;
+  border: 0px;
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+.UserUnauthorized .LoginSplit,
+.UserUnauthorized .LoginLeft,
+.UserUnauthorized .LoginRight,
+.UserUnauthorized .LoginCentered,
+.UserUnauthorized .LoginCentered img,
+.UserUnauthorized .LoginLeftH {
+  /* Update these styles as needed, similar to the above modifications */
+}
