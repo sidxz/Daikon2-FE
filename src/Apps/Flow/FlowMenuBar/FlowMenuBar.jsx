@@ -1,11 +1,11 @@
 import { TabMenu } from "primereact/tabmenu";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./WorkflowMenuBar.css";
+import "./FlowMenuBar.css";
 
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-const WorkflowMenuBar = () => {
+const FlowMenuBar = () => {
   const navigate = useNavigate();
   const [activeIndex, setActiveIndex] = useState(0);
   let location = useLocation();
@@ -55,7 +55,7 @@ const WorkflowMenuBar = () => {
     // { label: "Clinical", icon: "icon icon-conceptual icon-proteins" },
   ];
   return (
-    <div className="WorkflowMenuBar flex justify-content-center flex-wrap">
+    <div className="FlowMenuBar flex justify-content-center flex-wrap">
       <div className="flex pipeline-menu scalein animation-duration-500">
         <TabMenu
           model={items}
@@ -67,4 +67,4 @@ const WorkflowMenuBar = () => {
   );
 };
 
-export default WorkflowMenuBar;
+export default FlowMenuBar;
