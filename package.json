@@ -10,7 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@babel/plugin-proposal-decorators": "^7.23.9",
     "axios": "^1.6.7",
     "mobx": "^6.12.0",
     "mobx-react-lite": "^4.0.5",
@@ -20,7 +19,9 @@
     "primereact": "^10.5.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.22.0"
+    "react-icons": "^5.0.1",
+    "react-router-dom": "^6.22.0",
+    "remixicon": "^4.1.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",
@@ -30,6 +31,8 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
+    "sass": "^1.70.0",
+    "sass-loader": "^14.1.0",
     "vite": "^5.0.8"
   }
 }

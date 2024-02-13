@@ -1,0 +1,15 @@
+.TitleBar .Header {
+  overflow: hidden;
+  background: linear-gradient(to right, #44aa99 0%, #332288 100%);
+  padding: 2px 0px;
+}
+
+.TitleBar .BlackButton {
+  background: transparent;
+  border: 0px solid #000000;
+}
+
+.TitleBar .BlackButton:hover {
+  background: #332288;
+  border: 0px solid #000000;
+}

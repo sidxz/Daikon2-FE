@@ -1,0 +1,24 @@
+html {
+  font-size: 15px;
+}
+
+body {
+  margin: 0;
+  font-weight: 300;
+}
+
+.hide {
+  display: none;
+}
+
+a {
+  color: #28477f;
+}
+
+.noDataTableHeader thead {
+  display: none;
+}
+
+.DropdownWhiteLabel .p-dropdown-label.p-placeholder {
+  color: #ffffff !important;
+}
