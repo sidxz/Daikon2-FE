@@ -11,10 +11,6 @@ body {
   display: none;
 }
 
-a {
-  color: #28477f;
-}
-
 .noDataTableHeader thead {
   display: none;
 }

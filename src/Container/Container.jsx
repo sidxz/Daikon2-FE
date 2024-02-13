@@ -1,9 +1,9 @@
 import { observer } from "mobx-react-lite";
 import React, { useContext, useEffect, useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
+import Workflow from "../Apps/Workflow/Workflow";
 import Login from "../Auth/Login/Login";
 import UnauthorizedUser from "../Auth/UnauthorizedUser/UnauthorizedUser";
-import Dashboard from "../Dashboard/Dashboard";
 import { RootStoreContext } from "../RootStore";
 import TitleBar from "./TitleBar/TitleBar";
 
@@ -44,8 +44,8 @@ const Container = ({ userManager }) => {
     <div className="App">
       <TitleBar signOut={signOut} ssoUser={ssoUser} />
       <Routes>
-        <Route index element={<Navigate replace to="d/" />} />
-        <Route path="d" element={<Dashboard />} />
+        <Route index element={<Navigate replace to="w/" />} />
+        <Route path="w/*" element={<Workflow />} />
       </Routes>
     </div>
   );
