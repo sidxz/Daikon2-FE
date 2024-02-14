@@ -8,12 +8,9 @@ const SigninRedirect = ({ userManager }) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    console.log("Use effect :SigninRedirect component mounted");
     userManager
       .signinCallback()
       .then((user) => {
-        console.log("signin popup callback response success");
-        console.log(user);
         if (user) {
           setUser(user);
         }
@@ -24,7 +21,6 @@ const SigninRedirect = ({ userManager }) => {
   }, [userManager]);
 
   useEffect(() => {
-    console.log("Use effect :SigninRedirect user effect");
     if (user) {
       navigate("/");
     }

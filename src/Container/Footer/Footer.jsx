@@ -1,45 +1,55 @@
 import { Dialog } from "primereact/dialog";
 import { Tag } from "primereact/tag";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { appVersion } from "../../constants/appVersion";
 import "./Footer.css";
 
 const Footer = () => {
   const navigate = useNavigate();
-  let [showConfidentialAgreement, setShowConfidentialAgreement] =
+  const DefaultConfidentialTag = () => <div />; // Default component
+
+  const [showConfidentialAgreement, setShowConfidentialAgreement] =
     useState(false);
-  let CustomConfidentialTag;
-  try {
-    CustomConfidentialTag =
-      require("../../customizations/CustomFooterConfidentialTag/CustomFooterConfidentialTag").default;
-  } catch (error) {
-    CustomConfidentialTag = <></>;
-  }
+  const [CustomConfidentialTag, setCustomConfidentialTag] = useState(
+    () => DefaultConfidentialTag
+  );
 
-  let renderCustomConfidentialTag = () => {
-    if (CustomConfidentialTag) {
-      return (
-        <>
-          <Tag
-            value="TBDA Confidential"
-            severity="danger"
-            style={{ cursor: "pointer" }}
-            onClick={() => setShowConfidentialAgreement(true)}
-          />
+  useEffect(() => {
+    // Dynamically import the CustomFooterConfidentialTag component
+    import(
+      "../../Customizations/CustomFooterConfidentialTag/CustomFooterConfidentialTag"
+    )
+      .then((module) => {
+        setCustomConfidentialTag(() => module.default);
+      })
+      .catch((error) => {
+        console.error(
+          "CustomFooterConfidentialTag not found, using default",
+          error
+        );
+        setCustomConfidentialTag(() => DefaultConfidentialTag); // Fallback to DefaultConfidentialTag in case of error
+      });
+  }, []);
 
-          <Dialog
-            header="TBDA Informatics Systems Acknowledgment"
-            visible={showConfidentialAgreement}
-            onHide={() => setShowConfidentialAgreement(false)}
-            style={{ width: "70vw" }}
-          >
-            <CustomConfidentialTag />
-          </Dialog>
-        </>
-      );
-    }
-  };
+  const renderCustomConfidentialTag = () => (
+    <>
+      <Tag
+        value="TBDA Confidential"
+        severity="danger"
+        style={{ cursor: "pointer" }}
+        onClick={() => setShowConfidentialAgreement(true)}
+      />
+      <Dialog
+        header="TBDA Informatics Systems Acknowledgment"
+        visible={showConfidentialAgreement}
+        onHide={() => setShowConfidentialAgreement(false)}
+        style={{ width: "70vw" }}
+      >
+        <CustomConfidentialTag />
+      </Dialog>
+    </>
+  );
 
   return (
     <div className="Footer">
@@ -48,8 +58,7 @@ const Footer = () => {
         <div className="flex justify-content-end">
           <p style={{ margin: "0px" }}>
             &copy; | DAIKON {appVersion.stream}{" "}
-            <b>{"  " + appVersion.release + " "}</b>
-            {appVersion.channel}
+            <b>{"  " + appVersion.release + " "}</b> {appVersion.channel}
           </p>
         </div>
         <div className="flex justify-content-end gap-2">

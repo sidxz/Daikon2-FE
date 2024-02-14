@@ -41,7 +41,6 @@ const Container = ({ userManager }) => {
   if (isFetchingUser) return <Loading message={"Authorizing user..."} />;
   if (!user) return <UnauthorizedUser onSignOut={signOut} ssoUser={ssoUser} />;
 
-  console.log("user", user);
   return (
     <div className="App">
       <TitleBar signOut={signOut} ssoUser={ssoUser} />
