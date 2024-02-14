@@ -65,7 +65,7 @@ const TitleBar = ({ signOut, ssoUser }) => {
             <div className="flex align-items-center justify-content-center ml-2">
               <Button
                 className="BlackButton text-2xl p-0"
-                onClick={() => navigate("/d/")}
+                onClick={() => navigate("/")}
               >
                 D A I K O N
               </Button>

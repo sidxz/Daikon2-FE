@@ -2,11 +2,12 @@ import { observer } from "mobx-react-lite";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import React, { useContext, useEffect } from "react";
+import Loading from "../../../../Library/Loading/Loading";
 import SecHeading from "../../../../Library/SecHeading/SecHeading";
 import { RootStoreContext } from "../../../../RootStore";
 import { appColors } from "../../../../constants/colors";
-import * as Helper from "./FLowGeneDashHelper";
-const FlowGeneDashboard = () => {
+import * as Helper from "./FGDashHelper";
+const FGDashboard = () => {
   const rootStore = useContext(RootStoreContext);
   const {
     isGeneListCacheValid,
@@ -23,7 +24,7 @@ const FlowGeneDashboard = () => {
   }, [isGeneListCacheValid, fetchGenes]);
 
   if (isGeneListLoading) {
-    return <div>Loading...</div>;
+    return <Loading message={"Fetching Genes..."} />;
   }
 
   return (
@@ -31,7 +32,7 @@ const FlowGeneDashboard = () => {
       <div className="flex w-full">
         <SecHeading
           icon="icon icon-conceptual icon-dna"
-          heading="H37Rv Genes"
+          heading="Genes"
           color={appColors.sectionHeadingBg.gene}
         />
       </div>
@@ -49,7 +50,7 @@ const FlowGeneDashboard = () => {
           />
 
           <Column
-            field="geneName"
+            field="name"
             header="Gene Name"
             filter
             filterMatchMode="contains"
@@ -64,6 +65,7 @@ const FlowGeneDashboard = () => {
             filter
             filterMatchMode="contains"
             filterPlaceholder="Search"
+            className="narrow-column"
           />
 
           <Column
@@ -90,4 +92,4 @@ const FlowGeneDashboard = () => {
   );
 };
 
-export default observer(FlowGeneDashboard);
+export default observer(FGDashboard);

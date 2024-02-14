@@ -4,7 +4,9 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import Flow from "../Apps/Flow/Flow";
 import Login from "../Auth/Login/Login";
 import UnauthorizedUser from "../Auth/UnauthorizedUser/UnauthorizedUser";
+import Loading from "../Library/Loading/Loading";
 import { RootStoreContext } from "../RootStore";
+import Footer from "./Footer/Footer";
 import TitleBar from "./TitleBar/TitleBar";
 
 const Container = ({ userManager }) => {
@@ -36,7 +38,7 @@ const Container = ({ userManager }) => {
   };
 
   if (!ssoUser) return <Login userManager={userManager} />;
-  if (isFetchingUser) return <div>Loading...</div>;
+  if (isFetchingUser) return <Loading message={"Authorizing user..."} />;
   if (!user) return <UnauthorizedUser onSignOut={signOut} ssoUser={ssoUser} />;
 
   console.log("user", user);
@@ -47,6 +49,7 @@ const Container = ({ userManager }) => {
         <Route index element={<Navigate replace to="wf/" />} />
         <Route path="wf/*" element={<Flow />} />
       </Routes>
+      <Footer />
     </div>
   );
 };

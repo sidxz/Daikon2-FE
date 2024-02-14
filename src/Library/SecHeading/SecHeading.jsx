@@ -17,8 +17,8 @@ const SecHeading = ({
 }) => {
   const headerTemplate = (options) => {
     const toggleIcon = options.collapsed
-      ? "icon icon-common icon-bars"
-      : "pi pi-chevron-up";
+      ? "ri-menu-line"
+      : "ri-arrow-up-circle-fill";
 
     let background = color ? color : "#332288";
 
@@ -74,7 +74,7 @@ const SecHeading = ({
 
     return (
       <div
-        className="flex w-full border-round-md"
+        className="flex w-full border-round-sm"
         style={{
           background: background,
           opacity: "1",
@@ -102,7 +102,7 @@ const SecHeading = ({
 
   return (
     <Panel
-      className="w-full border-2"
+      className="w-full border-0"
       headerTemplate={headerTemplate}
       collapsed={true}
       toggleable

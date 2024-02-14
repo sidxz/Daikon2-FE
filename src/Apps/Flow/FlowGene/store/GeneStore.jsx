@@ -19,6 +19,12 @@ export default class GeneStore {
       geneListRegistry: observable,
       isGeneListCacheValid: observable,
       availableGeneFunctionalCategories: observable,
+
+      fetchGene: action,
+      isFetchingGene: observable,
+      geneRegistry: observable,
+      isGeneRegistryCacheValid: observable,
+      selectedGene: observable,
     });
   }
 
@@ -27,6 +33,11 @@ export default class GeneStore {
   isGeneListCacheValid = false;
   geneListRegistry = new Map();
   availableGeneFunctionalCategories = new Set();
+
+  isFetchingGene = false;
+  geneRegistry = new Map();
+  isGeneRegistryCacheValid = false;
+  selectedGene = null;
 
   // Actions
 
@@ -59,4 +70,34 @@ export default class GeneStore {
   get geneList() {
     return Array.from(this.geneListRegistry.values());
   }
+
+  fetchGene = async (geneId, inValidateCache = false) => {
+    if (inValidateCache) {
+      this.isGeneRegistryCacheValid = false;
+    }
+
+    this.isFetchingGene = true;
+    if (this.isGeneRegistryCacheValid) {
+      // find gene in registry and return if found
+      const gene = this.geneRegistry.get(geneId);
+      if (gene) {
+        this.isFetchingGene = false;
+        this.selectedGene = gene;
+      }
+    }
+    try {
+      const gene = await GeneAPI.getById(geneId);
+      runInAction(() => {
+        this.geneRegistry.set(gene.id, gene);
+        this.isGeneRegistryCacheValid = true;
+        this.selectedGene = gene;
+      });
+    } catch (error) {
+      console.error("Error fetching gene:", error);
+    } finally {
+      runInAction(() => {
+        this.isFetchingGene = false;
+      });
+    }
+  };
 }

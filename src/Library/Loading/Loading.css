@@ -1,0 +1,49 @@
+.Loading .loadingIcon {
+  background-image: url("../../../assets/loadingDNA.svg");
+}
+.Loading .backdrop {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.3);
+  z-index: 1000;
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  backdrop-filter: grayscale(100%);
+}
+.Loading .Text {
+  font-family: "IBM Plex Sans", sans-serif !important;
+  font-weight: 100 !important;
+}
+
+.Loading .p-progressbar .p-progressbar-value {
+  border: 0 none;
+  margin: 0;
+  background: #000000;
+}
+
+.Loading .LoadingMain {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2005;
+}
+.Loading .LoadingWrap {
+  position: relative;
+  background: linear-gradient(to right, #44aa99 0%, #332288 100%);
+  width: 610px;
+  height: 210px;
+  z-index: 2005;
+}
+
+.Loading .LoadingBox {
+  background: #ffffff;
+  margin: 5px 5px 5px 5px;
+  padding: 20px;
+  width: 600px;
+  height: 200px;
+  z-index: 2005;
+}

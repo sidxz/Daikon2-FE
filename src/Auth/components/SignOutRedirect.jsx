@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Loading from "../../Library/Loading/Loading";
 
 const SignOutRedirect = ({ userManager }) => {
   const navigate = useNavigate();
@@ -22,8 +23,7 @@ const SignOutRedirect = ({ userManager }) => {
       setTimeout(() => navigate("/"), 100);
     }
   }, [signoutDone, navigate]);
-
-  return <p>Processing SignOut...</p>;
+  return <Loading message={"Processing SignOut..."} />;
 };
 
 export default SignOutRedirect;

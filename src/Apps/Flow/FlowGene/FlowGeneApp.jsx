@@ -1,12 +1,14 @@
 import React from "react";
 import { Route, Routes } from "react-router";
-import FlowGeneDashboard from "./FlowGeneDashboard/FlowGeneDashboard";
+import FGDashboard from "./FGDashboard/FGDashboard";
+import FGViewer from "./FGViewer/FGViewer";
 
 const FlowGeneApp = () => {
   return (
     <>
       <Routes>
-        <Route index element={<FlowGeneDashboard />} />
+        <Route index element={<FGDashboard />} />
+        <Route path=":id/*" element={<FGViewer />} />
       </Routes>
     </>
   );

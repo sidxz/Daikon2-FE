@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Loading from "../../Library/Loading/Loading";
 
 const SigninRedirect = ({ userManager }) => {
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ const SigninRedirect = ({ userManager }) => {
     }
   }, [user, navigate]);
 
-  return <p>Processing Signin...</p>;
+  return <Loading message={"Processing Signin..."} />;
 };
 
 export default SigninRedirect;

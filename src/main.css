@@ -11,10 +11,17 @@ body {
   display: none;
 }
 
-.noDataTableHeader thead {
+.HideDataTableHeader thead {
   display: none;
 }
 
 .DropdownWhiteLabel .p-dropdown-label.p-placeholder {
   color: #ffffff !important;
+}
+
+.p-fieldset .p-fieldset-legend {
+  padding: 0rem 1rem 0rem 1rem;
+}
+.p-fieldset .p-fieldset-content {
+  padding: 0rem;
 }
