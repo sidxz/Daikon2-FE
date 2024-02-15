@@ -1,4 +1,5 @@
 import axios from "axios";
+import { toast } from "react-toastify";
 import AppUserManager from "../../Auth/components/AppUserManager";
 import { AxiosConfig } from "../../config/axiosConfig";
 
@@ -46,34 +47,43 @@ class AxiosWithAuth {
       switch (status) {
         case 400:
           errorMessage = "Bad Request";
+          toast.error(errorMessage + " " + error?.response?.data?.message);
           break;
         case 401:
           errorMessage = "Unauthorized. Please login again.";
+          toast.error(errorMessage);
           break;
         case 403:
           errorMessage =
             "Forbidden. You do not have permission to perform this action.";
+          toast.error(errorMessage);
           break;
         case 404:
           errorMessage = "The requested resource was not found";
+          toast.error(errorMessage);
           break;
         case 500:
           errorMessage = "Internal Server Error";
+          toast.error(errorMessage);
           break;
         case 503:
           errorMessage = "Service Unavailable";
+          toast.error(errorMessage);
           break;
         default:
           errorMessage = `An error occurred with your request. Status code: ${status}`;
+          toast.error(errorMessage);
       }
     } else if (error.request) {
       console.error("No response received:", error.request);
       errorMessage =
         "The request was made but no response was received. Please check your network connection.";
+      toast.error(errorMessage);
     } else {
       console.error("Error:", error.message);
       errorMessage =
         error.message || "An error occurred while setting up the request.";
+      toast.error(errorMessage);
     }
 
     console.error("Error Config:", error.config);

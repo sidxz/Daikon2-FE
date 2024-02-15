@@ -1,6 +1,7 @@
 import { observer } from "mobx-react-lite";
 import React, { useContext, useEffect, useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 import Flow from "../Apps/Flow/Flow";
 import Login from "../Auth/Login/Login";
 import UnauthorizedUser from "../Auth/UnauthorizedUser/UnauthorizedUser";
@@ -44,6 +45,7 @@ const Container = ({ userManager }) => {
   return (
     <div className="App">
       <TitleBar signOut={signOut} ssoUser={ssoUser} />
+      <ToastContainer />
       <Routes>
         <Route index element={<Navigate replace to="wf/" />} />
         <Route path="wf/*" element={<Flow />} />

@@ -1,15 +1,26 @@
+import { observer } from "mobx-react-lite";
+import { BlockUI } from "primereact/blockui";
 import { Button } from "primereact/button";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
-import React, { useState } from "react";
+import { Sidebar } from "primereact/sidebar";
+import React, { useContext, useState } from "react";
 import EmbeddedHelp from "../../../../../../Library/EmbeddedHelp/EmbeddedHelp";
+import { RootStoreContext } from "../../../../../../RootStore";
 import { TextAreaRowEditor } from "../../../../../../Shared/TableRowEditors/TextAreaRowEditor";
+import FGVPrEssentialityAddForm from "./FGVPrEssentialityAddForm";
 import * as Helper from "./FGVPrEssentialityHelper";
 
 const FGVPrEssentiality = ({ selectedGene }) => {
-  const [tableData, setTableData] = useState([...selectedGene.essentialities]);
-
   const [displayAddSideBar, setDisplayAddSideBar] = useState(false);
+
+  const rootStore = useContext(RootStoreContext);
+  const {
+    isAddingEssentiality,
+    addEssentiality,
+    isUpdatingEssentiality,
+    updateEssentiality,
+  } = rootStore.geneEssentialityStore;
 
   const tableHeader = (
     <div className="table-header">
@@ -37,47 +48,71 @@ const FGVPrEssentiality = ({ selectedGene }) => {
     </div>
   );
 
+  const addSideBarHeader = (
+    <div className="flex align-items-center gap-2">
+      <i className="icon icon-common icon-plus-circle"></i>
+      <span className="font-bold">Add Essentiality</span>
+    </div>
+  );
+
   return (
     <>
-      <DataTable
-        value={tableData}
-        editMode="row"
-        dataKey="id"
-        header={tableHeader}
+      <BlockUI blocked={isUpdatingEssentiality}>
+        <DataTable
+          value={selectedGene.essentialities}
+          editMode="row"
+          dataKey="essentialityId"
+          header={tableHeader}
+          onRowEditComplete={(e) => updateEssentiality(e.newData)}
+        >
+          <Column
+            field="classification"
+            header="Classification"
+            editor={(options) => Helper.classificationEditor(options)}
+          />
+          <Column
+            field="condition"
+            header="Condition"
+            editor={(options) => TextAreaRowEditor(options)}
+          />
+          <Column
+            field="method"
+            header="Method"
+            editor={(options) => TextAreaRowEditor(options)}
+          />
+          <Column
+            field="reference"
+            header="Reference"
+            editor={(options) => TextAreaRowEditor(options)}
+          />
+          <Column
+            field="notes"
+            header="Notes"
+            editor={(options) => TextAreaRowEditor(options)}
+          />
+          <Column
+            rowEditor
+            headerStyle={{ width: "10%", minWidth: "8rem" }}
+            bodyStyle={{ textAlign: "center" }}
+          />
+        </DataTable>
+      </BlockUI>
+      <Sidebar
+        visible={displayAddSideBar}
+        position="right"
+        onHide={() => setDisplayAddSideBar(false)}
+        className="p-sidebar-sm"
+        header={addSideBarHeader}
       >
-        <Column
-          field="classification"
-          header="Classification"
-          editor={(options) => Helper.classificationEditor(options)}
+        <FGVPrEssentialityAddForm
+          selectedGene={selectedGene}
+          isAddingEssentiality={isAddingEssentiality}
+          addEssentiality={addEssentiality}
+          closeSidebar={() => setDisplayAddSideBar(false)}
         />
-        <Column
-          field="condition"
-          header="Condition"
-          editor={(options) => TextAreaRowEditor(options)}
-        />
-        <Column
-          field="method"
-          header="Method"
-          editor={(options) => TextAreaRowEditor(options)}
-        />
-        <Column
-          field="reference"
-          header="Reference"
-          editor={(options) => TextAreaRowEditor(options)}
-        />
-        <Column
-          field="notes"
-          header="Notes"
-          editor={(options) => TextAreaRowEditor(options)}
-        />
-        <Column
-          rowEditor
-          headerStyle={{ width: "10%", minWidth: "8rem" }}
-          bodyStyle={{ textAlign: "center" }}
-        />
-      </DataTable>
+      </Sidebar>
     </>
   );
 };
 
-export default FGVPrEssentiality;
+export default observer(FGVPrEssentiality);

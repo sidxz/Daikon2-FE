@@ -2,7 +2,7 @@ import { Button } from "primereact/button";
 import "./UnauthorizedUser.css";
 
 const UnauthorizedUser = ({ onSignOut, ssoUser }) => {
-  console.log("ssoUser", ssoUser);
+  console.log("UNAUTHORIZED ssoUser", ssoUser);
   return (
     <div className="UserUnauthorized">
       <div className="BackgroundLogin">

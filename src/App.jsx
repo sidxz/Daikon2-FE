@@ -3,6 +3,7 @@ import { PrimeReactProvider } from "primereact/api";
 //import "primereact/resources/themes/nano/theme.css";
 import React from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import "react-toastify/dist/ReactToastify.css";
 import "remixicon/fonts/remixicon.css";
 import Auth from "./Auth/Auth";
 import AppUserManager from "./Auth/components/AppUserManager";
