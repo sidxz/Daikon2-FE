@@ -13,12 +13,16 @@ export default class GeneEssentialityStore {
 
       isAddingEssentiality: observable,
       addEssentiality: action,
+
+      isDeletingEssentiality: observable,
+      deleteEssentiality: action,
     });
   }
 
   // Observables
   isUpdatingEssentiality = false;
   isAddingEssentiality = false;
+  isDeletingEssentiality = false;
 
   // Actions
   addEssentiality = async (essentiality) => {
@@ -29,9 +33,13 @@ export default class GeneEssentialityStore {
       essentiality.geneId?.trim() || this.rootStore.geneStore.selectedGene.Id;
 
     try {
-      await GeneEssentialityAPI.create(essentiality);
+      var res = await GeneEssentialityAPI.create(essentiality);
       runInAction(() => {
         // Add essentiality to gene essentiality list
+        console.log(res);
+        essentiality.essentialityId = res.id;
+
+        console.log("Add with iD essentiality:", essentiality);
         this.rootStore.geneStore.selectedGene.essentialities.push(essentiality);
         const gene = this.rootStore.geneStore.geneRegistry.get(
           essentiality.geneId
@@ -50,6 +58,7 @@ export default class GeneEssentialityStore {
   };
 
   updateEssentiality = async (essentiality) => {
+    console.log("updateEssentiality:", essentiality);
     this.isUpdatingEssentiality = true;
 
     // Ensure essentiality.geneId is set, fallback to selectedGene.geneId if null, undefined, or empty
@@ -89,6 +98,44 @@ export default class GeneEssentialityStore {
     } finally {
       runInAction(() => {
         this.isUpdatingEssentiality = false;
+      });
+    }
+  };
+
+  deleteEssentiality = async (essentialityId) => {
+    this.isDeletingEssentiality = true;
+
+    const geneId = this.rootStore.geneStore.selectedGene.id;
+
+    // Ensure essentialityId is not null, undefined, or empty
+    if (!essentialityId?.trim()) {
+      throw new Error("essentialityId is required and cannot be empty.");
+    }
+
+    try {
+      await GeneEssentialityAPI.delete(geneId, essentialityId);
+      runInAction(() => {
+        // remove essentiality from gene essentiality list
+        const gene = this.rootStore.geneStore.geneRegistry.get(geneId);
+        const indexOfEss = gene.essentialities.findIndex(
+          (e) => e.essentialityId === essentialityId
+        );
+        gene.essentialities.splice(indexOfEss, 1);
+
+        // remove the same from selected gene
+        const selectedGene = this.rootStore.geneStore.selectedGene;
+        const selectedIndex = selectedGene.essentialities.findIndex(
+          (e) => e.essentialityId === essentialityId
+        );
+        selectedGene.essentialities.splice(selectedIndex, 1);
+
+        toast.success("Gene essentiality deleted successfully");
+      });
+    } catch (error) {
+      console.error("Error deleting gene essentiality:", error);
+    } finally {
+      runInAction(() => {
+        this.isDeletingEssentiality = false;
       });
     }
   };

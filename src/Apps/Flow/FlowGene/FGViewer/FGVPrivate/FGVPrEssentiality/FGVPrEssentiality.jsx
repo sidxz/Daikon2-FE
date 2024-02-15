@@ -2,6 +2,7 @@ import { observer } from "mobx-react-lite";
 import { BlockUI } from "primereact/blockui";
 import { Button } from "primereact/button";
 import { Column } from "primereact/column";
+import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
 import { DataTable } from "primereact/datatable";
 import { Sidebar } from "primereact/sidebar";
 import React, { useContext, useState } from "react";
@@ -20,6 +21,8 @@ const FGVPrEssentiality = ({ selectedGene }) => {
     addEssentiality,
     isUpdatingEssentiality,
     updateEssentiality,
+    deleteEssentiality,
+    isDeletingEssentiality,
   } = rootStore.geneEssentialityStore;
 
   const tableHeader = (
@@ -55,19 +58,53 @@ const FGVPrEssentiality = ({ selectedGene }) => {
     </div>
   );
 
+  const deleteBodyTemplate = (rowData) => {
+    const accept = () => {
+      // Delete essentiality
+      console.log("Delete essentiality:", rowData);
+      deleteEssentiality(rowData.essentialityId);
+    };
+    const reject = () => {
+      // Do nothing
+    };
+    return (
+      <Button
+        severity="danger"
+        icon="ri-delete-bin-2-line"
+        className="p-button-text"
+        onClick={() => {
+          confirmDialog({
+            message: "Do you want to delete this record?",
+            header: "Delete Confirmation",
+            icon: "pi pi-info-circle",
+            defaultFocus: "reject",
+            acceptClassName: "p-button-danger",
+            accept,
+            reject,
+          });
+        }}
+      />
+    );
+  };
+
   return (
     <>
-      <BlockUI blocked={isUpdatingEssentiality}>
+      <BlockUI blocked={isUpdatingEssentiality || isDeletingEssentiality}>
+        <ConfirmDialog />
+
         <DataTable
           value={selectedGene.essentialities}
           editMode="row"
           dataKey="essentialityId"
+          showGridlines
+          removableSort
           header={tableHeader}
           onRowEditComplete={(e) => updateEssentiality(e.newData)}
         >
           <Column
             field="classification"
             header="Classification"
+            sortable
             editor={(options) => Helper.classificationEditor(options)}
           />
           <Column
@@ -95,6 +132,7 @@ const FGVPrEssentiality = ({ selectedGene }) => {
             headerStyle={{ width: "10%", minWidth: "8rem" }}
             bodyStyle={{ textAlign: "center" }}
           />
+          <Column body={deleteBodyTemplate} />
         </DataTable>
       </BlockUI>
       <Sidebar
