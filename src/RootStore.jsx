@@ -1,7 +1,7 @@
 import { configure } from "mobx";
 import { createContext } from "react";
-import GenePDBCrossRefStore from "./Apps/Flow/FlowGene/store/GenePDBCrossRefStore";
-import GeneStore from "./Apps/Flow/FlowGene/store/GeneStore";
+import GenePDBCrossRefStore from "./Apps/Flow/FlowGene/Stores/GenePDBCrossRefStore";
+import GeneStore from "./Apps/Flow/FlowGene/Stores/GeneStore";
 import AuthStore from "./Auth/AuthStore";
 
 configure({ enforceActions: "always" });

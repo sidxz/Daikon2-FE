@@ -15,6 +15,10 @@ body {
   display: none;
 }
 
+.p-datatable .p-datatable-header {
+  padding: 0rem;
+}
+
 .DropdownWhiteLabel .p-dropdown-label.p-placeholder {
   color: #ffffff !important;
 }

@@ -15,7 +15,7 @@ export const sidePanelItems = (navigate) => {
           label: "Org Private Data",
           icon: "ri-git-repository-private-fill",
           command: () => {
-            navigate(`protected/`);
+            navigate(`private/`);
           },
         },
 

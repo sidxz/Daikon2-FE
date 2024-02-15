@@ -4,6 +4,7 @@ import React, { useContext, useEffect } from "react";
 import { Navigate, Route, Routes, useNavigate, useParams } from "react-router";
 import Loading from "../../../../Library/Loading/Loading";
 import { RootStoreContext } from "../../../../RootStore";
+import FGVPrivate from "./FGVPrivate/FGVPrivate";
 import FGVPublic from "./FGVPublic/FGVPublic";
 import * as Helper from "./FGViewerHelper";
 const FGViewer = () => {
@@ -36,6 +37,10 @@ const FGViewer = () => {
               <Route
                 path="public/*"
                 element={<FGVPublic selectedGene={selectedGene} />}
+              />
+              <Route
+                path="private/*"
+                element={<FGVPrivate selectedGene={selectedGene} />}
               />
             </Routes>
           </div>
