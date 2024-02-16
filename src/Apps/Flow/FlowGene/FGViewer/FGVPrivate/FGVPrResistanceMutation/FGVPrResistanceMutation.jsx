@@ -8,6 +8,7 @@ import { Sidebar } from "primereact/sidebar";
 import React, { useContext, useState } from "react";
 import EmbeddedHelp from "../../../../../../Library/EmbeddedHelp/EmbeddedHelp";
 import { RootStoreContext } from "../../../../../../RootStore";
+import { orgDropDown } from "../../../../../../Shared/FormEditors/OrgDropDown";
 import { TextAreaRowEditor } from "../../../../../../Shared/TableRowEditors/TextAreaRowEditor";
 import FGVPrResistanceMutationAddForm from "./FGVPrResistanceMutationAddForm";
 
@@ -116,6 +117,19 @@ const FGVPrResistanceMutation = ({ selectedGene }) => {
             field="parentStrain"
             header="Parent Strain"
             editor={(options) => TextAreaRowEditor(options)}
+          />
+
+          <Column
+            field="researcher"
+            header="Researcher"
+            editor={(options) => TextAreaRowEditor(options)}
+          />
+
+          <Column
+            field="organization"
+            header="Organization"
+            sortable
+            editor={(options) => orgDropDown(options)}
           />
 
           <Column

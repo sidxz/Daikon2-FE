@@ -1,9 +1,11 @@
 import { useFormik } from "formik";
 import { Button } from "primereact/button";
+import { Dropdown } from "primereact/dropdown";
 import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
 import { classNames } from "primereact/utils";
 import React from "react";
+import { orgDropDownOptions } from "../../../../../../Shared/FormEditors/OrgDropDown";
 
 const FGVPrResistanceMutationAddForm = ({
   selectedGene,
@@ -16,7 +18,9 @@ const FGVPrResistanceMutationAddForm = ({
       mutation: "",
       isolate: "",
       parentStrain: "",
+      organization: "",
       compound: "",
+      researcher: "",
       notes: "",
       reference: "",
       shiftInMIC: "",
@@ -125,6 +129,46 @@ const FGVPrResistanceMutationAddForm = ({
             })}
           />
           {getErrorMessage("compound")}
+        </div>
+
+        <div className="field">
+          <label
+            htmlFor="researcher"
+            className={classNames({
+              "p-error": isInvalid("researcher"),
+            })}
+          >
+            Researcher
+          </label>
+          <InputText
+            id="researcher"
+            value={formik.values.researcher}
+            onChange={formik.handleChange}
+            className={classNames({
+              "p-invalid": isInvalid("researcher"),
+            })}
+          />
+          {getErrorMessage("researcher")}
+        </div>
+
+        <div className="field">
+          <label
+            htmlFor="organization"
+            className={classNames({ "p-error": isInvalid("organization") })}
+          >
+            Organization *
+          </label>
+          <Dropdown
+            id="organization"
+            value={formik.values.organization}
+            options={orgDropDownOptions}
+            onChange={formik.handleChange}
+            placeholder="Select a organization"
+            optionLabel="name"
+            autoFocus
+            className={classNames({ "p-invalid": isInvalid("organization") })}
+          />
+          {getErrorMessage("organization")}
         </div>
 
         <div className="field">
