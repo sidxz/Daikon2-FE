@@ -8,6 +8,7 @@ import GeneProteinActivityAssayStore from "./Apps/Flow/FlowGene/Stores/GeneProte
 import GeneProteinProductionStore from "./Apps/Flow/FlowGene/Stores/GeneProteinProductionStore";
 import GeneResistanceMutationStore from "./Apps/Flow/FlowGene/Stores/GeneResistanceMutationStore";
 import GeneStore from "./Apps/Flow/FlowGene/Stores/GeneStore";
+import GeneVulnerabilityStore from "./Apps/Flow/FlowGene/Stores/GeneVulnerabilityStore";
 import AuthStore from "./Auth/AuthStore";
 
 configure({ enforceActions: "always" });
@@ -25,6 +26,7 @@ export class RootStore {
   geneHypomorphStore;
   geneCrispriStrainStore;
   geneResistanceMutationStore;
+  geneVulnerabilityStore;
   constructor() {
     this.authStore = new AuthStore(this);
     this.geneStore = new GeneStore(this);
@@ -37,6 +39,7 @@ export class RootStore {
     this.geneHypomorphStore = new GeneHypomorphStore(this);
     this.geneCrispriStrainStore = new GeneCrispriStrainStore(this);
     this.geneResistanceMutationStore = new GeneResistanceMutationStore(this);
+    this.geneVulnerabilityStore = new GeneVulnerabilityStore(this);
   }
 }
 

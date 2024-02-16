@@ -11,6 +11,7 @@ import FGVPrHypomorph from "./FGVPrHypomorph/FGVPrHypomorph";
 import FGVPrProteinActivityAssay from "./FGVPrProteinActivityAssay/FGVPrProteinActivityAssay";
 import FGVPrProteinProduction from "./FGVPrProteinProduction/FGVPrProteinProduction";
 import FGVPrResistanceMutation from "./FGVPrResistanceMutation/FGVPrResistanceMutation";
+import FGVPrVulnerability from "./FGVPrVulnerability/FGVPrVulnerability";
 
 const FGVPrivate = ({ selectedGene }) => {
   const navigate = useNavigate();
@@ -90,7 +91,7 @@ const FGVPrivate = ({ selectedGene }) => {
 
         <div className="flex pt-2">
           <Fieldset className="m-0 flex-grow-1" legend="Vulnerability">
-            <FGVPrProteinActivityAssay selectedGene={selectedGene} />
+            <FGVPrVulnerability selectedGene={selectedGene} />
           </Fieldset>
         </div>
 
