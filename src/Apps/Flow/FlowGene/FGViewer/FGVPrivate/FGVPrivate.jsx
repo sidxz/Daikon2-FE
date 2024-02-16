@@ -6,6 +6,7 @@ import { useNavigate } from "react-router";
 import SecHeading from "../../../../../Library/SecHeading/SecHeading";
 import { appColors } from "../../../../../constants/colors";
 import FGVPrEssentiality from "./FGVPrEssentiality/FGVPrEssentiality";
+import FGVPrProteinActivityAssay from "./FGVPrProteinActivityAssay/FGVPrProteinActivityAssay";
 import FGVPrProteinProduction from "./FGVPrProteinProduction/FGVPrProteinProduction";
 
 const FGVPrivate = ({ selectedGene }) => {
@@ -58,7 +59,9 @@ const FGVPrivate = ({ selectedGene }) => {
         <Fieldset
           className="m-0 flex-grow-1"
           legend="Protein Activity Assay List"
-        ></Fieldset>
+        >
+          <FGVPrProteinActivityAssay selectedGene={selectedGene} />
+        </Fieldset>
       </div>
     </div>
   );
