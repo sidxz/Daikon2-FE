@@ -5,6 +5,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import Admin from "../Apps/Admin/Admin";
 import Flow from "../Apps/Flow/Flow";
+import MolecuLogix from "../Apps/MolecuLogix/MolecuLogix";
 import Login from "../Auth/Login/Login";
 import UnauthorizedUser from "../Auth/UnauthorizedUser/UnauthorizedUser";
 import Loading from "../Library/Loading/Loading";
@@ -53,6 +54,7 @@ const Container = ({ userManager }) => {
         <Route index element={<Navigate replace to="wf/" />} />
         <Route path="wf/*" element={<Flow />} />
         <Route path="admin/*" element={<Admin />} />
+        <Route path="moleculogix/*" element={<MolecuLogix />} />
       </Routes>
       <Footer />
     </div>

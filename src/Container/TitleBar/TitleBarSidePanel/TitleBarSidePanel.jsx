@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
-import { Button } from "primereact/button";
 import { Divider } from "primereact/divider";
+import { PanelMenu } from "primereact/panelmenu";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import mainLogo from "../../../assets/logo-daikon.png";
@@ -9,98 +9,46 @@ import { appVersion } from "../../../constants/appVersion";
 const TitleBarSidePanel = ({ toggle, user }) => {
   const navigate = useNavigate();
 
-  const adminTools = (
-    <div className="flex flex-column">
-      <div className="flex">
-        <div className="flex">
-          {" "}
-          <h4>+ Admin Tools</h4>
-        </div>
-        <div className="flex">
-          {" "}
-          <Divider type="dashed" />
-        </div>
-      </div>
-
-      <div className="flex">
-        <div className="card">
-          <Button
-            type="button"
-            label="Admin Dashboard"
-            icon="icon icon-common icon-asterisk"
-            className="p-mr-2 p-mb-2 p-button-text p-button-plain p-button-sm"
-            onClick={() => {
-              toggle();
-
-              navigate("/admin");
-            }}
-          />
-        </div>
-      </div>
-    </div>
-  );
-
-  const pmTools = (
-    <div className="flex flex-column">
-      <div className="flex">
-        <div className="flex">
-          {" "}
-          <h4>+ Project Management</h4>
-        </div>
-        <div className="flex">
-          {" "}
-          <Divider type="dashed" />
-        </div>
-      </div>
-
-      <div className="flex">
-        <div className="card">
-          <Button
-            type="button"
-            label="Project Management Dashboard"
-            icon="icon icon-common icon-asterisk"
-            className="p-mr-2 p-mb-2 p-button-text p-button-plain p-button-sm"
-            onClick={() => {
-              toggle();
-
-              navigate("/pm");
-            }}
-          />
-        </div>
-      </div>
-    </div>
-  );
-
-  const tools = (
-    <div className="flex flex-column">
-      <div className="flex">
-        <div className="flex">
-          {" "}
-          <h4>+ Tools</h4>
-        </div>
-        <div className="flex">
-          {" "}
-          <Divider type="dashed" />
-        </div>
-      </div>
-
-      <div className="flex">
-        <div className="card">
-          <Button
-            type="button"
-            label="Compounds"
-            icon="icon icon-common icon-asterisk"
-            className="p-mr-2 p-mb-2 p-button-text p-button-plain p-button-sm"
-            onClick={() => {
-              toggle();
-              setAppView("Tools");
-              navigate("/tools");
-            }}
-          />
-        </div>
-      </div>
-    </div>
-  );
+  const items = [
+    {
+      label: "Admin",
+      icon: "pi pi-fw pi-cog",
+      items: [
+        {
+          label: "User Management",
+          icon: "pi pi-fw pi-user-plus",
+          command: () => {
+            navigate("/admin/users");
+            toggle();
+          },
+        },
+        {
+          label: "API Management",
+          icon: "pi pi-fw pi-cloud",
+          command: () => {
+            navigate("/admin/apis");
+            toggle();
+          },
+        },
+        {
+          label: "Role Management",
+          icon: "pi pi-fw pi-users",
+          command: () => {
+            navigate("/admin/users");
+            toggle();
+          },
+        },
+      ],
+    },
+    {
+      label: "MolecuLogix",
+      icon: "pi pi-fw pi-chart-line",
+      command: () => {
+        navigate("/moleculogix");
+        toggle();
+      },
+    },
+  ];
 
   return (
     <div className="flex flex-column">
@@ -113,26 +61,11 @@ const TitleBarSidePanel = ({ toggle, user }) => {
           </p>
         </div>
       </div>
+      <Divider />
 
-      <div className="flex align-items-center justify-content-center">
-        {/* <div className="card p-fluid">
-          <span className="p-input-icon-left">
-            <i className="pi pi-search" />
-            <InputText placeholder="Search" />
-          </span>
-        </div> */}
+      <div className="card flex justify-content-center">
+        <PanelMenu model={items} className="w-full md:w-20rem" multiple />
       </div>
-
-      <div className="flex">{adminTools}</div>
-      {/* 
-
-      <div className="flex">
-        {user.roles.includes("projectManager") ? pmTools : ""}
-      </div>
-
-      <div className="flex">
-        {user.roles.includes("projectManager") ? tools : ""}
-      </div> */}
     </div>
   );
 };
