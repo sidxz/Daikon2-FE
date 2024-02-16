@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import { BlockUI } from "primereact/blockui";
 import { Button } from "primereact/button";
 import { Column } from "primereact/column";
-import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
+import { confirmDialog } from "primereact/confirmdialog";
 import { DataTable } from "primereact/datatable";
 import { Sidebar } from "primereact/sidebar";
 import React, { useContext, useState } from "react";
@@ -148,7 +148,6 @@ const FGVPrEssentiality = ({ selectedGene }) => {
           closeSidebar={() => setDisplayAddSideBar(false)}
         />
       </Sidebar>
-      <ConfirmDialog />
     </>
   );
 };
