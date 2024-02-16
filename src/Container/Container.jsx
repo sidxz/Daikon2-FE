@@ -1,4 +1,5 @@
 import { observer } from "mobx-react-lite";
+import { ConfirmDialog } from "primereact/confirmdialog";
 import React, { useContext, useEffect, useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
@@ -45,6 +46,7 @@ const Container = ({ userManager }) => {
 
   return (
     <div className="App">
+      <ConfirmDialog />
       <TitleBar signOut={signOut} ssoUser={ssoUser} />
       <ToastContainer />
       <Routes>
