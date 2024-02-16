@@ -1,5 +1,6 @@
 import { configure } from "mobx";
 import { createContext } from "react";
+import GeneCrispriStrainStore from "./Apps/Flow/FlowGene/Stores/GeneCrispriStrainStore";
 import GeneEssentialityStore from "./Apps/Flow/FlowGene/Stores/GeneEssentialityStore";
 import GeneHypomorphStore from "./Apps/Flow/FlowGene/Stores/GeneHypomorphStore";
 import GenePDBCrossRefStore from "./Apps/Flow/FlowGene/Stores/GenePDBCrossRefStore";
@@ -21,6 +22,7 @@ export class RootStore {
   geneProteinProductionStore;
   geneProteinActivityAssayStore;
   geneHypomorphStore;
+  geneCrispriStrainStore;
   constructor() {
     this.authStore = new AuthStore(this);
     this.geneStore = new GeneStore(this);
@@ -31,6 +33,7 @@ export class RootStore {
       this
     );
     this.geneHypomorphStore = new GeneHypomorphStore(this);
+    this.geneCrispriStrainStore = new GeneCrispriStrainStore(this);
   }
 }
 

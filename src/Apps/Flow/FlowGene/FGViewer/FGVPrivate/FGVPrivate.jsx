@@ -5,6 +5,7 @@ import React from "react";
 import { useNavigate } from "react-router";
 import SecHeading from "../../../../../Library/SecHeading/SecHeading";
 import { appColors } from "../../../../../constants/colors";
+import FGVPrCrispriStrain from "./FGVPrCrispriStrain/FGVPrCrispriStrain";
 import FGVPrEssentiality from "./FGVPrEssentiality/FGVPrEssentiality";
 import FGVPrHypomorph from "./FGVPrHypomorph/FGVPrHypomorph";
 import FGVPrProteinActivityAssay from "./FGVPrProteinActivityAssay/FGVPrProteinActivityAssay";
@@ -76,7 +77,7 @@ const FGVPrivate = ({ selectedGene }) => {
 
         <div className="flex pt-2">
           <Fieldset className="m-0 flex-grow-1" legend="CRISPRi Strain List">
-            <FGVPrProteinActivityAssay selectedGene={selectedGene} />
+            <FGVPrCrispriStrain selectedGene={selectedGene} />
           </Fieldset>
         </div>
 
