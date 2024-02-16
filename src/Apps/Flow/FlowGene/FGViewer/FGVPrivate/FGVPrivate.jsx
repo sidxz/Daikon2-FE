@@ -11,6 +11,7 @@ import FGVPrHypomorph from "./FGVPrHypomorph/FGVPrHypomorph";
 import FGVPrProteinActivityAssay from "./FGVPrProteinActivityAssay/FGVPrProteinActivityAssay";
 import FGVPrProteinProduction from "./FGVPrProteinProduction/FGVPrProteinProduction";
 import FGVPrResistanceMutation from "./FGVPrResistanceMutation/FGVPrResistanceMutation";
+import FGVPrUnpublishedStructuralInformation from "./FGVPrUnpublishedStructuralInformation/FGVPrUnpublishedStructuralInformation";
 import FGVPrVulnerability from "./FGVPrVulnerability/FGVPrVulnerability";
 
 const FGVPrivate = ({ selectedGene }) => {
@@ -100,7 +101,9 @@ const FGVPrivate = ({ selectedGene }) => {
             className="m-0 flex-grow-1"
             legend="Unpublished Structural Information"
           >
-            <FGVPrProteinActivityAssay selectedGene={selectedGene} />
+            <FGVPrUnpublishedStructuralInformation
+              selectedGene={selectedGene}
+            />
           </Fieldset>
         </div>
       </div>
