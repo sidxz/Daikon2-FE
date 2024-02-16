@@ -2,6 +2,7 @@ import { observer } from "mobx-react-lite";
 import React, { useContext, useEffect, useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import Admin from "../Apps/Admin/Admin";
 import Flow from "../Apps/Flow/Flow";
 import Login from "../Auth/Login/Login";
 import UnauthorizedUser from "../Auth/UnauthorizedUser/UnauthorizedUser";
@@ -49,6 +50,7 @@ const Container = ({ userManager }) => {
       <Routes>
         <Route index element={<Navigate replace to="wf/" />} />
         <Route path="wf/*" element={<Flow />} />
+        <Route path="admin/*" element={<Admin />} />
       </Routes>
       <Footer />
     </div>

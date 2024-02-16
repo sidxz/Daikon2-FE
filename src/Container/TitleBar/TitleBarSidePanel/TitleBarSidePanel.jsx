@@ -31,7 +31,7 @@ const TitleBarSidePanel = ({ toggle, user }) => {
             className="p-mr-2 p-mb-2 p-button-text p-button-plain p-button-sm"
             onClick={() => {
               toggle();
-              setAppView("AdminDashboard");
+
               navigate("/admin");
             }}
           />
@@ -62,7 +62,7 @@ const TitleBarSidePanel = ({ toggle, user }) => {
             className="p-mr-2 p-mb-2 p-button-text p-button-plain p-button-sm"
             onClick={() => {
               toggle();
-              setAppView("ProjectManagement");
+
               navigate("/pm");
             }}
           />
@@ -123,9 +123,8 @@ const TitleBarSidePanel = ({ toggle, user }) => {
         </div> */}
       </div>
 
-      {/* <div className="flex">
-        {user.roles.includes("admin") ? adminTools : ""}
-      </div>
+      <div className="flex">{adminTools}</div>
+      {/* 
 
       <div className="flex">
         {user.roles.includes("projectManager") ? pmTools : ""}

@@ -90,8 +90,6 @@ const FGVPrEssentiality = ({ selectedGene }) => {
   return (
     <>
       <BlockUI blocked={isUpdatingEssentiality || isDeletingEssentiality}>
-        <ConfirmDialog />
-
         <DataTable
           value={selectedGene.essentialities}
           editMode="row"
@@ -129,10 +127,11 @@ const FGVPrEssentiality = ({ selectedGene }) => {
           />
           <Column
             rowEditor
-            headerStyle={{ width: "10%", minWidth: "8rem" }}
+            header="Edit"
+            // headerStyle={{ width: "10%", minWidth: "8rem" }}
             bodyStyle={{ textAlign: "center" }}
           />
-          <Column body={deleteBodyTemplate} />
+          <Column body={deleteBodyTemplate} header="Delete" />
         </DataTable>
       </BlockUI>
       <Sidebar
@@ -149,6 +148,7 @@ const FGVPrEssentiality = ({ selectedGene }) => {
           closeSidebar={() => setDisplayAddSideBar(false)}
         />
       </Sidebar>
+      <ConfirmDialog />
     </>
   );
 };
