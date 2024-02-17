@@ -26,4 +26,8 @@ export const appColors = {
     ind: "#53A9A8",
     portfolio: "#DCB14E",
   },
+
+  molecuLogix: {
+    heading: "#ED5565",
+  },
 };

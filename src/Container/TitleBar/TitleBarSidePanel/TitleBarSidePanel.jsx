@@ -3,6 +3,7 @@ import { Divider } from "primereact/divider";
 import { PanelMenu } from "primereact/panelmenu";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { MolecuLogixIcon } from "../../../Apps/MolecuLogix/Icons/MolecuLogixIcon";
 import mainLogo from "../../../assets/logo-daikon.png";
 import { appVersion } from "../../../constants/appVersion";
 
@@ -42,7 +43,7 @@ const TitleBarSidePanel = ({ toggle, user }) => {
     },
     {
       label: "MolecuLogix",
-      icon: "pi pi-fw pi-chart-line",
+      icon: <MolecuLogixIcon size={"18em"} />,
       command: () => {
         navigate("/moleculogix");
         toggle();

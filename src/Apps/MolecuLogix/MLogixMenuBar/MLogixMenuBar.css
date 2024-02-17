@@ -1,0 +1,42 @@
+.MLogixMenuBar .pipeline-menu .p-tabmenuitem {
+  margin-right: 20px !important;
+}
+
+.MLogixMenuBar .pipeline-menu .p-menuitem-icon {
+  font-size: 22px !important;
+  font-weight: 100 !important;
+}
+
+.MLogixMenuBar .pipeline-menu .p-menuitem-text {
+  font-size: 16px !important;
+  font-weight: 400 !important;
+}
+
+.MLogixMenuBar
+  .p-tabmenu
+  .p-tabmenu-nav
+  .p-tabmenuitem.p-highlight
+  .p-menuitem-link {
+  background: #ffffff;
+  border-color: #000000;
+  color: #000000;
+}
+
+.MLogixMenuBar .p-tabmenu .p-tabmenu-nav .p-tabmenuitem .p-menuitem-link {
+  color: #686868;
+}
+
+@media screen and (max-width: 1300px) {
+  .MLogixMenuBar .pipeline-menu .p-tabmenuitem {
+    margin-right: 0px !important;
+  }
+
+  .MLogixMenuBar .pipeline-menu .p-menuitem-icon {
+    font-size: 20px !important;
+  }
+
+  .MLogixMenuBar .pipeline-menu .p-menuitem-text {
+    font-size: 16px !important;
+    font-weight: 400 !important;
+  }
+}

@@ -10,6 +10,7 @@ import GeneResistanceMutationStore from "./Apps/Flow/FlowGene/Stores/GeneResista
 import GeneStore from "./Apps/Flow/FlowGene/Stores/GeneStore";
 import GeneUnpublishedStructuralInformationStore from "./Apps/Flow/FlowGene/Stores/GeneUnpublishedStructuralInformationStore";
 import GeneVulnerabilityStore from "./Apps/Flow/FlowGene/Stores/GeneVulnerabilityStore";
+import MoleculeStore from "./Apps/MolecuLogix/Stores/MoleculeStore";
 import AuthStore from "./Auth/AuthStore";
 
 configure({ enforceActions: "always" });
@@ -29,6 +30,8 @@ export class RootStore {
   geneResistanceMutationStore;
   geneVulnerabilityStore;
   geneUnpublishedStructuralInformationStore;
+
+  moleculeStore;
   constructor() {
     this.authStore = new AuthStore(this);
     this.geneStore = new GeneStore(this);
@@ -44,6 +47,7 @@ export class RootStore {
     this.geneVulnerabilityStore = new GeneVulnerabilityStore(this);
     this.geneUnpublishedStructuralInformationStore =
       new GeneUnpublishedStructuralInformationStore(this);
+    this.moleculeStore = new MoleculeStore(this);
   }
 }
 
