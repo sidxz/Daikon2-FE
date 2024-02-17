@@ -33,15 +33,17 @@ const SecHeading = ({
         >
           <Button
             className={
-              button?.className
-                ? button.className
-                : "p-button-outlined p-button-info"
+              button?.className ? button.className : "p-button-text p-button-sm"
             }
             label={button?.label}
             icon={button?.icon}
             onClick={button?.action}
             disabled={button?.disabled}
             loading={button?.loading}
+            pt={{
+              label: { style: { color: "#FFFFFF" } },
+              icon: { style: { color: "#FFFFFF" } },
+            }}
           />
         </div>
       ));
@@ -53,7 +55,7 @@ const SecHeading = ({
 
     let displayHorizonButton = (
       <div
-        style={{ float: "right", marginLeft: "auto", paddingRight: "0.5em" }}
+      // style={{ float: "right", marginLeft: "auto", paddingRight: "0.5em" }}
       >
         <button
           className={options.togglerClassName}
@@ -79,22 +81,27 @@ const SecHeading = ({
           background: background,
           opacity: "1",
           color: "#000000",
-          padding: "0.5em",
+          padding: "0.4em",
         }}
       >
         <div className="flex card-container w-full align-items-center">
-          <div className="flex text-3xl gap-2 " style={{ color: htextColor }}>
-            <div className="flex align-items-center justify-content-center">
-              <i className={icon}></i>
-            </div>
-            <div className="flex align-items-center justify-content-center">
-              {heading}
+          <div className="flex w-full align-items-center">
+            <div className="flex gap-2" style={{ color: htextColor }}>
+              <div className="flex align-items-center justify-content-center text-3xl">
+                <i className={icon}></i>
+              </div>
+              <div className="flex align-items-center justify-content-center text-3xl">
+                {heading}
+              </div>
+              <div className="flex align-items-center justify-content-center">
+                {sub ? "|" : ""} {sub}
+              </div>
             </div>
           </div>
-
-          <div className="flex">{sub}</div>
-          {customButtons.length > 0 && customButtonSet}
-          {displayHorizon ? displayHorizonButton : <p />}
+          <div className="flex w-full align-items-center justify-content-end">
+            {customButtons.length > 0 && customButtonSet}
+            {displayHorizon ? displayHorizonButton : <p />}
+          </div>
         </div>
       </div>
     );
