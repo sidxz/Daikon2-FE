@@ -1,10 +1,14 @@
 import { Sidebar } from "primereact/sidebar";
 import React, { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import SecHeading from "../../../../Library/SecHeading/SecHeading";
 import { RootStoreContext } from "../../../../RootStore";
 import { appColors } from "../../../../constants/colors";
-import FSAddScreen from "./FSAddScreen/FSAddScreen";
+import FSDAddScreen from "./FSDAddScreen/FSDAddScreen";
+import FSDMenuBar from "./FSDMenuBar/FSDMenuBar";
+import FSDOverview from "./FSDOverview/FSDOverview";
+import FSDPhenotypic from "./FSDPhenotypic/FSDPhenotypic";
+import FSDTargetBased from "./FSDTargetBased/FSDTargetBased";
 const FSDashboard = () => {
   const rootStore = useContext(RootStoreContext);
   const navigate = useNavigate();
@@ -25,7 +29,6 @@ const FSDashboard = () => {
           <SecHeading
             icon="icon icon-common icon-search"
             heading="Screens"
-            sub="List of all screens"
             color={appColors.sectionHeadingBg.screen}
             displayHorizon={true}
             customButtons={[
@@ -37,6 +40,17 @@ const FSDashboard = () => {
             ]}
           />
         </div>
+        <div className="flex w-full justify-content-center">
+          <FSDMenuBar />
+        </div>
+        <div className="flex w-full">
+          <Routes>
+            <Route index element={<Navigate to="overview/" />} />
+            <Route path="overview/*" element={<FSDOverview />} />
+            <Route path="target-based/*" element={<FSDTargetBased />} />
+            <Route path="phenotypic/*" element={<FSDPhenotypic />} />
+          </Routes>
+        </div>
       </div>
       <Sidebar
         visible={displayAddSideBar}
@@ -45,7 +59,7 @@ const FSDashboard = () => {
         className="p-sidebar-md"
         header={addSideBarHeader}
       >
-        <FSAddScreen closeSideBar={() => setDisplayAddSideBar(false)} />
+        <FSDAddScreen closeSideBar={() => setDisplayAddSideBar(false)} />
       </Sidebar>
     </>
   );

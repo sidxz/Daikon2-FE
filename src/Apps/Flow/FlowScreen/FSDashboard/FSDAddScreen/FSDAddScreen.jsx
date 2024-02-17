@@ -2,9 +2,9 @@ import { Dropdown } from "primereact/dropdown";
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { RootStoreContext } from "../../../../../RootStore";
-import FSAddScreenPhenotypic from "./FSAddScreenPhenotypic";
-import FSAddScreenTargetBased from "./FSAddScreenTargetBased";
-const FSAddScreen = ({ closeSideBar }) => {
+import FSDAddScreenPhenotypic from "./FSDAddScreenPhenotypic";
+import FSDAddScreenTargetBased from "./FSDAddScreenTargetBased";
+const FSDAddScreen = ({ closeSideBar }) => {
   const rootStore = useContext(RootStoreContext);
   const navigate = useNavigate();
 
@@ -33,13 +33,13 @@ const FSAddScreen = ({ closeSideBar }) => {
         />
       </div>
       {screenType === "target-based" && (
-        <FSAddScreenTargetBased closeSideBar={() => closeSideBar()} />
+        <FSDAddScreenTargetBased closeSideBar={() => closeSideBar()} />
       )}
       {screenType === "phenotypic" && (
-        <FSAddScreenPhenotypic closeSideBar={() => closeSideBar()} />
+        <FSDAddScreenPhenotypic closeSideBar={() => closeSideBar()} />
       )}
     </div>
   );
 };
 
-export default FSAddScreen;
+export default FSDAddScreen;

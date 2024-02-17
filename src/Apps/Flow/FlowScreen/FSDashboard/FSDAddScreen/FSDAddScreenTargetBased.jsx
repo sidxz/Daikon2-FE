@@ -9,18 +9,18 @@ import { RootStoreContext } from "../../../../../RootStore";
 import { orgDropDownOptions } from "../../../../../Shared/FormEditors/OrgDropDown";
 import { screeningMethods } from "../../shared/FSValues";
 
-const FSAddScreenTargetBased = ({ closeSideBar }) => {
+const FSDAddScreenTargetBased = ({ closeSideBar }) => {
   const rootStore = useContext(RootStoreContext);
 
   const { addScreen, isAddingScreen } = rootStore.screenStore;
 
   const formik = useFormik({
     initialValues: {
-      org: "",
+      primaryOrgName: "",
       name: "",
       notes: "",
       method: "",
-      screeningType: "target-based",
+      screenType: "target-based",
     },
 
     validate: (values) => {
@@ -73,28 +73,28 @@ const FSAddScreenTargetBased = ({ closeSideBar }) => {
 
           <div className="field">
             <label
-              htmlFor="org"
+              htmlFor="primaryOrgName"
               className={classNames({
-                "p-error": isInvalid("org"),
+                "p-error": isInvalid("primaryOrgName"),
               })}
             >
               Screening Organization
             </label>
 
             <Dropdown
-              value={formik.values.org}
+              value={formik.values.primaryOrgName}
               options={orgDropDownOptions}
-              onChange={formik.handleChange("org")}
+              onChange={formik.handleChange("primaryOrgName")}
               optionLabel="name"
               placeholder="Select an org"
               filter
               showClear
               filterBy="name"
               className={classNames({
-                "p-invalid": isInvalid("org"),
+                "p-invalid": isInvalid("primaryOrgName"),
               })}
             />
-            {getErrorMessage("org")}
+            {getErrorMessage("primaryOrgName")}
           </div>
 
           <div className="field">
@@ -155,4 +155,4 @@ const FSAddScreenTargetBased = ({ closeSideBar }) => {
   );
 };
 
-export default FSAddScreenTargetBased;
+export default FSDAddScreenTargetBased;

@@ -68,6 +68,7 @@ export default class ScreenStore {
       const screens = await ScreenAPI.list();
       runInAction(() => {
         screens.forEach((screen) => {
+          // console.log("screen:", screen);
           this.screenListRegistry.set(screen.id, screen);
         });
         this.isScreenListCacheValid = true;
