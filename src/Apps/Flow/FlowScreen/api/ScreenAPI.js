@@ -7,7 +7,7 @@ const ScreenAPI = {
   getById: (id) => axiosWithAuth.get(`/v2/screen/by-id/${id}`),
   getByName: (name) => axiosWithAuth.get(`/v2/gene/by-name/${name}`),
   create: (screen) => axiosWithAuth.post("/v2/screen", screen),
-  update: (screen) => axiosWithAuth.put("/v2/screen", screen),
+  update: (screen) => axiosWithAuth.put(`/v2/screen/${screen.id}`, screen),
   delete: (id) => axiosWithAuth.delete(`/v2/screen/${id}`),
 };
 

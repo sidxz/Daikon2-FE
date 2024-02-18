@@ -2,6 +2,7 @@ import { observer } from "mobx-react-lite";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import React, { useContext, useEffect } from "react";
+import { NavLink } from "react-router-dom";
 import Loading from "../../../../../Library/Loading/Loading";
 import { RootStoreContext } from "../../../../../RootStore";
 
@@ -23,6 +24,12 @@ const FSDTargetBased = () => {
   if (isFetchingScreens) {
     return <Loading message={"Fetching Screens..."} />;
   }
+
+  let nameBodyTemplate = (rowData) => {
+    return (
+      <NavLink to={"../../viewer/tb/" + rowData.id}>{rowData.name}</NavLink>
+    );
+  };
 
   let associateTargetBodyTemplate = (rowData) => {
     if (!rowData.associatedTargets) return <div></div>;
@@ -49,6 +56,7 @@ const FSDTargetBased = () => {
           filterDisplay="row"
         >
           <Column
+            body={nameBodyTemplate}
             field="name"
             header="Name"
             filter
