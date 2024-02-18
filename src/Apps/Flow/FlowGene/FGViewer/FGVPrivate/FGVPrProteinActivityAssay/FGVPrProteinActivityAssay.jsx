@@ -61,7 +61,6 @@ const FGVPrProteinActivityAssay = ({ selectedGene }) => {
   const deleteBodyTemplate = (rowData) => {
     const accept = () => {
       // Delete proteinActivityAssay
-      console.log("Delete proteinActivityAssay:", rowData);
       deleteProteinActivityAssay(rowData.proteinActivityAssayId);
     };
     const reject = () => {

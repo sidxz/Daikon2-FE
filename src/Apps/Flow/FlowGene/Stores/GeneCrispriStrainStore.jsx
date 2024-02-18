@@ -36,10 +36,8 @@ export default class GeneCrispriStrainStore {
       var res = await GeneCrispriStrainAPI.create(crispriStrain);
       runInAction(() => {
         // Add crispriStrain to gene crispriStrain list
-        console.log(res);
         crispriStrain.crispriStrainId = res.id;
 
-        console.log("Add with iD crispriStrain:", crispriStrain);
         this.rootStore.geneStore.selectedGene.crispriStrains.push(
           crispriStrain
         );
@@ -60,7 +58,6 @@ export default class GeneCrispriStrainStore {
   };
 
   updateCrispriStrain = async (crispriStrain) => {
-    console.log("updateCrispriStrain:", crispriStrain);
     this.isUpdatingCrispriStrain = true;
 
     // Ensure crispriStrain.geneId is set, fallback to selectedGene.geneId if null, undefined, or empty

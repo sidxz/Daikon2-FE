@@ -61,7 +61,6 @@ const FGVPrEssentiality = ({ selectedGene }) => {
   const deleteBodyTemplate = (rowData) => {
     const accept = () => {
       // Delete essentiality
-      console.log("Delete essentiality:", rowData);
       deleteEssentiality(rowData.essentialityId);
     };
     const reject = () => {

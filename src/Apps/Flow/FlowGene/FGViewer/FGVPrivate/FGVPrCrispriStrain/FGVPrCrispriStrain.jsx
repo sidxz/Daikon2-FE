@@ -58,7 +58,6 @@ const FGVPrCrispriStrain = ({ selectedGene }) => {
   const deleteBodyTemplate = (rowData) => {
     const accept = () => {
       // Delete crispriStrain
-      console.log("Delete crispriStrain:", rowData);
       deleteCrispriStrain(rowData.crispriStrainId);
     };
     const reject = () => {

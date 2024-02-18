@@ -5,17 +5,12 @@ import { InputTextarea } from "primereact/inputtextarea";
 import { classNames } from "primereact/utils";
 import React, { useContext } from "react";
 import { RootStoreContext } from "../../../../../RootStore";
+import { hitCollectionTypeOptions } from "../../shared/FSValues";
 
 const FSTbVAddHitCollection = ({ selectedScreen, closeSidebar }) => {
   const rootStore = useContext(RootStoreContext);
   const { isAddingHitCollection, addHitCollection } =
     rootStore.hitCollectionStore;
-
-  let hitCollectionTypeOptions = [
-    { name: "Validated Hits", value: "validated" },
-    { name: "Disclosed Hits", value: "disclosed" },
-    { name: "Other", value: "other" },
-  ];
 
   const formik = useFormik({
     initialValues: {

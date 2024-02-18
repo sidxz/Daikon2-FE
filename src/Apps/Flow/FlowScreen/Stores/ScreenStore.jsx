@@ -135,10 +135,8 @@ export default class ScreenStore {
       var res = await ScreenAPI.create(screen);
       runInAction(() => {
         // Add screen to screen list
-        console.log(res);
         screen.Id = res.id;
 
-        console.log("Add with iD screen:", screen);
         this.screenRegistry.set(screen.id, screen);
         this.screenListRegistry.set(screen.id, screen);
         toast.success("Screen added successfully");
@@ -153,7 +151,6 @@ export default class ScreenStore {
   };
 
   updateScreen = async (screen) => {
-    console.log("updateScreen:", screen);
     this.isUpdatingScreen = true;
 
     try {

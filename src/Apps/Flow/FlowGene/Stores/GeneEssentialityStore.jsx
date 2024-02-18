@@ -36,10 +36,8 @@ export default class GeneEssentialityStore {
       var res = await GeneEssentialityAPI.create(essentiality);
       runInAction(() => {
         // Add essentiality to gene essentiality list
-        console.log(res);
         essentiality.essentialityId = res.id;
 
-        console.log("Add with iD essentiality:", essentiality);
         this.rootStore.geneStore.selectedGene.essentialities.push(essentiality);
         const gene = this.rootStore.geneStore.geneRegistry.get(
           essentiality.geneId
@@ -58,7 +56,6 @@ export default class GeneEssentialityStore {
   };
 
   updateEssentiality = async (essentiality) => {
-    console.log("updateEssentiality:", essentiality);
     this.isUpdatingEssentiality = true;
 
     // Ensure essentiality.geneId is set, fallback to selectedGene.geneId if null, undefined, or empty

@@ -1,68 +1,48 @@
 import { BreadCrumb } from "primereact/breadcrumb";
 import { Sidebar } from "primereact/sidebar";
 import { TabPanel, TabView } from "primereact/tabview";
-import React, { useState } from "react";
-import { FcOpenedFolder } from "react-icons/fc";
+import React, { useContext, useEffect, useState } from "react";
 import SecHeading from "../../../../../Library/SecHeading/SecHeading";
 import { appColors } from "../../../../../constants/colors";
 import FSTbVAddHitCollection from "./FSTbVAddHitCollection";
-import FSTbVHitCollection from "./FSTbVHitCollection/FSTbVHitCollection";
 
-const FSTbVHits = ({ selectedScreen }) => {
+import { observer } from "mobx-react-lite";
+import { FcOpenedFolder } from "react-icons/fc";
+import { useNavigate } from "react-router-dom";
+import Loading from "../../../../../Library/Loading/Loading";
+import { RootStoreContext } from "../../../../../RootStore";
+import * as Helper from "./FSTbVHitCollectionHelper";
+const FSTbVHitCollection = ({ selectedScreen }) => {
   const [displayAddSideBar, setDisplayAddSideBar] = useState(false);
+  const navigate = useNavigate();
 
-  const breadCrumbItems = [
-    {
-      label: "Screens",
-      command: () => {
-        navigate("/wf/screen/");
-      },
-    },
-    {
-      label: selectedScreen.name,
-      command: () => {
-        navigate(`/wf/screen/viewer/tb/${selectedScreen.id}`);
-      },
-    },
-    { label: "Hits" },
-  ];
+  const rootStore = useContext(RootStoreContext);
+  const {
+    fetchHitCollection,
+    isFetchingHitCollection,
+    isHitCollectionRegistryCacheValid,
+    hitCollectionOfScreen,
+  } = rootStore.hitCollectionStore;
+  useEffect(() => {
+    if (!isHitCollectionRegistryCacheValid(selectedScreen.id)) {
+      fetchHitCollection(selectedScreen.id);
+    }
+  }, [isHitCollectionRegistryCacheValid, fetchHitCollection, selectedScreen]);
 
-  const addSideBarHeader = (
-    <div className="flex align-items-center gap-2">
-      <i className="icon icon-common icon-plus-circle"></i>
-      <span className="font-bold">Add Hit Collection</span>
-    </div>
-  );
+  if (isFetchingHitCollection) {
+    return <Loading message={"Fetching Hit Collection..."} />;
+  }
 
-  const hitCollectionTabHeaderTemplate = (options, hitCollection) => {
-    console.log("FSTbVHits -> hitCollection", hitCollection);
-    return (
-      <div
-        className="flex align-items-center gap-2 p-3"
-        style={{ cursor: "pointer" }}
-        onClick={options.onClick}
-      >
-        <FcOpenedFolder />
-
-        <span className="white-space-nowrap">
-          {hitCollection.hitCollectionType} ({hitCollection.name})
-        </span>
-      </div>
-    );
-  };
-
-  if (selectedScreen) {
-    console.log("FSTbVHits -> selectedScreen", selectedScreen);
+  if (selectedScreen && hitCollectionOfScreen(selectedScreen.id)) {
     let hitCollectionTabs = [];
-    selectedScreen.hitCollections.forEach((hitCollection) => {
+    hitCollectionOfScreen(selectedScreen.id).forEach((hitCollection) => {
       hitCollectionTabs.push(
         <TabPanel
-          headerTemplate={(options) =>
-            hitCollectionTabHeaderTemplate(options, hitCollection)
-          }
+          header={Helper.hitCollectionNameTemplate(hitCollection)}
+          leftIcon={<FcOpenedFolder className="mr-2" />}
           key={hitCollection.id}
         >
-          <FSTbVHitCollection hitCollection={hitCollection} />
+          {/* <FSTbVHits hitCollection={hitCollection} /> */}
         </TabPanel>
       );
     });
@@ -71,7 +51,9 @@ const FSTbVHits = ({ selectedScreen }) => {
       <>
         <div className="flex flex-column w-full">
           <div className="flex w-full">
-            <BreadCrumb model={breadCrumbItems} />
+            <BreadCrumb
+              model={Helper.breadCrumbItems(selectedScreen, navigate)}
+            />
           </div>
           <div className="flex w-full">
             <SecHeading
@@ -97,7 +79,7 @@ const FSTbVHits = ({ selectedScreen }) => {
           position="right"
           onHide={() => setDisplayAddSideBar(false)}
           className="p-sidebar-sm"
-          header={addSideBarHeader}
+          header={Helper.addSideBarHeader}
         >
           <FSTbVAddHitCollection
             selectedScreen={selectedScreen}
@@ -111,4 +93,4 @@ const FSTbVHits = ({ selectedScreen }) => {
   return <div>Loading..</div>;
 };
 
-export default FSTbVHits;
+export default observer(FSTbVHitCollection);

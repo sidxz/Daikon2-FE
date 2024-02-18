@@ -10,7 +10,7 @@ import {
 } from "react-router-dom";
 import Loading from "../../../../Library/Loading/Loading";
 import { RootStoreContext } from "../../../../RootStore";
-import FSTbVHits from "./FSTbVHits/FSTbVHits";
+import FSTbVHitCollection from "./FSTbVHitCollection/FSTbVHitCollection";
 import FSTbVScreens from "./FSTbVScreens/FSTbVScreens";
 import * as Helper from "./FSTbViewerHelper";
 const FSTbViewer = () => {
@@ -42,8 +42,8 @@ const FSTbViewer = () => {
             <Routes>
               <Route index element={<Navigate replace to="screens/" />} />
               <Route
-                path="hits/"
-                element={<FSTbVHits selectedScreen={selectedScreen} />}
+                path="hits/*"
+                element={<FSTbVHitCollection selectedScreen={selectedScreen} />}
               />
               <Route
                 path="screens/"

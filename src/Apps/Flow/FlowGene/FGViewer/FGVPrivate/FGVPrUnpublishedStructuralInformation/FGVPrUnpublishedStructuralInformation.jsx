@@ -58,7 +58,6 @@ const FGVPrUnpublishedStructuralInformation = ({ selectedGene }) => {
   const deleteBodyTemplate = (rowData) => {
     const accept = () => {
       // Delete unpublishedStructuralInformation
-      console.log("Delete unpublishedStructuralInformation:", rowData);
       deleteUnpublishedStructuralInformation(
         rowData.unpublishedStructuralInformationId
       );

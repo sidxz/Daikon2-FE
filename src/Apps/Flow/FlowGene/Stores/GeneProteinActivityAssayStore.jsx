@@ -37,10 +37,8 @@ export default class GeneProteinActivityAssayStore {
       var res = await GeneProteinActivityAssayAPI.create(proteinActivityAssay);
       runInAction(() => {
         // Add proteinActivityAssay to gene proteinActivityAssay list
-        console.log(res);
         proteinActivityAssay.proteinActivityAssayId = res.id;
 
-        console.log("Add with iD proteinActivityAssay:", proteinActivityAssay);
         this.rootStore.geneStore.selectedGene.proteinActivityAssays.push(
           proteinActivityAssay
         );
@@ -61,7 +59,6 @@ export default class GeneProteinActivityAssayStore {
   };
 
   updateProteinActivityAssay = async (proteinActivityAssay) => {
-    console.log("updateProteinActivityAssay:", proteinActivityAssay);
     this.isUpdatingProteinActivityAssay = true;
 
     // Ensure proteinActivityAssay.geneId is set, fallback to selectedGene.geneId if null, undefined, or empty

@@ -36,10 +36,8 @@ export default class GeneHypomorphStore {
       var res = await GeneHypomorphAPI.create(hypomorph);
       runInAction(() => {
         // Add hypomorph to gene hypomorph list
-        console.log(res);
         hypomorph.hypomorphId = res.id;
 
-        console.log("Add with iD hypomorph:", hypomorph);
         this.rootStore.geneStore.selectedGene.hypomorphs.push(hypomorph);
         const gene = this.rootStore.geneStore.geneRegistry.get(
           hypomorph.geneId
@@ -58,7 +56,6 @@ export default class GeneHypomorphStore {
   };
 
   updateHypomorph = async (hypomorph) => {
-    console.log("updateHypomorph:", hypomorph);
     this.isUpdatingHypomorph = true;
 
     // Ensure hypomorph.geneId is set, fallback to selectedGene.geneId if null, undefined, or empty

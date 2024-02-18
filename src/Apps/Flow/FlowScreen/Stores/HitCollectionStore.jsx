@@ -8,6 +8,14 @@ export default class HitCollectionStore {
   constructor(rootStore) {
     this.rootStore = rootStore;
     makeObservable(this, {
+      fetchHitCollection: action,
+      isFetchingHitCollection: observable,
+      hitCollectionRegistry: observable,
+      isHitCollectionRegistryCacheValid: action,
+      hitCollectionRegistryCache: observable,
+      selectedHitCollection: observable,
+      hitCollectionOfScreen: action,
+
       isUpdatingHitCollection: observable,
       updateHitCollection: action,
 
@@ -20,11 +28,59 @@ export default class HitCollectionStore {
   }
 
   // Observables
+
+  isFetchingHitCollection = false;
+  hitCollectionRegistry = new Map();
+  hitCollectionRegistryCache = new Map();
+  selectedHitCollection = null;
+
   isUpdatingHitCollection = false;
   isAddingHitCollection = false;
   isDeletingHitCollection = false;
 
   // Actions
+
+  isHitCollectionRegistryCacheValid = (screenId) => {
+    return this.hitCollectionRegistryCache.get(screenId);
+  };
+
+  fetchHitCollection = async (screenId, inValidateCache = false) => {
+    if (inValidateCache) {
+      this.hitCollectionRegistryCache.set(screenId, false);
+    }
+
+    if (this.hitCollectionRegistryCache.get(screenId)) {
+      return;
+    }
+
+    // if screenId is null, undefined, or empty, fallback to selectedScreen.screenId
+    screenId = screenId?.trim() || this.rootStore.screenStore.selectedScreen.id;
+
+    this.isFetchingHitCollection = true;
+
+    try {
+      var hitCollections = await HitCollectionAPI.listByScreen(screenId);
+      runInAction(() => {
+        hitCollections.forEach((hitCollection) => {
+          this.hitCollectionRegistry.set(hitCollection.id, hitCollection);
+        });
+        this.hitCollectionRegistryCache.set(screenId, true);
+      });
+    } catch (error) {
+      console.error("Error fetching hitCollection:", error);
+    } finally {
+      runInAction(() => {
+        this.isFetchingHitCollection = false;
+      });
+    }
+  };
+
+  hitCollectionOfScreen = (screenId) => {
+    return Array.from(this.hitCollectionRegistry.values()).filter(
+      (hitCollection) => hitCollection.screenId === screenId
+    );
+  };
+
   addHitCollection = async (hitCollection) => {
     this.isAddingHitCollection = true;
 
@@ -37,17 +93,10 @@ export default class HitCollectionStore {
       var res = await HitCollectionAPI.create(hitCollection);
       runInAction(() => {
         // Add hitCollection to hitCollection list
-        console.log(res);
         hitCollection.id = res.id;
 
-        console.log("Add with id hitCollection:", hitCollection);
-        this.rootStore.screenStore.selectedScreen.hitCollections.push(
-          hitCollection
-        );
-        const screen = this.rootStore.screenStore.screenRegistry.get(
-          hitCollection.screenId
-        );
-        screen.hitCollections.push(hitCollection);
+        this.selectedHitCollection?.hitCollections.push(hitCollection);
+        this.hitCollectionRegistry.set(hitCollection.id, hitCollection);
 
         toast.success("Hit Collection added successfully");
       });
@@ -77,23 +126,11 @@ export default class HitCollectionStore {
     try {
       await HitCollectionAPI.update(hitCollection);
       runInAction(() => {
-        // update in screen registry list
-        const screen = this.rootStore.screenStore.screenRegistry.get(
-          hitCollection.screenId
-        );
+        // update in hit collection registry
+        this.hitCollectionRegistry.set(hitCollection.id, hitCollection);
 
-        const indexOfEss = screen.hitCollections.findIndex(
-          (e) => e.id === hitCollection.id
-        );
-        screen.hitCollections[indexOfEss] = hitCollection;
-
-        // update the same in selected screen
-        const selectedScreen = this.rootStore.screenStore.selectedScreen;
-        const selectedIndex = selectedScreen.hitCollections.findIndex(
-          (e) => e.id === hitCollection.id
-        );
-
-        selectedScreen.hitCollections[selectedIndex] = hitCollection;
+        // update the same in selected hit collection
+        this.selectedHitCollection = hitCollection;
 
         toast.success("Gene hitCollection updated successfully");
       });
@@ -119,19 +156,14 @@ export default class HitCollectionStore {
     try {
       await HitCollectionAPI.delete(screenId, hitCollectionId);
       runInAction(() => {
-        // remove hitCollection from screen hitCollection list
-        const screen = this.rootStore.screenStore.screenRegistry.get(screenId);
-        const indexOfEss = screen.hitCollections.findIndex(
-          (e) => e.id === hitCollectionId
-        );
-        screen.hitCollections.splice(indexOfEss, 1);
+        // remove hitCollection from hit collection registry
+        this.hitCollectionRegistry.delete(hitCollectionId);
 
-        // remove the same from selected screen
-        const selectedScreen = this.rootStore.screenStore.selectedScreen;
-        const selectedIndex = selectedScreen.hitCollections.findIndex(
-          (e) => e.id === hitCollectionId
-        );
-        selectedScreen.hitCollections.splice(selectedIndex, 1);
+        // invalidate cache
+        this.hitCollectionRegistryCache.set(screenId, false);
+        // set selected hit collection to first hit collection of that screen or null
+        this.selectedHitCollection =
+          this.hitCollectionOfScreen(screenId)[0] || null;
 
         toast.success("Gene hitCollection deleted successfully");
       });

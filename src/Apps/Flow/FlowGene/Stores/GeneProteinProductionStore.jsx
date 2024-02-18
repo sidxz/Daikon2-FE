@@ -30,17 +30,18 @@ export default class GeneProteinProductionStore {
 
     // Ensure proteinProduction.geneId is set, fallback to selectedGene.geneId if null, undefined, or empty
     proteinProduction.geneId =
-      proteinProduction.geneId?.trim() || this.rootStore.geneStore.selectedGene.Id;
+      proteinProduction.geneId?.trim() ||
+      this.rootStore.geneStore.selectedGene.Id;
 
     try {
       var res = await GeneProteinProductionAPI.create(proteinProduction);
       runInAction(() => {
         // Add proteinProduction to gene proteinProduction list
-        console.log(res);
         proteinProduction.proteinProductionId = res.id;
 
-        console.log("Add with iD proteinProduction:", proteinProduction);
-        this.rootStore.geneStore.selectedGene.proteinProductions.push(proteinProduction);
+        this.rootStore.geneStore.selectedGene.proteinProductions.push(
+          proteinProduction
+        );
         const gene = this.rootStore.geneStore.geneRegistry.get(
           proteinProduction.geneId
         );
@@ -58,12 +59,12 @@ export default class GeneProteinProductionStore {
   };
 
   updateProteinProduction = async (proteinProduction) => {
-    console.log("updateProteinProduction:", proteinProduction);
     this.isUpdatingProteinProduction = true;
 
     // Ensure proteinProduction.geneId is set, fallback to selectedGene.geneId if null, undefined, or empty
     proteinProduction.geneId =
-      proteinProduction.geneId?.trim() || this.rootStore.geneStore.selectedGene.id;
+      proteinProduction.geneId?.trim() ||
+      this.rootStore.geneStore.selectedGene.id;
 
     // Ensure proteinProduction.proteinProductionId is not null, undefined, or empty
     if (!proteinProduction.proteinProductionId?.trim()) {

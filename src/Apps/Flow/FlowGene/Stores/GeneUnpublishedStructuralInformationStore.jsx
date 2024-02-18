@@ -41,14 +41,9 @@ export default class GeneUnpublishedStructuralInformationStore {
       );
       runInAction(() => {
         // Add unpublishedStructuralInformation to gene unpublishedStructuralInformation list
-        console.log(res);
         unpublishedStructuralInformation.unpublishedStructuralInformationId =
           res.id;
 
-        console.log(
-          "Add with iD unpublishedStructuralInformation:",
-          unpublishedStructuralInformation
-        );
         this.rootStore.geneStore.selectedGene.unpublishedStructuralInformations.push(
           unpublishedStructuralInformation
         );
@@ -78,10 +73,6 @@ export default class GeneUnpublishedStructuralInformationStore {
   updateUnpublishedStructuralInformation = async (
     unpublishedStructuralInformation
   ) => {
-    console.log(
-      "updateUnpublishedStructuralInformation:",
-      unpublishedStructuralInformation
-    );
     this.isUpdatingUnpublishedStructuralInformation = true;
 
     // Ensure unpublishedStructuralInformation.geneId is set, fallback to selectedGene.geneId if null, undefined, or empty

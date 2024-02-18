@@ -60,7 +60,6 @@ const FGVPrHypomorph = ({ selectedGene }) => {
   const deleteBodyTemplate = (rowData) => {
     const accept = () => {
       // Delete hypomorph
-      console.log("Delete hypomorph:", rowData);
       deleteHypomorph(rowData.hypomorphId);
     };
     const reject = () => {

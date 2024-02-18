@@ -62,7 +62,6 @@ const FGVPrProteinProduction = ({ selectedGene }) => {
   const deleteBodyTemplate = (rowData) => {
     const accept = () => {
       // Delete proteinProduction
-      console.log("Delete proteinProduction:", rowData);
       deleteProteinProduction(rowData.proteinProductionId);
     };
     const reject = () => {

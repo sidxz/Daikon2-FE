@@ -37,10 +37,8 @@ export default class GeneResistanceMutationStore {
       var res = await GeneResistanceMutationAPI.create(resistanceMutation);
       runInAction(() => {
         // Add resistanceMutation to gene resistanceMutation list
-        console.log(res);
         resistanceMutation.resistanceMutationId = res.id;
 
-        console.log("Add with ID resistanceMutation:", resistanceMutation);
         this.rootStore.geneStore.selectedGene.resistanceMutations.push(
           resistanceMutation
         );
@@ -61,7 +59,6 @@ export default class GeneResistanceMutationStore {
   };
 
   updateResistanceMutation = async (resistanceMutation) => {
-    console.log("updateResistanceMutation:", resistanceMutation);
     this.isUpdatingResistanceMutation = true;
 
     // Ensure resistanceMutation.geneId is set, fallback to selectedGene.geneId if null, undefined, or empty

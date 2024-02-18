@@ -62,7 +62,6 @@ const FGVPrResistanceMutation = ({ selectedGene }) => {
   const deleteBodyTemplate = (rowData) => {
     const accept = () => {
       // Delete resistanceMutation
-      console.log("Delete resistanceMutation:", rowData);
       deleteResistanceMutation(rowData.resistanceMutationId);
     };
     const reject = () => {
