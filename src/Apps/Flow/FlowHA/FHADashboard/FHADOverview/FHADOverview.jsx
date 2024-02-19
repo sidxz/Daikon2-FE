@@ -1,5 +1,4 @@
 import React from "react";
-import { useDrag, useDrop } from "react-dnd";
 import { FcAlarmClock, FcDisapprove, FcOk, FcWorkflow } from "react-icons/fc";
 import FHADOActiveHA from "./FHADOActiveHA/FHADOActiveHA";
 import FHADOInActiveHA from "./FHADOInActiveHA/FHADOInActiveHA";
@@ -7,35 +6,6 @@ import FHADOPortfolioReadyHA from "./FHADOPortfolioReadyHA/FHADOPortfolioReadyHA
 import FHADOReadyForHA from "./FHADOReadyForHA/FHADOReadyForHA";
 
 const FHADOverview = () => {
-  const Card = ({ project, onDrop }) => {
-    const [{ isDragging }, drag] = useDrag({
-      type: "CARD",
-      item: { project },
-      collect: (monitor) => ({
-        isDragging: monitor.isDragging(),
-      }),
-    });
-
-    const [{ isOver }, drop] = useDrop({
-      accept: "CARD",
-      drop: (item) => onDrop(item.project, project.bucket),
-      collect: (monitor) => ({
-        isOver: monitor.isOver(),
-      }),
-    });
-
-    return (
-      <div
-        ref={(node) => drag(drop(node))}
-        className={`card ${isDragging ? "dragging" : ""}`}
-      >
-        {/* Render card content here */}
-        <p>{project.name}</p>
-        {/* ... */}
-      </div>
-    );
-  };
-
   return (
     <div className="flex flex-column w-full">
       <div className="flex w-full ">
@@ -116,7 +86,7 @@ const FHADOverview = () => {
               <b>PORTFOLIO READY</b>
             </div>
           </div>
-          <div className="flex w-full pr-3">
+          <div className="flex w-full pr-3 ">
             <div className="flex w-full  pt-1 bg-white">
               <FHADOPortfolioReadyHA />
             </div>
