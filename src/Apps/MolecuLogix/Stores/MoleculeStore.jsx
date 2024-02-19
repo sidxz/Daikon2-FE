@@ -5,6 +5,7 @@ import {
   observable,
   runInAction,
 } from "mobx";
+import { toast } from "react-toastify";
 import MolDbAPI from "../api/MolDbAPI";
 
 export default class MoleculeStore {
@@ -19,9 +20,16 @@ export default class MoleculeStore {
 
       fetchMolecule: action,
       isFetchingMolecule: observable,
+
       moleculeRegistry: observable,
       isMoleculeRegistryCacheValid: observable,
       selectedMolecule: observable,
+
+      registerMolecule: action,
+      isRegisteringMolecule: observable,
+
+      findSimilarMolecules: action,
+      isFindingSimilarMolecules: observable,
     });
   }
 
@@ -31,6 +39,8 @@ export default class MoleculeStore {
   moleculeRegistry = new Map();
   isMoleculeRegistryCacheValid = false;
   selectedMolecule = null;
+  isRegisteringMolecule = false;
+  isFindingSimilarMolecules = false;
 
   // Actions
 
@@ -83,7 +93,6 @@ export default class MoleculeStore {
       const molecule = await MolDbAPI.getMoleculeById(moleculeId);
       runInAction(() => {
         this.moleculeRegistry.set(molecule.id, molecule);
-        this.isMoleculeRegistryCacheValid = true;
         this.selectedMolecule = molecule;
       });
     } catch (error) {
@@ -91,6 +100,58 @@ export default class MoleculeStore {
     } finally {
       runInAction(() => {
         this.isFetchingMolecule = false;
+      });
+    }
+  };
+
+  registerMolecule = async (molecule) => {
+    console.log("registerMolecule");
+    console.log(molecule);
+    // reject if molecule smiles is not set
+    if (!molecule.smiles) {
+      toast.error("Molecule smiles is required");
+      throw new Error("Molecule smiles is required");
+    }
+
+    this.isRegisteringMolecule = true;
+    try {
+      const res = await MolDbAPI.registerMolecule(molecule);
+      console.log(res);
+      runInAction(() => {
+        // check if res has property similarity
+        // if yes, then the molecule is already registered
+
+        if (res.similarity) {
+          toast.warning(
+            `The molecule is already registered under name: ${res.name}`
+          );
+        } else {
+          this.moleculeRegistry.set(res.id, res);
+          toast.success("Molecule registered successfully");
+        }
+      });
+    } catch (error) {
+      console.error("Error registering molecule:", error);
+    } finally {
+      runInAction(() => {
+        this.isRegisteringMolecule = false;
+      });
+    }
+  };
+
+  findSimilarMolecules = async (smiles, threshold = 0.01, limit = 10) => {
+    this.isFindingSimilarMolecules = true;
+    try {
+      let res = await MolDbAPI.findSimilarMolecules(smiles, threshold, limit);
+      runInAction(() => {
+        console.log(res);
+        this.isFindingSimilarMolecules = false;
+      });
+    } catch (error) {
+      console.error("Error finding similar molecules:", error);
+    } finally {
+      runInAction(() => {
+        this.isFindingSimilarMolecules = false;
       });
     }
   };
