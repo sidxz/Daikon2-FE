@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router";
 import { Navigate } from "react-router-dom";
 import FSDashboard from "./FSDashboard/FSDashboard";
 import FSPhViewer from "./FSPhViewer/FSPhViewer";
-import FSTbViewer from "./FSTBViewer/FSTBViewer";
+import FSTbViewer from "./FSTbViewer/FSTbViewer";
 import FSViewer from "./FSViewer/FSViewer";
 const FlowScreenApp = () => {
   return (
