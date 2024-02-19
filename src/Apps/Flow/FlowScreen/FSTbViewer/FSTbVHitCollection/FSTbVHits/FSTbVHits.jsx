@@ -11,7 +11,8 @@ const FSTbVHits = ({ hitCollection }) => {
   console.log("FSTbVHits hitCollection", hitCollection.id);
 
   const rootStore = useContext(RootStoreContext);
-  const { hitCollectionRegistry } = rootStore.hitCollectionStore;
+  const { setSelectedHitCollection } = rootStore.hitCollectionStore;
+  setSelectedHitCollection(hitCollection.id);
 
   const [displayAddHitSideBar, setDisplayAddHitSideBar] = useState(false);
 

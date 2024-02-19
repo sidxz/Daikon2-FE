@@ -15,6 +15,7 @@ export default class HitCollectionStore {
       hitCollectionRegistryCache: observable,
       selectedHitCollection: observable,
       hitCollectionOfScreen: action,
+      setSelectedHitCollection: action,
 
       isUpdatingHitCollection: observable,
       updateHitCollection: action,
@@ -42,6 +43,11 @@ export default class HitCollectionStore {
 
   isHitCollectionRegistryCacheValid = (screenId) => {
     return this.hitCollectionRegistryCache.get(screenId);
+  };
+
+  setSelectedHitCollection = (hitCollectionId) => {
+    this.selectedHitCollection =
+      this.hitCollectionRegistry.get(hitCollectionId);
   };
 
   fetchHitCollection = async (screenId, inValidateCache = false) => {
