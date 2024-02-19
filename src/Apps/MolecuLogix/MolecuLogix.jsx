@@ -1,8 +1,8 @@
 import React from "react";
 import { Route, Routes } from "react-router";
 import MLogixDash from "./MLogixDash/MLogixDash";
+import MLogixDraw from "./MLogixDraw/MLogixDraw";
 import MLogixMenuBar from "./MLogixMenuBar/MLogixMenuBar";
-import MLogixDraw from "./MlogixDraw/MLogixDraw";
 
 const MolecuLogix = () => {
   return (
