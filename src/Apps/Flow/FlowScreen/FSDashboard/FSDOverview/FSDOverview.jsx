@@ -2,13 +2,17 @@ import React from "react";
 import { FcNeutralTrading, FcPlanner } from "react-icons/fc";
 import { GiVote } from "react-icons/gi";
 import { WiMoonFull } from "react-icons/wi";
+import FSDOActiveScreens from "./FSDOActiveScreens/FSDOActiveScreens";
+import FSDOPlannedScreens from "./FSDOPlannedScreens/FSDOPlannedScreens";
+import FSDORecentlyCompleted from "./FSDORecentlyCompleted/FSDORecentlyCompleted";
+import FSDOVotingReady from "./FSDOVotingReady/FSDOVotingReady";
 
 const FSDOverview = () => {
   // root store context
 
   return (
     <div className="flex flex-column w-full">
-      <div className="flex w-full surface-50">
+      <div className="flex w-full surface-0">
         <div
           className="flex w-1 p-4 align-items-center bg-white"
           style={{
@@ -93,10 +97,43 @@ const FSDOverview = () => {
           TARGET BASED
         </div>
 
-        <div className="flex w-full border-1 border-100  bg-white"></div>
-        <div className="flex w-full border-1 border-100  bg-white"></div>
-        <div className="flex w-full border-1 border-100  bg-white"></div>
-        <div className="flex w-full border-1 border-100  bg-white"></div>
+        <div className="flex w-full border-1 border-50  bg-white">
+          <FSDOPlannedScreens />
+        </div>
+        <div className="flex w-full border-1 border-50  bg-white">
+          <FSDOActiveScreens />
+        </div>
+        <div className="flex w-full border-1 border-50  bg-white">
+          <FSDOVotingReady />
+        </div>
+        <div className="flex w-full border-1 border-50  bg-white">
+          <FSDORecentlyCompleted />
+        </div>
+      </div>
+      <div className="flex w-full pt-3">
+        <div
+          className="flex max-w-1 p-4 align-items-center bg-bluegray-400 text-white"
+          style={{
+            textOrientation: "sideways-right",
+            writingMode: "vertical-rl",
+            transform: "rotate(180deg)",
+          }}
+        >
+          PHENOTYPIC
+        </div>
+
+        <div className="flex w-full border-1 border-50 bg-white">
+          <FSDOPlannedScreens />
+        </div>
+        <div className="flex w-full border-1 border-50  bg-white">
+          <FSDOActiveScreens />
+        </div>
+        <div className="flex w-full border-1 border-50  bg-white">
+          <FSDOVotingReady />
+        </div>
+        <div className="flex w-full border-1 border-50  bg-white">
+          <FSDORecentlyCompleted />
+        </div>
       </div>
       ;
     </div>
