@@ -100,11 +100,13 @@ class AxiosWithAuth {
   };
 
   post = async (url, data, config = {}) => {
+    data.strainId = "d838994b-a5f2-4d50-b037-4dfe150f8cdf";
     await this.init();
     return this.axiosWithAuth.post(url, data, config).then(this.formatResponse);
   };
 
   put = async (url, data, config = {}) => {
+    data.strainId = "d838994b-a5f2-4d50-b037-4dfe150f8cdf";
     await this.init();
     return this.axiosWithAuth.put(url, data, config).then(this.formatResponse);
   };
