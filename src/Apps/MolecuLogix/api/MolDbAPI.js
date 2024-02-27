@@ -7,7 +7,7 @@ const MolDbAPI = {
   getMoleculeById: (id) => axiosWithAuth.get(`/v2/mol-db/molecule/by-id/${id}`),
 
   registerMolecule: (molecule) =>
-    axiosWithAuth.post("/v2/mol-db/molecule/register", molecule),
+    axiosWithAuth.post("/v2/mlogix/molecule/", molecule),
 
   // updateMolecule: (molecule) =>
   //   axiosWithAuth.put("/v2/mol-db/molecule/update", molecule),

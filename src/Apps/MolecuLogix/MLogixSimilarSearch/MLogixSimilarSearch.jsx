@@ -5,6 +5,7 @@ import { DataView } from "primereact/dataview";
 import { Fieldset } from "primereact/fieldset";
 import { InputText } from "primereact/inputtext";
 import { Menu } from "primereact/menu";
+import { Slider } from "primereact/slider";
 import React, { useContext, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import SecHeading from "../../../Library/SecHeading/SecHeading";
@@ -19,11 +20,16 @@ const MLogixSimilarSearch = () => {
   const params = useParams();
   const [searchValue, setSearchValue] = useState(params.smiles || "");
   const [searchResults, setSearchResults] = useState([]);
+  const [similarityThreshold, setSimilarityThreshold] = useState(20);
 
   const rootStore = useContext(RootStoreContext);
 
   const searchForSimilarMolecules = () => {
-    MolDbAPI.findSimilarMolecules(searchValue, 0.01, 10).then((response) => {
+    MolDbAPI.findSimilarMolecules(
+      searchValue,
+      similarityThreshold / 100,
+      10
+    ).then((response) => {
       //console.log(response);
       setSearchResults(response);
     });
@@ -64,14 +70,26 @@ const MLogixSimilarSearch = () => {
           <div className="flex w-full gap-2">
             <Fieldset legend="Search" className="w-full">
               <div className="flex w-full">
-                <div className="flex w-11">
+                <div className="flex w-11 p-2">
                   <InputText
-                    className="text-lg w-11"
+                    className="text-lg w-full"
                     value={searchValue}
                     onChange={(e) => setSearchValue(e.target.value)}
                   />
                 </div>
-                <div className="flex">
+                <div className="flex-column">
+                  <div className="flex w-14rem p-2">
+                    <Slider
+                      value={similarityThreshold}
+                      onChange={(e) => setSimilarityThreshold(e.value)}
+                      className="w-full"
+                    />
+                  </div>
+                  <div className="flex p-2">
+                    Threshold : {similarityThreshold}
+                  </div>
+                </div>
+                <div className="flex p-2">
                   <Button
                     label="Search"
                     onClick={() => searchForSimilarMolecules()}

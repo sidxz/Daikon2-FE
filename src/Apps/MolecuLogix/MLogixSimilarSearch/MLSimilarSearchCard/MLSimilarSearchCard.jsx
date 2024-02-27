@@ -19,11 +19,11 @@ const MLSimilarSearchCard = ({ molecule, navigate }) => {
       <div className="flex flex-column gap-1">
         <div className="flex">
           <NavLink to={`/moleculogix/molecule/${molecule.id}`}>
-            <p className="text-3xl m-0">{molecule.name}</p>
+            <p className="text-2xl m-0">{molecule.name}</p>
           </NavLink>
         </div>
         <div className="flex">
-          <p className="text-2xl m-0">
+          <p className="text-xl m-0">
             Similarity : {molecule.similarity * 100} %
           </p>
         </div>

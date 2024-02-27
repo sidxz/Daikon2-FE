@@ -108,7 +108,7 @@ export default class MoleculeStore {
     console.log("registerMolecule");
     console.log(molecule);
     // reject if molecule smiles is not set
-    if (!molecule.smiles) {
+    if (!molecule.requestedSMILES) {
       toast.error("Molecule smiles is required");
       throw new Error("Molecule smiles is required");
     }
@@ -121,7 +121,7 @@ export default class MoleculeStore {
         // check if res has property similarity
         // if yes, then the molecule is already registered
 
-        if (res.similarity) {
+        if (res.wasAlreadyRegistered) {
           toast.warning(
             `The molecule is already registered under name: ${res.name}`
           );

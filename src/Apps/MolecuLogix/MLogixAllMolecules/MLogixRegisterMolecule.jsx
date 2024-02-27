@@ -14,13 +14,14 @@ const MLogixRegisterMolecule = ({ closeSideBar }) => {
   const formik = useFormik({
     initialValues: {
       name: "",
-      smiles: "",
+      requestedSMILES: "",
     },
 
     validate: (values) => {
       const errors = {};
       if (!values.name) errors.name = "Name is required.";
-      if (!values.smiles) errors.smiles = "SMILES is required.";
+      if (!values.requestedSMILES)
+        errors.requestedSMILES = "SMILES is required.";
       // Additional validations can be added here
       return errors;
     },
@@ -66,23 +67,23 @@ const MLogixRegisterMolecule = ({ closeSideBar }) => {
 
           <div className="field">
             <label
-              htmlFor="smiles"
+              htmlFor="requestedSMILES"
               className={classNames({
-                "p-error": isInvalid("smiles"),
+                "p-error": isInvalid("requestedSMILES"),
               })}
             >
               SMILES *
             </label>
             <InputTextarea
-              id="smiles"
-              answer="smiles"
-              value={formik.values.smiles}
+              id="requestedSMILES"
+              answer="requestedSMILES"
+              value={formik.values.requestedSMILES}
               onChange={formik.handleChange}
               className={classNames({
-                "p-invalid": isInvalid("smiles"),
+                "p-invalid": isInvalid("requestedSMILES"),
               })}
             />
-            {getErrorMessage("smiles")}
+            {getErrorMessage("requestedSMILES")}
           </div>
 
           <Button
