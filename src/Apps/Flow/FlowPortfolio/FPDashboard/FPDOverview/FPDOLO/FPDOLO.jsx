@@ -37,7 +37,7 @@ const FPDOLO = () => {
                 minWidth: "5rem",
               }}
             >
-              <FDate timestamp={new Date().getTime()} />
+              <FDate timestamp={new Date().getTime()} color="#4761b4" />
             </div>
             <div
               className="flex flex-column justify-content-center w-full p-2 text-indigo-600 border-right-1 border-indigo-100"
@@ -45,7 +45,7 @@ const FPDOLO = () => {
                 minWidth: "5rem",
               }}
             >
-              <FDate timestamp={new Date().getTime()} />
+              <FDate timestamp={new Date().getTime()} color="#4761b4" />
             </div>
           </div>
           <div className="flex w-full justify-content-center">
