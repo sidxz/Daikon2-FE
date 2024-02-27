@@ -6,15 +6,15 @@ const FPDOH2L = () => {
   return (
     <div className="flex flex-column w-full shadow-1 hover:shadow-3">
       <div className="flex flex-column  justify-content-center cursor-pointer ">
-        <div className="flex flex-column bg-orange-100  justify-content-center ">
-          <div className="flex p-2 text-lg text-orange-800 justify-content-center">
+        <div className="flex flex-column bg-pink-100  justify-content-center ">
+          <div className="flex p-2 text-lg text-pink-800 justify-content-center">
             Project name
           </div>
         </div>
         <div className="flex ">
-          <div className="flex flex-column justify-content-center  border-orange-100">
+          <div className="flex flex-column justify-content-center  border-pink-100">
             <div
-              className="flex justify-content-center w-full p-2 text-orange-600 border-right-1 border-orange-100"
+              className="flex justify-content-center w-full p-2 text-pink-600 border-right-1 border-pink-100"
               style={{
                 minWidth: "5rem",
               }}
@@ -23,7 +23,7 @@ const FPDOH2L = () => {
             </div>
 
             <div
-              className="flex flex-column justify-content-center w-full p-2 text-orange-600 border-right-1 border-orange-100"
+              className="flex flex-column justify-content-center w-full p-2 text-pink-600 border-right-1 border-pink-100"
               style={{
                 minWidth: "5rem",
               }}
@@ -32,7 +32,7 @@ const FPDOH2L = () => {
             </div>
 
             <div
-              className="flex flex-column justify-content-center w-full p-2 text-orange-600 border-right-1 border-orange-100"
+              className="flex flex-column justify-content-center w-full p-2 text-pink-600 border-right-1 border-pink-100"
               style={{
                 minWidth: "5rem",
               }}
@@ -40,7 +40,7 @@ const FPDOH2L = () => {
               <FDate timestamp={new Date().getTime()} color="#CC5500" />
             </div>
             <div
-              className="flex flex-column justify-content-center w-full p-2 text-orange-600 border-right-1 border-orange-100"
+              className="flex flex-column justify-content-center w-full p-2 text-pink-600 border-right-1 border-pink-100"
               style={{
                 minWidth: "5rem",
               }}

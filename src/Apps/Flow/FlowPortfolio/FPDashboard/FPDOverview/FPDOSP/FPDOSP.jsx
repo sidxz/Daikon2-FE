@@ -6,15 +6,15 @@ const FPDOSP = () => {
   return (
     <div className="flex flex-column w-full shadow-1 hover:shadow-3">
       <div className="flex flex-column  justify-content-center cursor-pointer ">
-        <div className="flex flex-column bg-orange-100  justify-content-center ">
-          <div className="flex p-2 text-lg text-orange-800 justify-content-center">
+        <div className="flex flex-column bg-cyan-100  justify-content-center ">
+          <div className="flex p-2 text-lg text-cyan-800 justify-content-center">
             Project name
           </div>
         </div>
         <div className="flex ">
-          <div className="flex flex-column justify-content-center  border-orange-100">
+          <div className="flex flex-column justify-content-center  border-cyan-100">
             <div
-              className="flex justify-content-center w-full p-2 text-orange-600 border-right-1 border-orange-100"
+              className="flex justify-content-center w-full p-2 text-cyan-600 border-right-1 border-cyan-100"
               style={{
                 minWidth: "5rem",
               }}
@@ -23,7 +23,7 @@ const FPDOSP = () => {
             </div>
 
             <div
-              className="flex flex-column justify-content-center w-full p-2 text-orange-600 border-right-1 border-orange-100"
+              className="flex flex-column justify-content-center w-full p-2 text-cyan-600 border-right-1 border-cyan-100"
               style={{
                 minWidth: "5rem",
               }}
@@ -32,20 +32,20 @@ const FPDOSP = () => {
             </div>
 
             <div
-              className="flex flex-column justify-content-center w-full p-2 text-orange-600 border-right-1 border-orange-100"
+              className="flex flex-column justify-content-center w-full p-2 text-cyan-600 border-right-1 border-cyan-100"
               style={{
                 minWidth: "5rem",
               }}
             >
-              <FDate timestamp={new Date().getTime()} color="#CC5500" />
+              <FDate timestamp={new Date().getTime()} color="#007575" />
             </div>
             <div
-              className="flex flex-column justify-content-center w-full p-2 text-orange-600 border-right-1 border-orange-100"
+              className="flex flex-column justify-content-center w-full p-2 text-cyan-600 border-right-1 border-cyan-100"
               style={{
                 minWidth: "5rem",
               }}
             >
-              <FDate timestamp={new Date().getTime()} color="#CC5500" />
+              <FDate timestamp={new Date().getTime()} color="#007575" />
             </div>
           </div>
           <div className="flex w-full justify-content-center">

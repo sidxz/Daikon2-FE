@@ -97,16 +97,16 @@ const FSDOverview = () => {
           TARGET BASED
         </div>
 
-        <div className="flex w-full border-1 border-50  bg-white">
+        <div className="flex w-full border-1 border-50 justify-content-center bg-white">
           <FSDOPlannedScreens />
         </div>
-        <div className="flex w-full border-1 border-50  bg-white">
+        <div className="flex w-full border-1 border-50 justify-content-center bg-white">
           <FSDOActiveScreens />
         </div>
-        <div className="flex w-full border-1 border-50  bg-white">
+        <div className="flex w-full border-1 border-50 justify-content-center bg-white">
           <FSDOVotingReady />
         </div>
-        <div className="flex w-full border-1 border-50  bg-white">
+        <div className="flex w-full border-1 border-50 justify-content-center bg-white">
           <FSDORecentlyCompleted />
         </div>
       </div>
@@ -122,16 +122,16 @@ const FSDOverview = () => {
           PHENOTYPIC
         </div>
 
-        <div className="flex w-full border-1 border-50 bg-white">
+        <div className="flex w-full border-1 border-50 justify-content-center bg-white">
           <FSDOPlannedScreens />
         </div>
-        <div className="flex w-full border-1 border-50  bg-white">
+        <div className="flex w-full border-1 border-50 justify-content-center bg-white">
           <FSDOActiveScreens />
         </div>
-        <div className="flex w-full border-1 border-50  bg-white">
+        <div className="flex w-full border-1 border-50 justify-content-center bg-white">
           <FSDOVotingReady />
         </div>
-        <div className="flex w-full border-1 border-50  bg-white">
+        <div className="flex w-full border-1 border-50 justify-content-center bg-white">
           <FSDORecentlyCompleted />
         </div>
       </div>
