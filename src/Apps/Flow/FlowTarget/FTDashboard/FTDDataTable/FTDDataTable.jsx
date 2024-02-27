@@ -1,20 +1,19 @@
 import { observer } from "mobx-react-lite";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
-import { MultiSelect } from "primereact/multiselect";
+import { SelectButton } from "primereact/selectbutton";
 import React from "react";
 import "./FTDDataTable.css";
 
 const FTDDataTable = () => {
-  const priority = ["Yes", "No", "All"];
+  const priority = ["Yes", "All"];
 
   const priorityFilter = (options) => (
-    <MultiSelect
+    <SelectButton
       value={options.value}
       options={priority}
       onChange={(e) => options.filterApplyCallback(e.value)}
-      placeholder="Select a priority"
-      className="p-column-filter"
+      className="p-column-filter p-button-sm"
     />
   );
   return (
@@ -54,10 +53,9 @@ const FTDDataTable = () => {
             field="tbdaPriorityTarget"
             header="TBDA Priority Target"
             filter
-            filterField="currentPriority"
             filterElement={priorityFilter}
+            style={{ width: "250px" }}
             showFilterMenu={false}
-            filterMatchMode="in"
           />
 
           <Column
