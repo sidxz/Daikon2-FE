@@ -25,6 +25,8 @@ export default class HitCollectionStore {
 
       isDeletingHitCollection: observable,
       deleteHitCollection: action,
+
+      invalidateHitCollectionCacheOfSelectedScreen: action,
     });
   }
 
@@ -40,6 +42,13 @@ export default class HitCollectionStore {
   isDeletingHitCollection = false;
 
   // Actions
+
+  invalidateHitCollectionCacheOfSelectedScreen = () => {
+    this.hitCollectionRegistryCache.set(
+      this.rootStore.screenStore.selectedScreen.id,
+      false
+    );
+  };
 
   isHitCollectionRegistryCacheValid = (screenId) => {
     return this.hitCollectionRegistryCache.get(screenId);
@@ -101,8 +110,9 @@ export default class HitCollectionStore {
         // Add hitCollection to hitCollection list
         hitCollection.id = res.id;
 
-        this.selectedHitCollection?.hitCollections.push(hitCollection);
+        // this.selectedHitCollection?.hitCollections.push(hitCollection);
         this.hitCollectionRegistry.set(hitCollection.id, hitCollection);
+        this.setSelectedHitCollection(hitCollection.id);
 
         toast.success("Hit Collection added successfully");
       });

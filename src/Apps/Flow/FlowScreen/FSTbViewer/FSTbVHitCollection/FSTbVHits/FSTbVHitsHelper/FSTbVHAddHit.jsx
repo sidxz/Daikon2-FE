@@ -1,15 +1,15 @@
 import { useFormik } from "formik";
+import { observer } from "mobx-react-lite";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { classNames } from "primereact/utils";
-import React from "react";
+import React, { useContext } from "react";
+import { RootStoreContext } from "../../../../../../../RootStore";
 
-const FSTbVHAddHit = ({
-  selectedGene,
-  isAddingEssentiality,
-  addEssentiality,
-  closeSidebar,
-}) => {
+const FSTbVHAddHit = ({ hitCollectionId, closeSideBar }) => {
+  const rootStore = useContext(RootStoreContext);
+  const { isAddingHit, addHit } = rootStore.hitStore;
+
   const formik = useFormik({
     initialValues: {
       library: "",
@@ -19,22 +19,22 @@ const FSTbVHAddHit = ({
       iC50: "",
       clusterGroup: "",
       notes: "",
-      initialCompoundStructure: "",
+      moleculeName: "",
+      requestedSMILES: "",
     },
 
     validate: (values) => {
       const errors = {};
-      if (!values.initialCompoundStructure)
-        errors.initialCompoundStructure =
-          "initialCompoundStructure is required.";
+      if (!values.requestedSMILES)
+        errors.requestedSMILES = "SMILES is required.";
       // Additional validations can be added here
       return errors;
     },
 
-    onSubmit: (essentiality) => {
-      essentiality.geneId = selectedGene.id;
-      addEssentiality(essentiality).then(() => {
-        closeSidebar();
+    onSubmit: (hitToAdd) => {
+      hitToAdd.hitCollectionId = hitCollectionId;
+      addHit(hitToAdd).then(() => {
+        closeSideBar();
         formik.resetForm();
       });
     },
@@ -125,7 +125,7 @@ const FSTbVHAddHit = ({
         <div className="field">
           <label
             htmlFor="iC50"
-            className={classNames({ "p-error": isInvalid("mic") })}
+            className={classNames({ "p-error": isInvalid("iC50") })}
           >
             IC50
           </label>
@@ -160,22 +160,40 @@ const FSTbVHAddHit = ({
 
         <div className="field">
           <label
-            htmlFor="initialCompoundStructure"
+            htmlFor="moleculeName"
+            className={classNames({ "p-error": isInvalid("moleculeName") })}
+          >
+            Compound Name
+          </label>
+          <InputText
+            id="moleculeName"
+            value={formik.values.moleculeName}
+            onChange={formik.handleChange}
             className={classNames({
-              "p-error": isInvalid("initialCompoundStructure"),
+              "p-invalid": isInvalid("moleculeName"),
+            })}
+          />
+          {getErrorMessage("moleculeName")}
+        </div>
+
+        <div className="field">
+          <label
+            htmlFor="requestedSMILES"
+            className={classNames({
+              "p-error": isInvalid("requestedSMILES"),
             })}
           >
             Compound Structure (SMILES)
           </label>
           <InputText
-            id="initialCompoundStructure"
-            value={formik.values.initialCompoundStructure}
+            id="requestedSMILES"
+            value={formik.values.requestedSMILES}
             onChange={formik.handleChange}
             className={classNames({
-              "p-invalid": isInvalid("initialCompoundStructure"),
+              "p-invalid": isInvalid("requestedSMILES"),
             })}
           />
-          {getErrorMessage("initialCompoundStructure")}
+          {getErrorMessage("requestedSMILES")}
         </div>
 
         <div className="flex justify-content-end">
@@ -184,7 +202,7 @@ const FSTbVHAddHit = ({
             type="submit"
             label="Add to database"
             className="p-button-secondary p-button-sm"
-            loading={isAddingEssentiality}
+            loading={isAddingHit}
           />
         </div>
       </form>
@@ -192,4 +210,4 @@ const FSTbVHAddHit = ({
   );
 };
 
-export default FSTbVHAddHit;
+export default observer(FSTbVHAddHit);

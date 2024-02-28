@@ -41,12 +41,14 @@ export default class HitStore {
         hit.id = res.id;
 
         console.log("Add with id hit:", hit);
-        this.rootStore.hitCollectionStore.selectedHitCollection.hits.push(hit);
+        //this.rootStore.hitCollectionStore.selectedHitCollection.hits.push(hit);
         const hitCollection =
           this.rootStore.hitCollectionStore.hitCollectionRegistry.get(
             hit.hitCollectionId
           );
         hitCollection.hits.push(hit);
+
+        this.rootStore.hitCollectionStore.invalidateHitCollectionCacheOfSelectedScreen();
 
         toast.success("Hit added successfully");
       });
