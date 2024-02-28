@@ -1,4 +1,5 @@
 import { useFormik } from "formik";
+import { observer } from "mobx-react-lite";
 import { Button } from "primereact/button";
 import { Dropdown } from "primereact/dropdown";
 import { InputTextarea } from "primereact/inputtextarea";
@@ -125,4 +126,4 @@ const FSTbVAddHitCollection = ({ selectedScreen, closeSidebar }) => {
   );
 };
 
-export default FSTbVAddHitCollection;
+export default observer(FSTbVAddHitCollection);

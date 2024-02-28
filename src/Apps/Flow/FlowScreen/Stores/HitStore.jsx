@@ -25,7 +25,7 @@ export default class HitStore {
   isDeletingHit = false;
 
   // Actions
-  addHit = async (hit) => {
+  addHit = async (hit, silent = false) => {
     this.isAddingHit = true;
 
     // Ensure hit.hitCollectionId is set ,error out if not
@@ -42,15 +42,25 @@ export default class HitStore {
 
         console.log("Add with id hit:", hit);
         //this.rootStore.hitCollectionStore.selectedHitCollection.hits.push(hit);
-        const hitCollection =
-          this.rootStore.hitCollectionStore.hitCollectionRegistry.get(
-            hit.hitCollectionId
-          );
-        hitCollection.hits.push(hit);
+        // const hitCollection =
+        //   this.rootStore.hitCollectionStore.hitCollectionRegistry.get(
+        //     hit.hitCollectionId
+        //   );
+        // hitCollection.hits.push(hit);
 
+        // invalidate cache
         this.rootStore.hitCollectionStore.invalidateHitCollectionCacheOfSelectedScreen();
+        // fetch the hit collection again silently
+        // this.rootStore.hitCollectionStore.fetchHitCollection(
+        //   this.rootStore.hitCollectionStore.selectedHitCollection.id,
+        //   true
+        // );
+        // this.rootStore.screenStore.fetchScreen(
+        //   this.rootStore.screenStore.selectedScreen.id,
+        //   true
+        // );
 
-        toast.success("Hit added successfully");
+        if (!silent) toast.success("Hit added successfully");
       });
     } catch (error) {
       console.error("Error adding Hit:", error);
@@ -127,6 +137,9 @@ export default class HitStore {
             hitCollectionId
           );
         const indexOfEss = hitCollection.hits.findIndex((e) => e.id === hitId);
+        console.log("Before Deletion hit collection");
+        console.log(hitCollection);
+        console.log("indexOfEss:", indexOfEss);
         hitCollection.hits.splice(indexOfEss, 1);
 
         // remove the same from selected hitCollection
@@ -138,6 +151,10 @@ export default class HitStore {
         selectedHitCollection.hits.splice(selectedIndex, 1);
 
         toast.success("Hit deleted successfully");
+        console.log("After Deletion hit collection");
+        console.log(hitCollection);
+        console.log("After Deletion selectedHitCollection");
+        console.log(selectedHitCollection);
       });
     } catch (error) {
       console.error("Error deleting hitCollection hit:", error);

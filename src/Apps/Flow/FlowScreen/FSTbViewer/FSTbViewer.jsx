@@ -14,18 +14,31 @@ import FSTbVHitCollection from "./FSTbVHitCollection/FSTbVHitCollection";
 import FSTbVScreens from "./FSTbVScreens/FSTbVScreens";
 import * as Helper from "./FSTbViewerHelper";
 const FSTbViewer = () => {
+  console.log("-->>>> FSTbViewer");
   const params = useParams();
   const navigate = useNavigate();
 
   const rootStore = useContext(RootStoreContext);
-  const { fetchScreen, selectedScreen, isFetchingScreen } =
-    rootStore.screenStore;
+  const {
+    fetchScreen,
+    selectedScreen,
+    isFetchingScreen,
+    isScreenRegistryCacheValid,
+  } = rootStore.screenStore;
 
   useEffect(() => {
-    if (selectedScreen === undefined || selectedScreen?.id !== params?.id) {
+    if (
+      selectedScreen === undefined ||
+      selectedScreen?.id !== params?.id ||
+      !isScreenRegistryCacheValid
+    ) {
+      console.log(
+        "-->>>> -->>>> FSTbViewer useEffect -> fetchScreen:",
+        params.id
+      );
       fetchScreen(params.id);
     }
-  }, [params.id, fetchScreen, selectedScreen]);
+  }, [params.id, fetchScreen, selectedScreen, isScreenRegistryCacheValid]);
 
   if (isFetchingScreen) {
     return <Loading message={"Fetching Screen..."} />;

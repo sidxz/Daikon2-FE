@@ -1,6 +1,9 @@
 import { observer } from "mobx-react-lite";
+import { Button } from "primereact/button";
 import { Column } from "primereact/column";
+import { confirmDialog } from "primereact/confirmdialog";
 import { DataTable } from "primereact/datatable";
+import { Dialog } from "primereact/dialog";
 import { Sidebar } from "primereact/sidebar";
 import React, { useContext, useState } from "react";
 import { RootStoreContext } from "../../../../../../RootStore";
@@ -10,17 +13,22 @@ import {
   LibraryBodyTemplate,
   StructureBodyTemplate,
 } from "./FSTbVHitsHelper/FSTbVHDataTableHelper";
+import FSTbVHExcelImport from "./FSTbVHitsHelper/FSTbVHExcelImport";
 
 const FSTbVHits = ({ hitCollection }) => {
-  console.log("FSTbVHits hitCollection", hitCollection);
+  console.log("-->>>> FSTbVHits");
+  console.log("hitCollection:", hitCollection);
 
   const rootStore = useContext(RootStoreContext);
   const { setSelectedHitCollection, selectedHitCollection } =
     rootStore.hitCollectionStore;
   const { selectedScreen } = rootStore.screenStore;
+  const { deleteHit, isDeletingHit } = rootStore.hitStore;
+
   setSelectedHitCollection(hitCollection.id);
 
   const [displayAddHitSideBar, setDisplayAddHitSideBar] = useState(false);
+  const [showFileUploadDialog, setShowFileUploadDialog] = useState(false);
 
   const addHitSideBarHeader = (
     <div className="flex align-items-center gap-2">
@@ -28,6 +36,35 @@ const FSTbVHits = ({ hitCollection }) => {
       <span className="font-bold">Add Hit</span>
     </div>
   );
+
+  const deleteBodyTemplate = (rowData) => {
+    const accept = () => {
+      // Delete hit
+      console.log("Delete hit:", rowData);
+      deleteHit(rowData.id);
+    };
+    const reject = () => {
+      // Do nothing
+    };
+    return (
+      <Button
+        severity="danger"
+        icon="ri-delete-bin-2-line"
+        className="p-button-text"
+        onClick={() => {
+          confirmDialog({
+            message: "Do you want to delete this record?",
+            header: "Delete Confirmation",
+            icon: "pi pi-info-circle",
+            defaultFocus: "reject",
+            acceptClassName: "p-button-danger",
+            accept,
+            reject,
+          });
+        }}
+      />
+    );
+  };
 
   return (
     <>
@@ -46,6 +83,7 @@ const FSTbVHits = ({ hitCollection }) => {
                 showAddHitSideBar={() => setDisplayAddHitSideBar(true)}
                 selectedHitCollection={selectedHitCollection}
                 selectedScreen={selectedScreen}
+                showFileUploadDialog={() => setShowFileUploadDialog(true)}
               />
             }
             //className="p-datatable-screen-table"
@@ -80,7 +118,11 @@ const FSTbVHits = ({ hitCollection }) => {
               header="IC50 (&micro;M) "
             />
             <Column field={(rowData) => rowData?.mic} header="MIC (&micro;M)" />
-            <Column field={(rowData) => rowData?.cluster} header="Cluster" />
+            <Column
+              field={(rowData) => rowData?.clusterGroup}
+              header="Cluster"
+            />
+            <Column body={deleteBodyTemplate} header="Delete" />
           </DataTable>
         </div>
       </div>
@@ -96,6 +138,18 @@ const FSTbVHits = ({ hitCollection }) => {
           hitCollectionId={hitCollection.id}
         />
       </Sidebar>
+
+      {/* File upload Dialog */}
+      <Dialog
+        header="Import Hits"
+        visible={showFileUploadDialog}
+        onHide={() => setShowFileUploadDialog(false)}
+      >
+        <FSTbVHExcelImport
+          selectedHitCollection={selectedHitCollection}
+          hideFileUploadDialog={() => setShowFileUploadDialog(false)}
+        />
+      </Dialog>
     </>
   );
 };

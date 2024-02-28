@@ -15,6 +15,7 @@ import * as Helper from "./FSTbVHitCollectionHelper";
 import FSTbVHits from "./FSTbVHits/FSTbVHits";
 
 const FSTbVHitCollection = ({ selectedScreen }) => {
+  console.log("-->>>> FSTbVHitCollection");
   const [displayAddSideBar, setDisplayAddSideBar] = useState(false);
   const navigate = useNavigate();
 
@@ -27,6 +28,7 @@ const FSTbVHitCollection = ({ selectedScreen }) => {
   } = rootStore.hitCollectionStore;
   useEffect(() => {
     if (!isHitCollectionRegistryCacheValid(selectedScreen.id)) {
+      console.log("-->>>> FSTbVHitCollection useEffect -> fetchHitCollection");
       fetchHitCollection(selectedScreen.id);
     }
   }, [isHitCollectionRegistryCacheValid, fetchHitCollection, selectedScreen]);
