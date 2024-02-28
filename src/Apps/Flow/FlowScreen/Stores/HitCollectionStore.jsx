@@ -8,14 +8,13 @@ export default class HitCollectionStore {
   constructor(rootStore) {
     this.rootStore = rootStore;
     makeObservable(this, {
-      fetchHitCollection: action,
+      fetchHitCollectionsOfScreen: action,
       isFetchingHitCollection: observable,
       hitCollectionRegistry: observable,
       isHitCollectionRegistryCacheValid: action,
       hitCollectionRegistryCache: observable,
       selectedHitCollection: observable,
       hitCollectionOfScreen: action,
-      setSelectedHitCollection: action,
 
       isUpdatingHitCollection: observable,
       updateHitCollection: action,
@@ -27,6 +26,8 @@ export default class HitCollectionStore {
       deleteHitCollection: action,
 
       invalidateHitCollectionCacheOfSelectedScreen: action,
+
+      getHitCollection: action,
     });
   }
 
@@ -54,12 +55,7 @@ export default class HitCollectionStore {
     return this.hitCollectionRegistryCache.get(screenId);
   };
 
-  setSelectedHitCollection = (hitCollectionId) => {
-    this.selectedHitCollection =
-      this.hitCollectionRegistry.get(hitCollectionId);
-  };
-
-  fetchHitCollection = async (screenId, inValidateCache = false) => {
+  fetchHitCollectionsOfScreen = async (screenId, inValidateCache = false) => {
     if (inValidateCache) {
       this.hitCollectionRegistryCache.set(screenId, false);
     }
@@ -94,6 +90,18 @@ export default class HitCollectionStore {
     return Array.from(this.hitCollectionRegistry.values()).filter(
       (hitCollection) => hitCollection.screenId === screenId
     );
+  };
+
+  getHitCollection = (hitCollectionId) => {
+    // check if hitCollectionId is found in hitCollectionRegistry, if not fetch it
+    if (!this.hitCollectionRegistry.has(hitCollectionId)) {
+      this.fetchHitCollectionsOfScreen(
+        this.rootStore.screenStore.selectedScreen.id
+      );
+    }
+    this.selectedHitCollection =
+      this.hitCollectionRegistry.get(hitCollectionId);
+    return this.hitCollectionRegistry.get(hitCollectionId);
   };
 
   addHitCollection = async (hitCollection) => {

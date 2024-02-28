@@ -5,7 +5,8 @@ import { confirmDialog } from "primereact/confirmdialog";
 import { DataTable } from "primereact/datatable";
 import { Dialog } from "primereact/dialog";
 import { Sidebar } from "primereact/sidebar";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { RootStoreContext } from "../../../../../../RootStore";
 import FSTbVHAddHit from "./FSTbVHitsHelper/FSTbVHAddHit";
 import { FSTbVHDataTableHeader } from "./FSTbVHitsHelper/FSTbVHDataTableHeader";
@@ -15,17 +16,24 @@ import {
 } from "./FSTbVHitsHelper/FSTbVHDataTableHelper";
 import FSTbVHExcelImport from "./FSTbVHitsHelper/FSTbVHExcelImport";
 
-const FSTbVHits = ({ hitCollection }) => {
-  console.log("-->>>> FSTbVHits");
-  console.log("hitCollection:", hitCollection);
+const FSTbVHits = () => {
+  const { id } = useParams();
 
   const rootStore = useContext(RootStoreContext);
-  const { setSelectedHitCollection, selectedHitCollection } =
+
+  const { getHitCollection, selectedHitCollection } =
     rootStore.hitCollectionStore;
   const { selectedScreen } = rootStore.screenStore;
   const { deleteHit, isDeletingHit } = rootStore.hitStore;
 
-  setSelectedHitCollection(hitCollection.id);
+  useEffect(() => {
+    if (
+      selectedHitCollection === undefined ||
+      selectedHitCollection?.id !== id
+    ) {
+      getHitCollection(id);
+    }
+  }, [id, getHitCollection]);
 
   const [displayAddHitSideBar, setDisplayAddHitSideBar] = useState(false);
   const [showFileUploadDialog, setShowFileUploadDialog] = useState(false);
@@ -74,7 +82,7 @@ const FSTbVHits = ({ hitCollection }) => {
             className="p-datatable-gridlines w-full"
             size="small"
             //ref={dt}
-            value={hitCollection.hits}
+            value={selectedHitCollection?.hits}
             // paginator
             scrollable
             // rows={50}
@@ -135,7 +143,7 @@ const FSTbVHits = ({ hitCollection }) => {
       >
         <FSTbVHAddHit
           closeSideBar={() => setDisplayAddHitSideBar(false)}
-          hitCollectionId={hitCollection.id}
+          hitCollectionId={selectedHitCollection?.id}
         />
       </Sidebar>
 

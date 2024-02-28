@@ -1,14 +1,13 @@
 import { BreadCrumb } from "primereact/breadcrumb";
 import { Sidebar } from "primereact/sidebar";
-import { TabPanel, TabView } from "primereact/tabview";
 import React, { useContext, useEffect, useState } from "react";
 import SecHeading from "../../../../../Library/SecHeading/SecHeading";
 import { appColors } from "../../../../../constants/colors";
 import FSTbVAddHitCollection from "./FSTbVAddHitCollection";
 
 import { observer } from "mobx-react-lite";
-import { FcOpenedFolder } from "react-icons/fc";
-import { useNavigate } from "react-router-dom";
+import { Dropdown } from "primereact/dropdown";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import Loading from "../../../../../Library/Loading/Loading";
 import { RootStoreContext } from "../../../../../RootStore";
 import * as Helper from "./FSTbVHitCollectionHelper";
@@ -21,34 +20,37 @@ const FSTbVHitCollection = ({ selectedScreen }) => {
 
   const rootStore = useContext(RootStoreContext);
   const {
-    fetchHitCollection,
+    fetchHitCollectionsOfScreen,
     isFetchingHitCollection,
     isHitCollectionRegistryCacheValid,
     hitCollectionOfScreen,
+    selectedHitCollection,
   } = rootStore.hitCollectionStore;
+
+  const [selectedHitCollectionDropdown, setSelectedHitCollectionDropdown] =
+    useState(null);
   useEffect(() => {
     if (!isHitCollectionRegistryCacheValid(selectedScreen.id)) {
-      console.log("-->>>> FSTbVHitCollection useEffect -> fetchHitCollection");
-      fetchHitCollection(selectedScreen.id);
+      fetchHitCollectionsOfScreen(selectedScreen.id);
     }
-  }, [isHitCollectionRegistryCacheValid, fetchHitCollection, selectedScreen]);
+  }, [
+    isHitCollectionRegistryCacheValid,
+    fetchHitCollectionsOfScreen,
+    selectedScreen,
+  ]);
 
   if (isFetchingHitCollection) {
     return <Loading message={"Fetching Hit Collection..."} />;
   }
 
   if (selectedScreen && hitCollectionOfScreen(selectedScreen.id)) {
-    let hitCollectionTabs = [];
+    const hitCollections = [];
+
     hitCollectionOfScreen(selectedScreen.id).forEach((hitCollection) => {
-      hitCollectionTabs.push(
-        <TabPanel
-          header={Helper.hitCollectionNameTemplate(hitCollection)}
-          leftIcon={<FcOpenedFolder className="mr-2" />}
-          key={hitCollection.id}
-        >
-          <FSTbVHits hitCollection={hitCollection} />
-        </TabPanel>
-      );
+      hitCollections.push({
+        id: hitCollection.id,
+        name: Helper.hitCollectionNameTemplate(hitCollection),
+      });
     });
 
     return (
@@ -72,10 +74,25 @@ const FSTbVHitCollection = ({ selectedScreen }) => {
                   action: () => setDisplayAddSideBar(true),
                 },
               ]}
+              customElement={
+                <Dropdown
+                  value={selectedHitCollectionDropdown}
+                  onChange={(e) => {
+                    console.log(e);
+                    navigate(e.value.id);
+                    setSelectedHitCollectionDropdown(e.value);
+                  }}
+                  options={hitCollections}
+                  optionLabel="name"
+                  placeholder="Select a Hit Collection"
+                />
+              }
             />
           </div>
           <div className="flex w-full">
-            <TabView>{hitCollectionTabs}</TabView>
+            <Routes>
+              <Route path=":id" element={<FSTbVHits />} />
+            </Routes>
           </div>
         </div>
         <Sidebar

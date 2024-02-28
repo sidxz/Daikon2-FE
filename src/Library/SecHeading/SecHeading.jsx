@@ -14,6 +14,7 @@ const SecHeading = ({
   entryPoint,
   projectName,
   customButtons,
+  customElement,
 }) => {
   const headerTemplate = (options) => {
     const toggleIcon = options.collapsed
@@ -99,6 +100,7 @@ const SecHeading = ({
             </div>
           </div>
           <div className="flex w-full align-items-center justify-content-end">
+            {customElement}
             {customButtons.length > 0 && customButtonSet}
             {displayHorizon ? displayHorizonButton : <p />}
           </div>
