@@ -1,7 +1,8 @@
 import { FileUpload } from "primereact/fileupload";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { SiMicrosoftexcel } from "react-icons/si";
 import DataPreviewDialog from "../../../../../../../Library/DataPreviewDialog/DataPreviewDialog";
+import { RootStoreContext } from "../../../../../../../RootStore";
 import ImportFromExcel from "../../../../../../../Shared/Excel/ImportFromExcel";
 import { DtFieldsToExcelColumnMapping } from "./FSTbVHitsConstants";
 
@@ -9,6 +10,9 @@ const FSTbVHExcelImport = ({
   selectedHitCollection = { hits: [], name: "", hitCollectionType: "" },
   hideFileUploadDialog,
 }) => {
+  const rootStore = useContext(RootStoreContext);
+  const { batchInsertHits, isBatchInsertingHits } = rootStore.hitStore;
+
   const [dataForPreview, setDataForPreview] = useState([]);
   const [showDataPreviewDialog, setShowDataPreviewDialog] = useState(false);
   // Map and flatten the hit objects for Excel export
@@ -56,8 +60,9 @@ const FSTbVHExcelImport = ({
           });
           e.files = null;
           jsonData.forEach((row) => {
-            // row.screenId = selectedTargetBasedScreen.id;
-            // row.screenType = "TargetBased";
+            row.hitCollectionId = selectedHitCollection.id;
+            // output is in field 'smiles' in excel (template), but to create a hit, we need 'requestedSMILES'
+            row.requestedSMILES = row.smiles;
             console.log("row", row);
           });
           setDataForPreview(jsonData);
@@ -76,8 +81,8 @@ const FSTbVHExcelImport = ({
           setShowDataPreviewDialog(false);
           setDataForPreview(null);
         }}
-        onSave={() => console.log("onSave")}
-        isSaving={false}
+        onSave={batchInsertHits}
+        isSaving={isBatchInsertingHits}
       />
     </>
   );

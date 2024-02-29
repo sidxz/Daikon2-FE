@@ -114,7 +114,7 @@ const FSTbVHits = () => {
               //onSelectionChange={(e) => setSelectedCompounds(e.value)}
             >
               <Column
-                field={(rowData) => rowData?.requestedSMILES}
+                field={(rowData) => rowData?.molecule?.smiles}
                 header="Structure"
                 body={StructureBodyTemplate}
               />

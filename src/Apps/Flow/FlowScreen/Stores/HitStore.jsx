@@ -16,6 +16,8 @@ export default class HitStore {
 
       isDeletingHit: observable,
       deleteHit: action,
+      isBatchInsertingHits: observable,
+      batchInsertHits: action,
     });
   }
 
@@ -23,6 +25,7 @@ export default class HitStore {
   isUpdatingHit = false;
   isAddingHit = false;
   isDeletingHit = false;
+  isBatchInsertingHits = false;
 
   // Actions
   addHit = async (hit, silent = false) => {
@@ -126,6 +129,36 @@ export default class HitStore {
     } finally {
       runInAction(() => {
         this.isDeletingHit = false;
+      });
+    }
+  };
+
+  /**
+   * Batch insert a hits
+   * Adds new if ExternalCompoundId is null, updates if ExternalCompoundId is not null.
+   * @param {object} editedHitRows - The details of the hit rows to edit.
+   */
+  batchInsertHits = async (editedHitRows) => {
+    //console.log("Batch inserting hits");
+    //console.log(editedHitRows);
+    this.isBatchInsertingHits = true;
+
+    try {
+      const promises = editedHitRows.map(async (editedHitRow) => {
+        if (editedHitRow.status === "New") {
+          return await this.addHit(editedHitRow, true);
+        } else if (editedHitRow.status === "Modified") {
+          return await this.updateHit(editedHitRow, true);
+        }
+      });
+
+      await Promise.all(promises);
+      toast.success("Batch insertion/update completed successfully");
+    } catch (error) {
+      console.error(error);
+    } finally {
+      runInAction(() => {
+        this.isBatchInsertingHits = false;
       });
     }
   };
