@@ -145,6 +145,11 @@ export default class HitStore {
 
     try {
       const promises = editedHitRows.map(async (editedHitRow) => {
+        // Fix ids and map smiles to requestedSMILES
+        editedHitRow.hitCollectionId =
+          this.rootStore.hitCollectionStore.selectedHitCollection.id;
+        editedHitRow.requestedSMILES = editedHitRow.smiles;
+
         if (editedHitRow.status === "New") {
           return await this.addHit(editedHitRow, true);
         } else if (editedHitRow.status === "Modified") {

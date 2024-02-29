@@ -38,6 +38,8 @@ const FSTbVHits = () => {
 
   const [displayAddHitSideBar, setDisplayAddHitSideBar] = useState(false);
   const [showFileUploadDialog, setShowFileUploadDialog] = useState(false);
+  const [selectionEnabled, setSelectionEnabled] = useState(false);
+  const [selectedHits, setSelectedHits] = useState(null);
 
   if (isFetchingHitCollection) {
     return <Loading message={"Fetching Hit Collection..."} />;
@@ -103,6 +105,10 @@ const FSTbVHits = () => {
                   selectedHitCollection={selectedHitCollection}
                   selectedScreen={selectedScreen}
                   showFileUploadDialog={() => setShowFileUploadDialog(true)}
+                  selectionEnabled={selectionEnabled}
+                  setSelectionEnabled={setSelectionEnabled}
+                  selectedHits={selectedHits}
+                  setSelectedHits={setSelectedHits}
                 />
               }
               //globalFilter={globalFilter}
@@ -110,9 +116,15 @@ const FSTbVHits = () => {
               resizableColumns
               columnResizeMode="fit"
               showGridlines
-              //selection={selectedCompounds}
-              //onSelectionChange={(e) => setSelectedCompounds(e.value)}
+              selection={selectedHits}
+              onSelectionChange={(e) => setSelectedHits(e.value)}
             >
+              {selectionEnabled && (
+                <Column
+                  selectionMode="multiple"
+                  headerStyle={{ width: "3em" }}
+                ></Column>
+              )}
               <Column
                 field={(rowData) => rowData?.molecule?.smiles}
                 header="Structure"
@@ -178,10 +190,7 @@ const FSTbVHits = () => {
         visible={showFileUploadDialog}
         onHide={() => setShowFileUploadDialog(false)}
       >
-        <FSTbVHExcelImport
-          selectedHitCollection={selectedHitCollection}
-          hideFileUploadDialog={() => setShowFileUploadDialog(false)}
-        />
+        <FSTbVHExcelImport selectedHitCollection={selectedHitCollection} />
       </Dialog>
     </>
   );
