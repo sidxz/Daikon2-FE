@@ -83,7 +83,7 @@ const FSTbVHitCollection = ({ selectedScreen }) => {
                   action: () => setDisplayAddSideBar(true),
                 },
               ]}
-              customElement={
+              customElements={[
                 <Dropdown
                   value={selectedHitCollectionDropdown}
                   onChange={(e) => {
@@ -93,8 +93,8 @@ const FSTbVHitCollection = ({ selectedScreen }) => {
                   options={hitCollections}
                   optionLabel="name"
                   placeholder="Select a Hit Collection"
-                />
-              }
+                />,
+              ]}
             />
           </div>
           <div className="flex w-full">

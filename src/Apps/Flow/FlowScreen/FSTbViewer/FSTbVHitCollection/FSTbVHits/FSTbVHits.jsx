@@ -10,7 +10,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Loading from "../../../../../../Library/Loading/Loading";
 import { RootStoreContext } from "../../../../../../RootStore";
-import { TextAreaRowEditor } from "../../../../../../Shared/TableRowEditors/TextAreaRowEditor";
+import { TextRowEditor } from "../../../../../../Shared/TableRowEditors/TextRowEditor";
 import FSTbVHAddHit from "./FSTbVHitsHelper/FSTbVHAddHit";
 import { FSTbVHDataTableHeader } from "./FSTbVHitsHelper/FSTbVHDataTableHeader";
 import { StructureBodyTemplate } from "./FSTbVHitsHelper/FSTbVHDataTableHelper";
@@ -134,12 +134,12 @@ const FSTbVHits = () => {
               <Column
                 field={"library"}
                 header="Library"
-                editor={(options) => TextAreaRowEditor(options)}
+                editor={(options) => TextRowEditor(options)}
               />
               <Column
                 field={"librarySource"}
                 header="Source"
-                editor={(options) => TextAreaRowEditor(options)}
+                editor={(options) => TextRowEditor(options)}
               />
 
               <Column
@@ -149,17 +149,17 @@ const FSTbVHits = () => {
               <Column
                 field={"iC50"}
                 header="IC50 (&micro;M) "
-                editor={(options) => TextAreaRowEditor(options)}
+                editor={(options) => TextRowEditor(options)}
               />
               <Column
                 field={"mic"}
                 header="MIC (&micro;M)"
-                editor={(options) => TextAreaRowEditor(options)}
+                editor={(options) => TextRowEditor(options)}
               />
               <Column
                 field={"clusterGroup"}
                 header="Cluster"
-                editor={(options) => TextAreaRowEditor(options)}
+                editor={(options) => TextRowEditor(options)}
               />
               <Column
                 rowEditor

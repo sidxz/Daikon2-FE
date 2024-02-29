@@ -70,7 +70,7 @@ export const FSTbVHDataTableHeader = ({
             <Button
               type="button"
               icon="icon icon-common icon-arrow-circle-down"
-              label="Export Hits"
+              label="Export"
               className="p-button-text p-button-md"
               onClick={() =>
                 ExportHitsToExcel(

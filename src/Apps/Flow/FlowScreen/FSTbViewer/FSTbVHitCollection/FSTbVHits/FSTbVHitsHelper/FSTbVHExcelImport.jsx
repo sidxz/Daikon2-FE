@@ -32,7 +32,7 @@ const FSTbVHExcelImport = ({
         accept=".xls,.xlsx,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         maxFileSize={1000000}
         mode="basic"
-        chooseLabel="Import Hits"
+        chooseLabel="Import"
         chooseOptions={{
           icon: "icon icon-common icon-plus-circle",
           className: "p-button-text p-button-md",

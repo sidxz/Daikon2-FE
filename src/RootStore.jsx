@@ -12,6 +12,7 @@ import GeneUnpublishedStructuralInformationStore from "./Apps/Flow/FlowGene/Stor
 import GeneVulnerabilityStore from "./Apps/Flow/FlowGene/Stores/GeneVulnerabilityStore";
 import HitCollectionStore from "./Apps/Flow/FlowScreen/Stores/HitCollectionStore";
 import HitStore from "./Apps/Flow/FlowScreen/Stores/HitStore";
+import ScreenRunStore from "./Apps/Flow/FlowScreen/Stores/ScreenRunStore";
 import ScreenStore from "./Apps/Flow/FlowScreen/Stores/ScreenStore";
 import MoleculeStore from "./Apps/MolecuLogix/Stores/MoleculeStore";
 import AuthStore from "./Auth/AuthStore";
@@ -35,6 +36,7 @@ export class RootStore {
   geneUnpublishedStructuralInformationStore;
 
   screenStore;
+  screenRunStore;
   hitCollectionStore;
   hitStore;
 
@@ -56,6 +58,7 @@ export class RootStore {
       new GeneUnpublishedStructuralInformationStore(this);
 
     this.screenStore = new ScreenStore(this);
+    this.screenRunStore = new ScreenRunStore(this);
     this.hitCollectionStore = new HitCollectionStore(this);
     this.hitStore = new HitStore(this);
 
