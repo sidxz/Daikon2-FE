@@ -8,7 +8,7 @@ const HitAPI = {
   update: (hit) =>
     axiosWithAuth.put(
       `/v2/hit-collection/${hit.hitCollectionId}/hit/${hit.id}`,
-      hitCollection
+      hit
     ),
   delete: (hitCollectionId, hitId) =>
     axiosWithAuth.delete(`/v2/hit-collection/${hitCollectionId}/hit/${hitId}`),

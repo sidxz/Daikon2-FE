@@ -14,7 +14,6 @@ import FSTbVHitCollection from "./FSTbVHitCollection/FSTbVHitCollection";
 import FSTbVScreens from "./FSTbVScreens/FSTbVScreens";
 import * as Helper from "./FSTbViewerHelper";
 const FSTbViewer = () => {
-  console.log("-->>>> FSTbViewer");
   const params = useParams();
   const navigate = useNavigate();
 
@@ -32,10 +31,6 @@ const FSTbViewer = () => {
       selectedScreen?.id !== params?.id ||
       !isScreenRegistryCacheValid
     ) {
-      console.log(
-        "-->>>> -->>>> FSTbViewer useEffect -> fetchScreen:",
-        params.id
-      );
       fetchScreen(params.id);
     }
   }, [params.id, fetchScreen, selectedScreen, isScreenRegistryCacheValid]);

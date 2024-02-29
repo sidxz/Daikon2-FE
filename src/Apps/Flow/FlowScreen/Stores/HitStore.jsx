@@ -37,11 +37,7 @@ export default class HitStore {
       var res = await HitAPI.create(hit);
       runInAction(() => {
         // Add hit to hit list
-        console.log(res);
         hit.id = res.id;
-
-        console.log("Add with id hit:", hit);
-        this.rootStore.hitCollectionStore.selectedHitCollection.hits.push(hit);
         const hitCollection =
           this.rootStore.hitCollectionStore.hitCollectionRegistry.get(
             hit.hitCollectionId
@@ -61,7 +57,7 @@ export default class HitStore {
     }
   };
 
-  updateHit = async (hit) => {
+  updateHit = async (hit, silent = false) => {
     console.log("updateHit:", hit);
     this.isUpdatingHit = true;
 
@@ -74,6 +70,7 @@ export default class HitStore {
     if (!hit.id?.trim()) {
       throw new Error("hitId is required and cannot be empty.");
     }
+    hit.hitId = hit.id;
 
     try {
       await HitAPI.update(hit);
@@ -86,17 +83,9 @@ export default class HitStore {
 
         const indexOfEss = hitCollection.hits.findIndex((e) => e.id === hit.id);
         hitCollection.hits[indexOfEss] = hit;
+        this.rootStore.hitCollectionStore.selectedHitCollection = hitCollection;
 
-        // update the same in selected hitCollection
-        const selectedHitCollection =
-          this.rootStore.hitCollectionStore.selectedHitCollection;
-        const selectedIndex = selectedHitCollection.hits.findIndex(
-          (e) => e.id === hit.id
-        );
-
-        selectedHitCollection.hits[selectedIndex] = hit;
-
-        toast.success("Hit updated successfully");
+        if (!silent) toast.success("Hit updated successfully");
       });
     } catch (error) {
       console.error("Error updating hitCollection hit:", error);

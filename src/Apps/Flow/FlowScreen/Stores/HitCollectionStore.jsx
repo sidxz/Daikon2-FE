@@ -134,7 +134,6 @@ export default class HitCollectionStore {
   };
 
   updateHitCollection = async (hitCollection) => {
-    console.log("updateHitCollection:", hitCollection);
     this.isUpdatingHitCollection = true;
 
     // Ensure hitCollection.screenId is set, fallback to selectedScreen.screenId if null, undefined, or empty

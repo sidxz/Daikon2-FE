@@ -14,7 +14,6 @@ import * as Helper from "./FSTbVHitCollectionHelper";
 import FSTbVHits from "./FSTbVHits/FSTbVHits";
 
 const FSTbVHitCollection = ({ selectedScreen }) => {
-  console.log("-->>>> FSTbVHitCollection");
   const [displayAddSideBar, setDisplayAddSideBar] = useState(false);
   const navigate = useNavigate();
 
@@ -33,10 +32,20 @@ const FSTbVHitCollection = ({ selectedScreen }) => {
     if (!isHitCollectionRegistryCacheValid(selectedScreen.id)) {
       fetchHitCollectionsOfScreen(selectedScreen.id);
     }
+
+    if (selectedHitCollection) {
+      setSelectedHitCollectionDropdown({
+        id: selectedHitCollection.id,
+        name: Helper.hitCollectionNameTemplate(selectedHitCollection),
+      });
+      navigate(selectedHitCollection.id);
+    }
   }, [
     isHitCollectionRegistryCacheValid,
     fetchHitCollectionsOfScreen,
     selectedScreen,
+    selectedHitCollection,
+    setSelectedHitCollectionDropdown,
   ]);
 
   if (isFetchingHitCollection) {
@@ -78,7 +87,6 @@ const FSTbVHitCollection = ({ selectedScreen }) => {
                 <Dropdown
                   value={selectedHitCollectionDropdown}
                   onChange={(e) => {
-                    console.log(e);
                     navigate(e.value.id);
                     setSelectedHitCollectionDropdown(e.value);
                   }}

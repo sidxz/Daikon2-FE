@@ -1,4 +1,5 @@
 import { observer } from "mobx-react-lite";
+import { BlockUI } from "primereact/blockui";
 import { Button } from "primereact/button";
 import { Column } from "primereact/column";
 import { confirmDialog } from "primereact/confirmdialog";
@@ -7,13 +8,12 @@ import { Dialog } from "primereact/dialog";
 import { Sidebar } from "primereact/sidebar";
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import Loading from "../../../../../../Library/Loading/Loading";
 import { RootStoreContext } from "../../../../../../RootStore";
+import { TextAreaRowEditor } from "../../../../../../Shared/TableRowEditors/TextAreaRowEditor";
 import FSTbVHAddHit from "./FSTbVHitsHelper/FSTbVHAddHit";
 import { FSTbVHDataTableHeader } from "./FSTbVHitsHelper/FSTbVHDataTableHeader";
-import {
-  LibraryBodyTemplate,
-  StructureBodyTemplate,
-} from "./FSTbVHitsHelper/FSTbVHDataTableHelper";
+import { StructureBodyTemplate } from "./FSTbVHitsHelper/FSTbVHDataTableHelper";
 import FSTbVHExcelImport from "./FSTbVHitsHelper/FSTbVHExcelImport";
 
 const FSTbVHits = () => {
@@ -21,10 +21,11 @@ const FSTbVHits = () => {
 
   const rootStore = useContext(RootStoreContext);
 
-  const { getHitCollection, selectedHitCollection } =
+  const { getHitCollection, selectedHitCollection, isFetchingHitCollection } =
     rootStore.hitCollectionStore;
   const { selectedScreen } = rootStore.screenStore;
-  const { deleteHit, isDeletingHit } = rootStore.hitStore;
+  const { updateHit, deleteHit, isDeletingHit, isAddingHit, isUpdatingHit } =
+    rootStore.hitStore;
 
   useEffect(() => {
     if (
@@ -38,6 +39,10 @@ const FSTbVHits = () => {
   const [displayAddHitSideBar, setDisplayAddHitSideBar] = useState(false);
   const [showFileUploadDialog, setShowFileUploadDialog] = useState(false);
 
+  if (isFetchingHitCollection) {
+    return <Loading message={"Fetching Hit Collection..."} />;
+  }
+
   const addHitSideBarHeader = (
     <div className="flex align-items-center gap-2">
       <i className="icon icon-common icon-plus-circle"></i>
@@ -48,7 +53,6 @@ const FSTbVHits = () => {
   const deleteBodyTemplate = (rowData) => {
     const accept = () => {
       // Delete hit
-      console.log("Delete hit:", rowData);
       deleteHit(rowData.id);
     };
     const reject = () => {
@@ -78,60 +82,82 @@ const FSTbVHits = () => {
     <>
       <div className="flex flex-column w-full">
         <div className="flex w-full">
-          <DataTable
-            className="p-datatable-gridlines w-full"
-            size="small"
-            //ref={dt}
-            value={selectedHitCollection?.hits}
-            // paginator
-            scrollable
-            // rows={50}
-            header={
-              <FSTbVHDataTableHeader
-                showAddHitSideBar={() => setDisplayAddHitSideBar(true)}
-                selectedHitCollection={selectedHitCollection}
-                selectedScreen={selectedScreen}
-                showFileUploadDialog={() => setShowFileUploadDialog(true)}
-              />
-            }
-            //className="p-datatable-screen-table"
-            //globalFilter={globalFilter}
-            emptyMessage="No hits found."
-            resizableColumns
-            columnResizeMode="fit"
-            showGridlines
-            //selection={selectedCompounds}
-            //onSelectionChange={(e) => setSelectedCompounds(e.value)}
-            dataKey="id"
-            //exportFilename={`Hits-${selectedTargetBasedScreen.screenName}-${selectedTargetBasedScreen.method}.csv`}
+          <BlockUI
+            blocked={isDeletingHit || isAddingHit || isUpdatingHit}
+            containerClassName="w-full"
           >
-            <Column
-              field={(rowData) => rowData?.requestedSMILES}
-              header="Structure"
-              body={StructureBodyTemplate}
-            />
+            <DataTable
+              className="p-datatable-gridlines w-full"
+              size="small"
+              //ref={dt}
+              editMode="row"
+              onRowEditComplete={(e) => updateHit(e.newData)}
+              dataKey="id"
+              value={selectedHitCollection?.hits}
+              paginator
+              scrollable
+              rows={100}
+              header={
+                <FSTbVHDataTableHeader
+                  showAddHitSideBar={() => setDisplayAddHitSideBar(true)}
+                  selectedHitCollection={selectedHitCollection}
+                  selectedScreen={selectedScreen}
+                  showFileUploadDialog={() => setShowFileUploadDialog(true)}
+                />
+              }
+              //globalFilter={globalFilter}
+              emptyMessage="No hits found."
+              resizableColumns
+              columnResizeMode="fit"
+              showGridlines
+              //selection={selectedCompounds}
+              //onSelectionChange={(e) => setSelectedCompounds(e.value)}
+            >
+              <Column
+                field={(rowData) => rowData?.requestedSMILES}
+                header="Structure"
+                body={StructureBodyTemplate}
+              />
 
-            <Column
-              field={(rowData) => rowData?.library + " | " + rowData.source}
-              header="Library | Source"
-              body={LibraryBodyTemplate}
-            />
+              <Column
+                field={"library"}
+                header="Library"
+                editor={(options) => TextAreaRowEditor(options)}
+              />
+              <Column
+                field={"librarySource"}
+                header="Source"
+                editor={(options) => TextAreaRowEditor(options)}
+              />
 
-            <Column
-              field={(rowData) => rowData?.molecule?.name}
-              header="Name"
-            />
-            <Column
-              field={(rowData) => rowData?.iC50}
-              header="IC50 (&micro;M) "
-            />
-            <Column field={(rowData) => rowData?.mic} header="MIC (&micro;M)" />
-            <Column
-              field={(rowData) => rowData?.clusterGroup}
-              header="Cluster"
-            />
-            <Column body={deleteBodyTemplate} header="Delete" />
-          </DataTable>
+              <Column
+                field={(rowData) => rowData?.molecule?.name}
+                header="Name"
+              />
+              <Column
+                field={"iC50"}
+                header="IC50 (&micro;M) "
+                editor={(options) => TextAreaRowEditor(options)}
+              />
+              <Column
+                field={"mic"}
+                header="MIC (&micro;M)"
+                editor={(options) => TextAreaRowEditor(options)}
+              />
+              <Column
+                field={"clusterGroup"}
+                header="Cluster"
+                editor={(options) => TextAreaRowEditor(options)}
+              />
+              <Column
+                rowEditor
+                header="Edit"
+                // headerStyle={{ width: "10%", minWidth: "8rem" }}
+                bodyStyle={{ textAlign: "center" }}
+              />
+              <Column body={deleteBodyTemplate} header="Delete" />
+            </DataTable>
+          </BlockUI>
         </div>
       </div>
       <Sidebar
@@ -146,7 +172,6 @@ const FSTbVHits = () => {
           hitCollectionId={selectedHitCollection?.id}
         />
       </Sidebar>
-
       {/* File upload Dialog */}
       <Dialog
         header="Import Hits"
