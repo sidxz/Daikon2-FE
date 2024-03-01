@@ -1,7 +1,10 @@
 import { observer } from "mobx-react-lite";
+import { BlockUI } from "primereact/blockui";
 import { BreadCrumb } from "primereact/breadcrumb";
+import { Button } from "primereact/button";
 import { Chip } from "primereact/chip";
 import { Column } from "primereact/column";
+import { confirmDialog } from "primereact/confirmdialog";
 import { DataTable } from "primereact/datatable";
 import { Sidebar } from "primereact/sidebar";
 import React, { useContext, useState } from "react";
@@ -24,7 +27,13 @@ const FSTbVScreen = ({}) => {
   const { fetchScreen, isFetchingScreen, selectedScreen } =
     rootStore.screenStore;
 
-  const { updateScreenRun, isUpdatingScreenRun } = rootStore.screenRunStore;
+  const {
+    updateScreenRun,
+    isUpdatingScreenRun,
+    isAddingScreenRun,
+    isDeletingScreenRun,
+    deleteScreenRun,
+  } = rootStore.screenRunStore;
 
   const [displayAddScreenSeqSideBar, setDisplayAddScreenSeqSideBar] =
     useState(false);
@@ -41,6 +50,34 @@ const FSTbVScreen = ({}) => {
       <span className="font-bold">Add Hit</span>
     </div>
   );
+
+  const deleteBodyTemplate = (rowData) => {
+    const accept = () => {
+      // Delete hit
+      deleteScreenRun(rowData.id);
+    };
+    const reject = () => {
+      // Do nothing
+    };
+    return (
+      <Button
+        severity="danger"
+        icon="ri-delete-bin-2-line"
+        className="p-button-text"
+        onClick={() => {
+          confirmDialog({
+            message: "Do you want to delete this record?",
+            header: "Delete Confirmation",
+            icon: "pi pi-info-circle",
+            defaultFocus: "reject",
+            acceptClassName: "p-button-danger",
+            accept,
+            reject,
+          });
+        }}
+      />
+    );
+  };
 
   if (selectedScreen && !isFetchingScreen) {
     return (
@@ -72,88 +109,98 @@ const FSTbVScreen = ({}) => {
           </div>
 
           <div className="flex w-full">
-            <DataTable
-              className="p-datatable-gridlines w-full"
-              size="small"
-              value={selectedScreen?.screenRuns}
-              showGridlines
-              //header={tableHeader}
-              editMode="row"
-              sortField="startDate"
-              sortOrder={-1}
-              onRowEditComplete={(e) => updateScreenRun(e.newData)}
-              //loading={isEditingScreenSequence}
-
-              header={
-                <FSTbVScreenDataTableHeader
-                  selectedScreen={selectedScreen}
-                  setDisplayAddScreenSeqSideBar={setDisplayAddScreenSeqSideBar}
-                />
+            <BlockUI
+              blocked={
+                isUpdatingScreenRun || isAddingScreenRun || isDeletingScreenRun
               }
+              containerClassName="w-full"
             >
-              <Column
-                field="library"
-                header="Library"
-                editor={(options) => TextRowEditor(options)}
-              />
+              <DataTable
+                className="p-datatable-gridlines w-full"
+                size="small"
+                value={selectedScreen?.screenRuns}
+                showGridlines
+                //header={tableHeader}
+                editMode="row"
+                sortField="startDate"
+                sortOrder={-1}
+                onRowEditComplete={(e) => updateScreenRun(e.newData)}
+                //loading={isEditingScreenSequence}
 
-              <Column
-                field={"protocol"}
-                //body={protocolBodyTemplate}
-                header="Protocol"
-                editor={(options) => TextRowEditor(options)}
-              />
-              <Column
-                field="concentration"
-                header="Inhibitor C (&micro;M)"
-                editor={(options) => TextRowEditor(options)}
-              />
-              <Column
-                field="noOfCompoundsScreened"
-                header="No. of Compounds"
-                editor={(options) => TextRowEditor(options)}
-                //body={CompoundsScreenedTemplate}
-              />
-              <Column
-                field="scientist"
-                header="Scientist"
-                editor={(options) => ScientistRowEditor(options)}
-                style={{ wordWrap: "break-word" }}
-              />
-              <Column
-                field="startDate"
-                header="Start Date"
-                editor={(options) => CalendarRowEditor(options)}
-                body={Helper.StartDateTemplate}
-                sortable
-              />
-              <Column
-                field="endDate"
-                header="End Date"
-                editor={(options) => CalendarRowEditor(options)}
-                body={Helper.EndDateTemplate}
-                sortable
-              />
-              <Column
-                field="primaryHitCount"
-                header="Initial Hit Count"
-                editor={(options) => TextRowEditor(options)}
-                // body={UnverifiedHitCountTemplate}
-              />
+                header={
+                  <FSTbVScreenDataTableHeader
+                    selectedScreen={selectedScreen}
+                    setDisplayAddScreenSeqSideBar={
+                      setDisplayAddScreenSeqSideBar
+                    }
+                  />
+                }
+              >
+                <Column
+                  field="library"
+                  header="Library"
+                  editor={(options) => TextRowEditor(options)}
+                />
 
-              <Column
-                field="confirmedHitCount"
-                header="Validated Hit Count"
-                editor={(options) => TextRowEditor(options)}
-                //body={ConfirmedHitCountTemplate}
-              />
+                <Column
+                  field={"protocol"}
+                  //body={protocolBodyTemplate}
+                  header="Protocol"
+                  editor={(options) => TextRowEditor(options)}
+                />
+                <Column
+                  field="concentration"
+                  header="Inhibitor C (&micro;M)"
+                  editor={(options) => TextRowEditor(options)}
+                />
+                <Column
+                  field="noOfCompoundsScreened"
+                  header="No. of Compounds"
+                  editor={(options) => TextRowEditor(options)}
+                  //body={CompoundsScreenedTemplate}
+                />
+                <Column
+                  field="scientist"
+                  header="Scientist"
+                  editor={(options) => ScientistRowEditor(options)}
+                  style={{ wordWrap: "break-word" }}
+                />
+                <Column
+                  field="startDate"
+                  header="Start Date"
+                  editor={(options) => CalendarRowEditor(options)}
+                  body={Helper.StartDateTemplate}
+                  sortable
+                />
+                <Column
+                  field="endDate"
+                  header="End Date"
+                  editor={(options) => CalendarRowEditor(options)}
+                  body={Helper.EndDateTemplate}
+                  sortable
+                />
+                <Column
+                  field="primaryHitCount"
+                  header="Initial Hit Count"
+                  editor={(options) => TextRowEditor(options)}
+                  // body={UnverifiedHitCountTemplate}
+                />
 
-              <Column
-                rowEditor
-                headerStyle={{ minWidth: "4rem" }}
-                bodyStyle={{ textAlign: "center" }}
-              />
-            </DataTable>
+                <Column
+                  field="confirmedHitCount"
+                  header="Validated Hit Count"
+                  editor={(options) => TextRowEditor(options)}
+                  //body={ConfirmedHitCountTemplate}
+                />
+
+                <Column
+                  rowEditor
+                  headerStyle={{ minWidth: "4rem" }}
+                  bodyStyle={{ textAlign: "center" }}
+                />
+                <Column body={deleteBodyTemplate} header="Delete" />
+              </DataTable>
+            </BlockUI>
           </div>
         </div>
         <Sidebar

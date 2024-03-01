@@ -68,7 +68,9 @@ export default class ScreenRunStore {
 
       await ScreenRunAPI.update(screenRun);
       runInAction(() => {
-        const screen = this.rootStore.screenStore.selectedScreen;
+        const screen = this.rootStore.screenStore.screenRegistry.get(
+          this.rootStore.screenStore.selectedScreen.id
+        );
         const index = screen.screenRuns.findIndex((s) => s.id === screenRun.id);
         screen.screenRuns[index] = screenRun;
         this.rootStore.screenStore.selectedScreen = screen;
@@ -84,16 +86,22 @@ export default class ScreenRunStore {
     }
   };
 
-  deleteScreenRun = async (screenRun, silent = false) => {
+  deleteScreenRun = async (screenRunId, silent = false) => {
     this.isDeletingScreenRun = true;
 
     try {
-      await ScreenRunAPI.delete(screenRun);
+      await ScreenRunAPI.delete(
+        this.rootStore.screenStore.selectedScreen.id,
+        screenRunId
+      );
       runInAction(() => {
-        const screen = this.rootStore.screenStore.selectedScreen;
-        screen.screenRuns = screen.screenRuns.filter(
-          (s) => s.id !== screenRun.id
+        const screen = this.rootStore.screenStore.screenRegistry.get(
+          this.rootStore.screenStore.selectedScreen.id
         );
+
+        const index = screen.screenRuns.findIndex((s) => s.id === screenRunId);
+        screen.screenRuns.splice(index, 1);
+
         this.rootStore.screenStore.selectedScreen = screen;
 
         if (!silent) toast.success("Screen run deleted successfully");

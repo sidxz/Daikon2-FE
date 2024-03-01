@@ -2,6 +2,7 @@ import { Button } from "primereact/button";
 import React from "react";
 import { DtFieldsToScreenExcelColumnMapping } from "./FSTbScreenRunConstants";
 import { ExportScreenRunsToExcel } from "./FSTbScreenRunExport";
+import FSTbV_ScreenRunExcelImport from "./FSTbScreenRunImportExcel";
 
 const FSTbVScreenDataTableHeader = ({
   selectedScreen,
@@ -37,7 +38,7 @@ const FSTbVScreenDataTableHeader = ({
           />
         </div>
         <div className="flex flex-grow min-w-max">
-          {/* <FSTbVHExcelImport selectedHitCollection={selectedHitCollection} /> */}
+          <FSTbV_ScreenRunExcelImport selectedScreen={selectedScreen} />
         </div>
       </div>
     </div>

@@ -13,10 +13,8 @@ const ScreenRunAPI = {
       `/v2/screen/${screenRun.screenId}/screen-run/${screenRun.screenRunId}`,
       screenRun
     ),
-  delete: (screenId, screenRun) =>
-    axiosWithAuth.delete(
-      `/v2/screen/${screenId}/screen-run/${screenRun.screenRunId}`
-    ),
+  delete: (screenId, screenRunId) =>
+    axiosWithAuth.delete(`/v2/screen/${screenId}/screen-run/${screenRunId}`),
 };
 
 export default ScreenRunAPI;
