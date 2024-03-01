@@ -41,19 +41,13 @@ export default class ScreenRunStore {
     try {
       var res = await ScreenRunAPI.create(screenRun);
       runInAction(() => {
-        console.log("runInAction");
-        console.log(res);
         // Add screenRun to screenRun list
         screenRun.id = res.id;
         const screen = this.rootStore.screenStore.screenRegistry.get(
           screenRun.screenId
         );
-        console.log("Getting screen" + screen);
         screen.screenRuns.push(screenRun);
-        console.log("Pushing screen run" + screenRun);
         this.rootStore.screenStore.selectedScreen = screen;
-        console.log("Selected screen" + screen);
-        console.log("toasting");
 
         if (!silent) toast.success("Screen run added successfully");
       });
@@ -70,6 +64,8 @@ export default class ScreenRunStore {
     this.isUpdatingScreenRun = true;
 
     try {
+      screenRun.screenRunId = screenRun.id;
+
       await ScreenRunAPI.update(screenRun);
       runInAction(() => {
         const screen = this.rootStore.screenStore.selectedScreen;

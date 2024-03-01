@@ -7,6 +7,7 @@ import { InputTextarea } from "primereact/inputtextarea";
 import { classNames } from "primereact/utils";
 import React, { useContext } from "react";
 import { RootStoreContext } from "../../../../../../RootStore";
+import InputScientist from "../../../../../../Shared/InputEditors/InputScientist";
 
 const FSTbScreenRunAdd = ({ screenId, closeSideBar }) => {
   const rootStore = useContext(RootStoreContext);
@@ -18,8 +19,8 @@ const FSTbScreenRunAdd = ({ screenId, closeSideBar }) => {
       protocol: "",
       librarySize: "",
       scientist: "",
-      startDate: "",
-      endDate: "",
+      startDate: null,
+      endDate: null,
       hitRate: "",
       primaryHitCount: "",
       confirmedHitCount: "",
@@ -137,7 +138,7 @@ const FSTbScreenRunAdd = ({ screenId, closeSideBar }) => {
           >
             Scientist
           </label>
-          <InputText
+          <InputScientist
             id="scientist"
             value={formik.values.scientist}
             onChange={formik.handleChange}

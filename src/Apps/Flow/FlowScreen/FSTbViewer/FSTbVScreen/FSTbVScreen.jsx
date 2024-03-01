@@ -9,6 +9,8 @@ import { useNavigate } from "react-router-dom";
 import Loading from "../../../../../Library/Loading/Loading";
 import SecHeading from "../../../../../Library/SecHeading/SecHeading";
 import { RootStoreContext } from "../../../../../RootStore";
+import { CalendarRowEditor } from "../../../../../Shared/TableRowEditors/CalendarRowEditor";
+import { ScientistRowEditor } from "../../../../../Shared/TableRowEditors/ScientistRowEditor";
 import { TextRowEditor } from "../../../../../Shared/TableRowEditors/TextRowEditor";
 import { appColors } from "../../../../../constants/colors";
 import * as Helper from "./FSTbVScreenHelper";
@@ -21,6 +23,8 @@ const FSTbVScreen = ({}) => {
 
   const { fetchScreen, isFetchingScreen, selectedScreen } =
     rootStore.screenStore;
+
+  const { updateScreenRun, isUpdatingScreenRun } = rootStore.screenRunStore;
 
   const [displayAddScreenSeqSideBar, setDisplayAddScreenSeqSideBar] =
     useState(false);
@@ -75,7 +79,7 @@ const FSTbVScreen = ({}) => {
               editMode="row"
               sortField="startDate"
               sortOrder={-1}
-              //onRowEditComplete={saveEdits}
+              onRowEditComplete={(e) => updateScreenRun(e.newData)}
               //loading={isEditingScreenSequence}
 
               header={
@@ -111,20 +115,20 @@ const FSTbVScreen = ({}) => {
               <Column
                 field="scientist"
                 header="Scientist"
-                editor={(options) => TextRowEditor(options)}
+                editor={(options) => ScientistRowEditor(options)}
                 style={{ wordWrap: "break-word" }}
               />
               <Column
                 field="startDate"
                 header="Start Date"
-                //editor={(options) => dateEditor(options)}
+                editor={(options) => CalendarRowEditor(options)}
                 body={Helper.StartDateTemplate}
                 sortable
               />
               <Column
                 field="endDate"
                 header="End Date"
-                //editor={(options) => dateEditor(options)}
+                editor={(options) => CalendarRowEditor(options)}
                 body={Helper.EndDateTemplate}
                 sortable
               />

@@ -22,12 +22,16 @@ export const StartDateTemplate = (rowData) => {
   return <FDate timestamp={rowData.startDate} hideTime={true} />;
 };
 export const EndDateTemplate = (rowData) => {
-  let OngoingTemplate = () => {
-    return <span>Ongoing</span>;
-  };
-  return rowData.endDate ? (
-    <FDate timestamp={rowData.endDate} hideTime={true} />
-  ) : (
+  const isOngoing =
+    !rowData.endDate ||
+    rowData.endDate === "0001-01-01T00:00:00" ||
+    rowData.endDate === "0001-01-01T00:00:00Z";
+
+  const OngoingTemplate = () => <span>Ongoing</span>;
+
+  return isOngoing ? (
     OngoingTemplate()
+  ) : (
+    <FDate timestamp={rowData.endDate} hideTime={true} />
   );
 };

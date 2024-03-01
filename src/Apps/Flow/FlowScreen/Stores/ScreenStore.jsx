@@ -136,6 +136,7 @@ export default class ScreenStore {
       runInAction(() => {
         // Add screen to screen list
         screen.Id = res.id;
+        screen.screenRuns = [];
 
         this.screenRegistry.set(screen.id, screen);
         this.screenListRegistry.set(screen.id, screen);

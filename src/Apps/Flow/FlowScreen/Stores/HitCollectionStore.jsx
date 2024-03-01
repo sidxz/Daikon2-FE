@@ -117,10 +117,11 @@ export default class HitCollectionStore {
       runInAction(() => {
         // Add hitCollection to hitCollection list
         hitCollection.id = res.id;
+        hitCollection.hits = [];
 
         // this.selectedHitCollection?.hitCollections.push(hitCollection);
         this.hitCollectionRegistry.set(hitCollection.id, hitCollection);
-        this.setSelectedHitCollection(hitCollection.id);
+        this.selectedHitCollection = hitCollection;
 
         toast.success("Hit Collection added successfully");
       });
