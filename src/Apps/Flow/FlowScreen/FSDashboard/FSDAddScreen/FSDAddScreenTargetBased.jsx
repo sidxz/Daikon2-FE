@@ -6,17 +6,22 @@ import { InputTextarea } from "primereact/inputtextarea";
 import { classNames } from "primereact/utils";
 import React, { useContext } from "react";
 import { RootStoreContext } from "../../../../../RootStore";
-import { orgDropDownOptions } from "../../../../../Shared/FormEditors/OrgDropDown";
-import { screeningMethods } from "../../shared/FSValues";
+import InputOrg from "../../../../../Shared/InputEditors/InputOrg";
+import { AppOrgResolver } from "../../../../../Shared/VariableResolvers/AppOrgResolver";
+import { GlobalValuesResolver } from "../../../../../Shared/VariableResolvers/GlobalValuesResolver";
 
 const FSDAddScreenTargetBased = ({ closeSideBar }) => {
   const rootStore = useContext(RootStoreContext);
 
   const { addScreen, isAddingScreen } = rootStore.screenStore;
 
+  const { getScreeningGlobals } = GlobalValuesResolver();
+  const { getOrgNameById } = AppOrgResolver();
+
   const formik = useFormik({
     initialValues: {
       primaryOrgName: "",
+      primaryOrgId: "",
       name: "",
       notes: "",
       method: "",
@@ -32,6 +37,7 @@ const FSDAddScreenTargetBased = ({ closeSideBar }) => {
     },
 
     onSubmit: (newScreen) => {
+      newScreen.primaryOrgName = getOrgNameById(newScreen.primaryOrgId);
       addScreen(newScreen).then(() => {
         closeSideBar();
         formik.resetForm();
@@ -79,20 +85,14 @@ const FSDAddScreenTargetBased = ({ closeSideBar }) => {
               Screening Organization
             </label>
 
-            <Dropdown
-              value={formik.values.primaryOrgName}
-              options={orgDropDownOptions}
-              onChange={formik.handleChange("primaryOrgName")}
-              optionLabel="name"
-              placeholder="Select an org"
-              filter
-              showClear
-              filterBy="name"
+            <InputOrg
+              value={formik.values.primaryOrgId}
+              onChange={formik.handleChange("primaryOrgId")}
               className={classNames({
-                "p-invalid": isInvalid("primaryOrgName"),
+                "p-invalid": isInvalid("primaryOrgId"),
               })}
             />
-            {getErrorMessage("primaryOrgName")}
+            {getErrorMessage("primaryOrgId")}
           </div>
 
           <div className="field">
@@ -108,10 +108,13 @@ const FSDAddScreenTargetBased = ({ closeSideBar }) => {
               id="method"
               optionLabel="name"
               answer="value"
-              options={screeningMethods}
+              options={getScreeningGlobals().screeningMethods}
               value={formik.values.method}
               placeholder="Select a method"
               onChange={formik.handleChange}
+              filter
+              showClear
+              filterBy="name"
               className={classNames({
                 "p-invalid": isInvalid("method"),
               })}

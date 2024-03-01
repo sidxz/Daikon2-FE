@@ -5,6 +5,7 @@ import React, { useContext, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import Loading from "../../../../../Library/Loading/Loading";
 import { RootStoreContext } from "../../../../../RootStore";
+import { FormatScreeningMethod } from "../../shared/Formatters";
 
 const FSDTargetBased = () => {
   const rootStore = useContext(RootStoreContext);
@@ -84,6 +85,7 @@ const FSDTargetBased = () => {
             filterMatchMode="contains"
             filterPlaceholder="Search"
             className="narrow-column"
+            body={(rowData) => FormatScreeningMethod(rowData.method)}
           />
 
           <Column

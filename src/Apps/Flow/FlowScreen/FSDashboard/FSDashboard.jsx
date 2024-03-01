@@ -56,7 +56,7 @@ const FSDashboard = () => {
         visible={displayAddSideBar}
         position="right"
         onHide={() => setDisplayAddSideBar(false)}
-        className="p-sidebar-md"
+        className="p-sidebar-sm"
         header={addSideBarHeader}
       >
         <FSDAddScreen closeSideBar={() => setDisplayAddSideBar(false)} />

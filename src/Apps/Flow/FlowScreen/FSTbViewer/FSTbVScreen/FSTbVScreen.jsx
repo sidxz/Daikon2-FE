@@ -16,6 +16,7 @@ import { CalendarRowEditor } from "../../../../../Shared/TableRowEditors/Calenda
 import { ScientistRowEditor } from "../../../../../Shared/TableRowEditors/ScientistRowEditor";
 import { TextRowEditor } from "../../../../../Shared/TableRowEditors/TextRowEditor";
 import { appColors } from "../../../../../constants/colors";
+import { FormatScreeningMethod } from "../../shared/Formatters";
 import * as Helper from "./FSTbVScreenHelper";
 import FSTbScreenRunAdd from "./components/FSTbScreenRunAdd";
 import FSTbVScreenDataTableHeader from "./components/FSTbVScreenDataTableHeader";
@@ -96,7 +97,7 @@ const FSTbVScreen = ({}) => {
               color={appColors.sectionHeadingBg.screen}
               customElements={[
                 <Chip
-                  label={selectedScreen?.method}
+                  label={FormatScreeningMethod(selectedScreen?.method)}
                   icon="icon icon-common icon-circle-notch"
                 />,
                 <Chip

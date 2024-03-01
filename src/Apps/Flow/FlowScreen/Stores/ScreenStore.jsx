@@ -135,7 +135,7 @@ export default class ScreenStore {
       var res = await ScreenAPI.create(screen);
       runInAction(() => {
         // Add screen to screen list
-        screen.Id = res.id;
+        screen.id = res.id;
         screen.screenRuns = [];
 
         this.screenRegistry.set(screen.id, screen);
