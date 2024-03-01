@@ -1,5 +1,6 @@
 import { configure } from "mobx";
 import { createContext } from "react";
+import AdminUserManagementStore from "./Apps/Admin/AdminUserManagement/Stores/AdminUserManagementStore";
 import GeneCrispriStrainStore from "./Apps/Flow/FlowGene/Stores/GeneCrispriStrainStore";
 import GeneEssentialityStore from "./Apps/Flow/FlowGene/Stores/GeneEssentialityStore";
 import GeneHypomorphStore from "./Apps/Flow/FlowGene/Stores/GeneHypomorphStore";
@@ -41,6 +42,8 @@ export class RootStore {
   hitStore;
 
   moleculeStore;
+
+  adminUserManagementStore;
   constructor() {
     this.authStore = new AuthStore(this);
     this.geneStore = new GeneStore(this);
@@ -63,6 +66,8 @@ export class RootStore {
     this.hitStore = new HitStore(this);
 
     this.moleculeStore = new MoleculeStore(this);
+
+    this.adminUserManagementStore = new AdminUserManagementStore(this);
   }
 }
 
