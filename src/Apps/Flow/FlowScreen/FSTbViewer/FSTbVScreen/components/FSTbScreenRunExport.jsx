@@ -25,8 +25,8 @@ export const ExportScreenRunsToExcel = (selectedScreen, headerMapper = {}) => {
     scientist: screenRun?.scientist,
     startDate: screenRun?.startDate,
     endDate: screenRun?.endDate,
+    primaryHitCount: screenRun?.primaryHitCount,
     confirmedHitCount: screenRun?.confirmedHitCount,
-    initialHitCount: screenRun?.initialHitCount,
   }));
 
   // Construct the file name using template literals

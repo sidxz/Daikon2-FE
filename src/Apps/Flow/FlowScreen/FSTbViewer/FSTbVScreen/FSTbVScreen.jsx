@@ -135,7 +135,7 @@ const FSTbVScreen = ({}) => {
                 sortable
               />
               <Column
-                field="unverifiedHitCount"
+                field="primaryHitCount"
                 header="Initial Hit Count"
                 editor={(options) => TextRowEditor(options)}
                 // body={UnverifiedHitCountTemplate}

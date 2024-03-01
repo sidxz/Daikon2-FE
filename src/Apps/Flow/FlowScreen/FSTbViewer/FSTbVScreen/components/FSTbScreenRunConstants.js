@@ -8,6 +8,6 @@ export const DtFieldsToScreenExcelColumnMapping =
     scientist: "Scientist",
     startDate: "Start Date",
     endDate: "End Date",
+    primaryHitCount: "Initial Hit Count",
     confirmedHitCount: "Validated Hit Count",
-    initialHitCount: "Initial Hit Count",
   };
