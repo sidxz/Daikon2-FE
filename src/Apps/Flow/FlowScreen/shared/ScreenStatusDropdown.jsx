@@ -130,7 +130,7 @@ const ScreenStatusDropdown = ({ id, readOnlyStatus, readOnly = false }) => {
         visible={confirmDialogVisible}
         onHide={() => setConfirmDialogVisible(false)}
         message={`Are you sure you want to change the status to ${selectedStatus}?`}
-        header={`Confirmation -> ${selectedStatus}`}
+        header={`Screening Status Change Confirmation | ${selectedStatus}`}
         icon="icon icon-common icon-file-signature"
         accept={() => updateSelectedStatus()}
         reject={() => setConfirmDialogVisible(false)}
