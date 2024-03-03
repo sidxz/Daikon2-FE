@@ -160,6 +160,7 @@ export default class ScreenStore {
         // update in screen registry list
         this.screenRegistry.set(screen.id, screen);
         this.screenListRegistry.set(screen.id, screen);
+        this.selectedScreen = screen;
         toast.success("Screen updated successfully");
       });
     } catch (error) {

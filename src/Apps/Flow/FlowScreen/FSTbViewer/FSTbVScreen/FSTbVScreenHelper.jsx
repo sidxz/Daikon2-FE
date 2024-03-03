@@ -14,7 +14,7 @@ export const breadCrumbItems = (selectedScreen, navigate) => {
         navigate(`/wf/screen/viewer/tb/${selectedScreen.id}`);
       },
     },
-    { label: "Screen Sequences" },
+    { label: "Screen Runs" },
   ];
 };
 

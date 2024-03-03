@@ -121,7 +121,6 @@ const FSTbVScreen = ({}) => {
                 size="small"
                 value={selectedScreen?.screenRuns}
                 showGridlines
-                //header={tableHeader}
                 editMode="row"
                 sortField="startDate"
                 sortOrder={-1}

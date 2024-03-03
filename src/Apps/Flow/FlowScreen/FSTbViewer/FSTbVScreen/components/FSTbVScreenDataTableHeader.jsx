@@ -1,5 +1,7 @@
+import { observer } from "mobx-react-lite";
 import { Button } from "primereact/button";
 import React from "react";
+import ScreenStatusDropdown from "../../../shared/ScreenStatusDropdown";
 import { DtFieldsToScreenExcelColumnMapping } from "./FSTbScreenRunConstants";
 import { ExportScreenRunsToExcel } from "./FSTbScreenRunExport";
 import FSTbV_ScreenRunExcelImport from "./FSTbScreenRunImportExcel";
@@ -12,7 +14,11 @@ const FSTbVScreenDataTableHeader = ({
 
   return (
     <div className="table-header flex flex-row w-full">
-      <div className="flex justify-content-start"></div>
+      <div className="flex justify-content-start">
+        <div className="flex flex-grow min-w-max">
+          <ScreenStatusDropdown id={selectedScreen.id} readOnly={false} />
+        </div>
+      </div>
       <div className="flex justify-content-end w-full">
         <div className="flex flex-grow min-w-max">
           <Button
@@ -45,4 +51,4 @@ const FSTbVScreenDataTableHeader = ({
   );
 };
 
-export default FSTbVScreenDataTableHeader;
+export default observer(FSTbVScreenDataTableHeader);
