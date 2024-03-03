@@ -1,8 +1,15 @@
 import { observer } from "mobx-react-lite";
+import { BlockUI } from "primereact/blockui";
 import { ConfirmDialog } from "primereact/confirmdialog";
 import { Dropdown } from "primereact/dropdown";
 import React, { useContext, useState } from "react";
-import { FcDataSheet, FcNeutralTrading, FcOk, FcPlanner } from "react-icons/fc";
+import {
+  FcDataSheet,
+  FcExpired,
+  FcNeutralTrading,
+  FcOk,
+  FcPlanner,
+} from "react-icons/fc";
 import { GiVote } from "react-icons/gi";
 import { RootStoreContext } from "../../../../RootStore";
 
@@ -53,6 +60,26 @@ const ScreenStatusDropdown = ({
       );
     }
   };
+  const valueTemplate = (option) => {
+    if (option === null) {
+      return (
+        <div className="flex align-items-center align-self-center gap-2">
+          <div className="flex flex-column">
+            <FcExpired />
+          </div>
+          <div className="flex flex-column">Status Not Set</div>
+        </div>
+      );
+    }
+    if (option) {
+      return (
+        <div className="flex align-items-center align-self-center gap-2">
+          <div className="flex flex-column">{option.icon}</div>
+          <div className="flex flex-column">{option.name}</div>
+        </div>
+      );
+    }
+  };
 
   // Event handler for updating the selected status
   // and making the confirm dialog visible
@@ -86,18 +113,23 @@ const ScreenStatusDropdown = ({
 
   return (
     <div className="flex">
-      <Dropdown
-        value={selectedScreen.status}
-        options={statusOptions}
-        optionLabel="name"
-        optionValue="name"
-        placeholder="Set Status"
-        itemTemplate={optionTemplate}
-        valueTemplate={optionTemplate}
-        disabled={isUpdatingScreen}
-        onChange={handleStatusChange}
-        className="align-items-center"
-      />
+      <BlockUI blocked={isUpdatingScreen}>
+        <Dropdown
+          value={selectedScreen.status}
+          options={statusOptions}
+          optionLabel="name"
+          optionValue="name"
+          placeholder="Set Status"
+          itemTemplate={optionTemplate}
+          valueTemplate={valueTemplate}
+          disabled={isUpdatingScreen}
+          onChange={handleStatusChange}
+          pt={{
+            root: { style: { border: "0px" } },
+            input: { style: { paddingRight: "0px" } },
+          }}
+        />
+      </BlockUI>
       <ConfirmDialog
         visible={confirmDialogVisible}
         onHide={() => setConfirmDialogVisible(false)}

@@ -14,12 +14,11 @@ const FSTbVScreenDataTableHeader = ({
 
   return (
     <div className="table-header flex flex-row w-full">
-      <div className="flex justify-content-start">
+      <div className="flex justify-content-start"></div>
+      <div className="flex justify-content-end w-full">
         <div className="flex flex-grow min-w-max">
           <ScreenStatusDropdown id={selectedScreen.id} readOnly={false} />
         </div>
-      </div>
-      <div className="flex justify-content-end w-full">
         <div className="flex flex-grow min-w-max">
           <Button
             type="button"
