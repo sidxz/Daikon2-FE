@@ -23,11 +23,7 @@ import { RootStoreContext } from "../../../../RootStore";
  * @param {boolean} props.readOnly - Whether the status can be updated or not.
  */
 
-const ScreenStatusDropdown = ({
-  id,
-  readOnlyStatus = "NA",
-  readOnly = false,
-}) => {
+const ScreenStatusDropdown = ({ id, readOnlyStatus, readOnly = false }) => {
   const [confirmDialogVisible, setConfirmDialogVisible] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState(null);
 
@@ -99,6 +95,16 @@ const ScreenStatusDropdown = ({
   // Render the component based on readOnly flag
   // Temporarily handle new status as NA
   if (readOnly) {
+    if (readOnlyStatus === null) {
+      return (
+        <div className="flex align-items-center align-self-center gap-2">
+          <div className="flex flex-column">
+            <FcExpired />
+          </div>
+          <div className="flex flex-column">Status Not Set</div>
+        </div>
+      );
+    }
     return (
       <div className="flex align-items-center gap-2 bg-white p-2 border-1 border-100 m-0">
         <div className="flex flex-column">
