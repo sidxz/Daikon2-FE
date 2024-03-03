@@ -13,16 +13,6 @@ import {
 import { GiVote } from "react-icons/gi";
 import { RootStoreContext } from "../../../../RootStore";
 
-/**
- * ScreenStatusDropdown component allows users to update the status of a screen.
- * The status of the screen can be updated to a predefined set of options,
- * with each option associated with an icon.
- * @param {Object} props - The properties passed to the component.
- * @param {string} props.id - The id of the screen.
- * @param {string} props.status - The current status of the screen.
- * @param {boolean} props.readOnly - Whether the status can be updated or not.
- */
-
 const ScreenStatusDropdown = ({ id, readOnlyStatus, readOnly = false }) => {
   const [confirmDialogVisible, setConfirmDialogVisible] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState(null);
