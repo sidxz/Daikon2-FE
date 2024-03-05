@@ -46,7 +46,7 @@ const FSTbVScreen = ({}) => {
   const addScreenSeqSideBarHeader = (
     <div className="flex align-items-center gap-2">
       <i className="icon icon-common icon-plus-circle"></i>
-      <span className="font-bold">Add Hit</span>
+      <span className="font-bold">Add Screen Run</span>
     </div>
   );
 
