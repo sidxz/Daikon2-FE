@@ -11,6 +11,7 @@ import { useParams } from "react-router-dom";
 import Loading from "../../../../../../Library/Loading/Loading";
 import { RootStoreContext } from "../../../../../../RootStore";
 import { TextRowEditor } from "../../../../../../Shared/TableRowEditors/TextRowEditor";
+import Vote from "../../../shared/Vote/Vote";
 import FSTbVHAddHit from "./FSTbVHitsHelper/FSTbVHAddHit";
 import { FSTbVHDataTableHeader } from "./FSTbVHitsHelper/FSTbVHDataTableHeader";
 import { StructureBodyTemplate } from "./FSTbVHitsHelper/FSTbVHDataTableHelper";
@@ -26,6 +27,7 @@ const FSTbVHits = () => {
   const { selectedScreen } = rootStore.screenStore;
   const { updateHit, deleteHit, isDeletingHit, isAddingHit, isUpdatingHit } =
     rootStore.hitStore;
+  const { user } = rootStore.authStore;
 
   useEffect(() => {
     if (
@@ -80,7 +82,19 @@ const FSTbVHits = () => {
     );
   };
 
+  let votingBodyTemplate = (rowData) => {
+    return (
+      <Vote
+        hit={rowData}
+        isUpdatingHit={isUpdatingHit}
+        updateHit={updateHit}
+        userId={user.id}
+      />
+    );
+  };
+
   if (selectedHitCollection !== undefined && !isFetchingHitCollection) {
+    console.log("FSTbVHits -> selectedHitCollection", selectedHitCollection);
     return (
       <>
         <div className="flex flex-column w-full">
@@ -162,6 +176,8 @@ const FSTbVHits = () => {
                   header="Cluster"
                   editor={(options) => TextRowEditor(options)}
                 />
+                <Column header="Vote" body={votingBodyTemplate} />
+
                 <Column
                   rowEditor
                   header="Edit"

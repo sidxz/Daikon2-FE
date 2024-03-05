@@ -26,6 +26,15 @@ const FSDTargetBased = () => {
     return <Loading message={"Fetching Screens..."} />;
   }
 
+  const rowGroupHeaderTemplate = (data) => {
+    return (
+      <div className="flex align-items-center gap-2">
+        <i className="icon icon-common icon-target"></i>
+        <span className="font-bold">{data.associatedTargetsFlattened}</span>
+      </div>
+    );
+  };
+
   let nameBodyTemplate = (rowData) => {
     return (
       <NavLink to={"../../viewer/tb/" + rowData.id}>{rowData.name}</NavLink>
@@ -47,6 +56,7 @@ const FSDTargetBased = () => {
     );
   };
 
+  console.log("screenListTargetBased", screenListTargetBased);
   return (
     <div className="flex flex-column min-w-full fadein animation-duration-500">
       <div className="flex w-full">
@@ -55,6 +65,12 @@ const FSDTargetBased = () => {
           paginator
           rows={10}
           filterDisplay="row"
+          rowGroupMode="subheader"
+          groupRowsBy="associatedTargetsFlattened"
+          rowGroupHeaderTemplate={rowGroupHeaderTemplate}
+          sortMode="single"
+          sortField="associatedTargetsFlattened"
+          sortOrder={1}
         >
           <Column
             body={nameBodyTemplate}
@@ -68,9 +84,9 @@ const FSDTargetBased = () => {
           />
 
           <Column
-            // field="name"
+            field="associatedTargetsFlattened"
             header="Target"
-            body={associateTargetBodyTemplate}
+            //body={associateTargetBodyTemplate}
             filter
             filterMatchMode="contains"
             filterPlaceholder="Search"

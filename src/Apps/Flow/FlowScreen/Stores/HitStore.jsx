@@ -41,6 +41,8 @@ export default class HitStore {
       runInAction(() => {
         // Add hit to hit list
         hit.id = res.id;
+        hit.usersVote = hit.usersVote || "NA";
+        hit.voters = hit.voters || {};
         const hitCollection =
           this.rootStore.hitCollectionStore.hitCollectionRegistry.get(
             hit.hitCollectionId
@@ -62,6 +64,7 @@ export default class HitStore {
 
   updateHit = async (hit, silent = false) => {
     console.log("updateHit:", hit);
+    //return;
     this.isUpdatingHit = true;
 
     // Ensure hit.hitCollectionId is set, fallback to selectedHitCollection.hitCollectionId if null, undefined, or empty
