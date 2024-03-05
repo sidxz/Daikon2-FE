@@ -17,9 +17,7 @@ import { FSTbVHDataTableHeader } from "./FSTbVHitsHelper/FSTbVHDataTableHeader";
 import { StructureBodyTemplate } from "./FSTbVHitsHelper/FSTbVHDataTableHelper";
 import FSTbVHExcelImport from "./FSTbVHitsHelper/FSTbVHExcelImport";
 
-const FSTbVHits = () => {
-  const { id } = useParams();
-
+const FSTbVHits = ({ id }) => {
   const rootStore = useContext(RootStoreContext);
 
   const { getHitCollection, selectedHitCollection, isFetchingHitCollection } =

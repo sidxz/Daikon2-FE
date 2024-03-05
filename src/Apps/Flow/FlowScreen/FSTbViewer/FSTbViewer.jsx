@@ -11,6 +11,7 @@ import {
 import Loading from "../../../../Library/Loading/Loading";
 import { RootStoreContext } from "../../../../RootStore";
 import FSTbVHitCollection from "./FSTbVHitCollection/FSTbVHitCollection";
+import FSTbVHitCollectionSelection from "./FSTbVHitCollection/FSTbVHitCollectionSelection";
 import FSTbVScreen from "./FSTbVScreen/FSTbVScreen";
 import * as Helper from "./FSTbViewerHelper";
 const FSTbViewer = () => {
@@ -50,8 +51,16 @@ const FSTbViewer = () => {
             <Routes>
               <Route index element={<Navigate replace to="screens/" />} />
               <Route
-                path="hits/*"
+                path="hits/:hitCollectionId/"
                 element={<FSTbVHitCollection selectedScreen={selectedScreen} />}
+              />
+              <Route
+                path="hits/"
+                element={
+                  <FSTbVHitCollectionSelection
+                    selectedScreen={selectedScreen}
+                  />
+                }
               />
               <Route
                 path="screens/"

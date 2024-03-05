@@ -1,21 +1,19 @@
 import { observer } from "mobx-react-lite";
 import { BreadCrumb } from "primereact/breadcrumb";
-import { Dropdown } from "primereact/dropdown";
+import { Button } from "primereact/button";
+import { Card } from "primereact/card";
 import { Sidebar } from "primereact/sidebar";
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Loading from "../../../../../Library/Loading/Loading";
 import SecHeading from "../../../../../Library/SecHeading/SecHeading";
 import { RootStoreContext } from "../../../../../RootStore";
 import { appColors } from "../../../../../constants/colors";
 import FSTbVAddHitCollection from "./FSTbVAddHitCollection";
 import * as Helper from "./FSTbVHitCollectionHelper";
-import FSTbVHits from "./FSTbVHits/FSTbVHits";
-const FSTbVHitCollection = ({ selectedScreen }) => {
-  const [displayAddSideBar, setDisplayAddSideBar] = useState(false);
-  const navigate = useNavigate();
-  const { hitCollectionId } = useParams();
 
+const FSTbVHitCollectionSelection = ({ selectedScreen }) => {
+  const navigate = useNavigate();
   const rootStore = useContext(RootStoreContext);
   const {
     fetchHitCollectionsOfScreen,
@@ -23,41 +21,40 @@ const FSTbVHitCollection = ({ selectedScreen }) => {
     isHitCollectionRegistryCacheValid,
     hitCollectionOfScreen,
     selectedHitCollection,
-    getHitCollection,
   } = rootStore.hitCollectionStore;
 
-  const [selectedHitCollectionDropdown, setSelectedHitCollectionDropdown] =
-    useState(hitCollectionId);
+  const [displayAddSideBar, setDisplayAddSideBar] = useState(false);
 
   useEffect(() => {
-    if (
-      selectedHitCollection === undefined ||
-      selectedHitCollection?.id !== hitCollectionId
-    ) {
+    if (!isHitCollectionRegistryCacheValid(selectedScreen.id)) {
       fetchHitCollectionsOfScreen(selectedScreen.id);
-      getHitCollection(hitCollectionId);
     }
   }, [
     isHitCollectionRegistryCacheValid,
     fetchHitCollectionsOfScreen,
     selectedScreen,
     selectedHitCollection,
-    setSelectedHitCollectionDropdown,
   ]);
+
+  const header = <> </>;
+  const footer = (
+    <>
+      <Button
+        label="Create a Hit Collection"
+        icon="pi pi-plus"
+        onClick={() => setDisplayAddSideBar(true)}
+      />
+    </>
+  );
 
   if (isFetchingHitCollection) {
     return <Loading message={"Fetching Hit Collection..."} />;
   }
 
-  if (selectedScreen && hitCollectionOfScreen(selectedScreen.id)) {
-    const hitCollections = [];
-    hitCollectionOfScreen(selectedScreen.id).forEach((hitCollection) => {
-      hitCollections.push({
-        id: hitCollection.id,
-        name: Helper.hitCollectionNameTemplate(hitCollection),
-      });
-    });
-
+  if (
+    !isFetchingHitCollection &&
+    hitCollectionOfScreen(selectedScreen.id).length === 0
+  ) {
     return (
       <>
         <div className="flex flex-column w-full">
@@ -79,26 +76,25 @@ const FSTbVHitCollection = ({ selectedScreen }) => {
                   action: () => setDisplayAddSideBar(true),
                 },
               ]}
-              customElements={[
-                <Dropdown
-                  value={selectedHitCollectionDropdown}
-                  onChange={(e) => {
-                    navigate(
-                      "/wf/screen/viewer/tb/c8898ea6-ce40-4469-a996-412c6565dbac/hits/" +
-                        e.value
-                    );
-                    setSelectedHitCollectionDropdown(e.value);
-                  }}
-                  options={hitCollections}
-                  optionLabel="name"
-                  optionValue="id"
-                  placeholder="Select a Hit Collection"
-                />,
-              ]}
             />
           </div>
           <div className="flex w-full">
-            <FSTbVHits id={hitCollectionId} />
+            <Card
+              title="No Hit Collection Found"
+              subTitle="Add a hit collection to manage hits."
+              footer={footer}
+              header={header}
+            >
+              <p className="m-0">
+                A hit collection refers to a set of chemical compounds that have
+                shown initial promise in preliminary screening tests for
+                biological activity against a specific target or disease area.
+                This phase is critical in the drug discovery process, as it
+                involves identifying potential lead compounds that could be
+                further optimized and developed into effective therapeutic
+                agents.
+              </p>
+            </Card>
           </div>
         </div>
         <Sidebar
@@ -117,7 +113,18 @@ const FSTbVHitCollection = ({ selectedScreen }) => {
     );
   }
 
+  if (
+    !isFetchingHitCollection &&
+    hitCollectionOfScreen(selectedScreen.id).length > 0
+  ) {
+    // get id of first hit collection
+    const hitCollectionId = hitCollectionOfScreen(selectedScreen.id)[0].id;
+    navigate(
+      `/wf/screen/viewer/tb/${selectedScreen.id}/hits/${hitCollectionId}`
+    );
+  }
+
   return <div>Loading..</div>;
 };
 
-export default observer(FSTbVHitCollection);
+export default observer(FSTbVHitCollectionSelection);

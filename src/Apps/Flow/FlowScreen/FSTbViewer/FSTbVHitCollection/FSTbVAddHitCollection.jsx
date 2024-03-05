@@ -5,12 +5,14 @@ import { Dropdown } from "primereact/dropdown";
 import { InputTextarea } from "primereact/inputtextarea";
 import { classNames } from "primereact/utils";
 import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { RootStoreContext } from "../../../../../RootStore";
 import { hitCollectionTypeOptions } from "../../shared/FSValues";
 
 const FSTbVAddHitCollection = ({ selectedScreen, closeSidebar }) => {
   const rootStore = useContext(RootStoreContext);
-  const { isAddingHitCollection, addHitCollection } =
+  const navigate = useNavigate();
+  const { isAddingHitCollection, addHitCollection, selectedHitCollection } =
     rootStore.hitCollectionStore;
 
   const formik = useFormik({
@@ -32,6 +34,10 @@ const FSTbVAddHitCollection = ({ selectedScreen, closeSidebar }) => {
     onSubmit: (hitCollection) => {
       hitCollection.screenId = selectedScreen.id;
       addHitCollection(hitCollection).then(() => {
+        console.log("Hit Collection added successfully");
+        navigate(
+          `/wf/screen/viewer/tb/${selectedScreen.id}/hits/${selectedHitCollection.id}`
+        );
         closeSidebar();
         formik.resetForm();
       });
