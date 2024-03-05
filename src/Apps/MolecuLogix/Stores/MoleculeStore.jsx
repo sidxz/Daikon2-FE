@@ -45,7 +45,6 @@ export default class MoleculeStore {
   // Actions
 
   fetchMolecules = async (inValidateCache = false) => {
-    console.log("fetchMolecules");
     if (inValidateCache) {
       this.isMoleculeListCacheValid = false;
     }
@@ -57,7 +56,6 @@ export default class MoleculeStore {
       const molecules = await MolDbAPI.listMolecules();
       runInAction(() => {
         molecules.forEach((molecule) => {
-          console.log(molecule);
           this.moleculeRegistry.set(molecule.id, molecule);
         });
         this.isMoleculeListCacheValid = true;
@@ -105,8 +103,6 @@ export default class MoleculeStore {
   };
 
   registerMolecule = async (molecule) => {
-    console.log("registerMolecule");
-    console.log(molecule);
     // reject if molecule smiles is not set
     if (!molecule.requestedSMILES) {
       toast.error("Molecule smiles is required");
@@ -116,7 +112,6 @@ export default class MoleculeStore {
     this.isRegisteringMolecule = true;
     try {
       const res = await MolDbAPI.registerMolecule(molecule);
-      console.log(res);
       runInAction(() => {
         // check if res has property similarity
         // if yes, then the molecule is already registered

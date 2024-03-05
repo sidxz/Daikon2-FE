@@ -30,8 +30,6 @@ export default class ScreenRunStore {
   // Actions
   addScreenRun = async (screenRun, silent = false) => {
     this.isAddingScreenRun = true;
-    console.log("Adding screen run");
-    console.log(screenRun);
 
     // Ensure screenRun.screenId is set ,error out if not
     if (!screenRun.screenId?.trim()) {
@@ -119,8 +117,6 @@ export default class ScreenRunStore {
    * Batch insert screen runs
    */
   batchInsertScreenRuns = async (editedRows) => {
-    //console.log("Batch inserting screen runs");
-    //console.log(editedRows);
     this.isBatchInsertingScreenRuns = true;
 
     try {

@@ -24,8 +24,6 @@ const ScreenStatusDropdown = ({ id, readOnlyStatus, readOnly = false }) => {
   // Parameter check
   if (!id) return <></>;
 
-  console.log("selectedScreenStatus", selectedScreen.status);
-
   // The set of available options for the status of a screen
   const statusOptions = [
     { name: "Planned", icon: <FcPlanner /> },
@@ -70,7 +68,6 @@ const ScreenStatusDropdown = ({ id, readOnlyStatus, readOnly = false }) => {
   // Event handler for updating the selected status
   // and making the confirm dialog visible
   const handleStatusChange = (e) => {
-    console.log(e.value);
     setSelectedStatus(e.value);
     setConfirmDialogVisible(true);
   };

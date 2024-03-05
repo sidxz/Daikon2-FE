@@ -63,8 +63,6 @@ export default class HitStore {
   };
 
   updateHit = async (hit, silent = false) => {
-    console.log("updateHit:", hit);
-    //return;
     this.isUpdatingHit = true;
 
     // Ensure hit.hitCollectionId is set, fallback to selectedHitCollection.hitCollectionId if null, undefined, or empty
@@ -142,8 +140,6 @@ export default class HitStore {
    * @param {object} editedHitRows - The details of the hit rows to edit.
    */
   batchInsertHits = async (editedHitRows) => {
-    //console.log("Batch inserting hits");
-    //console.log(editedHitRows);
     this.isBatchInsertingHits = true;
 
     try {

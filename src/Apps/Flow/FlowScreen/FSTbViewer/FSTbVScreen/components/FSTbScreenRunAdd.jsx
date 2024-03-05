@@ -39,10 +39,8 @@ const FSTbScreenRunAdd = ({ screenId, closeSideBar }) => {
     onSubmit: (screenRunToAdd) => {
       screenRunToAdd.screenId = screenId;
       addScreenRun(screenRunToAdd).then(() => {
-        console.log("Screen run added successfully!!!!!");
         closeSideBar();
         formik.resetForm();
-        console.log("reset and exit!!!!!");
       });
     },
   });

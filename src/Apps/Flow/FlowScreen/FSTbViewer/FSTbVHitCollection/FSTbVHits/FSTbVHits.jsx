@@ -94,7 +94,6 @@ const FSTbVHits = () => {
   };
 
   if (selectedHitCollection !== undefined && !isFetchingHitCollection) {
-    console.log("FSTbVHits -> selectedHitCollection", selectedHitCollection);
     return (
       <>
         <div className="flex flex-column w-full">

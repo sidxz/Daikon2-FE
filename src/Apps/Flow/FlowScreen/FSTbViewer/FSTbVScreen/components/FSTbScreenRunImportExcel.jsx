@@ -61,7 +61,6 @@ const FSTbV_ScreenRunExcelImport = ({ selectedScreen }) => {
             // row.hitCollectionId = selectedHitCollection.id;
             // output is in field 'smiles' in excel (template), but to create a hit, we need 'requestedSMILES'
             // row.requestedSMILES = row.smiles;
-            //console.log("row", row);
           });
           setDataForPreview(jsonData);
           setShowDataPreviewDialog(true);
