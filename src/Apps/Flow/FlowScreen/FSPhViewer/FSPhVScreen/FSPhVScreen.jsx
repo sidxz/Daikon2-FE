@@ -43,6 +43,8 @@ const FSPhVScreen = ({}) => {
     return <Loading message={"Fetching Screen..."} />;
   }
 
+  console.log("selectedScreen", selectedScreen);
+
   const addScreenSeqSideBarHeader = (
     <div className="flex align-items-center gap-2">
       <i className="icon icon-common icon-plus-circle"></i>
@@ -152,11 +154,7 @@ const FSPhVScreen = ({}) => {
                   header="Protocol"
                   editor={(options) => TextRowEditor(options)}
                 />
-                <Column
-                  field="concentration"
-                  header="Inhibitor C (&micro;M)"
-                  editor={(options) => TextRowEditor(options)}
-                />
+
                 <Column
                   field="noOfCompoundsScreened"
                   header="# Compounds Screened"

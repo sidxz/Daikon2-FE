@@ -21,11 +21,10 @@ const FSPhScreenRunAdd = ({ screenId, closeSideBar }) => {
       scientist: "",
       startDate: null,
       endDate: null,
-      hitRate: "",
       primaryHitCount: "",
       confirmedHitCount: "",
       noOfCompoundsScreened: "",
-      concentration: "",
+      hitRate: "",
       notes: "",
     },
 
@@ -111,24 +110,6 @@ const FSPhScreenRunAdd = ({ screenId, closeSideBar }) => {
 
         <div className="field">
           <label
-            htmlFor="concentration"
-            className={classNames({ "p-error": isInvalid("concentration") })}
-          >
-            Concentration
-          </label>
-          <InputText
-            id="concentration"
-            value={formik.values.concentration}
-            onChange={formik.handleChange}
-            className={classNames({
-              "p-invalid": isInvalid("concentration"),
-            })}
-          />
-          {getErrorMessage("concentration")}
-        </div>
-
-        <div className="field">
-          <label
             htmlFor="noOfCompoundsScreened"
             className={classNames({
               "p-error": isInvalid("noOfCompoundsScreened"),
@@ -145,6 +126,24 @@ const FSPhScreenRunAdd = ({ screenId, closeSideBar }) => {
             })}
           />
           {getErrorMessage("noOfCompoundsScreened")}
+        </div>
+
+        <div className="field">
+          <label
+            htmlFor="scientist"
+            className={classNames({ "p-error": isInvalid("scientist") })}
+          >
+            Scientist
+          </label>
+          <InputScientist
+            id="scientist"
+            value={formik.values.scientist}
+            onChange={formik.handleChange}
+            className={classNames({
+              "p-invalid": isInvalid("scientist"),
+            })}
+          />
+          {getErrorMessage("scientist")}
         </div>
 
         <div className="field">
@@ -256,24 +255,6 @@ const FSPhScreenRunAdd = ({ screenId, closeSideBar }) => {
             })}
           />
           {getErrorMessage("hitRate")}
-        </div>
-
-        <div className="field">
-          <label
-            htmlFor="scientist"
-            className={classNames({ "p-error": isInvalid("scientist") })}
-          >
-            Scientist
-          </label>
-          <InputScientist
-            id="scientist"
-            value={formik.values.scientist}
-            onChange={formik.handleChange}
-            className={classNames({
-              "p-invalid": isInvalid("scientist"),
-            })}
-          />
-          {getErrorMessage("scientist")}
         </div>
 
         <div className="field">
