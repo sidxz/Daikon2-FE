@@ -14,10 +14,8 @@ const FSPhVHAddHit = ({ hitCollectionId, closeSideBar }) => {
     initialValues: {
       library: "",
       librarySource: "",
-      method: "",
       mic: "",
       iC50: "",
-      clusterGroup: "",
       notes: "",
       moleculeName: "",
       requestedSMILES: "",
@@ -88,24 +86,6 @@ const FSPhVHAddHit = ({ hitCollectionId, closeSideBar }) => {
 
         <div className="field">
           <label
-            htmlFor="method"
-            className={classNames({ "p-error": isInvalid("method") })}
-          >
-            Method
-          </label>
-          <InputText
-            id="method"
-            value={formik.values.method}
-            onChange={formik.handleChange}
-            className={classNames({
-              "p-invalid": isInvalid("method"),
-            })}
-          />
-          {getErrorMessage("method")}
-        </div>
-
-        <div className="field">
-          <label
             htmlFor="mic"
             className={classNames({ "p-error": isInvalid("mic") })}
           >
@@ -138,24 +118,6 @@ const FSPhVHAddHit = ({ hitCollectionId, closeSideBar }) => {
             })}
           />
           {getErrorMessage("iC50")}
-        </div>
-
-        <div className="field">
-          <label
-            htmlFor="clusterGroup"
-            className={classNames({ "p-error": isInvalid("clusterGroup") })}
-          >
-            Cluster Group
-          </label>
-          <InputText
-            id="clusterGroup"
-            value={formik.values.clusterGroup}
-            onChange={formik.handleChange}
-            className={classNames({
-              "p-invalid": isInvalid("clusterGroup"),
-            })}
-          />
-          {getErrorMessage("clusterGroup")}
         </div>
 
         <div className="field">
