@@ -22,7 +22,7 @@ const FSDOPlannedScreens = ({ screens }) => {
               : FormatScreeningMethod(screen.method)}
           </div>
 
-          <div className="p-1 white-space-nowrap justify-content-center bg-white text-700 text-xs w-6 overflow-hidden text-overflow-ellipsis border-right-1 border-purple-100">
+          <div className="p-1 white-space-nowrap justify-content-center bg-white text-700 text-xs w-6 overflow-hidden text-overflow-ellipsis border-purple-100">
             {screen.primaryOrgName}
           </div>
         </div>
