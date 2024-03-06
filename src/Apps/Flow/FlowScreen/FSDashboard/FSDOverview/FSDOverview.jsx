@@ -1,14 +1,49 @@
-import React from "react";
+import { observer } from "mobx-react-lite";
+import React, { useContext, useEffect } from "react";
 import { FcNeutralTrading, FcPlanner } from "react-icons/fc";
 import { GiVote } from "react-icons/gi";
 import { WiMoonFull } from "react-icons/wi";
-import FSDOActiveScreens from "./FSDOActiveScreens/FSDOActiveScreens";
+import Loading from "../../../../../Library/Loading/Loading";
+import { RootStoreContext } from "../../../../../RootStore";
+import FSDOOngoingScreens from "./FSDOOngoingScreens/FSDOOngoingScreens";
 import FSDOPlannedScreens from "./FSDOPlannedScreens/FSDOPlannedScreens";
 import FSDORecentlyCompleted from "./FSDORecentlyCompleted/FSDORecentlyCompleted";
 import FSDOVotingReady from "./FSDOVotingReady/FSDOVotingReady";
 
 const FSDOverview = () => {
   // root store context
+  const rootStore = useContext(RootStoreContext);
+  const {
+    fetchScreens,
+    isScreenListCacheValid,
+    isFetchingScreens,
+    screenListTargetBased,
+  } = rootStore.screenStore;
+  useEffect(() => {
+    if (!isScreenListCacheValid) {
+      fetchScreens();
+    }
+  }, [isScreenListCacheValid, fetchScreens]);
+
+  if (isFetchingScreens) {
+    return <Loading message={"Fetching Screens..."} />;
+  }
+
+  console.log("FSDOverview");
+
+  let sortByDate = (a, b) => {
+    // Handle default or null dateModified by using dateCreated instead
+    const dateA =
+      a.dateModified && a.dateModified !== "0001-01-01T00:00:00Z"
+        ? new Date(a.dateModified)
+        : new Date(a.dateCreated);
+    const dateB =
+      b.dateModified && b.dateModified !== "0001-01-01T00:00:00Z"
+        ? new Date(b.dateModified)
+        : new Date(b.dateCreated);
+
+    return dateA - dateB; // Sort by dateModified or dateCreated if dateModified is default or null
+  };
 
   return (
     <div className="flex flex-column w-full">
@@ -50,7 +85,7 @@ const FSDOverview = () => {
               <FcNeutralTrading />
             </div>
             <div className="flex">
-              <b>ACTIVE SCREEN CAMPAIGNS</b>
+              <b>ONGOING SCREENING CAMPAIGNS</b>
             </div>
           </div>
         </div>
@@ -101,7 +136,11 @@ const FSDOverview = () => {
           <FSDOPlannedScreens />
         </div>
         <div className="flex w-full border-1 border-50 justify-content-center bg-white">
-          <FSDOActiveScreens />
+          <FSDOOngoingScreens
+            screensOngoing={screenListTargetBased
+              .filter((item) => item.status === "Ongoing") // Filter by Ongoing status
+              .sort(sortByDate)}
+          />
         </div>
         <div className="flex w-full border-1 border-50 justify-content-center bg-white">
           <FSDOVotingReady />
@@ -126,7 +165,7 @@ const FSDOverview = () => {
           <FSDOPlannedScreens />
         </div>
         <div className="flex w-full border-1 border-50 justify-content-center bg-white">
-          <FSDOActiveScreens />
+          <FSDOOngoingScreens />
         </div>
         <div className="flex w-full border-1 border-50 justify-content-center bg-white">
           <FSDOVotingReady />
@@ -140,4 +179,4 @@ const FSDOverview = () => {
   );
 };
 
-export default FSDOverview;
+export default observer(FSDOverview);
