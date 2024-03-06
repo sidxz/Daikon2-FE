@@ -32,7 +32,7 @@ const FSDTargetBased = () => {
         <DataTable
           value={screenListTargetBased}
           paginator
-          rows={10}
+          rows={50}
           filterDisplay="row"
           rowGroupMode="subheader"
           groupRowsBy="associatedTargetsFlattened"

@@ -11,7 +11,7 @@ const FSTbVScreenDataTableHeader = ({
   setDisplayAddScreenSeqSideBar,
 }) => {
   if (selectedScreen === undefined) return <p>Loading...</p>;
-
+  console.log("FSTbVScreenDataTableHeader: selectedScreen", selectedScreen);
   return (
     <div className="table-header flex flex-row w-full">
       <div className="flex justify-content-start"></div>

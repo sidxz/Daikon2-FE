@@ -136,6 +136,11 @@ export default class ScreenStore {
         screen.id = res.id;
         screen.screenRuns = [];
 
+        // FLatten the associated targets, separate by comma
+        screen.associatedTargetsFlattened = Object.values(
+          screen.associatedTargets
+        ).join(", ");
+
         this.screenRegistry.set(screen.id, screen);
         this.screenListRegistry.set(screen.id, screen);
         toast.success("Screen added successfully");
