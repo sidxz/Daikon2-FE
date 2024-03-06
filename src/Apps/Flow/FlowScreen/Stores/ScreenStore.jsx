@@ -43,7 +43,6 @@ export default class ScreenStore {
   isFetchingScreens = false;
   isScreenListCacheValid = false;
   screenListRegistry = new Map();
-  availableScreenFunctionalCategories = new Set();
 
   isFetchingScreen = false;
   screenRegistry = new Map();

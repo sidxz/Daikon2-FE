@@ -15,6 +15,7 @@ import HitCollectionStore from "./Apps/Flow/FlowScreen/Stores/HitCollectionStore
 import HitStore from "./Apps/Flow/FlowScreen/Stores/HitStore";
 import ScreenRunStore from "./Apps/Flow/FlowScreen/Stores/ScreenRunStore";
 import ScreenStore from "./Apps/Flow/FlowScreen/Stores/ScreenStore";
+import TargetStore from "./Apps/Flow/FlowTarget/Stores/TargetStore";
 import MoleculeStore from "./Apps/MolecuLogix/Stores/MoleculeStore";
 import AuthStore from "./Auth/AuthStore";
 
@@ -36,6 +37,8 @@ export class RootStore {
   geneVulnerabilityStore;
   geneUnpublishedStructuralInformationStore;
 
+  targetStore;
+
   screenStore;
   screenRunStore;
   hitCollectionStore;
@@ -45,7 +48,10 @@ export class RootStore {
 
   adminUserManagementStore;
   constructor() {
+    /* Auth */
     this.authStore = new AuthStore(this);
+
+    /* Gene */
     this.geneStore = new GeneStore(this);
     this.genePDBCrossRefStore = new GenePDBCrossRefStore(this);
     this.geneEssentialityStore = new GeneEssentialityStore(this);
@@ -60,13 +66,19 @@ export class RootStore {
     this.geneUnpublishedStructuralInformationStore =
       new GeneUnpublishedStructuralInformationStore(this);
 
+    /* Target */
+    this.targetStore = new TargetStore(this);
+
+    /* Screen */
     this.screenStore = new ScreenStore(this);
     this.screenRunStore = new ScreenRunStore(this);
     this.hitCollectionStore = new HitCollectionStore(this);
     this.hitStore = new HitStore(this);
 
+    /* MLogix */
     this.moleculeStore = new MoleculeStore(this);
 
+    /* Admin */
     this.adminUserManagementStore = new AdminUserManagementStore(this);
   }
 }

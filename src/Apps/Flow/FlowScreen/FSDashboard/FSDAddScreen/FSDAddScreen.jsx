@@ -1,3 +1,4 @@
+import { observer } from "mobx-react-lite";
 import { Dropdown } from "primereact/dropdown";
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -40,4 +41,4 @@ const FSDAddScreen = ({ closeSideBar }) => {
   );
 };
 
-export default FSDAddScreen;
+export default observer(FSDAddScreen);

@@ -1,25 +1,41 @@
 import { useFormik } from "formik";
+import { observer } from "mobx-react-lite";
 import { Button } from "primereact/button";
 import { Dropdown } from "primereact/dropdown";
 import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
 import { classNames } from "primereact/utils";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { RootStoreContext } from "../../../../../RootStore";
 import InputOrg from "../../../../../Shared/InputEditors/InputOrg";
 import { AppOrgResolver } from "../../../../../Shared/VariableResolvers/AppOrgResolver";
 import { GlobalValuesResolver } from "../../../../../Shared/VariableResolvers/GlobalValuesResolver";
+import InputAssociatedTarget from "../../shared/InputAssociatedTarget";
 
 const FSDAddScreenTargetBased = ({ closeSideBar }) => {
   const rootStore = useContext(RootStoreContext);
 
   const { addScreen, isAddingScreen } = rootStore.screenStore;
+  const {
+    targetListRegistry,
+    fetchTargets,
+    isFetchingTargets,
+    isTargetListCacheValid,
+  } = rootStore.targetStore;
 
   const { getScreeningGlobals } = GlobalValuesResolver();
   const { getOrgNameById } = AppOrgResolver();
 
+  useEffect(() => {
+    if (!isTargetListCacheValid) {
+      fetchTargets();
+    }
+  }, [fetchTargets, isTargetListCacheValid]);
+
   const formik = useFormik({
     initialValues: {
+      associatedTargets: {},
+      targetToAssociate: "",
       primaryOrgName: "",
       primaryOrgId: "",
       name: "",
@@ -38,6 +54,13 @@ const FSDAddScreenTargetBased = ({ closeSideBar }) => {
 
     onSubmit: (newScreen) => {
       newScreen.primaryOrgName = getOrgNameById(newScreen.primaryOrgId);
+
+      const targetName = targetListRegistry.get(
+        newScreen.targetToAssociate
+      ).name;
+      newScreen.associatedTargets = {
+        [newScreen.targetToAssociate]: targetName,
+      };
       addScreen(newScreen).then(() => {
         closeSideBar();
         formik.resetForm();
@@ -52,10 +75,34 @@ const FSDAddScreenTargetBased = ({ closeSideBar }) => {
       <small className="p-error">{formik.errors[field]}</small>
     );
 
+  if (isFetchingTargets) {
+    return <div>Please wait...</div>;
+  }
+
   return (
     <>
       <div className="card w-full">
         <form onSubmit={formik.handleSubmit} className="p-fluid">
+          <div className="field">
+            <label
+              htmlFor="targetToAssociate"
+              className={classNames({
+                "p-error": isInvalid("targetToAssociate"),
+              })}
+            >
+              Associated Target
+            </label>
+
+            <InputAssociatedTarget
+              value={formik.values.targetToAssociate}
+              onChange={formik.handleChange("targetToAssociate")}
+              className={classNames({
+                "p-invalid": isInvalid("targetToAssociate"),
+              })}
+            />
+            {getErrorMessage("targetToAssociate")}
+          </div>
+
           <div className="field">
             <label
               htmlFor="name"
@@ -156,4 +203,4 @@ const FSDAddScreenTargetBased = ({ closeSideBar }) => {
   );
 };
 
-export default FSDAddScreenTargetBased;
+export default observer(FSDAddScreenTargetBased);
