@@ -70,7 +70,7 @@ const FSDOverview = () => {
               <FcPlanner />
             </div>
             <div className="flex">
-              <b>PLANNED SCREENS</b>
+              <b>PLANNED</b>
             </div>
           </div>
         </div>
@@ -85,7 +85,7 @@ const FSDOverview = () => {
               <FcNeutralTrading />
             </div>
             <div className="flex">
-              <b>ONGOING SCREENING CAMPAIGNS</b>
+              <b>ONGOING</b>
             </div>
           </div>
         </div>
@@ -115,7 +115,7 @@ const FSDOverview = () => {
               <WiMoonFull />
             </div>
             <div className="flex">
-              <b>RECENTLY COMPLETED SCREENS</b>
+              <b>RECENTLY COMPLETED</b>
             </div>
           </div>
         </div>
@@ -190,7 +190,6 @@ const FSDOverview = () => {
           <FSDORecentlyCompleted />
         </div>
       </div>
-      ;
     </div>
   );
 };
