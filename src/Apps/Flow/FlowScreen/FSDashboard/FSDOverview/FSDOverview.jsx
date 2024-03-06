@@ -122,7 +122,7 @@ const FSDOverview = () => {
       </div>
       <div className="flex w-full">
         <div
-          className="flex max-w-1 p-4 align-items-center bg-teal-400 text-white"
+          className="flex max-w-1 p-4 align-items-center justify-content-center bg-teal-400 text-white"
           style={{
             textOrientation: "sideways-right",
             writingMode: "vertical-rl",
@@ -133,25 +133,41 @@ const FSDOverview = () => {
         </div>
 
         <div className="flex w-full border-1 border-50 justify-content-center bg-white">
-          <FSDOPlannedScreens />
+          <FSDOPlannedScreens
+            screens={screenListTargetBased
+              .filter(
+                (item) =>
+                  item.status === "Planned" ||
+                  item.status == "Assay Development"
+              ) // Filter by Ongoing status
+              .sort(sortByDate)}
+          />
         </div>
         <div className="flex w-full border-1 border-50 justify-content-center bg-white">
           <FSDOOngoingScreens
-            screensOngoing={screenListTargetBased
+            screens={screenListTargetBased
               .filter((item) => item.status === "Ongoing") // Filter by Ongoing status
               .sort(sortByDate)}
           />
         </div>
         <div className="flex w-full border-1 border-50 justify-content-center bg-white">
-          <FSDOVotingReady />
+          <FSDOVotingReady
+            screens={screenListTargetBased
+              .filter((item) => item.status === "Voting Ready") // Filter by Ongoing status
+              .sort(sortByDate)}
+          />
         </div>
         <div className="flex w-full border-1 border-50 justify-content-center bg-white">
-          <FSDORecentlyCompleted />
+          <FSDORecentlyCompleted
+            screens={screenListTargetBased
+              .filter((item) => item.status === "Completed") // Filter by Ongoing status
+              .sort(sortByDate)}
+          />
         </div>
       </div>
       <div className="flex w-full pt-3">
         <div
-          className="flex max-w-1 p-4 align-items-center bg-bluegray-400 text-white"
+          className="flex max-w-1 p-4 align-items-center justify-content-center bg-bluegray-400 text-white"
           style={{
             textOrientation: "sideways-right",
             writingMode: "vertical-rl",
