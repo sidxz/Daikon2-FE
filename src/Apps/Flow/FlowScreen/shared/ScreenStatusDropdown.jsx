@@ -13,16 +13,13 @@ import {
 import { GiVote } from "react-icons/gi";
 import { RootStoreContext } from "../../../../RootStore";
 
-const ScreenStatusDropdown = ({ id, readOnlyStatus, readOnly = false }) => {
+const ScreenStatusDropdown = ({ readOnlyStatus, readOnly = false }) => {
   const [confirmDialogVisible, setConfirmDialogVisible] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState(null);
 
   const rootStore = useContext(RootStoreContext);
   const { updateScreen, isUpdatingScreen, selectedScreen } =
     rootStore.screenStore;
-
-  // Parameter check
-  if (!id) return <></>;
 
   // The set of available options for the status of a screen
   const statusOptions = [
@@ -93,7 +90,7 @@ const ScreenStatusDropdown = ({ id, readOnlyStatus, readOnly = false }) => {
       );
     }
     return (
-      <div className="flex align-items-center gap-2 bg-white p-2 border-1 border-100 m-0">
+      <div className="flex align-items-center gap-2 bg-white p-2 m-0">
         <div className="flex flex-column">
           {statusOptions.find((option) => option.name === readOnlyStatus)?.icon}
         </div>
