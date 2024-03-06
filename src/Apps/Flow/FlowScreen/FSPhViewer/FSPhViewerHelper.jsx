@@ -11,7 +11,7 @@ export const sidePanelItems = (navigate) => {
           },
         },
         {
-          label: "Disclosed Hits",
+          label: "Hits",
           icon: "icon icon-conceptual icon-structures-3d",
           command: () => {
             navigate("hits/");
