@@ -7,7 +7,6 @@ import { DataTable } from "primereact/datatable";
 import { Dialog } from "primereact/dialog";
 import { Sidebar } from "primereact/sidebar";
 import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import Loading from "../../../../../../Library/Loading/Loading";
 import { RootStoreContext } from "../../../../../../RootStore";
 import { TextRowEditor } from "../../../../../../Shared/TableRowEditors/TextRowEditor";
@@ -40,6 +39,8 @@ const FSTbVHits = ({ id }) => {
   const [showFileUploadDialog, setShowFileUploadDialog] = useState(false);
   const [selectionEnabled, setSelectionEnabled] = useState(false);
   const [selectedHits, setSelectedHits] = useState(null);
+  const [isVotesHidden, setIsVotesHidden] = useState(false);
+  const [isOneClickVotingEnabled, setIsOneClickVotingEnabled] = useState(false);
 
   if (isFetchingHitCollection) {
     return <Loading message={"Fetching Hit Collection..."} />;
@@ -87,6 +88,8 @@ const FSTbVHits = ({ id }) => {
         isUpdatingHit={isUpdatingHit}
         updateHit={updateHit}
         userId={user.id}
+        isVotesHidden={isVotesHidden}
+        isOneClickVotingEnabled={isOneClickVotingEnabled}
       />
     );
   };
@@ -121,6 +124,10 @@ const FSTbVHits = ({ id }) => {
                     setSelectionEnabled={setSelectionEnabled}
                     selectedHits={selectedHits}
                     setSelectedHits={setSelectedHits}
+                    isVotesHidden={isVotesHidden}
+                    setIsVotesHidden={setIsVotesHidden}
+                    isOneClickVotingEnabled={isOneClickVotingEnabled}
+                    setIsOneClickVotingEnabled={setIsOneClickVotingEnabled}
                   />
                 }
                 //globalFilter={globalFilter}

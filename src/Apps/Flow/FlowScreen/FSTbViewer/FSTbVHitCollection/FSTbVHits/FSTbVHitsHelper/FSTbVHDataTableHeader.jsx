@@ -1,4 +1,5 @@
 import { Button } from "primereact/button";
+import { ToggleButton } from "primereact/togglebutton";
 import React from "react";
 import { ExportHitsToExcel } from "./FSTbVHExcelExport";
 import FSTbVHExcelImport from "./FSTbVHExcelImport";
@@ -12,20 +13,24 @@ export const FSTbVHDataTableHeader = ({
   setSelectionEnabled,
   selectedHits,
   setSelectedHits,
+  isVotesHidden,
+  setIsVotesHidden,
+  isOneClickVotingEnabled,
+  setIsOneClickVotingEnabled,
 }) => {
   if (selectedHitCollection === undefined) return <p>Loading...</p>;
 
   if (selectedHitCollection) {
     return (
       <div className="table-header flex flex-row w-full">
-        <div className="flex justify-content-start">
+        <div className="flex justify-content-start gap-1">
           {!selectionEnabled && (
             <div className="flex flex-grow min-w-max w-full">
               <Button
                 type="button"
                 icon="pi pi-check-square"
                 label="Select Hits to Promote"
-                className="p-button-text p-button-md"
+                className="p-button-text p-button-md w-15rem"
                 onClick={() => setSelectionEnabled(true)}
               />
             </div>
@@ -36,7 +41,7 @@ export const FSTbVHDataTableHeader = ({
                 type="button"
                 icon="pi pi-times-circle"
                 label="Clear Selection"
-                className="p-button-text p-button-md"
+                className="p-button-text p-button-md  w-15rem"
                 onClick={() => {
                   setSelectionEnabled(false);
                   setSelectedHits([]);
@@ -45,16 +50,38 @@ export const FSTbVHDataTableHeader = ({
             </div>
           )}
           {selectionEnabled && selectedHits?.length > 0 && (
-            <div className="flex flex-grow min-w-max w-full">
+            <div className="flex flex-grow min-w-max w-full fadeinleft">
               <Button
                 type="button"
                 icon="icon icon-common icon-arrow-alt-circle-right"
                 label="Promote to HA"
-                className="p-button-text p-button-md"
+                className="p-button-text p-button-md w-15rem"
                 onClick={() => console.log(selectedHits)}
               />
             </div>
           )}
+          <div className="flex flex-grow min-w-max">
+            <ToggleButton
+              className="p-button-text p-button-md w-10rem"
+              checked={isVotesHidden}
+              onChange={(e) => setIsVotesHidden(e.value)}
+              onLabel="Votes Visible"
+              onIcon="pi pi-eye"
+              offLabel="Votes Hidden"
+              offIcon="pi pi-eye-slash"
+            />
+          </div>
+          <div className="flex flex-grow min-w-max">
+            <ToggleButton
+              className="p-button-text p-button-md w-16rem"
+              checked={isOneClickVotingEnabled}
+              onChange={(e) => setIsOneClickVotingEnabled(e.value)}
+              onLabel="One Click Voting Enabled"
+              onIcon="icon icon-common icon-hand-pointer"
+              offLabel="One Click Voting Disabled"
+              offIcon="pi pi-times"
+            />
+          </div>
         </div>
         <div className="flex justify-content-end w-full">
           <div className="flex flex-grow min-w-max">

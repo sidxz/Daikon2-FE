@@ -17,8 +17,8 @@ const Vote = ({
   isUpdatingHit,
   userId,
   isVotingAllowed = true,
-  revealVote = true,
-  enableOneCLickVoting = false,
+  isVotesHidden = true,
+  isOneClickVotingEnabled = false,
 }) => {
   if (hit) {
     const PanelUserAlreadyVoted = () => {
@@ -62,9 +62,10 @@ const Vote = ({
 
     let confirmCastVote = (e, selectedVote) => {
       /* Skip confirmation if one click voting is enabled */
-      if (enableOneCLickVoting) {
+      if (isOneClickVotingEnabled) {
         // edit
         updateHitWithVote(selectedVote);
+        return;
       }
 
       confirmDialog({
@@ -80,7 +81,7 @@ const Vote = ({
     };
 
     let renderVotingChart = () => {
-      if (!revealVote)
+      if (!isVotesHidden)
         return (
           <div className="flex w-auto justify-content-center">
             <p style={{ fontSize: "small" }}>
