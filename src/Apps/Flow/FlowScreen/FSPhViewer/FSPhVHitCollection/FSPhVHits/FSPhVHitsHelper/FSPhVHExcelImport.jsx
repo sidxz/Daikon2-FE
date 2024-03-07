@@ -22,7 +22,6 @@ const FSPhVHExcelImport = ({
     name: hit.molecule?.name ?? "",
     iC50: hit.iC50 ?? "",
     mic: hit.mic ?? "",
-    cluster: hit.clusterGroup ?? "",
   }));
 
   return (

@@ -7,5 +7,4 @@ export const DtFieldsToExcelColumnMapping =
     name: "Molecule Name",
     iC50: "IC50",
     mic: "MIC",
-    cluster: "Cluster Group",
   };

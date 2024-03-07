@@ -203,6 +203,13 @@ const FSPhVScreen = ({}) => {
                 />
 
                 <Column
+                  field="notes"
+                  header="Notes"
+                  editor={(options) => TextRowEditor(options)}
+                  //body={ConfirmedHitCountTemplate}
+                />
+
+                <Column
                   rowEditor
                   headerStyle={{ minWidth: "4rem" }}
                   bodyStyle={{ textAlign: "center" }}

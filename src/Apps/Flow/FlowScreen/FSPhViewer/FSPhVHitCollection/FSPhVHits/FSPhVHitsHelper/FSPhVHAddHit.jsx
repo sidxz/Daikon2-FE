@@ -16,7 +16,6 @@ const FSPhVHAddHit = ({ hitCollectionId, closeSideBar }) => {
       librarySource: "",
       mic: "",
       iC50: "",
-      notes: "",
       moleculeName: "",
       requestedSMILES: "",
     },

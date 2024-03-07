@@ -26,6 +26,7 @@ const FSPhV_ScreenRunExcelImport = ({ selectedScreen }) => {
     primaryHitCount: screenRun?.primaryHitCount,
     confirmedHitCount: screenRun?.confirmedHitCount,
     hitRate: screenRun?.hitRate,
+    notes: screenRun?.notes,
   }));
 
   return (
