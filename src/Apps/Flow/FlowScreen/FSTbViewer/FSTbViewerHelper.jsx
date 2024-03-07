@@ -47,28 +47,28 @@ export const sidePanelItems = (navigate) => {
           label: "Edit",
           icon: "icon icon-common icon-edit",
           command: () => {
-            setDisplayEditScreenDialog(true);
+            navigate("settings/");
           },
         },
         {
           label: "Merge",
           icon: "icon icon-common icon-compress",
           command: () => {
-            setDisplayMergeScreenDialog(true);
+            navigate("settings/");
           },
         },
         {
           label: "Update Target Association",
           icon: "icon icon-common icon-target",
           command: () => {
-            navigate("update-target-association/");
+            navigate("settings/");
           },
         },
         {
           label: "Delete",
           icon: "icon icon-common icon-remove",
           command: () => {
-            navigate("delete/");
+            navigate("settings/");
           },
         },
       ],

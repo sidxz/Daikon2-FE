@@ -13,6 +13,7 @@ import { RootStoreContext } from "../../../../RootStore";
 import FSTbVHitCollection from "./FSTbVHitCollection/FSTbVHitCollection";
 import FSTbVHitCollectionSelection from "./FSTbVHitCollection/FSTbVHitCollectionSelection";
 import FSTbVScreen from "./FSTbVScreen/FSTbVScreen";
+import FSTbVSettings from "./FSTbVSettings/FSTbVSettings";
 import * as Helper from "./FSTbViewerHelper";
 const FSTbViewer = () => {
   const params = useParams();
@@ -65,6 +66,10 @@ const FSTbViewer = () => {
               <Route
                 path="screens/"
                 element={<FSTbVScreen selectedScreen={selectedScreen} />}
+              />
+              <Route
+                path="settings/"
+                element={<FSTbVSettings selectedScreen={selectedScreen} />}
               />
             </Routes>
           </div>
