@@ -22,8 +22,14 @@ const FSTbVHits = ({ id }) => {
   const { getHitCollection, selectedHitCollection, isFetchingHitCollection } =
     rootStore.hitCollectionStore;
   const { selectedScreen } = rootStore.screenStore;
-  const { updateHit, deleteHit, isDeletingHit, isAddingHit, isUpdatingHit } =
-    rootStore.hitStore;
+  const {
+    updateHit,
+    deleteHit,
+    isDeletingHit,
+    isAddingHit,
+    isUpdatingHit,
+    isBatchInsertingHits,
+  } = rootStore.hitStore;
   const { user } = rootStore.authStore;
 
   useEffect(() => {
@@ -102,7 +108,12 @@ const FSTbVHits = ({ id }) => {
         <div className="flex flex-column w-full">
           <div className="flex w-full">
             <BlockUI
-              blocked={isDeletingHit || isAddingHit || isUpdatingHit}
+              blocked={
+                isDeletingHit ||
+                isAddingHit ||
+                isUpdatingHit ||
+                isBatchInsertingHits
+              }
               containerClassName="w-full"
             >
               <DataTable
