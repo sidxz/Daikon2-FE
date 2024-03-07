@@ -35,6 +35,8 @@ const FSTbVHits = ({ id }) => {
     }
   }, [id, getHitCollection]);
 
+  console.log("FSTbVHits -> selectedHitCollection", selectedHitCollection);
+
   const [displayAddHitSideBar, setDisplayAddHitSideBar] = useState(false);
   const [showFileUploadDialog, setShowFileUploadDialog] = useState(false);
   const [selectionEnabled, setSelectionEnabled] = useState(false);

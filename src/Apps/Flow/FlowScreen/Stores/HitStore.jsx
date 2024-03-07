@@ -141,14 +141,18 @@ export default class HitStore {
    */
   batchInsertHits = async (editedHitRows) => {
     this.isBatchInsertingHits = true;
+    const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
     try {
       const promises = editedHitRows.map(async (editedHitRow) => {
+        console.log("editedHitRow", editedHitRow);
         // Fix ids and map smiles to requestedSMILES
         editedHitRow.hitCollectionId =
           this.rootStore.hitCollectionStore.selectedHitCollection.id;
         editedHitRow.requestedSMILES = editedHitRow.smiles;
 
+        await delay(5000);
+        console.log("Sending --->>> editedHitRow", editedHitRow);
         if (editedHitRow.status === "New") {
           return await this.addHit(editedHitRow, true);
         } else if (editedHitRow.status === "Modified") {

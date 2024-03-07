@@ -18,11 +18,11 @@ const FSTbVHExcelImport = ({
     id: hit.id,
     smiles: hit.molecule?.smiles ?? "",
     library: hit.library ?? "",
-    source: hit.librarySource ?? "",
-    name: hit.molecule?.name ?? "",
+    librarySource: hit.librarySource ?? "",
+    moleculeName: hit.molecule?.name ?? "",
     iC50: hit.iC50 ?? "",
     mic: hit.mic ?? "",
-    cluster: hit.clusterGroup ?? "",
+    clusterGroup: hit.clusterGroup ?? "",
   }));
 
   return (
@@ -54,7 +54,7 @@ const FSTbVHExcelImport = ({
 
           // This is to clear the file list in the FileUpload component
           e.options.clear();
-
+          console.log("jsonData", jsonData);
           jsonData.forEach((row) => {
             // row.hitCollectionId = selectedHitCollection.id;
             // output is in field 'smiles' in excel (template), but to create a hit, we need 'requestedSMILES'
