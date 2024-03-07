@@ -163,7 +163,7 @@ const FSTbVHits = ({ id }) => {
 
                 <Column
                   field={(rowData) => rowData?.molecule?.name}
-                  header="Name"
+                  header="Compound Name"
                 />
                 <Column
                   field={"iC50"}
