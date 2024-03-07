@@ -8,7 +8,7 @@ const FSDOPlannedScreens = ({ screens }) => {
   if (!screens || screens.length === 0)
     return (
       <div className="flex justify-content-center align-items-center w-full text-sm	text-color-secondary">
-        - No screens are planned -
+        - No planned screens yet -
       </div>
     );
 

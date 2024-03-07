@@ -140,9 +140,11 @@ export default class ScreenStore {
         screen.screenRuns = [];
 
         // FLatten the associated targets, separate by comma
-        screen.associatedTargetsFlattened = Object.values(
-          screen.associatedTargets
-        ).join(", ");
+        if (screen.associatedTargets) {
+          screen.associatedTargetsFlattened = Object.values(
+            screen.associatedTargets
+          ).join(", ");
+        }
 
         this.screenRegistry.set(screen.id, screen);
         this.screenListRegistry.set(screen.id, screen);
