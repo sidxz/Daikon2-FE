@@ -18,6 +18,7 @@ const FSDOverview = () => {
     isScreenListCacheValid,
     isFetchingScreens,
     screenListTargetBased,
+    screenListPhenotypic,
   } = rootStore.screenStore;
   useEffect(() => {
     if (!isScreenListCacheValid) {
@@ -70,7 +71,7 @@ const FSDOverview = () => {
               <FcPlanner />
             </div>
             <div className="flex">
-              <b>PLANNED SCREENS</b>
+              <b>PLANNED</b>
             </div>
           </div>
         </div>
@@ -85,7 +86,7 @@ const FSDOverview = () => {
               <FcNeutralTrading />
             </div>
             <div className="flex">
-              <b>ONGOING SCREENING CAMPAIGNS</b>
+              <b>ONGOING</b>
             </div>
           </div>
         </div>
@@ -115,7 +116,7 @@ const FSDOverview = () => {
               <WiMoonFull />
             </div>
             <div className="flex">
-              <b>RECENTLY COMPLETED SCREENS</b>
+              <b>RECENTLY COMPLETED</b>
             </div>
           </div>
         </div>
@@ -178,19 +179,38 @@ const FSDOverview = () => {
         </div>
 
         <div className="flex w-full border-1 border-50 justify-content-center bg-white">
-          <FSDOPlannedScreens />
+          <FSDOPlannedScreens
+            screens={screenListPhenotypic
+              .filter(
+                (item) =>
+                  item.status === "Planned" ||
+                  item.status == "Assay Development"
+              ) // Filter by Ongoing status
+              .sort(sortByDate)}
+          />
         </div>
         <div className="flex w-full border-1 border-50 justify-content-center bg-white">
-          <FSDOOngoingScreens />
+          <FSDOOngoingScreens
+            screens={screenListPhenotypic
+              .filter((item) => item.status === "Ongoing") // Filter by Ongoing status
+              .sort(sortByDate)}
+          />
         </div>
         <div className="flex w-full border-1 border-50 justify-content-center bg-white">
-          <FSDOVotingReady />
+          <FSDOVotingReady
+            screens={screenListPhenotypic
+              .filter((item) => item.status === "Voting Ready") // Filter by Ongoing status
+              .sort(sortByDate)}
+          />
         </div>
         <div className="flex w-full border-1 border-50 justify-content-center bg-white">
-          <FSDORecentlyCompleted />
+          <FSDORecentlyCompleted
+            screens={screenListPhenotypic
+              .filter((item) => item.status === "Completed") // Filter by Ongoing status
+              .sort(sortByDate)}
+          />
         </div>
       </div>
-      ;
     </div>
   );
 };

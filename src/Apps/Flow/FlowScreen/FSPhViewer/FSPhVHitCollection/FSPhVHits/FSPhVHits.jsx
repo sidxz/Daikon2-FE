@@ -11,25 +11,19 @@ import Loading from "../../../../../../Library/Loading/Loading";
 import { RootStoreContext } from "../../../../../../RootStore";
 import { TextRowEditor } from "../../../../../../Shared/TableRowEditors/TextRowEditor";
 import Vote from "../../../shared/Vote/Vote";
-import FSTbVHAddHit from "./FSTbVHitsHelper/FSTbVHAddHit";
-import { FSTbVHDataTableHeader } from "./FSTbVHitsHelper/FSTbVHDataTableHeader";
-import { StructureBodyTemplate } from "./FSTbVHitsHelper/FSTbVHDataTableHelper";
-import FSTbVHExcelImport from "./FSTbVHitsHelper/FSTbVHExcelImport";
+import FSPhVHAddHit from "./FSPhVHitsHelper/FSPhVHAddHit";
+import { FSPhVHDataTableHeader } from "./FSPhVHitsHelper/FSPhVHDataTableHeader";
+import { StructureBodyTemplate } from "./FSPhVHitsHelper/FSPhVHDataTableHelper";
+import FSPhVHExcelImport from "./FSPhVHitsHelper/FSPhVHExcelImport";
 
-const FSTbVHits = ({ id }) => {
+const FSPhVHits = ({ id }) => {
   const rootStore = useContext(RootStoreContext);
 
   const { getHitCollection, selectedHitCollection, isFetchingHitCollection } =
     rootStore.hitCollectionStore;
   const { selectedScreen } = rootStore.screenStore;
-  const {
-    updateHit,
-    deleteHit,
-    isDeletingHit,
-    isAddingHit,
-    isUpdatingHit,
-    isBatchInsertingHits,
-  } = rootStore.hitStore;
+  const { updateHit, deleteHit, isDeletingHit, isAddingHit, isUpdatingHit } =
+    rootStore.hitStore;
   const { user } = rootStore.authStore;
 
   useEffect(() => {
@@ -40,8 +34,6 @@ const FSTbVHits = ({ id }) => {
       getHitCollection(id);
     }
   }, [id, getHitCollection]);
-
-  console.log("FSTbVHits -> selectedHitCollection", selectedHitCollection);
 
   const [displayAddHitSideBar, setDisplayAddHitSideBar] = useState(false);
   const [showFileUploadDialog, setShowFileUploadDialog] = useState(false);
@@ -108,12 +100,7 @@ const FSTbVHits = ({ id }) => {
         <div className="flex flex-column w-full">
           <div className="flex w-full">
             <BlockUI
-              blocked={
-                isDeletingHit ||
-                isAddingHit ||
-                isUpdatingHit ||
-                isBatchInsertingHits
-              }
+              blocked={isDeletingHit || isAddingHit || isUpdatingHit}
               containerClassName="w-full"
             >
               <DataTable
@@ -128,7 +115,7 @@ const FSTbVHits = ({ id }) => {
                 scrollable
                 rows={100}
                 header={
-                  <FSTbVHDataTableHeader
+                  <FSPhVHDataTableHeader
                     showAddHitSideBar={() => setDisplayAddHitSideBar(true)}
                     selectedHitCollection={selectedHitCollection}
                     selectedScreen={selectedScreen}
@@ -188,11 +175,7 @@ const FSTbVHits = ({ id }) => {
                   header="MIC (&micro;M)"
                   editor={(options) => TextRowEditor(options)}
                 />
-                <Column
-                  field={"clusterGroup"}
-                  header="Cluster"
-                  editor={(options) => TextRowEditor(options)}
-                />
+
                 <Column header="Vote" body={votingBodyTemplate} />
 
                 <Column
@@ -213,7 +196,7 @@ const FSTbVHits = ({ id }) => {
           className="p-sidebar-md"
           header={addHitSideBarHeader}
         >
-          <FSTbVHAddHit
+          <FSPhVHAddHit
             closeSideBar={() => setDisplayAddHitSideBar(false)}
             hitCollectionId={selectedHitCollection?.id}
           />
@@ -224,7 +207,7 @@ const FSTbVHits = ({ id }) => {
           visible={showFileUploadDialog}
           onHide={() => setShowFileUploadDialog(false)}
         >
-          <FSTbVHExcelImport selectedHitCollection={selectedHitCollection} />
+          <FSPhVHExcelImport selectedHitCollection={selectedHitCollection} />
         </Dialog>
       </>
     );
@@ -233,4 +216,4 @@ const FSTbVHits = ({ id }) => {
   return <></>;
 };
 
-export default observer(FSTbVHits);
+export default observer(FSPhVHits);
