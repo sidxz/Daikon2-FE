@@ -23,8 +23,8 @@ export const ExportHitsToExcel = (
     id: hit.id,
     smiles: hit.molecule?.smiles ?? "",
     library: hit.library ?? "",
-    source: hit.librarySource ?? "",
-    name: hit.molecule?.name ?? "",
+    librarySource: hit.librarySource ?? "",
+    moleculeName: hit.molecule?.name ?? "",
     iC50: hit.iC50 ?? "",
     mic: hit.mic ?? "",
   }));

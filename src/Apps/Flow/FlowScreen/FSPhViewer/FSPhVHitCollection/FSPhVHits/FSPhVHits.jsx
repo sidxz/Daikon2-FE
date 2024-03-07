@@ -94,6 +94,8 @@ const FSPhVHits = ({ id }) => {
     );
   };
 
+  console.log("selectedHitCollection", selectedHitCollection);
+
   if (selectedHitCollection !== undefined && !isFetchingHitCollection) {
     return (
       <>
