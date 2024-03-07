@@ -17,6 +17,8 @@ import { appColors } from "../../../../../constants/colors";
 import { FormatScreeningMethod } from "../../shared/Formatters";
 import * as Helper from "./FSTbVSettingsHelper";
 import FSTbVSettings_Basic from "./components/FSTbVSettings_Basic";
+import FSTbVSettings_Rename from "./components/FSTbVSettings_Rename";
+import FSTbVSettings_UpdateTarget from "./components/FSTbVSettings_UpdateTarget";
 
 const FSTbVSettings = () => {
   const navigate = useNavigate();
@@ -96,15 +98,13 @@ const FSTbVSettings = () => {
                 </>
               }
             >
-              <p className="m-0">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia deserunt mollit anim id est laborum.
+              <p className="m-0 p-2">
+                The settings below are designed to modify inter-section
+                relationships throughout the app. Updating these settings will
+                have broad implications, impacting overall functionality,
+                including features like the Horizon View, among others.
               </p>
+              <FSTbVSettings_UpdateTarget />
             </Fieldset>
           </div>
           <div className="flex w-full  mt-2">
@@ -117,15 +117,14 @@ const FSTbVSettings = () => {
               }
               className="w-full bg-orange-50	border-1 border-yellow-400	"
             >
-              <p className="m-0">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia deserunt mollit anim id est laborum.
+              <p className="m-0 p-2">
+                Adjusting the settings below will alter the relationships
+                between different sections within the app. Making these changes
+                can have extensive effects on the app's functionality,
+                especially since some features may be organized or accessed by
+                their names.
               </p>
+              <FSTbVSettings_Rename />
             </Fieldset>
           </div>
           <div className="flex w-full mt-2 ">

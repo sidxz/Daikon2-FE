@@ -36,6 +36,9 @@ export default class ScreenStore {
 
       isDeletingScreen: observable,
       deleteScreen: action,
+
+      updateTargetAssociation: action,
+      renameScreen: action,
     });
   }
 
@@ -197,6 +200,48 @@ export default class ScreenStore {
     } finally {
       runInAction(() => {
         this.isDeletingScreen = false;
+      });
+    }
+  };
+
+  updateTargetAssociation = async (screen) => {
+    this.isUpdatingScreen = true;
+
+    try {
+      await ScreenAPI.updateAssociatedTargets(screen);
+      runInAction(() => {
+        // update in screen registry list
+        this.screenRegistry.set(screen.id, screen);
+        this.screenListRegistry.set(screen.id, screen);
+        this.selectedScreen = screen;
+        toast.success("Screen target association updated successfully");
+      });
+    } catch (error) {
+      console.error("Error updating screen:", error);
+    } finally {
+      runInAction(() => {
+        this.isUpdatingScreen = false;
+      });
+    }
+  };
+
+  renameScreen = async (screen) => {
+    this.isUpdatingScreen = true;
+
+    try {
+      await ScreenAPI.rename(screen);
+      runInAction(() => {
+        // update in screen registry list
+        this.screenRegistry.set(screen.id, screen);
+        this.screenListRegistry.set(screen.id, screen);
+        this.selectedScreen = screen;
+        toast.success("Screen renamed successfully");
+      });
+    } catch (error) {
+      console.error("Error updating screen:", error);
+    } finally {
+      runInAction(() => {
+        this.isUpdatingScreen = false;
       });
     }
   };

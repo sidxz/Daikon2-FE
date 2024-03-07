@@ -9,6 +9,13 @@ const ScreenAPI = {
   create: (screen) => axiosWithAuth.post("/v2/screen", screen),
   update: (screen) => axiosWithAuth.put(`/v2/screen/${screen.id}`, screen),
   delete: (id) => axiosWithAuth.delete(`/v2/screen/${id}`),
+  updateAssociatedTargets: (screen) =>
+    axiosWithAuth.put(
+      `/v2/screen/${screen.id}/update-associated-targets`,
+      screen
+    ),
+  rename: (screen) =>
+    axiosWithAuth.put(`/v2/screen/${screen.id}/rename`, screen),
 };
 
 export default ScreenAPI;
