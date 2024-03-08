@@ -49,6 +49,7 @@ const Vote = ({
       let updatedHit = { ...hit };
       updatedHit.usersVote = selectedVote;
       updatedHit.voters = { ...hit.voters, [userId]: selectedVote };
+      updatedHit.voteToAdd = { Item1: userId, Item2: selectedVote };
       if (selectedVote === "Positive") {
         updatedHit.positive += 1;
       } else if (selectedVote === "Neutral") {

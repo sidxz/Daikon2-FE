@@ -47,7 +47,7 @@ const FSTbVHits = ({ id }) => {
   const [showFileUploadDialog, setShowFileUploadDialog] = useState(false);
   const [selectionEnabled, setSelectionEnabled] = useState(false);
   const [selectedHits, setSelectedHits] = useState(null);
-  const [isVotesHidden, setIsVotesHidden] = useState(false);
+  const [isVotesHidden, setIsVotesHidden] = useState(true);
   const [isOneClickVotingEnabled, setIsOneClickVotingEnabled] = useState(false);
 
   if (isFetchingHitCollection) {

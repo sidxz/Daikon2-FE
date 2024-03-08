@@ -76,6 +76,8 @@ export default class HitStore {
     }
     hit.hitId = hit.id;
 
+    console.log("updateHit", hit);
+
     try {
       await HitAPI.update(hit);
       runInAction(() => {

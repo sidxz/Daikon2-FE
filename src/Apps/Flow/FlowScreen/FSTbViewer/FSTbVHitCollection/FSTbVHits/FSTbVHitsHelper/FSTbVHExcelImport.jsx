@@ -15,6 +15,7 @@ const FSTbVHExcelImport = ({
   const [showDataPreviewDialog, setShowDataPreviewDialog] = useState(false);
   // Map and flatten the hit objects for Excel export
   const existingData = selectedHitCollection.hits.map((hit) => ({
+    ...hit,
     id: hit.id,
     smiles: hit.molecule?.smiles ?? "",
     library: hit.library ?? "",
@@ -59,6 +60,8 @@ const FSTbVHExcelImport = ({
             // row.hitCollectionId = selectedHitCollection.id;
             // output is in field 'smiles' in excel (template), but to create a hit, we need 'requestedSMILES'
             // row.requestedSMILES = row.smiles;
+            row = { ...existingData.find((hit) => hit.id === row.id), ...row };
+            console.log("row", row);
           });
           setDataForPreview(jsonData);
           setShowDataPreviewDialog(true);
