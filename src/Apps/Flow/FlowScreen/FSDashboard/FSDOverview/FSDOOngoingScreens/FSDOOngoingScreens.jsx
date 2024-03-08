@@ -47,7 +47,7 @@ const FSDOOngoingScreens = ({ screens }) => {
   });
 
   return (
-    <div className="flex flex-wrap w-full gap-3 p-1 align-items-center justify-content-center">
+    <div className="flex flex-wrap w-full gap-3 p-1 align-items-start justify-content-center align-self-baseline">
       {screensComponent}
     </div>
   );
