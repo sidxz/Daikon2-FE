@@ -3,8 +3,8 @@ export const DtFieldsToExcelColumnMapping =
   {
     smiles: "SMILES",
     library: "Library",
-    source: "Source",
-    name: "Molecule Name",
+    librarySource: "Source",
+    moleculeName: "Molecule Name",
     iC50: "IC50",
     mic: "MIC",
   };

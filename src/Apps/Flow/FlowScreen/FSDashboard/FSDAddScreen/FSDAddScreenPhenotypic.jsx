@@ -1,21 +1,24 @@
 import { useFormik } from "formik";
+import { observer } from "mobx-react-lite";
 import { Button } from "primereact/button";
-import { Dropdown } from "primereact/dropdown";
 import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
 import { classNames } from "primereact/utils";
 import React, { useContext } from "react";
 import { RootStoreContext } from "../../../../../RootStore";
-import { orgDropDownOptions } from "../../../../../Shared/FormEditors/OrgDropDown";
+import InputOrg from "../../../../../Shared/InputEditors/InputOrg";
+import { AppOrgResolver } from "../../../../../Shared/VariableResolvers/AppOrgResolver";
 
 const FSDAddScreenPhenotypic = ({ closeSideBar }) => {
   const rootStore = useContext(RootStoreContext);
 
   const { addScreen, isAddingScreen } = rootStore.screenStore;
+  const { getOrgNameById } = AppOrgResolver();
 
   const formik = useFormik({
     initialValues: {
       primaryOrgName: "",
+      primaryOrgId: "",
       name: "",
       notes: "",
       screenType: "phenotypic",
@@ -29,6 +32,7 @@ const FSDAddScreenPhenotypic = ({ closeSideBar }) => {
     },
 
     onSubmit: (newScreen) => {
+      newScreen.primaryOrgName = getOrgNameById(newScreen.primaryOrgId);
       addScreen(newScreen).then(() => {
         closeSideBar();
         formik.resetForm();
@@ -76,20 +80,14 @@ const FSDAddScreenPhenotypic = ({ closeSideBar }) => {
               Screening Organization
             </label>
 
-            <Dropdown
-              value={formik.values.primaryOrgName}
-              options={orgDropDownOptions}
-              onChange={formik.handleChange("primaryOrgName")}
-              optionLabel="name"
-              placeholder="Select an org"
-              filter
-              showClear
-              filterBy="name"
+            <InputOrg
+              value={formik.values.primaryOrgId}
+              onChange={formik.handleChange("primaryOrgId")}
               className={classNames({
-                "p-invalid": isInvalid("primaryOrgName"),
+                "p-invalid": isInvalid("primaryOrgId"),
               })}
             />
-            {getErrorMessage("primaryOrgName")}
+            {getErrorMessage("primaryOrgId")}
           </div>
 
           <div className="field">
@@ -125,4 +123,4 @@ const FSDAddScreenPhenotypic = ({ closeSideBar }) => {
   );
 };
 
-export default FSDAddScreenPhenotypic;
+export default observer(FSDAddScreenPhenotypic);

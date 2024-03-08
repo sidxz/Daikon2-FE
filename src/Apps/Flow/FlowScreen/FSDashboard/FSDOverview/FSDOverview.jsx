@@ -133,7 +133,7 @@ const FSDOverview = () => {
           TARGET BASED
         </div>
 
-        <div className="flex w-full border-1 border-50 justify-content-center bg-white">
+        <div className="flex w-full border-1 border-50 justify-content-center hover:shadow-5">
           <FSDOPlannedScreens
             screens={screenListTargetBased
               .filter(
@@ -144,21 +144,21 @@ const FSDOverview = () => {
               .sort(sortByDate)}
           />
         </div>
-        <div className="flex w-full border-1 border-50 justify-content-center bg-white">
+        <div className="flex w-full border-1 border-50 justify-content-center hover:shadow-5">
           <FSDOOngoingScreens
             screens={screenListTargetBased
               .filter((item) => item.status === "Ongoing") // Filter by Ongoing status
               .sort(sortByDate)}
           />
         </div>
-        <div className="flex w-full border-1 border-50 justify-content-center bg-white">
+        <div className="flex w-full border-1 border-50 justify-content-center hover:shadow-5">
           <FSDOVotingReady
             screens={screenListTargetBased
               .filter((item) => item.status === "Voting Ready") // Filter by Ongoing status
               .sort(sortByDate)}
           />
         </div>
-        <div className="flex w-full border-1 border-50 justify-content-center bg-white">
+        <div className="flex w-full border-1 border-50 justify-content-center hover:shadow-5">
           <FSDORecentlyCompleted
             screens={screenListTargetBased
               .filter((item) => item.status === "Completed") // Filter by Ongoing status
@@ -166,7 +166,8 @@ const FSDOverview = () => {
           />
         </div>
       </div>
-      <div className="flex w-full pt-3">
+
+      <div className="flex w-full pt-4">
         <div
           className="flex max-w-1 p-4 align-items-center justify-content-center bg-bluegray-400 text-white"
           style={{
@@ -178,7 +179,7 @@ const FSDOverview = () => {
           PHENOTYPIC
         </div>
 
-        <div className="flex w-full border-1 border-50 justify-content-center bg-white">
+        <div className="flex w-full border-1 border-50 justify-content-center hover:shadow-5">
           <FSDOPlannedScreens
             screens={screenListPhenotypic
               .filter(
@@ -189,21 +190,21 @@ const FSDOverview = () => {
               .sort(sortByDate)}
           />
         </div>
-        <div className="flex w-full border-1 border-50 justify-content-center bg-white">
+        <div className="flex w-full border-1 border-50 justify-content-center hover:shadow-5">
           <FSDOOngoingScreens
             screens={screenListPhenotypic
               .filter((item) => item.status === "Ongoing") // Filter by Ongoing status
               .sort(sortByDate)}
           />
         </div>
-        <div className="flex w-full border-1 border-50 justify-content-center bg-white">
+        <div className="flex w-full border-1 border-50 justify-content-center hover:shadow-5">
           <FSDOVotingReady
             screens={screenListPhenotypic
               .filter((item) => item.status === "Voting Ready") // Filter by Ongoing status
               .sort(sortByDate)}
           />
         </div>
-        <div className="flex w-full border-1 border-50 justify-content-center bg-white">
+        <div className="flex w-full border-1 border-50 justify-content-center hover:shadow-5">
           <FSDORecentlyCompleted
             screens={screenListPhenotypic
               .filter((item) => item.status === "Completed") // Filter by Ongoing status

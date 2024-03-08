@@ -8,7 +8,7 @@ const FSDORecentlyCompleted = ({ screens }) => {
   if (!screens || screens.length === 0)
     return (
       <div className="flex justify-content-center align-items-center w-full text-sm	text-color-secondary">
-        - No screens are voting ready -
+        - No screens are recently completed -
       </div>
     );
   let screensComponent = screens.map((screen) => {
