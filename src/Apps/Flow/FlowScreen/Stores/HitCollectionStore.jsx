@@ -105,6 +105,11 @@ export default class HitCollectionStore {
   };
 
   addHitCollection = async (hitCollection) => {
+    console.log("addHitCollection()");
+    console.log(
+      "selected hit collection before adding is" +
+        this.selectedHitCollection.name
+    );
     this.isAddingHitCollection = true;
 
     // Ensure hitCollection.screenId is set, fallback to selectedScreen.screenId if null, undefined, or empty
@@ -112,19 +117,33 @@ export default class HitCollectionStore {
       hitCollection.screenId?.trim() ||
       this.rootStore.screenStore.selectedScreen.Id;
 
+    console.log("Now adding hitCollection : " + hitCollection.name);
+    console.log(
+      "Now adding hitCollection with screen id : " + hitCollection.screenId
+    );
+
     try {
       var res = await HitCollectionAPI.create(hitCollection);
       runInAction(() => {
         // Add hitCollection to hitCollection list
         hitCollection.id = res.id;
         hitCollection.hits = [];
+        console.log("From Server new hitCollection id is " + hitCollection.id);
 
         // this.selectedHitCollection?.hitCollections.push(hitCollection);
         this.hitCollectionRegistry.set(hitCollection.id, hitCollection);
         this.selectedHitCollection = hitCollection;
 
+        console.log(
+          "selected hit collection after adding is" +
+            this.selectedHitCollection.name
+        );
+        console.log("and id is " + this.selectedHitCollection.id);
+        console.log("and screen id is " + this.selectedHitCollection.screenId);
+
         toast.success("Hit Collection added successfully");
       });
+      return res.id;
     } catch (error) {
       console.error("Error adding Hit Collection:", error);
     } finally {

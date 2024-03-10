@@ -15,7 +15,7 @@ const FSTbVHitCollection = ({ selectedScreen }) => {
   const [displayAddSideBar, setDisplayAddSideBar] = useState(false);
   const navigate = useNavigate();
   const { hitCollectionId } = useParams();
-
+  console.log("FSTbVHitCollection -> PARAMS hitCollectionId", hitCollectionId);
   const rootStore = useContext(RootStoreContext);
   const {
     fetchHitCollectionsOfScreen,
@@ -24,15 +24,21 @@ const FSTbVHitCollection = ({ selectedScreen }) => {
     hitCollectionOfScreen,
     selectedHitCollection,
     getHitCollection,
+    isAddingHitCollection,
   } = rootStore.hitCollectionStore;
 
   const [selectedHitCollectionDropdown, setSelectedHitCollectionDropdown] =
     useState(hitCollectionId);
 
   useEffect(() => {
+    if (hitCollectionId != selectedHitCollectionDropdown) {
+      setSelectedHitCollectionDropdown(hitCollectionId);
+    }
+
     if (
-      selectedHitCollection === undefined ||
-      selectedHitCollection?.id !== hitCollectionId
+      !isAddingHitCollection &&
+      (selectedHitCollection === undefined ||
+        selectedHitCollection?.id !== hitCollectionId)
     ) {
       fetchHitCollectionsOfScreen(selectedScreen.id);
       getHitCollection(hitCollectionId);
@@ -84,8 +90,7 @@ const FSTbVHitCollection = ({ selectedScreen }) => {
                   value={selectedHitCollectionDropdown}
                   onChange={(e) => {
                     navigate(
-                      "/wf/screen/viewer/tb/c8898ea6-ce40-4469-a996-412c6565dbac/hits/" +
-                        e.value
+                      `/wf/screen/viewer/tb/${selectedScreen.id}/hits/${e.value}`
                     );
                     setSelectedHitCollectionDropdown(e.value);
                   }}

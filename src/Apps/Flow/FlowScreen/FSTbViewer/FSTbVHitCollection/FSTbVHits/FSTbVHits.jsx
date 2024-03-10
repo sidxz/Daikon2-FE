@@ -19,8 +19,12 @@ import FSTbVHExcelImport from "./FSTbVHitsHelper/FSTbVHExcelImport";
 const FSTbVHits = ({ id }) => {
   const rootStore = useContext(RootStoreContext);
 
-  const { getHitCollection, selectedHitCollection, isFetchingHitCollection } =
-    rootStore.hitCollectionStore;
+  const {
+    getHitCollection,
+    selectedHitCollection,
+    isFetchingHitCollection,
+    isAddingHitCollection,
+  } = rootStore.hitCollectionStore;
   const { selectedScreen } = rootStore.screenStore;
   const {
     updateHit,
@@ -34,14 +38,18 @@ const FSTbVHits = ({ id }) => {
 
   useEffect(() => {
     if (
-      selectedHitCollection === undefined ||
-      selectedHitCollection?.id !== id
+      !isAddingHitCollection &&
+      (selectedHitCollection === undefined || selectedHitCollection?.id !== id)
     ) {
+      console.log("FSTbVHits -> Fetching Hit Collection" + id);
       getHitCollection(id);
     }
   }, [id, getHitCollection]);
 
-  console.log("FSTbVHits -> selectedHitCollection", selectedHitCollection);
+  console.log(
+    "FSTbVHits -> selectedHitCollection",
+    selectedHitCollection?.name
+  );
 
   const [displayAddHitSideBar, setDisplayAddHitSideBar] = useState(false);
   const [showFileUploadDialog, setShowFileUploadDialog] = useState(false);
