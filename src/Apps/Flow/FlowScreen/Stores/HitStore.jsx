@@ -154,7 +154,7 @@ export default class HitStore {
 
         // Wait for the delay before proceeding
         await delay(100);
-        console.log("Sending editedHitRow ---->>>>>", editedHitRow);
+        //console.log("Sending editedHitRow ---->>>>>", editedHitRow);
         // Perform the operation based on the status
         if (editedHitRow.status === "New") {
           await this.addHit(editedHitRow, true);

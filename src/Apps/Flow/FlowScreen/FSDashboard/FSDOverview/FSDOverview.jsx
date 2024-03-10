@@ -30,8 +30,6 @@ const FSDOverview = () => {
     return <Loading message={"Fetching Screens..."} />;
   }
 
-  console.log("FSDOverview");
-
   let sortByDate = (a, b) => {
     // Handle default or null dateModified by using dateCreated instead
     const dateA =

@@ -41,15 +41,9 @@ const FSTbVHits = ({ id }) => {
       !isAddingHitCollection &&
       (selectedHitCollection === undefined || selectedHitCollection?.id !== id)
     ) {
-      console.log("FSTbVHits -> Fetching Hit Collection" + id);
       getHitCollection(id);
     }
   }, [id, getHitCollection]);
-
-  console.log(
-    "FSTbVHits -> selectedHitCollection",
-    selectedHitCollection?.name
-  );
 
   const [displayAddHitSideBar, setDisplayAddHitSideBar] = useState(false);
   const [showFileUploadDialog, setShowFileUploadDialog] = useState(false);

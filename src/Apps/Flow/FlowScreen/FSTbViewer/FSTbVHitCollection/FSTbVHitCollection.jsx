@@ -15,7 +15,6 @@ const FSTbVHitCollection = ({ selectedScreen }) => {
   const [displayAddSideBar, setDisplayAddSideBar] = useState(false);
   const navigate = useNavigate();
   const { hitCollectionId } = useParams();
-  console.log("FSTbVHitCollection -> PARAMS hitCollectionId", hitCollectionId);
   const rootStore = useContext(RootStoreContext);
   const {
     fetchHitCollectionsOfScreen,

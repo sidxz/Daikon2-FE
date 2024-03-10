@@ -31,16 +31,15 @@ const FSPhVAddHitCollection = ({ selectedScreen, closeSidebar }) => {
       return errors;
     },
 
-    onSubmit: (hitCollection) => {
+    onSubmit: async (hitCollection) => {
       hitCollection.screenId = selectedScreen.id;
-      addHitCollection(hitCollection).then(() => {
-        console.log("Hit Collection added successfully");
-        navigate(
-          `/wf/screen/viewer/tb/${selectedScreen.id}/hits/${selectedHitCollection.id}`
-        );
-        closeSidebar();
-        formik.resetForm();
-      });
+      const newHitCollectionId = await addHitCollection(hitCollection);
+
+      navigate(
+        `/wf/screen/viewer/ph/${selectedScreen.id}/hits/${newHitCollectionId}`
+      );
+      closeSidebar();
+      formik.resetForm();
     },
   });
 

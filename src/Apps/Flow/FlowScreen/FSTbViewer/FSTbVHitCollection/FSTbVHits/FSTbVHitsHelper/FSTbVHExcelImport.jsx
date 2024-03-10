@@ -55,13 +55,13 @@ const FSTbVHExcelImport = ({
 
           // This is to clear the file list in the FileUpload component
           e.options.clear();
-          console.log("jsonData", jsonData);
+          // console.log("jsonData", jsonData);
           jsonData.forEach((row) => {
             // row.hitCollectionId = selectedHitCollection.id;
             // output is in field 'smiles' in excel (template), but to create a hit, we need 'requestedSMILES'
             // row.requestedSMILES = row.smiles;
             row = { ...existingData.find((hit) => hit.id === row.id), ...row };
-            console.log("row", row);
+            // console.log("row", row);
           });
           setDataForPreview(jsonData);
           setShowDataPreviewDialog(true);

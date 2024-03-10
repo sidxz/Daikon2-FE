@@ -19,17 +19,27 @@ import FSPhVHExcelImport from "./FSPhVHitsHelper/FSPhVHExcelImport";
 const FSPhVHits = ({ id }) => {
   const rootStore = useContext(RootStoreContext);
 
-  const { getHitCollection, selectedHitCollection, isFetchingHitCollection } =
-    rootStore.hitCollectionStore;
+  const {
+    getHitCollection,
+    selectedHitCollection,
+    isFetchingHitCollection,
+    isAddingHitCollection,
+  } = rootStore.hitCollectionStore;
   const { selectedScreen } = rootStore.screenStore;
-  const { updateHit, deleteHit, isDeletingHit, isAddingHit, isUpdatingHit } =
-    rootStore.hitStore;
+  const {
+    updateHit,
+    deleteHit,
+    isDeletingHit,
+    isAddingHit,
+    isUpdatingHit,
+    isBatchInsertingHits,
+  } = rootStore.hitStore;
   const { user } = rootStore.authStore;
 
   useEffect(() => {
     if (
-      selectedHitCollection === undefined ||
-      selectedHitCollection?.id !== id
+      !isAddingHitCollection &&
+      (selectedHitCollection === undefined || selectedHitCollection?.id !== id)
     ) {
       getHitCollection(id);
     }
@@ -94,15 +104,18 @@ const FSPhVHits = ({ id }) => {
     );
   };
 
-  console.log("selectedHitCollection", selectedHitCollection);
-
   if (selectedHitCollection !== undefined && !isFetchingHitCollection) {
     return (
       <>
         <div className="flex flex-column w-full">
           <div className="flex w-full">
             <BlockUI
-              blocked={isDeletingHit || isAddingHit || isUpdatingHit}
+              blocked={
+                isDeletingHit ||
+                isAddingHit ||
+                isUpdatingHit ||
+                isBatchInsertingHits
+              }
               containerClassName="w-full"
             >
               <DataTable

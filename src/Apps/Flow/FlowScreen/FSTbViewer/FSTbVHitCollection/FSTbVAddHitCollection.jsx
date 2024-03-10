@@ -35,8 +35,6 @@ const FSTbVAddHitCollection = ({ selectedScreen, closeSidebar }) => {
       hitCollection.screenId = selectedScreen.id;
       const newHitCollectionId = await addHitCollection(hitCollection);
 
-      console.log("Inside THEN Returned id is " + newHitCollectionId);
-
       navigate(
         `/wf/screen/viewer/tb/${selectedScreen.id}/hits/${newHitCollectionId}`
       );
