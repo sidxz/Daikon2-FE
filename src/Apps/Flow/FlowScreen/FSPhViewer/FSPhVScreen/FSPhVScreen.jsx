@@ -16,7 +16,6 @@ import { CalendarRowEditor } from "../../../../../Shared/TableRowEditors/Calenda
 import { ScientistRowEditor } from "../../../../../Shared/TableRowEditors/ScientistRowEditor";
 import { TextRowEditor } from "../../../../../Shared/TableRowEditors/TextRowEditor";
 import { appColors } from "../../../../../constants/colors";
-import { FormatScreeningMethod } from "../../shared/Formatters";
 import * as Helper from "./FSPhVScreenHelper";
 import FSPhScreenRunAdd from "./components/FSPhScreenRunAdd";
 import FSPhVScreenDataTableHeader from "./components/FSPhVScreenDataTableHeader";
@@ -95,10 +94,6 @@ const FSPhVScreen = ({}) => {
               displayHorizon={true}
               color={appColors.sectionHeadingBg.screen}
               customElements={[
-                <Chip
-                  label={FormatScreeningMethod(selectedScreen?.method)}
-                  icon="icon icon-common icon-circle-notch"
-                />,
                 <Chip
                   label={selectedScreen?.primaryOrgName}
                   icon="ri-organization-chart"

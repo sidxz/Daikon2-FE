@@ -23,7 +23,13 @@ export const breadCrumbItems = (selectedScreen, navigate) => {
     {
       label: "Screens",
       command: () => {
-        navigate("/wf/screen/");
+        navigate("/wf/screen/dash/");
+      },
+    },
+    {
+      label: "Phenotypic",
+      command: () => {
+        navigate("/wf/screen/dash/phenotypic/");
       },
     },
     {
@@ -32,6 +38,6 @@ export const breadCrumbItems = (selectedScreen, navigate) => {
         navigate(`/wf/screen/viewer/ph/${selectedScreen.id}`);
       },
     },
-    { label: "Disclosed Hits" },
+    { label: "Hits" },
   ];
 };
