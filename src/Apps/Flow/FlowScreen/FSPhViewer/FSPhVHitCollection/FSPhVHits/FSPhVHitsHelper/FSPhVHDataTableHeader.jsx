@@ -29,7 +29,7 @@ export const FSPhVHDataTableHeader = ({
               <Button
                 type="button"
                 icon="pi pi-check-square"
-                label="Select Hits to Promote"
+                label="Select Hits for HA"
                 className="p-button-text p-button-md w-15rem"
                 onClick={() => setSelectionEnabled(true)}
               />
@@ -41,7 +41,7 @@ export const FSPhVHDataTableHeader = ({
                 type="button"
                 icon="pi pi-times-circle"
                 label="Clear Selection"
-                className="p-button-text p-button-md  w-15rem"
+                className="fadein p-button-text p-button-md w-15rem"
                 onClick={() => {
                   setSelectionEnabled(false);
                   setSelectedHits([]);
@@ -55,7 +55,7 @@ export const FSPhVHDataTableHeader = ({
                 type="button"
                 icon="icon icon-common icon-arrow-alt-circle-right"
                 label="Promote to HA"
-                className="p-button-text p-button-md w-15rem"
+                className="fadein p-button-text p-button-md  w-15rem"
                 onClick={() => console.log(selectedHits)}
               />
             </div>

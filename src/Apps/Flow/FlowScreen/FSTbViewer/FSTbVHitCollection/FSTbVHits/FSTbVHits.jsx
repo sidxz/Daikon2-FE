@@ -157,6 +157,7 @@ const FSTbVHits = ({ id }) => {
                   <Column
                     selectionMode="multiple"
                     headerStyle={{ width: "3em" }}
+                    className="fadein"
                   ></Column>
                 )}
                 <Column
