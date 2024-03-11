@@ -36,6 +36,11 @@ export default class HitStore {
       throw new Error("hitCollectionId is required and cannot be empty.");
     }
 
+    // if clusterGroup is empty, set it to 0
+    if (!hit?.clusterGroup) {
+      hit.clusterGroup = 0;
+    }
+
     try {
       var res = await HitAPI.create(hit);
       runInAction(() => {
@@ -43,6 +48,7 @@ export default class HitStore {
         hit.id = res.id;
         hit.usersVote = hit.usersVote || "NA";
         hit.voters = hit.voters || {};
+
         const hitCollection =
           this.rootStore.hitCollectionStore.hitCollectionRegistry.get(
             hit.hitCollectionId
@@ -76,6 +82,10 @@ export default class HitStore {
     }
     hit.hitId = hit.id;
 
+    // if clusterGroup is empty, set it to 0
+    if (!hit?.clusterGroup) {
+      hit.clusterGroup = 0;
+    }
     console.log("updateHit", hit);
 
     try {

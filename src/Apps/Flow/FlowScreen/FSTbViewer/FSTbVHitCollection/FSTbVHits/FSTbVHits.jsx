@@ -170,6 +170,7 @@ const FSTbVHits = ({ id }) => {
                   field={"library"}
                   header="Library"
                   editor={(options) => TextRowEditor(options)}
+                  sortable
                 />
                 <Column
                   field={"librarySource"}
@@ -185,18 +186,26 @@ const FSTbVHits = ({ id }) => {
                   field={"iC50"}
                   header="IC50 (&micro;M) "
                   editor={(options) => TextRowEditor(options)}
+                  sortable
                 />
                 <Column
                   field={"mic"}
                   header="MIC (&micro;M)"
                   editor={(options) => TextRowEditor(options)}
+                  sortable
                 />
                 <Column
                   field={"clusterGroup"}
                   header="Cluster"
                   editor={(options) => TextRowEditor(options)}
+                  sortable
                 />
-                <Column header="Vote" body={votingBodyTemplate} />
+                <Column
+                  field="voteScore"
+                  header="Vote"
+                  body={votingBodyTemplate}
+                  sortable
+                />
 
                 <Column
                   rowEditor

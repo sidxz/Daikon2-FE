@@ -22,8 +22,7 @@ const FSPhVHAddHit = ({ hitCollectionId, closeSideBar }) => {
 
     validate: (values) => {
       const errors = {};
-      if (!values.requestedSMILES)
-        errors.requestedSMILES = "SMILES is required.";
+      if (!values.library) errors.library = "Library is required.";
       // Additional validations can be added here
       return errors;
     },

@@ -49,7 +49,7 @@ const FSPhVHits = ({ id }) => {
   const [showFileUploadDialog, setShowFileUploadDialog] = useState(false);
   const [selectionEnabled, setSelectionEnabled] = useState(false);
   const [selectedHits, setSelectedHits] = useState(null);
-  const [isVotesHidden, setIsVotesHidden] = useState(false);
+  const [isVotesHidden, setIsVotesHidden] = useState(true);
   const [isOneClickVotingEnabled, setIsOneClickVotingEnabled] = useState(false);
 
   if (isFetchingHitCollection) {
@@ -170,6 +170,7 @@ const FSPhVHits = ({ id }) => {
                   field={"library"}
                   header="Library"
                   editor={(options) => TextRowEditor(options)}
+                  sortable
                 />
                 <Column
                   field={"librarySource"}
@@ -185,14 +186,21 @@ const FSPhVHits = ({ id }) => {
                   field={"iC50"}
                   header="IC50 (&micro;M) "
                   editor={(options) => TextRowEditor(options)}
+                  sortable
                 />
                 <Column
                   field={"mic"}
                   header="MIC (&micro;M)"
                   editor={(options) => TextRowEditor(options)}
+                  sortable
                 />
 
-                <Column header="Vote" body={votingBodyTemplate} />
+                <Column
+                  field="voteScore"
+                  header="Vote"
+                  body={votingBodyTemplate}
+                  sortable
+                />
 
                 <Column
                   rowEditor
