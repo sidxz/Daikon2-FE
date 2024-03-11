@@ -28,7 +28,7 @@ export const sidePanelItems = (navigate) => {
       ],
     },
     {
-      label: "Actions",
+      label: "Related Screens",
       items: [
         {
           label: "Add a Screen",
@@ -44,29 +44,8 @@ export const sidePanelItems = (navigate) => {
       label: "Admin Section",
       items: [
         {
-          label: "Edit",
-          icon: "icon icon-common icon-edit",
-          command: () => {
-            navigate("settings/");
-          },
-        },
-        {
-          label: "Merge",
-          icon: "icon icon-common icon-compress",
-          command: () => {
-            navigate("settings/");
-          },
-        },
-        {
-          label: "Update Target Association",
-          icon: "icon icon-common icon-target",
-          command: () => {
-            navigate("settings/");
-          },
-        },
-        {
-          label: "Delete",
-          icon: "icon icon-common icon-remove",
+          label: "Settings",
+          icon: "pi pi-cog",
           command: () => {
             navigate("settings/");
           },

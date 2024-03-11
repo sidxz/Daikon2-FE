@@ -15,7 +15,13 @@ import InputAssociatedTarget from "../../shared/InputAssociatedTarget";
 const FSDAddScreenTargetBased = ({ closeSideBar }) => {
   const rootStore = useContext(RootStoreContext);
 
-  const { addScreen, isAddingScreen } = rootStore.screenStore;
+  const {
+    addScreen,
+    isAddingScreen,
+    fetchScreens,
+    isFetchingScreen,
+    isScreenListCacheValid,
+  } = rootStore.screenStore;
   const {
     targetListRegistry,
     fetchTargets,
@@ -30,7 +36,15 @@ const FSDAddScreenTargetBased = ({ closeSideBar }) => {
     if (!isTargetListCacheValid) {
       fetchTargets();
     }
-  }, [fetchTargets, isTargetListCacheValid]);
+    if (!isScreenListCacheValid) {
+      fetchScreens();
+    }
+  }, [
+    fetchTargets,
+    isTargetListCacheValid,
+    fetchScreens,
+    isScreenListCacheValid,
+  ]);
 
   const formik = useFormik({
     initialValues: {
@@ -75,7 +89,31 @@ const FSDAddScreenTargetBased = ({ closeSideBar }) => {
       <small className="p-error">{formik.errors[field]}</small>
     );
 
-  if (isFetchingTargets) {
+  let suggestedName = () => {
+    // first check the no of existing screens of the selected target
+    const targetId = formik.values.targetToAssociate;
+    const targetScreens = rootStore.screenStore.screenList.filter(
+      (screen) => screen.associatedTargets && screen.associatedTargets[targetId]
+    );
+    const targetName = targetListRegistry.get(targetId)?.name;
+    const suggestedName = `${targetName ? targetName : ""}-${
+      targetScreens.length + 1
+    }`;
+    return suggestedName;
+  };
+
+  useEffect(() => {
+    // This effect runs when formik.values.targetToAssociate changes
+    if (formik.values.targetToAssociate) {
+      // Call the suggestedName function to get the suggested name
+      const suggested = suggestedName();
+
+      // Update the formik values with the suggested name
+      formik.setFieldValue("name", suggested, false); // The third parameter is "shouldValidate", you can set it as needed
+    }
+  }, [formik.values.targetToAssociate, formik.setFieldValue]); // Add formik.setFieldValue to the dependency array
+
+  if (isFetchingTargets || isFetchingScreen) {
     return <div>Please wait...</div>;
   }
 
