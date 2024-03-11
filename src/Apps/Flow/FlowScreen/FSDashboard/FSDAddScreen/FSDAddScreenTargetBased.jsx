@@ -149,6 +149,12 @@ const FSDAddScreenTargetBased = ({ closeSideBar }) => {
               })}
             >
               Name *
+              {formik.values.targetToAssociate && (
+                <p className="text-xs text-gray-500">
+                  A name suggestion has been generated following the established
+                  naming conventions for screenings.
+                </p>
+              )}
             </label>
             <InputText
               id="name"
