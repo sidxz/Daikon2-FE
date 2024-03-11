@@ -2,9 +2,10 @@ import { useFormik } from "formik";
 import { observer } from "mobx-react-lite";
 import { Button } from "primereact/button";
 import { Dropdown } from "primereact/dropdown";
+import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
 import { classNames } from "primereact/utils";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { RootStoreContext } from "../../../../../RootStore";
 import { hitCollectionTypeOptions } from "../../shared/FSValues";
@@ -12,8 +13,25 @@ import { hitCollectionTypeOptions } from "../../shared/FSValues";
 const FSPhVAddHitCollection = ({ selectedScreen, closeSidebar }) => {
   const rootStore = useContext(RootStoreContext);
   const navigate = useNavigate();
-  const { isAddingHitCollection, addHitCollection, selectedHitCollection } =
-    rootStore.hitCollectionStore;
+  const {
+    isAddingHitCollection,
+    addHitCollection,
+    selectedHitCollection,
+    fetchHitCollectionsOfScreen,
+    isFetchingHitCollection,
+    hitCollectionOfScreen,
+    isHitCollectionRegistryCacheValid,
+  } = rootStore.hitCollectionStore;
+
+  useEffect(() => {
+    if (!isHitCollectionRegistryCacheValid(selectedScreen.id)) {
+      fetchHitCollectionsOfScreen(selectedScreen.id, true);
+    }
+  }, [
+    fetchHitCollectionsOfScreen,
+    isHitCollectionRegistryCacheValid,
+    selectedScreen.id,
+  ]);
 
   const formik = useFormik({
     initialValues: {
@@ -49,6 +67,33 @@ const FSPhVAddHitCollection = ({ selectedScreen, closeSidebar }) => {
     isInvalid(field) && (
       <small className="p-error">{formik.errors[field]}</small>
     );
+
+  const suggestedName = () => {
+    // check if selected screen has any existing hit collections of the selected type
+    const hitCollectionType = formik.values.hitCollectionType;
+
+    var existingHitCollectionsLength = 0;
+    if (hitCollectionOfScreen(selectedScreen.id)) {
+      existingHitCollectionsLength = hitCollectionOfScreen(
+        selectedScreen.id
+      ).filter((hc) => hc.hitCollectionType === hitCollectionType).length;
+    }
+    const screenName = selectedScreen.name || "";
+    const type = (hitCollectionType ? hitCollectionType[0] : "").toUpperCase();
+    const number = existingHitCollectionsLength + 1;
+    return `${screenName}-${type}${number}`;
+  };
+
+  useEffect(() => {
+    // This effect runs when formik.values.targetToAssociate changes
+    if (formik.values.hitCollectionType) {
+      // Call the suggestedName function to get the suggested name
+      const suggested = suggestedName();
+
+      // Update the formik values with the suggested name
+      formik.setFieldValue("name", suggested, false); // The third parameter is "shouldValidate", you can set it as needed
+    }
+  }, [formik.values.hitCollectionType, formik.setFieldValue]); // Add formik.setFieldValue to the dependency array
 
   return (
     <div className="card w-full">
@@ -86,7 +131,7 @@ const FSPhVAddHitCollection = ({ selectedScreen, closeSidebar }) => {
           >
             Name *
           </label>
-          <InputTextarea
+          <InputText
             id="name"
             value={formik.values.name}
             onChange={formik.handleChange}
