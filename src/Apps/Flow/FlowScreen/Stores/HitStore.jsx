@@ -162,7 +162,12 @@ export default class HitStore {
           await this.updateHit(editedHitRow, true);
         }
       }
-      toast.success("Batch insertion/update completed successfully");
+      toast.success(
+        "The batch insertion/update was successful. Compound names will be fetched upon syncing the page.",
+        {
+          autoClose: false,
+        }
+      );
     } catch (error) {
       console.error(error);
     } finally {

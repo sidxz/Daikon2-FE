@@ -1,14 +1,16 @@
 import { useFormik } from "formik";
 import { observer } from "mobx-react-lite";
 import { Button } from "primereact/button";
+import { Dropdown } from "primereact/dropdown";
 import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
 import { classNames } from "primereact/utils";
 import React, { useContext } from "react";
+import { FcDataSheet, FcNeutralTrading, FcOk, FcPlanner } from "react-icons/fc";
+import { GiVote } from "react-icons/gi";
 import { RootStoreContext } from "../../../../../RootStore";
 import InputOrg from "../../../../../Shared/InputEditors/InputOrg";
 import { AppOrgResolver } from "../../../../../Shared/VariableResolvers/AppOrgResolver";
-
 const FSDAddScreenPhenotypic = ({ closeSideBar }) => {
   const rootStore = useContext(RootStoreContext);
 
@@ -22,11 +24,14 @@ const FSDAddScreenPhenotypic = ({ closeSideBar }) => {
       name: "",
       notes: "",
       screenType: "phenotypic",
+      status: "Planned",
     },
 
     validate: (values) => {
       const errors = {};
       if (!values.name) errors.name = "Name is required.";
+      if (!values.primaryOrgId)
+        errors.primaryOrgId = "Organization is required.";
       // Additional validations can be added here
       return errors;
     },
@@ -46,6 +51,48 @@ const FSDAddScreenPhenotypic = ({ closeSideBar }) => {
     isInvalid(field) && (
       <small className="p-error">{formik.errors[field]}</small>
     );
+
+  // The set of available options for the status of a screen
+  const statusOptions = [
+    { name: "Planned", icon: <FcPlanner /> },
+    { name: "Assay Development", icon: <FcDataSheet /> },
+    { name: "Ongoing", icon: <FcNeutralTrading /> },
+    { name: "Voting Ready", icon: <GiVote /> },
+    { name: "Completed", icon: <FcOk /> },
+  ];
+
+  // Template for rendering a selected status option
+  const statusOptionTemplate = (option) => {
+    if (option) {
+      return (
+        <div className="flex align-items-center align-self-center gap-2">
+          <div className="flex flex-column">{option.icon}</div>
+          <div className="flex flex-column">{option.name}</div>
+        </div>
+      );
+    }
+  };
+
+  const statusValueTemplate = (option) => {
+    if (option === null) {
+      return (
+        <div className="flex align-items-center align-self-center gap-2">
+          <div className="flex flex-column">
+            <FcExpired />
+          </div>
+          <div className="flex flex-column">Status Not Set</div>
+        </div>
+      );
+    }
+    if (option) {
+      return (
+        <div className="flex align-items-center align-self-center gap-2">
+          <div className="flex flex-column">{option.icon}</div>
+          <div className="flex flex-column">{option.name}</div>
+        </div>
+      );
+    }
+  };
 
   return (
     <>
@@ -88,6 +135,33 @@ const FSDAddScreenPhenotypic = ({ closeSideBar }) => {
               })}
             />
             {getErrorMessage("primaryOrgId")}
+          </div>
+          <div className="field">
+            <label
+              htmlFor="status"
+              className={classNames({
+                "p-error": isInvalid("status"),
+              })}
+            >
+              Status
+            </label>
+            <Dropdown
+              id="status"
+              answer="name"
+              optionLabel="name"
+              optionValue="name"
+              options={statusOptions}
+              itemTemplate={statusOptionTemplate}
+              valueTemplate={statusValueTemplate}
+              value={formik.values.status}
+              placeholder="Select a status"
+              onChange={formik.handleChange}
+              className={classNames({
+                "p-invalid": isInvalid("status"),
+              })}
+            />
+
+            {getErrorMessage("status")}
           </div>
 
           <div className="field">
