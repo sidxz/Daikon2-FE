@@ -5,6 +5,7 @@ import React, { useContext, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import Loading from "../../../../../Library/Loading/Loading";
 import { RootStoreContext } from "../../../../../RootStore";
+import * as Helper from "./FSDPhenotypicHelper";
 
 const FSDPhenotypic = () => {
   const rootStore = useContext(RootStoreContext);
@@ -35,13 +36,14 @@ const FSDPhenotypic = () => {
     <div className="flex flex-column min-w-full fadein animation-duration-500">
       <div className="flex w-full">
         <DataTable
+          className="w-full"
           value={screenListPhenotypic}
           paginator
           rows={10}
           filterDisplay="row"
         >
           <Column
-            body={nameBodyTemplate}
+            body={Helper.nameBodyTemplate}
             field="name"
             header="Name"
             filter
@@ -55,8 +57,12 @@ const FSDPhenotypic = () => {
             field="primaryOrgName"
             header="Primary Org"
             filter
-            filterMatchMode="contains"
-            filterPlaceholder="Search"
+            filterField="primaryOrgName"
+            filterElement={(options) =>
+              Helper.orgFilter(screenListPhenotypic, options)
+            }
+            showFilterMenu={false}
+            filterMatchMode="in"
             className="narrow-column"
           />
 
@@ -64,9 +70,14 @@ const FSDPhenotypic = () => {
             field="status"
             header="Status"
             filter
-            filterMatchMode="contains"
-            filterPlaceholder="Search"
+            filterField="status"
+            filterElement={(options) =>
+              Helper.screenStatusFilter(screenListPhenotypic, options)
+            }
+            showFilterMenu={false}
+            filterMatchMode="in"
             className="narrow-column"
+            body={Helper.statusBodyTemplate}
           />
 
           <Column

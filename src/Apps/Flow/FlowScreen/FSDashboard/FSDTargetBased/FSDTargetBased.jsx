@@ -30,6 +30,7 @@ const FSDTargetBased = () => {
     <div className="flex flex-column min-w-full fadein animation-duration-500">
       <div className="flex w-full">
         <DataTable
+          className="w-full"
           value={screenListTargetBased}
           paginator
           rows={50}

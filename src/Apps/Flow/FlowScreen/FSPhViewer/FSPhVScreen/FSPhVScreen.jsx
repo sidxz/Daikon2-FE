@@ -90,7 +90,7 @@ const FSPhVScreen = ({}) => {
           </div>
           <div className="flex w-full">
             <SecHeading
-              icon="icon icon-conceptual icon-structures-3d"
+              icon="icon icon-common icon-circle-notch"
               heading={"Screen - " + selectedScreen.name}
               displayHorizon={true}
               color={appColors.sectionHeadingBg.screen}
