@@ -1,4 +1,21 @@
-export const sidePanelItems = (navigate) => {
+export const sidePanelItems = (navigate, getRelatedScreens) => {
+  let relatedScreens = getRelatedScreens();
+
+  // check if URL contains "hits" or "screens"
+  let url = window.location.href;
+  let isHits = url.includes("hits");
+
+  let relatedScreensItems = relatedScreens.map((screen) => {
+    return {
+      label: screen.name,
+      icon: "icon icon-common icon-search",
+      command: () => {
+        navigate(
+          "/wf/screen/viewer/tb/" + screen.id + (isHits ? "/hits/" : "/")
+        );
+      },
+    };
+  });
   return [
     {
       label: "Sections",
@@ -28,47 +45,18 @@ export const sidePanelItems = (navigate) => {
       ],
     },
     {
-      label: "Actions",
-      items: [
-        {
-          label: "Add a Screen",
-          icon: "icon icon-common icon-database-submit",
-          command: () => {
-            setDisplayPromotionDialog(true);
-          },
-        },
-      ],
+      label: "Related Screens",
+      items: [...relatedScreensItems],
     },
 
     {
       label: "Admin Section",
       items: [
         {
-          label: "Edit",
-          icon: "icon icon-common icon-edit",
+          label: "Settings",
+          icon: "pi pi-cog",
           command: () => {
-            setDisplayEditScreenDialog(true);
-          },
-        },
-        {
-          label: "Merge",
-          icon: "icon icon-common icon-compress",
-          command: () => {
-            setDisplayMergeScreenDialog(true);
-          },
-        },
-        {
-          label: "Update Target Association",
-          icon: "icon icon-common icon-target",
-          command: () => {
-            navigate("update-target-association/");
-          },
-        },
-        {
-          label: "Delete",
-          icon: "icon icon-common icon-remove",
-          command: () => {
-            navigate("delete/");
+            navigate("settings/");
           },
         },
       ],

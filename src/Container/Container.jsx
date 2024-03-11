@@ -16,7 +16,17 @@ import TitleBar from "./TitleBar/TitleBar";
 const Container = ({ userManager }) => {
   const [ssoUser, setSsoUser] = useState(null);
   const { authStore } = useContext(RootStoreContext);
-  const { user, fetchUser, isFetchingUser } = authStore;
+  const {
+    user,
+    fetchUser,
+    isFetchingUser,
+    fetchAppVars,
+    isFetchingAppVars,
+    fetchGlobalValues,
+    isFetchingGlobalValues,
+    globalValues,
+    appVars,
+  } = authStore;
 
   useEffect(() => {
     const fetchSSOUser = async () => {
@@ -30,7 +40,9 @@ const Container = ({ userManager }) => {
     };
 
     fetchSSOUser();
-  }, [userManager, fetchUser]);
+    fetchAppVars();
+    fetchGlobalValues();
+  }, [userManager, fetchUser, fetchAppVars, fetchGlobalValues]);
 
   const signOut = async () => {
     try {
@@ -43,7 +55,13 @@ const Container = ({ userManager }) => {
 
   if (!ssoUser) return <Login userManager={userManager} />;
   if (isFetchingUser) return <Loading message={"Authorizing user..."} />;
+  if (isFetchingAppVars || isFetchingGlobalValues)
+    return <Loading message={"Fetching app data..."} />;
   if (!user) return <UnauthorizedUser onSignOut={signOut} ssoUser={ssoUser} />;
+
+  console.log("Container user", user);
+  console.log("Container appVars", appVars);
+  console.log("Container globalValues", globalValues);
 
   return (
     <div className="App">

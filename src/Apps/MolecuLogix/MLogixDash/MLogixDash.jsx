@@ -25,8 +25,6 @@ const MLogixDash = () => {
     return <Loading message={"Fetching Molecules..."} />;
   }
 
-  console.log(moleculeList);
-
   return (
     <div className="flex flex-column min-w-full fadein animation-duration-500">
       <div className="flex w-full">

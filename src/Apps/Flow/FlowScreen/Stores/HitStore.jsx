@@ -16,6 +16,8 @@ export default class HitStore {
 
       isDeletingHit: observable,
       deleteHit: action,
+      isBatchInsertingHits: observable,
+      batchInsertHits: action,
     });
   }
 
@@ -23,9 +25,10 @@ export default class HitStore {
   isUpdatingHit = false;
   isAddingHit = false;
   isDeletingHit = false;
+  isBatchInsertingHits = false;
 
   // Actions
-  addHit = async (hit) => {
+  addHit = async (hit, silent = false) => {
     this.isAddingHit = true;
 
     // Ensure hit.hitCollectionId is set ,error out if not
@@ -33,22 +36,28 @@ export default class HitStore {
       throw new Error("hitCollectionId is required and cannot be empty.");
     }
 
+    // if clusterGroup is empty, set it to 0
+    if (!hit?.clusterGroup) {
+      hit.clusterGroup = 0;
+    }
+
     try {
       var res = await HitAPI.create(hit);
       runInAction(() => {
         // Add hit to hit list
-        console.log(res);
         hit.id = res.id;
+        hit.usersVote = hit.usersVote || "NA";
+        hit.voters = hit.voters || {};
 
-        console.log("Add with id hit:", hit);
-        this.rootStore.hitCollectionStore.selectedHitCollection.hits.push(hit);
         const hitCollection =
           this.rootStore.hitCollectionStore.hitCollectionRegistry.get(
             hit.hitCollectionId
           );
         hitCollection.hits.push(hit);
 
-        toast.success("Hit added successfully");
+        this.rootStore.hitCollectionStore.selectedHitCollection = hitCollection;
+
+        if (!silent) toast.success("Hit added successfully");
       });
     } catch (error) {
       console.error("Error adding Hit:", error);
@@ -59,8 +68,7 @@ export default class HitStore {
     }
   };
 
-  updateHit = async (hit) => {
-    console.log("updateHit:", hit);
+  updateHit = async (hit, silent = false) => {
     this.isUpdatingHit = true;
 
     // Ensure hit.hitCollectionId is set, fallback to selectedHitCollection.hitCollectionId if null, undefined, or empty
@@ -72,6 +80,13 @@ export default class HitStore {
     if (!hit.id?.trim()) {
       throw new Error("hitId is required and cannot be empty.");
     }
+    hit.hitId = hit.id;
+
+    // if clusterGroup is empty, set it to 0
+    if (!hit?.clusterGroup) {
+      hit.clusterGroup = 0;
+    }
+    console.log("updateHit", hit);
 
     try {
       await HitAPI.update(hit);
@@ -84,17 +99,9 @@ export default class HitStore {
 
         const indexOfEss = hitCollection.hits.findIndex((e) => e.id === hit.id);
         hitCollection.hits[indexOfEss] = hit;
+        this.rootStore.hitCollectionStore.selectedHitCollection = hitCollection;
 
-        // update the same in selected hitCollection
-        const selectedHitCollection =
-          this.rootStore.hitCollectionStore.selectedHitCollection;
-        const selectedIndex = selectedHitCollection.hits.findIndex(
-          (e) => e.id === hit.id
-        );
-
-        selectedHitCollection.hits[selectedIndex] = hit;
-
-        toast.success("Hit updated successfully");
+        if (!silent) toast.success("Hit updated successfully");
       });
     } catch (error) {
       console.error("Error updating hitCollection hit:", error);
@@ -126,14 +133,7 @@ export default class HitStore {
           );
         const indexOfEss = hitCollection.hits.findIndex((e) => e.id === hitId);
         hitCollection.hits.splice(indexOfEss, 1);
-
-        // remove the same from selected hitCollection
-        const selectedHitCollection =
-          this.rootStore.hitCollectionStore.selectedHitCollection;
-        const selectedIndex = selectedHitCollection.hits.findIndex(
-          (e) => e.id === hitId
-        );
-        selectedHitCollection.hits.splice(selectedIndex, 1);
+        this.rootStore.hitCollectionStore.selectedHitCollection = hitCollection;
 
         toast.success("Hit deleted successfully");
       });
@@ -142,6 +142,47 @@ export default class HitStore {
     } finally {
       runInAction(() => {
         this.isDeletingHit = false;
+      });
+    }
+  };
+
+  /**
+   * Batch insert a hits
+   * Adds new if ExternalCompoundId is null, updates if ExternalCompoundId is not null.
+   * @param {object} editedHitRows - The details of the hit rows to edit.
+   */
+  batchInsertHits = async (editedHitRows) => {
+    this.isBatchInsertingHits = true;
+    const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+    try {
+      for (const editedHitRow of editedHitRows) {
+        // Fix ids and map smiles to requestedSMILES
+        editedHitRow.hitCollectionId =
+          this.rootStore.hitCollectionStore.selectedHitCollection.id;
+        editedHitRow.requestedSMILES = editedHitRow.smiles;
+
+        // Wait for the delay before proceeding
+        await delay(100);
+        //console.log("Sending editedHitRow ---->>>>>", editedHitRow);
+        // Perform the operation based on the status
+        if (editedHitRow.status === "New") {
+          await this.addHit(editedHitRow, true);
+        } else if (editedHitRow.status === "Modified") {
+          await this.updateHit(editedHitRow, true);
+        }
+      }
+      toast.success(
+        "The batch insertion/update was successful. Compound names will be fetched upon syncing the page.",
+        {
+          autoClose: false,
+        }
+      );
+    } catch (error) {
+      console.error(error);
+    } finally {
+      runInAction(() => {
+        this.isBatchInsertingHits = false;
       });
     }
   };

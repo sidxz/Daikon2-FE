@@ -23,7 +23,13 @@ export const breadCrumbItems = (selectedScreen, navigate) => {
     {
       label: "Screens",
       command: () => {
-        navigate("/wf/screen/");
+        navigate("/wf/screen/dash/");
+      },
+    },
+    {
+      label: "Target Based",
+      command: () => {
+        navigate("/wf/screen/dash/target-based/");
       },
     },
     {

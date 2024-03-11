@@ -1,51 +1,66 @@
+import { observer } from "mobx-react-lite";
 import { BreadCrumb } from "primereact/breadcrumb";
+import { Dropdown } from "primereact/dropdown";
 import { Sidebar } from "primereact/sidebar";
-import { TabPanel, TabView } from "primereact/tabview";
 import React, { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import Loading from "../../../../../Library/Loading/Loading";
 import SecHeading from "../../../../../Library/SecHeading/SecHeading";
+import { RootStoreContext } from "../../../../../RootStore";
 import { appColors } from "../../../../../constants/colors";
 import FSTbVAddHitCollection from "./FSTbVAddHitCollection";
-
-import { observer } from "mobx-react-lite";
-import { FcOpenedFolder } from "react-icons/fc";
-import { useNavigate } from "react-router-dom";
-import Loading from "../../../../../Library/Loading/Loading";
-import { RootStoreContext } from "../../../../../RootStore";
 import * as Helper from "./FSTbVHitCollectionHelper";
 import FSTbVHits from "./FSTbVHits/FSTbVHits";
 const FSTbVHitCollection = ({ selectedScreen }) => {
   const [displayAddSideBar, setDisplayAddSideBar] = useState(false);
   const navigate = useNavigate();
-
+  const { hitCollectionId } = useParams();
   const rootStore = useContext(RootStoreContext);
   const {
-    fetchHitCollection,
+    fetchHitCollectionsOfScreen,
     isFetchingHitCollection,
     isHitCollectionRegistryCacheValid,
     hitCollectionOfScreen,
+    selectedHitCollection,
+    getHitCollection,
+    isAddingHitCollection,
   } = rootStore.hitCollectionStore;
+
+  const [selectedHitCollectionDropdown, setSelectedHitCollectionDropdown] =
+    useState(hitCollectionId);
+
   useEffect(() => {
-    if (!isHitCollectionRegistryCacheValid(selectedScreen.id)) {
-      fetchHitCollection(selectedScreen.id);
+    if (hitCollectionId != selectedHitCollectionDropdown) {
+      setSelectedHitCollectionDropdown(hitCollectionId);
     }
-  }, [isHitCollectionRegistryCacheValid, fetchHitCollection, selectedScreen]);
+
+    if (
+      !isAddingHitCollection &&
+      (selectedHitCollection === undefined ||
+        selectedHitCollection?.id !== hitCollectionId)
+    ) {
+      fetchHitCollectionsOfScreen(selectedScreen.id);
+      getHitCollection(hitCollectionId);
+    }
+  }, [
+    isHitCollectionRegistryCacheValid,
+    fetchHitCollectionsOfScreen,
+    selectedScreen,
+    selectedHitCollection,
+    setSelectedHitCollectionDropdown,
+  ]);
 
   if (isFetchingHitCollection) {
     return <Loading message={"Fetching Hit Collection..."} />;
   }
 
   if (selectedScreen && hitCollectionOfScreen(selectedScreen.id)) {
-    let hitCollectionTabs = [];
+    const hitCollections = [];
     hitCollectionOfScreen(selectedScreen.id).forEach((hitCollection) => {
-      hitCollectionTabs.push(
-        <TabPanel
-          header={Helper.hitCollectionNameTemplate(hitCollection)}
-          leftIcon={<FcOpenedFolder className="mr-2" />}
-          key={hitCollection.id}
-        >
-          <FSTbVHits hitCollection={hitCollection} />
-        </TabPanel>
-      );
+      hitCollections.push({
+        id: hitCollection.id,
+        name: Helper.hitCollectionNameTemplate(hitCollection),
+      });
     });
 
     return (
@@ -69,10 +84,25 @@ const FSTbVHitCollection = ({ selectedScreen }) => {
                   action: () => setDisplayAddSideBar(true),
                 },
               ]}
+              customElements={[
+                <Dropdown
+                  value={selectedHitCollectionDropdown}
+                  onChange={(e) => {
+                    navigate(
+                      `/wf/screen/viewer/tb/${selectedScreen.id}/hits/${e.value}`
+                    );
+                    setSelectedHitCollectionDropdown(e.value);
+                  }}
+                  options={hitCollections}
+                  optionLabel="name"
+                  optionValue="id"
+                  placeholder="Select a Hit Collection"
+                />,
+              ]}
             />
           </div>
           <div className="flex w-full">
-            <TabView>{hitCollectionTabs}</TabView>
+            <FSTbVHits id={hitCollectionId} />
           </div>
         </div>
         <Sidebar

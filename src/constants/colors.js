@@ -30,4 +30,11 @@ export const appColors = {
   molecuLogix: {
     heading: "#ED5565",
   },
+
+  admin: {
+    userManagement: {
+      users: "#3D4780",
+      orgs: "#74B7A7",
+    },
+  },
 };

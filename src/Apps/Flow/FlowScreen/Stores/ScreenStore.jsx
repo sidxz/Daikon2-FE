@@ -36,6 +36,9 @@ export default class ScreenStore {
 
       isDeletingScreen: observable,
       deleteScreen: action,
+
+      updateTargetAssociation: action,
+      renameScreen: action,
     });
   }
 
@@ -43,7 +46,6 @@ export default class ScreenStore {
   isFetchingScreens = false;
   isScreenListCacheValid = false;
   screenListRegistry = new Map();
-  availableScreenFunctionalCategories = new Set();
 
   isFetchingScreen = false;
   screenRegistry = new Map();
@@ -68,7 +70,6 @@ export default class ScreenStore {
       const screens = await ScreenAPI.list();
       runInAction(() => {
         screens.forEach((screen) => {
-          // console.log("screen:", screen);
           this.screenListRegistry.set(screen.id, screen);
         });
         this.isScreenListCacheValid = true;
@@ -99,6 +100,7 @@ export default class ScreenStore {
   }
 
   fetchScreen = async (screenId, inValidateCache = false) => {
+    console.log("fetchScreen -> screenId", screenId);
     if (inValidateCache) {
       this.isScreenRegistryCacheValid = false;
     }
@@ -135,7 +137,15 @@ export default class ScreenStore {
       var res = await ScreenAPI.create(screen);
       runInAction(() => {
         // Add screen to screen list
-        screen.Id = res.id;
+        screen.id = res.id;
+        screen.screenRuns = [];
+
+        // FLatten the associated targets, separate by comma
+        if (screen.associatedTargets) {
+          screen.associatedTargetsFlattened = Object.values(
+            screen.associatedTargets
+          ).join(", ");
+        }
 
         this.screenRegistry.set(screen.id, screen);
         this.screenListRegistry.set(screen.id, screen);
@@ -159,6 +169,7 @@ export default class ScreenStore {
         // update in screen registry list
         this.screenRegistry.set(screen.id, screen);
         this.screenListRegistry.set(screen.id, screen);
+        this.selectedScreen = screen;
         toast.success("Screen updated successfully");
       });
     } catch (error) {
@@ -192,6 +203,48 @@ export default class ScreenStore {
     } finally {
       runInAction(() => {
         this.isDeletingScreen = false;
+      });
+    }
+  };
+
+  updateTargetAssociation = async (screen) => {
+    this.isUpdatingScreen = true;
+
+    try {
+      await ScreenAPI.updateAssociatedTargets(screen);
+      runInAction(() => {
+        // update in screen registry list
+        this.screenRegistry.set(screen.id, screen);
+        this.screenListRegistry.set(screen.id, screen);
+        this.selectedScreen = screen;
+        toast.success("Screen target association updated successfully");
+      });
+    } catch (error) {
+      console.error("Error updating screen:", error);
+    } finally {
+      runInAction(() => {
+        this.isUpdatingScreen = false;
+      });
+    }
+  };
+
+  renameScreen = async (screen) => {
+    this.isUpdatingScreen = true;
+
+    try {
+      await ScreenAPI.rename(screen);
+      runInAction(() => {
+        // update in screen registry list
+        this.screenRegistry.set(screen.id, screen);
+        this.screenListRegistry.set(screen.id, screen);
+        this.selectedScreen = screen;
+        toast.success("Screen renamed successfully");
+      });
+    } catch (error) {
+      console.error("Error updating screen:", error);
+    } finally {
+      runInAction(() => {
+        this.isUpdatingScreen = false;
       });
     }
   };

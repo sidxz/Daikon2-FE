@@ -1,3 +1,4 @@
+import { observer } from "mobx-react-lite";
 import { Sidebar } from "primereact/sidebar";
 import React, { useContext, useState } from "react";
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
@@ -56,7 +57,7 @@ const FSDashboard = () => {
         visible={displayAddSideBar}
         position="right"
         onHide={() => setDisplayAddSideBar(false)}
-        className="p-sidebar-md"
+        className="p-sidebar-sm"
         header={addSideBarHeader}
       >
         <FSDAddScreen closeSideBar={() => setDisplayAddSideBar(false)} />
@@ -65,4 +66,4 @@ const FSDashboard = () => {
   );
 };
 
-export default FSDashboard;
+export default observer(FSDashboard);

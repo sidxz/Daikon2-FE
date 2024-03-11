@@ -2,9 +2,10 @@ import { observer } from "mobx-react-lite";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import React, { useContext, useEffect } from "react";
-import { NavLink } from "react-router-dom";
 import Loading from "../../../../../Library/Loading/Loading";
 import { RootStoreContext } from "../../../../../RootStore";
+import { FormatScreeningMethod } from "../../shared/Formatters";
+import * as Helper from "./FSDTargetBasedHelper";
 
 const FSDTargetBased = () => {
   const rootStore = useContext(RootStoreContext);
@@ -25,38 +26,24 @@ const FSDTargetBased = () => {
     return <Loading message={"Fetching Screens..."} />;
   }
 
-  let nameBodyTemplate = (rowData) => {
-    return (
-      <NavLink to={"../../viewer/tb/" + rowData.id}>{rowData.name}</NavLink>
-    );
-  };
-
-  let associateTargetBodyTemplate = (rowData) => {
-    if (!rowData.associatedTargets) return <div></div>;
-    // loop across key value pairs in rowData.associatedTargets and display value
-
-    return (
-      <div>
-        {Object.entries(rowData.associatedTargets).map(([key, value]) => (
-          <div key={key} className="flex">
-            <div className="flex">{value}</div>
-          </div>
-        ))}
-      </div>
-    );
-  };
-
   return (
     <div className="flex flex-column min-w-full fadein animation-duration-500">
       <div className="flex w-full">
         <DataTable
+          className="w-full"
           value={screenListTargetBased}
           paginator
-          rows={10}
+          rows={50}
           filterDisplay="row"
+          rowGroupMode="subheader"
+          groupRowsBy="associatedTargetsFlattened"
+          rowGroupHeaderTemplate={Helper.rowGroupHeaderTemplate}
+          sortMode="single"
+          sortField="associatedTargetsFlattened"
+          sortOrder={1}
         >
           <Column
-            body={nameBodyTemplate}
+            body={Helper.nameBodyTemplate}
             field="name"
             header="Name"
             filter
@@ -67,9 +54,9 @@ const FSDTargetBased = () => {
           />
 
           <Column
-            // field="name"
+            field="associatedTargetsFlattened"
             header="Target"
-            body={associateTargetBodyTemplate}
+            //body={associateTargetBodyTemplate}
             filter
             filterMatchMode="contains"
             filterPlaceholder="Search"
@@ -81,28 +68,41 @@ const FSDTargetBased = () => {
             field="method"
             header="Method"
             filter
-            filterMatchMode="contains"
-            filterPlaceholder="Search"
+            filterField="method"
+            filterElement={(options) =>
+              Helper.methodFilter(screenListTargetBased, options)
+            }
+            showFilterMenu={false}
+            filterMatchMode="in"
             className="narrow-column"
+            body={(rowData) => FormatScreeningMethod(rowData.method)}
           />
 
           <Column
             field="primaryOrgName"
             header="Primary Org"
             filter
-            filterMatchMode="contains"
-            filterPlaceholder="Search"
+            filterField="primaryOrgName"
+            filterElement={(options) =>
+              Helper.orgFilter(screenListTargetBased, options)
+            }
+            showFilterMenu={false}
+            filterMatchMode="in"
             className="narrow-column"
-            //body={ProductBodyTemplate}
           />
 
           <Column
             field="status"
             header="Status"
             filter
-            filterMatchMode="contains"
-            filterPlaceholder="Search"
+            filterField="status"
+            filterElement={(options) =>
+              Helper.screenStatusFilter(screenListTargetBased, options)
+            }
+            showFilterMenu={false}
+            filterMatchMode="in"
             className="narrow-column"
+            body={Helper.statusBodyTemplate}
           />
         </DataTable>
       </div>

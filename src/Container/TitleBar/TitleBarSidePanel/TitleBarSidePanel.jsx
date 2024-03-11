@@ -19,7 +19,7 @@ const TitleBarSidePanel = ({ toggle, user }) => {
           label: "User Management",
           icon: "pi pi-fw pi-user-plus",
           command: () => {
-            navigate("/admin/users");
+            navigate("/admin/user-management");
             toggle();
           },
         },
@@ -27,7 +27,7 @@ const TitleBarSidePanel = ({ toggle, user }) => {
           label: "API Management",
           icon: "pi pi-fw pi-cloud",
           command: () => {
-            navigate("/admin/apis");
+            navigate("/admin/api-management");
             toggle();
           },
         },
@@ -35,7 +35,7 @@ const TitleBarSidePanel = ({ toggle, user }) => {
           label: "Role Management",
           icon: "pi pi-fw pi-users",
           command: () => {
-            navigate("/admin/users");
+            navigate("/admin/role-management");
             toggle();
           },
         },

@@ -8,14 +8,13 @@ export default class HitCollectionStore {
   constructor(rootStore) {
     this.rootStore = rootStore;
     makeObservable(this, {
-      fetchHitCollection: action,
+      fetchHitCollectionsOfScreen: action,
       isFetchingHitCollection: observable,
       hitCollectionRegistry: observable,
       isHitCollectionRegistryCacheValid: action,
       hitCollectionRegistryCache: observable,
       selectedHitCollection: observable,
       hitCollectionOfScreen: action,
-      setSelectedHitCollection: action,
 
       isUpdatingHitCollection: observable,
       updateHitCollection: action,
@@ -25,6 +24,10 @@ export default class HitCollectionStore {
 
       isDeletingHitCollection: observable,
       deleteHitCollection: action,
+
+      invalidateHitCollectionCacheOfSelectedScreen: action,
+
+      getHitCollection: action,
     });
   }
 
@@ -41,16 +44,18 @@ export default class HitCollectionStore {
 
   // Actions
 
+  invalidateHitCollectionCacheOfSelectedScreen = () => {
+    this.hitCollectionRegistryCache.set(
+      this.rootStore.screenStore.selectedScreen.id,
+      false
+    );
+  };
+
   isHitCollectionRegistryCacheValid = (screenId) => {
     return this.hitCollectionRegistryCache.get(screenId);
   };
 
-  setSelectedHitCollection = (hitCollectionId) => {
-    this.selectedHitCollection =
-      this.hitCollectionRegistry.get(hitCollectionId);
-  };
-
-  fetchHitCollection = async (screenId, inValidateCache = false) => {
+  fetchHitCollectionsOfScreen = async (screenId, inValidateCache = false) => {
     if (inValidateCache) {
       this.hitCollectionRegistryCache.set(screenId, false);
     }
@@ -87,6 +92,18 @@ export default class HitCollectionStore {
     );
   };
 
+  getHitCollection = (hitCollectionId) => {
+    // check if hitCollectionId is found in hitCollectionRegistry, if not fetch it
+    if (!this.hitCollectionRegistry.has(hitCollectionId)) {
+      this.fetchHitCollectionsOfScreen(
+        this.rootStore.screenStore.selectedScreen.id
+      );
+    }
+    this.selectedHitCollection =
+      this.hitCollectionRegistry.get(hitCollectionId);
+    return this.hitCollectionRegistry.get(hitCollectionId);
+  };
+
   addHitCollection = async (hitCollection) => {
     this.isAddingHitCollection = true;
 
@@ -100,12 +117,15 @@ export default class HitCollectionStore {
       runInAction(() => {
         // Add hitCollection to hitCollection list
         hitCollection.id = res.id;
+        hitCollection.hits = [];
 
-        this.selectedHitCollection?.hitCollections.push(hitCollection);
+        // this.selectedHitCollection?.hitCollections.push(hitCollection);
         this.hitCollectionRegistry.set(hitCollection.id, hitCollection);
+        this.selectedHitCollection = hitCollection;
 
         toast.success("Hit Collection added successfully");
       });
+      return res.id;
     } catch (error) {
       console.error("Error adding Hit Collection:", error);
     } finally {
@@ -116,7 +136,6 @@ export default class HitCollectionStore {
   };
 
   updateHitCollection = async (hitCollection) => {
-    console.log("updateHitCollection:", hitCollection);
     this.isUpdatingHitCollection = true;
 
     // Ensure hitCollection.screenId is set, fallback to selectedScreen.screenId if null, undefined, or empty

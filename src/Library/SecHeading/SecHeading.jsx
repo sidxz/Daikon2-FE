@@ -14,6 +14,7 @@ const SecHeading = ({
   entryPoint,
   projectName,
   customButtons,
+  customElements,
 }) => {
   const headerTemplate = (options) => {
     const toggleIcon = options.collapsed
@@ -51,6 +52,15 @@ const SecHeading = ({
 
     let customButtonSet = (
       <div className="flex ml-5 gap-2">{generateCustomButtons()}</div>
+    );
+
+    if (customElements === undefined) customElements = [];
+    let generateCustomElements = () => {
+      return customElements.map((element) => <>{element}</>);
+    };
+
+    let customElementsSet = (
+      <div className="flex gap-2">{generateCustomElements()}</div>
     );
 
     let displayHorizonButton = (
@@ -99,6 +109,7 @@ const SecHeading = ({
             </div>
           </div>
           <div className="flex w-full align-items-center justify-content-end">
+            {customElements.length > 0 && customElementsSet}
             {customButtons.length > 0 && customButtonSet}
             {displayHorizon ? displayHorizonButton : <p />}
           </div>

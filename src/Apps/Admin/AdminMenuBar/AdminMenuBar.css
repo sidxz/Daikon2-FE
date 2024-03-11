@@ -1,0 +1,42 @@
+.AdminMenuBar .pipeline-menu .p-tabmenuitem {
+  margin-right: 20px !important;
+}
+
+.AdminMenuBar .pipeline-menu .p-menuitem-icon {
+  font-size: 22px !important;
+  font-weight: 100 !important;
+}
+
+.AdminMenuBar .pipeline-menu .p-menuitem-text {
+  font-size: 16px !important;
+  font-weight: 400 !important;
+}
+
+.AdminMenuBar
+  .p-tabmenu
+  .p-tabmenu-nav
+  .p-tabmenuitem.p-highlight
+  .p-menuitem-link {
+  background: #ffffff;
+  border-color: #000000;
+  color: #000000;
+}
+
+.AdminMenuBar .p-tabmenu .p-tabmenu-nav .p-tabmenuitem .p-menuitem-link {
+  color: #686868;
+}
+
+@media screen and (max-width: 1300px) {
+  .AdminMenuBar .pipeline-menu .p-tabmenuitem {
+    margin-right: 0px !important;
+  }
+
+  .AdminMenuBar .pipeline-menu .p-menuitem-icon {
+    font-size: 20px !important;
+  }
+
+  .AdminMenuBar .pipeline-menu .p-menuitem-text {
+    font-size: 16px !important;
+    font-weight: 400 !important;
+  }
+}

@@ -20,6 +20,11 @@ const FTDTargetMap = () => {
         color: "#eee",
       },
     ]),
+    title: {
+      text: "Target Map",
+      left: "5cd tp%",
+      top: "2%",
+    },
 
     legend: {
       right: "7%",

@@ -1,17 +1,16 @@
+import { observer } from "mobx-react-lite";
 import { Dropdown } from "primereact/dropdown";
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { RootStoreContext } from "../../../../../RootStore";
+import { GlobalValuesResolver } from "../../../../../Shared/VariableResolvers/GlobalValuesResolver";
 import FSDAddScreenPhenotypic from "./FSDAddScreenPhenotypic";
 import FSDAddScreenTargetBased from "./FSDAddScreenTargetBased";
 const FSDAddScreen = ({ closeSideBar }) => {
   const rootStore = useContext(RootStoreContext);
   const navigate = useNavigate();
 
-  const screenTypeOptions = [
-    { name: "Target Based", value: "target-based" },
-    { name: "Phenotypic", value: "phenotypic" },
-  ];
+  const { getScreeningGlobals } = GlobalValuesResolver();
 
   const [screenType, setScreenType] = useState("target-based");
 
@@ -22,7 +21,7 @@ const FSDAddScreen = ({ closeSideBar }) => {
         <Dropdown
           id="screenType"
           value={screenType}
-          options={screenTypeOptions}
+          options={getScreeningGlobals().screeningTypes}
           onChange={(e) => {
             setScreenType(e.value);
           }}
@@ -42,4 +41,4 @@ const FSDAddScreen = ({ closeSideBar }) => {
   );
 };
 
-export default FSDAddScreen;
+export default observer(FSDAddScreen);

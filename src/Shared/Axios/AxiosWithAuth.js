@@ -62,6 +62,11 @@ class AxiosWithAuth {
           errorMessage = "The requested resource was not found";
           toast.error(errorMessage);
           break;
+        case 409:
+          errorMessage =
+            "A conflict occurred, suggesting that there may be a request for a resource that already exists. Please ensure that the resource you are attempting to create or modify is not already present.";
+          toast.error(errorMessage);
+          break;
         case 500:
           errorMessage = "Internal Server Error";
           toast.error(errorMessage);
