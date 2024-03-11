@@ -13,6 +13,7 @@ import { RootStoreContext } from "../../../../RootStore";
 import FSPhVHitCollection from "./FSPhVHitCollection/FSPhVHitCollection";
 import FSPhVHitCollectionSelection from "./FSPhVHitCollection/FSPhVHitCollectionSelection";
 import FSPhVScreen from "./FSPhVScreen/FSPhVScreen";
+import FSPhVSettings from "./FSPhVSettings/FSPhVSettings";
 import * as Helper from "./FSPhViewerHelper";
 
 const FSPhViewer = () => {
@@ -66,6 +67,11 @@ const FSPhViewer = () => {
               <Route
                 path="screens/"
                 element={<FSPhVScreen selectedScreen={selectedScreen} />}
+              />
+
+              <Route
+                path="settings/"
+                element={<FSPhVSettings selectedScreen={selectedScreen} />}
               />
             </Routes>
           </div>

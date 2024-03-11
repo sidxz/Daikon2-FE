@@ -29,20 +29,13 @@ export const sidePanelItems = (navigate) => {
     },
 
     {
-      label: "Actions",
+      label: "Admin Section",
       items: [
         {
-          label: "Edit Screen",
-          icon: "icon icon-common icon-edit",
+          label: "Settings",
+          icon: "pi pi-cog",
           command: () => {
-            setDisplayEditScreenDialog(true);
-          },
-        },
-        {
-          label: "Merge Screens",
-          icon: "icon icon-common icon-compress",
-          command: () => {
-            setDisplayMergeScreenDialog(true);
+            navigate("settings/");
           },
         },
       ],

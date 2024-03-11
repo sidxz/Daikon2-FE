@@ -38,6 +38,7 @@ const FSPhVScreen = ({}) => {
 
   const [displayAddScreenSeqSideBar, setDisplayAddScreenSeqSideBar] =
     useState(false);
+  const [isProtocolExpanded, setIsProtocolExpanded] = useState(false);
 
   if (isFetchingScreen) {
     return <Loading message={"Fetching Screen..."} />;
@@ -148,8 +149,13 @@ const FSPhVScreen = ({}) => {
 
                 <Column
                   field={"protocol"}
-                  //body={protocolBodyTemplate}
-                  header="Protocol"
+                  body={(rowData) =>
+                    Helper.ProtocolBodyTemplate(rowData, isProtocolExpanded)
+                  }
+                  header={Helper.ProtocolHeaderTemplate(
+                    isProtocolExpanded,
+                    setIsProtocolExpanded
+                  )}
                   editor={(options) => TextRowEditor(options)}
                 />
 

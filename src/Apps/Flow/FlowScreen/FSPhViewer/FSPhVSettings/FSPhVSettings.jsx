@@ -1,26 +1,18 @@
-import { observer } from "mobx-react-lite";
 import { BreadCrumb } from "primereact/breadcrumb";
 import { Chip } from "primereact/chip";
 import { Fieldset } from "primereact/fieldset";
 import React, { useContext, useState } from "react";
-import {
-  FcBusiness,
-  FcHighPriority,
-  FcMediumPriority,
-  FcTreeStructure,
-} from "react-icons/fc";
+import { FcBusiness, FcHighPriority, FcMediumPriority } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
 import Loading from "../../../../../Library/Loading/Loading";
 import SecHeading from "../../../../../Library/SecHeading/SecHeading";
 import { RootStoreContext } from "../../../../../RootStore";
 import { appColors } from "../../../../../constants/colors";
-import { FormatScreeningMethod } from "../../shared/Formatters";
-import * as Helper from "./FSTbVSettingsHelper";
-import FSTbVSettings_Basic from "./components/FSTbVSettings_Basic";
-import FSTbVSettings_Rename from "./components/FSTbVSettings_Rename";
-import FSTbVSettings_UpdateTarget from "./components/FSTbVSettings_UpdateTarget";
+import * as Helper from "./FSPhVSettingsHelper";
+import FSPhVSettings_Basic from "./components/FSPhVSettings_Basic";
+import FSPhVSettings_Rename from "./components/FSPhVSettings_Rename";
 
-const FSTbVSettings = () => {
+const FSPhVSettings = () => {
   const navigate = useNavigate();
   const rootStore = useContext(RootStoreContext);
 
@@ -59,10 +51,6 @@ const FSTbVSettings = () => {
               color={appColors.sectionHeadingBg.screen}
               customElements={[
                 <Chip
-                  label={FormatScreeningMethod(selectedScreen?.method)}
-                  icon="icon icon-common icon-circle-notch"
-                />,
-                <Chip
                   label={selectedScreen?.primaryOrgName}
                   icon="ri-organization-chart"
                   className="mr-3"
@@ -85,28 +73,10 @@ const FSTbVSettings = () => {
                 The settings outlined here are part of the "Screen" section and
                 will not impact any other areas of the app.
               </p>
-              <FSTbVSettings_Basic />
+              <FSPhVSettings_Basic />
             </Fieldset>
           </div>
-          <div className="flex w-full  mt-2">
-            <Fieldset
-              className="w-full"
-              legend={
-                <>
-                  <FcTreeStructure className="mr-2" />
-                  Update Target Association
-                </>
-              }
-            >
-              <p className="m-0 p-2">
-                The settings below are designed to modify inter-section
-                relationships throughout the app. Updating these settings will
-                have broad implications, impacting overall functionality,
-                including features like the Horizon View, among others.
-              </p>
-              <FSTbVSettings_UpdateTarget />
-            </Fieldset>
-          </div>
+
           <div className="flex w-full  mt-2">
             <Fieldset
               legend={
@@ -124,7 +94,7 @@ const FSTbVSettings = () => {
                 especially since some features may be organized or accessed by
                 their names.
               </p>
-              <FSTbVSettings_Rename />
+              <FSPhVSettings_Rename />
             </Fieldset>
           </div>
           <div className="flex w-full mt-2 ">
@@ -144,7 +114,7 @@ const FSTbVSettings = () => {
       </>
     );
   }
-  return <div>FSTbVSettings</div>;
+  return <div>FSPhVSettings</div>;
 };
 
-export default observer(FSTbVSettings);
+export default FSPhVSettings;

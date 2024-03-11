@@ -24,7 +24,7 @@ export const ProtocolHeaderTemplate = (
   setIsProtocolExpanded
 ) => {
   return (
-    <div className="flex align-items-center">
+    <div className="flex align-items-center min-w-max">
       <div className="flex">Protocol</div>
       <div className="flex">
         {!isProtocolExpanded && (
