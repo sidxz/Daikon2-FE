@@ -89,7 +89,7 @@ const FSTbVScreen = ({}) => {
           </div>
           <div className="flex w-full">
             <SecHeading
-              icon="icon icon-conceptual icon-structures-3d"
+              icon="icon icon-common icon-search"
               heading={"Screen - " + selectedScreen.name}
               displayHorizon={true}
               color={appColors.sectionHeadingBg.screen}

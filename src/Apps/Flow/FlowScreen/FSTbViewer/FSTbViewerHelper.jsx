@@ -1,4 +1,21 @@
-export const sidePanelItems = (navigate) => {
+export const sidePanelItems = (navigate, getRelatedScreens) => {
+  let relatedScreens = getRelatedScreens();
+
+  // check if URL contains "hits" or "screens"
+  let url = window.location.href;
+  let isHits = url.includes("hits");
+
+  let relatedScreensItems = relatedScreens.map((screen) => {
+    return {
+      label: screen.name,
+      icon: "icon icon-common icon-search",
+      command: () => {
+        navigate(
+          "/wf/screen/viewer/tb/" + screen.id + (isHits ? "/hits/" : "/")
+        );
+      },
+    };
+  });
   return [
     {
       label: "Sections",
@@ -29,15 +46,7 @@ export const sidePanelItems = (navigate) => {
     },
     {
       label: "Related Screens",
-      items: [
-        {
-          label: "Add a Screen",
-          icon: "icon icon-common icon-database-submit",
-          command: () => {
-            setDisplayPromotionDialog(true);
-          },
-        },
-      ],
+      items: [...relatedScreensItems],
     },
 
     {

@@ -22,6 +22,7 @@ const FSTbViewer = () => {
   const rootStore = useContext(RootStoreContext);
   const {
     fetchScreen,
+    fetchScreens,
     selectedScreen,
     isFetchingScreen,
     isScreenRegistryCacheValid,
@@ -33,20 +34,46 @@ const FSTbViewer = () => {
       selectedScreen?.id !== params?.id ||
       !isScreenRegistryCacheValid
     ) {
+      fetchScreens();
       fetchScreen(params.id);
     }
-  }, [params.id, fetchScreen, selectedScreen, isScreenRegistryCacheValid]);
+  }, [
+    params.id,
+    fetchScreen,
+    selectedScreen,
+    isScreenRegistryCacheValid,
+    fetchScreens,
+  ]);
 
   if (isFetchingScreen) {
     return <Loading message={"Fetching Screen..."} />;
   }
 
   if (selectedScreen) {
+    let getRelatedScreens = () => {
+      // Find out other screens having the same target in associatedTargets
+      let relatedScreens = [];
+      if (selectedScreen.associatedTargets) {
+        let targetIds = Object.keys(selectedScreen.associatedTargets);
+        for (let targetId of targetIds) {
+          let screen = rootStore.screenStore.screenListTargetBased
+            .filter((screen) => screen.id !== selectedScreen.id)
+            .filter((screen) =>
+              Object.keys(screen.associatedTargets).includes(targetId)
+            );
+          relatedScreens.push(...screen);
+        }
+      }
+      // sort relatedScreens by name
+      relatedScreens.sort((a, b) => a.name.localeCompare(b.name));
+      return relatedScreens;
+    };
+
     return (
       <div className="flex w-full">
         <div className="flex gap-2 w-full">
           <div className="flex">
-            <Menu model={Helper.sidePanelItems(navigate)} />
+            <Menu model={Helper.sidePanelItems(navigate, getRelatedScreens)} />
           </div>
           <div className="flex w-full">
             <Routes>
