@@ -41,10 +41,10 @@ const FSDashboard = () => {
             ]}
           />
         </div>
-        <div className="flex w-full justify-content-center">
+        <div className="flex w-full justify-content-center pl-1 pr-1">
           <FSDMenuBar />
         </div>
-        <div className="flex w-full">
+        <div className="flex w-full pl-1 pr-1">
           <Routes>
             <Route index element={<Navigate to="overview/" />} />
             <Route path="overview/*" element={<FSDOverview />} />

@@ -31,6 +31,30 @@ const FlowDashCards = () => {
           />
         </NavLink>
       </div>
+      <div className="flex">
+        <NavLink to="screen/" style={{ textDecoration: "None" }}>
+          <FlowDashCardsCircles
+            icon="icon icon-common icon-search"
+            total="105"
+          />
+        </NavLink>
+      </div>
+      <div className="flex">
+        <NavLink to="screen/" style={{ textDecoration: "None" }}>
+          <FlowDashCardsCircles
+            icon="icon icon-common icon-search"
+            total="105"
+          />
+        </NavLink>
+      </div>
+      <div className="flex">
+        <NavLink to="screen/" style={{ textDecoration: "None" }}>
+          <FlowDashCardsCircles
+            icon="icon icon-common icon-search"
+            total="105"
+          />
+        </NavLink>
+      </div>
     </div>
   );
 };

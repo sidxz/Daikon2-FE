@@ -1,71 +1,77 @@
 import { observer } from "mobx-react-lite";
+import { BlockUI } from "primereact/blockui";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
-import { SelectButton } from "primereact/selectbutton";
-import React from "react";
+import React, { useContext, useEffect } from "react";
+import { NavLink } from "react-router-dom";
+import { RootStoreContext } from "../../../../../RootStore";
 import "./FTDDataTable.css";
 
-const FTDDataTable = () => {
-  const priority = ["Yes", "All"];
+const FTDDataTable = ({ targets }) => {
+  const rootStore = useContext(RootStoreContext);
+  const {
+    targetList,
+    isFetchingTargets,
+    fetchTargets,
+    isTargetListCacheValid,
+  } = rootStore.targetStore;
 
-  const priorityFilter = (options) => (
-    <SelectButton
-      value={options.value}
-      options={priority}
-      onChange={(e) => options.filterApplyCallback(e.value)}
-      className="p-column-filter p-button-sm"
-    />
-  );
+  useEffect(() => {
+    if (!isTargetListCacheValid) {
+      fetchTargets();
+    }
+  }, [fetchTargets, isTargetListCacheValid]);
+
+  let nameBodyTemplate = (rowData) => {
+    return <NavLink to={rowData.id}>{rowData.name}</NavLink>;
+  };
+
   return (
     <div>
       <div className="card">
-        <DataTable
-          paginator
-          rows={15}
-          // header={header}
-          className="datatable-targets"
-          //globalFilter={globalFilter}
-          emptyMessage="No Targets found."
-          filterDisplay="row"
-          scrollable
-          scrollHeight="400px"
-        >
-          <Column
-            field="name"
-            header="Target Name"
-            filter
-            filterMatchMode="contains"
-            filterPlaceholder="Search by Target"
-            className="narrow-column"
-            sortable
-          />
+        <BlockUI blocked={isFetchingTargets}>
+          <DataTable
+            paginator
+            rows={15}
+            value={targetList}
+            // header={header}
+            className="w-full"
+            //globalFilter={globalFilter}
+            emptyMessage="No Targets found."
+            filterDisplay="row"
+            scrollable
+            scrollHeight="400px"
+            loading={isFetchingTargets}
+          >
+            <Column
+              field="name"
+              header="Target Name"
+              body={nameBodyTemplate}
+              filter
+              filterMatchMode="contains"
+              filterPlaceholder="Search by Target"
+              className="narrow-column"
+              sortable
+            />
 
-          <Column
-            field="associatedGenes"
-            filterField="targetGenesAccessionNumbers"
-            header="Associated Genes"
-            filter
-            filterMatchMode="contains"
-            filterPlaceholder="Search by Accession No."
-            className="narrow-column"
-          />
-          <Column
-            field="tbdaPriorityTarget"
-            header="TBDA Priority Target"
-            filter
-            filterElement={priorityFilter}
-            style={{ width: "250px" }}
-            showFilterMenu={false}
-          />
-
-          <Column
-            field="impactScore"
-            header="Biological Impact Score"
-            sortable
-          />
-          <Column field="likeScore" header="Likelihood Score" sortable />
-          <Column field="bucket" header="Bucket Score" sortable />
-        </DataTable>
+            <Column
+              field="associatedGenesFlattened"
+              filterField="associatedGenesFlattened"
+              header="Associated Genes"
+              filter
+              filterMatchMode="contains"
+              filterPlaceholder="Search by Accession No."
+              className="narrow-column"
+            />
+            <Column
+              field="impactScore"
+              header="Biological Impact Score"
+              sortable
+            />
+            <Column field="likeScore" header="Likelihood Score" sortable />
+            <Column field="bucket" header="Bucket Score" sortable />
+          </DataTable>
+        </BlockUI>
       </div>
     </div>
   );

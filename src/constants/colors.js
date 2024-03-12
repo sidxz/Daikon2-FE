@@ -1,14 +1,14 @@
 /* App Config Localhost */
 export const appColors = {
   sectionHeadingBg: {
-    gene: "#3D4780",
-    target: "#74B7A7",
-    screen: "#8497B3",
-    ha: "#D5B089",
-    portfolio: "#916B8B",
-    postPortfolio: "#BB7B73",
-    project: "#16425B",
-    compounds: "#000000",
+    gene: "#527aa3",
+    target: "#5d9ca6",
+    screen: "#5a72a5",
+    ha: "#a98d7e",
+    portfolio: "#8a759a",
+    postPortfolio: "#a97a6d",
+    project: "#2e5a7d",
+    compounds: "#2c3e50",
   },
   horizonText: {
     gene: "#3D4780",
@@ -28,7 +28,7 @@ export const appColors = {
   },
 
   molecuLogix: {
-    heading: "#ED5565",
+    heading: "#2c3e50",
   },
 
   admin: {

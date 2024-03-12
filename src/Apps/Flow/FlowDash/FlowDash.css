@@ -1,0 +1,5 @@
+.FlowDash .HeaderText {
+  background: linear-gradient(to right, #57a1c9 0%, #1e3d7b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

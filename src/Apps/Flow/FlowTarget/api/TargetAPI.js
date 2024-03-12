@@ -8,6 +8,11 @@ const TargetAPI = {
   create: (target) => axiosWithAuth.post("/v2/target", target),
   update: (target) => axiosWithAuth.put(`/v2/target/${target.id}`, target),
   delete: (id) => axiosWithAuth.delete(`/v2/target/${id}`),
+  updateAssociatedGenes: (target) =>
+    axiosWithAuth.put(
+      `/v2/target/${target.id}/update-associated-targets`,
+      target
+    ),
 };
 
 export default TargetAPI;

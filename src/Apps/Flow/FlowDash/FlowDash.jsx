@@ -1,11 +1,14 @@
 import React from "react";
+import "./FlowDash.css";
 import FlowDashCards from "./FlowDashCards/FlowDashCards";
 
 const FlowDash = () => {
   return (
-    <div className="Home surface-50 flex flex-column align-items-center w-full pb-4 pl-5 pr-5 ml-5 mr-5">
+    <div className="FlowDash bg-bluegray-50 flex flex-column align-items-center w-full">
       <div className="flex">
-        <h1>Data Acquisition, Integration and Knowledge Capture Application</h1>
+        <p className="HeaderText text-xl font-medium">
+          Data Acquisition, Integration and Knowledge Capture Application
+        </p>
       </div>
       <div className="flex">
         <FlowDashCards />

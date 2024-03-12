@@ -88,9 +88,12 @@ export default class TargetStore {
     }
 
     this.isFetchingTarget = true;
+
     if (this.isTargetRegistryCacheValid) {
       // find target in registry and return if found
       const target = this.targetRegistry.get(targetId);
+      console.log("fetchTarget -> target", target);
+
       if (target) {
         this.isFetchingTarget = false;
         this.selectedTarget = target;
@@ -99,6 +102,7 @@ export default class TargetStore {
     try {
       const target = await TargetAPI.getById(targetId);
       runInAction(() => {
+        console.log("fetchTarget -> target", target);
         this.targetRegistry.set(target.id, target);
         this.isTargetRegistryCacheValid = true;
         this.selectedTarget = target;
@@ -120,10 +124,10 @@ export default class TargetStore {
       runInAction(() => {
         // Add target to target list
         target.id = res.id;
-        target.targetRuns = [];
 
         this.targetRegistry.set(target.id, target);
         this.targetListRegistry.set(target.id, target);
+        this.selectedTarget = target;
         toast.success("Target added successfully");
       });
     } catch (error) {
@@ -170,7 +174,7 @@ export default class TargetStore {
         // remove target from target list
         this.targetRegistry.delete(targetId);
         this.targetListRegistry.delete(targetId);
-
+        this.selectedTarget = null;
         toast.success("Target deleted successfully");
       });
     } catch (error) {
