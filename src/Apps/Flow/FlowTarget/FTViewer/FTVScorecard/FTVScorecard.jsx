@@ -1,7 +1,44 @@
-import React from "react";
+import { observer } from "mobx-react-lite";
+import { BreadCrumb } from "primereact/breadcrumb";
+import React, { useContext } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import Loading from "../../../../../Library/Loading/Loading";
+import SecHeading from "../../../../../Library/SecHeading/SecHeading";
+import { RootStoreContext } from "../../../../../RootStore";
+import { appColors } from "../../../../../constants/colors";
+import * as Helper from "./FTVScorecardHelper";
 
 const FTVScorecard = () => {
-  return <div>FTVScorecard</div>;
+  const navigate = useNavigate();
+  const rootStore = useContext(RootStoreContext);
+  const params = useParams();
+
+  const {
+    fetchTarget,
+    selectedTarget,
+    isFetchingTarget,
+    isTargetRegistryCacheValid,
+  } = rootStore.targetStore;
+
+  if (isFetchingTarget) {
+    return <Loading message={"Fetching Target..."} />;
+  }
+
+  return (
+    <div className="flex flex-column min-w-full fadein animation-duration-500 m-2">
+      <div className="flex w-full">
+        <BreadCrumb model={Helper.breadCrumbItems(selectedTarget, navigate)} />
+      </div>
+      <div className="flex w-full">
+        <SecHeading
+          icon="icon icon-common icon-target"
+          heading={"Scorecard - " + selectedTarget.name}
+          color={appColors.sectionHeadingBg.target}
+          displayHorizon={true}
+        />
+      </div>
+    </div>
+  );
 };
 
-export default FTVScorecard;
+export default observer(FTVScorecard);

@@ -33,7 +33,7 @@ const FTVCompass = () => {
       <div className="flex w-full">
         <SecHeading
           icon="icon icon-common icon-target"
-          heading={"Target - " + selectedTarget.name}
+          heading={"Compass - " + selectedTarget.name}
           color={appColors.sectionHeadingBg.target}
           displayHorizon={true}
         />
