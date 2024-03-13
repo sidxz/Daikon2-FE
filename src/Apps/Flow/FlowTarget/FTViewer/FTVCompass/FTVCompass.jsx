@@ -1,3 +1,4 @@
+import { startCase } from "lodash";
 import { observer } from "mobx-react-lite";
 import { BreadCrumb } from "primereact/breadcrumb";
 import { Fieldset } from "primereact/fieldset";
@@ -26,7 +27,7 @@ const FTVCompass = () => {
   }
 
   return (
-    <div className="flex flex-column min-w-full fadein animation-duration-500 m-2">
+    <div className="flex flex-column min-w-full fadein animation-duration-500 m-2 gap-2">
       <div className="flex w-full">
         <BreadCrumb model={Helper.breadCrumbItems(selectedTarget, navigate)} />
       </div>
@@ -49,14 +50,16 @@ const FTVCompass = () => {
               Associated Genes: {selectedTarget.associatedGenesFlattened}
             </div>
             <div className="flex border-1 border-50 p-2">
-              Target Type: {selectedTarget.targetType}
+              Target Type: {startCase(selectedTarget.targetType)}
             </div>
           </div>
         </Fieldset>
       </div>
 
       <div className="flex w-full">
-        <FTVCompassQuad />
+        <Fieldset className="m-0 w-full" legend="Compass">
+          <FTVCompassQuad />
+        </Fieldset>
       </div>
     </div>
   );
