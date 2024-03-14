@@ -6,6 +6,7 @@ import Loading from "../../../../Library/Loading/Loading";
 import SecHeading from "../../../../Library/SecHeading/SecHeading";
 import { RootStoreContext } from "../../../../RootStore";
 import { appColors } from "../../../../constants/colors";
+import { GeneIcon } from "../../icons/GeneIcon";
 import * as Helper from "./FGDashHelper";
 const FGDashboard = () => {
   const rootStore = useContext(RootStoreContext);
@@ -31,7 +32,7 @@ const FGDashboard = () => {
     <div className="flex flex-column min-w-full fadein animation-duration-500">
       <div className="flex w-full">
         <SecHeading
-          icon="icon icon-conceptual icon-dna"
+          svgIcon={<GeneIcon size={"25em"} />}
           heading="Genes"
           color={appColors.sectionHeadingBg.gene}
         />

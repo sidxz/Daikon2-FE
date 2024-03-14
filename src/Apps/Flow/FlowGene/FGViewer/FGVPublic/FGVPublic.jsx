@@ -7,6 +7,7 @@ import React from "react";
 import { useNavigate } from "react-router";
 import SecHeading from "../../../../../Library/SecHeading/SecHeading";
 import { appColors } from "../../../../../constants/colors";
+import { GeneIcon } from "../../../icons/GeneIcon";
 import FGVPProteinDataBank from "./FGVPProteinDataBank/FGVPProteinDataBank";
 
 const FGVPublic = ({ selectedGene }) => {
@@ -92,7 +93,7 @@ const FGVPublic = ({ selectedGene }) => {
       </div>
       <div className="flex w-full">
         <SecHeading
-          icon="icon icon-conceptual icon-dna"
+          svgIcon={<GeneIcon size={"25em"} />}
           heading={selectedGene.accessionNumber}
           accessionNumber={selectedGene.accessionNumber}
           displayHorizon={true}
