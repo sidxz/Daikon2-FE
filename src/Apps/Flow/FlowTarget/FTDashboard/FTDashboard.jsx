@@ -4,6 +4,7 @@ import Loading from "../../../../Library/Loading/Loading";
 import SecHeading from "../../../../Library/SecHeading/SecHeading";
 import { RootStoreContext } from "../../../../RootStore";
 import { appColors } from "../../../../constants/colors";
+import { TargetIcon } from "../../icons/TargetIcon";
 import FTDDataTable from "./FTDDataTable/FTDDataTable";
 import FTDTargetMap from "./FTDTargetMap/FTDTargetMap";
 const FTDashboard = () => {
@@ -31,6 +32,7 @@ const FTDashboard = () => {
     <div className="flex flex-column min-w-full fadein animation-duration-500">
       <div className="flex w-full">
         <SecHeading
+          svgIcon={<TargetIcon size={"25em"} />}
           icon="icon icon-common icon-target"
           heading="Targets"
           color={appColors.sectionHeadingBg.target}

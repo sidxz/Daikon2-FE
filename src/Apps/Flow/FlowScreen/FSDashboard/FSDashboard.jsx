@@ -5,6 +5,7 @@ import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import SecHeading from "../../../../Library/SecHeading/SecHeading";
 import { RootStoreContext } from "../../../../RootStore";
 import { appColors } from "../../../../constants/colors";
+import { ScreenIcon } from "../../icons/ScreenIcon";
 import FSDAddScreen from "./FSDAddScreen/FSDAddScreen";
 import FSDMenuBar from "./FSDMenuBar/FSDMenuBar";
 import FSDOverview from "./FSDOverview/FSDOverview";
@@ -28,6 +29,7 @@ const FSDashboard = () => {
       <div className="flex flex-column min-w-full fadein animation-duration-500">
         <div className="flex w-full">
           <SecHeading
+            svgIcon={<ScreenIcon size={"25em"} />}
             icon="icon icon-common icon-search"
             heading="Screens"
             color={appColors.sectionHeadingBg.screen}
