@@ -1,5 +1,6 @@
 import { observer } from "mobx-react-lite";
 import { BreadCrumb } from "primereact/breadcrumb";
+import { Fieldset } from "primereact/fieldset";
 import React, { useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../../../../../Library/Loading/Loading";
@@ -36,6 +37,9 @@ const FTVScorecard = () => {
           color={appColors.sectionHeadingBg.target}
           displayHorizon={true}
         />
+      </div>
+      <div className="flex w-full">
+        <Fieldset legend="Scorecard"></Fieldset>
       </div>
     </div>
   );
