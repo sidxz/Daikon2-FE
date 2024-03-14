@@ -66,7 +66,9 @@ export default class QnaireStore {
     } catch (error) {
       console.error("Error fetching questionnaires", error);
     } finally {
-      this.isFetchingQuestionnaires = false;
+      runInAction(() => {
+        this.isFetchingQuestionnaires = false;
+      });
     }
   };
 
@@ -87,6 +89,7 @@ export default class QnaireStore {
       if (questionnaire) {
         runInAction(() => {
           this.selectedQuestionnaire = questionnaire;
+          this.isFetchingQuestionnaire = false;
         });
         return;
       }
@@ -96,11 +99,14 @@ export default class QnaireStore {
       runInAction(() => {
         this.questionnaireRegistry.set(questionnaire.id, questionnaire);
         this.selectedQuestionnaire = questionnaire;
+        this.isQuestionnaireRegistryCacheValid = true;
       });
     } catch (error) {
       console.error("Error fetching questionnaire", error);
     } finally {
-      this.isFetchingQuestionnaire = false;
+      runInAction(() => {
+        this.isFetchingQuestionnaire = false;
+      });
     }
   };
 
@@ -115,12 +121,20 @@ export default class QnaireStore {
     } catch (error) {
       console.error("Error creating questionnaire", error);
     } finally {
-      this.isCreatingQuestionnaire = false;
+      runInAction(() => {
+        this.isCreatingQuestionnaire = false;
+      });
     }
   };
 
   updateQuestionnaire = async (questionnaire) => {
     this.isUpdatingQuestionnaire = true;
+    if (!questionnaire.id) {
+      questionnaire.id = this.selectedQuestionnaire.id;
+    }
+
+    console.log("updateQuestionnaire", questionnaire);
+
     try {
       const updatedQuestionnaire = await QnaireAPI.update(questionnaire);
       runInAction(() => {
@@ -132,7 +146,9 @@ export default class QnaireStore {
     } catch (error) {
       console.error("Error updating questionnaire", error);
     } finally {
-      this.isUpdatingQuestionnaire = false;
+      runInAction(() => {
+        this.isUpdatingQuestionnaire = false;
+      });
     }
   };
 
@@ -146,7 +162,9 @@ export default class QnaireStore {
     } catch (error) {
       console.error("Error deleting questionnaire", error);
     } finally {
-      this.isDeletingQuestionnaire = false;
+      runInAction(() => {
+        this.isDeletingQuestionnaire = false;
+      });
     }
   };
 }

@@ -20,9 +20,7 @@ const QnaireDash = () => {
   } = rootStore.qnaireStore;
 
   useEffect(() => {
-    if (!isQuestionnaireRegistryCacheValid) {
-      fetchQuestionnaires();
-    }
+    fetchQuestionnaires();
   }, [fetchQuestionnaires, isQuestionnaireRegistryCacheValid]);
 
   if (isFetchingQuestionnaires) {
