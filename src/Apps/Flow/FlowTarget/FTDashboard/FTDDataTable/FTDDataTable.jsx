@@ -23,7 +23,7 @@ const FTDDataTable = ({ targets }) => {
   }, [fetchTargets, isTargetListCacheValid]);
 
   let nameBodyTemplate = (rowData) => {
-    return <NavLink to={rowData.id}>{rowData.name}</NavLink>;
+    return <NavLink to={"viewer/" + rowData.id}>{rowData.name}</NavLink>;
   };
 
   return (
