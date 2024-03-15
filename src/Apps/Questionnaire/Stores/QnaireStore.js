@@ -142,6 +142,7 @@ export default class QnaireStore {
           updatedQuestionnaire.id,
           updatedQuestionnaire
         );
+        this.selectedQuestionnaire = updatedQuestionnaire;
       });
     } catch (error) {
       console.error("Error updating questionnaire", error);
