@@ -35,8 +35,8 @@ const Question = ({ question, updateObject, readObject, highlightRed }) => {
 
   const optionTemplate = (option) => {
     return (
-      <div className="flex flex-column gap-1 max-w-30rem flex-wrap pt-1">
-        <div className="flex font-bold text-md border-400 surface-300 p-1">
+      <div className="flex flex-column max-w-30rem flex-wrap">
+        <div className="flex font-bold text-md border-400 p-0">
           {option.answer}
         </div>
         <div className="flex flex-wrap white-space-normal ml-4">
@@ -84,7 +84,7 @@ const Question = ({ question, updateObject, readObject, highlightRed }) => {
         {question.questionType === "MultipleChoice" && (
           <Dropdown
             id={question.identification}
-            style={{ width: "9rem", height: "2.5rem" }}
+            style={{ width: "9rem", height: "3rem" }}
             options={question.possibleAnswers}
             valueTemplate={selectedOptionTemplate}
             itemTemplate={optionTemplate}
@@ -97,7 +97,7 @@ const Question = ({ question, updateObject, readObject, highlightRed }) => {
         {question.questionType === "Text" && (
           <InputText
             id={question.identification}
-            style={{ width: "9rem", height: "2.5rem" }}
+            style={{ width: "9rem", height: "3rem" }}
             value={readObject?.[question.identification]?.answer}
             optionLabel="answer"
             optionValue="answer"
@@ -107,7 +107,7 @@ const Question = ({ question, updateObject, readObject, highlightRed }) => {
         {question.questionType === "" && (
           <InputText
             id={question.identification}
-            style={{ width: "9rem", height: "2.5rem" }}
+            style={{ width: "9rem", height: "3rem" }}
             value={readObject?.[question.identification]?.answer}
             optionLabel="answer"
             optionValue="answer"
@@ -120,7 +120,7 @@ const Question = ({ question, updateObject, readObject, highlightRed }) => {
         <span className="float-label">
           <InputTextarea
             rows={1}
-            style={{ minWidth: "40rem", minHeight: "2.5rem" }}
+            style={{ minWidth: "40rem", minHeight: "2.9rem" }}
             id={question.identification + "Description"}
             value={readObject?.[question.identification]?.description || ""}
             onChange={(e) => updateObject(e)}

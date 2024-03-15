@@ -2,6 +2,7 @@ import { observer } from "mobx-react-lite";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Loading from "../../../../../../Library/Loading/Loading";
 import { RootStoreContext } from "../../../../../../RootStore";
@@ -11,18 +12,9 @@ import { _defaultFormData } from "./helpers/TPQ_helper";
 
 const TPQuestionnaire = ({ selectedGenes, proteinName }) => {
   const rootStore = useContext(RootStoreContext);
+  const navigate = useNavigate();
   const { isGeneListCacheValid, isGeneListLoading, geneList, fetchGenes } =
     rootStore.geneStore;
-
-  const {
-    fetchQuestionnaires,
-    isFetchingQuestionnaires,
-    fetchQuestionnaireByName,
-    isFetchingQuestionnaire,
-    isQuestionnaireRegistryCacheValid,
-    selectedQuestionnaire,
-    isUpdatingQuestionnaire,
-  } = rootStore.qnaireStore;
 
   const {
     questions,
@@ -42,7 +34,6 @@ const TPQuestionnaire = ({ selectedGenes, proteinName }) => {
     if (!isGeneListCacheValid) {
       fetchGenes();
     }
-    fetchQuestionnaireByName("TARGET PROMOTION QUESTIONNAIRE");
   }, [isGeneListCacheValid, fetchGenes]);
 
   useEffect(() => {
@@ -51,26 +42,21 @@ const TPQuestionnaire = ({ selectedGenes, proteinName }) => {
     }
   }, [isCacheValid, fetchQuestions]);
 
-  if (isGeneListLoading || isFetchingQuestionnaires) {
+  if (isGeneListLoading || isFetchingQuestions) {
     return <Loading message={"Fetching..."} />;
   }
 
-  console.log(selectedQuestionnaire);
+  console.log(questions);
 
   if (
-    !isFetchingQuestionnaires &&
-    selectedQuestionnaire &&
+    !isFetchingQuestions &&
+    questions.length > 0 &&
     Object.keys(targetPromotionFormValue).length === 0
   ) {
     let targetNameKey = "promote_" + proteinName;
     let storedFormData = localStorage.getItem(targetNameKey);
-    console.log(
-      "_defaultFormData",
-      _defaultFormData(selectedQuestionnaire.questions)
-    );
-    setTargetPromotionFormValue(
-      _defaultFormData(selectedQuestionnaire.questions)
-    );
+    console.log("_defaultFormData", _defaultFormData(questions));
+    setTargetPromotionFormValue(_defaultFormData(questions));
     console.log("storedFormData", storedFormData);
     console.log("targetPromotionFormValue", targetPromotionFormValue);
     if (storedFormData !== null) {
@@ -124,9 +110,7 @@ const TPQuestionnaire = ({ selectedGenes, proteinName }) => {
   const resetFormLocalStorage = () => {
     let targetNameKey = "promote_" + proteinName;
     localStorage.removeItem(targetNameKey);
-    setTargetPromotionFormValue(
-      _defaultFormData(selectedQuestionnaire.questions)
-    );
+    setTargetPromotionFormValue(_defaultFormData(questions));
 
     // Remove draft
     let existingDrafts = localStorage.getItem("promotion_drafts");
@@ -135,6 +119,7 @@ const TPQuestionnaire = ({ selectedGenes, proteinName }) => {
     localStorage.setItem("promotion_drafts", JSON.stringify(existingDrafts));
 
     toast.success("Cleared");
+    navigate("/wf/target/");
   };
 
   const submitTargetPromotionFormValueForm = () => {
