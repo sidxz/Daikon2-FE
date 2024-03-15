@@ -2,6 +2,7 @@ import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import SecHeading from "../../../../Library/SecHeading/SecHeading";
 import { appColors } from "../../../../constants/colors";
+import { HAIcon } from "../../icons/HAIcon";
 import FHADMenuBar from "./FHADMenuBar/FHADMenuBar";
 import FHADOverview from "./FHADOverview/FHADOverview";
 
@@ -10,7 +11,7 @@ const FHADashboard = () => {
     <div className="flex flex-column min-w-full fadein animation-duration-500">
       <div className="flex w-full">
         <SecHeading
-          icon="icon icon-conceptual icon-chemical"
+          svgIcon={<HAIcon size={"25em"} />}
           heading="Hit Assessment"
           color={appColors.sectionHeadingBg.ha}
           displayHorizon={true}

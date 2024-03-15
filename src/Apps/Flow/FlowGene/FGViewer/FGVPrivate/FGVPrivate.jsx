@@ -13,6 +13,7 @@ import FGVPrProteinProduction from "./FGVPrProteinProduction/FGVPrProteinProduct
 import FGVPrResistanceMutation from "./FGVPrResistanceMutation/FGVPrResistanceMutation";
 import FGVPrUnpublishedStructuralInformation from "./FGVPrUnpublishedStructuralInformation/FGVPrUnpublishedStructuralInformation";
 import FGVPrVulnerability from "./FGVPrVulnerability/FGVPrVulnerability";
+import { GeneIcon } from "../../../icons/GeneIcon";
 
 const FGVPrivate = ({ selectedGene }) => {
   const navigate = useNavigate();
@@ -39,7 +40,7 @@ const FGVPrivate = ({ selectedGene }) => {
       </div>
       <div className="flex w-full">
         <SecHeading
-          icon="icon icon-conceptual icon-dna"
+          svgIcon={<GeneIcon size={"25em"} />}
           heading={selectedGene.accessionNumber}
           accessionNumber={selectedGene.accessionNumber}
           displayHorizon={true}
