@@ -46,23 +46,21 @@ const TPQuestionnaire = ({ selectedGenes, proteinName }) => {
     return <Loading message={"Fetching..."} />;
   }
 
-  console.log(questions);
-
   if (
     !isFetchingQuestions &&
-    questions.length > 0 &&
+    questionsRegistry.size > 0 &&
     Object.keys(targetPromotionFormValue).length === 0
   ) {
     let targetNameKey = "promote_" + proteinName;
     let storedFormData = localStorage.getItem(targetNameKey);
-    console.log("_defaultFormData", _defaultFormData(questions));
-    setTargetPromotionFormValue(_defaultFormData(questions));
-    console.log("storedFormData", storedFormData);
-    console.log("targetPromotionFormValue", targetPromotionFormValue);
+    console.log("_defaultFormData", _defaultFormData(questionsRegistry));
+    setTargetPromotionFormValue(_defaultFormData(questionsRegistry));
     if (storedFormData !== null) {
       setTargetPromotionFormValue(JSON.parse(storedFormData));
     }
   }
+
+  console.log("targetPromotionFormValue", targetPromotionFormValue);
 
   const updateTargetPromotionFormValue = (e) => {
     //console.log(e);
@@ -124,24 +122,24 @@ const TPQuestionnaire = ({ selectedGenes, proteinName }) => {
 
   const submitTargetPromotionFormValueForm = () => {
     var validationFail = false;
-    Object.keys(targetPromotionFormValue).map((key) => {
-      if (targetPromotionFormValue[key].answer === "") {
-        console.error("Validation fail, blank answer");
-        //console.log(targetPromotionFormValue[key]);
-        validationFail = true;
-      }
-      if (
-        !(
-          targetPromotionFormValue[key].answer === "UNKNOWN" ||
-          targetPromotionFormValue[key].answer === "NA"
-        ) &&
-        targetPromotionFormValue[key].description === ""
-      ) {
-        console.error("Validation fail, blank description");
-        //console.log(targetPromotionFormValue[key]);
-        validationFail = true;
-      }
-    });
+    // Object.keys(targetPromotionFormValue).map((key) => {
+    //   if (targetPromotionFormValue[key].answer === "") {
+    //     console.error("Validation fail, blank answer");
+    //     //console.log(targetPromotionFormValue[key]);
+    //     validationFail = true;
+    //   }
+    //   if (
+    //     !(
+    //       targetPromotionFormValue[key].answer === "UNKNOWN" ||
+    //       targetPromotionFormValue[key].answer === "NA"
+    //     ) &&
+    //     targetPromotionFormValue[key].description === ""
+    //   ) {
+    //     console.error("Validation fail, blank description");
+    //     //console.log(targetPromotionFormValue[key]);
+    //     validationFail = true;
+    //   }
+    // });
 
     if (validationFail) {
       toast.warning("Required fields are missing");
@@ -154,10 +152,15 @@ const TPQuestionnaire = ({ selectedGenes, proteinName }) => {
     //   genePromotionRequestValues: [],
     // };
     var data = {
+      ...getGenePromotionDataObj(),
       genePromotionRequestValues: [],
     };
 
+    console.log("targetPromotionFormValue");
+    console.log(targetPromotionFormValue);
+
     Object.keys(targetPromotionFormValue).map((key) => {
+      console.log("KEY", key);
       data.genePromotionRequestValues.push({
         questionId: questionsRegistry.get(key).id,
         answer: targetPromotionFormValue[key].answer,
