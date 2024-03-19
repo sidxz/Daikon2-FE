@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import SecHeading from "../../../../Library/SecHeading/SecHeading";
 import { appColors } from "../../../../constants/colors";
 import { HAIcon } from "../../icons/HAIcon";
+import FHADAllProjects from "./FHADAllProjects/FHADAllProjects";
 import FHADMenuBar from "./FHADMenuBar/FHADMenuBar";
 import FHADOverview from "./FHADOverview/FHADOverview";
 
@@ -25,6 +26,7 @@ const FHADashboard = () => {
         <Routes>
           <Route index element={<Navigate to="overview/" />} />
           <Route path="overview/*" element={<FHADOverview />} />
+          <Route path="all-projects/*" element={<FHADAllProjects />} />
         </Routes>
       </div>
     </div>

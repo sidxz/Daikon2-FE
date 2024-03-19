@@ -12,7 +12,7 @@ const FHADMenuBar = () => {
 
   useEffect(() => {
     if (location.pathname.includes("/overview/")) setActiveIndex(0);
-    else if (location.pathname.includes("/tabular-view/")) setActiveIndex(1);
+    else if (location.pathname.includes("/all-projects/")) setActiveIndex(1);
   }, [location, setActiveIndex]);
 
   const items = [
@@ -21,8 +21,8 @@ const FHADMenuBar = () => {
       command: () => navigate("overview/"),
     },
     {
-      label: "Tabular View",
-      command: () => navigate("tabular-view/"),
+      label: "All HA Projects",
+      command: () => navigate("all-projects/"),
     },
   ];
 
