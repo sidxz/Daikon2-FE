@@ -1,5 +1,4 @@
 import { observer } from "mobx-react-lite";
-import { BlockUI } from "primereact/blockui";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import React, { useContext, useEffect, useState } from "react";
@@ -76,33 +75,36 @@ const QnaireView = () => {
         />
       </div>
       <div className="flex w-full">
-        <BlockUI blocked={isUpdatingQuestionnaire}>
-          <DataTable
-            value={selectedQuestionnaire?.questions}
-            className="p-datatable-sm w-full"
-            sortMode="single"
-            sortField="displayName"
-            sortOrder={1}
-            filterDisplay="row"
-            header={
-              <QnaireDataTableHeader
-                selectedQuestionnaire={selectedQuestionnaire}
-              />
-            }
-          >
-            <Column
-              body={identificationTemplate}
-              header="Identification"
-              sortable
+        <DataTable
+          value={selectedQuestionnaire?.questions}
+          className="p-datatable-sm w-full"
+          sortMode="single"
+          sortField="displayName"
+          sortOrder={1}
+          filterDisplay="row"
+          header={
+            <QnaireDataTableHeader
+              selectedQuestionnaire={selectedQuestionnaire}
             />
-            <Column field="questionBody" header="QuestionBody" sortable />
-            <Column field="section" header="Section" sortable />
-            <Column field="subSection" header="Sub Section" sortable />
-            <Column field="isAdminOnly" header="isAdminOnly?" />
-            <Column field="isDisabled" header="isDisabled?" />
-            <Column field="weight" header="Weight" sortable />
-          </DataTable>
-        </BlockUI>
+          }
+          loading={
+            isFetchingQuestionnaire ||
+            isFetchingQuestionnaires ||
+            isUpdatingQuestionnaire
+          }
+        >
+          <Column
+            body={identificationTemplate}
+            header="Identification"
+            sortable
+          />
+          <Column field="questionBody" header="QuestionBody" sortable />
+          <Column field="section" header="Section" sortable />
+          <Column field="subSection" header="Sub Section" sortable />
+          <Column field="isAdminOnly" header="isAdminOnly?" />
+          <Column field="isDisabled" header="isDisabled?" />
+          <Column field="weight" header="Weight" sortable />
+        </DataTable>
       </div>
     </div>
   );

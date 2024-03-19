@@ -16,6 +16,7 @@ import HitCollectionStore from "./Apps/Flow/FlowScreen/Stores/HitCollectionStore
 import HitStore from "./Apps/Flow/FlowScreen/Stores/HitStore";
 import ScreenRunStore from "./Apps/Flow/FlowScreen/Stores/ScreenRunStore";
 import ScreenStore from "./Apps/Flow/FlowScreen/Stores/ScreenStore";
+import TargetSourcingStore from "./Apps/Flow/FlowTarget/Stores/TargetSourcingStore";
 import TargetStore from "./Apps/Flow/FlowTarget/Stores/TargetStore";
 import MoleculeStore from "./Apps/MolecuLogix/Stores/MoleculeStore";
 import QnaireStore from "./Apps/Questionnaire/Stores/QnaireStore";
@@ -40,6 +41,7 @@ export class RootStore {
   geneUnpublishedStructuralInformationStore;
 
   targetStore;
+  targetSourcingStore;
 
   screenStore;
   screenRunStore;
@@ -73,6 +75,7 @@ export class RootStore {
 
     /* Target */
     this.targetStore = new TargetStore(this);
+    this.targetSourcingStore = new TargetSourcingStore(this);
 
     /* Screen */
     this.screenStore = new ScreenStore(this);

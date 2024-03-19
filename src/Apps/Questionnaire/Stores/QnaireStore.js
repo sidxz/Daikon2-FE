@@ -21,6 +21,7 @@ export default class QnaireStore {
       questionnaires: computed,
 
       fetchQuestionnaire: action,
+      fetchQuestionnaireByName: action,
       isFetchingQuestionnaire: observable,
 
       createQuestionnaire: action,
@@ -110,6 +111,29 @@ export default class QnaireStore {
     }
   };
 
+  fetchQuestionnaireByName = async (name, inValidateCache = false) => {
+    this.isFetchingQuestionnaire = true;
+
+    if (inValidateCache) {
+      this.isQuestionnaireRegistryCacheValid = false;
+    }
+
+    try {
+      const questionnaire = await QnaireAPI.readByName(name);
+      runInAction(() => {
+        this.questionnaireRegistry.set(questionnaire.id, questionnaire);
+        this.selectedQuestionnaire = questionnaire;
+        this.isQuestionnaireRegistryCacheValid = true;
+      });
+    } catch (error) {
+      console.error("Error fetching questionnaire", error);
+    } finally {
+      runInAction(() => {
+        this.isFetchingQuestionnaire = false;
+      });
+    }
+  };
+
   createQuestionnaire = async (questionnaire) => {
     console.log("createQuestionnaire", questionnaire);
     this.isCreatingQuestionnaire = true;
@@ -142,6 +166,7 @@ export default class QnaireStore {
           updatedQuestionnaire.id,
           updatedQuestionnaire
         );
+        this.selectedQuestionnaire = updatedQuestionnaire;
       });
     } catch (error) {
       console.error("Error updating questionnaire", error);

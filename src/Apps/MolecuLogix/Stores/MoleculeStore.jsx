@@ -56,6 +56,10 @@ export default class MoleculeStore {
       const molecules = await MolDbAPI.listMolecules();
       runInAction(() => {
         molecules.forEach((molecule) => {
+          console.log(molecule);
+          // round off molecularWeight and tpsa to 2 decimal places
+          molecule.molecularWeight = molecule.molecularWeight.toFixed(2);
+          molecule.tpsa = molecule.tpsa.toFixed(2);
           this.moleculeRegistry.set(molecule.id, molecule);
         });
         this.isMoleculeListCacheValid = true;
@@ -90,6 +94,8 @@ export default class MoleculeStore {
     try {
       const molecule = await MolDbAPI.getMoleculeById(moleculeId);
       runInAction(() => {
+        molecule.molecularWeight = molecule.molecularWeight.toFixed(2);
+        molecule.tpsa = molecule.tpsa.toFixed(2);
         this.moleculeRegistry.set(molecule.id, molecule);
         this.selectedMolecule = molecule;
       });

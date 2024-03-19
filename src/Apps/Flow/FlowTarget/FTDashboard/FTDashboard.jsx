@@ -1,10 +1,13 @@
 import { observer } from "mobx-react-lite";
-import React, { useContext, useEffect } from "react";
+import { Sidebar } from "primereact/sidebar";
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Loading from "../../../../Library/Loading/Loading";
 import SecHeading from "../../../../Library/SecHeading/SecHeading";
 import { RootStoreContext } from "../../../../RootStore";
 import { appColors } from "../../../../constants/colors";
 import { TargetIcon } from "../../icons/TargetIcon";
+import FTDAddTarget from "./FTDAddTarget";
 import FTDDataTable from "./FTDDataTable/FTDDataTable";
 import FTDTargetMap from "./FTDTargetMap/FTDTargetMap";
 const FTDashboard = () => {
@@ -15,6 +18,9 @@ const FTDashboard = () => {
     fetchTargets,
     isTargetListCacheValid,
   } = rootStore.targetStore;
+
+  const [displayAddSideBar, setDisplayAddSideBar] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!isTargetListCacheValid) {
@@ -28,6 +34,13 @@ const FTDashboard = () => {
 
   console.log("FTDashboard -> targetList", targetList);
 
+  const addSideBarHeader = (
+    <div className="flex align-items-center gap-2">
+      <i className="icon icon-common icon-plus-circle"></i>
+      <span className="font-bold">Source Target</span>
+    </div>
+  );
+
   return (
     <div className="flex flex-column min-w-full fadein animation-duration-500">
       <div className="flex w-full">
@@ -36,7 +49,19 @@ const FTDashboard = () => {
           icon="icon icon-common icon-target"
           heading="Targets"
           color={appColors.sectionHeadingBg.target}
-          displayHorizon={true}
+          displayHorizon={false}
+          customButtons={[
+            {
+              label: "Awaiting Approval",
+              icon: "pi pi-stopwatch",
+              action: () => navigate("sourcing/approval"),
+            },
+            {
+              label: "Add Target",
+              icon: "pi pi-plus",
+              action: () => setDisplayAddSideBar(true),
+            },
+          ]}
         />
       </div>
       <div className="flex max-w-full p-1">
@@ -47,6 +72,16 @@ const FTDashboard = () => {
           <FTDDataTable />
         </div>
       </div>
+
+      <Sidebar
+        visible={displayAddSideBar}
+        position="right"
+        onHide={() => setDisplayAddSideBar(false)}
+        className="p-sidebar-sm"
+        header={addSideBarHeader}
+      >
+        <FTDAddTarget closeSideBar={() => setDisplayAddSideBar(false)} />
+      </Sidebar>
     </div>
   );
 };
