@@ -7,14 +7,14 @@ export const sidePanelItems = (navigate) => {
           label: "Compass",
           icon: "icon icon-common icon-compass",
           command: () => {
-            navigate(`private/`);
+            navigate(`compass/`);
           },
         },
         {
           label: "Scorecard",
           icon: "icon icon-common icon-flag-checkered",
           command: () => {
-            navigate(`public/`);
+            navigate(`scorecard/`);
           },
         },
 
@@ -22,7 +22,7 @@ export const sidePanelItems = (navigate) => {
           label: "Promotion Info",
           icon: "icon icon-common icon-info",
           command: () => {
-            navigate(`discussion/`);
+            navigate(`promotion-info/`);
           },
         },
         {
@@ -38,7 +38,7 @@ export const sidePanelItems = (navigate) => {
       label: "Actions",
       items: [
         {
-          label: "Promote to Target",
+          label: "Promote to Screen",
           icon: "pi pi-external-link",
           command: () => {
             navigate(`promote/`);
