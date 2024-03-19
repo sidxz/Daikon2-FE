@@ -1,6 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { Sidebar } from "primereact/sidebar";
 import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Loading from "../../../../Library/Loading/Loading";
 import SecHeading from "../../../../Library/SecHeading/SecHeading";
 import { RootStoreContext } from "../../../../RootStore";
@@ -19,6 +20,7 @@ const FTDashboard = () => {
   } = rootStore.targetStore;
 
   const [displayAddSideBar, setDisplayAddSideBar] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!isTargetListCacheValid) {
@@ -49,6 +51,11 @@ const FTDashboard = () => {
           color={appColors.sectionHeadingBg.target}
           displayHorizon={false}
           customButtons={[
+            {
+              label: "Awaiting Approval",
+              icon: "pi pi-stopwatch",
+              action: () => navigate("sourcing/approval"),
+            },
             {
               label: "Add Target",
               icon: "pi pi-plus",

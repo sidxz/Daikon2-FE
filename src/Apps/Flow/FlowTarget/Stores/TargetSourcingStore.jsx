@@ -5,6 +5,7 @@ import {
   observable,
   runInAction,
 } from "mobx";
+import TPQAPI from "../api/TPQAPI";
 
 export default class TargetSourcingStore {
   rootStore;
@@ -137,19 +138,19 @@ export default class TargetSourcingStore {
   };
 
   /* submit Promotion Questionnaire from API */
-  submitPromotionQuestionnaire = async (targetName, data) => {
-    //   this.isPromotionQuestionnaireSubmitting = true;
-    //   let res = null;
-    //   // send to server
-    //   try {
-    //     res = await agent.Gene.submitPromotionQuestionnaire(targetName, data);
-    //   } catch (error) {
-    //     console.error(error);
-    //   } finally {
-    //     runInAction(() => {
-    //       this.isPromotionQuestionnaireSubmitting = false;
-    //     });
-    //   }
-    //   return res;
+  submitPromotionQuestionnaire = async (data) => {
+    this.isPromotionQuestionnaireSubmitting = true;
+    let res = null;
+    // send to server
+    try {
+      res = await TPQAPI.submit(data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      runInAction(() => {
+        this.isPromotionQuestionnaireSubmitting = false;
+      });
+    }
+    return res;
   };
 }

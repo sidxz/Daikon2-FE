@@ -52,7 +52,6 @@ const TargetPromotionQuestionnaire = () => {
               geneList={geneList}
               proteinName={proteinName}
               nextStep={() => {
-                console.log("next step");
                 setIsGenePanelOpen(false);
                 setIsQuestionnairePanelOpen(true);
               }}
@@ -68,7 +67,6 @@ const TargetPromotionQuestionnaire = () => {
               geneList={geneList}
               proteinName={proteinName}
               nextStep={() => {
-                console.log("next step");
                 setIsGenePanelOpen(false);
                 setIsQuestionnairePanelOpen(true);
               }}

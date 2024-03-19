@@ -14,6 +14,7 @@ const FTDAddTarget = ({ closeSideBar }) => {
       <div className="flex">
         <Divider />
       </div>
+
       <div
         className="flex flex-column gap-2 w-full border-1 border-200 pt-3 pb-3 pl-2 pr-2 justify-content-center cursor-pointer hover:shadow-1"
         onClick={() => {

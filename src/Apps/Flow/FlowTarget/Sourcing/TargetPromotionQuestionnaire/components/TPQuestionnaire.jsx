@@ -24,6 +24,7 @@ const TPQuestionnaire = ({ selectedGenes, proteinName }) => {
     questionsRegistry,
     isCacheValid,
     getGenePromotionDataObj,
+    submitPromotionQuestionnaire,
   } = rootStore.targetSourcingStore;
 
   const [targetPromotionFormValue, setTargetPromotionFormValue] = useState({});
@@ -147,36 +148,38 @@ const TPQuestionnaire = ({ selectedGenes, proteinName }) => {
       return;
     }
 
-    // var data = {
-    //   ...getGenePromotionDataObj(),
-    //   genePromotionRequestValues: [],
-    // };
     var data = {
       ...getGenePromotionDataObj(),
-      genePromotionRequestValues: [],
+      response: [],
     };
 
     console.log("targetPromotionFormValue");
     console.log(targetPromotionFormValue);
 
     Object.keys(targetPromotionFormValue).map((key) => {
-      console.log("KEY", key);
-      data.genePromotionRequestValues.push({
-        questionId: questionsRegistry.get(key).id,
-        answer: targetPromotionFormValue[key].answer,
-        description: targetPromotionFormValue[key].description,
+      data.response.push({
+        Item1: questionsRegistry.get(key).id,
+        Item2: targetPromotionFormValue[key].answer,
+        Item3: targetPromotionFormValue[key].description,
       });
+    });
+
+    data.requestedTargetName = proteinName;
+
+    // return a dictionary of gene id, gene accession number
+    data.requestedAssociatedGenes = {};
+    selectedGenes.forEach((g) => {
+      data.requestedAssociatedGenes[g.id] = g.accessionNumber;
     });
 
     console.log("===SUBMIT===");
     console.log(data);
-    // submitPromotionQuestionnaire(params.proposedTargetName, data).then(
-    //   (res) => {
-    //     if (res !== null) {
-    //       setFormSuccess(true);
-    //     }
-    //   }
-    // );
+
+    submitPromotionQuestionnaire(data).then((res) => {
+      if (res !== null) {
+        setFormSuccess(true);
+      }
+    });
   };
 
   let header = (
