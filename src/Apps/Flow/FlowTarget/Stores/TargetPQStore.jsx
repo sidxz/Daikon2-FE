@@ -15,45 +15,91 @@ export default class TargetPQStore {
     this.rootStore = rootStore;
     makeObservable(this, {
       TQRegistry: observable,
-      isFetchingTQ: observable,
+      isFetchingTQList: observable,
       fetchTQUnverified: action,
+
+      fetchTQ: action,
+      isFetchingTQ: observable,
+
       isTQCacheValid: observable,
+      isTQXVerifiedCacheValid: observable,
 
-      selectedTargetQuestionnaire: observable,
+      selectedTQ: observable,
 
-      targetQuestionnaires: computed,
-      targetQuestionnairesUnapproved: computed,
+      TQUnapproved: computed,
     });
   }
 
   // Observables
-  isFetchingTQ = false;
+  isFetchingTQList = false;
   isTQCacheValid = false;
+  isTQXVerifiedCacheValid = false;
   TQRegistry = new Map();
-  selectedTargetQuestionnaire = null;
+  selectedTQ = null;
+
+  isFetchingTQ = false;
 
   // Actions
   fetchTQUnverified = async (inValidateCache = false) => {
     if (inValidateCache) {
-      this.isTQCacheValid = false;
+      this.isTQXVerifiedCacheValid = false;
     }
-    if (this.isTQCacheValid) {
+    if (this.isTQXVerifiedCacheValid) {
       return;
     }
-    this.isFetchingTQ = true;
+    this.isFetchingTQList = true;
     try {
       const response = await TPQAPI.listUnverified();
       runInAction(() => {
-        this.TQRegistry = new Map(
-          response.data.map((targetQuestionnaire) => [
-            targetQuestionnaire.id,
-            targetQuestionnaire,
-          ])
-        );
-        this.isTQCacheValid = true;
+        response.forEach((tq) => {
+          console.log(tq);
+          this.TQRegistry.set(tq.id, tq);
+        });
+        this.isTQXVerifiedCacheValid = true;
       });
     } catch (error) {
       toast.error("Error fetching target questionnaire");
+    } finally {
+      runInAction(() => {
+        this.isFetchingTQList = false;
+      });
+    }
+  };
+
+  // Computed
+  get targetQuestionnaires() {
+    return Array.from(this.TQRegistry.values());
+  }
+
+  get TQUnapproved() {
+    return this.targetQuestionnaires.filter((q) => q.isVerified === false);
+  }
+
+  fetchTQ = async (id, inValidateCache = false) => {
+    if (inValidateCache) {
+      this.isTQCacheValid = false;
+    }
+
+    this.isFetchingTQ = true;
+
+    if (this.isTQCacheValid) {
+      const tq = this.TQRegistry.get(id);
+      console.log("fetchTQ -> tq", tq);
+
+      if (tq) {
+        this.isFetchingTQ = false;
+        this.selectedTQ = tq;
+      }
+    }
+    try {
+      const tq = await TPQAPI.getById(id);
+      runInAction(() => {
+        console.log("fetchTQ -> tq", tq);
+        this.TQRegistry.set(tq.id, tq);
+        this.selectedTQ = tq;
+      });
+    } catch (error) {
+      console.error("Error fetching Target Questionnaire:", error);
     } finally {
       runInAction(() => {
         this.isFetchingTQ = false;

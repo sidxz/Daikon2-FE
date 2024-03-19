@@ -158,7 +158,7 @@ const TPQuestionnaire = ({ selectedGenes, proteinName }) => {
 
     Object.keys(targetPromotionFormValue).map((key) => {
       data.response.push({
-        Item1: questionsRegistry.get(key).id,
+        Item1: questionsRegistry.get(key).identification,
         Item2: targetPromotionFormValue[key].answer,
         Item3: targetPromotionFormValue[key].description,
       });

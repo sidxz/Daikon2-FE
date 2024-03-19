@@ -4,7 +4,8 @@ const axiosWithAuth = new AxiosWithAuth();
 
 const TPQAPI = {
   listUnverified: () => axiosWithAuth.get("/v2/target/tpq/unverified"),
-  submit: (QResponse) => axiosWithAuth.post("/v2/target/tpq/submit", QResponse),
+  getById: (id) => axiosWithAuth.get(`/v2/target/tpq/${id}`),
+  submit: (QResponse) => axiosWithAuth.post("/v2/target/tpq/", QResponse),
 };
 
 export default TPQAPI;
