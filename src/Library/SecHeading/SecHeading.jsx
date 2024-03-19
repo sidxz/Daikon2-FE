@@ -5,6 +5,7 @@ import Horizon from "../Horizon/Horizon";
 
 const SecHeading = ({
   icon,
+  svgIcon,
   heading,
   sub,
   displayHorizon,
@@ -98,7 +99,7 @@ const SecHeading = ({
           <div className="flex w-full align-items-center">
             <div className="flex gap-2" style={{ color: htextColor }}>
               <div className="flex align-items-center justify-content-center text-3xl">
-                <i className={icon}></i>
+                {svgIcon ? svgIcon : <i className={icon} />}
               </div>
               <div className="flex align-items-center justify-content-center text-3xl">
                 {heading}

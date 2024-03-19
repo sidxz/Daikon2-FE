@@ -3,7 +3,9 @@ import { Divider } from "primereact/divider";
 import { PanelMenu } from "primereact/panelmenu";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { AdminIcon } from "../../../Apps/Admin/icons/AdminIcon";
 import { MolecuLogixIcon } from "../../../Apps/MolecuLogix/Icons/MolecuLogixIcon";
+import { QuestionnaireIcon } from "../../../Apps/Questionnaire/icons/QuestionnaireIcon";
 import mainLogo from "../../../assets/logo-daikon.png";
 import { appVersion } from "../../../constants/appVersion";
 import "./TitleBarSidePanel.css";
@@ -13,7 +15,7 @@ const TitleBarSidePanel = ({ toggle, user }) => {
   const items = [
     {
       label: "Admin",
-      icon: "pi pi-fw pi-cog",
+      icon: <AdminIcon size={"18em"} />,
       items: [
         {
           label: "User Management",
@@ -46,6 +48,14 @@ const TitleBarSidePanel = ({ toggle, user }) => {
       icon: <MolecuLogixIcon size={"18em"} />,
       command: () => {
         navigate("/moleculogix");
+        toggle();
+      },
+    },
+    {
+      label: "Questionnaires",
+      icon: <QuestionnaireIcon size={"18em"} />,
+      command: () => {
+        navigate("/questionnaire");
         toggle();
       },
     },

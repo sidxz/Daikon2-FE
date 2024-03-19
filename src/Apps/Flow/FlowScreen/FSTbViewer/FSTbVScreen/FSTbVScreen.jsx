@@ -16,6 +16,7 @@ import { CalendarRowEditor } from "../../../../../Shared/TableRowEditors/Calenda
 import { ScientistRowEditor } from "../../../../../Shared/TableRowEditors/ScientistRowEditor";
 import { TextRowEditor } from "../../../../../Shared/TableRowEditors/TextRowEditor";
 import { appColors } from "../../../../../constants/colors";
+import { ScreenIcon } from "../../../icons/ScreenIcon";
 import { FormatScreeningMethod } from "../../shared/Formatters";
 import * as Helper from "./FSTbVScreenHelper";
 import FSTbScreenRunAdd from "./components/FSTbScreenRunAdd";
@@ -90,7 +91,7 @@ const FSTbVScreen = ({}) => {
           </div>
           <div className="flex w-full">
             <SecHeading
-              icon="icon icon-common icon-search"
+              svgIcon={<ScreenIcon size={"25em"} />}
               heading={"Screen - " + selectedScreen.name}
               displayHorizon={true}
               color={appColors.sectionHeadingBg.screen}

@@ -5,6 +5,12 @@ import "./FlowMenuBar.css";
 
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { GeneIcon } from "../icons/GeneIcon";
+import { HAIcon } from "../icons/HAIcon";
+import { PortfolioIcon } from "../icons/PortfolioIcon";
+import { PostPortfolioIcon } from "../icons/PostPortfolioIcon";
+import { ScreenIcon } from "../icons/ScreenIcon";
+import { TargetIcon } from "../icons/TargetIcon";
 const FlowMenuBar = () => {
   const navigate = useNavigate();
   const [activeIndex, setActiveIndex] = useState(0);
@@ -22,33 +28,33 @@ const FlowMenuBar = () => {
   const items = [
     {
       label: "Genes",
-      icon: "icon icon-conceptual icon-dna",
+      icon: <GeneIcon size={"30em"} />,
       command: () => navigate("gene/"),
     },
     {
       label: "Targets",
-      icon: "icon icon-common icon-target",
+      icon: <TargetIcon size={"25em"} />,
       command: () => navigate("target/"),
     },
     {
       label: "Screens",
-      icon: "icon icon-common icon-search",
+      icon: <ScreenIcon size={"25em"} />,
       command: () => navigate("screen/"),
     },
     {
       label: "Hit Assessment",
-      icon: "icon icon-conceptual icon-chemical",
+      icon: <HAIcon size={"30em"} />,
       command: () => navigate("ha/"),
     },
     {
       label: "Portfolio",
-      icon: "icon icon-common icon-analyse",
+      icon: <PortfolioIcon size={"25em"} />,
       command: () => navigate("portfolio/"),
     },
 
     {
       label: "Post-Portfolio",
-      icon: "icon icon-common icon-drug",
+      icon: <PostPortfolioIcon size={"25em"} />,
       command: () => navigate("post-portfolio/"),
     },
 

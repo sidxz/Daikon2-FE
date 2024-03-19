@@ -6,6 +6,7 @@ import { ToastContainer } from "react-toastify";
 import Admin from "../Apps/Admin/Admin";
 import Flow from "../Apps/Flow/Flow";
 import MolecuLogix from "../Apps/MolecuLogix/MolecuLogix";
+import Questionnaire from "../Apps/Questionnaire/Questionnaire";
 import Login from "../Auth/Login/Login";
 import UnauthorizedUser from "../Auth/UnauthorizedUser/UnauthorizedUser";
 import Loading from "../Library/Loading/Loading";
@@ -73,6 +74,7 @@ const Container = ({ userManager }) => {
         <Route path="wf/*" element={<Flow />} />
         <Route path="admin/*" element={<Admin />} />
         <Route path="moleculogix/*" element={<MolecuLogix />} />
+        <Route path="questionnaire/*" element={<Questionnaire />} />
       </Routes>
       <Footer />
     </div>

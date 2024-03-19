@@ -6,6 +6,7 @@ import { Sidebar } from "primereact/sidebar";
 import React, { useContext, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { RootStoreContext } from "../../RootStore";
+import { MenuIcon } from "../icons/MenuIcon";
 import "./TitleBar.css";
 import TitleBarAccountPanel from "./TitleBarAccountPanel/TitleBarAccountPanel";
 import TitleBarSidePanel from "./TitleBarSidePanel/TitleBarSidePanel";
@@ -52,12 +53,12 @@ const TitleBar = ({ signOut, ssoUser }) => {
   return (
     <>
       <div className="TitleBar w-full ">
-        <div className="Header flex w-full gap-2">
-          <div className="flex flex-row flex-wrap w-3 gap-2">
+        <div className="Header flex w-full">
+          <div className="flex flex-row flex-wrap w-3">
             <div className="flex align-items-center justify-content-center">
               <Button
                 type="Button"
-                icon="icon icon-common icon-th"
+                icon={<MenuIcon size={"20em"} />}
                 className="BlackButton"
                 onClick={() => setShowSidePanel(true)}
               />

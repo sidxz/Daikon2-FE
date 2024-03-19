@@ -15,8 +15,10 @@ import HitCollectionStore from "./Apps/Flow/FlowScreen/Stores/HitCollectionStore
 import HitStore from "./Apps/Flow/FlowScreen/Stores/HitStore";
 import ScreenRunStore from "./Apps/Flow/FlowScreen/Stores/ScreenRunStore";
 import ScreenStore from "./Apps/Flow/FlowScreen/Stores/ScreenStore";
+import TargetSourcingStore from "./Apps/Flow/FlowTarget/Stores/TargetSourcingStore";
 import TargetStore from "./Apps/Flow/FlowTarget/Stores/TargetStore";
 import MoleculeStore from "./Apps/MolecuLogix/Stores/MoleculeStore";
+import QnaireStore from "./Apps/Questionnaire/Stores/QnaireStore";
 import AuthStore from "./Auth/AuthStore";
 
 configure({ enforceActions: "always" });
@@ -38,6 +40,7 @@ export class RootStore {
   geneUnpublishedStructuralInformationStore;
 
   targetStore;
+  targetSourcingStore;
 
   screenStore;
   screenRunStore;
@@ -47,6 +50,8 @@ export class RootStore {
   moleculeStore;
 
   adminUserManagementStore;
+
+  qnaireStore;
   constructor() {
     /* Auth */
     this.authStore = new AuthStore(this);
@@ -68,6 +73,7 @@ export class RootStore {
 
     /* Target */
     this.targetStore = new TargetStore(this);
+    this.targetSourcingStore = new TargetSourcingStore(this);
 
     /* Screen */
     this.screenStore = new ScreenStore(this);
@@ -80,6 +86,9 @@ export class RootStore {
 
     /* Admin */
     this.adminUserManagementStore = new AdminUserManagementStore(this);
+
+    /* Questionnaire */
+    this.qnaireStore = new QnaireStore(this);
   }
 }
 
