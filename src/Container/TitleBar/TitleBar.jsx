@@ -92,7 +92,7 @@ const TitleBar = ({ signOut, ssoUser }) => {
                 options={FeedbackOptions}
                 onChange={(e) => onFeedback(e)}
                 optionLabel="label"
-                placeholder="Feedback"
+                placeholder="Support"
                 itemTemplate={feedbackOptionTemplate}
               />
             </div>

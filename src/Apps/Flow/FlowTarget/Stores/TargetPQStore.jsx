@@ -26,6 +26,9 @@ export default class TargetPQStore {
 
       selectedTQ: observable,
 
+      updateTQ: action,
+      isUpdatingTQ: observable,
+
       TQUnapproved: computed,
     });
   }
@@ -38,6 +41,7 @@ export default class TargetPQStore {
   selectedTQ = null;
 
   isFetchingTQ = false;
+  isUpdatingTQ = false;
 
   // Actions
   fetchTQUnverified = async (inValidateCache = false) => {
@@ -99,10 +103,27 @@ export default class TargetPQStore {
         this.selectedTQ = tq;
       });
     } catch (error) {
-      console.error("Error fetching Target Questionnaire:", error);
     } finally {
       runInAction(() => {
         this.isFetchingTQ = false;
+      });
+    }
+  };
+
+  updateTQ = async (tq) => {
+    this.isUpdatingTQ = true;
+    try {
+      const response = await TPQAPI.update(tq);
+      runInAction(() => {
+        this.TQRegistry.set(response.id, tq);
+        this.selectedTQ = response;
+      });
+      toast.success("Target Questionnaire updated");
+    } catch (error) {
+      console.error("Error updating Target Questionnaire:", error);
+    } finally {
+      runInAction(() => {
+        this.isUpdatingTQ = false;
       });
     }
   };

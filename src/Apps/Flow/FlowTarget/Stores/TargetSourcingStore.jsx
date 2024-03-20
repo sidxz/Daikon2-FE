@@ -41,6 +41,8 @@ export default class TargetSourcingStore {
 
       adminQuestions: computed,
       adminQuestionsGrouped: computed,
+
+      allQuestions: computed,
     });
   }
 
@@ -85,8 +87,12 @@ export default class TargetSourcingStore {
   }
 
   get adminQuestions() {
-    let questions = Array.from(this.questionsRegistry.values());
+    let questions = Array.from(this.adminQuestionsRegistry.values());
     return questions.filter((q) => q.isDisabled === false);
+  }
+
+  get allQuestions() {
+    return this.questions.concat(this.adminQuestions);
   }
 
   get questionsGrouped() {
