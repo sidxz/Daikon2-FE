@@ -80,11 +80,13 @@ export default class TargetSourcingStore {
   };
 
   get questions() {
-    return Array.from(this.questionsRegistry.values());
+    let questions = Array.from(this.questionsRegistry.values());
+    return questions.filter((q) => q.isDisabled === false);
   }
 
   get adminQuestions() {
-    return Array.from(this.adminQuestionsRegistry.values());
+    let questions = Array.from(this.questionsRegistry.values());
+    return questions.filter((q) => q.isDisabled === false);
   }
 
   get questionsGrouped() {

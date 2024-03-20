@@ -1,4 +1,6 @@
 import { observer } from "mobx-react-lite";
+import { Divider } from "primereact/divider";
+import { Panel } from "primereact/panel";
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../../../../../Library/Loading/Loading";
@@ -112,13 +114,21 @@ const FTApprovalView = () => {
   for (var section in questionsGrouped) {
     // Extract top level sections
     userAnsweredQuestionsGrouped_Render.push(
-      <div className="flex text-xl">{section}</div>
+      <div className="flex w-full">
+        <Divider align="left" className="text-xl font-bold">
+          {section}
+        </Divider>
+      </div>
     );
     for (var subSection in questionsGrouped[section]) {
       // Extract sub sections
       userAnsweredQuestionsGrouped_Render.push(
-        <div className="flex flex-column ml-2 gap-1">
-          <div className="flex text-lg">{subSection}</div>
+        <div className="flex flex-column ml-6 gap-1">
+          <div className="flex">
+            <Divider align="left" type="dotted" className="text-lg font-bold">
+              {subSection}
+            </Divider>
+          </div>
           <div className="flex text-sm p-2">
             {questionsGrouped[section][subSection][0]["subSectionDescription"]}
           </div>
@@ -128,7 +138,7 @@ const FTApprovalView = () => {
       // extract questions from subsections, use map as it is an array
       questionsGrouped[section][subSection].map((subSectionQuestion) => {
         userAnsweredQuestionsGrouped_Render.push(
-          <div className="flex flex-column ml-4 gap-1">
+          <div className="flex flex-column ml-8 gap-1 pb-2">
             <Question
               question={questionsRegistry.get(
                 subSectionQuestion.identification
@@ -156,8 +166,13 @@ const FTApprovalView = () => {
           displayHorizon={false}
         />
       </div>
-      <div className="flex w-full flex-column pl-2">
-        {userAnsweredQuestionsGrouped_Render}
+      <div className="flex w-full flex-column pl-2 m-2">
+        <Panel
+          header="Target Promotion Questionnaire (User's Submission)"
+          className="w-full"
+        >
+          {userAnsweredQuestionsGrouped_Render}
+        </Panel>
       </div>
     </div>
   );
