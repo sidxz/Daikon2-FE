@@ -29,6 +29,9 @@ export default class TargetPQStore {
       updateTQ: action,
       isUpdatingTQ: observable,
 
+      approveTQ: action,
+      isApprovingTQ: observable,
+
       TQUnapproved: computed,
     });
   }
@@ -42,6 +45,7 @@ export default class TargetPQStore {
 
   isFetchingTQ = false;
   isUpdatingTQ = false;
+  isApprovingTQ = false;
 
   // Actions
   fetchTQUnverified = async (inValidateCache = false) => {
@@ -124,6 +128,39 @@ export default class TargetPQStore {
     } finally {
       runInAction(() => {
         this.isUpdatingTQ = false;
+      });
+    }
+  };
+
+  approveTQ = async (approveDTO) => {
+    this.isApprovingTQ = true;
+
+    try {
+      const response = await TPQAPI.approve(approveDTO);
+      runInAction(() => {
+        // unset approveDTO.tPQId from TQRegistry
+        this.TQRegistry.delete(approveDTO.tPQId);
+        this.selectedTQ = null;
+
+        var newTarget = {
+          id: response.id,
+          name: approveDTO.targetName,
+          associatedGenes: approveDTO.associatedGenes,
+        };
+
+        this.rootStore.targetStore.targetListRegistry.set(
+          response.id,
+          newTarget
+        );
+        this.rootStore.targetStore.isTargetRegistryCacheValid = false;
+        this.rootStore.targetStore.isTargetListCacheValid = false;
+      });
+      toast.success("The Target has been approved.");
+    } catch (error) {
+      console.error("Error approving Target Questionnaire:", error);
+    } finally {
+      runInAction(() => {
+        this.isApprovingTQ = false;
       });
     }
   };

@@ -84,6 +84,7 @@ const TPSelector = ({
               className="w-full"
               placeholder="Enter Protein Name"
               value={proteinName}
+              onChange={(e) => setProteinName(e.target.value)}
             />
             {proteinName && (
               <p className="text-xs text-gray-500">

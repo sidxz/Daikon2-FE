@@ -8,6 +8,11 @@ const TPQAPI = {
   submit: (QResponse) => axiosWithAuth.post("/v2/target/tpq/", QResponse),
   update: (QResponse) =>
     axiosWithAuth.put(`/v2/target/tpq/${QResponse.id}`, QResponse),
+  approve: (approveDTO) =>
+    axiosWithAuth.post(
+      `/v2/target/tpq/${approveDTO.tPQId}/approve/`,
+      approveDTO
+    ),
 };
 
 export default TPQAPI;
