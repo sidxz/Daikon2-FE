@@ -296,7 +296,6 @@ const FTApprovalView = () => {
 
     console.log("===SUBMIT===");
     console.log(data);
-    //return;s
     updateTQ(data);
   };
 
