@@ -22,10 +22,7 @@ const FTAVApproveDialog = ({ formatTPFormValue }) => {
     tptFormValue?.requestedTargetName
   );
 
-  console.log("selected genes", selectedGenes);
-
   let onApproveTargetButtonClicked = () => {
-    console.log("Approving Target");
     let data = {
       tPQId: tptFormValue?.id,
       response: tptFormValue?.response,
@@ -36,7 +33,6 @@ const FTAVApproveDialog = ({ formatTPFormValue }) => {
 
     console.log("Approve Target Data", data);
     approveTQ(data).then(() => {
-      console.log("Approved Target");
       navigate("/wf/target/");
     });
   };

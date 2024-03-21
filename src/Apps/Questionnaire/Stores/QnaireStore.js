@@ -135,7 +135,7 @@ export default class QnaireStore {
   };
 
   createQuestionnaire = async (questionnaire) => {
-    console.log("createQuestionnaire", questionnaire);
+    //console.log("createQuestionnaire", questionnaire);
     this.isCreatingQuestionnaire = true;
     try {
       const newQuestionnaire = await QnaireAPI.create(questionnaire);
@@ -157,7 +157,7 @@ export default class QnaireStore {
       questionnaire.id = this.selectedQuestionnaire.id;
     }
 
-    console.log("updateQuestionnaire", questionnaire);
+    //console.log("updateQuestionnaire", questionnaire);
 
     try {
       const updatedQuestionnaire = await QnaireAPI.update(questionnaire);

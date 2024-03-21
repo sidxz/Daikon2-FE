@@ -6,9 +6,6 @@ import "./FTVScorecardGrid.css";
 
 // Component to display the FTVScorecardGrid
 const FTVScorecardGrid = ({ questions, selectedTQ }) => {
-  console.log("=========== FTVScorecardGrid ===========");
-  console.log(questions);
-  console.log(selectedTQ);
   let answers = {};
 
   // Check if questions or target data is not available

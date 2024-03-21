@@ -35,7 +35,7 @@ const QniareImport = () => {
           reader.onload = (e) => {
             try {
               const parsedYaml = jsYaml.load(e.target.result);
-              console.log(parsedYaml);
+              //console.log(parsedYaml);
               updateQuestionnaire(parsedYaml);
             } catch (error) {
               toast.error("Error parsing YAML file");

@@ -47,8 +47,6 @@ const QnaireView = () => {
     return <Loading message={"Fetching Questionnaire..."} />;
   }
 
-  console.log(selectedQuestionnaire);
-
   // Table templated: Identification
   const identificationTemplate = (rowData) => {
     return (

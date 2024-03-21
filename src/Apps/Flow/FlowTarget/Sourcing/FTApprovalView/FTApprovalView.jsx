@@ -80,7 +80,6 @@ const FTApprovalView = () => {
       Object.keys(targetPromotionFormValue).length === 0 &&
       selectedTQ.response.length > 0
     ) {
-      console.log("Set Now");
       let loadFormValue = allQuestions?.reduce((acc, question) => {
         let ansItem = selectedTQ?.response.find(
           (obj) => obj.item1 === question.identification
@@ -96,8 +95,6 @@ const FTApprovalView = () => {
         return acc;
       }, {});
 
-      console.log("loadFormValue");
-      console.log(loadFormValue);
       setTargetPromotionFormValue(loadFormValue);
     }
 

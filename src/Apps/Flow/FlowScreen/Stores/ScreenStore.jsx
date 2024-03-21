@@ -100,7 +100,6 @@ export default class ScreenStore {
   }
 
   fetchScreen = async (screenId, inValidateCache = false) => {
-    console.log("fetchScreen -> screenId", screenId);
     if (inValidateCache) {
       this.isScreenRegistryCacheValid = false;
     }

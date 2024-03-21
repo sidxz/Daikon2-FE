@@ -57,8 +57,8 @@ export default class TargetSourcingStore {
         "TARGET PROMOTION QUESTIONNAIRE"
       );
       runInAction(() => {
-        console.log("fetchQuestions runInAction");
-        console.log(this.rootStore.qnaireStore.selectedQuestionnaire);
+        //console.log("fetchQuestions runInAction");
+        //console.log(this.rootStore.qnaireStore.selectedQuestionnaire);
         this.rootStore.qnaireStore.selectedQuestionnaire.questions.forEach(
           (question) => {
             if (question.isAdminOnly) {
@@ -154,7 +154,7 @@ export default class TargetSourcingStore {
     try {
       res = await TPQAPI.submit(data);
       runInAction(() => {
-        console.log("submitPromotionQuestionnaire -> res", res);
+        //console.log("submitPromotionQuestionnaire -> res", res);
         toast.success(
           "Promotion Questionnaire has been successfully submitted. The target will be added once it undergoes review and a bucket score is calculated.",
           { autoClose: false }

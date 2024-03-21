@@ -16,7 +16,6 @@ const TPSelector = ({
   nextStep,
 }) => {
   const onGenesSelected = (e) => {
-    console.log("selected genes", e);
     setSelectedGenes(e.value);
     proteinNameSuggestion(e.value);
   };

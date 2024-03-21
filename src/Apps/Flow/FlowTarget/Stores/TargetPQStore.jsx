@@ -94,7 +94,6 @@ export default class TargetPQStore {
 
     if (this.isTQCacheValid) {
       const tq = this.TQRegistry.get(id);
-      console.log("fetchTQ -> tq", tq);
 
       if (tq) {
         this.isFetchingTQ = false;
@@ -104,7 +103,6 @@ export default class TargetPQStore {
     try {
       const tq = await TPQAPI.getById(id);
       runInAction(() => {
-        console.log("fetchTQ -> tq", tq);
         this.TQRegistry.set(tq.id, tq);
         this.selectedTQ = tq;
       });
@@ -128,7 +126,7 @@ export default class TargetPQStore {
       const tq = Array.from(this.TQRegistry.values()).find(
         (tq) => tq.targetId === targetId
       );
-      console.log("fetchTQByTargetId  -> tq", tq);
+      //console.log("fetchTQByTargetId  -> tq", tq);
 
       if (tq) {
         this.isFetchingTQ = false;
@@ -138,7 +136,7 @@ export default class TargetPQStore {
     try {
       const tq = await TPQAPI.getByTargetId(targetId);
       runInAction(() => {
-        console.log("fetchTQByTargetId  -> tq", tq);
+        //console.log("fetchTQByTargetId  -> tq", tq);
         this.TQRegistry.set(tq.id, tq);
         this.selectedTQ = tq;
       });
