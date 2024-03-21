@@ -1,9 +1,11 @@
 import { observer } from "mobx-react-lite";
 import { Menu } from "primereact/menu";
 import React, { useContext, useEffect } from "react";
+import { Navigate, Route, Routes } from "react-router";
 import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../../../../Library/Loading/Loading";
 import { RootStoreContext } from "../../../../RootStore";
+import FHAVInformation from "./FHAVInformation/FHAVInformation";
 import * as Helper from "./FHAViewerHelper";
 
 const FHAViewer = () => {
@@ -39,6 +41,15 @@ const FHAViewer = () => {
         <div className="flex gap-2 w-full">
           <div className="flex">
             <Menu model={Helper.sidePanelItems(navigate)} />
+          </div>
+          <div className="flex w-full">
+            <Routes>
+              <Route index element={<Navigate replace to="information/" />} />
+              <Route
+                path="information/*"
+                element={<FHAVInformation selectedHA={selectedHA} />}
+              />
+            </Routes>
           </div>
         </div>
       </div>
