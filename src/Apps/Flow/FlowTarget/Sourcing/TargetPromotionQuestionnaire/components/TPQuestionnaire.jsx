@@ -106,7 +106,7 @@ const TPQuestionnaire = ({ selectedGenes, proteinName }) => {
     );
   };
 
-  const resetFormLocalStorage = () => {
+  const resetFormLocalStorage = (silent = false) => {
     let targetNameKey = "promote_" + proteinName;
     localStorage.removeItem(targetNameKey);
     setTargetPromotionFormValue(_defaultFormData(questions));
@@ -117,7 +117,7 @@ const TPQuestionnaire = ({ selectedGenes, proteinName }) => {
     existingDrafts = existingDrafts.filter((d) => d !== proteinName);
     localStorage.setItem("promotion_drafts", JSON.stringify(existingDrafts));
 
-    toast.success("Cleared");
+    if (!silent) toast.success("Cleared");
     navigate("/wf/target/");
   };
 
@@ -178,6 +178,8 @@ const TPQuestionnaire = ({ selectedGenes, proteinName }) => {
     submitPromotionQuestionnaire(data).then((res) => {
       if (res !== null) {
         setFormSuccess(true);
+        resetFormLocalStorage(true);
+        navigate("/wf/target/");
       }
     });
   };

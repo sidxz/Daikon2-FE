@@ -5,6 +5,7 @@ import {
   observable,
   runInAction,
 } from "mobx";
+import { toast } from "react-toastify";
 import TPQAPI from "../api/TPQAPI";
 
 export default class TargetSourcingStore {
@@ -152,6 +153,13 @@ export default class TargetSourcingStore {
     // send to server
     try {
       res = await TPQAPI.submit(data);
+      runInAction(() => {
+        console.log("submitPromotionQuestionnaire -> res", res);
+        toast.success(
+          "Promotion Questionnaire has been successfully submitted. The target will be added once it undergoes review and a bucket score is calculated.",
+          { autoClose: false }
+        );
+      });
     } catch (error) {
       console.error(error);
     } finally {
