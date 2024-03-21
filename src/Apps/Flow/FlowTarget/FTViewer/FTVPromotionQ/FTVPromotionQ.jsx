@@ -1,14 +1,16 @@
 import { observer } from "mobx-react-lite";
+import { BreadCrumb } from "primereact/breadcrumb";
 import { Button } from "primereact/button";
 import { Divider } from "primereact/divider";
-import { Panel } from "primereact/panel";
 import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Loading from "../../../../../Library/Loading/Loading";
 import Question from "../../../../../Library/Question/Question";
 import SecHeading from "../../../../../Library/SecHeading/SecHeading";
 import { RootStoreContext } from "../../../../../RootStore";
 import { appColors } from "../../../../../constants/colors";
 import { TargetIcon } from "../../../icons/TargetIcon";
+import * as Helper from "./FTVPromotionQHelper";
 const FTVPromotionQ = () => {
   const rootStore = useContext(RootStoreContext);
   const {
@@ -39,6 +41,8 @@ const FTVPromotionQ = () => {
 
   const { selectedTarget, isFetchingTarget } = rootStore.targetStore;
   const [targetPromotionFormValue, setTargetPromotionFormValue] = useState({});
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (
@@ -290,35 +294,24 @@ const FTVPromotionQ = () => {
     return (
       <div className="flex flex-column min-w-full fadein animation-duration-500">
         <div className="flex w-full">
+          <BreadCrumb
+            model={Helper.breadCrumbItems(selectedTarget, navigate)}
+          />
+        </div>
+        <div className="flex w-full">
           <SecHeading
             svgIcon={<TargetIcon size={"25em"} />}
-            heading={
-              "Target Awaiting Approval ( " +
-              selectedTQ?.requestedTargetName +
-              " )"
-            }
+            heading={"Target - " + selectedTarget.name}
             color={appColors.sectionHeadingBg.target}
-            displayHorizon={false}
+            displayHorizon={true}
           />
         </div>
         <div className="flex w-full">{header}</div>
         <div className="flex w-full flex-column p-2 m-2">
-          <Panel
-            header="Target Promotion Questionnaire (User's Submission)"
-            className="w-full"
-            toggleable
-          >
-            {userAnsweredQuestionsGrouped_Render}
-          </Panel>
+          {userAnsweredQuestionsGrouped_Render}
         </div>
         <div className="flex w-full flex-column p-2 m-2">
-          <Panel
-            header="Target Promotion Questionnaire (Admin)"
-            className="w-full"
-            toggleable
-          >
-            {adminQuestionsGrouped_Render}
-          </Panel>
+          {adminQuestionsGrouped_Render}
         </div>
       </div>
     );
