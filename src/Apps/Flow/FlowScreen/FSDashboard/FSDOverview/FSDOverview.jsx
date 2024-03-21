@@ -69,7 +69,7 @@ const FSDOverview = () => {
               <FcPlanner />
             </div>
             <div className="flex">
-              <b>PLANNED</b>
+              <b>PLANNED | ASSAY DEVELOPMENT</b>
             </div>
           </div>
         </div>
