@@ -20,7 +20,7 @@ const FHAVInformation = (selectedHA) => {
     {
       label: selectedHA.name,
       command: () => {
-        navigate(`/wf/ha/${selectedHA.name}`);
+        navigate(`/wf/ha/viewer/${selectedHA.name}`);
       },
     },
     { label: "Information" },
@@ -29,14 +29,25 @@ const FHAVInformation = (selectedHA) => {
   let haInformation = [
     { name: "HA Status", value: selectedHA.haStatus },
     { name: "HA Start Date", value: selectedHA.haStart },
-    { name: "H2L Predicted Start", value: selectedHA.haPredictedStart },
+    { name: "H2L Predicted Start Date", value: selectedHA.haPredictedStart },
     { name: "HA Description", value: selectedHA.haDescription },
   ];
 
   let projectInformation = [
-    { name: "Internal Project ID", value: selectedHA.legacyId },
-    // { name: "Target", value: selectedHA.target},
     { name: "Project Status", value: selectedHA.haStatus },
+    { name: "Target", value: "Rho" },
+    { name: "Participating Org", value: selectedHA.primaryOrg },
+    { name: "Supporting Org", value: selectedHA.supportingOrgs },
+  ];
+
+  let compoundEvolution = [
+    { name: "Compound", value: selectedHA.hitId },
+    { name: "Associated Compound", value: selectedHA.associatedHitIds },
+  ];
+
+  let baseHits = [
+    { name: "Compound", value: selectedHA.hitId },
+    { name: "Associated Compound", value: selectedHA.associatedHitIds },
   ];
 
   return (
@@ -58,6 +69,27 @@ const FHAVInformation = (selectedHA) => {
           <div className="flex pt-2">
             <Fieldset className="m-0 flex-grow-1" legend="HA Information">
               <DataTable value={haInformation} className="HideDataTableHeader">
+                <Column field="name"></Column>
+                <Column field="value"></Column>
+              </DataTable>
+            </Fieldset>
+          </div>
+
+          <div className="flex pt-2">
+            <Fieldset className="m-0 flex-grow-1" legend="Compound Evolution">
+              <DataTable
+                value={compoundEvolution}
+                className="HideDataTableHeader"
+              >
+                <Column field="name"></Column>
+                <Column field="value"></Column>
+              </DataTable>
+            </Fieldset>
+          </div>
+
+          <div className="flex pt-2">
+            <Fieldset className="m-0 flex-grow-1" legend="Base Hits">
+              <DataTable value={baseHits} className="HideDataTableHeader">
                 <Column field="name"></Column>
                 <Column field="value"></Column>
               </DataTable>
