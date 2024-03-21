@@ -5,49 +5,48 @@ import PleaseWait from "../../../../../../Library/PleaseWait/PleaseWait";
 import "./FTVScorecardGrid.css";
 
 // Component to display the FTVScorecardGrid
-const FTVScorecardGrid = ({ questions, target }) => {
-  //console.log(questions);
+const FTVScorecardGrid = ({ questions, selectedTQ }) => {
+  console.log("=========== FTVScorecardGrid ===========");
+  console.log(questions);
+  console.log(selectedTQ);
   let answers = {};
 
   // Check if questions or target data is not available
-  if (questions.size === 0 || target === null) {
+  if (questions.size === 0 || selectedTQ === null) {
     return <PleaseWait />;
   }
   // Iterate over targetScoreCardValues
-  target.targetScorecard.targetScoreCardValues.forEach((ans) => {
+  selectedTQ.response.forEach((ans) => {
     // Set appropriate answer color based on the answer value
-    if (ans.answer === "ACTIVE" || ans.answer === "YES") {
-      answers[ans.questionIdentification] = "greenCell";
+    if (ans.item2 === "ACTIVE" || ans.item2 === "YES") {
+      answers[ans.item1] = "greenCell";
     }
-    if (ans.answer === "INACTIVE" || ans.answer === "NO") {
-      answers[ans.questionIdentification] = "redCell";
+    if (ans.item2 === "INACTIVE" || ans.item2 === "NO") {
+      answers[ans.item1] = "redCell";
     }
-    if (ans.answer === "UNKNOWN" || ans.answer === "NA") {
-      answers[ans.questionIdentification] = "grayCell";
-    }
-
-    if (ans.answer === "HIGH") {
-      answers[ans.questionIdentification] = "darkGreenCell";
+    if (ans.item2 === "UNKNOWN" || ans.item2 === "NA") {
+      answers[ans.item1] = "grayCell";
     }
 
-    if (ans.answer === "MEDIUM") {
-      answers[ans.questionIdentification] = "yellowCell";
+    if (ans.item2 === "HIGH") {
+      answers[ans.item1] = "darkGreenCell";
     }
 
-    if (ans.answer === "LOW") {
-      answers[ans.questionIdentification] = "darkRedCell";
+    if (ans.item2 === "MEDIUM") {
+      answers[ans.item1] = "yellowCell";
+    }
+
+    if (ans.item2 === "LOW") {
+      answers[ans.item1] = "darkRedCell";
     }
 
     /* Exceptions */
-    if (
-      ans.questionIdentification === "5a1" ||
-      ans.questionIdentification === "5a3"
-    ) {
-      if (ans.answer === "YES") {
-        answers[ans.questionIdentification] = "redCell";
+    if (ans.item1 === "5a1" || ans.item1 === "5a3") {
+      if (ans.item2 === "YES") {
+        answers[ans.item1] = "redCell";
       }
-      if (ans.answer === "NO") {
-        answers[ans.questionIdentification] = "greenCell";
+      if (ans.item2 === "NO") {
+        answers[ans.item1] = "greenCell";
       }
     }
   });
@@ -74,11 +73,11 @@ const FTVScorecardGrid = ({ questions, target }) => {
             <td></td>
 
             <td
-              className={"questionTooltip " + answers["2a1"]}
-              data-pr-tooltip={questions.get("2a1")?.questionBody}
+              className={"questionTooltip " + answers["2A1"]}
+              data-pr-tooltip={questions.get("2A1")?.questionBody}
               data-pr-position="left"
             >
-              2a1
+              2A1
             </td>
 
             <td

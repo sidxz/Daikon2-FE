@@ -1,12 +1,12 @@
 import { observer } from "mobx-react-lite";
 import { BreadCrumb } from "primereact/breadcrumb";
-import { Fieldset } from "primereact/fieldset";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../../../../../Library/Loading/Loading";
 import SecHeading from "../../../../../Library/SecHeading/SecHeading";
 import { RootStoreContext } from "../../../../../RootStore";
 import { appColors } from "../../../../../constants/colors";
+import FTVScorecardGrid from "./FTVScorecardGrid/FTVScorecardGrid";
 import * as Helper from "./FTVScorecardHelper";
 
 const FTVScorecard = () => {
@@ -15,13 +15,39 @@ const FTVScorecard = () => {
   const params = useParams();
 
   const {
-    fetchTarget,
-    selectedTarget,
-    isFetchingTarget,
-    isTargetRegistryCacheValid,
-  } = rootStore.targetStore;
+    fetchTQByTargetId,
+    isFetchingTQ,
+    isTQUnVerifiedCacheValid,
+    selectedTQ,
+  } = rootStore.targetPQStore;
 
-  if (isFetchingTarget) {
+  const {
+    allQuestions,
+    isFetchingQuestions,
+    fetchQuestions,
+    questionsRegistry,
+    adminQuestionsRegistry,
+    isCacheValid,
+  } = rootStore.targetSourcingStore;
+
+  const { selectedTarget, isFetchingTarget } = rootStore.targetStore;
+
+  useEffect(() => {
+    if (
+      selectedTarget &&
+      (selectedTQ === null || selectedTQ.targetId !== selectedTarget.id)
+    ) {
+      fetchTQByTargetId(selectedTarget.id);
+    }
+  }, [selectedTarget, fetchTQByTargetId, selectedTQ]);
+
+  useEffect(() => {
+    if (!isCacheValid) {
+      fetchQuestions();
+    }
+  }, [isCacheValid, fetchQuestions]);
+
+  if (isFetchingTarget || isFetchingQuestions || isFetchingTQ) {
     return <Loading message={"Fetching Target..."} />;
   }
 
@@ -38,8 +64,11 @@ const FTVScorecard = () => {
           displayHorizon={true}
         />
       </div>
-      <div className="flex w-full">
-        <Fieldset legend="Scorecard"></Fieldset>
+      <div className="flex w-full p-2">
+        <FTVScorecardGrid
+          questions={new Map([...questionsRegistry, ...adminQuestionsRegistry])}
+          selectedTQ={selectedTQ}
+        />
       </div>
     </div>
   );
