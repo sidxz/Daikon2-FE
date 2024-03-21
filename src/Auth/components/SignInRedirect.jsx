@@ -9,7 +9,7 @@ const SigninRedirect = ({ userManager }) => {
 
   useEffect(() => {
     userManager
-      .signinCallback()
+      .signinRedirectCallback()
       .then((user) => {
         if (user) {
           setUser(user);
@@ -22,7 +22,11 @@ const SigninRedirect = ({ userManager }) => {
 
   useEffect(() => {
     if (user) {
-      navigate("/");
+      console.log("SigninRedirect: user", user);
+      const redirectUrl = localStorage.getItem("redirectUrl") || "/";
+      console.log("SigninRedirect: redirectUrl", redirectUrl);
+      localStorage.removeItem("redirectUrl");
+      navigate(redirectUrl);
     }
   }, [user, navigate]);
 

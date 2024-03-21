@@ -15,6 +15,8 @@ import "/node_modules/primeflex/primeflex.css";
 const App = () => {
   var userManager = AppUserManager;
 
+  console.log("+++++++++++++ APP +++++++++++++++ ");
+
   return (
     <PrimeReactProvider>
       <Router>

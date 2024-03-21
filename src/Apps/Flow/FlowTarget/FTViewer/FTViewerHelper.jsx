@@ -32,6 +32,13 @@ export const sidePanelItems = (navigate) => {
             navigate("discussion/");
           },
         },
+        {
+          label: "Impact Values",
+          icon: "icon icon-common icon-bolt",
+          command: () => {
+            navigate("impact/");
+          },
+        },
       ],
     },
     {

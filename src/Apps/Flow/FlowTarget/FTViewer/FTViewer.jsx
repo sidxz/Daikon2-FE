@@ -10,6 +10,7 @@ import {
 } from "react-router-dom";
 import Loading from "../../../../Library/Loading/Loading";
 import { RootStoreContext } from "../../../../RootStore";
+import FTImpactValues from "./FTImpactValues/FTImpactValues";
 import FTVCompass from "./FTVCompass/FTVCompass";
 import FTVPromotionQ from "./FTVPromotionQ/FTVPromotionQ";
 import FTVScorecard from "./FTVScorecard/FTVScorecard";
@@ -61,6 +62,10 @@ const FTViewer = () => {
             <Route
               path="promotion-questionnaire/"
               element={<FTVPromotionQ selectedGene={selectedTarget} />}
+            />
+            <Route
+              path="impact/"
+              element={<FTImpactValues selectedGene={selectedTarget} />}
             />
           </Routes>
         </div>
