@@ -22,7 +22,7 @@ export const sidePanelItems = (navigate) => {
           label: "Promotion Info",
           icon: "icon icon-common icon-info",
           command: () => {
-            navigate(`promotion-info/`);
+            navigate(`promotion-questionnaire/`);
           },
         },
         {

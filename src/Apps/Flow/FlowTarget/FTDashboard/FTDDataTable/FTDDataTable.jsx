@@ -28,7 +28,7 @@ const FTDDataTable = ({ targets }) => {
 
   return (
     <div>
-      <div className="card">
+      <div className="flex w-full">
         <BlockUI blocked={isFetchingTargets}>
           <DataTable
             paginator
@@ -40,7 +40,6 @@ const FTDDataTable = ({ targets }) => {
             emptyMessage="No Targets found."
             filterDisplay="row"
             scrollable
-            scrollHeight="400px"
             loading={isFetchingTargets}
           >
             <Column

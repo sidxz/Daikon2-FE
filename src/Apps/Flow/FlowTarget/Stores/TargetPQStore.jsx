@@ -21,8 +21,10 @@ export default class TargetPQStore {
       fetchTQ: action,
       isFetchingTQ: observable,
 
+      fetchTQByTargetId: action,
+
       isTQCacheValid: observable,
-      isTQXVerifiedCacheValid: observable,
+      isTQUnVerifiedCacheValid: observable,
 
       selectedTQ: observable,
 
@@ -39,7 +41,7 @@ export default class TargetPQStore {
   // Observables
   isFetchingTQList = false;
   isTQCacheValid = false;
-  isTQXVerifiedCacheValid = false;
+  isTQUnVerifiedCacheValid = false;
   TQRegistry = new Map();
   selectedTQ = null;
 
@@ -50,9 +52,9 @@ export default class TargetPQStore {
   // Actions
   fetchTQUnverified = async (inValidateCache = false) => {
     if (inValidateCache) {
-      this.isTQXVerifiedCacheValid = false;
+      this.isTQUnVerifiedCacheValid = false;
     }
-    if (this.isTQXVerifiedCacheValid) {
+    if (this.isTQUnVerifiedCacheValid) {
       return;
     }
     this.isFetchingTQList = true;
@@ -63,7 +65,7 @@ export default class TargetPQStore {
           console.log(tq);
           this.TQRegistry.set(tq.id, tq);
         });
-        this.isTQXVerifiedCacheValid = true;
+        this.isTQUnVerifiedCacheValid = true;
       });
     } catch (error) {
       toast.error("Error fetching target questionnaire");
@@ -103,6 +105,40 @@ export default class TargetPQStore {
       const tq = await TPQAPI.getById(id);
       runInAction(() => {
         console.log("fetchTQ -> tq", tq);
+        this.TQRegistry.set(tq.id, tq);
+        this.selectedTQ = tq;
+      });
+    } catch (error) {
+    } finally {
+      runInAction(() => {
+        this.isFetchingTQ = false;
+      });
+    }
+  };
+
+  fetchTQByTargetId = async (targetId, inValidateCache = false) => {
+    if (inValidateCache) {
+      this.isTQCacheValid = false;
+    }
+
+    this.isFetchingTQ = true;
+
+    if (this.isTQCacheValid) {
+      // search registry where targetId === targetId
+      const tq = Array.from(this.TQRegistry.values()).find(
+        (tq) => tq.targetId === targetId
+      );
+      console.log("fetchTQByTargetId  -> tq", tq);
+
+      if (tq) {
+        this.isFetchingTQ = false;
+        this.selectedTQ = tq;
+      }
+    }
+    try {
+      const tq = await TPQAPI.getByTargetId(targetId);
+      runInAction(() => {
+        console.log("fetchTQByTargetId  -> tq", tq);
         this.TQRegistry.set(tq.id, tq);
         this.selectedTQ = tq;
       });

@@ -14,17 +14,17 @@ const FTApprovalDash = () => {
   const {
     fetchTQUnverified,
     isFetchingTQList,
-    isTQXVerifiedCacheValid,
+    isTQUnVerifiedCacheValid,
     TQUnapproved,
   } = rootStore.targetPQStore;
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isTQXVerifiedCacheValid) {
+    if (!isTQUnVerifiedCacheValid) {
       fetchTQUnverified();
     }
-  }, [fetchTQUnverified, isTQXVerifiedCacheValid]);
+  }, [fetchTQUnverified, isTQUnVerifiedCacheValid]);
 
   if (isFetchingTQList) {
     return <Loading message={"Fetching Targets..."} />;

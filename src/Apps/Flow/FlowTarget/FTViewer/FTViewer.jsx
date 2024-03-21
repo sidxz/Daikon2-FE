@@ -11,6 +11,7 @@ import {
 import Loading from "../../../../Library/Loading/Loading";
 import { RootStoreContext } from "../../../../RootStore";
 import FTVCompass from "./FTVCompass/FTVCompass";
+import FTVPromotionQ from "./FTVPromotionQ/FTVPromotionQ";
 import FTVScorecard from "./FTVScorecard/FTVScorecard";
 import * as Helper from "./FTViewerHelper";
 const FTViewer = () => {
@@ -56,6 +57,10 @@ const FTViewer = () => {
             <Route
               path="compass/"
               element={<FTVCompass selectedGene={selectedTarget} />}
+            />
+            <Route
+              path="promotion-questionnaire/"
+              element={<FTVPromotionQ selectedGene={selectedTarget} />}
             />
           </Routes>
         </div>
