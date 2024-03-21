@@ -24,7 +24,6 @@ export default class TargetSourcingStore {
     this.rootStore = rootStore;
 
     makeObservable(this, {
-      questions: observable,
       isFetchingQuestions: observable,
       fetchQuestions: action,
       questionsRegistry: observable,
