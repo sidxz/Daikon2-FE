@@ -13,6 +13,7 @@ import { RootStoreContext } from "../../../../../RootStore";
 import { appColors } from "../../../../../constants/colors";
 import { TargetIcon } from "../../../icons/TargetIcon";
 import * as Helper from "./FTVSettingsHelper";
+import FTVSettingsRename from "./components/FTVSettingsRename";
 import FTVSettingsUpdateGeneAssociation from "./components/FTVSettingsUpdateGeneAssociation";
 const FTVSettings = () => {
   const navigate = useNavigate();
@@ -92,6 +93,7 @@ const FTVSettings = () => {
               extensive effects on the app's functionality, especially since
               some features may be organized or accessed by their names.
             </p>
+            <FTVSettingsRename />
           </Fieldset>
         </div>
         <div className="flex w-full mt-2 ">

@@ -36,6 +36,7 @@ export default class TargetStore {
       deleteTarget: action,
 
       updateGeneAssociation: action,
+      renameTarget: action,
     });
   }
 
@@ -222,6 +223,36 @@ export default class TargetStore {
         this.targetListRegistry.set(target.id, target);
         this.selectedTarget = target;
         toast.success("Target gene association updated successfully");
+      });
+    } catch (error) {
+      console.error("Error updating target:", error);
+    } finally {
+      runInAction(() => {
+        this.isUpdatingTarget = false;
+      });
+    }
+  };
+
+  renameTarget = async (target) => {
+    this.isUpdatingTarget = true;
+
+    // check if new target name is same as old target name
+    // if same then no need to update
+    if (this.selectedTarget.name === target.name) {
+      toast.info("No changes detected in target name");
+      this.isUpdatingTarget = false;
+      return;
+    }
+
+    try {
+      await TargetAPI.rename(target);
+      runInAction(() => {
+        // update in target registry list
+
+        this.targetRegistry.set(target.id, target);
+        this.targetListRegistry.set(target.id, target);
+        this.selectedTarget = target;
+        toast.success("Target renamed successfully");
       });
     } catch (error) {
       console.error("Error updating target:", error);

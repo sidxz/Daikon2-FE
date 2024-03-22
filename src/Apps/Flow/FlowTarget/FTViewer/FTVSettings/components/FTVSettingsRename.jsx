@@ -2,42 +2,24 @@ import { useFormik } from "formik";
 import { observer } from "mobx-react-lite";
 import { BlockUI } from "primereact/blockui";
 import { Button } from "primereact/button";
+import { InputText } from "primereact/inputtext";
 import { classNames } from "primereact/utils";
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { RootStoreContext } from "../../../../../../RootStore";
-import InputAssociatedGenes from "../../../Shared/InputAssociatedGenes";
-const FTVSettingsUpdateGeneAssociation = () => {
+const FTVSettingsRename = () => {
   const rootStore = useContext(RootStoreContext);
-  const {
-    isGeneListCacheValid,
-    isGeneListLoading,
-    geneListRegistry,
-    fetchGenes,
-  } = rootStore.geneStore;
-  const {
-    updateGeneAssociation,
-    selectedTarget,
-    isUpdatingTarget,
-    isFetchingTarget,
-  } = rootStore.targetStore;
 
-  useEffect(() => {
-    if (!isGeneListCacheValid) {
-      fetchGenes();
-    }
-  }, [isGeneListCacheValid, fetchGenes]);
+  const { renameTarget, selectedTarget, isUpdatingTarget, isFetchingTarget } =
+    rootStore.targetStore;
 
   const formik = useFormik({
     initialValues: {
-      genesIdToAssociate: Object.keys(selectedTarget?.associatedGenes),
-
-      // participatingOrgsId: [],
+      name: selectedTarget.name,
     },
 
     validate: (values) => {
       const errors = {};
-      if (!values.genesIdToAssociate)
-        errors.method = "Gene Association is required.";
+      if (!values.name) errors.method = "Name is required.";
       // Additional validations can be added here
       return errors;
     },
@@ -45,18 +27,12 @@ const FTVSettingsUpdateGeneAssociation = () => {
     onSubmit: (newTarget) => {
       var targetToSubmit = { ...selectedTarget, ...newTarget };
 
-      let associatedGenes = {};
-      targetToSubmit.genesIdToAssociate.forEach((geneId) => {
-        associatedGenes[geneId] = geneListRegistry.get(geneId).accessionNumber;
-      });
-      targetToSubmit.associatedGenes = associatedGenes;
-
       console.log(
         "FTVSettingsUpdateGeneAssociation -> targetToSubmit",
         targetToSubmit
       );
 
-      updateGeneAssociation(targetToSubmit);
+      renameTarget(targetToSubmit);
     },
   });
 
@@ -68,36 +44,35 @@ const FTVSettingsUpdateGeneAssociation = () => {
     );
 
   return (
-    <BlockUI
-      blocked={isUpdatingTarget || isFetchingTarget || isGeneListLoading}
-    >
+    <BlockUI blocked={isUpdatingTarget || isFetchingTarget}>
       <div className="card w-full">
         <form onSubmit={formik.handleSubmit} className="p-fluid">
           <div className="field">
             <label
-              htmlFor="genesIdToAssociate"
+              htmlFor="name"
               className={classNames({
-                "p-error": isInvalid("genesIdToAssociate"),
+                "p-error": isInvalid("name"),
               })}
             >
-              Associated Genes
+              Name
             </label>
-            <InputAssociatedGenes
-              value={formik.values.genesIdToAssociate}
-              onChange={formik.handleChange("genesIdToAssociate")}
+            <InputText
+              id="name"
+              value={formik.values.name}
+              onChange={formik.handleChange}
               className={classNames({
-                "p-invalid": isInvalid("genesIdToAssociate"),
+                "p-invalid": isInvalid("name"),
               })}
             />
-            {getErrorMessage("genesIdToAssociate")}
+            {getErrorMessage("name")}
           </div>
 
           <Button
             icon="icon icon-common icon-database-submit"
             type="submit"
+            size="small"
             label="Save"
             className="p-mt-2 w-2"
-            size="small"
             loading={isUpdatingTarget}
           />
         </form>
@@ -106,4 +81,4 @@ const FTVSettingsUpdateGeneAssociation = () => {
   );
 };
 
-export default observer(FTVSettingsUpdateGeneAssociation);
+export default observer(FTVSettingsRename);

@@ -13,6 +13,8 @@ const TargetAPI = {
       `/v2/target/${target.id}/update-associated-genes`,
       target
     ),
+  rename: (target) =>
+    axiosWithAuth.put(`/v2/target/${target.id}/rename`, target),
 };
 
 export default TargetAPI;
