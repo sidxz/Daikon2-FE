@@ -14,6 +14,7 @@ import FTImpactValues from "./FTImpactValues/FTImpactValues";
 import FTVCompass from "./FTVCompass/FTVCompass";
 import FTVPromotionQ from "./FTVPromotionQ/FTVPromotionQ";
 import FTVScorecard from "./FTVScorecard/FTVScorecard";
+import FTVSettings from "./FTVSettings/FTVSettings";
 import * as Helper from "./FTViewerHelper";
 const FTViewer = () => {
   const navigate = useNavigate();
@@ -66,6 +67,10 @@ const FTViewer = () => {
             <Route
               path="impact/"
               element={<FTImpactValues selectedGene={selectedTarget} />}
+            />
+            <Route
+              path="settings/"
+              element={<FTVSettings selectedGene={selectedTarget} />}
             />
           </Routes>
         </div>

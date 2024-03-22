@@ -53,5 +53,17 @@ export const sidePanelItems = (navigate) => {
         },
       ],
     },
+    {
+      label: "Admin",
+      items: [
+        {
+          label: "Settings",
+          icon: "pi pi-cog",
+          command: () => {
+            navigate(`settings/`);
+          },
+        },
+      ],
+    },
   ];
 };

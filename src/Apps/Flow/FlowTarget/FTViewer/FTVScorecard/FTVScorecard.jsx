@@ -6,6 +6,7 @@ import Loading from "../../../../../Library/Loading/Loading";
 import SecHeading from "../../../../../Library/SecHeading/SecHeading";
 import { RootStoreContext } from "../../../../../RootStore";
 import { appColors } from "../../../../../constants/colors";
+import { TargetIcon } from "../../../icons/TargetIcon";
 import FTVScorecardGrid from "./FTVScorecardGrid/FTVScorecardGrid";
 import * as Helper from "./FTVScorecardHelper";
 
@@ -58,8 +59,8 @@ const FTVScorecard = () => {
       </div>
       <div className="flex w-full">
         <SecHeading
-          icon="icon icon-common icon-target"
-          heading={"Scorecard - " + selectedTarget.name}
+          svgIcon={<TargetIcon size={"25em"} />}
+          heading={"Target - " + selectedTarget?.name}
           color={appColors.sectionHeadingBg.target}
           displayHorizon={true}
         />
