@@ -20,6 +20,7 @@ const FTImpactValues = () => {
     selectedTarget,
     isFetchingTarget,
     isUpdatingTarget,
+    updateTarget,
     isTargetRegistryCacheValid,
   } = rootStore.targetStore;
 
@@ -40,6 +41,7 @@ const FTImpactValues = () => {
   const onFormikSubmit = (data) => {
     const updatedTarget = { ...selectedTarget, ...data };
     console.log("updatedTarget", updatedTarget);
+    updateTarget(updatedTarget);
   };
 
   return (
@@ -56,7 +58,7 @@ const FTImpactValues = () => {
         />
       </div>
       <div className="card w-full p-3">
-        <LoadingBlockUI blocked={true}>
+        <LoadingBlockUI blocked={isUpdatingTarget}>
           <Formik
             initialValues={{
               bucket: selectedTarget?.bucket || "",
