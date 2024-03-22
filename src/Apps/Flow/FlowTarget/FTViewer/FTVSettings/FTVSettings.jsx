@@ -2,7 +2,6 @@ import { BreadCrumb } from "primereact/breadcrumb";
 import { Fieldset } from "primereact/fieldset";
 import React, { useContext } from "react";
 import {
-  FcBusiness,
   FcHighPriority,
   FcMediumPriority,
   FcTreeStructure,
@@ -14,6 +13,7 @@ import { RootStoreContext } from "../../../../../RootStore";
 import { appColors } from "../../../../../constants/colors";
 import { TargetIcon } from "../../../icons/TargetIcon";
 import * as Helper from "./FTVSettingsHelper";
+import FTVSettingsUpdateGeneAssociation from "./components/FTVSettingsUpdateGeneAssociation";
 const FTVSettings = () => {
   const navigate = useNavigate();
   const rootStore = useContext(RootStoreContext);
@@ -27,7 +27,7 @@ const FTVSettings = () => {
 
   if (selectedTarget && !isFetchingTarget) {
     return (
-      <div className="flex flex-column min-w-full fadein animation-duration-500 m-2">
+      <div className="flex flex-column min-w-full fadein animation-duration-500">
         <div className="flex w-full">
           <BreadCrumb
             model={Helper.breadCrumbItems(selectedTarget, navigate)}
@@ -41,7 +41,7 @@ const FTVSettings = () => {
             displayHorizon={true}
           />
         </div>
-        <div className="flex w-full mt-2">
+        {/* <div className="flex w-full mt-2">
           <Fieldset
             className="w-full"
             legend={
@@ -56,7 +56,7 @@ const FTVSettings = () => {
               will not impact any other areas of the app.
             </p>
           </Fieldset>
-        </div>
+        </div> */}
         <div className="flex w-full  mt-2">
           <Fieldset
             className="w-full"
@@ -73,6 +73,7 @@ const FTVSettings = () => {
               have broad implications, impacting overall functionality,
               including features like the Horizon View, among others.
             </p>
+            <FTVSettingsUpdateGeneAssociation />
           </Fieldset>
         </div>
         <div className="flex w-full  mt-2">
@@ -103,7 +104,7 @@ const FTVSettings = () => {
             }
             className="w-full bg-red-50 border-1 border-red-400"
           >
-            <p className="m-0">Screen deletion is currently unavailable.</p>
+            <p className="m-0">Target deletion is currently unavailable.</p>
           </Fieldset>
         </div>
       </div>

@@ -1,9 +1,9 @@
 import { useFormik } from "formik";
 import { observer } from "mobx-react-lite";
-import { BlockUI } from "primereact/blockui";
 import { Button } from "primereact/button";
 import { classNames } from "primereact/utils";
 import React, { useContext, useEffect } from "react";
+import LoadingBlockUI from "../../../../../../Library/LoadingBlockUI/LoadingBlockUI";
 import { RootStoreContext } from "../../../../../../RootStore";
 import { AppOrgResolver } from "../../../../../../Shared/VariableResolvers/AppOrgResolver";
 import { GlobalValuesResolver } from "../../../../../../Shared/VariableResolvers/GlobalValuesResolver";
@@ -69,7 +69,7 @@ const FSTbVSettings_UpdateTarget = () => {
     );
 
   return (
-    <BlockUI
+    <LoadingBlockUI
       blocked={isUpdatingScreen || isFetchingTargets || isFetchingScreen}
     >
       <div className="card w-full">
@@ -103,7 +103,7 @@ const FSTbVSettings_UpdateTarget = () => {
           />
         </form>
       </div>
-    </BlockUI>
+    </LoadingBlockUI>
   );
 };
 

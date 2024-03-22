@@ -53,7 +53,7 @@ const FTVScorecard = () => {
   }
 
   return (
-    <div className="flex flex-column min-w-full fadein animation-duration-500 m-2">
+    <div className="flex flex-column min-w-full fadein animation-duration-500">
       <div className="flex w-full">
         <BreadCrumb model={Helper.breadCrumbItems(selectedTarget, navigate)} />
       </div>

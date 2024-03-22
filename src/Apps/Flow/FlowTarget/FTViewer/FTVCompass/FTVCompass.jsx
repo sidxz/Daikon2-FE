@@ -29,7 +29,7 @@ const FTVCompass = () => {
   }
 
   return (
-    <div className="flex flex-column min-w-full fadein animation-duration-500 m-2 gap-0">
+    <div className="flex flex-column min-w-full fadein animation-duration-500 gap-0">
       <div className="flex w-full">
         <BreadCrumb model={Helper.breadCrumbItems(selectedTarget, navigate)} />
       </div>

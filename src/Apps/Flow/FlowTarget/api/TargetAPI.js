@@ -10,7 +10,7 @@ const TargetAPI = {
   delete: (id) => axiosWithAuth.delete(`/v2/target/${id}`),
   updateAssociatedGenes: (target) =>
     axiosWithAuth.put(
-      `/v2/target/${target.id}/update-associated-targets`,
+      `/v2/target/${target.id}/update-associated-genes`,
       target
     ),
 };

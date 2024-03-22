@@ -45,7 +45,7 @@ const FTViewer = () => {
   if (selectedTarget) {
     console.log("FTViewer -> selectedTarget", selectedTarget);
     return (
-      <div className="flex w-full">
+      <div className="flex gap-2 w-full">
         <div className="flex">
           <Menu model={Helper.sidePanelItems(navigate)} />
         </div>
