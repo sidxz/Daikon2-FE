@@ -35,11 +35,11 @@ const FTApprovalDash = () => {
   // construct the list of questionnaires
   const qListElements = TQUnapproved?.map((q) => {
     return (
-      <div key={q.id} className="flex w-15rem border-round-md">
+      <div key={q.id} className="flex border-round-md w-9">
         <Card title={q.requestedTargetName} className="w-full">
           <div className="flex flex-column gap-2 justify-between">
             <div className="flex">
-              <p className="m-2">The Target has been submitted by Name </p>
+              <p className="m-2">The Target has been submitted for review </p>
             </div>
             <div className="flex">
               {" "}
@@ -48,9 +48,6 @@ const FTApprovalDash = () => {
                 onClick={() => navigate("./" + q.id)}
                 className="w-10"
               />
-            </div>
-            <div className="flex">
-              <Button label="Approve" className="w-10" />
             </div>
           </div>
         </Card>
@@ -69,7 +66,7 @@ const FTApprovalDash = () => {
         />
       </div>
       <div className="flex w-full bg-gray-50 p-2 gap-2">
-        <div className="flex w-15rem border-round-md">{qListElements}</div>
+        <div className="flex border-round-md gap-2">{qListElements}</div>
       </div>
     </div>
   );

@@ -16,8 +16,13 @@ class AxiosWithAuth {
       ...AxiosConfig,
     });
 
-    let shd = await this.shouldRefreshToken();
-    console.log("AxiosWithAuth -> init -> shd", shd);
+    // let shd = await this.shouldRefreshToken();
+    // console.log("AxiosWithAuth -> init -> shd", shd);
+    // if (shd) {
+    //   console.log("AxiosWithAuth -> init -> Refreshing Token");
+    //   await AppUserManager.refreshToken();
+    //   this.accessToken = await AppUserManager.getAccessToken();
+    // }
 
     this.setInterceptors();
   }

@@ -43,9 +43,8 @@ class AppUserManager {
     return await this.userManager.removeUser();
   }
 
-  async getTokenExpiry() {
-    const user = await this.userManager.getUser();
-    return user && user.expires_at;
+  async startSilentRenew() {
+    return await this.userManager.startSilentRenew();
   }
 
   async refreshToken() {
