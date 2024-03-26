@@ -15,6 +15,7 @@ import FSPhVHAddHit from "./FSPhVHitsHelper/FSPhVHAddHit";
 import { FSPhVHDataTableHeader } from "./FSPhVHitsHelper/FSPhVHDataTableHeader";
 import { StructureBodyTemplate } from "./FSPhVHitsHelper/FSPhVHDataTableHelper";
 import FSPhVHExcelImport from "./FSPhVHitsHelper/FSPhVHExcelImport";
+import FSPhVHPromote from "./FSPhVHitsHelper/FSPhVHPromote";
 
 const FSPhVHits = ({ id }) => {
   const rootStore = useContext(RootStoreContext);
@@ -51,6 +52,7 @@ const FSPhVHits = ({ id }) => {
   const [selectedHits, setSelectedHits] = useState(null);
   const [isVotesHidden, setIsVotesHidden] = useState(true);
   const [isOneClickVotingEnabled, setIsOneClickVotingEnabled] = useState(false);
+  const [isPromoteSideBarVisible, setIsPromoteSideBarVisible] = useState(false);
 
   if (isFetchingHitCollection) {
     return <Loading message={"Fetching Hit Collection..."} />;
@@ -143,6 +145,7 @@ const FSPhVHits = ({ id }) => {
                     setIsVotesHidden={setIsVotesHidden}
                     isOneClickVotingEnabled={isOneClickVotingEnabled}
                     setIsOneClickVotingEnabled={setIsOneClickVotingEnabled}
+                    showPromoteSideBar={() => setIsPromoteSideBarVisible(true)}
                   />
                 }
                 //globalFilter={globalFilter}
@@ -233,6 +236,21 @@ const FSPhVHits = ({ id }) => {
         >
           <FSPhVHExcelImport selectedHitCollection={selectedHitCollection} />
         </Dialog>
+
+        <Sidebar
+          visible={isPromoteSideBarVisible}
+          position="right"
+          onHide={() => setIsPromoteSideBarVisible(false)}
+          className="p-sidebar-sm"
+          header="Create a new Hit Assessment"
+        >
+          <FSPhVHPromote
+            selectedScreen={selectedScreen}
+            selectedHitCollection={selectedHitCollection}
+            selectedHits={selectedHits}
+            closeSideBar={() => setIsPromoteSideBarVisible(false)}
+          />
+        </Sidebar>
       </>
     );
   }
