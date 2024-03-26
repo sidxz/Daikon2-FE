@@ -17,6 +17,7 @@ export const FSTbVHDataTableHeader = ({
   setIsVotesHidden,
   isOneClickVotingEnabled,
   setIsOneClickVotingEnabled,
+  showPromoteSideBar,
 }) => {
   if (selectedHitCollection === undefined) return <p>Loading...</p>;
 
@@ -56,7 +57,7 @@ export const FSTbVHDataTableHeader = ({
                 icon="icon icon-common icon-arrow-alt-circle-right"
                 label="Promote to HA"
                 className=" p-button-text p-button-md w-15rem"
-                onClick={() => console.log(selectedHits)}
+                onClick={() => showPromoteSideBar()}
               />
             </div>
           )}
