@@ -33,7 +33,7 @@ const FSDashboard = () => {
             icon="icon icon-common icon-search"
             heading="Screens"
             color={appColors.sectionHeadingBg.screen}
-            displayHorizon={true}
+            displayHorizon={false}
             customButtons={[
               {
                 label: "Add Screen",

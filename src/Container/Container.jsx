@@ -39,12 +39,6 @@ const Container = ({ userManager }) => {
         console.log("SSO User Expires at", expiresAtDate);
         setSsoUser(_ssoUser);
         if (_ssoUser?.expired) {
-          /* Experiment:  The problem is when refresh token expires exactly after one day 
-          Theory is .expired => is true when access token expires, but user manger should silently refresh it.
-          If it is not able to refresh then it should redirect to login page. (i,e refresh token is expired)
-
-          Above works, next test is to check if it works when refresh token expires exactly after one day.
-          */
           console.log("SSO User expired, redirecting to login...");
           await userManager.signinRedirect();
         }
