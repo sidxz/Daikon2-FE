@@ -38,7 +38,7 @@ const FTVScorecardGrid = ({ questions, selectedTQ }) => {
     }
 
     /* Exceptions */
-    if (ans.item1 === "5a1" || ans.item1 === "5a3") {
+    if (ans.item1 === "5A1" || ans.item1 === "5A3") {
       if (ans.item2 === "YES") {
         answers[ans.item1] = "redCell";
       }
@@ -65,7 +65,7 @@ const FTVScorecardGrid = ({ questions, selectedTQ }) => {
             </td>
             <td>During infections</td>
             <td>
-              <b>2a</b>
+              <b>2A</b>
             </td>
             <td></td>
 
@@ -78,100 +78,100 @@ const FTVScorecardGrid = ({ questions, selectedTQ }) => {
             </td>
 
             <td
-              className={"questionTooltip " + answers["2a1b"]}
-              data-pr-tooltip={questions.get("2a1b")?.questionBody}
+              className={"questionTooltip " + answers["2A1B"]}
+              data-pr-tooltip={questions.get("2A1B")?.questionBody}
               data-pr-position="left"
             >
-              2a1b
+              2A1B
             </td>
             <td
-              className={"questionTooltip " + answers["2a2"]}
-              data-pr-tooltip={questions.get("2a2")?.questionBody}
+              className={"questionTooltip " + answers["2A2"]}
+              data-pr-tooltip={questions.get("2A2")?.questionBody}
               data-pr-position="left"
             >
-              2a2
+              2A2
             </td>
 
             <td
-              className={"questionTooltip " + answers["2a3b"]}
-              data-pr-tooltip={questions.get("2a3b")?.questionBody}
+              className={"questionTooltip " + answers["2A3B"]}
+              data-pr-tooltip={questions.get("2A3B")?.questionBody}
               data-pr-position="left"
             >
-              2a3b
+              2A3B
             </td>
             <td
-              className={"questionTooltip " + answers["2a4a"]}
-              data-pr-tooltip={questions.get("2a4a")?.questionBody}
+              className={"questionTooltip " + answers["2A4A"]}
+              data-pr-tooltip={questions.get("2A4A")?.questionBody}
               data-pr-position="left"
             >
-              2a4a
+              2A4A
             </td>
             <td
-              className={"questionTooltip " + answers["2a4b"]}
-              data-pr-tooltip={questions.get("2a4b")?.questionBody}
+              className={"questionTooltip " + answers["2A4B"]}
+              data-pr-tooltip={questions.get("2A4B")?.questionBody}
               data-pr-position="left"
             >
-              2a4b
+              2A4B
             </td>
             <td
-              className={"questionTooltip " + answers["2a5"]}
-              data-pr-tooltip={questions.get("2a5")?.questionBody}
+              className={"questionTooltip " + answers["2A5"]}
+              data-pr-tooltip={questions.get("2A5")?.questionBody}
               data-pr-position="left"
             >
-              2a5
+              2A5
             </td>
           </tr>
           {/* Rest of the table rows */}
           <tr>
             <td>On replicating Mtb in vitro</td>
             <td>
-              <b>2b</b>
+              <b>2B</b>
             </td>
             <td></td>
             <td
-              className={"questionTooltip " + answers["2b1"]}
-              data-pr-tooltip={questions.get("2b1")?.questionBody}
+              className={"questionTooltip " + answers["2B1"]}
+              data-pr-tooltip={questions.get("2B1")?.questionBody}
               data-pr-position="left"
             >
-              2b1
+              2B1
             </td>
             <td
-              className={"questionTooltip " + answers["2b2"]}
-              data-pr-tooltip={questions.get("2b2")?.questionBody}
+              className={"questionTooltip " + answers["2B2"]}
+              data-pr-tooltip={questions.get("2B2")?.questionBody}
               data-pr-position="left"
             >
-              2b2
+              2B2
             </td>
             <td
-              className={"questionTooltip " + answers["2b4"]}
-              data-pr-tooltip={questions.get("2b4")?.questionBody}
+              className={"questionTooltip " + answers["2B4"]}
+              data-pr-tooltip={questions.get("2B4")?.questionBody}
               data-pr-position="left"
             >
-              2b4
+              2B4
             </td>
             <td colSpan="5">&nbsp;</td>
           </tr>
           <tr>
             <td>On non replicating Mtb in vitro</td>
             <td>
-              <b>2c</b>
+              <b>2C</b>
             </td>
             <td></td>
 
             <td
-              className={"questionTooltip " + answers["2c3"]}
-              data-pr-tooltip={questions.get("2c3")?.questionBody}
+              className={"questionTooltip " + answers["2C3"]}
+              data-pr-tooltip={questions.get("2C3")?.questionBody}
               data-pr-position="left"
             >
-              2c3
+              2C3
             </td>
 
             <td
-              className={"questionTooltip " + answers["2c5"]}
-              data-pr-tooltip={questions.get("2c5")?.questionBody}
+              className={"questionTooltip " + answers["2C5"]}
+              data-pr-tooltip={questions.get("2C5")?.questionBody}
               data-pr-position="left"
             >
-              2c5
+              2C5
             </td>
             <td colSpan="6">&nbsp;</td>
           </tr>
@@ -185,46 +185,46 @@ const FTVScorecardGrid = ({ questions, selectedTQ }) => {
             </td>
             <td></td>
             <td
-              className={"questionTooltip " + answers["3a1"]}
-              data-pr-tooltip={questions.get("3a1")?.questionBody}
+              className={"questionTooltip " + answers["3A1"]}
+              data-pr-tooltip={questions.get("3A1")?.questionBody}
               data-pr-position="left"
             >
-              3a1
+              3A1
             </td>
             <td
-              className={"questionTooltip " + answers["3a2"]}
-              data-pr-tooltip={questions.get("3a2")?.questionBody}
+              className={"questionTooltip " + answers["3A2"]}
+              data-pr-tooltip={questions.get("3A2")?.questionBody}
               data-pr-position="left"
             >
-              3a2
+              3A2
             </td>
             <td
-              className={"questionTooltip " + answers["3a3"]}
-              data-pr-tooltip={questions.get("3a3")?.questionBody}
+              className={"questionTooltip " + answers["3A3"]}
+              data-pr-tooltip={questions.get("3A3")?.questionBody}
               data-pr-position="left"
             >
-              3a3
+              3A3
             </td>
             <td
-              className={"questionTooltip " + answers["3a4"]}
-              data-pr-tooltip={questions.get("3a4")?.questionBody}
+              className={"questionTooltip " + answers["3A4"]}
+              data-pr-tooltip={questions.get("3A4")?.questionBody}
               data-pr-position="left"
             >
-              3a4
+              3A4
             </td>
             <td
-              className={"questionTooltip " + answers["3b1"]}
-              data-pr-tooltip={questions.get("3b1")?.questionBody}
+              className={"questionTooltip " + answers["3B1"]}
+              data-pr-tooltip={questions.get("3B1")?.questionBody}
               data-pr-position="left"
             >
-              3b1
+              3B1
             </td>
             <td
-              className={"questionTooltip " + answers["3b2"]}
-              data-pr-tooltip={questions.get("3b2")?.questionBody}
+              className={"questionTooltip " + answers["3B2"]}
+              data-pr-tooltip={questions.get("3B2")?.questionBody}
               data-pr-position="left"
             >
-              3b2
+              3B2
             </td>
             <td colSpan="2">&nbsp;</td>
           </tr>
@@ -235,30 +235,30 @@ const FTVScorecardGrid = ({ questions, selectedTQ }) => {
             </td>
             <td>During infections</td>
             <td>
-              <b>4a</b>
+              <b>4A</b>
             </td>
             <td></td>
 
             <td
-              className={"questionTooltip " + answers["4a3a"]}
-              data-pr-tooltip={questions.get("4a3a")?.questionBody}
+              className={"questionTooltip " + answers["4A3A"]}
+              data-pr-tooltip={questions.get("4A3A")?.questionBody}
               data-pr-position="left"
             >
-              4a3a
+              4A3A
             </td>
             <td
-              className={"questionTooltip " + answers["4a3b"]}
-              data-pr-tooltip={questions.get("4a3b")?.questionBody}
+              className={"questionTooltip " + answers["4A3B"]}
+              data-pr-tooltip={questions.get("4A3B")?.questionBody}
               data-pr-position="left"
             >
-              4a3b
+              4A3B
             </td>
             <td
-              className={"questionTooltip " + answers["4a4"]}
-              data-pr-tooltip={questions.get("4a4")?.questionBody}
+              className={"questionTooltip " + answers["4A4"]}
+              data-pr-tooltip={questions.get("4A4")?.questionBody}
               data-pr-position="left"
             >
-              4a4
+              4A4
             </td>
             <td colSpan="5">&nbsp;</td>
           </tr>
@@ -266,24 +266,24 @@ const FTVScorecardGrid = ({ questions, selectedTQ }) => {
           <tr>
             <td>On non replicating Mtb in vitro</td>
             <td>
-              <b>4c</b>
+              <b>4C</b>
             </td>
             <td></td>
 
             <td
-              className={"questionTooltip " + answers["4c3"]}
-              data-pr-tooltip={questions.get("4c3")?.questionBody}
+              className={"questionTooltip " + answers["4C3"]}
+              data-pr-tooltip={questions.get("4C3")?.questionBody}
               data-pr-position="left"
             >
-              4c3
+              4C3
             </td>
 
             <td
-              className={"questionTooltip " + answers["4c5"]}
-              data-pr-tooltip={questions.get("4c5")?.questionBody}
+              className={"questionTooltip " + answers["4C5"]}
+              data-pr-tooltip={questions.get("4C5")?.questionBody}
               data-pr-position="left"
             >
-              4c5
+              4C5
             </td>
             <td colSpan="6">&nbsp;</td>
           </tr>
@@ -294,32 +294,32 @@ const FTVScorecardGrid = ({ questions, selectedTQ }) => {
             </td>
             <td></td>
             <td
-              className={"questionTooltip " + answers["5a1"]}
-              data-pr-tooltip={questions.get("5a1")?.questionBody}
+              className={"questionTooltip " + answers["5A1"]}
+              data-pr-tooltip={questions.get("5A1")?.questionBody}
               data-pr-position="left"
             >
-              5a1
+              5A1
             </td>
             <td
-              className={"questionTooltip " + answers["5a2"]}
-              data-pr-tooltip={questions.get("5a2")?.questionBody}
+              className={"questionTooltip " + answers["5A2"]}
+              data-pr-tooltip={questions.get("5A2")?.questionBody}
               data-pr-position="left"
             >
-              5a2
+              5A2
             </td>
             <td
-              className={"questionTooltip " + answers["5a3"]}
-              data-pr-tooltip={questions.get("5a3")?.questionBody}
+              className={"questionTooltip " + answers["5A3"]}
+              data-pr-tooltip={questions.get("5A3")?.questionBody}
               data-pr-position="left"
             >
-              5a3
+              5A3
             </td>
             <td
-              className={"questionTooltip " + answers["5b1"]}
-              data-pr-tooltip={questions.get("5b1")?.questionBody}
+              className={"questionTooltip " + answers["5B1"]}
+              data-pr-tooltip={questions.get("5B1")?.questionBody}
               data-pr-position="left"
             >
-              5b1
+              5B1
             </td>
             <td colSpan="4">&nbsp;</td>
           </tr>
@@ -335,57 +335,57 @@ const FTVScorecardGrid = ({ questions, selectedTQ }) => {
             </td>
             <td rowSpan="2">High throughput screening feasibility</td>
             <td rowSpan="2">
-              <b>6a</b>
+              <b>6A</b>
             </td>
             <td></td>
             <td
-              className={"questionTooltip " + answers["6a1"]}
-              data-pr-tooltip={questions.get("6a1")?.questionBody}
+              className={"questionTooltip " + answers["6A1"]}
+              data-pr-tooltip={questions.get("6A1")?.questionBody}
               data-pr-position="left"
             >
-              6a1
+              6A1
             </td>
             <td
-              className={"questionTooltip " + answers["6a2"]}
-              data-pr-tooltip={questions.get("6a2")?.questionBody}
+              className={"questionTooltip " + answers["6A2"]}
+              data-pr-tooltip={questions.get("6A2")?.questionBody}
               data-pr-position="left"
             >
-              6a2
+              6A2
             </td>
             <td
-              className={"questionTooltip " + answers["6a3"]}
-              data-pr-tooltip={questions.get("6a3")?.questionBody}
+              className={"questionTooltip " + answers["6A3"]}
+              data-pr-tooltip={questions.get("6A3")?.questionBody}
               data-pr-position="left"
             >
-              6a3
+              6A3
             </td>
             <td
-              className={"questionTooltip " + answers["6a4"]}
-              data-pr-tooltip={questions.get("6a4")?.questionBody}
+              className={"questionTooltip " + answers["6A4"]}
+              data-pr-tooltip={questions.get("6A4")?.questionBody}
               data-pr-position="left"
             >
-              6a4
+              6A4
             </td>
             <td
-              className={"questionTooltip " + answers["6a4a"]}
-              data-pr-tooltip={questions.get("6a4a")?.questionBody}
+              className={"questionTooltip " + answers["6A4A"]}
+              data-pr-tooltip={questions.get("6A4A")?.questionBody}
               data-pr-position="left"
             >
-              6a4a
+              6A4A
             </td>
             <td
-              className={"questionTooltip " + answers["6a4b"]}
-              data-pr-tooltip={questions.get("6a4b")?.questionBody}
+              className={"questionTooltip " + answers["6A4B"]}
+              data-pr-tooltip={questions.get("6A4B")?.questionBody}
               data-pr-position="left"
             >
-              6a4b
+              6A4B
             </td>
             <td
-              className={"questionTooltip " + answers["6a4c"]}
-              data-pr-tooltip={questions.get("6a4c")?.questionBody}
+              className={"questionTooltip " + answers["6A4C"]}
+              data-pr-tooltip={questions.get("6A4C")?.questionBody}
               data-pr-position="left"
             >
-              6a4c
+              6A4C
             </td>
 
             <td colSpan="1">&nbsp;</td>
@@ -394,82 +394,82 @@ const FTVScorecardGrid = ({ questions, selectedTQ }) => {
             <td></td>
 
             <td
-              className={"questionTooltip " + answers["6a5"]}
-              data-pr-tooltip={questions.get("6a5")?.questionBody}
+              className={"questionTooltip " + answers["6A5"]}
+              data-pr-tooltip={questions.get("6A5")?.questionBody}
               data-pr-position="left"
             >
-              6a5
+              6A5
             </td>
             <td
-              className={"questionTooltip " + answers["6a6"]}
-              data-pr-tooltip={questions.get("6a6")?.questionBody}
+              className={"questionTooltip " + answers["6A6"]}
+              data-pr-tooltip={questions.get("6A6")?.questionBody}
               data-pr-position="left"
             >
-              6a6
+              6A6
             </td>
             <td
-              className={"questionTooltip " + answers["6a6a"]}
-              data-pr-tooltip={questions.get("6a6a")?.questionBody}
+              className={"questionTooltip " + answers["6A6A"]}
+              data-pr-tooltip={questions.get("6A6A")?.questionBody}
               data-pr-position="left"
             >
-              6a6a
+              6A6A
             </td>
             <td
-              className={"questionTooltip " + answers["6a7"]}
-              data-pr-tooltip={questions.get("6a7")?.questionBody}
+              className={"questionTooltip " + answers["6A7"]}
+              data-pr-tooltip={questions.get("6A7")?.questionBody}
               data-pr-position="left"
             >
-              6a7
+              6A7
             </td>
             <td colSpan="4">&nbsp;</td>
           </tr>
           <tr>
             <td rowSpan="6">Structure based feasibility</td>
             <td rowSpan="6">
-              <b>6b</b>
+              <b>6B</b>
             </td>
             <td></td>
             <td
-              className={"questionTooltip " + answers["6b1"]}
-              data-pr-tooltip={questions.get("6b1")?.questionBody}
+              className={"questionTooltip " + answers["6B1"]}
+              data-pr-tooltip={questions.get("6B1")?.questionBody}
               data-pr-position="left"
             >
-              6b1
+              6B1
             </td>
             <td
-              className={"questionTooltip " + answers["6b1a"]}
-              data-pr-tooltip={questions.get("6b1a")?.questionBody}
+              className={"questionTooltip " + answers["6B1A"]}
+              data-pr-tooltip={questions.get("6B1A")?.questionBody}
               data-pr-position="left"
             >
-              6b1a
+              6B1A
             </td>
             <td
-              className={"questionTooltip " + answers["6b1b"]}
-              data-pr-tooltip={questions.get("6b1b")?.questionBody}
+              className={"questionTooltip " + answers["6B1B"]}
+              data-pr-tooltip={questions.get("6B1B")?.questionBody}
               data-pr-position="left"
             >
-              6b1b
+              6B1B
             </td>
             <td
-              className={"questionTooltip " + answers["6b1b1"]}
-              data-pr-tooltip={questions.get("6b1b1")?.questionBody}
+              className={"questionTooltip " + answers["6B1B1"]}
+              data-pr-tooltip={questions.get("6B1B1")?.questionBody}
               data-pr-position="left"
             >
-              6b1b1
+              6B1B1
             </td>
             <td
-              className={"questionTooltip " + answers["6b1b2"]}
-              data-pr-tooltip={questions.get("6b1b2")?.questionBody}
+              className={"questionTooltip " + answers["6B1B2"]}
+              data-pr-tooltip={questions.get("6B1B2")?.questionBody}
               data-pr-position="left"
             >
-              6b1b2
+              6B1B2
             </td>
             <td
-              className={"questionTooltip " + answers["6b1b2a"]}
-              data-pr-tooltip={questions.get("6b1b2a")?.questionBody}
+              className={"questionTooltip " + answers["6B1B2A"]}
+              data-pr-tooltip={questions.get("6B1B2A")?.questionBody}
               data-pr-position="left"
             >
-              6b1b2a
+              6B1B2A
             </td>
             <td colSpan="2">&nbsp;</td>
           </tr>
@@ -477,53 +477,53 @@ const FTVScorecardGrid = ({ questions, selectedTQ }) => {
             <td></td>
 
             <td
-              className={"questionTooltip " + answers["6b1c"]}
-              data-pr-tooltip={questions.get("6b1c")?.questionBody}
+              className={"questionTooltip " + answers["6B1C"]}
+              data-pr-tooltip={questions.get("6B1C")?.questionBody}
               data-pr-position="left"
             >
-              6b1c
+              6B1C
             </td>
             <td
-              className={"questionTooltip " + answers["6b1d"]}
-              data-pr-tooltip={questions.get("6b1d")?.questionBody}
+              className={"questionTooltip " + answers["6B1D"]}
+              data-pr-tooltip={questions.get("6B1D")?.questionBody}
               data-pr-position="left"
             >
-              6b1d
+              6B1D
             </td>
             <td
-              className={"questionTooltip " + answers["6b1e"]}
-              data-pr-tooltip={questions.get("6b1e")?.questionBody}
+              className={"questionTooltip " + answers["6B1E"]}
+              data-pr-tooltip={questions.get("6B1E")?.questionBody}
               data-pr-position="left"
             >
-              6b1e
+              6B1E
             </td>
             <td
-              className={"questionTooltip " + answers["6b2"]}
-              data-pr-tooltip={questions.get("6b2")?.questionBody}
+              className={"questionTooltip " + answers["6B2"]}
+              data-pr-tooltip={questions.get("6B2")?.questionBody}
               data-pr-position="left"
             >
-              6b2
+              6B2
             </td>
             <td
-              className={"questionTooltip " + answers["6b2a"]}
-              data-pr-tooltip={questions.get("6b2a")?.questionBody}
+              className={"questionTooltip " + answers["6B2A"]}
+              data-pr-tooltip={questions.get("6B2A")?.questionBody}
               data-pr-position="left"
             >
-              6b2a
+              6B2A
             </td>
             <td
-              className={"questionTooltip " + answers["6b2b"]}
-              data-pr-tooltip={questions.get("6b2b")?.questionBody}
+              className={"questionTooltip " + answers["6B2B"]}
+              data-pr-tooltip={questions.get("6B2B")?.questionBody}
               data-pr-position="left"
             >
-              6b2b
+              6B2B
             </td>
             <td
-              className={"questionTooltip " + answers["6b2c"]}
-              data-pr-tooltip={questions.get("6b2c")?.questionBody}
+              className={"questionTooltip " + answers["6B2C"]}
+              data-pr-tooltip={questions.get("6B2C")?.questionBody}
               data-pr-position="left"
             >
-              6b2c
+              6B2C
             </td>
 
             <td colSpan="3">&nbsp;</td>
@@ -532,142 +532,142 @@ const FTVScorecardGrid = ({ questions, selectedTQ }) => {
           <tr>
             <td></td>
             <td
-              className={"questionTooltip " + answers["6b3"]}
-              data-pr-tooltip={questions.get("6b3")?.questionBody}
+              className={"questionTooltip " + answers["6B3"]}
+              data-pr-tooltip={questions.get("6B3")?.questionBody}
               data-pr-position="left"
             >
-              6b3
+              6B3
             </td>
             <td
-              className={"questionTooltip " + answers["6b3a"]}
-              data-pr-tooltip={questions.get("6b3a")?.questionBody}
+              className={"questionTooltip " + answers["6B3A"]}
+              data-pr-tooltip={questions.get("6B3A")?.questionBody}
               data-pr-position="left"
             >
-              6b3a
+              6B3A
             </td>
             <td
-              className={"questionTooltip " + answers["6b3b"]}
-              data-pr-tooltip={questions.get("6b3b")?.questionBody}
+              className={"questionTooltip " + answers["6B3B"]}
+              data-pr-tooltip={questions.get("6B3B")?.questionBody}
               data-pr-position="left"
             >
-              6b3b
+              6B3B
             </td>
             <td
-              className={"questionTooltip " + answers["6b3b1"]}
-              data-pr-tooltip={questions.get("6b3b1")?.questionBody}
+              className={"questionTooltip " + answers["6B3B1"]}
+              data-pr-tooltip={questions.get("6B3B1")?.questionBody}
               data-pr-position="left"
             >
-              6b3b1
+              6B3B1
             </td>
 
             <td
-              className={"questionTooltip " + answers["6b3b2"]}
-              data-pr-tooltip={questions.get("6b3b2")?.questionBody}
+              className={"questionTooltip " + answers["6B3B2"]}
+              data-pr-tooltip={questions.get("6B3B2")?.questionBody}
               data-pr-position="left"
             >
-              6b3b2
+              6B3B2
             </td>
             <td
-              className={"questionTooltip " + answers["6b3b2a"]}
-              data-pr-tooltip={questions.get("6b3b2a")?.questionBody}
+              className={"questionTooltip " + answers["6B3B2A"]}
+              data-pr-tooltip={questions.get("6B3B2A")?.questionBody}
               data-pr-position="left"
             >
-              6b3b2a
+              6B3B2A
             </td>
           </tr>
           <tr>
             <td></td>
             <td
-              className={"questionTooltip " + answers["6b3c"]}
-              data-pr-tooltip={questions.get("6b3c")?.questionBody}
+              className={"questionTooltip " + answers["6B3c"]}
+              data-pr-tooltip={questions.get("6B3c")?.questionBody}
               data-pr-position="left"
             >
-              6b3c
+              6B3c
             </td>
             <td
-              className={"questionTooltip " + answers["6b3c1"]}
-              data-pr-tooltip={questions.get("6b3c1")?.questionBody}
+              className={"questionTooltip " + answers["6B3C1"]}
+              data-pr-tooltip={questions.get("6B3C1")?.questionBody}
               data-pr-position="left"
             >
-              6b3c1
+              6B3C1
             </td>
             <td
-              className={"questionTooltip " + answers["6b3c1a"]}
-              data-pr-tooltip={questions.get("6b3c1a")?.questionBody}
+              className={"questionTooltip " + answers["6B3C1A"]}
+              data-pr-tooltip={questions.get("6B3C1A")?.questionBody}
               data-pr-position="left"
             >
-              6b3c1a
+              6B3C1A
             </td>
             <td
-              className={"questionTooltip " + answers["6b3c2"]}
-              data-pr-tooltip={questions.get("6b3c2")?.questionBody}
+              className={"questionTooltip " + answers["6B3C2"]}
+              data-pr-tooltip={questions.get("6B3C2")?.questionBody}
               data-pr-position="left"
             >
-              6b3c2
+              6B3C2
             </td>
             <td
-              className={"questionTooltip " + answers["6b3d"]}
-              data-pr-tooltip={questions.get("6b3d")?.questionBody}
+              className={"questionTooltip " + answers["6B3D"]}
+              data-pr-tooltip={questions.get("6B3D")?.questionBody}
               data-pr-position="left"
             >
-              6b3d
+              6B3D
             </td>
             <td colSpan="3">&nbsp;</td>
           </tr>
           <tr>
             <td></td>
             <td
-              className={"questionTooltip " + answers["6b4"]}
-              data-pr-tooltip={questions.get("6b4")?.questionBody}
+              className={"questionTooltip " + answers["6B4"]}
+              data-pr-tooltip={questions.get("6B4")?.questionBody}
               data-pr-position="left"
             >
-              6b4
+              6B4
             </td>
             <td
-              className={"questionTooltip " + answers["6b4a"]}
-              data-pr-tooltip={questions.get("6b4a")?.questionBody}
+              className={"questionTooltip " + answers["6B4A"]}
+              data-pr-tooltip={questions.get("6B4A")?.questionBody}
               data-pr-position="left"
             >
-              6b4a
+              6B4A
             </td>
             <td
-              className={"questionTooltip " + answers["6b4b"]}
-              data-pr-tooltip={questions.get("6b4b")?.questionBody}
+              className={"questionTooltip " + answers["6B4B"]}
+              data-pr-tooltip={questions.get("6B4B")?.questionBody}
               data-pr-position="left"
             >
-              6b4b
+              6B4B
             </td>
             <td
-              className={"questionTooltip " + answers["6b4c"]}
-              data-pr-tooltip={questions.get("6b4c")?.questionBody}
+              className={"questionTooltip " + answers["6B4C"]}
+              data-pr-tooltip={questions.get("6B4C")?.questionBody}
               data-pr-position="left"
             >
-              6b4c
+              6B4C
             </td>
             <td colSpan="4">&nbsp;</td>
           </tr>
           <tr>
             <td></td>
             <td
-              className={"questionTooltip " + answers["6b5"]}
-              data-pr-tooltip={questions.get("6b5")?.questionBody}
+              className={"questionTooltip " + answers["6B5"]}
+              data-pr-tooltip={questions.get("6B5")?.questionBody}
               data-pr-position="left"
             >
-              6b5
+              6B5
             </td>
             <td
-              className={"questionTooltip " + answers["6b5a"]}
-              data-pr-tooltip={questions.get("6b5a")?.questionBody}
+              className={"questionTooltip " + answers["6B5A"]}
+              data-pr-tooltip={questions.get("6B5A")?.questionBody}
               data-pr-position="left"
             >
-              6b5a
+              6B5A
             </td>
             <td
-              className={"questionTooltip " + answers["6b5b"]}
-              data-pr-tooltip={questions.get("6b5b")?.questionBody}
+              className={"questionTooltip " + answers["6B5B"]}
+              data-pr-tooltip={questions.get("6B5B")?.questionBody}
               data-pr-position="left"
             >
-              6b5b
+              6B5B
             </td>
             <td colSpan="5">&nbsp;</td>
           </tr>
@@ -675,36 +675,36 @@ const FTVScorecardGrid = ({ questions, selectedTQ }) => {
           <tr>
             <td rowSpan="2">Progressibility considerations</td>
             <td rowSpan="2">
-              <b>6c</b>
+              <b>6C</b>
             </td>
             <td></td>
             <td
-              className={"questionTooltip " + answers["6c1"]}
-              data-pr-tooltip={questions.get("6c1")?.questionBody}
+              className={"questionTooltip " + answers["6C1"]}
+              data-pr-tooltip={questions.get("6C1")?.questionBody}
               data-pr-position="left"
             >
-              6c1
+              6C1
             </td>
             <td
-              className={"questionTooltip " + answers["6c2"]}
-              data-pr-tooltip={questions.get("6c2")?.questionBody}
+              className={"questionTooltip " + answers["6C2"]}
+              data-pr-tooltip={questions.get("6C2")?.questionBody}
               data-pr-position="left"
             >
-              6c2
+              6C2
             </td>
             <td
-              className={"questionTooltip " + answers["6c3"]}
-              data-pr-tooltip={questions.get("6c3")?.questionBody}
+              className={"questionTooltip " + answers["6C3"]}
+              data-pr-tooltip={questions.get("6C3")?.questionBody}
               data-pr-position="left"
             >
-              6c3
+              6C3
             </td>
             <td
-              className={"questionTooltip " + answers["6c4"]}
-              data-pr-tooltip={questions.get("6c4")?.questionBody}
+              className={"questionTooltip " + answers["6C4"]}
+              data-pr-tooltip={questions.get("6C4")?.questionBody}
               data-pr-position="left"
             >
-              6c4
+              6C4
             </td>
             <td colSpan="4">&nbsp;</td>
           </tr>
@@ -712,82 +712,82 @@ const FTVScorecardGrid = ({ questions, selectedTQ }) => {
             <td></td>
 
             <td
-              className={"questionTooltip " + answers["6c5"]}
-              data-pr-tooltip={questions.get("6c5")?.questionBody}
+              className={"questionTooltip " + answers["6C5"]}
+              data-pr-tooltip={questions.get("6C5")?.questionBody}
               data-pr-position="left"
             >
-              6c5
+              6C5
             </td>
             <td
-              className={"questionTooltip " + answers["6c5a"]}
-              data-pr-tooltip={questions.get("6c5a")?.questionBody}
+              className={"questionTooltip " + answers["6C5A"]}
+              data-pr-tooltip={questions.get("6C5A")?.questionBody}
               data-pr-position="left"
             >
-              6c5a
+              6C5A
             </td>
             <td
-              className={"questionTooltip " + answers["6c5b"]}
-              data-pr-tooltip={questions.get("6c5b")?.questionBody}
+              className={"questionTooltip " + answers["6C5B"]}
+              data-pr-tooltip={questions.get("6C5B")?.questionBody}
               data-pr-position="left"
             >
-              6c5b
+              6C5B
             </td>
             <td
-              className={"questionTooltip " + answers["6c5b1"]}
-              data-pr-tooltip={questions.get("6c5b1")?.questionBody}
+              className={"questionTooltip " + answers["6C5B1"]}
+              data-pr-tooltip={questions.get("6C5B1")?.questionBody}
               data-pr-position="left"
             >
-              6c5b1
+              6C5B1
             </td>
             <td
-              className={"questionTooltip " + answers["6c6"]}
-              data-pr-tooltip={questions.get("6c6")?.questionBody}
+              className={"questionTooltip " + answers["6C6"]}
+              data-pr-tooltip={questions.get("6C6")?.questionBody}
               data-pr-position="left"
             >
-              6c6
+              6C6
             </td>
             <td colSpan="3">&nbsp;</td>
           </tr>
           <tr>
             <td>Safety considerations</td>
             <td>
-              <b>6d</b>
+              <b>6D</b>
             </td>
             <td></td>
             <td
-              className={"questionTooltip " + answers["6d1"]}
-              data-pr-tooltip={questions.get("6d1")?.questionBody}
+              className={"questionTooltip " + answers["6D1"]}
+              data-pr-tooltip={questions.get("6D1")?.questionBody}
               data-pr-position="left"
             >
-              6d1
+              6D1
             </td>
             <td
-              className={"questionTooltip " + answers["6d2"]}
-              data-pr-tooltip={questions.get("6d2")?.questionBody}
+              className={"questionTooltip " + answers["6D2"]}
+              data-pr-tooltip={questions.get("6D2")?.questionBody}
               data-pr-position="left"
             >
-              6d2
+              6D2
             </td>
             <td
-              className={"questionTooltip " + answers["6d3"]}
-              data-pr-tooltip={questions.get("6d3")?.questionBody}
+              className={"questionTooltip " + answers["6D3"]}
+              data-pr-tooltip={questions.get("6D3")?.questionBody}
               data-pr-position="left"
             >
-              6d3
+              6D3
             </td>
             <td
-              className={"questionTooltip " + answers["6d4"]}
-              data-pr-tooltip={questions.get("6d4")?.questionBody}
+              className={"questionTooltip " + answers["6D4"]}
+              data-pr-tooltip={questions.get("6D4")?.questionBody}
               data-pr-position="left"
             >
-              6d4
+              6D4
             </td>
             <td
-              className={"questionTooltip " + answers["6d5"]}
-              data-pr-tooltip={questions.get("6d5")?.questionBody}
+              className={"questionTooltip " + answers["6D5"]}
+              data-pr-tooltip={questions.get("6D5")?.questionBody}
               data-pr-position="left"
             >
-              6d5
+              6D5
             </td>
             <td colSpan="4">&nbsp;</td>
           </tr>

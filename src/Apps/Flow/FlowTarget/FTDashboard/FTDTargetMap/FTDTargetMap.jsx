@@ -172,7 +172,7 @@ const FTDTargetMap = () => {
       <div className="flex">
         <ReactECharts
           option={option}
-          style={{ height: "40rem", width: "40rem" }}
+          style={{ height: "45rem", width: "45rem" }}
         />
       </div>
       <div className="flex flex-column pl-5 pr-5">
