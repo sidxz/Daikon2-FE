@@ -39,13 +39,13 @@ const FHaNewBaseHitData = ({ baseHitData }) => {
       baseHitData.hitCollectionId
     )?.hits?.find((hit) => hit.id === baseHitData.hitId)?.requestedSMILES;
 
-    let associatedSMILES = [
-      ...baseHitData.associatedHitIds.map((associatedHit) => {
+    let associatedSMILES = Object.values(baseHitData.associatedHitIds).map(
+      (value) => {
         return getHitCollection(baseHitData.hitCollectionId)?.hits?.find(
-          (hit) => hit.id === associatedHit.item1
+          (hit) => hit.id === value
         )?.requestedSMILES;
-      }),
-    ];
+      }
+    );
 
     return (
       <div className="flex flex w-full gap-5 border-1 border-50 align-items-center justify-content-center">
@@ -69,6 +69,7 @@ const FHaNewBaseHitData = ({ baseHitData }) => {
               <div
                 className="flex align-items-center justify-content-center"
                 style={{ width: "200px", height: "200px" }}
+                key={index}
               >
                 {" "}
                 <SmilesView

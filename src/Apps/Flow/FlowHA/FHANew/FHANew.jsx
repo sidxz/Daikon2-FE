@@ -60,8 +60,8 @@ const FHANew = () => {
       haType: "",
       legacyId: "",
       primaryOrgId: "",
-      hAStatus: "Ready for HA",
-      hADescription: "",
+      status: "Ready for HA",
+      description: "",
       participatingOrgs: [],
     },
 
@@ -86,8 +86,8 @@ const FHANew = () => {
       };
 
       console.log("FHANew -> data", data);
-
-      addHA(newHa).then(() => {
+      //return;
+      addHA(data).then(() => {
         formik.resetForm();
         navigate("/wf/ha/dash/all-projects/");
       });
@@ -235,48 +235,48 @@ const FHANew = () => {
 
             <div className="field">
               <label
-                htmlFor="hAStatus"
+                htmlFor="status"
                 className={classNames({
-                  "p-error": isInvalid("hAStatus"),
+                  "p-error": isInvalid("status"),
                 })}
               >
                 Status
               </label>
               <Dropdown
-                id="hAStatus"
+                id="status"
                 answer="name"
                 optionLabel="name"
                 optionValue="name"
                 options={statusOptions}
                 itemTemplate={statusOptionTemplate}
                 valueTemplate={statusValueTemplate}
-                value={formik.values.hAStatus}
+                value={formik.values.status}
                 placeholder="Select a status"
                 onChange={formik.handleChange}
                 className={classNames({
-                  "p-invalid": isInvalid("hAStatus"),
+                  "p-invalid": isInvalid("status"),
                 })}
               />
 
-              {getErrorMessage("hAStatus")}
+              {getErrorMessage("status")}
             </div>
 
             <div className="field">
               <label
-                htmlFor="hADescription"
+                htmlFor="description"
                 className={classNames({
-                  "p-error": isInvalid("hADescription"),
+                  "p-error": isInvalid("description"),
                 })}
               >
                 HA Description
               </label>
               <InputTextarea
-                id="hADescription"
-                answer="hADescription"
-                value={formik.values.hADescription}
+                id="description"
+                answer="description"
+                value={formik.values.description}
                 onChange={formik.handleChange}
                 className={classNames({
-                  "p-invalid": isInvalid("hADescription"),
+                  "p-invalid": isInvalid("description"),
                 })}
               />
             </div>

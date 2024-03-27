@@ -121,7 +121,7 @@ const FHAVInformation = ({ selectedHA }) => {
       <div className="flex w-full">
         <SecHeading
           svgIcon={<HAIcon size={"25em"} />}
-          heading={selectedHA.name}
+          heading={"Hit Assessment - " + selectedHA.name}
           displayHorizon={true}
           color={appColors.sectionHeadingBg.ha}
           breadCrumbItems={breadCrumbItems}

@@ -82,13 +82,14 @@ const FHaNewHitPicker = ({ baseHitData, setBaseHitData }) => {
   };
 
   let onSubmitClicked = () => {
+    let selectedAssociatedHits = {};
+    ddSelectedBaseHits.forEach((hit) => {
+      selectedAssociatedHits[hit.molecule.id] = hit.id;
+    });
     let data = {
       hitId: ddSelectedPrimaryHit.id,
       compoundId: ddSelectedPrimaryHit.molecule.id,
-      associatedHitIds: ddSelectedBaseHits.map((hit) => ({
-        item1: hit.id,
-        item2: hit.molecule.id,
-      })),
+      associatedHitIds: selectedAssociatedHits,
       hitCollectionId: ddSelectedHitCollection.id,
       screenId: ddSelectedScreen.id,
     };

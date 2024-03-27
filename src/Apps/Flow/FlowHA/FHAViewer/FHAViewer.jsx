@@ -35,6 +35,8 @@ const FHAViewer = () => {
     return <Loading message={"Fetching HA..."} />;
   }
 
+  console.log("FHAViewer -> selectedHA", selectedHA);
+
   if (selectedHA) {
     return (
       <div className="flex w-full">

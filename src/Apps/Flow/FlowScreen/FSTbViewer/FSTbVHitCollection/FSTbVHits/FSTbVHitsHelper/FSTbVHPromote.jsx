@@ -24,13 +24,15 @@ const FSTbVHPromote = ({
       return;
     }
 
+    let selectedAssociatedHits = {};
+    selectedHits.forEach((hit) => {
+      selectedAssociatedHits[hit.molecule.id] = hit.id;
+    });
+
     let data = {
       hitId: ddSelectedPrimaryHit.id,
       compoundId: ddSelectedPrimaryHit.molecule.id,
-      associatedHitIds: selectedHits.map((hit) => ({
-        item1: hit.id,
-        item2: hit.molecule.id,
-      })),
+      associatedHitIds: selectedAssociatedHits,
       hitCollectionId: selectedHitCollection.id,
       screenId: selectedScreen.id,
     };
