@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-const FHADMenuBar = () => {
+const FHaDMenuBar = () => {
   const navigate = useNavigate();
   const [activeIndex, setActiveIndex] = useState(0);
   let location = useLocation();
@@ -38,4 +38,4 @@ const FHADMenuBar = () => {
   );
 };
 
-export default FHADMenuBar;
+export default FHaDMenuBar;

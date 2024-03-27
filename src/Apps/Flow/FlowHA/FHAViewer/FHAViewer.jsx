@@ -12,13 +12,8 @@ const FHaViewer = () => {
   const params = useParams();
   const navigate = useNavigate();
   const rootStore = useContext(RootStoreContext);
-  const {
-    fetchHA,
-    fetchHAs,
-    selectedHA,
-    isFetchingHA,
-    isHARegistryCacheValid,
-  } = rootStore.haStore;
+  const { fetchHA, selectedHA, isFetchingHA, isHARegistryCacheValid } =
+    rootStore.haStore;
 
   useEffect(() => {
     if (

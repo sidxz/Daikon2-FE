@@ -3,11 +3,11 @@ import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import SecHeading from "../../../../Library/SecHeading/SecHeading";
 import { appColors } from "../../../../constants/colors";
 import { HAIcon } from "../../icons/HAIcon";
-import FHADAllProjects from "./FHADAllProjects/FHADAllProjects";
-import FHADMenuBar from "./FHADMenuBar/FHADMenuBar";
-import FHADOverview from "./FHADOverview/FHADOverview";
+import FHaDAllProjects from "./FHaDAllProjects/FHaDAllProjects";
+import FHaDMenuBar from "./FHaDMenuBar/FHaDMenuBar";
+import FHaDOverview from "./FHaDOverview/FHaDOverview";
 
-const FHADashboard = () => {
+const FHaDashboard = () => {
   const navigate = useNavigate();
   return (
     <div className="flex flex-column min-w-full fadein animation-duration-500">
@@ -27,18 +27,18 @@ const FHADashboard = () => {
         />
       </div>
       <div className="flex w-full justify-content-center">
-        <FHADMenuBar />
+        <FHaDMenuBar />
       </div>
 
       <div className="flex w-full">
         <Routes>
           <Route index element={<Navigate to="overview/" />} />
-          <Route path="overview/*" element={<FHADOverview />} />
-          <Route path="all-projects/*" element={<FHADAllProjects />} />
+          <Route path="overview/*" element={<FHaDOverview />} />
+          <Route path="all-projects/*" element={<FHaDAllProjects />} />
         </Routes>
       </div>
     </div>
   );
 };
 
-export default FHADashboard;
+export default FHaDashboard;

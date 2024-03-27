@@ -2,7 +2,7 @@ import React from "react";
 import FDate from "../../../../../../Library/FDate/FDate";
 import SmilesView from "../../../../../../Library/SmilesView/SmilesView";
 
-const FHADOInActiveHA = () => {
+const FHaDOInActiveHA = () => {
   return (
     <div className="flex flex-column w-full shadow-1 hover:shadow-3">
       <div className="flex flex-column  justify-content-center cursor-pointer">
@@ -57,4 +57,4 @@ const FHADOInActiveHA = () => {
   );
 };
 
-export default FHADOInActiveHA;
+export default FHaDOInActiveHA;

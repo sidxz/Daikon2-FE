@@ -4,9 +4,9 @@ import { DataTable } from "primereact/datatable";
 import React, { useContext, useEffect } from "react";
 import Loading from "../../../../../Library/Loading/Loading";
 import { RootStoreContext } from "../../../../../RootStore";
-import * as Helper from "./FHADAllProjectsHelper";
+import * as Helper from "./FHaDAllProjectsHelper";
 
-const FHADAllProjects = () => {
+const FHaDAllProjects = () => {
   const rootStore = useContext(RootStoreContext);
   const { fetchHAs, isHAListCacheValid, haList, isFetchingHAs } =
     rootStore.haStore;
@@ -70,4 +70,4 @@ const FHADAllProjects = () => {
   );
 };
 
-export default observer(FHADAllProjects);
+export default observer(FHaDAllProjects);

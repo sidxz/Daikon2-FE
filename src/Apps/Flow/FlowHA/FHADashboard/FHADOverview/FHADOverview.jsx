@@ -1,11 +1,11 @@
 import React from "react";
 import { FcAlarmClock, FcDisapprove, FcOk, FcWorkflow } from "react-icons/fc";
-import FHADOActiveHA from "./FHADOActiveHA/FHADOActiveHA";
-import FHADOInActiveHA from "./FHADOInActiveHA/FHADOInActiveHA";
-import FHADOPortfolioReadyHA from "./FHADOPortfolioReadyHA/FHADOPortfolioReadyHA";
-import FHADOReadyForHA from "./FHADOReadyForHA/FHADOReadyForHA";
+import FHaDOActiveHA from "./FHaDOActiveHA/FHaDOActiveHA";
+import FHaDOInActiveHA from "./FHaDOInActiveHA/FHaDOInActiveHA";
+import FHaDOPortfolioReadyHA from "./FHaDOPortfolioReadyHA/FHaDOPortfolioReadyHA";
+import FHaDOReadyForHA from "./FHaDOReadyForHA/FHaDOReadyForHA";
 
-const FHADOverview = () => {
+const FHaDOverview = () => {
   return (
     <div className="flex flex-column w-full">
       <div className="flex w-full ">
@@ -25,7 +25,7 @@ const FHADOverview = () => {
           </div>
           <div className="flex w-full pr-3">
             <div className="flex w-full  pt-1  bg-white">
-              <FHADOReadyForHA />
+              <FHaDOReadyForHA />
             </div>
           </div>
         </div>
@@ -46,7 +46,7 @@ const FHADOverview = () => {
           </div>
           <div className="flex w-full pr-3">
             <div className="flex w-full  pt-1 bg-white">
-              <FHADOActiveHA />
+              <FHaDOActiveHA />
             </div>
           </div>
         </div>
@@ -67,7 +67,7 @@ const FHADOverview = () => {
           </div>
           <div className="flex w-full pr-3">
             <div className="flex w-full  pt-1  bg-white">
-              <FHADOInActiveHA />
+              <FHaDOInActiveHA />
             </div>
           </div>
         </div>
@@ -88,7 +88,7 @@ const FHADOverview = () => {
           </div>
           <div className="flex w-full pr-3 ">
             <div className="flex w-full  pt-1 bg-white">
-              <FHADOPortfolioReadyHA />
+              <FHaDOPortfolioReadyHA />
             </div>
           </div>
         </div>
@@ -97,4 +97,4 @@ const FHADOverview = () => {
   );
 };
 
-export default FHADOverview;
+export default FHaDOverview;
