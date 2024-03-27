@@ -48,7 +48,7 @@ const FHaNewBaseHitData = ({ baseHitData }) => {
     ];
 
     return (
-      <div className="flex flex w-full gap-4">
+      <div className="flex flex w-full gap-5 border-1 border-50 align-items-center justify-content-center">
         <div className="flex flex-column w-1/2">
           <div className="flex">
             <Divider>Primary Molecule</Divider>{" "}

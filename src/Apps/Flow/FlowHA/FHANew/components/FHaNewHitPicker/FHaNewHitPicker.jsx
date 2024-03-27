@@ -100,54 +100,54 @@ const FHaNewHitPicker = ({ baseHitData, setBaseHitData }) => {
     <div className="flex flex-column w-full">
       <LoadingBlockUI blocked={isFetchingScreens || isFetchingHitCollection}>
         <div className="flex gap-2">
-          <div className="flex">
+          <div className="flex w-full">
             <Dropdown
               value={ddSelectedScreen}
               onChange={(e) => onScreenSelect(e.value)}
               options={screenList}
               optionLabel="name"
               placeholder="Select a Screen"
-              className="w-full md:w-20rem"
+              className="w-full "
               filter
             />
           </div>
-          <div className="flex">
+          <div className="flex w-full">
             <Dropdown
               value={ddSelectedHitCollection}
               onChange={(e) => onHitCollectionSelect(e.value)}
               options={hitCollectionOfScreen(ddSelectedScreen?.id)}
               optionLabel="name"
               placeholder="Select Hit Collection"
-              className="w-full md:w-20rem"
+              className="w-full "
               filter
             />
           </div>
-          <div className="flex">
+          <div className="flex w-full">
             <MultiSelect
               value={ddSelectedBaseHits}
               onChange={(e) => onBaseHitsSelect(e.value)}
               options={ddSelectedHitCollection?.hits}
               optionLabel={(hit) => hit?.molecule?.name}
               placeholder="Pick Hits"
-              className="w-full md:w-20rem"
+              className="w-full "
               itemTemplate={ddPrimaryItemTemplate}
             />
           </div>
 
-          <div className="flex">
+          <div className="flex w-full">
             <Dropdown
               value={ddSelectedPrimaryHit}
               onChange={(e) => setDdSelectedPrimaryHit(e.value)}
               options={ddSelectedBaseHits}
               optionLabel={(hit) => hit?.molecule?.name}
               placeholder="Select Primary Molecule"
-              className="w-full md:w-20rem"
+              className="w-full "
               itemTemplate={ddPrimaryItemTemplate}
             />
           </div>
-          <div className="flex">
+          <div className="flex w-full">
             <Button
-              label="Select"
+              label="Select Molecules"
               icon="pi pi-check"
               className="p-button-secondary"
               onClick={onSubmitClicked}

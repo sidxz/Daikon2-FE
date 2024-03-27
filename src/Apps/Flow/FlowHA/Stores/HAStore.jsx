@@ -116,15 +116,14 @@ export default class HAStore {
 
   addHA = async (ha) => {
     this.isAddingHA = true;
-
     try {
       var res = await HitAssessmentAPI.create(ha);
       runInAction(() => {
         // Add ha to ha list
-
         ha.id = res.id;
         this.haRegistry.set(ha.id, ha);
         this.haListRegistry.set(ha.id, ha);
+        this.selectedHA = ha;
         toast.success("HA added successfully");
       });
     } catch (error) {
