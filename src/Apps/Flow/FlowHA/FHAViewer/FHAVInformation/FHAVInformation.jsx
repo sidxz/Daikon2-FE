@@ -3,34 +3,27 @@ import { BreadCrumb } from "primereact/breadcrumb";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { Fieldset } from "primereact/fieldset";
-import { Timeline } from "primereact/timeline";
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router";
 import SecHeading from "../../../../../Library/SecHeading/SecHeading";
 
 import { Divider } from "primereact/divider";
+import Loading from "../../../../../Library/Loading/Loading";
 import SmilesView from "../../../../../Library/SmilesView/SmilesView";
+import { RootStoreContext } from "../../../../../RootStore";
 import { appColors } from "../../../../../constants/colors";
 import { HAIcon } from "../../../icons/HAIcon";
+import * as Helper from "./FHaVInformationHelper";
 
-const FHAVInformation = ({ selectedHA }) => {
-  console.log("FHAVInformation -> selectedHA", selectedHA);
+const FHaVInformation = () => {
+  const rootStore = useContext(RootStoreContext);
+  const { selectedHA, isFetchingHA } = rootStore.haStore;
+
+  if (isFetchingHA) {
+    return <Loading message={"Fetching HA..."} />;
+  }
+
   const navigate = useNavigate();
-  const breadCrumbItems = [
-    {
-      label: "HAs",
-      command: () => {
-        navigate("/wf/ha/");
-      },
-    },
-    {
-      label: selectedHA.name,
-      command: () => {
-        navigate(`/wf/ha/viewer/${selectedHA.name}`);
-      },
-    },
-    { label: "Information" },
-  ];
 
   let haInformation = [
     { name: "HA Status", value: selectedHA.haStatus },
@@ -116,7 +109,7 @@ const FHAVInformation = ({ selectedHA }) => {
   return (
     <div className="flex flex-column w-full">
       <div className="flex w-full">
-        <BreadCrumb model={breadCrumbItems} />
+        <BreadCrumb model={Helper.breadCrumbItems(navigate, selectedHA)} />
       </div>
       <div className="flex w-full">
         <SecHeading
@@ -124,7 +117,15 @@ const FHAVInformation = ({ selectedHA }) => {
           heading={"Hit Assessment - " + selectedHA.name}
           displayHorizon={true}
           color={appColors.sectionHeadingBg.ha}
-          breadCrumbItems={breadCrumbItems}
+          customElements={
+            [
+              // <Chip
+              //   label={selectedScreen?.primaryOrgName}
+              //   icon="ri-organization-chart"
+              //   className="mr-3"
+              // />,
+            ]
+          }
         />
       </div>
       <div className="flex gap-2">
@@ -163,18 +164,13 @@ const FHAVInformation = ({ selectedHA }) => {
         </div>
       </div>
       <div className="flex w-full">
-        <Fieldset className="m-0 flex-grow-1" legend="Compound Evolution">
-          <Timeline
-            value={events}
-            layout="horizontal"
-            className="customized-timeline"
-            marker={customizedMarker}
-            content={customizedContent}
-          />
-        </Fieldset>
+        <Fieldset
+          className="m-0 flex-grow-1"
+          legend="Compound Evolution"
+        ></Fieldset>
       </div>
     </div>
   );
 };
 
-export default observer(FHAVInformation);
+export default observer(FHaVInformation);

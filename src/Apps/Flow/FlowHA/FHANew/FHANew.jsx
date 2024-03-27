@@ -12,7 +12,7 @@ import { RootStoreContext } from "../../../../RootStore";
 import InputOrg from "../../../../Shared/InputEditors/InputOrg";
 import { appColors } from "../../../../constants/colors";
 import { HAIcon } from "../../icons/HAIcon";
-import FHANewBaseHitData from "./components/FHANewBaseHitData/FHANewBaseHitData";
+import FHaNewBaseHitData from "./components/FHaNewBaseHitData/FHaNewBaseHitData";
 import FHaNewHitPicker from "./components/FHaNewHitPicker/FHaNewHitPicker";
 
 import { Button } from "primereact/button";
@@ -163,7 +163,7 @@ const FHANew = () => {
             setBaseHitData={setBaseHitData}
           />
         ) : (
-          <FHANewBaseHitData baseHitData={baseHitData} />
+          <FHaNewBaseHitData baseHitData={baseHitData} />
         )}
       </div>
       <div className="flex w-full border-1 border-50">

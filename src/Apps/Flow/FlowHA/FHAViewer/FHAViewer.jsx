@@ -5,10 +5,10 @@ import { Navigate, Route, Routes } from "react-router";
 import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../../../../Library/Loading/Loading";
 import { RootStoreContext } from "../../../../RootStore";
-import FHAVInformation from "./FHAVInformation/FHAVInformation";
-import * as Helper from "./FHAViewerHelper";
+import FHaVInformation from "./FHaVInformation/FHaVInformation";
+import * as Helper from "./FHaViewerHelper";
 
-const FHAViewer = () => {
+const FHaViewer = () => {
   const params = useParams();
   const navigate = useNavigate();
   const rootStore = useContext(RootStoreContext);
@@ -26,10 +26,9 @@ const FHAViewer = () => {
       selectedHA?.id !== params?.id ||
       !isHARegistryCacheValid
     ) {
-      fetchHAs();
       fetchHA(params.id);
     }
-  }, [params.id, fetchHA, selectedHA, isHARegistryCacheValid, fetchHAs]);
+  }, [params.id, fetchHA, selectedHA, isHARegistryCacheValid]);
 
   if (isFetchingHA) {
     return <Loading message={"Fetching HA..."} />;
@@ -47,10 +46,7 @@ const FHAViewer = () => {
           <div className="flex w-full">
             <Routes>
               <Route index element={<Navigate replace to="information/" />} />
-              <Route
-                path="information/*"
-                element={<FHAVInformation selectedHA={selectedHA} />}
-              />
+              <Route path="information/*" element={<FHaVInformation />} />
             </Routes>
           </div>
         </div>
@@ -59,4 +55,4 @@ const FHAViewer = () => {
   }
 };
 
-export default observer(FHAViewer);
+export default observer(FHaViewer);
