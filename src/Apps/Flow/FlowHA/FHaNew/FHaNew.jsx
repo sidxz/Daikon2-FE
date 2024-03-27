@@ -44,7 +44,7 @@ const FHANew = () => {
     isFetchingScreens,
   } = rootStore.screenStore;
 
-  const { isAddingHA, addHA } = rootStore.haStore;
+  const { isAddingHa, addHa } = rootStore.haStore;
 
   const navigate = useNavigate();
 
@@ -87,7 +87,7 @@ const FHANew = () => {
 
       console.log("FHANew -> data", data);
       //return;
-      addHA(data).then(() => {
+      addHa(data).then(() => {
         formik.resetForm();
         navigate("/wf/ha/dash/all-projects/");
       });
@@ -286,7 +286,7 @@ const FHANew = () => {
               type="submit"
               label="Create Hit Assessment"
               className="p-mt-2"
-              loading={isAddingHA}
+              loading={isAddingHa}
             />
           </form>
         </div>

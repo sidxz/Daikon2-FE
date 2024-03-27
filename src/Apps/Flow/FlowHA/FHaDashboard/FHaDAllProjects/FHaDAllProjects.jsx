@@ -8,14 +8,14 @@ import * as Helper from "./FHaDAllProjectsHelper";
 
 const FHaDAllProjects = () => {
   const rootStore = useContext(RootStoreContext);
-  const { fetchHAs, isHAListCacheValid, haList, isFetchingHAs } =
+  const { fetchHAs, isHaListCacheValid, haList, isFetchingHAs } =
     rootStore.haStore;
 
   useEffect(() => {
-    if (!isHAListCacheValid) {
+    if (!isHaListCacheValid) {
       fetchHAs();
     }
-  }, [isHAListCacheValid, fetchHAs]);
+  }, [isHaListCacheValid, fetchHAs]);
 
   if (isFetchingHAs) {
     return <Loading message={"Fetching HAs..."} />;

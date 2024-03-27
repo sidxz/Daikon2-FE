@@ -1,4 +1,4 @@
-export const breadCrumbItems = (navigate, selectedHA) => [
+export const breadCrumbItems = (navigate, selectedHa) => [
   {
     label: "HAs",
     command: () => {
@@ -6,9 +6,9 @@ export const breadCrumbItems = (navigate, selectedHA) => [
     },
   },
   {
-    label: selectedHA.name,
+    label: selectedHa.name,
     command: () => {
-      navigate(`/wf/ha/viewer/${selectedHA.name}`);
+      navigate(`/wf/ha/viewer/${selectedHa.name}`);
     },
   },
   { label: "Information" },

@@ -12,26 +12,26 @@ const FHaViewer = () => {
   const params = useParams();
   const navigate = useNavigate();
   const rootStore = useContext(RootStoreContext);
-  const { fetchHA, selectedHA, isFetchingHA, isHARegistryCacheValid } =
+  const { fetchHa, selectedHa, isFetchingHa, isHaRegistryCacheValid } =
     rootStore.haStore;
 
   useEffect(() => {
     if (
-      selectedHA === undefined ||
-      selectedHA?.id !== params?.id ||
-      !isHARegistryCacheValid
+      selectedHa === undefined ||
+      selectedHa?.id !== params?.id ||
+      !isHaRegistryCacheValid
     ) {
-      fetchHA(params.id);
+      fetchHa(params.id);
     }
-  }, [params.id, fetchHA, selectedHA, isHARegistryCacheValid]);
+  }, [params.id, fetchHa, selectedHa, isHaRegistryCacheValid]);
 
-  if (isFetchingHA) {
+  if (isFetchingHa) {
     return <Loading message={"Fetching HA..."} />;
   }
 
-  console.log("FHAViewer -> selectedHA", selectedHA);
+  console.log("FHAViewer -> selectedHa", selectedHa);
 
-  if (selectedHA) {
+  if (selectedHa) {
     return (
       <div className="flex w-full">
         <div className="flex gap-2 w-full">

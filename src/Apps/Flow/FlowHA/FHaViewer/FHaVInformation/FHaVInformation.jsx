@@ -7,125 +7,64 @@ import React, { useContext } from "react";
 import { useNavigate } from "react-router";
 import SecHeading from "../../../../../Library/SecHeading/SecHeading";
 
-import { Divider } from "primereact/divider";
+import { Chip } from "primereact/chip";
 import Loading from "../../../../../Library/Loading/Loading";
-import SmilesView from "../../../../../Library/SmilesView/SmilesView";
 import { RootStoreContext } from "../../../../../RootStore";
+import { AppOrgResolver } from "../../../../../Shared/VariableResolvers/AppOrgResolver";
 import { appColors } from "../../../../../constants/colors";
 import { HAIcon } from "../../../icons/HAIcon";
+import HaStatusDropdown from "../../shared/HaStatusDropdown";
 import * as Helper from "./FHaVInformationHelper";
 
 const FHaVInformation = () => {
   const rootStore = useContext(RootStoreContext);
-  const { selectedHA, isFetchingHA } = rootStore.haStore;
+  const { selectedHa, isFetchingHa } = rootStore.haStore;
 
-  if (isFetchingHA) {
+  if (isFetchingHa) {
     return <Loading message={"Fetching HA..."} />;
   }
 
   const navigate = useNavigate();
 
+  const { getOrgNameById } = AppOrgResolver();
+
+  // calculate the waiting to start date in days from the current date = current date - date created
+  let waitingToStartDate = new Date() - new Date(selectedHa.dateCreated);
+  waitingToStartDate = Math.ceil(waitingToStartDate / (1000 * 3600 * 24));
+
+  //waitingToStartDate = Math.ceil(waitingToStartDate / (1000 * 3600 * 24));
+
   let haInformation = [
-    { name: "HA Status", value: selectedHA.haStatus },
-    { name: "HA Start Date", value: selectedHA.haStart },
-    { name: "H2L Predicted Start Date", value: selectedHA.haPredictedStart },
-    { name: "HA Description", value: selectedHA.haDescription },
-  ];
-
-  let projectInformation = [
-    { name: "Target", value: "Rho" },
-    { name: "Participating Org", value: selectedHA.primaryOrg },
-    { name: "Supporting Org", value: selectedHA.supportingOrgs },
-  ];
-
-  const customizedContent = (item) => {
-    return (
-      <div className="flex flex-column">
-        <div className="flex">
-          <SmilesView compound="C1=CC=C(C=C1)C(=O)O" width={300} height={300} />
-        </div>
-
-        <div
-          className="flex"
-          style={{
-            lineHeight: "1.5rem",
-            marginRight: "50px",
-            minWidth: "150px",
-          }}
-        >
-          Ext Id : "SACC-0443305" <br />
-          Mol Weight : "100.56" <br />
-          Mol Area : "32.67" <br />
-          IC50 : "83.53" <br />
-          MIC : {item.mic} (&micro;M)
-          <br />
-        </div>
-        <div className="flex flex-column">
-          <Divider align="left">
-            <div className="flex">
-              <i className="pi pi-info-circle mr-2"></i>
-              <b>Notes</b>
-            </div>
-          </Divider>
-          {item.notes}
-        </div>
-      </div>
-    );
-  };
-
-  const events = [
+    { name: "Created Date", value: selectedHa.dateCreated },
+    { name: "Waiting to start", value: waitingToStartDate },
+    { name: "Start Date", value: selectedHa.haStartDate },
     {
-      // status: structureBody,
-      date: "15/10/2020 10:30",
-      icon: "pi pi-shopping-cart",
-      color: "#9C27B0",
-      image: "game-controller.jpg",
+      name: "Predicted Start Date",
+      value: selectedHa.haPredictedStartDate,
     },
-    {
-      // status: structureBody,
-      date: "15/10/2020 14:00",
-      icon: "pi pi-cog",
-      color: "#673AB7",
-    },
-    {
-      // status: structureBody,
-      date: "15/10/2020 16:15",
-      icon: "pi pi-shopping-cart",
-      color: "#FF9800",
-    },
+    { name: "Completed Date", value: selectedHa.completionDate },
+    { name: "Termination Date", value: selectedHa.terminationDate },
   ];
-
-  const customizedMarker = (item) => {
-    return (
-      <span
-        className="flex w-2rem h-2rem align-items-center justify-content-center text-white border-circle z-1 shadow-1"
-        style={{ backgroundColor: item.color }}
-      >
-        <i className={item.icon}></i>
-      </span>
-    );
-  };
 
   return (
     <div className="flex flex-column w-full">
       <div className="flex w-full">
-        <BreadCrumb model={Helper.breadCrumbItems(navigate, selectedHA)} />
+        <BreadCrumb model={Helper.breadCrumbItems(navigate, selectedHa)} />
       </div>
       <div className="flex w-full">
         <SecHeading
           svgIcon={<HAIcon size={"25em"} />}
-          heading={"Hit Assessment - " + selectedHA.name}
+          heading={"Hit Assessment - " + selectedHa.name}
           displayHorizon={true}
           color={appColors.sectionHeadingBg.ha}
-          customElements={
-            [
-              // <Chip
-              //   label={selectedScreen?.primaryOrgName}
-              //   icon="ri-organization-chart"
-              //   className="mr-3"
-              // />,
-            ]
-          }
+          customElements={[
+            <HaStatusDropdown />,
+            <Chip
+              label={getOrgNameById(selectedHa?.primaryOrgId)}
+              icon="ri-organization-chart"
+              className="mr-3"
+            />,
+          ]}
         />
       </div>
       <div className="flex gap-2">
@@ -138,30 +77,9 @@ const FHaVInformation = () => {
               </DataTable>
             </Fieldset>
           </div>
-
-          <div className="flex pt-2">
-            {/* <Fieldset className="m-0 flex-grow-1" legend="Base Hits">
-              <DataTable value={baseHits} className="HideDataTableHeader">
-                <Column field="name"></Column>
-                <Column field="value"></Column>
-              </DataTable>
-            </Fieldset> */}
-          </div>
         </div>
 
-        <div className="flex flex-column gap-2">
-          <div className="flex pt-2">
-            <Fieldset className="m-0 flex-grow-1" legend="Project Information">
-              <DataTable
-                value={projectInformation}
-                className="HideDataTableHeader"
-              >
-                <Column field="name"></Column>
-                <Column field="value"></Column>
-              </DataTable>
-            </Fieldset>
-          </div>
-        </div>
+        <div className="flex flex-column gap-2"></div>
       </div>
       <div className="flex w-full">
         <Fieldset

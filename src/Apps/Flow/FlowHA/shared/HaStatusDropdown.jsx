@@ -3,24 +3,28 @@ import { BlockUI } from "primereact/blockui";
 import { ConfirmDialog } from "primereact/confirmdialog";
 import { Dropdown } from "primereact/dropdown";
 import React, { useContext, useState } from "react";
-import { FcAlarmClock, FcDisapprove, FcOk } from "react-icons/fc";
+import { FcAlarmClock, FcDisapprove, FcOk, FcWorkflow } from "react-icons/fc";
 
 import { FaExclamationTriangle } from "react-icons/fa";
 import { FcHighPriority } from "react-icons/fc";
 import { RootStoreContext } from "../../../../RootStore";
 
 const HaStatusDropdown = ({ readOnlyStatus, readOnly = false }) => {
-  return <p>NOT IMPLEMENTED</p>;
   const [confirmDialogVisible, setConfirmDialogVisible] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState(null);
 
   const rootStore = useContext(RootStoreContext);
-  const { updateScreen, isUpdatingScreen, selectedScreen } =
-    rootStore.screenStore;
 
-  // The set of available options for the status of a screen
+  const { selectedHa, isUpdatingHa, updateHa } = rootStore.haStore;
+
+  // The set of available options for the status of a ha
+  if (!selectedHa) {
+    return <> </>;
+  }
+
   const statusOptions = [
     { name: "Ready for HA", icon: <FcAlarmClock /> },
+    { name: "Active", icon: <FcWorkflow /> },
     { name: "Incorrect m/z", icon: <FaExclamationTriangle /> },
     { name: "Known Liability", icon: <FcHighPriority /> },
     { name: "Complete - Failed", icon: <FcDisapprove /> },
@@ -68,8 +72,8 @@ const HaStatusDropdown = ({ readOnlyStatus, readOnly = false }) => {
 
   const updateSelectedStatus = () => {
     if (selectedStatus) {
-      const updatedScreen = { ...selectedScreen, status: selectedStatus };
-      updateScreen(updatedScreen);
+      const updatedHa = { ...selectedHa, status: selectedStatus };
+      updateHa(updatedHa);
     }
   };
 
@@ -100,19 +104,19 @@ const HaStatusDropdown = ({ readOnlyStatus, readOnly = false }) => {
 
   return (
     <div className="flex">
-      <BlockUI blocked={isUpdatingScreen}>
+      <BlockUI blocked={isUpdatingHa}>
         <Dropdown
-          value={selectedScreen.status}
+          value={selectedHa.status}
           options={statusOptions}
           optionLabel="name"
           optionValue="name"
           placeholder="Set Status"
           itemTemplate={optionTemplate}
           valueTemplate={valueTemplate}
-          disabled={isUpdatingScreen}
+          disabled={isUpdatingHa}
           onChange={handleStatusChange}
           pt={{
-            root: { style: { border: "0px" } },
+            root: { style: { border: "0px", borderRadius: "5rem" } },
             input: { style: { paddingRight: "0px" } },
           }}
         />
@@ -121,7 +125,7 @@ const HaStatusDropdown = ({ readOnlyStatus, readOnly = false }) => {
         visible={confirmDialogVisible}
         onHide={() => setConfirmDialogVisible(false)}
         message={`Are you sure you want to change the status to ${selectedStatus}?`}
-        header={`Screening Status Change Confirmation | ${selectedStatus}`}
+        header={`HA Status Change Confirmation | ${selectedStatus}`}
         icon="icon icon-common icon-file-signature"
         accept={() => updateSelectedStatus()}
         reject={() => setConfirmDialogVisible(false)}

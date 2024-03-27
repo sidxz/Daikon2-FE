@@ -18,46 +18,46 @@ export default class HAStore {
       isFetchingHAs: observable,
       fetchHAs: action,
       haListRegistry: observable,
-      isHAListCacheValid: observable,
+      isHaListCacheValid: observable,
 
-      fetchHA: action,
-      isFetchingHA: observable,
+      fetchHa: action,
+      isFetchingHa: observable,
       haRegistry: observable,
-      isHARegistryCacheValid: observable,
-      selectedHA: observable,
+      isHaRegistryCacheValid: observable,
+      selectedHa: observable,
 
-      isUpdatingHA: observable,
-      updateHA: action,
+      isUpdatingHa: observable,
+      updateHa: action,
 
-      isAddingHA: observable,
-      addHA: action,
+      isAddingHa: observable,
+      addHa: action,
 
-      isDeletingHA: observable,
-      deleteHA: action,
+      isDeletingHa: observable,
+      deleteHa: action,
     });
   }
 
   // Observables
   isFetchingHAs = false;
-  isHAListCacheValid = false;
+  isHaListCacheValid = false;
   haListRegistry = new Map();
 
-  isFetchingHA = false;
+  isFetchingHa = false;
   haRegistry = new Map();
-  isHARegistryCacheValid = false;
-  selectedHA = null;
+  isHaRegistryCacheValid = false;
+  selectedHa = null;
 
-  isUpdatingHA = false;
-  isAddingHA = false;
-  isDeletingHA = false;
+  isUpdatingHa = false;
+  isAddingHa = false;
+  isDeletingHa = false;
 
   // Actions
 
   fetchHAs = async (inValidateCache = false) => {
     if (inValidateCache) {
-      this.isHAListCacheValid = false;
+      this.isHaListCacheValid = false;
     }
-    if (this.isHAListCacheValid) {
+    if (this.isHaListCacheValid) {
       return;
     }
     this.isFetchingHAs = true;
@@ -67,7 +67,7 @@ export default class HAStore {
         has.forEach((ha) => {
           this.haListRegistry.set(ha.id, ha);
         });
-        this.isHAListCacheValid = true;
+        this.isHaListCacheValid = true;
       });
     } catch (error) {
       console.error("Error fetching HAs", error);
@@ -82,19 +82,19 @@ export default class HAStore {
     return Array.from(this.haListRegistry.values());
   }
 
-  fetchHA = async (haId, inValidateCache = false) => {
-    console.log("fetchHA -> haId", haId);
+  fetchHa = async (haId, inValidateCache = false) => {
+    console.log("fetchHa -> haId", haId);
     if (inValidateCache) {
-      this.isHARegistryCacheValid = false;
+      this.isHaRegistryCacheValid = false;
     }
 
-    this.isFetchingHA = true;
-    if (this.isHARegistryCacheValid) {
+    this.isFetchingHa = true;
+    if (this.isHaRegistryCacheValid) {
       // find ha in registry and return if found
       const ha = this.haRegistry.get(haId);
       if (ha) {
-        this.isFetchingHA = false;
-        this.selectedHA = ha;
+        this.isFetchingHa = false;
+        this.selectedHa = ha;
       }
     }
 
@@ -102,20 +102,20 @@ export default class HAStore {
       const ha = await HitAssessmentAPI.getById(haId);
       runInAction(() => {
         this.haRegistry.set(ha.id, ha);
-        this.isHARegistryCacheValid = true;
-        this.selectedHA = ha;
+        this.isHaRegistryCacheValid = true;
+        this.selectedHa = ha;
       });
     } catch (error) {
       console.error("Error fetching ha:", error);
     } finally {
       runInAction(() => {
-        this.isFetchingHA = false;
+        this.isFetchingHa = false;
       });
     }
   };
 
-  addHA = async (ha) => {
-    this.isAddingHA = true;
+  addHa = async (ha) => {
+    this.isAddingHa = true;
     try {
       var res = await HitAssessmentAPI.create(ha);
       runInAction(() => {
@@ -123,20 +123,20 @@ export default class HAStore {
         ha.id = res.id;
         this.haRegistry.set(ha.id, ha);
         this.haListRegistry.set(ha.id, ha);
-        this.selectedHA = ha;
+        this.selectedHa = ha;
         toast.success("HA added successfully");
       });
     } catch (error) {
       console.error("Error adding ha:", error);
     } finally {
       runInAction(() => {
-        this.isAddingHA = false;
+        this.isAddingHa = false;
       });
     }
   };
 
-  updateHA = async (ha) => {
-    this.isUpdatingHA = true;
+  updateHa = async (ha) => {
+    this.isUpdatingHa = true;
 
     try {
       await HitAssessmentAPI.update(ha);
@@ -144,20 +144,20 @@ export default class HAStore {
         // update in ha registry list
         this.haRegistry.set(ha.id, ha);
         this.haListRegistry.set(ha.id, ha);
-        this.selectedHA = ha;
+        this.selectedHa = ha;
         toast.success("HA updated successfully");
       });
     } catch (error) {
       console.error("Error updating ha:", error);
     } finally {
       runInAction(() => {
-        this.isUpdatingHA = false;
+        this.isUpdatingHa = false;
       });
     }
   };
 
-  deleteHA = async (haId) => {
-    this.isDeletingHA = true;
+  deleteHa = async (haId) => {
+    this.isDeletingHa = true;
 
     // Ensure haId is not null, undefined, or empty
     if (!haId?.trim()) {
@@ -176,7 +176,7 @@ export default class HAStore {
       console.error("Error deleting ha:", error);
     } finally {
       runInAction(() => {
-        this.isDeletingHA = false;
+        this.isDeletingHa = false;
       });
     }
   };
