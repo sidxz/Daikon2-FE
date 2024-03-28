@@ -37,6 +37,8 @@
     "react-toastify": "^10.0.4",
     "remixicon": "^4.1.0",
     "smiles-drawer": "^2.1.7",
+    "vis-data": "^7.1.9",
+    "vis-timeline": "^7.7.3",
     "xml-js": "^1.6.11"
   },
   "devDependencies": {

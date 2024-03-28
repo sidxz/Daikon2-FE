@@ -12,6 +12,7 @@ import GeneStore from "./Apps/Flow/FlowGene/Stores/GeneStore";
 import GeneUnpublishedStructuralInformationStore from "./Apps/Flow/FlowGene/Stores/GeneUnpublishedStructuralInformationStore";
 import GeneVulnerabilityStore from "./Apps/Flow/FlowGene/Stores/GeneVulnerabilityStore";
 import HAStore from "./Apps/Flow/FlowHA/Stores/HAStore";
+import HaCompoundEvoStore from "./Apps/Flow/FlowHA/Stores/HaCompoundEvoStore";
 import HitCollectionStore from "./Apps/Flow/FlowScreen/Stores/HitCollectionStore";
 import HitStore from "./Apps/Flow/FlowScreen/Stores/HitStore";
 import ScreenRunStore from "./Apps/Flow/FlowScreen/Stores/ScreenRunStore";
@@ -49,7 +50,9 @@ export class RootStore {
   screenRunStore;
   hitCollectionStore;
   hitStore;
+
   haStore;
+  haCompoundEvoStore;
 
   moleculeStore;
 
@@ -88,6 +91,7 @@ export class RootStore {
 
     /* HA */
     this.haStore = new HAStore(this);
+    this.haCompoundEvoStore = new HaCompoundEvoStore(this);
 
     /* MLogix */
     this.moleculeStore = new MoleculeStore(this);
