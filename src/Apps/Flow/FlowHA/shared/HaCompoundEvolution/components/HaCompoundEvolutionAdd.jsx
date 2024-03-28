@@ -6,6 +6,7 @@ import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
 import { classNames } from "primereact/utils";
 import React, { useContext } from "react";
+import LoadingBlockUI from "../../../../../../Library/LoadingBlockUI/LoadingBlockUI";
 import { RootStoreContext } from "../../../../../../RootStore";
 const HaCompoundEvolutionAdd = ({ hitAssessmentId, closeSideBar }) => {
   const rootStore = useContext(RootStoreContext);
@@ -36,8 +37,8 @@ const HaCompoundEvolutionAdd = ({ hitAssessmentId, closeSideBar }) => {
       console.log(cEvoToAdd);
       //return;
       addHaCEvo(cEvoToAdd).then(() => {
-        //closeSideBar();
-        //formik.resetForm();
+        closeSideBar();
+        formik.resetForm();
       });
     },
   });
@@ -51,136 +52,138 @@ const HaCompoundEvolutionAdd = ({ hitAssessmentId, closeSideBar }) => {
 
   return (
     <div className="card w-full">
-      <form onSubmit={formik.handleSubmit} className="p-fluid">
-        <div className="field">
-          <label
-            htmlFor="moleculeName"
-            className={classNames({ "p-error": isInvalid("moleculeName") })}
-          >
-            Molecule Name
-          </label>
-          <InputText
-            id="moleculeName"
-            value={formik.values.moleculeName}
-            onChange={formik.handleChange}
-            className={classNames({
-              "p-invalid": isInvalid("moleculeName"),
-            })}
-          />
-          {getErrorMessage("moleculeName")}
-        </div>
+      <LoadingBlockUI loading={isAddingHaCEvo}>
+        <form onSubmit={formik.handleSubmit} className="p-fluid">
+          <div className="field">
+            <label
+              htmlFor="moleculeName"
+              className={classNames({ "p-error": isInvalid("moleculeName") })}
+            >
+              Molecule Name
+            </label>
+            <InputText
+              id="moleculeName"
+              value={formik.values.moleculeName}
+              onChange={formik.handleChange}
+              className={classNames({
+                "p-invalid": isInvalid("moleculeName"),
+              })}
+            />
+            {getErrorMessage("moleculeName")}
+          </div>
 
-        <div className="field">
-          <label
-            htmlFor="requestedSMILES"
-            className={classNames({
-              "p-error": isInvalid("requestedSMILES"),
-            })}
-          >
-            SMILES
-          </label>
-          <InputTextarea
-            id="requestedSMILES"
-            value={formik.values.requestedSMILES}
-            onChange={formik.handleChange}
-            className={classNames({
-              "p-invalid": isInvalid("requestedSMILES"),
-            })}
-          />
-          {getErrorMessage("requestedSMILES")}
-        </div>
+          <div className="field">
+            <label
+              htmlFor="requestedSMILES"
+              className={classNames({
+                "p-error": isInvalid("requestedSMILES"),
+              })}
+            >
+              SMILES
+            </label>
+            <InputTextarea
+              id="requestedSMILES"
+              value={formik.values.requestedSMILES}
+              onChange={formik.handleChange}
+              className={classNames({
+                "p-invalid": isInvalid("requestedSMILES"),
+              })}
+            />
+            {getErrorMessage("requestedSMILES")}
+          </div>
 
-        <div className="field">
-          <label
-            htmlFor="evolutionDate"
-            className={classNames({
-              "p-error": isInvalid("evolutionDate"),
-            })}
-          >
-            Evolution Date
-          </label>
-          <Calendar
-            id="evolutionDate"
-            name="evolutionDate"
-            value={formik.values.evolutionDate}
-            onChange={formik.handleChange}
-            dateFormat="dd/mm/yy"
-            mask="99/99/9999"
-            showIcon
-            className={classNames({
-              "p-invalid": isInvalid("evolutionDate"),
-            })}
-          />
+          <div className="field">
+            <label
+              htmlFor="evolutionDate"
+              className={classNames({
+                "p-error": isInvalid("evolutionDate"),
+              })}
+            >
+              Evolution Date
+            </label>
+            <Calendar
+              id="evolutionDate"
+              name="evolutionDate"
+              value={formik.values.evolutionDate}
+              onChange={formik.handleChange}
+              dateFormat="dd/mm/yy"
+              mask="99/99/9999"
+              showIcon
+              className={classNames({
+                "p-invalid": isInvalid("evolutionDate"),
+              })}
+            />
 
-          {getErrorMessage("evolutionDate")}
-        </div>
+            {getErrorMessage("evolutionDate")}
+          </div>
 
-        <div className="field">
-          <label
-            htmlFor="mic"
-            className={classNames({ "p-error": isInvalid("mic") })}
-          >
-            MIC (µM)
-          </label>
-          <InputText
-            id="mic"
-            value={formik.values.mic}
-            onChange={formik.handleChange}
-            className={classNames({
-              "p-invalid": isInvalid("mic"),
-            })}
-          />
-          {getErrorMessage("mic")}
-        </div>
+          <div className="field">
+            <label
+              htmlFor="mic"
+              className={classNames({ "p-error": isInvalid("mic") })}
+            >
+              MIC (µM)
+            </label>
+            <InputText
+              id="mic"
+              value={formik.values.mic}
+              onChange={formik.handleChange}
+              className={classNames({
+                "p-invalid": isInvalid("mic"),
+              })}
+            />
+            {getErrorMessage("mic")}
+          </div>
 
-        <div className="field">
-          <label
-            htmlFor="iC50"
-            className={classNames({ "p-error": isInvalid("iC50") })}
-          >
-            IC50 (µM)
-          </label>
-          <InputText
-            id="iC50"
-            value={formik.values.iC50}
-            onChange={formik.handleChange}
-            className={classNames({
-              "p-invalid": isInvalid("iC50"),
-            })}
-          />
-          {getErrorMessage("iC50")}
-        </div>
+          <div className="field">
+            <label
+              htmlFor="iC50"
+              className={classNames({ "p-error": isInvalid("iC50") })}
+            >
+              IC50 (µM)
+            </label>
+            <InputText
+              id="iC50"
+              value={formik.values.iC50}
+              onChange={formik.handleChange}
+              className={classNames({
+                "p-invalid": isInvalid("iC50"),
+              })}
+            />
+            {getErrorMessage("iC50")}
+          </div>
 
-        <div className="field">
-          <label
-            htmlFor="notes"
-            className={classNames({
-              "p-error": isInvalid("notes"),
-            })}
-          >
-            Notes
-          </label>
-          <InputTextarea
-            id="notes"
-            value={formik.values.notes}
-            onChange={formik.handleChange}
-            className={classNames({
-              "p-invalid": isInvalid("notes"),
-            })}
-          />
-          {getErrorMessage("notes")}
-        </div>
+          <div className="field">
+            <label
+              htmlFor="notes"
+              className={classNames({
+                "p-error": isInvalid("notes"),
+              })}
+            >
+              Notes
+            </label>
+            <InputTextarea
+              id="notes"
+              value={formik.values.notes}
+              onChange={formik.handleChange}
+              className={classNames({
+                "p-invalid": isInvalid("notes"),
+              })}
+            />
+            {getErrorMessage("notes")}
+          </div>
 
-        <div className="flex justify-content-end">
-          <Button
-            icon="icon icon-common icon-database-submit"
-            type="submit"
-            label="Add to database"
-            className="p-button-secondary p-button-sm"
-            loading={isAddingHaCEvo}
-          />
-        </div>
-      </form>
+          <div className="flex justify-content-end">
+            <Button
+              icon="icon icon-common icon-database-submit"
+              type="submit"
+              label="Add to database"
+              className="p-button-secondary p-button-sm"
+              loading={isAddingHaCEvo}
+            />
+          </div>
+        </form>
+      </LoadingBlockUI>
     </div>
   );
 };

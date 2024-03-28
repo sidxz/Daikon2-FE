@@ -42,6 +42,7 @@ export default class HaCompoundEvoStore {
       runInAction(() => {
         // Add cEvo to cEvo list
         cEvo.id = res.id;
+        cEvo = { ...cEvo, ...res };
 
         const hitAssessment = this.rootStore.haStore.haRegistry.get(
           cEvo.hitAssessmentId
@@ -50,9 +51,18 @@ export default class HaCompoundEvoStore {
         console.log("Adding cEvo to hitAssessment", cEvo);
         hitAssessment.haCompoundEvolution.push(cEvo);
 
+        // sort by evolutionDate
+        hitAssessment.haCompoundEvolution =
+          hitAssessment.haCompoundEvolution.sort(
+            (a, b) => new Date(b.evolutionDate) - new Date(a.evolutionDate)
+          );
+
         this.rootStore.haStore.selectedHa = hitAssessment;
 
-        if (!silent) toast.success("Compound Evolution added successfully");
+        if (!silent)
+          toast.success(
+            "Compound Evolution added successfully. Please Sync to fetch calculated values."
+          );
       });
     } catch (error) {
       console.error("Error adding Compound Evolution:", error);
@@ -93,6 +103,13 @@ export default class HaCompoundEvoStore {
           (e) => e.id === cEvo.id
         );
         hitAssessment.haCompoundEvolution[indexOfEss] = cEvo;
+
+        // sort by evolutionDate
+        hitAssessment.haCompoundEvolution =
+          hitAssessment.haCompoundEvolution.sort(
+            (a, b) => new Date(b.evolutionDate) - new Date(a.evolutionDate)
+          );
+
         this.rootStore.haStore.selectedHa = hitAssessment;
 
         if (!silent) toast.success("Compound Evolution updated successfully");

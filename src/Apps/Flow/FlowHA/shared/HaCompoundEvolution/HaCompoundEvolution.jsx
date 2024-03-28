@@ -1,4 +1,5 @@
 import { observer } from "mobx-react-lite";
+import { Button } from "primereact/button";
 import { Chip } from "primereact/chip";
 import { Divider } from "primereact/divider";
 import { Sidebar } from "primereact/sidebar";
@@ -15,6 +16,7 @@ const HaCompoundEvolution = () => {
   const { selectedHa, isFetchingHa } = rootStore.haStore;
 
   const [displayAddCEvoSideBar, setDisplayAddCEvoSideBar] = useState(false);
+  const [isNotesExpanded, setIsNotesExpanded] = useState(false);
 
   if (isFetchingHa) {
     return <PleaseWait />;
@@ -61,7 +63,28 @@ const HaCompoundEvolution = () => {
                   </div>
                 </Divider>
               </div>
-              <div className="flex flex-column pl-4 pr-4 border-1 border-50 border-round-md	mr-2">
+              <div
+                className="flex flex-column pl-4 pr-4 border-1 border-50 border-round-md	mr-2"
+                style={{ position: "relative" }}
+              >
+                <div
+                  className="flex p-2"
+                  style={{
+                    position: "absolute",
+                    top: "0",
+                    right: "0",
+                  }}
+                >
+                  <Button
+                    icon="pi pi-pencil"
+                    rounded
+                    text
+                    severity="secondary"
+                    aria-label="Edit"
+                    className="p-button-text p-button-sm p-0 m-0"
+                    //onClick={() => setIsNotesExpanded(!isNotesExpanded)}
+                  />
+                </div>
                 <div className="flex align-items-center justify-content-center">
                   <SmilesView
                     smiles={event?.molecule?.smiles}
@@ -88,8 +111,23 @@ const HaCompoundEvolution = () => {
                     TPSA: {event?.molecule?.tpsa}
                   </div>
                 </div>
-                <div className="flex gap-2 pr-2 pl-2 border-1 border-50 pb-1">
-                  Notes : {event?.notes}
+                <div className="flex gap-2 pr-2 pl-2 border-1 border-50 pb-1 align-items-center">
+                  <div className="flex" style={{ width: "200px" }}>
+                    Notes :{" "}
+                    {event?.notes?.length > 20 && !isNotesExpanded
+                      ? event?.notes?.substring(0, 20) + "..."
+                      : event?.notes}
+                  </div>
+                  {event?.notes?.length > 20 && (
+                    <div className="flex">
+                      <Button
+                        label={isNotesExpanded ? "| Collapse" : "Expand"}
+                        link
+                        className="p-button-text p-button-sm p-0 m-0"
+                        onClick={() => setIsNotesExpanded(!isNotesExpanded)}
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
