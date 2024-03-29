@@ -8,7 +8,7 @@ export const breadCrumbItems = (navigate, selectedHa) => [
   {
     label: selectedHa.name,
     command: () => {
-      navigate(`/wf/ha/viewer/${selectedHa.name}`);
+      navigate(`/wf/ha/viewer/${selectedHa.id}`);
     },
   },
   { label: "Information" },

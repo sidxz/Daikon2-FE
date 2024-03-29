@@ -123,24 +123,29 @@ export default class HaCompoundEvoStore {
     }
   };
 
-  deleteHaCEvo = async (hitId) => {
+  deleteHaCEvo = async (haId, cEvoId) => {
     this.isDeletingHaCEvo = true;
 
-    const hitAssessmentId = this.rootStore.haStore.selectedHa.id;
+    const hitAssessmentId =
+      haId?.trim() || this.rootStore.haStore.selectedHa.id;
 
     // Ensure hitId is not null, undefined, or empty
-    if (!hitId?.trim()) {
+    if (!hitAssessmentId?.trim()) {
       throw new Error("hitId is required and cannot be empty.");
     }
 
+    if (!cEvoId) {
+      throw new Error("Compound Evolution Id is required and cannot be empty.");
+    }
+
     try {
-      await HaCompoundEvoAPI.delete(hitAssessmentId, hitId);
+      await HaCompoundEvoAPI.delete(hitAssessmentId, cEvoId);
       runInAction(() => {
         // remove cEvo from hitAssessment cEvo list
         const hitAssessment =
           this.rootStore.haStore.haRegistry.get(hitAssessmentId);
         const indexOfEss = hitAssessment.haCompoundEvolution.findIndex(
-          (e) => e.id === hitId
+          (e) => e.id === cEvoId
         );
         hitAssessment.haCompoundEvolution.splice(indexOfEss, 1);
         this.rootStore.haStore.selectedHa = hitAssessment;

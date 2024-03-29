@@ -13,9 +13,9 @@ const HaCompoundEvoAPI = {
       `/v2/hit-assessment/${ce.hitAssessmentId}/compound-evolution/${ce.id}`,
       ce
     ),
-  delete: (hitAssessmentId, id) =>
+  delete: (hitAssessmentId, cEvoId) =>
     axiosWithAuth.delete(
-      `/v2/hit-assessment/${hitAssessmentId}/compound-evolution/${id}`
+      `/v2/hit-assessment/${hitAssessmentId}/compound-evolution/${cEvoId}`
     ),
 };
 
