@@ -1,11 +1,29 @@
-import React from "react";
+import { observer } from "mobx-react-lite";
+import React, { useContext, useEffect } from "react";
 import { FcAlarmClock, FcDisapprove, FcOk, FcWorkflow } from "react-icons/fc";
+import Loading from "../../../../../Library/Loading/Loading";
+import { RootStoreContext } from "../../../../../RootStore";
 import FHaDOActiveHA from "./FHaDOActiveHA/FHaDOActiveHA";
 import FHaDOInActiveHA from "./FHaDOInActiveHA/FHaDOInActiveHA";
 import FHaDOPortfolioReadyHA from "./FHaDOPortfolioReadyHA/FHaDOPortfolioReadyHA";
 import FHaDOReadyForHA from "./FHaDOReadyForHA/FHaDOReadyForHA";
 
 const FHaDOverview = () => {
+  // root store context
+  const rootStore = useContext(RootStoreContext);
+  const { fetchHAs, isHaListCacheValid, isFetchingHAs, haList } =
+    rootStore.haStore;
+
+  useEffect(() => {
+    if (!isHaListCacheValid) {
+      fetchHAs();
+    }
+  }, [isHaListCacheValid, fetchHAs]);
+
+  if (isFetchingHAs) {
+    return <Loading message={"Fetching HAs..."} />;
+  }
+
   return (
     <div className="flex flex-column w-full">
       <div className="flex w-full ">
@@ -25,7 +43,11 @@ const FHaDOverview = () => {
           </div>
           <div className="flex w-full pr-3">
             <div className="flex w-full  pt-1  bg-white">
-              <FHaDOReadyForHA />
+              <FHaDOReadyForHA
+                hitAssessments={haList.filter(
+                  (item) => item.status === "Ready for HA"
+                )}
+              />
             </div>
           </div>
         </div>
@@ -46,7 +68,11 @@ const FHaDOverview = () => {
           </div>
           <div className="flex w-full pr-3">
             <div className="flex w-full  pt-1 bg-white">
-              <FHaDOActiveHA />
+              <FHaDOActiveHA
+                hitAssessments={haList.filter(
+                  (item) => item.status === "Active"
+                )}
+              />
             </div>
           </div>
         </div>
@@ -67,7 +93,14 @@ const FHaDOverview = () => {
           </div>
           <div className="flex w-full pr-3">
             <div className="flex w-full  pt-1  bg-white">
-              <FHaDOInActiveHA />
+              <FHaDOInActiveHA
+                hitAssessments={haList.filter(
+                  (item) =>
+                    item.status === "Incorrect m/z" ||
+                    item.status === "Known Liability" ||
+                    item.status === "Complete - Failed"
+                )}
+              />
             </div>
           </div>
         </div>
@@ -88,7 +121,11 @@ const FHaDOverview = () => {
           </div>
           <div className="flex w-full pr-3 ">
             <div className="flex w-full  pt-1 bg-white">
-              <FHaDOPortfolioReadyHA />
+              <FHaDOPortfolioReadyHA
+                hitAssessments={haList.filter(
+                  (item) => item.status === "Complete - Success"
+                )}
+              />
             </div>
           </div>
         </div>
@@ -97,4 +134,4 @@ const FHaDOverview = () => {
   );
 };
 
-export default FHaDOverview;
+export default observer(FHaDOverview);
