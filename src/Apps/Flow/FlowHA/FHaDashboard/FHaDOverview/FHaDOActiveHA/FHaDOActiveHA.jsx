@@ -21,7 +21,7 @@ const FHaDOActiveHA = ({ hitAssessments }) => {
         <div
           className="flex flex-column  justify-content-center cursor-pointer"
           onClick={() => {
-            navigate(`/d/ha/${ha.id}`);
+            navigate(`/wf/ha/viewer/${ha.id}/information`);
           }}
         >
           <div className="flex flex-column bg-blue-100 justify-content-center">
