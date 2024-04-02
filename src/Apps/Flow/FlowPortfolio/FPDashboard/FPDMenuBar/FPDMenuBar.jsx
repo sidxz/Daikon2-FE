@@ -23,14 +23,6 @@ const FPDMenuBar = () => {
       command: () => navigate("overview/"),
     },
     {
-      label: "High Priority",
-      command: () => navigate("high-priority/"),
-    },
-    {
-      label: "At Risk",
-      command: () => navigate("at-risk/"),
-    },
-    {
       label: "Tabular View",
       command: () => navigate("tabular-view/"),
     },
