@@ -12,7 +12,7 @@ const FHaDOActiveHA = ({ hitAssessments }) => {
   if (!hitAssessments || hitAssessments.length === 0)
     return (
       <div className="flex justify-content-center w-full align-items-center text-sm	text-color-secondary">
-        - No hits are active -
+        - No HAs are active -
       </div>
     );
   let hitAssessmentsComponent = hitAssessments.map((ha) => {
