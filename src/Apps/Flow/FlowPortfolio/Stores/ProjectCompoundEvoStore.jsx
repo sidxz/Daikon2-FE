@@ -1,5 +1,6 @@
 import { action, makeObservable, observable, runInAction } from "mobx";
 import { toast } from "react-toastify";
+import ProjectCompoundEvoAPI from "../api/ProjectCompoundEvoAPI";
 
 export default class ProjectCompoundEvoStore {
   rootStore;
@@ -22,15 +23,14 @@ export default class ProjectCompoundEvoStore {
   isUpdatingProjectCEvo = false;
   isAddingProjectCEvo = false;
   isDeletingProjectCEvo = false;
-  isBatchInsertingHits = false;
 
   // Actions
   addProjectCEvo = async (cEvo, silent = false) => {
     this.isAddingProjectCEvo = true;
 
-    // Ensure cEvo.portfolioId is set ,error out if not
-    if (!cEvo.portfolioId?.trim()) {
-      throw new Error("portfolioId is required and cannot be empty.");
+    // Ensure cEvo.projectId is set ,error out if not
+    if (!cEvo.projectId?.trim()) {
+      throw new Error("projectId is required and cannot be empty.");
     }
 
     // set stage to Project
@@ -43,20 +43,20 @@ export default class ProjectCompoundEvoStore {
         cEvo.id = res.id;
         cEvo = { ...cEvo, ...res };
 
-        const portfolio = this.rootStore.projectStore.projectRegistry.get(
-          cEvo.portfolioId
+        const project = this.rootStore.projectStore.projectRegistry.get(
+          cEvo.projectId
         );
-        console.log("Found portfolio from registry", portfolio);
-        console.log("Adding cEvo to portfolio", cEvo);
-        portfolio.portfolioCompoundEvolution.push(cEvo);
+        console.log("Found project from registry", project);
+        console.log("Adding cEvo to project", cEvo);
+        project.portfolioCompoundEvolution.push(cEvo);
 
         // sort by evolutionDate
-        portfolio.portfolioCompoundEvolution =
-          portfolio.portfolioCompoundEvolution.sort(
+        project.portfolioCompoundEvolution =
+          project.portfolioCompoundEvolution.sort(
             (a, b) => new Date(b.evolutionDate) - new Date(a.evolutionDate)
           );
 
-        this.rootStore.projectStore.selectedProject = portfolio;
+        this.rootStore.projectStore.selectedProject = project;
 
         if (!silent)
           toast.success(
@@ -75,10 +75,9 @@ export default class ProjectCompoundEvoStore {
   updateProjectCEvo = async (cEvo, silent = false) => {
     this.isUpdatingProjectCEvo = true;
 
-    // Ensure cEvo.portfolioId is set, fallback to selectedProject.portfolioId if null, undefined, or empty
-    cEvo.portfolioId =
-      cEvo.portfolioId?.trim() ||
-      this.rootStore.projectStore.selectedProject.id;
+    // Ensure cEvo.projectId is set, fallback to selectedProject.projectId if null, undefined, or empty
+    cEvo.projectId =
+      cEvo.projectId?.trim() || this.rootStore.projectStore.selectedProject.id;
 
     // Ensure cEvo.hitId is not null, undefined, or empty
     if (!cEvo.id?.trim()) {
@@ -94,28 +93,28 @@ export default class ProjectCompoundEvoStore {
     try {
       await ProjectCompoundEvoAPI.update(cEvo);
       runInAction(() => {
-        // update in portfolio registry list
-        const portfolio = this.rootStore.projectStore.projectRegistry.get(
-          cEvo.portfolioId
+        // update in project registry list
+        const project = this.rootStore.projectStore.projectRegistry.get(
+          cEvo.projectId
         );
 
-        const indexOfEss = portfolio.portfolioCompoundEvolution.findIndex(
+        const indexOfEss = project.portfolioCompoundEvolution.findIndex(
           (e) => e.id === cEvo.id
         );
-        portfolio.portfolioCompoundEvolution[indexOfEss] = cEvo;
+        project.portfolioCompoundEvolution[indexOfEss] = cEvo;
 
         // sort by evolutionDate
-        portfolio.portfolioCompoundEvolution =
-          portfolio.portfolioCompoundEvolution.sort(
+        project.portfolioCompoundEvolution =
+          project.portfolioCompoundEvolution.sort(
             (a, b) => new Date(b.evolutionDate) - new Date(a.evolutionDate)
           );
 
-        this.rootStore.projectStore.selectedProject = portfolio;
+        this.rootStore.projectStore.selectedProject = project;
 
         if (!silent) toast.success("Compound Evolution updated successfully");
       });
     } catch (error) {
-      console.error("Error updating portfolio cEvo:", error);
+      console.error("Error updating project cEvo:", error);
     } finally {
       runInAction(() => {
         this.isUpdatingProjectCEvo = false;
@@ -123,14 +122,14 @@ export default class ProjectCompoundEvoStore {
     }
   };
 
-  deleteProjectCEvo = async (projectId, cEvoId) => {
+  deleteProjectCEvo = async (portfolioId, cEvoId) => {
     this.isDeletingProjectCEvo = true;
 
-    const portfolioId =
-      projectId?.trim() || this.rootStore.projectStore.selectedProject.id;
+    const projectId =
+      portfolioId?.trim() || this.rootStore.projectStore.selectedProject.id;
 
     // Ensure hitId is not null, undefined, or empty
-    if (!portfolioId?.trim()) {
+    if (!projectId?.trim()) {
       throw new Error("hitId is required and cannot be empty.");
     }
 
@@ -139,21 +138,21 @@ export default class ProjectCompoundEvoStore {
     }
 
     try {
-      await ProjectCompoundEvoAPI.delete(portfolioId, cEvoId);
+      await ProjectCompoundEvoAPI.delete(projectId, cEvoId);
       runInAction(() => {
-        // remove cEvo from portfolio cEvo list
-        const portfolio =
-          this.rootStore.projectStore.projectRegistry.get(portfolioId);
-        const indexOfEss = portfolio.portfolioCompoundEvolution.findIndex(
+        // remove cEvo from project cEvo list
+        const project =
+          this.rootStore.projectStore.projectRegistry.get(projectId);
+        const indexOfEss = project.portfolioCompoundEvolution.findIndex(
           (e) => e.id === cEvoId
         );
-        portfolio.portfolioCompoundEvolution.splice(indexOfEss, 1);
-        this.rootStore.projectStore.selectedProject = portfolio;
+        project.portfolioCompoundEvolution.splice(indexOfEss, 1);
+        this.rootStore.projectStore.selectedProject = project;
 
         toast.success("Compound Evolution deleted successfully");
       });
     } catch (error) {
-      console.error("Error deleting portfolio cEvo:", error);
+      console.error("Error deleting project cEvo:", error);
     } finally {
       runInAction(() => {
         this.isDeletingProjectCEvo = false;

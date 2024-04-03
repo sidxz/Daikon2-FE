@@ -263,7 +263,7 @@ const PortfolioCompoundEvolution = () => {
         header={addCEvoSideBarHeader}
       >
         <PortfolioCompoundEvolutionAdd
-          hitAssessmentId={selectedProject?.id}
+          projectId={selectedProject?.id}
           closeSideBar={() => setDisplayAddCEvoSideBar(false)}
         />
       </Sidebar>

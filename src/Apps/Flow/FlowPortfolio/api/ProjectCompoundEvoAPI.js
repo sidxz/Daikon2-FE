@@ -4,15 +4,15 @@ const axiosWithAuth = new AxiosWithAuth();
 
 const ProjectCompoundEvoAPI = {
   add: (ce) =>
-    axiosWithAuth.post(`/v2/project/${ce.portfolioId}/compound-evolution`, ce),
+    axiosWithAuth.post(`/v2/project/${ce.projectId}/compound-evolution`, ce),
   update: (ce) =>
     axiosWithAuth.put(
-      `/v2/project/${ce.portfolioId}/compound-evolution/${ce.id}`,
+      `/v2/project/${ce.projectId}/compound-evolution/${ce.id}`,
       ce
     ),
-  delete: (portfolioId, cEvoId) =>
+  delete: (projectId, cEvoId) =>
     axiosWithAuth.delete(
-      `/v2/project/${portfolioId}/compound-evolution/${cEvoId}`
+      `/v2/project/${projectId}/compound-evolution/${cEvoId}`
     ),
 };
 
