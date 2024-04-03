@@ -1,5 +1,7 @@
 import React, { useContext, useEffect } from "react";
-import { FcApproval, FcBiotech, FcRight } from "react-icons/fc";
+import { FaFlask } from "react-icons/fa";
+import { GiTestTubes } from "react-icons/gi";
+import { IoMdList } from "react-icons/io";
 
 import { observer } from "mobx-react-lite";
 import Loading from "../../../../../Library/Loading/Loading";
@@ -61,7 +63,7 @@ const FPDOverview = () => {
             }}
           >
             <div className="flex">
-              <FcRight />
+              <GiTestTubes />
             </div>
             <div className="flex ">
               <b>H2L - ACTIVE &nbsp;</b>
@@ -86,7 +88,7 @@ const FPDOverview = () => {
             }}
           >
             <div className="flex">
-              <FcBiotech />
+              <FaFlask />
             </div>
             <div className="flex ">
               <b> LO - ACTIVE &nbsp;</b>
@@ -112,7 +114,7 @@ const FPDOverview = () => {
             }}
           >
             <div className="flex text-orange-500">
-              <FcApproval />
+              <IoMdList />
             </div>
             <div className="flex ">
               <b> SP - ACTIVE &nbsp;</b>
