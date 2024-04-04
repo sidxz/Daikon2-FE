@@ -35,6 +35,7 @@ const FSTbVHPromote = ({
       associatedHitIds: selectedAssociatedHits,
       hitCollectionId: selectedHitCollection.id,
       screenId: selectedScreen.id,
+      compoundSMILES: ddSelectedPrimaryHit.molecule.smiles,
     };
     console.log(data);
     const jsonDataString = JSON.stringify(data);

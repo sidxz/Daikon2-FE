@@ -92,6 +92,7 @@ const FHaNewHitPicker = ({ baseHitData, setBaseHitData }) => {
       associatedHitIds: selectedAssociatedHits,
       hitCollectionId: ddSelectedHitCollection.id,
       screenId: ddSelectedScreen.id,
+      compoundSMILES: ddSelectedPrimaryHit.molecule.smiles,
     };
     setBaseHitData(data);
     console.log(data);

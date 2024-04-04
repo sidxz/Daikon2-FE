@@ -64,7 +64,11 @@ const FHaDOPortfolioReadyHA = ({ hitAssessments }) => {
             </div>
           </div>
           <div className="flex w-full justify-content-center">
-            <SmilesView smiles={ha.smiles} width={180} height={180} />
+            <SmilesView
+              smiles={ha.compoundEvoLatestSMILES}
+              width={180}
+              height={180}
+            />
           </div>
         </div>
       </div>
