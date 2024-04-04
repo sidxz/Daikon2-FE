@@ -29,3 +29,9 @@ body {
 .p-fieldset .p-fieldset-content {
   padding: 0rem;
 }
+
+.vis-item.expected {
+  background-color: transparent;
+  border-style: dashed !important;
+  z-index: 0;
+}

@@ -29,12 +29,24 @@ const HaStatusDropdown = ({ readOnlyStatus, readOnly = false }) => {
   }
 
   const statusOptions = [
-    { name: "Ready for HA", icon: <FcAlarmClock /> },
-    { name: "Active", icon: <FcWorkflow /> },
-    { name: "Incorrect m/z", icon: <FaExclamationTriangle /> },
-    { name: "Known Liability", icon: <FcHighPriority /> },
-    { name: "Complete - Failed", icon: <FcDisapprove /> },
-    { name: "Complete - Success", icon: <FcOk /> },
+    { name: "Ready for HA", value: "ReadyForHA", icon: <FcAlarmClock /> },
+    { name: "Active", value: "Active", icon: <FcWorkflow /> },
+    {
+      name: "Incorrect m/z",
+      value: "IncorrectMz",
+      icon: <FaExclamationTriangle />,
+    },
+    {
+      name: "Known Liability",
+      value: "KnownLiability",
+      icon: <FcHighPriority />,
+    },
+    {
+      name: "Complete - Failed",
+      value: "CompleteFailed",
+      icon: <FcDisapprove />,
+    },
+    { name: "Complete - Success", value: "CompleteSuccess", icon: <FcOk /> },
   ];
 
   // Template for rendering a selected status option
@@ -72,6 +84,7 @@ const HaStatusDropdown = ({ readOnlyStatus, readOnly = false }) => {
   // Event handler for updating the selected status
   // and making the confirm dialog visible
   const handleStatusChange = (e) => {
+    console.log(e);
     setSelectedStatus(e.value);
     setConfirmDialogVisible(true);
   };
@@ -99,7 +112,10 @@ const HaStatusDropdown = ({ readOnlyStatus, readOnly = false }) => {
     return (
       <div className="flex align-items-center gap-2 bg-white p-2 m-0">
         <div className="flex flex-column">
-          {statusOptions.find((option) => option.name === readOnlyStatus)?.icon}
+          {
+            statusOptions.find((option) => option.value === readOnlyStatus)
+              ?.icon
+          }
         </div>
         <div className="flex flex-column">
           {readOnlyStatus ? readOnlyStatus : "Not Available"}
@@ -115,7 +131,7 @@ const HaStatusDropdown = ({ readOnlyStatus, readOnly = false }) => {
           value={selectedHa.status}
           options={statusOptions}
           optionLabel="name"
-          optionValue="name"
+          optionValue="value"
           placeholder="Set Status"
           itemTemplate={optionTemplate}
           valueTemplate={valueTemplate}
