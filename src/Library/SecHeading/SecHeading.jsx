@@ -11,9 +11,7 @@ const SecHeading = ({
   displayHorizon,
   color,
   textColor,
-  accessionNumber,
   entryPoint,
-  projectName,
   customButtons,
   customElements,
 }) => {
@@ -126,10 +124,7 @@ const SecHeading = ({
       collapsed={true}
       toggleable
     >
-      <Horizon
-        accessionNumber={accessionNumber}
-        entryPoint={entryPoint || projectName}
-      />
+      <Horizon entryPoint={entryPoint} />
     </Panel>
   );
 };

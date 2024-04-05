@@ -16,7 +16,7 @@ const FPDashboard = () => {
           svgIcon={<PortfolioIcon size={"25em"} />}
           heading="Portfolio"
           color={appColors.sectionHeadingBg.portfolio}
-          displayHorizon={true}
+          displayHorizon={false}
         />
       </div>
       <div className="flex w-full justify-content-center">

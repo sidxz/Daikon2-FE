@@ -99,6 +99,7 @@ const FGVPublic = ({ selectedGene }) => {
           displayHorizon={true}
           color={appColors.sectionHeadingBg.gene}
           breadCrumbItems={breadCrumbItems}
+          entryPoint={selectedGene?.id}
         />
       </div>
 

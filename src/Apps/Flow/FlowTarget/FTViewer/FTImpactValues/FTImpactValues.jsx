@@ -55,6 +55,7 @@ const FTImpactValues = () => {
           heading={"Target - " + selectedTarget?.name}
           color={appColors.sectionHeadingBg.target}
           displayHorizon={true}
+          entryPoint={selectedTarget?.id}
         />
       </div>
       <div className="card w-full p-3">

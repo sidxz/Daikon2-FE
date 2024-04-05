@@ -5,6 +5,7 @@ import React from "react";
 import { useNavigate } from "react-router";
 import SecHeading from "../../../../../Library/SecHeading/SecHeading";
 import { appColors } from "../../../../../constants/colors";
+import { GeneIcon } from "../../../icons/GeneIcon";
 import FGVPrCrispriStrain from "./FGVPrCrispriStrain/FGVPrCrispriStrain";
 import FGVPrEssentiality from "./FGVPrEssentiality/FGVPrEssentiality";
 import FGVPrHypomorph from "./FGVPrHypomorph/FGVPrHypomorph";
@@ -13,7 +14,6 @@ import FGVPrProteinProduction from "./FGVPrProteinProduction/FGVPrProteinProduct
 import FGVPrResistanceMutation from "./FGVPrResistanceMutation/FGVPrResistanceMutation";
 import FGVPrUnpublishedStructuralInformation from "./FGVPrUnpublishedStructuralInformation/FGVPrUnpublishedStructuralInformation";
 import FGVPrVulnerability from "./FGVPrVulnerability/FGVPrVulnerability";
-import { GeneIcon } from "../../../icons/GeneIcon";
 
 const FGVPrivate = ({ selectedGene }) => {
   const navigate = useNavigate();
@@ -46,6 +46,7 @@ const FGVPrivate = ({ selectedGene }) => {
           displayHorizon={true}
           color={appColors.sectionHeadingBg.gene}
           breadCrumbItems={breadCrumbItems}
+          entryPoint={selectedGene?.id}
         />
       </div>
       <div className="flex flex-column gap-2">

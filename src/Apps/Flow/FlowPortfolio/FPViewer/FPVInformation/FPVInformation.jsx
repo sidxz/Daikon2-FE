@@ -70,6 +70,7 @@ const FPVInformation = () => {
           heading={"Portfolio - " + selectedProject.name}
           displayHorizon={true}
           color={appColors.sectionHeadingBg.project}
+          entryPoint={selectedProject?.id}
           customElements={[
             <Chip
               label={getOrgNameById(selectedProject?.primaryOrgId)}

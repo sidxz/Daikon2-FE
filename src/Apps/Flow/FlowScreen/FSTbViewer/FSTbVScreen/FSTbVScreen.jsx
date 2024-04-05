@@ -94,6 +94,7 @@ const FSTbVScreen = ({}) => {
               svgIcon={<ScreenIcon size={"25em"} />}
               heading={"Screen - " + selectedScreen.name}
               displayHorizon={true}
+              entryPoint={selectedScreen?.id}
               color={appColors.sectionHeadingBg.screen}
               customElements={[
                 <Chip

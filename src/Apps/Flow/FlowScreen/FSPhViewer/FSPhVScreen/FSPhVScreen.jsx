@@ -92,6 +92,7 @@ const FSPhVScreen = ({}) => {
               icon="icon icon-common icon-circle-notch"
               heading={"Screen - " + selectedScreen.name}
               displayHorizon={true}
+              entryPoint={selectedScreen?.id}
               color={appColors.sectionHeadingBg.screen}
               customElements={[
                 <Chip

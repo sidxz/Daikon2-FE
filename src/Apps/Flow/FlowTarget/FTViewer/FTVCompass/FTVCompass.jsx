@@ -39,6 +39,7 @@ const FTVCompass = () => {
           heading={"Target - " + selectedTarget.name}
           color={appColors.sectionHeadingBg.target}
           displayHorizon={true}
+          entryPoint={selectedTarget?.id}
         />
       </div>
 

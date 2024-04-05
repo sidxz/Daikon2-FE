@@ -25,6 +25,7 @@ import TargetStore from "./Apps/Flow/FlowTarget/Stores/TargetStore";
 import MoleculeStore from "./Apps/MolecuLogix/Stores/MoleculeStore";
 import QnaireStore from "./Apps/Questionnaire/Stores/QnaireStore";
 import AuthStore from "./Auth/AuthStore";
+import HorizonStore from "./Library/Horizon/HorizonStore";
 
 configure({ enforceActions: "always" });
 
@@ -64,6 +65,8 @@ export class RootStore {
   adminUserManagementStore;
 
   qnaireStore;
+
+  horizonStore;
   constructor() {
     /* Auth */
     this.authStore = new AuthStore(this);
@@ -110,6 +113,9 @@ export class RootStore {
 
     /* Questionnaire */
     this.qnaireStore = new QnaireStore(this);
+
+    /* Horizon */
+    this.horizonStore = new HorizonStore(this);
   }
 }
 

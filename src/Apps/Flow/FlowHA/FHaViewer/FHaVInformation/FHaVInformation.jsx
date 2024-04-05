@@ -117,6 +117,7 @@ const FHaVInformation = () => {
           heading={"Hit Assessment - " + selectedHa.name}
           displayHorizon={true}
           color={appColors.sectionHeadingBg.ha}
+          entryPoint={selectedHa?.id}
           customElements={[
             <HaStatusDropdown />,
             <Chip

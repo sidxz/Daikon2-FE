@@ -63,6 +63,7 @@ const FTVScorecard = () => {
           heading={"Target - " + selectedTarget?.name}
           color={appColors.sectionHeadingBg.target}
           displayHorizon={true}
+          entryPoint={selectedTarget?.id}
         />
       </div>
       <div className="flex w-full p-2">
