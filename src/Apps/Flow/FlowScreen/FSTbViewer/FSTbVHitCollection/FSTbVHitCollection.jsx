@@ -76,7 +76,7 @@ const FSTbVHitCollection = ({ selectedScreen }) => {
               icon="icon icon-conceptual icon-structures-3d"
               heading={"Hits of " + selectedScreen.name}
               displayHorizon={true}
-              entryPoint={selectedScreen?.id}
+              entryPoint={selectedHitCollection?.id}
               color={appColors.sectionHeadingBg.screen}
               customButtons={[
                 {

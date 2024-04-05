@@ -10,8 +10,8 @@ const HNScreen = ({ dataObj, entryPoint }) => {
       }}
     >
       {dataObj?.id === entryPoint && (
-        <foreignObject x="-70" y="-40" width="15rem" height="15rem">
-          <div className="flex items-center p-0 m-0 w-15rem h-15rem border-1 border-green-200 border-circle"></div>
+        <foreignObject x="-65" y="-50" width="14rem" height="14rem">
+          <div className="flex items-center p-0 m-1 w-13rem h-13rem border-dashed border-1 border-green-200 border-circle"></div>
         </foreignObject>
       )}
       <foreignObject x="-20" y="-20" width="4rem" height="4rem">
