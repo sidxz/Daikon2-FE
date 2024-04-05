@@ -1,7 +1,7 @@
 import React from "react";
 import IconSVG from "../../../assets/flow/ha.svg";
 import "./flowIcons.css";
-export const HAIcon = ({ size }) => {
+export const HAIcon = ({ size, grayscale = 0 }) => {
   const width = size || "24px";
   const height = size || "24px";
   return (
@@ -12,6 +12,7 @@ export const HAIcon = ({ size }) => {
         alt="HA"
         width={width}
         height={height}
+        style={{ filter: `grayscale(${grayscale})` }}
       />
     </div>
   );

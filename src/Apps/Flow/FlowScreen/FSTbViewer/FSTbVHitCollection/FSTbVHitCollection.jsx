@@ -8,6 +8,7 @@ import Loading from "../../../../../Library/Loading/Loading";
 import SecHeading from "../../../../../Library/SecHeading/SecHeading";
 import { RootStoreContext } from "../../../../../RootStore";
 import { appColors } from "../../../../../constants/colors";
+import { HitCollectionIcon } from "../../../icons/HitCollectionIcon";
 import FSTbVAddHitCollection from "./FSTbVAddHitCollection";
 import * as Helper from "./FSTbVHitCollectionHelper";
 import FSTbVHits from "./FSTbVHits/FSTbVHits";
@@ -73,7 +74,7 @@ const FSTbVHitCollection = ({ selectedScreen }) => {
           </div>
           <div className="flex w-full">
             <SecHeading
-              icon="icon icon-conceptual icon-structures-3d"
+              svgIcon={<HitCollectionIcon size={"25em"} />}
               heading={"Hits of " + selectedScreen.name}
               displayHorizon={true}
               entryPoint={selectedHitCollection?.id}

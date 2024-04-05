@@ -1,3 +1,6 @@
+import { HitCollectionIcon } from "../../icons/HitCollectionIcon";
+import { PhenoScreenIcon } from "../../icons/PhenoScreenIcon";
+
 export const sidePanelItems = (navigate) => {
   return [
     {
@@ -5,14 +8,14 @@ export const sidePanelItems = (navigate) => {
       items: [
         {
           label: "Screens",
-          icon: "icon icon-common icon-circle-notch",
+          icon: <PhenoScreenIcon size={"18em"} grayscale={1} />,
           command: () => {
             navigate("screens/");
           },
         },
         {
           label: "Hits",
-          icon: "icon icon-conceptual icon-structures-3d",
+          icon: <HitCollectionIcon size={"18em"} grayscale={1} />,
           command: () => {
             navigate("hits/");
           },

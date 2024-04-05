@@ -1,7 +1,7 @@
 import React from "react";
 import IconSVG from "../../../assets/flow/gene.svg";
 import "./flowIcons.css";
-export const GeneIcon = ({ size }) => {
+export const GeneIcon = ({ size, grayscale = 0 }) => {
   const width = size || "24px";
   const height = size || "24px";
   return (
@@ -12,6 +12,7 @@ export const GeneIcon = ({ size }) => {
         alt="Gene"
         width={width}
         height={height}
+        style={{ filter: `grayscale(${grayscale})` }}
       />
     </div>
   );

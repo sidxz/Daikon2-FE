@@ -1,7 +1,7 @@
 import React from "react";
 import IconSVG from "../../../assets/flow/portfolio.svg";
 import "./flowIcons.css";
-export const PortfolioIcon = ({ size }) => {
+export const PortfolioIcon = ({ size, grayscale = 0 }) => {
   const width = size || "24px";
   const height = size || "24px";
   return (
@@ -12,6 +12,7 @@ export const PortfolioIcon = ({ size }) => {
         alt="Portfolio"
         width={width}
         height={height}
+        style={{ filter: `grayscale(${grayscale})` }}
       />
     </div>
   );

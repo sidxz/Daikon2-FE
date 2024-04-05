@@ -1,7 +1,7 @@
 import React from "react";
 import IconSVG from "../../../assets/flow/target.svg";
 import "./flowIcons.css";
-export const TargetIcon = ({ size }) => {
+export const TargetIcon = ({ size, grayscale = 0 }) => {
   const width = size || "24px";
   const height = size || "24px";
   return (
@@ -12,6 +12,7 @@ export const TargetIcon = ({ size }) => {
         alt="Target"
         width={width}
         height={height}
+        style={{ filter: `grayscale(${grayscale})` }}
       />
     </div>
   );
