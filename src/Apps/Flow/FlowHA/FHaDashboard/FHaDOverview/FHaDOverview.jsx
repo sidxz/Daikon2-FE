@@ -45,7 +45,7 @@ const FHaDOverview = () => {
             <div className="flex w-full  pt-1  bg-white">
               <FHaDOReadyForHA
                 hitAssessments={haList.filter(
-                  (item) => item.status === "Ready for HA"
+                  (item) => item.status === "ReadyForHA"
                 )}
               />
             </div>
@@ -96,9 +96,9 @@ const FHaDOverview = () => {
               <FHaDOInActiveHA
                 hitAssessments={haList.filter(
                   (item) =>
-                    item.status === "Incorrect m/z" ||
-                    item.status === "Known Liability" ||
-                    item.status === "Complete - Failed"
+                    item.status === "IncorrectMz" ||
+                    item.status === "KnownLiability" ||
+                    item.status === "CompleteFailed"
                 )}
               />
             </div>
@@ -123,7 +123,7 @@ const FHaDOverview = () => {
             <div className="flex w-full  pt-1 bg-white">
               <FHaDOPortfolioReadyHA
                 hitAssessments={haList.filter(
-                  (item) => item.status === "Complete - Success"
+                  (item) => item.status === "CompleteSuccess"
                 )}
               />
             </div>

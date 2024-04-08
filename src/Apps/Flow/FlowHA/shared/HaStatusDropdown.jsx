@@ -3,17 +3,10 @@ import { BlockUI } from "primereact/blockui";
 import { ConfirmDialog } from "primereact/confirmdialog";
 import { Dropdown } from "primereact/dropdown";
 import React, { useContext, useState } from "react";
-import {
-  FcAlarmClock,
-  FcDisapprove,
-  FcExpired,
-  FcOk,
-  FcWorkflow,
-} from "react-icons/fc";
+import { FcExpired } from "react-icons/fc";
 
-import { FaExclamationTriangle } from "react-icons/fa";
-import { FcHighPriority } from "react-icons/fc";
 import { RootStoreContext } from "../../../../RootStore";
+import { statusOptions } from "../constants/statusOptions";
 
 const HaStatusDropdown = ({ readOnlyStatus, readOnly = false }) => {
   const [confirmDialogVisible, setConfirmDialogVisible] = useState(false);
@@ -28,26 +21,7 @@ const HaStatusDropdown = ({ readOnlyStatus, readOnly = false }) => {
     return <> </>;
   }
 
-  const statusOptions = [
-    { name: "Ready for HA", value: "ReadyForHA", icon: <FcAlarmClock /> },
-    { name: "Active", value: "Active", icon: <FcWorkflow /> },
-    {
-      name: "Incorrect m/z",
-      value: "IncorrectMz",
-      icon: <FaExclamationTriangle />,
-    },
-    {
-      name: "Known Liability",
-      value: "KnownLiability",
-      icon: <FcHighPriority />,
-    },
-    {
-      name: "Complete - Failed",
-      value: "CompleteFailed",
-      icon: <FcDisapprove />,
-    },
-    { name: "Complete - Success", value: "CompleteSuccess", icon: <FcOk /> },
-  ];
+  const statuses = statusOptions;
 
   // Template for rendering a selected status option
   const optionTemplate = (option) => {
@@ -112,10 +86,7 @@ const HaStatusDropdown = ({ readOnlyStatus, readOnly = false }) => {
     return (
       <div className="flex align-items-center gap-2 bg-white p-2 m-0">
         <div className="flex flex-column">
-          {
-            statusOptions.find((option) => option.value === readOnlyStatus)
-              ?.icon
-          }
+          {statuses.find((option) => option.value === readOnlyStatus)?.icon}
         </div>
         <div className="flex flex-column">
           {readOnlyStatus ? readOnlyStatus : "Not Available"}
@@ -129,7 +100,7 @@ const HaStatusDropdown = ({ readOnlyStatus, readOnly = false }) => {
       <BlockUI blocked={isUpdatingHa}>
         <Dropdown
           value={selectedHa.status}
-          options={statusOptions}
+          options={statuses}
           optionLabel="name"
           optionValue="value"
           placeholder="Set Status"

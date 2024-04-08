@@ -4,7 +4,7 @@ import { Divider } from "primereact/divider";
 import { InputText } from "primereact/inputtext";
 import { classNames } from "primereact/utils";
 import React, { useContext, useEffect, useState } from "react";
-import { FcAlarmClock, FcDisapprove, FcExpired, FcOk } from "react-icons/fc";
+import { FcExpired } from "react-icons/fc";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Loading from "../../../../Library/Loading/Loading";
 import SecHeading from "../../../../Library/SecHeading/SecHeading";
@@ -18,10 +18,9 @@ import FHaNewHitPicker from "./components/FHaNewHitPicker/FHaNewHitPicker";
 import { Button } from "primereact/button";
 import { Dropdown } from "primereact/dropdown";
 import { InputTextarea } from "primereact/inputtextarea";
-import { FaExclamationTriangle } from "react-icons/fa";
-import { FcHighPriority } from "react-icons/fc";
 import { toast } from "react-toastify";
 import InputMultiOrg from "../../../../Shared/InputEditors/InputMultiOrg";
+import { statusOptions } from "../constants/statusOptions";
 const FHANew = () => {
   const [searchParams] = useSearchParams();
   const encodedData = searchParams.get("data");
@@ -60,7 +59,7 @@ const FHANew = () => {
       haType: "",
       legacyId: "",
       primaryOrgId: "",
-      status: "Ready for HA",
+      status: "ReadyForHA",
       description: "",
       participatingOrgs: [],
     },
@@ -104,14 +103,6 @@ const FHANew = () => {
   if (isFetchingScreens) {
     return <Loading message="Fetching screens and hits..." />;
   }
-
-  const statusOptions = [
-    { name: "Ready for HA", icon: <FcAlarmClock /> },
-    { name: "Incorrect m/z", icon: <FaExclamationTriangle /> },
-    { name: "Known Liability", icon: <FcHighPriority /> },
-    { name: "Complete - Failed", icon: <FcDisapprove /> },
-    { name: "Complete - Success", icon: <FcOk /> },
-  ];
 
   // Template for rendering a selected status option
   const statusOptionTemplate = (option) => {
@@ -244,9 +235,8 @@ const FHANew = () => {
               </label>
               <Dropdown
                 id="status"
-                answer="name"
                 optionLabel="name"
-                optionValue="name"
+                optionValue="value"
                 options={statusOptions}
                 itemTemplate={statusOptionTemplate}
                 valueTemplate={statusValueTemplate}
