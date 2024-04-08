@@ -1,8 +1,10 @@
 import React from "react";
 import { PhenoScreenIcon } from "../../../../../Apps/Flow/icons/PhenoScreenIcon";
 import { ScreenIcon } from "../../../../../Apps/Flow/icons/ScreenIcon";
+import { AppOrgResolver } from "../../../../../Shared/VariableResolvers/AppOrgResolver";
 
 const HNScreen = ({ dataObj, entryPoint }) => {
+  const { getOrgAliasById } = AppOrgResolver();
   return (
     <g
       onClick={() => {
@@ -40,7 +42,7 @@ const HNScreen = ({ dataObj, entryPoint }) => {
             <br />
             {dataObj?.attributes?.method}
             <br />
-            {dataObj?.attributes?.primaryOrgName}
+            {getOrgAliasById(dataObj?.attributes?.primaryOrgId)}
             <br />
             {dataObj?.attributes?.status}
           </p>
