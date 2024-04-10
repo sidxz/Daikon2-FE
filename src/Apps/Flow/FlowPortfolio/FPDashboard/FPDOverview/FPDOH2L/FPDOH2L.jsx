@@ -1,4 +1,6 @@
 import React from "react";
+
+import { observer } from "mobx-react-lite";
 import { useNavigate } from "react-router-dom";
 import FDate from "../../../../../../Library/FDate/FDate";
 import SmilesView from "../../../../../../Library/SmilesView/SmilesView";
@@ -88,4 +90,4 @@ const FPDOH2L = ({ projects }) => {
   );
 };
 
-export default FPDOH2L;
+export default observer(FPDOH2L);
