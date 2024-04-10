@@ -33,24 +33,12 @@ const FPDOverview = () => {
     return <Loading message={"Fetching Projects..."} />;
   }
 
-  // const h2lProjects = filterH2LProjects(); // Get all H2L projects
-  // const loProjects = filterLOProjects(); // Get all LO projects
-  // const spProjects = filterSPProjects(); // Get all SP projects
+  console.log("projectList", projectList);
 
-  // // Filter projects with 'Active' or 'Terminated' status
-  // const activeH2LProjects = h2lProjects.filter(
-  //   (project) => project.status === "Active"
-  // );
-  // const activeLOProjects = loProjects.filter(
-  //   (project) => project.status === "Active"
-  // );
-  // const activeSPProjects = spProjects.filter(
-  //   (project) => project.status === "Active"
-  // );
-
-  // const h2lProjectsCount = activeH2LProjects.length;
-  // const loProjectsCount = activeLOProjects.length;
-  // const spProjectsCount = activeSPProjects.length;
+  let h2lActiveProjects = projectList.filter(
+    (item) => item.stage === "H2L" && item.isProjectRemoved === false
+  );
+  let h2lProjects = projectList.filter((item) => item.stage === "H2L");
 
   return (
     <div className="flex flex-column w-full">
@@ -66,16 +54,16 @@ const FPDOverview = () => {
               <GiTestTubes />
             </div>
             <div className="flex ">
-              <b>H2L - ACTIVE &nbsp;</b>
-              {/* <b style={{ color: "#00A86B" }}>({h2lProjectsCount})</b> */}
+              <b>H2L</b>
+              <b style={{ color: "#00A86B" }}>({h2lActiveProjects.length})</b>
             </div>
             <div className="flex text-xs justify-content-center text-bluegray-400">
-              {/* <b> Total ({h2lProjects.length})</b> */}
+              <b> Total ({h2lProjects.length})</b>
             </div>
           </div>
           <div className="flex w-full pr-3">
             <div className="flex w-full  pt-1  bg-white">
-              <FPDOH2L />
+              <FPDOH2L projects={h2lActiveProjects} />
             </div>
           </div>
         </div>

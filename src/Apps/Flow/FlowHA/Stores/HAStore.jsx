@@ -34,6 +34,8 @@ export default class HAStore {
 
       isDeletingHa: observable,
       deleteHa: action,
+
+      haPortfolioReadyList: computed,
     });
   }
 
@@ -80,6 +82,10 @@ export default class HAStore {
 
   get haList() {
     return Array.from(this.haListRegistry.values());
+  }
+
+  get haPortfolioReadyList() {
+    return this.haList.filter((ha) => ha.status === "CompleteSuccess");
   }
 
   fetchHa = async (haId, inValidateCache = false) => {

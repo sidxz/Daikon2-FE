@@ -1,0 +1,208 @@
+import { useFormik } from "formik";
+import { observer } from "mobx-react-lite";
+import { Button } from "primereact/button";
+import { Dropdown } from "primereact/dropdown";
+import { InputText } from "primereact/inputtext";
+import { InputTextarea } from "primereact/inputtextarea";
+import { classNames } from "primereact/utils";
+import React, { useContext, useEffect, useState } from "react";
+import PleaseWait from "../../../../../Library/PleaseWait/PleaseWait";
+import { RootStoreContext } from "../../../../../RootStore";
+import InputOrg from "../../../../../Shared/InputEditors/InputOrg";
+import { AppOrgResolver } from "../../../../../Shared/VariableResolvers/AppOrgResolver";
+
+const FPDAddNew = ({ closeSideBar }) => {
+  const rootStore = useContext(RootStoreContext);
+  const { fetchHAs, isHaListCacheValid, isFetchingHAs, haPortfolioReadyList } =
+    rootStore.haStore;
+
+  const {
+    addProject,
+    isAddingProject,
+    fetchProjects,
+    isProjectListCacheValid,
+    projectList,
+    isFetchingProjects,
+  } = rootStore.projectStore;
+
+  useEffect(() => {
+    if (!isHaListCacheValid) {
+      fetchHAs();
+    }
+    if (!isProjectListCacheValid) {
+      fetchProjects();
+    }
+  }, [isHaListCacheValid, isProjectListCacheValid]);
+
+  const [selectedHa, setSelectedHa] = useState();
+  const { getOrgNameById } = AppOrgResolver();
+
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      alias: "",
+      legacyId: "",
+      description: "",
+      stage: "H2L",
+      primaryOrgId: "",
+      primaryOrgName: "",
+      participatingOrgs: [],
+    },
+
+    validate: (values) => {
+      const errors = {};
+      if (!values.name) errors.name = "Name is required.";
+      if (!values.primaryOrgId)
+        errors.primaryOrgId = "Organization is required.";
+      // Additional validations can be added here
+      return errors;
+    },
+
+    onSubmit: (newProject) => {
+      newProject.primaryOrgName = getOrgNameById(newProject.primaryOrgId);
+      newProject.haId = selectedHa.id;
+      newProject.compoundId = selectedHa.compoundEvoLatestMoleculeId;
+      newProject.hitCompoundId = selectedHa.compoundId;
+      newProject.hitId = selectedHa.hitId;
+
+      console.log(newProject);
+
+      addProject(newProject).then(() => {
+        closeSideBar();
+        formik.resetForm();
+      });
+    },
+  });
+
+  useEffect(() => {
+    if (selectedHa) {
+      formik.setFieldValue("name", selectedHa.name);
+      formik.setFieldValue("primaryOrgId", selectedHa?.primaryOrgId);
+      formik.setFieldValue("alias", selectedHa?.alias);
+      formik.setFieldValue("legacyId", selectedHa?.legacyId);
+    }
+  }, [selectedHa]);
+
+  // Helper functions for form validation and error messages
+  const isInvalid = (field) => formik.touched[field] && formik.errors[field];
+  const getErrorMessage = (field) =>
+    isInvalid(field) && (
+      <small className="p-error">{formik.errors[field]}</small>
+    );
+
+  if (isFetchingHAs || isFetchingProjects) {
+    return <PleaseWait />;
+  }
+
+  console.log(haPortfolioReadyList);
+  return (
+    <div className="card w-full">
+      <div className="field p-fluid">
+        <label htmlFor="ha">Select HA</label>
+        <Dropdown
+          id="ha"
+          value={selectedHa}
+          options={haPortfolioReadyList}
+          onChange={(e) => {
+            setSelectedHa(e.value);
+          }}
+          placeholder="Select HA"
+          optionLabel="name"
+          autoFocus
+          className="text-base text-color surface-overlay"
+        />
+      </div>
+      <form onSubmit={formik.handleSubmit} className="p-fluid">
+        <div className="field">
+          <label
+            htmlFor="name"
+            className={classNames({
+              "p-error": isInvalid("name"),
+            })}
+          >
+            Name *
+            <p className="text-xs text-color">
+              A name suggestion has been made based on the selected HA project.
+            </p>
+          </label>
+          <InputText
+            id="name"
+            value={formik.values.name}
+            onChange={formik.handleChange}
+            className={classNames({
+              "p-invalid": isInvalid("name"),
+            })}
+          />
+        </div>
+
+        <div className="field">
+          <label
+            htmlFor="alias"
+            className={classNames({
+              "p-error": isInvalid("alias"),
+            })}
+          >
+            Alias
+          </label>
+          <InputText
+            id="alias"
+            value={formik.values.alias}
+            onChange={formik.handleChange}
+            className={classNames({
+              "p-invalid": isInvalid("alias"),
+            })}
+          />
+        </div>
+
+        <div className="field">
+          <label
+            htmlFor="primaryOrgId"
+            className={classNames({
+              "p-error": isInvalid("primaryOrgId"),
+            })}
+          >
+            Primary Organization
+          </label>
+
+          <InputOrg
+            value={formik.values.primaryOrgId}
+            onChange={formik.handleChange("primaryOrgId")}
+            className={classNames({
+              "p-invalid": isInvalid("primaryOrgId"),
+            })}
+          />
+          {getErrorMessage("primaryOrgId")}
+        </div>
+
+        <div className="field">
+          <label
+            htmlFor="description"
+            className={classNames({
+              "p-error": isInvalid("description"),
+            })}
+          >
+            Description
+          </label>
+          <InputTextarea
+            id="description"
+            value={formik.values.description}
+            onChange={formik.handleChange}
+            className={classNames({
+              "p-invalid": isInvalid("description"),
+            })}
+          />
+        </div>
+
+        <Button
+          icon="icon icon-common icon-database-submit"
+          type="submit"
+          label="Create Portfolio Project"
+          className="p-mt-2"
+          loading={isAddingProject}
+        />
+      </form>
+    </div>
+  );
+};
+
+export default observer(FPDAddNew);
