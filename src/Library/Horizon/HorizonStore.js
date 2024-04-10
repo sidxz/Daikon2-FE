@@ -1,5 +1,5 @@
 import { action, makeObservable, observable, runInAction } from "mobx";
-import HorizonAPI from "./HorizonApi";
+import HorizonAPI from "./HorizonAPI";
 
 export default class HorizonStore {
   rootStore;
