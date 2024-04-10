@@ -60,7 +60,7 @@ const FPDAllPortfolioProjects = () => {
 
           <Column
             field="projectStatus"
-            header="Project Status"
+            header="Portfolio Stage"
             filter
             filterField="projectStatus"
             filterElement={(options) =>
