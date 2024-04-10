@@ -59,17 +59,17 @@ const FPDAllPortfolioProjects = () => {
           />
 
           <Column
-            field="projectStatus"
+            field="projectStage"
             header="Portfolio Stage"
             filter
-            filterField="projectStatus"
+            filterField="projectStage"
             filterElement={(options) =>
-              Helper.projectStatusFilter(projectList, options)
+              Helper.projectStageFilter(projectList, options)
             }
             showFilterMenu={false}
             filterMatchMode="in"
             className="narrow-column"
-            body={Helper.statusBodyTemplate}
+            body={Helper.stageBodyTemplate}
           />
         </DataTable>
       </div>
