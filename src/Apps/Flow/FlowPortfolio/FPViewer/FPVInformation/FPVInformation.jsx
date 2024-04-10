@@ -40,59 +40,61 @@ const FPVInformation = () => {
     { id: "group2", content: "group2" },
   ]);
 
-  const timelineItems = new DataSet([
-    {
-      id: 1,
-      content: "Created",
-      start: selectedProject.dateCreated,
-      //start: today,
-      group: "group1",
-    },
+  const timelineItems = new DataSet([]);
 
-    {
-      id: 2,
-      content: "Predicted Start",
-      start: selectedProject.h2LPredictedStartDate,
-      //start: addDays(5),
-      group: "group1",
-    },
-  ]);
-
-  isDateValid(selectedProject.h2LStartDate) &&
+  isDateValid(selectedProject?.h2LStart) &&
     timelineItems.add({
-      id: 3,
-      content: "Actual Start",
-      start: selectedProject.h2LStartDate,
+      id: 1,
+      content: "H2L Actual Start",
+      start: selectedProject?.h2LStart,
       //end: selectedProject.h2LPredictedStartDate,
       //start: addDays(6),
       //end: addDays(90),
       //className: "expected",
-      group: "group2",
-      subgroup: "sg_1",
     });
 
-  isDateValid(selectedProject?.h2LPredictedStartDate) &&
+  isDateValid(selectedProject?.loPredictedStart) &&
+    timelineItems.add({
+      id: 2,
+      content: "LO Predicted Start",
+      start: selectedProject?.loPredictedStart,
+      //end: selectedProject.h2LPredictedStartDate,
+      //start: addDays(6),
+      //end: addDays(90),
+      className: "expected",
+    });
+
+  isDateValid(selectedProject?.loStart) &&
+    timelineItems.add({
+      id: 3,
+      content: "LO Actual Start",
+      start: selectedProject?.loStart,
+      //end: selectedProject.h2LPredictedStartDate,
+      //start: addDays(6),
+      //end: addDays(90),
+      //className: "expected",
+    });
+
+  isDateValid(selectedProject?.spPredictedStart) &&
     timelineItems.add({
       id: 4,
-      content: "H2L Predicted Start",
-      start: selectedProject?.h2LPredictedStartDate,
-      group: "group1",
+      content: "SP Predicted Start",
+      start: selectedProject?.spPredictedStart,
+      //end: selectedProject.h2LPredictedStartDate,
+      //start: addDays(6),
+      //end: addDays(90),
+      className: "expected",
     });
 
-  isDateValid(selectedProject?.terminationDate) &&
+  isDateValid(selectedProject?.spStart) &&
     timelineItems.add({
       id: 5,
-      content: "Termination Date",
-      start: selectedProject?.terminationDate,
-      group: "group1",
-    });
-
-  isDateValid(selectedProject?.completionDate) &&
-    timelineItems.add({
-      id: 6,
-      content: "Completed",
-      start: selectedProject?.completionDate,
-      group: "group1",
+      content: "SP Actual Start",
+      start: selectedProject?.spStart,
+      //end: selectedProject.h2LPredictedStartDate,
+      //start: addDays(6),
+      //end: addDays(90),
+      //className: "expected",
     });
 
   const options = {

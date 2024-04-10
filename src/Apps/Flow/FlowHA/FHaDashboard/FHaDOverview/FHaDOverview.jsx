@@ -116,7 +116,7 @@ const FHaDOverview = () => {
               <FcOk />
             </div>
             <div className="flex">
-              <b>PORTFOLIO READY</b>
+              <b>COMPLETE - SUCCESS</b>
             </div>
           </div>
           <div className="flex w-full pr-3 ">

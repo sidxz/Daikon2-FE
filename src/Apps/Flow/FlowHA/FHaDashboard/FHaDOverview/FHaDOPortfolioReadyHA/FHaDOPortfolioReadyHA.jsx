@@ -12,7 +12,7 @@ const FHaDOPortfolioReadyHA = ({ hitAssessments }) => {
   if (!hitAssessments || hitAssessments.length === 0)
     return (
       <div className="flex justify-content-center w-full align-items-center text-sm	text-color-secondary">
-        - No HAs are ready to move to Portfolio -
+        - No HAs are recently completed -
       </div>
     );
   let hitAssessmentsComponent = hitAssessments.map((ha) => {

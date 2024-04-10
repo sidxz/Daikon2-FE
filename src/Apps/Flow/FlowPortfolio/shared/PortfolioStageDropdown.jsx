@@ -8,7 +8,6 @@ import { RootStoreContext } from "../../../../RootStore";
 import { stagePortfolioOptions } from "../constants/stageOptions";
 
 const PortfolioStageDropdown = ({ readOnlyStage, readOnly = false }) => {
-  console.log("++++ PortfolioStageDropdown", readOnlyStage, readOnly);
   const [confirmDialogVisible, setConfirmDialogVisible] = useState(false);
   const [selectedStage, setSelectedStage] = useState(null);
 
@@ -21,8 +20,6 @@ const PortfolioStageDropdown = ({ readOnlyStage, readOnly = false }) => {
   if (!readOnly && !selectedProject) {
     return <> </>;
   }
-
-  console.log("Before readonly");
 
   const stages = stagePortfolioOptions;
 
