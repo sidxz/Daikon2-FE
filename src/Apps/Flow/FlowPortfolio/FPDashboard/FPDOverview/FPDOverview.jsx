@@ -40,6 +40,16 @@ const FPDOverview = () => {
   );
   let h2lProjects = projectList.filter((item) => item.stage === "H2L");
 
+  let loActiveProjects = projectList.filter(
+    (item) => item.stage === "LO" && item.isProjectRemoved === false
+  );
+  let loProjects = projectList.filter((item) => item.stage === "LO");
+
+  let spActiveProjects = projectList.filter(
+    (item) => item.stage === "SP" && item.isProjectRemoved === false
+  );
+  let spProjects = projectList.filter((item) => item.stage === "SP");
+
   return (
     <div className="flex flex-column w-full">
       <div className="flex w-full ">
@@ -53,12 +63,15 @@ const FPDOverview = () => {
             <div className="flex">
               <GiTestTubes />
             </div>
-            <div className="flex ">
-              <b>H2L</b>
-              <b style={{ color: "#00A86B" }}>({h2lActiveProjects.length})</b>
-            </div>
-            <div className="flex text-xs justify-content-center text-bluegray-400">
-              <b> Total ({h2lProjects.length})</b>
+            <div className="flex gap-2">
+              <div className="flex">
+                <b style={{ color: "#3c83bd" }}>H2L -</b>
+              </div>
+              <div className="flex">
+                <b style={{ color: "#00A86B" }}>
+                  {h2lActiveProjects.length} / {h2lProjects.length}
+                </b>
+              </div>
             </div>
           </div>
           <div className="flex w-full pr-3">
@@ -78,18 +91,22 @@ const FPDOverview = () => {
             <div className="flex">
               <FaFlask />
             </div>
-            <div className="flex ">
-              <b> LO - ACTIVE &nbsp;</b>
 
-              {/* <b style={{ color: "#00A86B" }}>({loProjectsCount})</b> */}
+            <div className="flex gap-2">
+              <div className="flex">
+                <b style={{ color: "#3c83bd" }}>LO -</b>
+              </div>
+              <div className="flex">
+                <b style={{ color: "#00A86B" }}>
+                  {loActiveProjects.length} / {loProjects.length}
+                </b>
+              </div>
             </div>
           </div>
-          <div className="flex text-xs justify-content-center text-bluegray-400">
-            {/* <b> Total ({loProjects.length})</b> */}
-          </div>
+
           <div className="flex w-full pr-3">
             <div className="flex w-full  pt-1 bg-white">
-              <FPDOLO />
+              <FPDOLO projects={loActiveProjects} />
             </div>
           </div>
         </div>
@@ -104,18 +121,22 @@ const FPDOverview = () => {
             <div className="flex text-orange-500">
               <IoMdList />
             </div>
-            <div className="flex ">
-              <b> SP - ACTIVE &nbsp;</b>
 
-              {/* <b style={{ color: "#00A86B" }}>({spProjectsCount})</b> */}
+            <div className="flex gap-2">
+              <div className="flex">
+                <b style={{ color: "#3c83bd" }}>SP -</b>
+              </div>
+              <div className="flex">
+                <b style={{ color: "#00A86B" }}>
+                  {spActiveProjects.length} / {spProjects.length}
+                </b>
+              </div>
             </div>
           </div>
-          <div className="flex text-xs justify-content-center text-bluegray-400">
-            {/* <b> Total ({spProjects.length})</b> */}
-          </div>
+
           <div className="flex w-full pr-3">
             <div className="flex w-full  pt-1  bg-white">
-              <FPDOSP />
+              <FPDOSP projects={spActiveProjects} />
             </div>
           </div>
         </div>

@@ -13,6 +13,7 @@ import { AppOrgResolver } from "../../../../../Shared/VariableResolvers/AppOrgRe
 import { appColors } from "../../../../../constants/colors";
 import { PortfolioIcon } from "../../../icons/PortfolioIcon";
 import PortfolioCompoundEvolution from "../../shared/HaCompoundEvolution/PortfolioCompoundEvolution";
+import PortfolioStageDropdown from "../../shared/PortfolioStageDropdown";
 import * as Helper from "./FPVInformationHelper";
 
 const FPVInformation = () => {
@@ -72,6 +73,7 @@ const FPVInformation = () => {
           color={appColors.sectionHeadingBg.project}
           entryPoint={selectedProject?.id}
           customElements={[
+            <PortfolioStageDropdown />,
             <Chip
               label={getOrgNameById(selectedProject?.primaryOrgId)}
               icon="ri-organization-chart"

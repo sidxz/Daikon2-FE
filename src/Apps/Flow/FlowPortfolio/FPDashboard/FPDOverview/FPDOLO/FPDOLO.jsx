@@ -1,3 +1,4 @@
+import { observer } from "mobx-react-lite";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import FDate from "../../../../../../Library/FDate/FDate";
@@ -87,4 +88,4 @@ const FPDOLO = ({ projects }) => {
   );
 };
 
-export default FPDOLO;
+export default observer(FPDOLO);
