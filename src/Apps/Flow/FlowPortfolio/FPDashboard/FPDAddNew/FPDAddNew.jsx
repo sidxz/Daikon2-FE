@@ -39,8 +39,7 @@ const FPDAddNew = ({ closeSideBar }) => {
   const { getOrgNameById } = AppOrgResolver();
 
   // available has are haPortfolioReadyList minus the ones that are already projects
-  console.log("haPortfolioReadyList", haPortfolioReadyList);
-  console.log("projectList", projectList);
+
   const availableHAs = haPortfolioReadyList.filter(
     (ha) => !projectList.some((project) => project.haId === ha.id)
   );
@@ -69,11 +68,12 @@ const FPDAddNew = ({ closeSideBar }) => {
 
     onSubmit: (newProject) => {
       newProject.primaryOrgName = getOrgNameById(newProject.primaryOrgId);
+
       newProject.haId = selectedHa.id;
       newProject.compoundId = selectedHa.compoundEvoLatestMoleculeId;
+      newProject.compoundSMILES = selectedHa.compoundEvoLatestSMILES;
       newProject.hitCompoundId = selectedHa.compoundId;
       newProject.hitId = selectedHa.hitId;
-
       console.log(newProject);
 
       addProject(newProject).then(() => {
@@ -136,7 +136,6 @@ const FPDAddNew = ({ closeSideBar }) => {
     }
   };
 
-  console.log(haPortfolioReadyList);
   return (
     <div className="card w-full">
       <div className="field p-fluid">
