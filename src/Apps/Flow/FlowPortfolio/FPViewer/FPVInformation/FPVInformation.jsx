@@ -9,6 +9,7 @@ import Loading from "../../../../../Library/Loading/Loading";
 import SecHeading from "../../../../../Library/SecHeading/SecHeading";
 import VisTimeline from "../../../../../Library/VisTimeline/VisTimeline";
 import { RootStoreContext } from "../../../../../RootStore";
+import { DateValidators } from "../../../../../Shared/Validators/DateValidators";
 import { AppOrgResolver } from "../../../../../Shared/VariableResolvers/AppOrgResolver";
 import { appColors } from "../../../../../constants/colors";
 import { PortfolioIcon } from "../../../icons/PortfolioIcon";
@@ -26,38 +27,77 @@ const FPVInformation = () => {
 
   const navigate = useNavigate();
 
+  const { isDateValid } = DateValidators();
+
   const { getOrgNameById } = AppOrgResolver();
 
   // calculate the waiting to start date in days from the current date = current date - date created
   let waitingToStartDate = new Date() - new Date(selectedProject.dateCreated);
   waitingToStartDate = Math.ceil(waitingToStartDate / (1000 * 3600 * 24));
 
-  let projectInformation = [
-    { name: "Created Date", value: selectedProject.dateCreated },
-    { name: "Waiting to start", value: waitingToStartDate },
-    { name: "Start Date", value: selectedProject.projectStartDate },
-    {
-      name: "Predicted Start Date",
-      value: selectedProject.projectPredictedStartDate,
-    },
-    { name: "Completed Date", value: selectedProject.completionDate },
-    { name: "Termination Date", value: selectedProject.terminationDate },
-  ];
-
-  const items = new DataSet([
-    {
-      id: 1,
-      content: "Created Date",
-      start: selectedProject.dateCreated,
-    },
-
-    { id: 3, content: "Predicted Start Date", start: "2024-04-14" },
-    { id: 4, content: "Actual Start Date", start: "2024-04-17" },
-    { id: 5, content: "Completed Date", start: "2024-12-17" },
+  var groups = new DataSet([
+    { id: "group1", content: "group1" },
+    { id: "group2", content: "group2" },
   ]);
 
+  const timelineItems = new DataSet([
+    {
+      id: 1,
+      content: "Created",
+      start: selectedProject.dateCreated,
+      //start: today,
+      group: "group1",
+    },
+
+    {
+      id: 2,
+      content: "Predicted Start",
+      start: selectedProject.h2LPredictedStartDate,
+      //start: addDays(5),
+      group: "group1",
+    },
+  ]);
+
+  isDateValid(selectedProject.h2LStartDate) &&
+    timelineItems.add({
+      id: 3,
+      content: "Actual Start",
+      start: selectedProject.h2LStartDate,
+      //end: selectedProject.h2LPredictedStartDate,
+      //start: addDays(6),
+      //end: addDays(90),
+      //className: "expected",
+      group: "group2",
+      subgroup: "sg_1",
+    });
+
+  isDateValid(selectedProject?.h2LPredictedStartDate) &&
+    timelineItems.add({
+      id: 4,
+      content: "H2L Predicted Start",
+      start: selectedProject?.h2LPredictedStartDate,
+      group: "group1",
+    });
+
+  isDateValid(selectedProject?.terminationDate) &&
+    timelineItems.add({
+      id: 5,
+      content: "Termination Date",
+      start: selectedProject?.terminationDate,
+      group: "group1",
+    });
+
+  isDateValid(selectedProject?.completionDate) &&
+    timelineItems.add({
+      id: 6,
+      content: "Completed",
+      start: selectedProject?.completionDate,
+      group: "group1",
+    });
+
   const options = {
-    // Your options here
+    stack: true,
+    stackSubgroups: false,
   };
 
   return (
@@ -83,7 +123,7 @@ const FPVInformation = () => {
         />
       </div>
       <div className="flex w-full">
-        <VisTimeline items={items} options={options} />{" "}
+        <VisTimeline items={timelineItems} options={options} groups={groups} />
       </div>
       <div className="flex w-full">
         <Fieldset className="m-0 flex-grow-1" legend="Compound Evolution">
