@@ -10,6 +10,7 @@ import PleaseWait from "../../../../../Library/PleaseWait/PleaseWait";
 import { RootStoreContext } from "../../../../../RootStore";
 import InputOrg from "../../../../../Shared/InputEditors/InputOrg";
 import { AppOrgResolver } from "../../../../../Shared/VariableResolvers/AppOrgResolver";
+import { stagePortfolioOptions } from "../../constants/stageOptions";
 
 const FPDAddNew = ({ closeSideBar }) => {
   const rootStore = useContext(RootStoreContext);
@@ -94,6 +95,39 @@ const FPDAddNew = ({ closeSideBar }) => {
     return <PleaseWait />;
   }
 
+  // Template for rendering a selected stage option
+  const stageOptionTemplate = (option) => {
+    if (option) {
+      return (
+        <div className="flex align-items-center align-self-center gap-2">
+          <div className="flex flex-column">{option.icon}</div>
+          <div className="flex flex-column">{option.name}</div>
+        </div>
+      );
+    }
+  };
+
+  const stageValueTemplate = (option) => {
+    if (option === null) {
+      return (
+        <div className="flex align-items-center align-self-center gap-2">
+          <div className="flex flex-column">
+            <FcExpired />
+          </div>
+          <div className="flex flex-column">Stage Not Set</div>
+        </div>
+      );
+    }
+    if (option) {
+      return (
+        <div className="flex align-items-center align-self-center gap-2">
+          <div className="flex flex-column">{option.icon}</div>
+          <div className="flex flex-column">{option.name}</div>
+        </div>
+      );
+    }
+  };
+
   console.log(haPortfolioReadyList);
   return (
     <div className="card w-full">
@@ -172,6 +206,33 @@ const FPDAddNew = ({ closeSideBar }) => {
             })}
           />
           {getErrorMessage("primaryOrgId")}
+        </div>
+
+        <div className="field">
+          <label
+            htmlFor="stage"
+            className={classNames({
+              "p-error": isInvalid("stage"),
+            })}
+          >
+            Stage
+          </label>
+          <Dropdown
+            id="stage"
+            optionLabel="name"
+            optionValue="value"
+            options={stagePortfolioOptions}
+            itemTemplate={stageOptionTemplate}
+            valueTemplate={stageValueTemplate}
+            value={formik.values.stage}
+            placeholder="Select a stage"
+            onChange={formik.handleChange}
+            className={classNames({
+              "p-invalid": isInvalid("stage"),
+            })}
+          />
+
+          {getErrorMessage("stage")}
         </div>
 
         <div className="field">
