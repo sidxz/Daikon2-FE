@@ -59,10 +59,10 @@ const FPDAllPortfolioProjects = () => {
           />
 
           <Column
-            field="projectStage"
+            field="stage"
             header="Portfolio Stage"
             filter
-            filterField="projectStage"
+            filterField="stage"
             filterElement={(options) =>
               Helper.projectStageFilter(projectList, options)
             }

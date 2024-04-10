@@ -8,6 +8,7 @@ import { RootStoreContext } from "../../../../RootStore";
 import { stagePortfolioOptions } from "../constants/stageOptions";
 
 const PortfolioStageDropdown = ({ readOnlyStage, readOnly = false }) => {
+  console.log("++++ PortfolioStageDropdown", readOnlyStage, readOnly);
   const [confirmDialogVisible, setConfirmDialogVisible] = useState(false);
   const [selectedStage, setSelectedStage] = useState(null);
 
@@ -17,9 +18,11 @@ const PortfolioStageDropdown = ({ readOnlyStage, readOnly = false }) => {
     rootStore.projectStore;
 
   // The set of available options for the stage of a project
-  if (!selectedProject) {
+  if (!readOnly && !selectedProject) {
     return <> </>;
   }
+
+  console.log("Before readonly");
 
   const stages = stagePortfolioOptions;
 
@@ -72,7 +75,9 @@ const PortfolioStageDropdown = ({ readOnlyStage, readOnly = false }) => {
 
   // Render the component based on readOnly flag
   // Temporarily handle new stage as NA
+
   if (readOnly) {
+    console.log("readOnlyStage", readOnlyStage);
     if (readOnlyStage === null) {
       return (
         <div className="flex align-items-center align-self-center gap-2">

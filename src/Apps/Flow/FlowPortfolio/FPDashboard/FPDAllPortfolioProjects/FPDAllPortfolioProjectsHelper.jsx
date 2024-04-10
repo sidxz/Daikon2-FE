@@ -26,6 +26,6 @@ export const orgFilter = (data, options) => (
 
 export let stageBodyTemplate = (rowData) => {
   return (
-    <PortfolioStageDropdown readOnlyStatus={rowData.stage} readOnly={true} />
+    <PortfolioStageDropdown readOnlyStage={rowData.stage} readOnly={true} />
   );
 };
