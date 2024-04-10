@@ -37,6 +37,14 @@ const FPDAddNew = ({ closeSideBar }) => {
   const [selectedHa, setSelectedHa] = useState();
   const { getOrgNameById } = AppOrgResolver();
 
+  // available has are haPortfolioReadyList minus the ones that are already projects
+  console.log("haPortfolioReadyList", haPortfolioReadyList);
+  console.log("projectList", projectList);
+  const availableHAs = haPortfolioReadyList.filter(
+    (ha) => !projectList.some((project) => project.haId === ha.id)
+  );
+  console.log("availableHAs", availableHAs);
+
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -102,7 +110,7 @@ const FPDAddNew = ({ closeSideBar }) => {
         <Dropdown
           id="ha"
           value={selectedHa}
-          options={haPortfolioReadyList}
+          options={availableHAs}
           onChange={(e) => {
             setSelectedHa(e.value);
           }}
