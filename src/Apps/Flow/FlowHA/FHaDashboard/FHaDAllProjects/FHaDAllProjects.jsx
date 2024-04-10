@@ -45,9 +45,10 @@ const FHaDAllProjects = () => {
           <Column
             field="primaryOrgName"
             header="Primary Org"
+            body={Helper.orgBodyTemplate}
             filter
-            filterField="primaryOrgName"
-            filterElement={(options) => Helper.orgFilter(haList, options)}
+            // filterField="primaryOrgName"
+            // filterElement={(options) => Helper.orgFilter(haList, options)}
             showFilterMenu={false}
             filterMatchMode="in"
             className="narrow-column"
