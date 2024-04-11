@@ -44,59 +44,30 @@ const FPPVInformation = () => {
 
   const timelineItems = new DataSet([]);
 
-  isDateValid(selectedProject?.h2LStart) &&
+  isDateValid(selectedProject?.indStart) &&
     timelineItems.add({
       id: 1,
-      content: "H2L Actual Start",
-      start: selectedProject?.h2LStart,
-      //end: selectedProject.h2LPredictedStartDate,
+      content: "IND Actual Start",
+      start: selectedProject?.indStart,
+      //end: selectedProject.indPredictedStart,
       //start: addDays(6),
       //end: addDays(90),
       //className: "expected",
     });
 
-  isDateValid(selectedProject?.loPredictedStart) &&
+  isDateValid(selectedProject?.p1PredictedStart) &&
     timelineItems.add({
       id: 2,
-      content: "LO Predicted Start",
-      start: selectedProject?.loPredictedStart,
-      //end: selectedProject.h2LPredictedStartDate,
-      //start: addDays(6),
-      //end: addDays(90),
+      content: "P1 Predicted Start",
+      start: selectedProject?.p1PredictedStart,
       className: "expected",
     });
 
-  isDateValid(selectedProject?.loStart) &&
+  isDateValid(selectedProject?.p1Start) &&
     timelineItems.add({
       id: 3,
-      content: "LO Actual Start",
-      start: selectedProject?.loStart,
-      //end: selectedProject.h2LPredictedStartDate,
-      //start: addDays(6),
-      //end: addDays(90),
-      //className: "expected",
-    });
-
-  isDateValid(selectedProject?.spPredictedStart) &&
-    timelineItems.add({
-      id: 4,
-      content: "SP Predicted Start",
-      start: selectedProject?.spPredictedStart,
-      //end: selectedProject.h2LPredictedStartDate,
-      //start: addDays(6),
-      //end: addDays(90),
-      className: "expected",
-    });
-
-  isDateValid(selectedProject?.spStart) &&
-    timelineItems.add({
-      id: 5,
-      content: "SP Actual Start",
-      start: selectedProject?.spStart,
-      //end: selectedProject.h2LPredictedStartDate,
-      //start: addDays(6),
-      //end: addDays(90),
-      //className: "expected",
+      content: "P1 Actual Start",
+      start: selectedProject?.p1Start,
     });
 
   const options = {

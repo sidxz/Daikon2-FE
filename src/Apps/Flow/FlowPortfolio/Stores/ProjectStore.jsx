@@ -15,6 +15,8 @@ export default class ProjectStore {
     this.rootStore = rootStore;
     makeObservable(this, {
       projectList: computed,
+      portfolioList: computed,
+      postPortfolioList: computed,
       isFetchingProjects: observable,
       fetchProjects: action,
       projectListRegistry: observable,
@@ -80,6 +82,21 @@ export default class ProjectStore {
 
   get projectList() {
     return Array.from(this.projectListRegistry.values());
+  }
+
+  get portfolioList() {
+    return this.projectList.filter(
+      (project) =>
+        project.stage === "H2L" ||
+        project.stage === "LO" ||
+        project.stage === "SP"
+    );
+  }
+
+  get postPortfolioList() {
+    return this.projectList.filter(
+      (project) => project.stage === "IND" || project.stage === "P1"
+    );
   }
 
   fetchProject = async (projectId, inValidateCache = false) => {

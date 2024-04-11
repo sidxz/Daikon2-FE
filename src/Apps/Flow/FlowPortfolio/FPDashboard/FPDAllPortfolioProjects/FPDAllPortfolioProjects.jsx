@@ -11,7 +11,7 @@ const FPDAllPortfolioProjects = () => {
   const {
     fetchProjects,
     isProjectListCacheValid,
-    projectList,
+    portfolioList,
     isFetchingProjects,
   } = rootStore.projectStore;
 
@@ -30,7 +30,7 @@ const FPDAllPortfolioProjects = () => {
       <div className="flex w-full">
         <DataTable
           className="w-full"
-          value={projectList}
+          value={portfolioList}
           paginator
           rows={10}
           filterDisplay="row"
@@ -52,7 +52,7 @@ const FPDAllPortfolioProjects = () => {
             body={Helper.orgBodyTemplate}
             filter
             // filterField="primaryOrgName"
-            // filterElement={(options) => Helper.orgFilter(projectList, options)}
+            // filterElement={(options) => Helper.orgFilter(portfolioList, options)}
             showFilterMenu={false}
             filterMatchMode="in"
             className="narrow-column"
@@ -64,7 +64,7 @@ const FPDAllPortfolioProjects = () => {
             filter
             filterField="stage"
             filterElement={(options) =>
-              Helper.projectStageFilter(projectList, options)
+              Helper.projectStageFilter(portfolioList, options)
             }
             showFilterMenu={false}
             filterMatchMode="in"
