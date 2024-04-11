@@ -5,16 +5,17 @@ import FDate from "../../../../../../Library/FDate/FDate";
 import SmilesView from "../../../../../../Library/SmilesView/SmilesView";
 import { AppOrgResolver } from "../../../../../../Shared/VariableResolvers/AppOrgResolver";
 
-const FPDOSP = ({ projects }) => {
+const FPDOReady = ({ projects }) => {
   const { getOrgNameById } = AppOrgResolver();
   const navigate = useNavigate();
   // check if projects is empty or not set or null
   if (!projects || projects.length === 0)
     return (
       <div className="flex justify-content-center w-full align-items-center text-sm	text-color-secondary ">
-        - No SP projects are available -
+        - No H2L projects are available -
       </div>
     );
+
   let projectsComponent = projects.map((project) => {
     const displayTargetName = project.targetName
       ? project.targetName
@@ -30,16 +31,17 @@ const FPDOSP = ({ projects }) => {
           <div
             className="flex flex-column justify-content-center "
             style={{
-              backgroundColor: "#d48e8f",
+              backgroundColor: "#c3cba8",
             }}
           >
             <div className="flex p-2 text-lg text-100 text-white-alpha-90 justify-content-center">
               {project.name}
             </div>
           </div>
-          <div className="flex justify-content-center border-bottom-1 border-gray-100">
+
+          <div className="flex justify-content-center border-green-100 border-bottom-1">
             <div
-              className="flex justify-content-center w-full p-2 text-pink-600 border-right-1 border-gray-100"
+              className="flex justify-content-center w-full p-2 text-green-800 border-right-1 border-green-100"
               style={{
                 minWidth: "4rem",
               }}
@@ -48,7 +50,7 @@ const FPDOSP = ({ projects }) => {
             </div>
 
             <div
-              className="flex justify-content-center w-full p-2 text-pink-600 border-right-1 border-gray-100"
+              className="flex justify-content-center w-full p-2 text-green-800 border-right-1 border-green-100"
               style={{
                 minWidth: "4rem",
               }}
@@ -57,22 +59,25 @@ const FPDOSP = ({ projects }) => {
             </div>
 
             <div
-              className="flex justify-content-center w-full p-2 border-right-1 border-gray-100"
+              className="flex justify-content-center w-full p-2 text-green-800 border-right-1 border-green-100"
               style={{
                 minWidth: "4rem",
               }}
             >
-              <FDate timestamp={project.spStart} color="#2d8bad" />
+              <FDate
+                timestamp={project.statusCompleteSuccessDate}
+                color="#4c6018"
+              />
             </div>
 
             <div
-              className="flex justify-content-center w-full p-2 border-right-1 border-gray-100"
+              className="flex justify-content-center w-full p-2 text-100 border-right-1 border-green-100"
               style={{
                 minWidth: "4rem",
-                backgroundColor: "#53A9A8",
+                backgroundColor: "#e0c380",
               }}
             >
-              <FDate timestamp={project.p1PredictedStart} color="#FFFFFF" />
+              <FDate timestamp={project.h2LPredictedStart} color="#FFFFFF" />
             </div>
           </div>
           <div className="flex w-full justify-content-center">
@@ -98,4 +103,4 @@ const FPDOSP = ({ projects }) => {
   );
 };
 
-export default observer(FPDOSP);
+export default observer(FPDOReady);
