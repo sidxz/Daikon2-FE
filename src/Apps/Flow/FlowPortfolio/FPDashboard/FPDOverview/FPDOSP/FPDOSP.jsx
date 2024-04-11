@@ -66,7 +66,7 @@ const FPDOSP = ({ projects }) => {
             </div>
 
             <div
-              className="flex justify-content-center w-full p-2 border-right-1 border-gray-100"
+              className="flex justify-content-center w-full p-2 text-100"
               style={{
                 minWidth: "4rem",
                 backgroundColor: "#53A9A8",
@@ -82,8 +82,8 @@ const FPDOSP = ({ projects }) => {
                   ? project.compoundEvoLatestSMILES
                   : project.compoundSMILES
               }
-              width={220}
-              height={220}
+              width={200}
+              height={200}
             />
           </div>
         </div>

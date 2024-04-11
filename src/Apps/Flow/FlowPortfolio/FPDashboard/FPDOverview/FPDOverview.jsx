@@ -1,9 +1,9 @@
+import { observer } from "mobx-react-lite";
 import React, { useContext, useEffect } from "react";
 import { FaFlask } from "react-icons/fa";
+import { FcClock } from "react-icons/fc";
 import { GiTestTubes } from "react-icons/gi";
 import { IoMdList } from "react-icons/io";
-
-import { observer } from "mobx-react-lite";
 import Loading from "../../../../../Library/Loading/Loading";
 import { RootStoreContext } from "../../../../../RootStore";
 import FPDOH2L from "./FPDOH2L/FPDOH2L";
@@ -62,7 +62,7 @@ const FPDOverview = () => {
             }}
           >
             <div className="flex">
-              <GiTestTubes />
+              <FcClock />
             </div>
             <div className="flex gap-2">
               <div className="flex">
