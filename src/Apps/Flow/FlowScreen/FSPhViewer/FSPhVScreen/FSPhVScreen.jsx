@@ -16,6 +16,7 @@ import { CalendarRowEditor } from "../../../../../Shared/TableRowEditors/Calenda
 import { ScientistRowEditor } from "../../../../../Shared/TableRowEditors/ScientistRowEditor";
 import { TextRowEditor } from "../../../../../Shared/TableRowEditors/TextRowEditor";
 import { appColors } from "../../../../../constants/colors";
+import { PhenoScreenIcon } from "../../../icons/PhenoScreenIcon";
 import * as Helper from "./FSPhVScreenHelper";
 import FSPhScreenRunAdd from "./components/FSPhScreenRunAdd";
 import FSPhVScreenDataTableHeader from "./components/FSPhVScreenDataTableHeader";
@@ -89,9 +90,10 @@ const FSPhVScreen = ({}) => {
           </div>
           <div className="flex w-full">
             <SecHeading
-              icon="icon icon-common icon-circle-notch"
+              svgIcon={<PhenoScreenIcon size={"25em"} />}
               heading={"Screen - " + selectedScreen.name}
               displayHorizon={true}
+              entryPoint={selectedScreen?.id}
               color={appColors.sectionHeadingBg.screen}
               customElements={[
                 <Chip

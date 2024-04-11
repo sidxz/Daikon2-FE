@@ -1,6 +1,6 @@
 :root {
-  font-family: "IBM Plex Sans", Helvetica, Arial, sans-serif;
-  --font-family: "IBM Plex Sans", Helvetica, Arial, sans-serif;
+  font-family: Open Sans, sans-serif;
+  --font-family: Open Sans, sans-serif;
   --surface-a: #ffffff;
   --surface-b: #f5f5f5;
   --surface-c: #edf0fa;
@@ -46,6 +46,119 @@
   --highlight-bg: #ced6f1;
   --highlight-text-color: #585858;
   color-scheme: light;
+}
+
+.open-sans-black-italic,
+.open-sans-extra-bold-italic,
+.open-sans-bold-italic,
+.open-sans-semibold-italic,
+.open-sans-medium-italic,
+.open-sans-italic,
+.open-sans-light-italic,
+.open-sans-extra-light-italic,
+.open-sans-thin-italic,
+.open-sans-black,
+.open-sans-extra-bold,
+.open-sans-bold,
+.open-sans-semibold,
+.open-sans-medium,
+.open-sans-regular,
+.open-sans-light,
+.open-sans-extra-light,
+.open-sans-thin {
+  font-family: "Open Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "wdth" 100;
+}
+
+.open-sans-thin {
+  font-weight: 100;
+  font-style: normal;
+}
+
+.open-sans-extra-light {
+  font-weight: 200;
+  font-style: normal;
+}
+
+.open-sans-light {
+  font-weight: 300;
+  font-style: normal;
+}
+
+.open-sans-regular {
+  font-weight: 400;
+  font-style: normal;
+}
+
+.open-sans-medium {
+  font-weight: 500;
+  font-style: normal;
+}
+
+.open-sans-semibold {
+  font-weight: 600;
+  font-style: normal;
+}
+
+.open-sans-bold {
+  font-weight: 700;
+  font-style: normal;
+}
+
+.open-sans-extra-bold {
+  font-weight: 800;
+  font-style: normal;
+}
+
+.open-sans-black {
+  font-weight: 900;
+  font-style: normal;
+}
+
+.open-sans-thin-italic {
+  font-weight: 100;
+  font-style: italic;
+}
+
+.open-sans-extra-light-italic {
+  font-weight: 200;
+  font-style: italic;
+}
+
+.open-sans-light-italic {
+  font-weight: 300;
+  font-style: italic;
+}
+
+.open-sans-italic {
+  font-weight: 400;
+  font-style: italic;
+}
+
+.open-sans-medium-italic {
+  font-weight: 500;
+  font-style: italic;
+}
+
+.open-sans-semibold-italic {
+  font-weight: 600;
+  font-style: italic;
+}
+
+.open-sans-bold-italic {
+  font-weight: 700;
+  font-style: italic;
+}
+
+.open-sans-extra-bold-italic {
+  font-weight: 800;
+  font-style: italic;
+}
+
+.open-sans-black-italic {
+  font-weight: 900;
+  font-style: italic;
 }
 
 :root {

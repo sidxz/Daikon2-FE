@@ -1,11 +1,13 @@
 import { observer } from "mobx-react-lite";
 import { ConfirmDialog } from "primereact/confirmdialog";
+import { ConfirmPopup } from "primereact/confirmpopup";
 import React, { useContext, useEffect, useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import Admin from "../Apps/Admin/Admin";
 import Flow from "../Apps/Flow/Flow";
 import MolecuLogix from "../Apps/MolecuLogix/MolecuLogix";
+import Questionnaire from "../Apps/Questionnaire/Questionnaire";
 import Login from "../Auth/Login/Login";
 import UnauthorizedUser from "../Auth/UnauthorizedUser/UnauthorizedUser";
 import Loading from "../Library/Loading/Loading";
@@ -31,8 +33,16 @@ const Container = ({ userManager }) => {
   useEffect(() => {
     const fetchSSOUser = async () => {
       try {
-        const user = await userManager.getUser();
-        setSsoUser(user);
+        const _ssoUser = await userManager.getUser();
+        console.log("SSO User", _ssoUser);
+        const expiresAtTimestamp = _ssoUser?.expires_at;
+        const expiresAtDate = new Date(expiresAtTimestamp * 1000); // Multiply by 1000 to convert seconds to milliseconds
+        console.log("SSO User Expires at", expiresAtDate);
+        setSsoUser(_ssoUser);
+        if (_ssoUser?.expired) {
+          console.log("SSO User expired, redirecting to login...");
+          await userManager.signinRedirect();
+        }
         fetchUser();
       } catch (err) {
         console.error("Error fetching SSO user:", err);
@@ -66,6 +76,7 @@ const Container = ({ userManager }) => {
   return (
     <div className="App">
       <ConfirmDialog />
+      <ConfirmPopup />
       <TitleBar signOut={signOut} ssoUser={ssoUser} />
       <ToastContainer />
       <Routes>
@@ -73,6 +84,7 @@ const Container = ({ userManager }) => {
         <Route path="wf/*" element={<Flow />} />
         <Route path="admin/*" element={<Admin />} />
         <Route path="moleculogix/*" element={<MolecuLogix />} />
+        <Route path="questionnaire/*" element={<Questionnaire />} />
       </Routes>
       <Footer />
     </div>

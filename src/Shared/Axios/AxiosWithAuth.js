@@ -16,13 +16,42 @@ class AxiosWithAuth {
       ...AxiosConfig,
     });
 
+    // let shd = await this.shouldRefreshToken();
+    // console.log("AxiosWithAuth -> init -> shd", shd);
+    // if (shd) {
+    //   console.log("AxiosWithAuth -> init -> Refreshing Token");
+    //   await AppUserManager.refreshToken();
+    //   this.accessToken = await AppUserManager.getAccessToken();
+    // }
+
     this.setInterceptors();
+  }
+
+  async shouldRefreshToken() {
+    // Check if the access token is expired or about to expire
+    const tokenExpiryThreshold = 60 * 1000; // 1 minute
+    const tokenExpirySeconds = await AppUserManager.getTokenExpiry();
+    const tokenExpiryMilliseconds = tokenExpirySeconds * 1000;
+
+    const currentTimeMilliseconds = Date.now();
+    console.log(
+      "AxiosWithAuth -> Token will expire in Minutes : ",
+      (tokenExpiryMilliseconds - currentTimeMilliseconds) / (1000 * 60)
+    );
+    return (
+      tokenExpirySeconds &&
+      tokenExpiryMilliseconds - currentTimeMilliseconds < tokenExpiryThreshold
+    );
   }
 
   setInterceptors() {
     this.axiosWithAuth.interceptors.request.use(
       (config) => {
         if (this.accessToken) {
+          console.log(
+            "AxiosWithAuth -> setInterceptors -> this.accessToken",
+            this.accessToken
+          );
           config.headers.Authorization = `Bearer ${this.accessToken}`;
         }
         return config;

@@ -12,9 +12,8 @@ const FPDMenuBar = () => {
 
   useEffect(() => {
     if (location.pathname.includes("/overview/")) setActiveIndex(0);
-    else if (location.pathname.includes("/high-priority/")) setActiveIndex(1);
-    else if (location.pathname.includes("/at-risk/")) setActiveIndex(2);
-    else if (location.pathname.includes("/tabular-view/")) setActiveIndex(3);
+    else if (location.pathname.includes("/all-portfolio-projects/"))
+      setActiveIndex(1);
   }, [location, setActiveIndex]);
 
   const items = [
@@ -23,16 +22,8 @@ const FPDMenuBar = () => {
       command: () => navigate("overview/"),
     },
     {
-      label: "High Priority",
-      command: () => navigate("high-priority/"),
-    },
-    {
-      label: "At Risk",
-      command: () => navigate("at-risk/"),
-    },
-    {
-      label: "Tabular View",
-      command: () => navigate("tabular-view/"),
+      label: "All Portfolio Projects",
+      command: () => navigate("all-portfolio-projects/"),
     },
   ];
 

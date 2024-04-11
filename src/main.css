@@ -1,10 +1,10 @@
 html {
-  font-size: 14px;
+  font-size: 13px;
 }
 
 body {
   margin: 0;
-  font-weight: 300;
+  font-weight: 400;
 }
 
 .hide {
@@ -28,4 +28,10 @@ body {
 }
 .p-fieldset .p-fieldset-content {
   padding: 0rem;
+}
+
+.vis-item.expected {
+  background-color: transparent;
+  border-style: dashed !important;
+  z-index: 0;
 }

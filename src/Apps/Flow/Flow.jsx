@@ -2,7 +2,7 @@ import React from "react";
 import { Route, Routes } from "react-router";
 import FlowDash from "./FlowDash/FlowDash";
 import FlowGeneApp from "./FlowGene/FlowGeneApp";
-import FlowHAApp from "./FlowHA/FlowHAApp";
+import FlowHaApp from "./FlowHA/FlowHaApp";
 import FlowMenuBar from "./FlowMenuBar/FlowMenuBar";
 import FlowPortfolioApp from "./FlowPortfolio/FlowPortfolioApp";
 import FlowScreenApp from "./FlowScreen/FlowScreenApp";
@@ -20,7 +20,7 @@ const Flow = () => {
           <Route path="gene/*" element={<FlowGeneApp />} />
           <Route path="target/*" element={<FlowTargetApp />} />
           <Route path="screen/*" element={<FlowScreenApp />} />
-          <Route path="ha/*" element={<FlowHAApp />} />
+          <Route path="ha/*" element={<FlowHaApp />} />
           <Route path="portfolio/*" element={<FlowPortfolioApp />} />
         </Routes>
       </div>

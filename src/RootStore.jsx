@@ -11,13 +11,21 @@ import GeneResistanceMutationStore from "./Apps/Flow/FlowGene/Stores/GeneResista
 import GeneStore from "./Apps/Flow/FlowGene/Stores/GeneStore";
 import GeneUnpublishedStructuralInformationStore from "./Apps/Flow/FlowGene/Stores/GeneUnpublishedStructuralInformationStore";
 import GeneVulnerabilityStore from "./Apps/Flow/FlowGene/Stores/GeneVulnerabilityStore";
+import HAStore from "./Apps/Flow/FlowHA/Stores/HAStore";
+import HaCompoundEvoStore from "./Apps/Flow/FlowHA/Stores/HaCompoundEvoStore";
+import ProjectCompoundEvoStore from "./Apps/Flow/FlowPortfolio/Stores/ProjectCompoundEvoStore";
+import ProjectStore from "./Apps/Flow/FlowPortfolio/Stores/ProjectStore";
 import HitCollectionStore from "./Apps/Flow/FlowScreen/Stores/HitCollectionStore";
 import HitStore from "./Apps/Flow/FlowScreen/Stores/HitStore";
 import ScreenRunStore from "./Apps/Flow/FlowScreen/Stores/ScreenRunStore";
 import ScreenStore from "./Apps/Flow/FlowScreen/Stores/ScreenStore";
+import TargetPQStore from "./Apps/Flow/FlowTarget/Stores/TargetPQStore";
+import TargetSourcingStore from "./Apps/Flow/FlowTarget/Stores/TargetSourcingStore";
 import TargetStore from "./Apps/Flow/FlowTarget/Stores/TargetStore";
 import MoleculeStore from "./Apps/MolecuLogix/Stores/MoleculeStore";
+import QnaireStore from "./Apps/Questionnaire/Stores/QnaireStore";
 import AuthStore from "./Auth/AuthStore";
+import HorizonStore from "./Library/Horizon/HorizonStore";
 
 configure({ enforceActions: "always" });
 
@@ -38,15 +46,27 @@ export class RootStore {
   geneUnpublishedStructuralInformationStore;
 
   targetStore;
+  targetSourcingStore;
+  targetPQStore;
 
   screenStore;
   screenRunStore;
   hitCollectionStore;
   hitStore;
 
+  haStore;
+  haCompoundEvoStore;
+
+  projectStore;
+  projectCompoundEvoStore;
+
   moleculeStore;
 
   adminUserManagementStore;
+
+  qnaireStore;
+
+  horizonStore;
   constructor() {
     /* Auth */
     this.authStore = new AuthStore(this);
@@ -68,6 +88,8 @@ export class RootStore {
 
     /* Target */
     this.targetStore = new TargetStore(this);
+    this.targetSourcingStore = new TargetSourcingStore(this);
+    this.targetPQStore = new TargetPQStore(this);
 
     /* Screen */
     this.screenStore = new ScreenStore(this);
@@ -75,11 +97,25 @@ export class RootStore {
     this.hitCollectionStore = new HitCollectionStore(this);
     this.hitStore = new HitStore(this);
 
+    /* HA */
+    this.haStore = new HAStore(this);
+    this.haCompoundEvoStore = new HaCompoundEvoStore(this);
+
+    /* Project */
+    this.projectStore = new ProjectStore(this);
+    this.projectCompoundEvoStore = new ProjectCompoundEvoStore(this);
+
     /* MLogix */
     this.moleculeStore = new MoleculeStore(this);
 
     /* Admin */
     this.adminUserManagementStore = new AdminUserManagementStore(this);
+
+    /* Questionnaire */
+    this.qnaireStore = new QnaireStore(this);
+
+    /* Horizon */
+    this.horizonStore = new HorizonStore(this);
   }
 }
 

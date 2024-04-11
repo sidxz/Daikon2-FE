@@ -56,6 +56,7 @@ const FSTbVSettings = () => {
               icon="icon icon-conceptual icon-structures-3d"
               heading={"Screen - " + selectedScreen.name}
               displayHorizon={true}
+              entryPoint={selectedScreen?.id}
               color={appColors.sectionHeadingBg.screen}
               customElements={[
                 <Chip

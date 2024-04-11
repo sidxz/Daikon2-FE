@@ -1,3 +1,6 @@
+import { HitCollectionIcon } from "../../icons/HitCollectionIcon";
+import { ScreenIcon } from "../../icons/ScreenIcon";
+
 export const sidePanelItems = (navigate, getRelatedScreens) => {
   let relatedScreens = getRelatedScreens();
 
@@ -8,7 +11,7 @@ export const sidePanelItems = (navigate, getRelatedScreens) => {
   let relatedScreensItems = relatedScreens.map((screen) => {
     return {
       label: screen.name,
-      icon: "icon icon-common icon-search",
+      icon: <ScreenIcon size={"18em"} grayscale={1} />,
       command: () => {
         navigate(
           "/wf/screen/viewer/tb/" + screen.id + (isHits ? "/hits/" : "/")
@@ -22,14 +25,14 @@ export const sidePanelItems = (navigate, getRelatedScreens) => {
       items: [
         {
           label: "Screens",
-          icon: "icon icon-common icon-circle-notch",
+          icon: <ScreenIcon size={"18em"} grayscale={1} />,
           command: () => {
             navigate("screens/");
           },
         },
         {
           label: "Hits",
-          icon: "icon icon-conceptual icon-structures-3d",
+          icon: <HitCollectionIcon size={"18em"} grayscale={1} />,
           command: () => {
             navigate("hits/");
           },

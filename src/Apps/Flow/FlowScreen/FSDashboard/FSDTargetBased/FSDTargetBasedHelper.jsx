@@ -1,11 +1,12 @@
 import { NavLink } from "react-router-dom";
 import MultiSelectFilter from "../../../../../Shared/TableFilters/MultiSelectFilter";
+import { TargetIcon } from "../../../icons/TargetIcon";
 import { FormatScreeningMethod } from "../../shared/Formatters";
 import ScreenStatusDropdown from "../../shared/ScreenStatusDropdown";
 export const rowGroupHeaderTemplate = (data) => {
   return (
     <div className="flex align-items-center gap-2">
-      <i className="icon icon-common icon-target"></i>
+      <TargetIcon size="16px" grayscale={1} />
       <span className="font-bold">{data.associatedTargetsFlattened}</span>
     </div>
   );

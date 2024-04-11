@@ -34,6 +34,9 @@ export default class TargetStore {
 
       isDeletingTarget: observable,
       deleteTarget: action,
+
+      updateGeneAssociation: action,
+      renameTarget: action,
     });
   }
 
@@ -88,9 +91,12 @@ export default class TargetStore {
     }
 
     this.isFetchingTarget = true;
+
     if (this.isTargetRegistryCacheValid) {
       // find target in registry and return if found
       const target = this.targetRegistry.get(targetId);
+      //console.log("fetchTarget -> target", target);
+
       if (target) {
         this.isFetchingTarget = false;
         this.selectedTarget = target;
@@ -99,6 +105,7 @@ export default class TargetStore {
     try {
       const target = await TargetAPI.getById(targetId);
       runInAction(() => {
+        //console.log("fetchTarget -> target", target);
         this.targetRegistry.set(target.id, target);
         this.isTargetRegistryCacheValid = true;
         this.selectedTarget = target;
@@ -120,10 +127,12 @@ export default class TargetStore {
       runInAction(() => {
         // Add target to target list
         target.id = res.id;
-        target.targetRuns = [];
-
+        target.associatedGenesFlattened = Object.values(
+          target.associatedGenes
+        ).join(", ");
         this.targetRegistry.set(target.id, target);
         this.targetListRegistry.set(target.id, target);
+        this.selectedTarget = target;
         toast.success("Target added successfully");
       });
     } catch (error) {
@@ -142,6 +151,11 @@ export default class TargetStore {
       await TargetAPI.update(target);
       runInAction(() => {
         // update in target registry list
+        // flatten the associatedGenes to associatedGenesFlattened having gene names
+        target.associatedGenesFlattened = Object.values(
+          target.associatedGenes
+        ).join(", ");
+
         this.targetRegistry.set(target.id, target);
         this.targetListRegistry.set(target.id, target);
         this.selectedTarget = target;
@@ -170,7 +184,7 @@ export default class TargetStore {
         // remove target from target list
         this.targetRegistry.delete(targetId);
         this.targetListRegistry.delete(targetId);
-
+        this.selectedTarget = null;
         toast.success("Target deleted successfully");
       });
     } catch (error) {
@@ -178,6 +192,73 @@ export default class TargetStore {
     } finally {
       runInAction(() => {
         this.isDeletingTarget = false;
+      });
+    }
+  };
+
+  updateGeneAssociation = async (target) => {
+    this.isUpdatingTarget = true;
+
+    // check if selectedTarget associatedGenes is same as target associatedGenes
+    // if same then no need to update
+    if (
+      JSON.stringify(this.selectedTarget.associatedGenes) ===
+      JSON.stringify(target.associatedGenes)
+    ) {
+      toast.info("No changes detected in gene association");
+      this.isUpdatingTarget = false;
+      return;
+    }
+
+    try {
+      await TargetAPI.updateAssociatedGenes(target);
+      runInAction(() => {
+        // update in target registry list
+        // flatten the associatedGenes to associatedGenesFlattened having gene names
+        target.associatedGenesFlattened = Object.values(
+          target.associatedGenes
+        ).join(", ");
+
+        this.targetRegistry.set(target.id, target);
+        this.targetListRegistry.set(target.id, target);
+        this.selectedTarget = target;
+        toast.success("Target gene association updated successfully");
+      });
+    } catch (error) {
+      console.error("Error updating target:", error);
+    } finally {
+      runInAction(() => {
+        this.isUpdatingTarget = false;
+      });
+    }
+  };
+
+  renameTarget = async (target) => {
+    this.isUpdatingTarget = true;
+
+    // check if new target name is same as old target name
+    // if same then no need to update
+    if (this.selectedTarget.name === target.name) {
+      toast.info("No changes detected in target name");
+      this.isUpdatingTarget = false;
+      return;
+    }
+
+    try {
+      await TargetAPI.rename(target);
+      runInAction(() => {
+        // update in target registry list
+
+        this.targetRegistry.set(target.id, target);
+        this.targetListRegistry.set(target.id, target);
+        this.selectedTarget = target;
+        toast.success("Target renamed successfully");
+      });
+    } catch (error) {
+      console.error("Error updating target:", error);
+    } finally {
+      runInAction(() => {
+        this.isUpdatingTarget = false;
       });
     }
   };

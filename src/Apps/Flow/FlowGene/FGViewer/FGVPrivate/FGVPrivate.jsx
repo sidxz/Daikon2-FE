@@ -5,6 +5,7 @@ import React from "react";
 import { useNavigate } from "react-router";
 import SecHeading from "../../../../../Library/SecHeading/SecHeading";
 import { appColors } from "../../../../../constants/colors";
+import { GeneIcon } from "../../../icons/GeneIcon";
 import FGVPrCrispriStrain from "./FGVPrCrispriStrain/FGVPrCrispriStrain";
 import FGVPrEssentiality from "./FGVPrEssentiality/FGVPrEssentiality";
 import FGVPrHypomorph from "./FGVPrHypomorph/FGVPrHypomorph";
@@ -39,12 +40,13 @@ const FGVPrivate = ({ selectedGene }) => {
       </div>
       <div className="flex w-full">
         <SecHeading
-          icon="icon icon-conceptual icon-dna"
+          svgIcon={<GeneIcon size={"25em"} />}
           heading={selectedGene.accessionNumber}
           accessionNumber={selectedGene.accessionNumber}
           displayHorizon={true}
           color={appColors.sectionHeadingBg.gene}
           breadCrumbItems={breadCrumbItems}
+          entryPoint={selectedGene?.id}
         />
       </div>
       <div className="flex flex-column gap-2">

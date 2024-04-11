@@ -66,14 +66,20 @@ const SmilesView = ({ smiles, compoundId, width = 200, height = 200 }) => {
   }
 
   return (
-    <div className="flex min-w-max justify-content-center align-items-center">
+    <div className="flex min-w-max justify-content-center align-items-center border-0">
       <ContextMenu model={contextMenuItems} ref={cm} />
       <svg
         id={canId}
         ref={svgElementRef}
         data-smiles={smiles}
         onContextMenu={(e) => cm.current.show(e)}
-        style={{ width: width, height: height }}
+        style={{
+          width: width,
+          height: height,
+          marginTop: -20,
+          padding: 0,
+          marginBottom: -20,
+        }}
       />
     </div>
   );

@@ -27,6 +27,9 @@ const Login = ({ userManager }) => {
     }
   };
 
+  console.log("localStorage.setItem redirectUrl", window.location.pathname);
+  localStorage.setItem("redirectUrl", window.location.pathname);
+
   // Check if LoginComponent is set before rendering
   if (!LoginComponent) {
     return <div>Loading...</div>; // Or any other loading state representation

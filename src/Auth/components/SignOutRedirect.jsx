@@ -8,7 +8,7 @@ const SignOutRedirect = ({ userManager }) => {
 
   useEffect(() => {
     userManager
-      .signoutCallback()
+      .signoutRedirectCallback()
       .then(() => {
         console.log("Signout successful");
         setSignoutDone(true);

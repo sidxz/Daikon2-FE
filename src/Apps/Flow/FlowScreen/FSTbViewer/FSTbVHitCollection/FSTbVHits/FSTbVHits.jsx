@@ -15,6 +15,7 @@ import FSTbVHAddHit from "./FSTbVHitsHelper/FSTbVHAddHit";
 import { FSTbVHDataTableHeader } from "./FSTbVHitsHelper/FSTbVHDataTableHeader";
 import { StructureBodyTemplate } from "./FSTbVHitsHelper/FSTbVHDataTableHelper";
 import FSTbVHExcelImport from "./FSTbVHitsHelper/FSTbVHExcelImport";
+import FSTbVHPromote from "./FSTbVHitsHelper/FSTbVHPromote";
 
 const FSTbVHits = ({ id }) => {
   const rootStore = useContext(RootStoreContext);
@@ -51,6 +52,7 @@ const FSTbVHits = ({ id }) => {
   const [selectedHits, setSelectedHits] = useState(null);
   const [isVotesHidden, setIsVotesHidden] = useState(true);
   const [isOneClickVotingEnabled, setIsOneClickVotingEnabled] = useState(false);
+  const [isPromoteSideBarVisible, setIsPromoteSideBarVisible] = useState(false);
 
   if (isFetchingHitCollection) {
     return <Loading message={"Fetching Hit Collection..."} />;
@@ -143,6 +145,7 @@ const FSTbVHits = ({ id }) => {
                     setIsVotesHidden={setIsVotesHidden}
                     isOneClickVotingEnabled={isOneClickVotingEnabled}
                     setIsOneClickVotingEnabled={setIsOneClickVotingEnabled}
+                    showPromoteSideBar={() => setIsPromoteSideBarVisible(true)}
                   />
                 }
                 //globalFilter={globalFilter}
@@ -238,6 +241,21 @@ const FSTbVHits = ({ id }) => {
         >
           <FSTbVHExcelImport selectedHitCollection={selectedHitCollection} />
         </Dialog>
+
+        <Sidebar
+          visible={isPromoteSideBarVisible}
+          position="right"
+          onHide={() => setIsPromoteSideBarVisible(false)}
+          className="p-sidebar-sm"
+          header="Create a new Hit Assessment"
+        >
+          <FSTbVHPromote
+            selectedScreen={selectedScreen}
+            selectedHitCollection={selectedHitCollection}
+            selectedHits={selectedHits}
+            closeSideBar={() => setIsPromoteSideBarVisible(false)}
+          />
+        </Sidebar>
       </>
     );
   }

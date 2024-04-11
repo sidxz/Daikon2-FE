@@ -60,7 +60,7 @@ const FSDOverview = () => {
 
         <div className="flex w-full">
           <div
-            className="flex p-1 align-items-center justify-content-center w-full text-lg  border-1 border-0 gap-2"
+            className="flex p-1 align-items-center justify-content-center w-full text-lg border-1 border-0 gap-2"
             style={{
               color: "#3c83bd",
             }}
@@ -69,7 +69,7 @@ const FSDOverview = () => {
               <FcPlanner />
             </div>
             <div className="flex">
-              <b>PLANNED</b>
+              <b>PLANNED | ASSAY DEVELOPMENT</b>
             </div>
           </div>
         </div>
