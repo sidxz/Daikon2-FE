@@ -1,8 +1,10 @@
 import { observer } from "mobx-react-lite";
 import React, { useContext, useEffect } from "react";
-import { FcCollect, FcFilledFilter, FcOvertime } from "react-icons/fc";
+import { FcCollect, FcFilledFilter } from "react-icons/fc";
 import Loading from "../../../../../Library/Loading/Loading";
 import { RootStoreContext } from "../../../../../RootStore";
+import FPPDOIND from "./FPPDOIND/FPPDOIND";
+import FPPDOP1 from "./FPPDOP1/FPPDOP1";
 
 const FPPDOverview = () => {
   const rootStore = useContext(RootStoreContext);
@@ -29,52 +31,19 @@ const FPPDOverview = () => {
 
   console.log("projectList", projectList);
 
-  let h2lActiveProjects = projectList.filter(
-    (item) => item.stage === "H2L" && item.isProjectRemoved === false
+  let indActiveProjects = projectList.filter(
+    (item) => item.stage === "IND" && item.isProjectRemoved === false
   );
-  let h2lProjects = projectList.filter((item) => item.stage === "H2L");
+  let indProjects = projectList.filter((item) => item.stage === "IND");
 
-  let loActiveProjects = projectList.filter(
-    (item) => item.stage === "LO" && item.isProjectRemoved === false
+  let p1ActiveProjects = projectList.filter(
+    (item) => item.stage === "P1" && item.isProjectRemoved === false
   );
-  let loProjects = projectList.filter((item) => item.stage === "LO");
-
-  let spActiveProjects = projectList.filter(
-    (item) => item.stage === "SP" && item.isProjectRemoved === false
-  );
-  let spProjects = projectList.filter((item) => item.stage === "SP");
+  let p1Projects = projectList.filter((item) => item.stage === "P1");
 
   return (
     <div className="flex flex-column w-full">
       <div className="flex w-full ">
-        <div className="flex w-full flex-column text-sm ">
-          <div
-            className="flex p-1 align-items-center justify-content-center w-full text-lg gap-2"
-            style={{
-              color: "#3c83bd",
-            }}
-          >
-            <div className="flex">
-              <FcOvertime />
-            </div>
-            <div className="flex gap-2">
-              <div className="flex">
-                <b style={{ color: "#3c83bd" }}>READY FOR POST PORTFOLIO -</b>
-              </div>
-              <div className="flex">
-                <b style={{ color: "#00A86B" }}>
-                  {h2lActiveProjects.length} / {h2lProjects.length}
-                </b>
-              </div>
-            </div>
-          </div>
-          <div className="flex w-full pr-3">
-            <div className="flex w-full  pt-1  bg-white">
-              {/* <FPDOReady projects={h2lActiveProjects} /> */}
-            </div>
-          </div>
-        </div>
-
         <div className="flex w-full flex-column text-sm">
           <div
             className="flex p-1 align-items-center justify-content-center w-full text-lg gap-2"
@@ -92,15 +61,15 @@ const FPPDOverview = () => {
               </div>
               <div className="flex">
                 <b style={{ color: "#00A86B" }}>
-                  {loActiveProjects.length} / {loProjects.length}
+                  {indActiveProjects.length} / {indProjects.length}
                 </b>
               </div>
             </div>
           </div>
 
-          <div className="flex w-full pr-3">
-            <div className="flex w-full  pt-1 bg-white">
-              {/* <FPDOLO projects={loActiveProjects} /> */}
+          <div className="flex pr-3">
+            <div className="flex pt-1 bg-white">
+              <FPPDOIND projects={indActiveProjects} />
             </div>
           </div>
         </div>
@@ -122,15 +91,15 @@ const FPPDOverview = () => {
               </div>
               <div className="flex">
                 <b style={{ color: "#00A86B" }}>
-                  {spActiveProjects.length} / {spProjects.length}
+                  {p1ActiveProjects.length} / {p1Projects.length}
                 </b>
               </div>
             </div>
           </div>
 
-          <div className="flex w-full pr-3">
-            <div className="flex w-full  pt-1  bg-white">
-              {/* <FPDOSP projects={spActiveProjects} /> */}
+          <div className="flex  pr-3">
+            <div className="flex  pt-1  bg-white">
+              <FPPDOP1 projects={p1ActiveProjects} />
             </div>
           </div>
         </div>

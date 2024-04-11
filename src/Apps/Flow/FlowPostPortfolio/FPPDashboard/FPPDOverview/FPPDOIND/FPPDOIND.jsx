@@ -5,17 +5,16 @@ import FDate from "../../../../../../Library/FDate/FDate";
 import SmilesView from "../../../../../../Library/SmilesView/SmilesView";
 import { AppOrgResolver } from "../../../../../../Shared/VariableResolvers/AppOrgResolver";
 
-const FPDOReady = ({ projects }) => {
+const FPPDOIND = ({ projects }) => {
   const { getOrgNameById } = AppOrgResolver();
   const navigate = useNavigate();
   // check if projects is empty or not set or null
   if (!projects || projects.length === 0)
     return (
       <div className="flex justify-content-center w-full align-items-center text-sm	text-color-secondary ">
-        - No H2L projects are available -
+        - No IND projects are available -
       </div>
     );
-
   let projectsComponent = projects.map((project) => {
     const displayTargetName = project.targetName
       ? project.targetName
@@ -25,23 +24,22 @@ const FPDOReady = ({ projects }) => {
         <div
           className="flex flex-column  justify-content-center cursor-pointer "
           onClick={() => {
-            navigate(`/wf/portfolio/viewer/${project.id}/information`);
+            navigate(`/wf/post-portfolio/viewer/${project.id}/information`);
           }}
         >
           <div
             className="flex flex-column justify-content-center "
             style={{
-              backgroundColor: "#c3cba8",
+              backgroundColor: "#53A9A8",
             }}
           >
             <div className="flex p-2 text-lg text-100 text-white-alpha-90 justify-content-center">
               {project.name}
             </div>
           </div>
-
-          <div className="flex justify-content-center border-green-100 border-bottom-1">
+          <div className="flex justify-content-center border-bottom-1 border-gray-100">
             <div
-              className="flex justify-content-center w-full p-2 text-green-800 border-right-1 border-green-100"
+              className="flex justify-content-center w-full  p-2 text-yellow-900 border-right-1 border-gray-100"
               style={{
                 minWidth: "4rem",
               }}
@@ -50,7 +48,7 @@ const FPDOReady = ({ projects }) => {
             </div>
 
             <div
-              className="flex justify-content-center w-full p-2 text-green-800 border-right-1 border-green-100"
+              className="flex justify-content-center w-full  p-2 text-yellow-900 border-right-1 border-gray-100"
               style={{
                 minWidth: "4rem",
               }}
@@ -59,28 +57,25 @@ const FPDOReady = ({ projects }) => {
             </div>
 
             <div
-              className="flex justify-content-center w-full p-2 text-green-800 border-right-1 border-green-100"
+              className="flex justify-content-center w-full p-2 text-yellow-900 border-right-1 border-gray-100"
               style={{
                 minWidth: "4rem",
               }}
             >
-              <FDate
-                timestamp={project.statusCompleteSuccessDate}
-                color="#4c6018"
-              />
+              <FDate timestamp={project.loStart} color="#52422D" />
             </div>
 
             <div
               className="flex justify-content-center w-full p-2 text-100"
               style={{
                 minWidth: "4rem",
-                backgroundColor: "#e0c380",
+                backgroundColor: "#82c7df",
               }}
             >
-              <FDate timestamp={project.h2LPredictedStart} color="#FFFFFF" />
+              <FDate timestamp={project.spPredictedStart} color="#FFFFFF" />
             </div>
           </div>
-          <div className="flex p-2 w-full justify-content-center">
+          <div className="flex w-full p-2 justify-content-center">
             <SmilesView
               smiles={
                 project.compoundEvoLatestSMILES != null
@@ -103,4 +98,4 @@ const FPDOReady = ({ projects }) => {
   );
 };
 
-export default observer(FPDOReady);
+export default observer(FPPDOIND);

@@ -5,6 +5,8 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import SecHeading from "../../../../Library/SecHeading/SecHeading";
 import { appColors } from "../../../../constants/colors";
 import { PostPortfolioIcon } from "../../icons/PostPortfolioIcon";
+import FPPDAddNew from "./FPPDAddNew/FPPDAddNew";
+import FPPDAllPostPortfolioProjects from "./FPPDAllPostPortfolioProjects/FPPDAllPostPortfolioProjects";
 import FPPDMenuBar from "./FPPDMenuBar/FPPDMenuBar";
 import FPPDOverview from "./FPPDOverview/FPPDOverview";
 const FPPDashboard = () => {
@@ -42,10 +44,10 @@ const FPPDashboard = () => {
         <Routes>
           <Route index element={<Navigate to="overview/" />} />
           <Route path="overview/*" element={<FPPDOverview />} />
-          {/* <Route
-            path="all-portfolio-projects/*"
-            element={<FPDAllPortfolioProjects />}
-          /> */}
+          <Route
+            path="all-post-portfolio-projects/*"
+            element={<FPPDAllPostPortfolioProjects />}
+          />
         </Routes>
       </div>
 
@@ -56,7 +58,7 @@ const FPPDashboard = () => {
         className="p-sidebar-sm"
         header={addSideBarHeader}
       >
-        {/* /<FPDAddNew closeSideBar={() => setDisplayAddSideBar(false)} /> */}
+        <FPPDAddNew closeSideBar={() => setDisplayAddSideBar(false)} />
       </Sidebar>
     </div>
   );
