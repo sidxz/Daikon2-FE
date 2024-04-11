@@ -15,6 +15,7 @@ import { appColors } from "../../../../../constants/colors";
 import { PortfolioIcon } from "../../../icons/PortfolioIcon";
 import PortfolioCompoundEvolution from "../../shared/HaCompoundEvolution/PortfolioCompoundEvolution";
 import PortfolioStageDropdown from "../../shared/PortfolioStageDropdown";
+import FPVIProjectInfoDesc from "./FPVIProjectInfo/FPVIProjectInfoDesc";
 import FPVIProjectInfoPriority from "./FPVIProjectInfo/FPVIProjectInfoPriority";
 import * as Helper from "./FPVInformationHelper";
 
@@ -129,10 +130,17 @@ const FPVInformation = () => {
         <VisTimeline items={timelineItems} options={options} groups={groups} />
       </div>
 
-      <div className="flex w-full">
-        <Fieldset className="m-0 flex-grow-1" legend="Project Information">
-          <FPVIProjectInfoPriority />
-        </Fieldset>
+      <div className="flex flex-row m-0 flex-grow-1">
+        <div className="flex">
+          <Fieldset className="flex" legend="Project Information">
+            <FPVIProjectInfoPriority />
+          </Fieldset>
+        </div>
+        <div className="flex w-full m-0 flex-grow-1">
+          <Fieldset className="flex" legend="Project Description">
+            <FPVIProjectInfoDesc />
+          </Fieldset>
+        </div>
       </div>
 
       <div className="flex w-full">
