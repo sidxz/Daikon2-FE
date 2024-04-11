@@ -80,7 +80,7 @@ const FPDOReady = ({ projects }) => {
               <FDate timestamp={project.h2LPredictedStart} color="#FFFFFF" />
             </div>
           </div>
-          <div className="flex w-full justify-content-center">
+          <div className="flex p-2 w-full justify-content-center">
             <SmilesView
               smiles={
                 project.compoundEvoLatestSMILES != null

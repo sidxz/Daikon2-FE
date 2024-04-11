@@ -75,7 +75,7 @@ const FPDOLO = ({ projects }) => {
               <FDate timestamp={project.spPredictedStart} color="#FFFFFF" />
             </div>
           </div>
-          <div className="flex w-full justify-content-center">
+          <div className="flex w-full p-2 justify-content-center">
             <SmilesView
               smiles={
                 project.compoundEvoLatestSMILES != null
