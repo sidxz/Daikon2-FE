@@ -38,6 +38,8 @@ export default class ProjectCompoundEvoStore {
 
     try {
       var res = await ProjectCompoundEvoAPI.add(cEvo);
+
+      console.log("addProjectCEvo RES", res);
       runInAction(() => {
         // Add cEvo to cEvo list
         cEvo.id = res.id;
