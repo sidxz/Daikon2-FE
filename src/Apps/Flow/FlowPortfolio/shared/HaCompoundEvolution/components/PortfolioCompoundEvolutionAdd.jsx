@@ -8,7 +8,7 @@ import { classNames } from "primereact/utils";
 import React, { useContext } from "react";
 import LoadingBlockUI from "../../../../../../Library/LoadingBlockUI/LoadingBlockUI";
 import { RootStoreContext } from "../../../../../../RootStore";
-const PortfolioCompoundEvolutionAdd = ({ projectId, closeSideBar }) => {
+const PortfolioCompoundEvolutionAdd = ({ project, closeSideBar }) => {
   const rootStore = useContext(RootStoreContext);
   const { isAddingProjectCEvo, addProjectCEvo } =
     rootStore.projectCompoundEvoStore;
@@ -34,7 +34,8 @@ const PortfolioCompoundEvolutionAdd = ({ projectId, closeSideBar }) => {
     },
 
     onSubmit: (cEvoToAdd) => {
-      cEvoToAdd.projectId = projectId;
+      cEvoToAdd.projectId = project.id;
+      cEvoToAdd.stage = project.stage;
       console.log(cEvoToAdd);
       //return;
       addProjectCEvo(cEvoToAdd).then(() => {

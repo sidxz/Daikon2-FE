@@ -48,13 +48,12 @@ export default class ProjectCompoundEvoStore {
         );
         console.log("Found project from registry", project);
         console.log("Adding cEvo to project", cEvo);
-        project.portfolioCompoundEvolution.push(cEvo);
+        project.compoundEvolution.push(cEvo);
 
         // sort by evolutionDate
-        project.portfolioCompoundEvolution =
-          project.portfolioCompoundEvolution.sort(
-            (a, b) => new Date(b.evolutionDate) - new Date(a.evolutionDate)
-          );
+        project.compoundEvolution = project.compoundEvolution.sort(
+          (a, b) => new Date(b.evolutionDate) - new Date(a.evolutionDate)
+        );
 
         this.rootStore.projectStore.selectedProject = project;
 
@@ -98,16 +97,15 @@ export default class ProjectCompoundEvoStore {
           cEvo.projectId
         );
 
-        const indexOfEss = project.portfolioCompoundEvolution.findIndex(
+        const indexOfEss = project.compoundEvolution.findIndex(
           (e) => e.id === cEvo.id
         );
-        project.portfolioCompoundEvolution[indexOfEss] = cEvo;
+        project.compoundEvolution[indexOfEss] = cEvo;
 
         // sort by evolutionDate
-        project.portfolioCompoundEvolution =
-          project.portfolioCompoundEvolution.sort(
-            (a, b) => new Date(b.evolutionDate) - new Date(a.evolutionDate)
-          );
+        project.compoundEvolution = project.compoundEvolution.sort(
+          (a, b) => new Date(b.evolutionDate) - new Date(a.evolutionDate)
+        );
 
         this.rootStore.projectStore.selectedProject = project;
 
@@ -143,10 +141,10 @@ export default class ProjectCompoundEvoStore {
         // remove cEvo from project cEvo list
         const project =
           this.rootStore.projectStore.projectRegistry.get(projectId);
-        const indexOfEss = project.portfolioCompoundEvolution.findIndex(
+        const indexOfEss = project.compoundEvolution.findIndex(
           (e) => e.id === cEvoId
         );
-        project.portfolioCompoundEvolution.splice(indexOfEss, 1);
+        project.compoundEvolution.splice(indexOfEss, 1);
         this.rootStore.projectStore.selectedProject = project;
 
         toast.success("Compound Evolution deleted successfully");

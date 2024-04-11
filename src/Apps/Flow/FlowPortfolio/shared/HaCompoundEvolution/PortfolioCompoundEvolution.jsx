@@ -90,7 +90,7 @@ const PortfolioCompoundEvolution = () => {
         />
       </div>
       <div className="flex flex-wrap">
-        {selectedProject?.portfolioCompoundEvolution?.map((evo, index) => (
+        {selectedProject?.compoundEvolution?.map((evo, index) => (
           <div key={"loop_flex_" + evo.id} className="flex">
             <div className="flex flex-column mb-4">
               <div className="flex">
@@ -107,8 +107,7 @@ const PortfolioCompoundEvolution = () => {
                     </div>
                     <div className="flex align-items-center text-sm text-500">
                       {index == 0 ? "(Latest)" : ""}
-                      {index ==
-                      selectedProject?.portfolioCompoundEvolution.length - 1
+                      {index == selectedProject?.compoundEvolution.length - 1
                         ? "(Initial)"
                         : ""}
                     </div>
@@ -263,7 +262,7 @@ const PortfolioCompoundEvolution = () => {
         header={addCEvoSideBarHeader}
       >
         <PortfolioCompoundEvolutionAdd
-          projectId={selectedProject?.id}
+          project={selectedProject}
           closeSideBar={() => setDisplayAddCEvoSideBar(false)}
         />
       </Sidebar>
