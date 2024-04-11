@@ -3,23 +3,17 @@ import { DataTable } from "primereact/datatable";
 import React from "react";
 
 const FPVIProjectInfoDesc = () => {
-  let h2lDescData = [
+  let projectDescData = [
     {
       name: "H2L Description",
       value:
-        "Phenotypic project where target is unknown- split when MMV46 reached SP and SAR diverged in March 2023",
+        "Phenotypic project where target is unknown- split when MMV46 reached SP and SAR diverged in March 2023. More text coming.Phenotypic project where target is unknown- split when MMV46 reached SP and SAR diverged in March 2023. More text coming.",
     },
-  ];
-
-  let loDescData = [
     {
       name: "LO Description",
       value:
-        "Phenotypic project where target is unknown- split when MMV46 reached SP and SAR diverged in March 2023",
+        "Phenotypic project where target is unknown- split when MMV46 reached SP and SAR diverged in March 2023. More text coming.Phenotypic project where target is unknown- split when MMV46 reached SP and SAR diverged in March 2023. More text coming.",
     },
-  ];
-
-  let spDescData = [
     {
       name: "SP Description",
       value:
@@ -28,23 +22,11 @@ const FPVIProjectInfoDesc = () => {
   ];
 
   return (
-    <div className="flex flex-column pt-1">
-      <DataTable value={h2lDescData} className="HideDataTableHeader">
+    <div className="flex w-full pt-1">
+      <DataTable value={projectDescData} className="HideDataTableHeader w-full">
         <Column field="name"></Column>
         <Column field="value"></Column>
       </DataTable>
-      <div className="flex pt-1">
-        <DataTable value={loDescData} className="HideDataTableHeader">
-          <Column field="name"></Column>
-          <Column field="value"></Column>
-        </DataTable>
-      </div>
-      <div className="flex pt-1">
-        <DataTable value={spDescData} className="HideDataTableHeader">
-          <Column field="name"></Column>
-          <Column field="value"></Column>
-        </DataTable>
-      </div>
     </div>
   );
 };

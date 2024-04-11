@@ -8,7 +8,7 @@ const PortfolioProbabilityGauge = () => {
         type: "gauge",
         startAngle: 180,
         endAngle: 0,
-        center: ["50%", "75%"],
+        center: ["50%", "70%"],
         radius: "90%",
         min: 0,
         max: 1,
@@ -97,7 +97,7 @@ const PortfolioProbabilityGauge = () => {
     <ReactECharts
       option={option}
       // onEvents={onEvents}
-      style={{ height: "20rem", width: "20rem" }}
+      style={{ height: "18rem", width: "18rem" }}
     />
   );
 };

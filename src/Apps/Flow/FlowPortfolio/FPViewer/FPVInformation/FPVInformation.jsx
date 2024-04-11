@@ -130,14 +130,14 @@ const FPVInformation = () => {
         <VisTimeline items={timelineItems} options={options} groups={groups} />
       </div>
 
-      <div className="flex flex-row m-0 flex-grow-1">
-        <div className="flex">
+      <div className="flex flex-row m-0 w-full">
+        <div className="flex m-0 flex-grow-1">
           <Fieldset className="flex" legend="Project Information">
             <FPVIProjectInfoPriority />
           </Fieldset>
         </div>
-        <div className="flex w-full m-0 flex-grow-1">
-          <Fieldset className="flex" legend="Project Description">
+        <div className="flex w-full m-0">
+          <Fieldset className="flex w-full" legend="Project Description">
             <FPVIProjectInfoDesc />
           </Fieldset>
         </div>
