@@ -28,7 +28,7 @@ const FGVPrEssentialityAddForm = ({
       strain: "",
       method: "",
       reference: "",
-      notes: "",
+      note: "",
     },
 
     validate: (values) => {
@@ -160,22 +160,22 @@ const FGVPrEssentialityAddForm = ({
 
         <div className="field">
           <label
-            htmlFor="notes"
+            htmlFor="note"
             className={classNames({
-              "p-error": isInvalid("notes"),
+              "p-error": isInvalid("note"),
             })}
           >
             Notes
           </label>
           <InputTextarea
-            id="notes"
+            id="note"
             value={formik.values.notes}
             onChange={formik.handleChange}
             className={classNames({
-              "p-invalid": isInvalid("notes"),
+              "p-invalid": isInvalid("note"),
             })}
           />
-          {getErrorMessage("notes")}
+          {getErrorMessage("note")}
         </div>
 
         <div className="flex justify-content-end">

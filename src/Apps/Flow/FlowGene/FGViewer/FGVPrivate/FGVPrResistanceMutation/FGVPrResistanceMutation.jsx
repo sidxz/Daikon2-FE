@@ -62,7 +62,7 @@ const FGVPrResistanceMutation = ({ selectedGene }) => {
   const deleteBodyTemplate = (rowData) => {
     const accept = () => {
       // Delete resistanceMutation
-      deleteResistanceMutation(rowData.resistanceMutationId);
+      deleteResistanceMutation(rowData.id);
     };
     const reject = () => {
       // Do nothing
@@ -96,7 +96,7 @@ const FGVPrResistanceMutation = ({ selectedGene }) => {
         <DataTable
           value={selectedGene.resistanceMutations}
           editMode="row"
-          dataKey="resistanceMutationId"
+          dataKey="id"
           showGridlines
           removableSort
           header={tableHeader}

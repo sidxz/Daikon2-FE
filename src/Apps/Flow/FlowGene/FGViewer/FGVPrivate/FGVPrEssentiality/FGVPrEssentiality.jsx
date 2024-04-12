@@ -61,7 +61,7 @@ const FGVPrEssentiality = ({ selectedGene }) => {
   const deleteBodyTemplate = (rowData) => {
     const accept = () => {
       // Delete essentiality
-      deleteEssentiality(rowData.essentialityId);
+      deleteEssentiality(rowData.id);
     };
     const reject = () => {
       // Do nothing
@@ -92,7 +92,7 @@ const FGVPrEssentiality = ({ selectedGene }) => {
         <DataTable
           value={selectedGene.essentialities}
           editMode="row"
-          dataKey="essentialityId"
+          dataKey="id"
           showGridlines
           removableSort
           header={tableHeader}
@@ -120,7 +120,7 @@ const FGVPrEssentiality = ({ selectedGene }) => {
             editor={(options) => TextAreaRowEditor(options)}
           />
           <Column
-            field="notes"
+            field="note"
             header="Notes"
             editor={(options) => TextAreaRowEditor(options)}
           />

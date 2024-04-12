@@ -37,7 +37,7 @@ export default class GeneProteinProductionStore {
       var res = await GeneProteinProductionAPI.create(proteinProduction);
       runInAction(() => {
         // Add proteinProduction to gene proteinProduction list
-        proteinProduction.proteinProductionId = res.id;
+        proteinProduction.id = res.id;
 
         this.rootStore.geneStore.selectedGene.proteinProductions.push(
           proteinProduction
@@ -66,9 +66,9 @@ export default class GeneProteinProductionStore {
       proteinProduction.geneId?.trim() ||
       this.rootStore.geneStore.selectedGene.id;
 
-    // Ensure proteinProduction.proteinProductionId is not null, undefined, or empty
-    if (!proteinProduction.proteinProductionId?.trim()) {
-      throw new Error("proteinProductionId is required and cannot be empty.");
+    // Ensure proteinProduction.id is not null, undefined, or empty
+    if (!proteinProduction.id?.trim()) {
+      throw new Error("id is required and cannot be empty.");
     }
 
     try {
@@ -80,14 +80,14 @@ export default class GeneProteinProductionStore {
         );
 
         const indexOfEss = gene.proteinProductions.findIndex(
-          (e) => e.proteinProductionId === proteinProduction.proteinProductionId
+          (e) => e.id === proteinProduction.id
         );
         gene.proteinProductions[indexOfEss] = proteinProduction;
 
         // update the same in selected gene
         const selectedGene = this.rootStore.geneStore.selectedGene;
         const selectedIndex = selectedGene.proteinProductions.findIndex(
-          (e) => e.proteinProductionId === proteinProduction.proteinProductionId
+          (e) => e.id === proteinProduction.id
         );
 
         selectedGene.proteinProductions[selectedIndex] = proteinProduction;
@@ -103,30 +103,30 @@ export default class GeneProteinProductionStore {
     }
   };
 
-  deleteProteinProduction = async (proteinProductionId) => {
+  deleteProteinProduction = async (id) => {
     this.isDeletingProteinProduction = true;
 
     const geneId = this.rootStore.geneStore.selectedGene.id;
 
-    // Ensure proteinProductionId is not null, undefined, or empty
-    if (!proteinProductionId?.trim()) {
-      throw new Error("proteinProductionId is required and cannot be empty.");
+    // Ensure id is not null, undefined, or empty
+    if (!id?.trim()) {
+      throw new Error("id is required and cannot be empty.");
     }
 
     try {
-      await GeneProteinProductionAPI.delete(geneId, proteinProductionId);
+      await GeneProteinProductionAPI.delete(geneId, id);
       runInAction(() => {
         // remove proteinProduction from gene proteinProduction list
         const gene = this.rootStore.geneStore.geneRegistry.get(geneId);
         const indexOfEss = gene.proteinProductions.findIndex(
-          (e) => e.proteinProductionId === proteinProductionId
+          (e) => e.id === id
         );
         gene.proteinProductions.splice(indexOfEss, 1);
 
         // remove the same from selected gene
         const selectedGene = this.rootStore.geneStore.selectedGene;
         const selectedIndex = selectedGene.proteinProductions.findIndex(
-          (e) => e.proteinProductionId === proteinProductionId
+          (e) => e.id === id
         );
         selectedGene.proteinProductions.splice(selectedIndex, 1);
 

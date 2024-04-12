@@ -8,12 +8,14 @@ const GeneResistanceMutationAPI = {
 
   update: (data) =>
     axiosWithAuth.put(
-      `/v2/gene/${data.geneId}/resistance-mutation/${data.resistanceMutationId}`,
+      `/v2/gene/${data.geneId}/resistance-mutation/${data.id}`,
       data
     ),
 
-  delete: (id, resistanceMutationId) =>
-    axiosWithAuth.delete(`/v2/gene/${id}/resistance-mutation/${resistanceMutationId}`),
+  delete: (geneId, resistanceMutationId) =>
+    axiosWithAuth.delete(
+      `/v2/gene/${geneId}/resistance-mutation/${resistanceMutationId}`
+    ),
 };
 
 export default GeneResistanceMutationAPI;

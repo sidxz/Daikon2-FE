@@ -58,7 +58,7 @@ const FGVPrCrispriStrain = ({ selectedGene }) => {
   const deleteBodyTemplate = (rowData) => {
     const accept = () => {
       // Delete crispriStrain
-      deleteCrispriStrain(rowData.crispriStrainId);
+      deleteCrispriStrain(rowData.id);
     };
     const reject = () => {
       // Do nothing
@@ -90,7 +90,7 @@ const FGVPrCrispriStrain = ({ selectedGene }) => {
         <DataTable
           value={selectedGene.crispriStrains}
           editMode="row"
-          dataKey="crispriStrainId"
+          dataKey="id"
           showGridlines
           removableSort
           header={tableHeader}

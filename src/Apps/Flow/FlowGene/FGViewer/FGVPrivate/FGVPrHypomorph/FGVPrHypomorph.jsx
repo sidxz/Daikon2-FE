@@ -60,7 +60,7 @@ const FGVPrHypomorph = ({ selectedGene }) => {
   const deleteBodyTemplate = (rowData) => {
     const accept = () => {
       // Delete hypomorph
-      deleteHypomorph(rowData.hypomorphId);
+      deleteHypomorph(rowData.id);
     };
     const reject = () => {
       // Do nothing
@@ -92,7 +92,7 @@ const FGVPrHypomorph = ({ selectedGene }) => {
         <DataTable
           value={selectedGene.hypomorphs}
           editMode="row"
-          dataKey="hypomorphId"
+          dataKey="id"
           showGridlines
           removableSort
           header={tableHeader}

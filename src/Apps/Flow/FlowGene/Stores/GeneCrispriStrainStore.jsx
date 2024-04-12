@@ -36,7 +36,7 @@ export default class GeneCrispriStrainStore {
       var res = await GeneCrispriStrainAPI.create(crispriStrain);
       runInAction(() => {
         // Add crispriStrain to gene crispriStrain list
-        crispriStrain.crispriStrainId = res.id;
+        crispriStrain.id = res.id;
 
         this.rootStore.geneStore.selectedGene.crispriStrains.push(
           crispriStrain
@@ -64,9 +64,9 @@ export default class GeneCrispriStrainStore {
     crispriStrain.geneId =
       crispriStrain.geneId?.trim() || this.rootStore.geneStore.selectedGene.id;
 
-    // Ensure crispriStrain.crispriStrainId is not null, undefined, or empty
-    if (!crispriStrain.crispriStrainId?.trim()) {
-      throw new Error("crispriStrainId is required and cannot be empty.");
+    // Ensure crispriStrain.id is not null, undefined, or empty
+    if (!crispriStrain.id?.trim()) {
+      throw new Error("id is required and cannot be empty.");
     }
 
     try {
@@ -78,14 +78,14 @@ export default class GeneCrispriStrainStore {
         );
 
         const indexOfEss = gene.crispriStrains.findIndex(
-          (e) => e.crispriStrainId === crispriStrain.crispriStrainId
+          (e) => e.id === crispriStrain.id
         );
         gene.crispriStrains[indexOfEss] = crispriStrain;
 
         // update the same in selected gene
         const selectedGene = this.rootStore.geneStore.selectedGene;
         const selectedIndex = selectedGene.crispriStrains.findIndex(
-          (e) => e.crispriStrainId === crispriStrain.crispriStrainId
+          (e) => e.id === crispriStrain.id
         );
 
         selectedGene.crispriStrains[selectedIndex] = crispriStrain;
@@ -101,30 +101,28 @@ export default class GeneCrispriStrainStore {
     }
   };
 
-  deleteCrispriStrain = async (crispriStrainId) => {
+  deleteCrispriStrain = async (id) => {
     this.isDeletingCrispriStrain = true;
 
     const geneId = this.rootStore.geneStore.selectedGene.id;
 
-    // Ensure crispriStrainId is not null, undefined, or empty
-    if (!crispriStrainId?.trim()) {
-      throw new Error("crispriStrainId is required and cannot be empty.");
+    // Ensure id is not null, undefined, or empty
+    if (!id?.trim()) {
+      throw new Error("id is required and cannot be empty.");
     }
 
     try {
-      await GeneCrispriStrainAPI.delete(geneId, crispriStrainId);
+      await GeneCrispriStrainAPI.delete(geneId, id);
       runInAction(() => {
         // remove crispriStrain from gene crispriStrain list
         const gene = this.rootStore.geneStore.geneRegistry.get(geneId);
-        const indexOfEss = gene.crispriStrains.findIndex(
-          (e) => e.crispriStrainId === crispriStrainId
-        );
+        const indexOfEss = gene.crispriStrains.findIndex((e) => e.id === id);
         gene.crispriStrains.splice(indexOfEss, 1);
 
         // remove the same from selected gene
         const selectedGene = this.rootStore.geneStore.selectedGene;
         const selectedIndex = selectedGene.crispriStrains.findIndex(
-          (e) => e.crispriStrainId === crispriStrainId
+          (e) => e.id === id
         );
         selectedGene.crispriStrains.splice(selectedIndex, 1);
 

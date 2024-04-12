@@ -58,9 +58,7 @@ const FGVPrUnpublishedStructuralInformation = ({ selectedGene }) => {
   const deleteBodyTemplate = (rowData) => {
     const accept = () => {
       // Delete unpublishedStructuralInformation
-      deleteUnpublishedStructuralInformation(
-        rowData.unpublishedStructuralInformationId
-      );
+      deleteUnpublishedStructuralInformation(rowData.id);
     };
     const reject = () => {
       // Do nothing
@@ -97,7 +95,7 @@ const FGVPrUnpublishedStructuralInformation = ({ selectedGene }) => {
         <DataTable
           value={selectedGene.unpublishedStructuralInformations}
           editMode="row"
-          dataKey="unpublishedStructuralInformationId"
+          dataKey="id"
           showGridlines
           removableSort
           header={tableHeader}

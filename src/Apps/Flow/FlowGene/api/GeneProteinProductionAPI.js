@@ -8,12 +8,14 @@ const GeneProteinProductionAPI = {
 
   update: (data) =>
     axiosWithAuth.put(
-      `/v2/gene/${data.geneId}/protein-production/${data.proteinProductionId}`,
+      `/v2/gene/${data.geneId}/protein-production/${data.id}`,
       data
     ),
 
-  delete: (id, proteinProductionId) =>
-    axiosWithAuth.delete(`/v2/gene/${id}/protein-production/${proteinProductionId}`),
+  delete: (geneId, proteinProductionId) =>
+    axiosWithAuth.delete(
+      `/v2/gene/${geneId}/protein-production/${proteinProductionId}`
+    ),
 };
 
 export default GeneProteinProductionAPI;

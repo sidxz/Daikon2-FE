@@ -61,7 +61,7 @@ const FGVPrProteinActivityAssay = ({ selectedGene }) => {
   const deleteBodyTemplate = (rowData) => {
     const accept = () => {
       // Delete proteinActivityAssay
-      deleteProteinActivityAssay(rowData.proteinActivityAssayId);
+      deleteProteinActivityAssay(rowData.id);
     };
     const reject = () => {
       // Do nothing
@@ -97,7 +97,7 @@ const FGVPrProteinActivityAssay = ({ selectedGene }) => {
         <DataTable
           value={selectedGene.proteinActivityAssays}
           editMode="row"
-          dataKey="proteinActivityAssayId"
+          dataKey="id"
           showGridlines
           removableSort
           header={tableHeader}

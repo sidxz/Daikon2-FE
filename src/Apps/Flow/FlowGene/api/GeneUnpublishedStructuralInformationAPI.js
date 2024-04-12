@@ -4,16 +4,21 @@ const axiosWithAuth = new AxiosWithAuth();
 
 const GeneUnpublishedStructuralInformationAPI = {
   create: (data) =>
-    axiosWithAuth.post(`/v2/gene/${data.geneId}/unpublished-structural-information`, data),
-
-  update: (data) =>
-    axiosWithAuth.put(
-      `/v2/gene/${data.geneId}/unpublished-structural-information/${data.unpublishedStructuralInformationId}`,
+    axiosWithAuth.post(
+      `/v2/gene/${data.geneId}/unpublished-structural-information`,
       data
     ),
 
-  delete: (id, unpublishedStructuralInformationId) =>
-    axiosWithAuth.delete(`/v2/gene/${id}/unpublished-structural-information/${unpublishedStructuralInformationId}`),
+  update: (data) =>
+    axiosWithAuth.put(
+      `/v2/gene/${data.geneId}/unpublished-structural-information/${data.id}`,
+      data
+    ),
+
+  delete: (geneId, unpublishedStructuralInformationId) =>
+    axiosWithAuth.delete(
+      `/v2/gene/${geneId}/unpublished-structural-information/${unpublishedStructuralInformationId}`
+    ),
 };
 
 export default GeneUnpublishedStructuralInformationAPI;

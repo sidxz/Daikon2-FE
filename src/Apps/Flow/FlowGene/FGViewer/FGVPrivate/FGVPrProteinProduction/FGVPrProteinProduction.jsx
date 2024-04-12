@@ -62,7 +62,7 @@ const FGVPrProteinProduction = ({ selectedGene }) => {
   const deleteBodyTemplate = (rowData) => {
     const accept = () => {
       // Delete proteinProduction
-      deleteProteinProduction(rowData.proteinProductionId);
+      deleteProteinProduction(rowData.id);
     };
     const reject = () => {
       // Do nothing
@@ -96,7 +96,7 @@ const FGVPrProteinProduction = ({ selectedGene }) => {
         <DataTable
           value={selectedGene.proteinProductions}
           editMode="row"
-          dataKey="proteinProductionId"
+          dataKey="id"
           showGridlines
           removableSort
           header={tableHeader}

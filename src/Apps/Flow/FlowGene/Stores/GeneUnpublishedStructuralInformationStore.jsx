@@ -41,8 +41,7 @@ export default class GeneUnpublishedStructuralInformationStore {
       );
       runInAction(() => {
         // Add unpublishedStructuralInformation to gene unpublishedStructuralInformation list
-        unpublishedStructuralInformation.unpublishedStructuralInformationId =
-          res.id;
+        unpublishedStructuralInformation.id = res.id;
 
         this.rootStore.geneStore.selectedGene.unpublishedStructuralInformations.push(
           unpublishedStructuralInformation
@@ -80,13 +79,9 @@ export default class GeneUnpublishedStructuralInformationStore {
       unpublishedStructuralInformation.geneId?.trim() ||
       this.rootStore.geneStore.selectedGene.id;
 
-    // Ensure unpublishedStructuralInformation.unpublishedStructuralInformationId is not null, undefined, or empty
-    if (
-      !unpublishedStructuralInformation.unpublishedStructuralInformationId?.trim()
-    ) {
-      throw new Error(
-        "unpublishedStructuralInformationId is required and cannot be empty."
-      );
+    // Ensure unpublishedStructuralInformation.id is not null, undefined, or empty
+    if (!unpublishedStructuralInformation.id?.trim()) {
+      throw new Error("id is required and cannot be empty.");
     }
 
     try {
@@ -100,9 +95,7 @@ export default class GeneUnpublishedStructuralInformationStore {
         );
 
         const indexOfEss = gene.unpublishedStructuralInformations.findIndex(
-          (e) =>
-            e.unpublishedStructuralInformationId ===
-            unpublishedStructuralInformation.unpublishedStructuralInformationId
+          (e) => e.id === unpublishedStructuralInformation.id
         );
         gene.unpublishedStructuralInformations[indexOfEss] =
           unpublishedStructuralInformation;
@@ -111,9 +104,7 @@ export default class GeneUnpublishedStructuralInformationStore {
         const selectedGene = this.rootStore.geneStore.selectedGene;
         const selectedIndex =
           selectedGene.unpublishedStructuralInformations.findIndex(
-            (e) =>
-              e.unpublishedStructuralInformationId ===
-              unpublishedStructuralInformation.unpublishedStructuralInformationId
+            (e) => e.id === unpublishedStructuralInformation.id
           );
 
         selectedGene.unpublishedStructuralInformations[selectedIndex] =
@@ -135,32 +126,23 @@ export default class GeneUnpublishedStructuralInformationStore {
     }
   };
 
-  deleteUnpublishedStructuralInformation = async (
-    unpublishedStructuralInformationId
-  ) => {
+  deleteUnpublishedStructuralInformation = async (id) => {
     this.isDeletingUnpublishedStructuralInformation = true;
 
     const geneId = this.rootStore.geneStore.selectedGene.id;
 
-    // Ensure unpublishedStructuralInformationId is not null, undefined, or empty
-    if (!unpublishedStructuralInformationId?.trim()) {
-      throw new Error(
-        "unpublishedStructuralInformationId is required and cannot be empty."
-      );
+    // Ensure id is not null, undefined, or empty
+    if (!id?.trim()) {
+      throw new Error("id is required and cannot be empty.");
     }
 
     try {
-      await GeneUnpublishedStructuralInformationAPI.delete(
-        geneId,
-        unpublishedStructuralInformationId
-      );
+      await GeneUnpublishedStructuralInformationAPI.delete(geneId, id);
       runInAction(() => {
         // remove unpublishedStructuralInformation from gene unpublishedStructuralInformation list
         const gene = this.rootStore.geneStore.geneRegistry.get(geneId);
         const indexOfEss = gene.unpublishedStructuralInformations.findIndex(
-          (e) =>
-            e.unpublishedStructuralInformationId ===
-            unpublishedStructuralInformationId
+          (e) => e.id === id
         );
         gene.unpublishedStructuralInformations.splice(indexOfEss, 1);
 
@@ -168,9 +150,7 @@ export default class GeneUnpublishedStructuralInformationStore {
         const selectedGene = this.rootStore.geneStore.selectedGene;
         const selectedIndex =
           selectedGene.unpublishedStructuralInformations.findIndex(
-            (e) =>
-              e.unpublishedStructuralInformationId ===
-              unpublishedStructuralInformationId
+            (e) => e.id === id
           );
         selectedGene.unpublishedStructuralInformations.splice(selectedIndex, 1);
 

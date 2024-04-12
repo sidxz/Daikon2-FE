@@ -8,12 +8,14 @@ const GeneProteinActivityAssayAPI = {
 
   update: (data) =>
     axiosWithAuth.put(
-      `/v2/gene/${data.geneId}/protein-activity-assay/${data.proteinActivityAssayId}`,
+      `/v2/gene/${data.geneId}/protein-activity-assay/${data.id}`,
       data
     ),
 
-  delete: (id, proteinActivityAssayId) =>
-    axiosWithAuth.delete(`/v2/gene/${id}/protein-activity-assay/${proteinActivityAssayId}`),
+  delete: (geneId, proteinActivityAssayId) =>
+    axiosWithAuth.delete(
+      `/v2/gene/${geneId}/protein-activity-assay/${proteinActivityAssayId}`
+    ),
 };
 
 export default GeneProteinActivityAssayAPI;
