@@ -38,7 +38,7 @@ const FGDashboard = () => {
         />
       </div>
       <div className="flex w-full">
-        <DataTable value={geneList} paginator rows={10} filterDisplay="row">
+        <DataTable value={geneList} paginator rows={30} filterDisplay="row">
           <Column
             field="accessionNumber"
             header="Accession Number"
@@ -61,15 +61,6 @@ const FGDashboard = () => {
           />
 
           <Column
-            field="function"
-            header="Function"
-            filter
-            filterMatchMode="contains"
-            filterPlaceholder="Search"
-            className="narrow-column"
-          />
-
-          <Column
             field="product"
             header="Product"
             //body={ProductBodyTemplate}
@@ -79,12 +70,12 @@ const FGDashboard = () => {
             field="functionalCategory"
             header="Functional Category"
             filter
-            filterElement={(options) =>
-              Helper.functionalCategoryFilter(
-                options,
-                availableGeneFunctionalCategories
-              )
-            }
+            // filterElement={(options) =>
+            //   Helper.functionalCategoryFilter(
+            //     options,
+            //     availableGeneFunctionalCategories
+            //   )
+            // }
             showFilterMenu={false}
           />
         </DataTable>
