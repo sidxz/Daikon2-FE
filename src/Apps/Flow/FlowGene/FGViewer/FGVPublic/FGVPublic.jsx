@@ -5,7 +5,10 @@ import { DataTable } from "primereact/datatable";
 import { Fieldset } from "primereact/fieldset";
 import React from "react";
 import { useNavigate } from "react-router";
+import { NavLink } from "react-router-dom";
 import SecHeading from "../../../../../Library/SecHeading/SecHeading";
+import PublicationTags from "../../../../../Shared/TagGenerators/PublicationTags/PublicationTags";
+import SourceTag from "../../../../../Shared/TagGenerators/SourceTag/SourceTag";
 import { appColors } from "../../../../../constants/colors";
 import { GeneIcon } from "../../../icons/GeneIcon";
 import FGVPProteinDataBank from "./FGVPProteinDataBank/FGVPProteinDataBank";
@@ -32,8 +35,11 @@ const FGVPublic = ({ selectedGene }) => {
   let generalInfoData = [
     { name: "Gene Name", value: selectedGene.name },
     { name: "Protein Name", value: selectedGene?.proteinNameExpanded },
-    { name: "Product", value: selectedGene.product },
-    { name: "Functional Category", value: selectedGene.functionalCategory },
+    { name: "Product", value: selectedGene.product?.value },
+    {
+      name: "Functional Category",
+      value: selectedGene.functionalCategory?.value,
+    },
   ];
 
   let coordinatesData = [
@@ -89,6 +95,12 @@ const FGVPublic = ({ selectedGene }) => {
     ...geneOntologyBiologicalProcess,
   ];
 
+  let catalyticActivityData = selectedGene.expansionProps
+    .filter((prop) => prop.expansionType === "catalyticActivities")
+    .map((fun) => ({
+      value: fun.expansionValue,
+    }));
+
   let proteinSummaryData = [
     {
       name: "Molecular Mass",
@@ -115,8 +127,8 @@ const FGVPublic = ({ selectedGene }) => {
     },
   ];
 
-  let genomicSequenceData = selectedGene?.geneSequence;
-  let proteinSequenceData = selectedGene?.proteinSequence;
+  let genomicSequenceData = selectedGene?.geneSequence?.value;
+  let proteinSequenceData = selectedGene?.proteinSequence.value;
 
   return (
     <div className="flex flex-column w-full">
@@ -159,15 +171,29 @@ const FGVPublic = ({ selectedGene }) => {
                   field="value"
                   className="m-0 p-0"
                   body={(rowData) => (
-                    <ul>
-                      {rowData.value
-                        .split(".") // Split by period to get sentences
-                        .map((sentence) => sentence.trim()) // Trim whitespace from each sentence
-                        .filter((sentence) => sentence) // Filter out empty sentences
-                        .map((sentence, index) => (
-                          <li key={index}>{sentence}.</li> // Append period to each sentence visually, not logically
-                        ))}
-                    </ul>
+                    <div className="flex flex-column">
+                      <div className="flex">
+                        <ul>
+                          {rowData.value.value
+                            .split(".") // Split by period to get sentences
+                            .map((sentence) => sentence.trim()) // Trim whitespace from each sentence
+                            .filter((sentence) => sentence) // Filter out empty sentences
+                            .map((sentence, index) => (
+                              <li key={index}>{sentence}.</li> // Append period to each sentence visually, not logically
+                            ))}
+                        </ul>
+                      </div>
+                      <div className="flex justify-content-end p-1 gap-2">
+                        <div className="flex">
+                          <SourceTag source={rowData.value.source} />
+                        </div>
+                        <div className="flex">
+                          <PublicationTags
+                            publications={rowData.value.publications}
+                          />
+                        </div>
+                      </div>
+                    </div>
                   )}
                 />
               </DataTable>
@@ -175,12 +201,92 @@ const FGVPublic = ({ selectedGene }) => {
           </div>
 
           <div className="flex pt-2">
-            <Fieldset className="m-0 flex-grow-1" legend="Mycobrowser Comments">
+            <Fieldset className="m-0 flex-grow-1" legend="Catalytic activity">
+              <DataTable
+                value={catalyticActivityData}
+                className="HideDataTableHeader"
+                size="small"
+                stripedRows
+              >
+                <Column
+                  field="value"
+                  body={(rowData) => (
+                    <div className="flex gap-2 align-items-center p-0 m-0">
+                      <div className="flex">{rowData.value.value}</div>
+                      <div className="flex text-primary border-right-1 pr-1">
+                        <NavLink
+                          to={
+                            "https://www.uniprot.org/uniprotkb?query=ec:" +
+                            rowData.value.provenance
+                          }
+                          target="_blank"
+                          className="text-primary no-underline"
+                        >
+                          UniProtKB
+                        </NavLink>
+                      </div>
+                      <div className="flex text-primary border-right-1 pr-1">
+                        <NavLink
+                          to={
+                            "https://enzyme.expasy.org/EC/" +
+                            rowData.value.provenance
+                          }
+                          target="_blank"
+                          className="text-primary no-underline"
+                        >
+                          Enzyme
+                        </NavLink>
+                      </div>
+                      <div className="flex text-primary border-right-1 pr-1">
+                        <NavLink
+                          to={
+                            "https://www.rhea-db.org/rhea?query=ec:" +
+                            rowData.value.provenance
+                          }
+                          target="_blank"
+                          className="text-primary no-underline"
+                        >
+                          Rhea
+                        </NavLink>
+                      </div>
+                      <div className="flex justify-content-end p-1 gap-2">
+                        <div className="flex">
+                          <PublicationTags
+                            publications={rowData.value.publications}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                />
+              </DataTable>
+            </Fieldset>
+          </div>
+
+          <div className="flex pt-2">
+            <Fieldset className="m-0 flex-grow-1" legend="Comments">
               <DataTable
                 value={mycobrowswerCommentsData}
                 className="HideDataTableHeader"
               >
-                <Column field="value"></Column>
+                <Column
+                  field="value"
+                  body={(rowData) => (
+                    <div className="flex flex-column">
+                      <div className="flex">{rowData.value.value}</div>
+                      <div className="flex justify-content-end p-1 gap-2">
+                        <div className="flex">
+                          <SourceTag source={rowData.value.source} />
+                        </div>
+                        <div className="flex">
+                          <PublicationTags
+                            publications={rowData.value.publications}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                />
               </DataTable>
             </Fieldset>
           </div>
@@ -193,14 +299,39 @@ const FGVPublic = ({ selectedGene }) => {
                 size="small"
                 stripedRows
               >
-                <Column field="name"></Column>
-                <Column field="value"></Column>
+                <Column field="name" />
+                <Column
+                  field="value"
+                  body={(rowData) => (
+                    <div className="flex gap-2 align-items-center p-0 m-0">
+                      <div className="flex text-primary	">
+                        <NavLink
+                          to={
+                            "https://www.ebi.ac.uk/QuickGO/term/" +
+                            rowData.value.source
+                          }
+                          target="_blank"
+                          className="text-primary no-underline"
+                        >
+                          {rowData.value.value}{" "}
+                        </NavLink>
+                      </div>
+                      <div className="flex justify-content-end p-1 gap-2">
+                        <div className="flex">
+                          <PublicationTags
+                            publications={rowData.value.publications}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                />
               </DataTable>
             </Fieldset>
           </div>
 
           <div className="flex gap-2">
-            <Fieldset className="m-0 flex-grow-1" legend="Protein Databank">
+            <Fieldset className="m-0 flex-grow-1" legend="Protein databank">
               <FGVPProteinDataBank
                 accessionNumber={selectedGene.accessionNumber}
                 UniprotID={selectedGene.uniProtKB}
@@ -211,7 +342,7 @@ const FGVPublic = ({ selectedGene }) => {
           <div className="flex gap-2">
             <Fieldset
               className="m-0 flex-grow-1"
-              legend="Genomic Sequence"
+              legend="Genomic sequence"
               toggleable
               collapsed={false}
             >
@@ -231,7 +362,7 @@ const FGVPublic = ({ selectedGene }) => {
           <div className="flex gap-2">
             <Fieldset
               className="m-0 flex-grow-1"
-              legend="Protein Sequence"
+              legend="Protein sequence"
               toggleable
               collapsed={false}
             >
@@ -272,7 +403,7 @@ const FGVPublic = ({ selectedGene }) => {
           </div>
 
           <div className="flex pt-2">
-            <Fieldset className="m-0 flex-grow-1" legend="Protein Summary">
+            <Fieldset className="m-0 flex-grow-1" legend="Protein summary">
               <DataTable
                 value={proteinSummaryData}
                 className="HideDataTableHeader"
@@ -283,7 +414,7 @@ const FGVPublic = ({ selectedGene }) => {
             </Fieldset>
           </div>
           <div className="flex pt-2">
-            <Fieldset className="m-0 flex-grow-1" legend="Gene Summary">
+            <Fieldset className="m-0 flex-grow-1" legend="Gene summary">
               <DataTable
                 value={geneSummaryData}
                 className="HideDataTableHeader"

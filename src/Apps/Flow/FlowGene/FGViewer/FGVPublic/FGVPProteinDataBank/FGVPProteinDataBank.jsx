@@ -5,6 +5,7 @@ import { SplitButton } from "primereact/splitbutton";
 import React, { useContext, useEffect, useState } from "react";
 import LiteMolView from "../../../../../../Library/LiteMolView/LiteMolView";
 import { RootStoreContext } from "../../../../../../RootStore";
+import { NavLink } from "react-router-dom";
 
 const FGVPProteinDataBank = ({ accessionNumber, UniprotID }) => {
   const rootStore = useContext(RootStoreContext);
@@ -61,19 +62,20 @@ const FGVPProteinDataBank = ({ accessionNumber, UniprotID }) => {
       return (
         <tr key={obj.id} style={{ verticalAlign: "top" }}>
           <td>
-            <a
-              href={"https://www.ebi.ac.uk/pdbe/entry/pdb/" + obj.id}
+            <NavLink
+              to={"https://www.ebi.ac.uk/pdbe/entry/pdb/" + obj.id}
               target="_blank"
               rel="noreferrer"
+              className="text-primary no-underline"
             >
               {obj.id}
-            </a>
+            </NavLink>
           </td>
           <td>{obj.method}</td>
           <td>{obj.resolution}</td>
           <td>
-            <a
-              href={
+            <NavLink
+              to={
                 "https://www.uniprot.org/blast/?about=" +
                 obj.accession +
                 "%5B" +
@@ -82,9 +84,10 @@ const FGVPProteinDataBank = ({ accessionNumber, UniprotID }) => {
               }
               target="_blank"
               rel="noreferrer"
+              className="text-primary no-underline"
             >
               {obj.chains}
-            </a>
+            </NavLink>
           </td>
           <td>
             <div style={{ width: "10rem", fontSize: "small" }}>

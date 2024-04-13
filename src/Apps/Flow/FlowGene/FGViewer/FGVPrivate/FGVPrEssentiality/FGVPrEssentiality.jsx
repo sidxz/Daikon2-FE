@@ -8,7 +8,7 @@ import { Sidebar } from "primereact/sidebar";
 import React, { useContext, useState } from "react";
 import EmbeddedHelp from "../../../../../../Library/EmbeddedHelp/EmbeddedHelp";
 import { RootStoreContext } from "../../../../../../RootStore";
-import { TextAreaRowEditor } from "../../../../../../Shared/TableRowEditors/TextAreaRowEditor";
+import { TextAreaRowEditorDVar } from "../../../../../../Shared/TableRowEditorsDVar/TextAreaRowEditorDVar";
 import FGVPrEssentialityAddForm from "./FGVPrEssentialityAddForm";
 import * as Helper from "./FGVPrEssentialityHelper";
 
@@ -95,34 +95,42 @@ const FGVPrEssentiality = ({ selectedGene }) => {
           dataKey="id"
           showGridlines
           removableSort
+          size="small"
           header={tableHeader}
           onRowEditComplete={(e) => updateEssentiality(e.newData)}
         >
           <Column
             field="classification"
             header="Classification"
+            body={(rowData) => rowData.classification.value}
             sortable
+            sortField="classification.value"
             editor={(options) => Helper.classificationEditor(options)}
           />
           <Column
             field="condition"
             header="Condition"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => rowData.condition.value}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
+
           <Column
             field="method"
             header="Method"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => rowData.method.value}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
           <Column
             field="reference"
             header="Reference"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => rowData.reference.value}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
           <Column
             field="note"
             header="Notes"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => rowData.note.value}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
           <Column
             rowEditor
