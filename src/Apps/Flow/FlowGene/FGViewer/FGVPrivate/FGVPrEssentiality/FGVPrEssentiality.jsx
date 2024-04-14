@@ -8,6 +8,7 @@ import { Sidebar } from "primereact/sidebar";
 import React, { useContext, useState } from "react";
 import EmbeddedHelp from "../../../../../../Library/EmbeddedHelp/EmbeddedHelp";
 import { RootStoreContext } from "../../../../../../RootStore";
+import TableRowBodyDVar from "../../../../../../Shared/DVariable/TableRowBodyDVar";
 import { TextAreaRowEditorDVar } from "../../../../../../Shared/TableRowEditorsDVar/TextAreaRowEditorDVar";
 import FGVPrEssentialityAddForm from "./FGVPrEssentialityAddForm";
 import * as Helper from "./FGVPrEssentialityHelper";
@@ -102,7 +103,9 @@ const FGVPrEssentiality = ({ selectedGene }) => {
           <Column
             field="classification"
             header="Classification"
-            body={(rowData) => rowData.classification.value}
+            body={(rowData) => (
+              <TableRowBodyDVar dVar={rowData?.classification} />
+            )}
             sortable
             sortField="classification.value"
             editor={(options) => Helper.classificationEditor(options)}
@@ -110,26 +113,26 @@ const FGVPrEssentiality = ({ selectedGene }) => {
           <Column
             field="condition"
             header="Condition"
-            body={(rowData) => rowData.condition.value}
+            body={(rowData) => <TableRowBodyDVar dVar={rowData?.condition} />}
             editor={(options) => TextAreaRowEditorDVar(options)}
           />
 
           <Column
             field="method"
             header="Method"
-            body={(rowData) => rowData.method.value}
+            body={(rowData) => <TableRowBodyDVar dVar={rowData?.method} />}
             editor={(options) => TextAreaRowEditorDVar(options)}
           />
           <Column
             field="reference"
             header="Reference"
-            body={(rowData) => rowData.reference.value}
+            body={(rowData) => <TableRowBodyDVar dVar={rowData?.reference} />}
             editor={(options) => TextAreaRowEditorDVar(options)}
           />
           <Column
             field="note"
             header="Notes"
-            body={(rowData) => rowData.note.value}
+            body={(rowData) => <TableRowBodyDVar dVar={rowData?.note} />}
             editor={(options) => TextAreaRowEditorDVar(options)}
           />
           <Column
