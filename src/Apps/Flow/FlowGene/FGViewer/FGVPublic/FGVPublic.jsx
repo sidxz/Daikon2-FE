@@ -128,7 +128,7 @@ const FGVPublic = ({ selectedGene }) => {
   ];
 
   let genomicSequenceData = selectedGene?.geneSequence?.value;
-  let proteinSequenceData = selectedGene?.proteinSequence.value;
+  let proteinSequenceData = selectedGene?.proteinSequence?.value;
 
   return (
     <div className="flex flex-column w-full">
@@ -174,7 +174,7 @@ const FGVPublic = ({ selectedGene }) => {
                     <div className="flex flex-column">
                       <div className="flex">
                         <ul>
-                          {rowData.value.value
+                          {rowData?.value?.value
                             .split(".") // Split by period to get sentences
                             .map((sentence) => sentence.trim()) // Trim whitespace from each sentence
                             .filter((sentence) => sentence) // Filter out empty sentences
@@ -185,11 +185,11 @@ const FGVPublic = ({ selectedGene }) => {
                       </div>
                       <div className="flex justify-content-end p-1 gap-2">
                         <div className="flex">
-                          <SourceTag source={rowData.value.source} />
+                          <SourceTag source={rowData?.value?.source} />
                         </div>
                         <div className="flex">
                           <PublicationTags
-                            publications={rowData.value.publications}
+                            publications={rowData?.value.publications}
                           />
                         </div>
                       </div>
@@ -212,12 +212,12 @@ const FGVPublic = ({ selectedGene }) => {
                   field="value"
                   body={(rowData) => (
                     <div className="flex gap-2 align-items-center p-0 m-0">
-                      <div className="flex">{rowData.value.value}</div>
+                      <div className="flex">{rowData?.value?.value}</div>
                       <div className="flex text-primary border-right-1 pr-1">
                         <NavLink
                           to={
                             "https://www.uniprot.org/uniprotkb?query=ec:" +
-                            rowData.value.provenance
+                            rowData?.value.provenance
                           }
                           target="_blank"
                           className="text-primary no-underline"
@@ -229,7 +229,7 @@ const FGVPublic = ({ selectedGene }) => {
                         <NavLink
                           to={
                             "https://enzyme.expasy.org/EC/" +
-                            rowData.value.provenance
+                            rowData?.value.provenance
                           }
                           target="_blank"
                           className="text-primary no-underline"
@@ -241,7 +241,7 @@ const FGVPublic = ({ selectedGene }) => {
                         <NavLink
                           to={
                             "https://www.rhea-db.org/rhea?query=ec:" +
-                            rowData.value.provenance
+                            rowData?.value.provenance
                           }
                           target="_blank"
                           className="text-primary no-underline"
@@ -252,7 +252,7 @@ const FGVPublic = ({ selectedGene }) => {
                       <div className="flex justify-content-end p-1 gap-2">
                         <div className="flex">
                           <PublicationTags
-                            publications={rowData.value.publications}
+                            publications={rowData?.value.publications}
                           />
                         </div>
                       </div>
@@ -273,14 +273,14 @@ const FGVPublic = ({ selectedGene }) => {
                   field="value"
                   body={(rowData) => (
                     <div className="flex flex-column">
-                      <div className="flex">{rowData.value.value}</div>
+                      <div className="flex">{rowData?.value?.value}</div>
                       <div className="flex justify-content-end p-1 gap-2">
                         <div className="flex">
-                          <SourceTag source={rowData.value.source} />
+                          <SourceTag source={rowData?.value?.source} />
                         </div>
                         <div className="flex">
                           <PublicationTags
-                            publications={rowData.value.publications}
+                            publications={rowData?.value?.publications}
                           />
                         </div>
                       </div>
@@ -308,18 +308,18 @@ const FGVPublic = ({ selectedGene }) => {
                         <NavLink
                           to={
                             "https://www.ebi.ac.uk/QuickGO/term/" +
-                            rowData.value.source
+                            rowData?.value?.source
                           }
                           target="_blank"
                           className="text-primary no-underline"
                         >
-                          {rowData.value.value}{" "}
+                          {rowData?.value?.value}{" "}
                         </NavLink>
                       </div>
                       <div className="flex justify-content-end p-1 gap-2">
                         <div className="flex">
                           <PublicationTags
-                            publications={rowData.value.publications}
+                            publications={rowData?.value.publications}
                           />
                         </div>
                       </div>

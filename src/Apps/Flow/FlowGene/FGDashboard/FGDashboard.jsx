@@ -38,7 +38,15 @@ const FGDashboard = () => {
         />
       </div>
       <div className="flex w-full">
-        <DataTable value={geneList} paginator rows={30} filterDisplay="row">
+        <DataTable
+          value={geneList}
+          paginator
+          rows={30}
+          loading={isGeneListLoading}
+          filterDisplay="row"
+          className="w-full"
+          emptyMessage="Loading..."
+        >
           <Column
             field="accessionNumber"
             header="Accession Number"
