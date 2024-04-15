@@ -45,6 +45,8 @@ const FGVPrivate = ({ selectedGene }) => {
     unpublishedStructuralInformations: [],
   };
 
+  console.log("selectedGene", selectedGene);
+
   return (
     <div className="flex flex-column w-full">
       <div className="flex w-full">
@@ -82,13 +84,13 @@ const FGVPrivate = ({ selectedGene }) => {
             className="m-0 flex-grow-1"
             legend="Protein Activity Assay List"
           >
-            <FGVPrProteinActivityAssay selectedGene={temp} />
+            <FGVPrProteinActivityAssay selectedGene={selectedGene} />
           </Fieldset>
         </div>
 
         <div className="flex pt-2">
           <Fieldset className="m-0 flex-grow-1" legend="Hypomorph">
-            <FGVPrHypomorph selectedGene={temp} />
+            <FGVPrHypomorph selectedGene={selectedGene} />
           </Fieldset>
         </div>
 

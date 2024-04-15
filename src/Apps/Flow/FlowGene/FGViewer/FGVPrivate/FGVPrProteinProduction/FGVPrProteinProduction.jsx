@@ -89,11 +89,6 @@ const FGVPrProteinProduction = ({ selectedGene }) => {
     );
   };
 
-  console.log(
-    "selectedGene.proteinProductions",
-    selectedGene.proteinProductions
-  );
-
   return (
     <>
       <BlockUI
@@ -105,6 +100,7 @@ const FGVPrProteinProduction = ({ selectedGene }) => {
           dataKey="id"
           showGridlines
           removableSort
+          size="small"
           header={tableHeader}
           onRowEditComplete={(e) => updateProteinProduction(e.newData)}
         >

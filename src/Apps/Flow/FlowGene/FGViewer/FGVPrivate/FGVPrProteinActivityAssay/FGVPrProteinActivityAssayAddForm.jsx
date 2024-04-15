@@ -1,9 +1,10 @@
 import { useFormik } from "formik";
 import { Button } from "primereact/button";
-import { InputText } from "primereact/inputtext";
-import { InputTextarea } from "primereact/inputtextarea";
 import { classNames } from "primereact/utils";
 import React from "react";
+import InputTextAreaDVar from "../../../../../../Shared/DVarEditors/InputTextAreaDVar";
+import InputTextDVar from "../../../../../../Shared/DVarEditors/InputTextDVar";
+import { generateDefaultDVar } from "../../../../../../Shared/DVariable/DVarDefaults";
 
 const FGVPrProteinActivityAssayAddForm = ({
   selectedGene,
@@ -13,12 +14,12 @@ const FGVPrProteinActivityAssayAddForm = ({
 }) => {
   const formik = useFormik({
     initialValues: {
-      assay: "",
-      method: "",
-      pmid: "",
-      url: "",
-      reference: "",
-      throughput: "",
+      assay: generateDefaultDVar(),
+      method: generateDefaultDVar(),
+      pmid: generateDefaultDVar(),
+      url: generateDefaultDVar(),
+      reference: generateDefaultDVar(),
+      throughput: generateDefaultDVar(),
     },
 
     validate: (values) => {
@@ -54,10 +55,9 @@ const FGVPrProteinActivityAssayAddForm = ({
           >
             Assay *
           </label>
-          <InputTextarea
+          <InputTextAreaDVar
             id="assay"
-            value={formik.values.assay}
-            onChange={formik.handleChange}
+            formik={formik}
             className={classNames({
               "p-invalid": isInvalid("assay"),
             })}
@@ -75,10 +75,9 @@ const FGVPrProteinActivityAssayAddForm = ({
           >
             Method
           </label>
-          <InputTextarea
+          <InputTextAreaDVar
             id="method"
-            value={formik.values.method}
-            onChange={formik.handleChange}
+            formik={formik}
             className={classNames({
               "p-invalid": isInvalid("method"),
             })}
@@ -95,10 +94,9 @@ const FGVPrProteinActivityAssayAddForm = ({
           >
             PMID
           </label>
-          <InputText
+          <InputTextDVar
             id="pmid"
-            value={formik.values.pmid}
-            onChange={formik.handleChange}
+            formik={formik}
             className={classNames({
               "p-invalid": isInvalid("pmid"),
             })}
@@ -115,10 +113,9 @@ const FGVPrProteinActivityAssayAddForm = ({
           >
             URL
           </label>
-          <InputText
+          <InputTextDVar
             id="url"
-            value={formik.values.url}
-            onChange={formik.handleChange}
+            formik={formik}
             className={classNames({
               "p-invalid": isInvalid("url"),
             })}
@@ -135,10 +132,9 @@ const FGVPrProteinActivityAssayAddForm = ({
           >
             Throughput
           </label>
-          <InputText
+          <InputTextDVar
             id="throughput"
-            value={formik.values.throughput}
-            onChange={formik.handleChange}
+            formik={formik}
             className={classNames({
               "p-invalid": isInvalid("throughput"),
             })}
@@ -155,10 +151,9 @@ const FGVPrProteinActivityAssayAddForm = ({
           >
             Reference
           </label>
-          <InputTextarea
+          <InputTextAreaDVar
             id="reference"
-            value={formik.values.reference}
-            onChange={formik.handleChange}
+            formik={formik}
             className={classNames({
               "p-invalid": isInvalid("reference"),
             })}
