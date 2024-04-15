@@ -1,8 +1,9 @@
 import { useFormik } from "formik";
 import { Button } from "primereact/button";
-import { InputTextarea } from "primereact/inputtextarea";
 import { classNames } from "primereact/utils";
 import React from "react";
+import InputTextAreaDVar from "../../../../../../Shared/DVarEditors/InputTextAreaDVar";
+import { generateDefaultDVar } from "../../../../../../Shared/DVariable/DVarDefaults";
 
 const FGVPrCrispriStrainAddForm = ({
   selectedGene,
@@ -12,8 +13,8 @@ const FGVPrCrispriStrainAddForm = ({
 }) => {
   const formik = useFormik({
     initialValues: {
-      crispriStrainName: "",
-      notes: "",
+      crispriStrainName: generateDefaultDVar(),
+      notes: generateDefaultDVar(),
     },
 
     validate: (values) => {
@@ -52,10 +53,9 @@ const FGVPrCrispriStrainAddForm = ({
           >
             Crispri Strain Name *
           </label>
-          <InputTextarea
+          <InputTextAreaDVar
             id="crispriStrainName"
-            value={formik.values.crispriStrainName}
-            onChange={formik.handleChange}
+            formik={formik}
             className={classNames({
               "p-invalid": isInvalid("crispriStrainName"),
             })}
@@ -73,10 +73,9 @@ const FGVPrCrispriStrainAddForm = ({
           >
             Notes
           </label>
-          <InputTextarea
+          <InputTextAreaDVar
             id="notes"
-            value={formik.values.notes}
-            onChange={formik.handleChange}
+            formik={formik}
             className={classNames({
               "p-invalid": isInvalid("notes"),
             })}

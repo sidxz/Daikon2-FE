@@ -1,14 +1,11 @@
 import { useFormik } from "formik";
 import { Button } from "primereact/button";
-import { Calendar } from "primereact/calendar";
-import { InputText } from "primereact/inputtext";
-import { InputTextarea } from "primereact/inputtextarea";
 import { classNames } from "primereact/utils";
 import React from "react";
-import { generateDefaultDVar } from "../../../../../../Shared/DVariable/DVarDefaults";
+import CalendarDVar from "../../../../../../Shared/DVarEditors/CalendarDVar";
 import InputTextAreaDVar from "../../../../../../Shared/DVarEditors/InputTextAreaDVar";
 import InputTextDVar from "../../../../../../Shared/DVarEditors/InputTextDVar";
-import CalendarDVar from "../../../../../../Shared/DVarEditors/CalendarDVar";
+import { generateDefaultDVar } from "../../../../../../Shared/DVariable/DVarDefaults";
 
 const FGVPrProteinProductionAddForm = ({
   selectedGene,

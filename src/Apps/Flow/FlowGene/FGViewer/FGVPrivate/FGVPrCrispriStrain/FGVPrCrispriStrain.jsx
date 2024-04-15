@@ -8,7 +8,8 @@ import { Sidebar } from "primereact/sidebar";
 import React, { useContext, useState } from "react";
 import EmbeddedHelp from "../../../../../../Library/EmbeddedHelp/EmbeddedHelp";
 import { RootStoreContext } from "../../../../../../RootStore";
-import { TextAreaRowEditor } from "../../../../../../Shared/TableRowEditors/TextAreaRowEditor";
+import TableRowBodyDVar from "../../../../../../Shared/DVariable/TableRowBodyDVar";
+import { TextAreaRowEditorDVar } from "../../../../../../Shared/TableRowEditorsDVar/TextAreaRowEditorDVar";
 import FGVPrCrispriStrainAddForm from "./FGVPrCrispriStrainAddForm";
 
 const FGVPrCrispriStrain = ({ selectedGene }) => {
@@ -99,13 +100,17 @@ const FGVPrCrispriStrain = ({ selectedGene }) => {
           <Column
             field="crispriStrainName"
             header="Crispri Strain Name"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => (
+              <TableRowBodyDVar dVar={rowData?.crispriStrainName} />
+            )}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
 
           <Column
             field="notes"
             header="Notes"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => <TableRowBodyDVar dVar={rowData?.notes} />}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
           <Column
             rowEditor

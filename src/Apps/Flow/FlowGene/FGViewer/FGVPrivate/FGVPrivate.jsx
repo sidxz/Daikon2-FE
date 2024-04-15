@@ -96,7 +96,7 @@ const FGVPrivate = ({ selectedGene }) => {
 
         <div className="flex pt-2">
           <Fieldset className="m-0 flex-grow-1" legend="CRISPRi Strain List">
-            <FGVPrCrispriStrain selectedGene={temp} />
+            <FGVPrCrispriStrain selectedGene={selectedGene} />
           </Fieldset>
         </div>
 
