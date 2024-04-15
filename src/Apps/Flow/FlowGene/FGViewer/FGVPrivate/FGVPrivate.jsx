@@ -102,13 +102,13 @@ const FGVPrivate = ({ selectedGene }) => {
 
         <div className="flex pt-2">
           <Fieldset className="m-0 flex-grow-1" legend="Resistance Mutation">
-            <FGVPrResistanceMutation selectedGene={temp} />
+            <FGVPrResistanceMutation selectedGene={selectedGene} />
           </Fieldset>
         </div>
 
         <div className="flex pt-2">
           <Fieldset className="m-0 flex-grow-1" legend="Vulnerability">
-            <FGVPrVulnerability selectedGene={temp} />
+            <FGVPrVulnerability selectedGene={selectedGene} />
           </Fieldset>
         </div>
 
@@ -117,7 +117,9 @@ const FGVPrivate = ({ selectedGene }) => {
             className="m-0 flex-grow-1"
             legend="Unpublished Structural Information"
           >
-            <FGVPrUnpublishedStructuralInformation selectedGene={temp} />
+            <FGVPrUnpublishedStructuralInformation
+              selectedGene={selectedGene}
+            />
           </Fieldset>
         </div>
       </div>

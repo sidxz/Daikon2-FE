@@ -8,8 +8,9 @@ import { Sidebar } from "primereact/sidebar";
 import React, { useContext, useState } from "react";
 import EmbeddedHelp from "../../../../../../Library/EmbeddedHelp/EmbeddedHelp";
 import { RootStoreContext } from "../../../../../../RootStore";
-import { orgDropDown } from "../../../../../../Shared/FormEditors/OrgDropDown";
-import { TextAreaRowEditor } from "../../../../../../Shared/TableRowEditors/TextAreaRowEditor";
+import TableRowBodyDVar from "../../../../../../Shared/DVariable/TableRowBodyDVar";
+import { OrgRowEditorDVar } from "../../../../../../Shared/TableRowEditorsDVar/OrgRowEditorDVar";
+import { TextAreaRowEditorDVar } from "../../../../../../Shared/TableRowEditorsDVar/TextAreaRowEditorDVar";
 import FGVPrUnpublishedStructuralInformationAddForm from "./FGVPrUnpublishedStructuralInformationAddForm";
 
 const FGVPrUnpublishedStructuralInformation = ({ selectedGene }) => {
@@ -106,40 +107,49 @@ const FGVPrUnpublishedStructuralInformation = ({ selectedGene }) => {
           <Column
             field="organization"
             header="Organization"
+            body={(rowData) => (
+              <TableRowBodyDVar dVar={rowData?.organization} isOrg={true} />
+            )}
             sortable
-            editor={(options) => orgDropDown(options)}
+            editor={(options) => OrgRowEditorDVar(options)}
           />
 
           <Column
             field="method"
             header="Method"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => <TableRowBodyDVar dVar={rowData?.method} />}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
           <Column
             field="resolution"
             header="Resolution"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => <TableRowBodyDVar dVar={rowData?.resolution} />}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
           <Column
             field="url"
             header="URL"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => <TableRowBodyDVar dVar={rowData?.url} />}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
           <Column
             field="ligands"
             header="Ligands"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => <TableRowBodyDVar dVar={rowData?.ligands} />}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
           <Column
             field="reference"
             header="Reference"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => <TableRowBodyDVar dVar={rowData?.reference} />}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
 
           <Column
             field="researcher"
             header="Researcher"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => <TableRowBodyDVar dVar={rowData?.researcher} />}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
           <Column
             rowEditor

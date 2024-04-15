@@ -1,11 +1,10 @@
 import { useFormik } from "formik";
 import { Button } from "primereact/button";
-import { Dropdown } from "primereact/dropdown";
-import { InputText } from "primereact/inputtext";
-import { InputTextarea } from "primereact/inputtextarea";
 import { classNames } from "primereact/utils";
 import React from "react";
-import { orgDropDownOptions } from "../../../../../../Shared/FormEditors/OrgDropDown";
+import InputTextAreaDVar from "../../../../../../Shared/DVarEditors/InputTextAreaDVar";
+import OrgEditorDVar from "../../../../../../Shared/DVarEditors/OrgEditorDVar";
+import { generateDefaultDVar } from "../../../../../../Shared/DVariable/DVarDefaults";
 
 const FGVPrUnpublishedStructuralInformationAddForm = ({
   selectedGene,
@@ -15,13 +14,13 @@ const FGVPrUnpublishedStructuralInformationAddForm = ({
 }) => {
   const formik = useFormik({
     initialValues: {
-      organization: "",
-      method: "",
-      resolution: "",
-      ligands: "",
-      url: "",
-      reference: "",
-      researcher: "",
+      organization: generateDefaultDVar(),
+      method: generateDefaultDVar(),
+      resolution: generateDefaultDVar(),
+      ligands: generateDefaultDVar(),
+      url: generateDefaultDVar(),
+      reference: generateDefaultDVar(),
+      researcher: generateDefaultDVar(),
     },
 
     validate: (values) => {
@@ -60,11 +59,9 @@ const FGVPrUnpublishedStructuralInformationAddForm = ({
           >
             Organization *
           </label>
-          <Dropdown
+          <OrgEditorDVar
             id="organization"
-            value={formik.values.organization}
-            options={orgDropDownOptions}
-            onChange={formik.handleChange}
+            formik={formik}
             placeholder="Select a organization"
             optionLabel="name"
             autoFocus
@@ -82,10 +79,9 @@ const FGVPrUnpublishedStructuralInformationAddForm = ({
           >
             Method
           </label>
-          <InputTextarea
+          <InputTextAreaDVar
             id="method"
-            value={formik.values.method}
-            onChange={formik.handleChange}
+            formik={formik}
             className={classNames({
               "p-invalid": isInvalid("method"),
             })}
@@ -102,10 +98,9 @@ const FGVPrUnpublishedStructuralInformationAddForm = ({
           >
             Resolution
           </label>
-          <InputText
+          <InputTextAreaDVar
             id="resolution"
-            value={formik.values.resolution}
-            onChange={formik.handleChange}
+            formik={formik}
             className={classNames({
               "p-invalid": isInvalid("resolution"),
             })}
@@ -122,10 +117,9 @@ const FGVPrUnpublishedStructuralInformationAddForm = ({
           >
             URL
           </label>
-          <InputText
+          <InputTextAreaDVar
             id="url"
-            value={formik.values.url}
-            onChange={formik.handleChange}
+            formik={formik}
             className={classNames({
               "p-invalid": isInvalid("url"),
             })}
@@ -142,10 +136,9 @@ const FGVPrUnpublishedStructuralInformationAddForm = ({
           >
             Ligands
           </label>
-          <InputText
+          <InputTextAreaDVar
             id="ligands"
-            value={formik.values.ligands}
-            onChange={formik.handleChange}
+            formik={formik}
             className={classNames({
               "p-invalid": isInvalid("ligands"),
             })}
@@ -162,10 +155,9 @@ const FGVPrUnpublishedStructuralInformationAddForm = ({
           >
             Researcher
           </label>
-          <InputText
+          <InputTextAreaDVar
             id="researcher"
-            value={formik.values.researcher}
-            onChange={formik.handleChange}
+            formik={formik}
             className={classNames({
               "p-invalid": isInvalid("researcher"),
             })}
@@ -182,10 +174,9 @@ const FGVPrUnpublishedStructuralInformationAddForm = ({
           >
             Reference
           </label>
-          <InputTextarea
+          <InputTextAreaDVar
             id="reference"
-            value={formik.values.reference}
-            onChange={formik.handleChange}
+            formik={formik}
             className={classNames({
               "p-invalid": isInvalid("reference"),
             })}
