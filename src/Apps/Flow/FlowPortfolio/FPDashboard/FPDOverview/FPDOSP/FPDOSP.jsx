@@ -27,62 +27,64 @@ const FPDOSP = ({ projects }) => {
             navigate(`/wf/portfolio/viewer/${project.id}/information`);
           }}
         >
-          <div className="flex flex-column bg-cyan-100  justify-content-center ">
-            <div className="flex p-2 text-lg text-cyan-800 justify-content-center">
+          <div
+            className="flex flex-column justify-content-center "
+            style={{
+              backgroundColor: "#d48e8f",
+            }}
+          >
+            <div className="flex p-2 text-lg text-100 text-white-alpha-90 justify-content-center">
               {project.name}
             </div>
           </div>
-          <div className="flex ">
-            <div className="flex flex-column justify-content-center  border-cyan-100">
-              <div
-                className="flex justify-content-center w-full p-2 text-cyan-600 border-right-1 border-cyan-100"
-                style={{
-                  minWidth: "5rem",
-                }}
-              >
-                {displayTargetName}
-              </div>
-
-              <div
-                className="flex flex-column justify-content-center w-full p-2 text-cyan-600 border-right-1 border-cyan-100"
-                style={{
-                  minWidth: "5rem",
-                }}
-              >
-                {getOrgNameById(project?.primaryOrgId)}
-              </div>
-
-              <div
-                className="flex flex-column justify-content-center w-full p-2 text-cyan-600 border-right-1 border-cyan-100"
-                style={{
-                  minWidth: "5rem",
-                }}
-              >
-                <FDate timestamp={project.dateCreated} color="#2d8bad" />
-              </div>
-              <div
-                className="flex flex-column justify-content-center w-full p-2 text-cyan-600 border-right-1 border-cyan-100"
-                style={{
-                  minWidth: "5rem",
-                }}
-              >
-                <FDate
-                  timestamp={project.projectPredictedStart}
-                  color="#2d8bad"
-                />
-              </div>
+          <div className="flex justify-content-center border-bottom-1 border-gray-100">
+            <div
+              className="flex justify-content-center w-full p-2 text-pink-600 border-right-1 border-gray-100"
+              style={{
+                minWidth: "4rem",
+              }}
+            >
+              rho
             </div>
-            <div className="flex w-full justify-content-center">
-              <SmilesView
-                smiles={
-                  project.compoundEvoLatestSMILES != null
-                    ? project.compoundEvoLatestSMILES
-                    : project.compoundSMILES
-                }
-                width={100}
-                height={100}
-              />
+
+            <div
+              className="flex justify-content-center w-full p-2 text-pink-600 border-right-1 border-gray-100"
+              style={{
+                minWidth: "4rem",
+              }}
+            >
+              {getOrgNameById(project?.primaryOrgId)}
             </div>
+
+            <div
+              className="flex justify-content-center w-full p-2 border-right-1 border-gray-100"
+              style={{
+                minWidth: "4rem",
+              }}
+            >
+              <FDate timestamp={project.spStart} color="#2d8bad" />
+            </div>
+
+            <div
+              className="flex justify-content-center w-full p-2 text-100"
+              style={{
+                minWidth: "4rem",
+                backgroundColor: "#53A9A8",
+              }}
+            >
+              <FDate timestamp={project.p1PredictedStart} color="#FFFFFF" />
+            </div>
+          </div>
+          <div className="flex w-full p-2 justify-content-center">
+            <SmilesView
+              smiles={
+                project.compoundEvoLatestSMILES != null
+                  ? project.compoundEvoLatestSMILES
+                  : project.compoundSMILES
+              }
+              width={200}
+              height={200}
+            />
           </div>
         </div>
       </div>

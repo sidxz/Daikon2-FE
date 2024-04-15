@@ -5,6 +5,7 @@ import FlowGeneApp from "./FlowGene/FlowGeneApp";
 import FlowHaApp from "./FlowHA/FlowHaApp";
 import FlowMenuBar from "./FlowMenuBar/FlowMenuBar";
 import FlowPortfolioApp from "./FlowPortfolio/FlowPortfolioApp";
+import FlowPostPortfolioApp from "./FlowPostPortfolio/FlowPostPortfolioApp";
 import FlowScreenApp from "./FlowScreen/FlowScreenApp";
 import FlowTargetApp from "./FlowTarget/FlowTargetApp";
 
@@ -22,6 +23,7 @@ const Flow = () => {
           <Route path="screen/*" element={<FlowScreenApp />} />
           <Route path="ha/*" element={<FlowHaApp />} />
           <Route path="portfolio/*" element={<FlowPortfolioApp />} />
+          <Route path="post-portfolio/*" element={<FlowPostPortfolioApp />} />
         </Routes>
       </div>
     </div>

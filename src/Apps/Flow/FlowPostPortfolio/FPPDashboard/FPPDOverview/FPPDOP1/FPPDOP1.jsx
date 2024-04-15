@@ -5,14 +5,14 @@ import FDate from "../../../../../../Library/FDate/FDate";
 import SmilesView from "../../../../../../Library/SmilesView/SmilesView";
 import { AppOrgResolver } from "../../../../../../Shared/VariableResolvers/AppOrgResolver";
 
-const FPDOLO = ({ projects }) => {
+const FPPDOP1 = ({ projects }) => {
   const { getOrgNameById } = AppOrgResolver();
   const navigate = useNavigate();
   // check if projects is empty or not set or null
   if (!projects || projects.length === 0)
     return (
       <div className="flex justify-content-center w-full align-items-center text-sm	text-color-secondary ">
-        - No LO projects are available -
+        - No P1 projects are available -
       </div>
     );
   let projectsComponent = projects.map((project) => {
@@ -24,13 +24,13 @@ const FPDOLO = ({ projects }) => {
         <div
           className="flex flex-column  justify-content-center cursor-pointer "
           onClick={() => {
-            navigate(`/wf/portfolio/viewer/${project.id}/information`);
+            navigate(`/wf/post-portfolio/viewer/${project.id}/information`);
           }}
         >
           <div
             className="flex flex-column justify-content-center "
             style={{
-              backgroundColor: "#a38e74",
+              backgroundColor: "#82c7df",
             }}
           >
             <div className="flex p-2 text-lg text-100 text-white-alpha-90 justify-content-center">
@@ -39,7 +39,7 @@ const FPDOLO = ({ projects }) => {
           </div>
           <div className="flex justify-content-center border-bottom-1 border-gray-100">
             <div
-              className="flex justify-content-center w-full  p-2 text-yellow-900 border-right-1 border-gray-100"
+              className="flex justify-content-center w-full p-2 text-pink-600 border-right-1 border-gray-100"
               style={{
                 minWidth: "4rem",
               }}
@@ -48,7 +48,7 @@ const FPDOLO = ({ projects }) => {
             </div>
 
             <div
-              className="flex justify-content-center w-full  p-2 text-yellow-900 border-right-1 border-gray-100"
+              className="flex justify-content-center w-full p-2 text-pink-600 border-right-1 border-gray-100"
               style={{
                 minWidth: "4rem",
               }}
@@ -57,22 +57,12 @@ const FPDOLO = ({ projects }) => {
             </div>
 
             <div
-              className="flex justify-content-center w-full p-2 text-yellow-900 border-right-1 border-gray-100"
+              className="flex justify-content-center w-full p-2 border-right-1 border-gray-100"
               style={{
                 minWidth: "4rem",
               }}
             >
-              <FDate timestamp={project.loStart} color="#52422D" />
-            </div>
-
-            <div
-              className="flex justify-content-center w-full p-2 text-100"
-              style={{
-                minWidth: "4rem",
-                backgroundColor: "#d48e8f",
-              }}
-            >
-              <FDate timestamp={project.spPredictedStart} color="#FFFFFF" />
+              <FDate timestamp={project.spStart} color="#2d8bad" />
             </div>
           </div>
           <div className="flex w-full p-2 justify-content-center">
@@ -98,4 +88,4 @@ const FPDOLO = ({ projects }) => {
   );
 };
 
-export default observer(FPDOLO);
+export default observer(FPPDOP1);

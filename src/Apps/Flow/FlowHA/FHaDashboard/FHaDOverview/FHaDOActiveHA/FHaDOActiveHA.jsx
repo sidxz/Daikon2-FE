@@ -66,8 +66,8 @@ const FHaDOActiveHA = ({ hitAssessments }) => {
           <div className="flex w-full justify-content-center">
             <SmilesView
               smiles={ha.compoundEvoLatestSMILES}
-              width={180}
-              height={180}
+              width={200}
+              height={200}
             />
           </div>
         </div>

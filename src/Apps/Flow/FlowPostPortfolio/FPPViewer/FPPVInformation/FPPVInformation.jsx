@@ -12,14 +12,14 @@ import { RootStoreContext } from "../../../../../RootStore";
 import { DateValidators } from "../../../../../Shared/Validators/DateValidators";
 import { AppOrgResolver } from "../../../../../Shared/VariableResolvers/AppOrgResolver";
 import { appColors } from "../../../../../constants/colors";
-import { PortfolioIcon } from "../../../icons/PortfolioIcon";
-import PortfolioCompoundEvolution from "../../shared/HaCompoundEvolution/PortfolioCompoundEvolution";
-import PortfolioStageDropdown from "../../shared/PortfolioStageDropdown";
-import FPVIProjectInfoDesc from "./FPVIProjectInfo/FPVIProjectInfoDesc";
-import FPVIProjectInfoPriority from "./FPVIProjectInfo/FPVIProjectInfoPriority";
-import * as Helper from "./FPVInformationHelper";
+import PortfolioCompoundEvolution from "../../../FlowPortfolio/shared/HaCompoundEvolution/PortfolioCompoundEvolution";
+import { PostPortfolioIcon } from "../../../icons/PostPortfolioIcon";
+import PostPortfolioStageDropdown from "../../shared/PostPortfolioStageDropdown";
+import FPPVIProjectInfoDesc from "./FPPVIProjectInfo/FPPVIProjectInfoDesc";
+import FPPVIProjectInfoPriority from "./FPPVIProjectInfo/FPPVIProjectInfoPriority";
+import * as Helper from "./FPPVInformationHelper";
 
-const FPVInformation = () => {
+const FPPVInformation = () => {
   const rootStore = useContext(RootStoreContext);
   const { selectedProject, isFetchingProject } = rootStore.projectStore;
 
@@ -44,59 +44,30 @@ const FPVInformation = () => {
 
   const timelineItems = new DataSet([]);
 
-  isDateValid(selectedProject?.h2LStart) &&
+  isDateValid(selectedProject?.indStart) &&
     timelineItems.add({
       id: 1,
-      content: "H2L Actual Start",
-      start: selectedProject?.h2LStart,
-      //end: selectedProject.h2LPredictedStartDate,
+      content: "IND Actual Start",
+      start: selectedProject?.indStart,
+      //end: selectedProject.indPredictedStart,
       //start: addDays(6),
       //end: addDays(90),
       //className: "expected",
     });
 
-  isDateValid(selectedProject?.loPredictedStart) &&
+  isDateValid(selectedProject?.p1PredictedStart) &&
     timelineItems.add({
       id: 2,
-      content: "LO Predicted Start",
-      start: selectedProject?.loPredictedStart,
-      //end: selectedProject.h2LPredictedStartDate,
-      //start: addDays(6),
-      //end: addDays(90),
+      content: "P1 Predicted Start",
+      start: selectedProject?.p1PredictedStart,
       className: "expected",
     });
 
-  isDateValid(selectedProject?.loStart) &&
+  isDateValid(selectedProject?.p1Start) &&
     timelineItems.add({
       id: 3,
-      content: "LO Actual Start",
-      start: selectedProject?.loStart,
-      //end: selectedProject.h2LPredictedStartDate,
-      //start: addDays(6),
-      //end: addDays(90),
-      //className: "expected",
-    });
-
-  isDateValid(selectedProject?.spPredictedStart) &&
-    timelineItems.add({
-      id: 4,
-      content: "SP Predicted Start",
-      start: selectedProject?.spPredictedStart,
-      //end: selectedProject.h2LPredictedStartDate,
-      //start: addDays(6),
-      //end: addDays(90),
-      className: "expected",
-    });
-
-  isDateValid(selectedProject?.spStart) &&
-    timelineItems.add({
-      id: 5,
-      content: "SP Actual Start",
-      start: selectedProject?.spStart,
-      //end: selectedProject.h2LPredictedStartDate,
-      //start: addDays(6),
-      //end: addDays(90),
-      //className: "expected",
+      content: "P1 Actual Start",
+      start: selectedProject?.p1Start,
     });
 
   const options = {
@@ -111,13 +82,13 @@ const FPVInformation = () => {
       </div>
       <div className="flex w-full">
         <SecHeading
-          svgIcon={<PortfolioIcon size={"25em"} />}
-          heading={"Portfolio - " + selectedProject.name}
+          svgIcon={<PostPortfolioIcon size={"25em"} />}
+          heading={"Post Portfolio - " + selectedProject.name}
           displayHorizon={true}
           color={appColors.sectionHeadingBg.project}
           entryPoint={selectedProject?.id}
           customElements={[
-            <PortfolioStageDropdown />,
+            <PostPortfolioStageDropdown />,
             <Chip
               label={getOrgNameById(selectedProject?.primaryOrgId)}
               icon="ri-organization-chart"
@@ -133,12 +104,12 @@ const FPVInformation = () => {
       <div className="flex flex-row m-0 w-full">
         <div className="flex m-0 flex-grow-1">
           <Fieldset className="flex" legend="Project Information">
-            <FPVIProjectInfoPriority />
+            <FPPVIProjectInfoPriority />
           </Fieldset>
         </div>
         <div className="flex w-full m-0">
           <Fieldset className="flex w-full" legend="Project Description">
-            <FPVIProjectInfoDesc />
+            <FPPVIProjectInfoDesc />
           </Fieldset>
         </div>
       </div>
@@ -154,4 +125,4 @@ const FPVInformation = () => {
   );
 };
 
-export default observer(FPVInformation);
+export default observer(FPPVInformation);

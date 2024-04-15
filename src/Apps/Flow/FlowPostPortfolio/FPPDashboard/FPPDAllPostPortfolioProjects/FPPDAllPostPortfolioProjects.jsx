@@ -2,16 +2,17 @@ import { observer } from "mobx-react-lite";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import React, { useContext, useEffect } from "react";
+
 import Loading from "../../../../../Library/Loading/Loading";
 import { RootStoreContext } from "../../../../../RootStore";
-import * as Helper from "./FPDAllPortfolioProjectsHelper";
+import * as Helper from "./FPPDAllPostPortfolioProjectsHelper";
 
-const FPDAllPortfolioProjects = () => {
+const FPPDAllPostPortfolioProjects = () => {
   const rootStore = useContext(RootStoreContext);
   const {
     fetchProjects,
     isProjectListCacheValid,
-    portfolioList,
+    postPortfolioList,
     isFetchingProjects,
   } = rootStore.projectStore;
 
@@ -30,7 +31,7 @@ const FPDAllPortfolioProjects = () => {
       <div className="flex w-full">
         <DataTable
           className="w-full"
-          value={portfolioList}
+          value={postPortfolioList}
           paginator
           rows={10}
           filterDisplay="row"
@@ -52,7 +53,7 @@ const FPDAllPortfolioProjects = () => {
             body={Helper.orgBodyTemplate}
             filter
             // filterField="primaryOrgName"
-            // filterElement={(options) => Helper.orgFilter(portfolioList, options)}
+            // filterElement={(options) => Helper.orgFilter(postPortfolioList, options)}
             showFilterMenu={false}
             filterMatchMode="in"
             className="narrow-column"
@@ -60,11 +61,11 @@ const FPDAllPortfolioProjects = () => {
 
           <Column
             field="stage"
-            header="Portfolio Stage"
+            header="Post Portfolio Stage"
             filter
             filterField="stage"
             filterElement={(options) =>
-              Helper.projectStageFilter(portfolioList, options)
+              Helper.projectStageFilter(postPortfolioList, options)
             }
             showFilterMenu={false}
             filterMatchMode="in"
@@ -77,4 +78,4 @@ const FPDAllPortfolioProjects = () => {
   );
 };
 
-export default observer(FPDAllPortfolioProjects);
+export default observer(FPPDAllPostPortfolioProjects);

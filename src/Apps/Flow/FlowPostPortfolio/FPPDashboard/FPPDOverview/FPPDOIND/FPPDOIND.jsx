@@ -5,14 +5,14 @@ import FDate from "../../../../../../Library/FDate/FDate";
 import SmilesView from "../../../../../../Library/SmilesView/SmilesView";
 import { AppOrgResolver } from "../../../../../../Shared/VariableResolvers/AppOrgResolver";
 
-const FPDOLO = ({ projects }) => {
+const FPPDOIND = ({ projects }) => {
   const { getOrgNameById } = AppOrgResolver();
   const navigate = useNavigate();
   // check if projects is empty or not set or null
   if (!projects || projects.length === 0)
     return (
       <div className="flex justify-content-center w-full align-items-center text-sm	text-color-secondary ">
-        - No LO projects are available -
+        - No IND projects are available -
       </div>
     );
   let projectsComponent = projects.map((project) => {
@@ -24,13 +24,13 @@ const FPDOLO = ({ projects }) => {
         <div
           className="flex flex-column  justify-content-center cursor-pointer "
           onClick={() => {
-            navigate(`/wf/portfolio/viewer/${project.id}/information`);
+            navigate(`/wf/post-portfolio/viewer/${project.id}/information`);
           }}
         >
           <div
             className="flex flex-column justify-content-center "
             style={{
-              backgroundColor: "#a38e74",
+              backgroundColor: "#53A9A8",
             }}
           >
             <div className="flex p-2 text-lg text-100 text-white-alpha-90 justify-content-center">
@@ -69,7 +69,7 @@ const FPDOLO = ({ projects }) => {
               className="flex justify-content-center w-full p-2 text-100"
               style={{
                 minWidth: "4rem",
-                backgroundColor: "#d48e8f",
+                backgroundColor: "#82c7df",
               }}
             >
               <FDate timestamp={project.spPredictedStart} color="#FFFFFF" />
@@ -98,4 +98,4 @@ const FPDOLO = ({ projects }) => {
   );
 };
 
-export default observer(FPDOLO);
+export default observer(FPPDOIND);
