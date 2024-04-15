@@ -1,11 +1,9 @@
 import { useFormik } from "formik";
 import { Button } from "primereact/button";
-import { Dropdown } from "primereact/dropdown";
 import { classNames } from "primereact/utils";
 import React from "react";
 import InputTextAreaDVar from "../../../../../../Shared/DVarEditors/InputTextAreaDVar";
 import { generateDefaultDVar } from "../../../../../../Shared/DVariable/DVarDefaults";
-import { orgDropDownOptions } from "../../../../../../Shared/FormEditors/OrgDropDown";
 
 const FGVPrResistanceMutationAddForm = ({
   selectedGene,
@@ -149,19 +147,18 @@ const FGVPrResistanceMutationAddForm = ({
         <div className="field">
           <label
             htmlFor="organization"
-            className={classNames({ "p-error": isInvalid("organization") })}
+            className={classNames({
+              "p-error": isInvalid("organization"),
+            })}
           >
-            Organization *
+            Organization
           </label>
-          <Dropdown
+          <InputTextAreaDVar
             id="organization"
-            value={formik.values.organization}
-            options={orgDropDownOptions}
-            onChange={formik.handleChange}
-            placeholder="Select a organization"
-            optionLabel="name"
-            autoFocus
-            className={classNames({ "p-invalid": isInvalid("organization") })}
+            formik={formik}
+            className={classNames({
+              "p-invalid": isInvalid("organization"),
+            })}
           />
           {getErrorMessage("organization")}
         </div>
