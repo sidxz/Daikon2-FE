@@ -132,7 +132,7 @@ const FPVInformation = () => {
 
       <div className="flex flex-row m-0 w-full">
         <div className="flex m-0 flex-grow-1">
-          <Fieldset className="flex" legend="Project Information">
+          <Fieldset className="flex" legend="Team Info">
             <FPVIProjectInfoPriority />
           </Fieldset>
         </div>

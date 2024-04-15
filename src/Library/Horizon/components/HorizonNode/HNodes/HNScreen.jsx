@@ -1,14 +1,19 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { PhenoScreenIcon } from "../../../../../Apps/Flow/icons/PhenoScreenIcon";
 import { ScreenIcon } from "../../../../../Apps/Flow/icons/ScreenIcon";
 import { AppOrgResolver } from "../../../../../Shared/VariableResolvers/AppOrgResolver";
 
 const HNScreen = ({ dataObj, entryPoint }) => {
   const { getOrgAliasById } = AppOrgResolver();
+  const navigate = useNavigate();
+  const linkType =
+    dataObj?.attributes?.screenType === "target-based" ? "tb" : "ph";
+
   return (
     <g
       onClick={() => {
-        navigate(`/wf/gene/${dataObj?.id}`);
+        navigate(`/wf/screen/viewer/${linkType}/${dataObj?.id}`);
       }}
     >
       {dataObj?.id === entryPoint && (
@@ -39,12 +44,16 @@ const HNScreen = ({ dataObj, entryPoint }) => {
             <br />
             {dataObj?.attributes?.name}
 
-            <br />
-            {dataObj?.attributes?.method}
-            <br />
-            {getOrgAliasById(dataObj?.attributes?.primaryOrgId)}
+            {dataObj?.attributes?.screenType === "target-based" && (
+              <>
+                <br />
+                {dataObj?.attributes?.method}
+              </>
+            )}
             <br />
             {dataObj?.attributes?.status}
+            <br />
+            {getOrgAliasById(dataObj?.attributes?.primaryOrgId)}
           </p>
         </div>
       </foreignObject>

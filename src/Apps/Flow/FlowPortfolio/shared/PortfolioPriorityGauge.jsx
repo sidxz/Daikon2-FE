@@ -1,14 +1,24 @@
 import ReactECharts from "echarts-for-react";
 import React from "react";
 
-const PortfolioPriorityGauge = () => {
+const PortfolioPriorityGauge = ({ priority }) => {
+  let value = 0;
+
+  if (priority === "Low") {
+    value = 0.17;
+  } else if (priority === "Medium") {
+    value = 0.5;
+  } else if (priority === "High") {
+    value = 0.83;
+  }
+
   let option = {
     series: [
       {
         type: "gauge",
         startAngle: 180,
         endAngle: 0,
-        center: ["50%", "70%"],
+        center: ["50%", "50%"],
         radius: "90%",
         min: 0,
         max: 1,
@@ -17,9 +27,9 @@ const PortfolioPriorityGauge = () => {
           lineStyle: {
             width: 3,
             color: [
-              [0.34, "#58D9F9"],
-              [0.67, "#FDDD60"],
-              [1, "#FF6E76"],
+              [0.34, "#5a72a5"],
+              [0.67, "#DCB14E"],
+              [1, "#D86D6F"],
             ],
           },
         },
@@ -86,7 +96,7 @@ const PortfolioPriorityGauge = () => {
         },
         data: [
           {
-            value: 0,
+            value: value,
             name: "Priority",
           },
         ],
@@ -94,11 +104,15 @@ const PortfolioPriorityGauge = () => {
     ],
   };
   return (
-    <ReactECharts
-      option={option}
-      // onEvents={onEvents}
-      style={{ height: "18rem", width: "18rem" }}
-    />
+    <div
+      className="flex items-center justify-center"
+      style={{ height: "10rem", width: "18rem" }}
+    >
+      <ReactECharts
+        option={option}
+        style={{ height: "18rem", width: "18rem" }}
+      />
+    </div>
   );
 };
 

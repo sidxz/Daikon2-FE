@@ -1,11 +1,16 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { HitCollectionIcon } from "../../../../../Apps/Flow/icons/HitCollectionIcon";
 
 const HNHitCollection = ({ dataObj, entryPoint }) => {
+  const navigate = useNavigate();
+  const linkType =
+    dataObj?.attributes?.screenType === "target-based" ? "tb" : "ph";
+
   return (
     <g
       onClick={() => {
-        navigate(`/wf/gene/${dataObj?.id}`);
+        //navigate(`/wf/screen/viewer/${linkType}/${dataObj?.id}/hits`);
       }}
     >
       {dataObj?.id === entryPoint && (

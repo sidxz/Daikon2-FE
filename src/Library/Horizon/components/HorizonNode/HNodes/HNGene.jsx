@@ -1,7 +1,9 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { GeneIcon } from "../../../../../Apps/Flow/icons/GeneIcon";
 
 const HNGene = ({ dataObj, entryPoint }) => {
+  const navigate = useNavigate();
   return (
     <g
       onClick={() => {
