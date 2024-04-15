@@ -8,8 +8,8 @@ import { Sidebar } from "primereact/sidebar";
 import React, { useContext, useState } from "react";
 import EmbeddedHelp from "../../../../../../Library/EmbeddedHelp/EmbeddedHelp";
 import { RootStoreContext } from "../../../../../../RootStore";
-import { orgDropDown } from "../../../../../../Shared/FormEditors/OrgDropDown";
-import { TextAreaRowEditor } from "../../../../../../Shared/TableRowEditors/TextAreaRowEditor";
+import TableRowBodyDVar from "../../../../../../Shared/DVariable/TableRowBodyDVar";
+import { TextAreaRowEditorDVar } from "../../../../../../Shared/TableRowEditorsDVar/TextAreaRowEditorDVar";
 import FGVPrResistanceMutationAddForm from "./FGVPrResistanceMutationAddForm";
 
 const FGVPrResistanceMutation = ({ selectedGene }) => {
@@ -105,52 +105,65 @@ const FGVPrResistanceMutation = ({ selectedGene }) => {
           <Column
             field="mutation"
             header="Mutation"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => <TableRowBodyDVar dVar={rowData?.mutation} />}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
           <Column
             field="isolate"
             header="Isolate"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => <TableRowBodyDVar dVar={rowData?.isolate} />}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
           <Column
             field="parentStrain"
             header="Parent Strain"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => (
+              <TableRowBodyDVar dVar={rowData?.parentStrain} />
+            )}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
 
           <Column
             field="researcher"
             header="Researcher"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => <TableRowBodyDVar dVar={rowData?.researcher} />}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
 
           <Column
             field="organization"
             header="Organization"
             sortable
-            editor={(options) => orgDropDown(options)}
+            body={(rowData) => (
+              <TableRowBodyDVar dVar={rowData?.organization} />
+            )}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
 
           <Column
             field="compound"
             header="Compound"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => <TableRowBodyDVar dVar={rowData?.compound} />}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
           <Column
             field="shiftInMIC"
             header="Shift In MIC"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => <TableRowBodyDVar dVar={rowData?.shiftInMIC} />}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
           <Column
             field="notes"
             header="Notes"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => <TableRowBodyDVar dVar={rowData?.notes} />}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
 
           <Column
             field="reference"
             header="Reference"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => <TableRowBodyDVar dVar={rowData?.reference} />}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
           <Column
             rowEditor

@@ -102,7 +102,7 @@ const FGVPrivate = ({ selectedGene }) => {
 
         <div className="flex pt-2">
           <Fieldset className="m-0 flex-grow-1" legend="Resistance Mutation">
-            <FGVPrResistanceMutation selectedGene={temp} />
+            <FGVPrResistanceMutation selectedGene={selectedGene} />
           </Fieldset>
         </div>
 
