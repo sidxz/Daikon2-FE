@@ -117,7 +117,9 @@ const FGVPrivate = ({ selectedGene }) => {
             className="m-0 flex-grow-1"
             legend="Unpublished Structural Information"
           >
-            <FGVPrUnpublishedStructuralInformation selectedGene={temp} />
+            <FGVPrUnpublishedStructuralInformation
+              selectedGene={selectedGene}
+            />
           </Fieldset>
         </div>
       </div>
