@@ -1,11 +1,12 @@
 import { useFormik } from "formik";
 import { observer } from "mobx-react-lite";
 import { Button } from "primereact/button";
+import { confirmPopup } from "primereact/confirmpopup";
 import { Dropdown } from "primereact/dropdown";
 import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
 import { classNames } from "primereact/utils";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import PleaseWait from "../../../../../Library/PleaseWait/PleaseWait";
 import { RootStoreContext } from "../../../../../RootStore";
 import InputOrg from "../../../../../Shared/InputEditors/InputOrg";
@@ -25,6 +26,8 @@ const FPDAddNew = ({ closeSideBar }) => {
     projectList,
     isFetchingProjects,
   } = rootStore.projectStore;
+
+  const submitButtonEl = useRef(null);
 
   useEffect(() => {
     if (!isHaListCacheValid) {
@@ -67,13 +70,38 @@ const FPDAddNew = ({ closeSideBar }) => {
     },
 
     onSubmit: (newProject) => {
+      console.log("newProject", newProject);
+      if (newProject.selectedHa === undefined) {
+        console.log("No HA selected");
+        confirmPopup({
+          target: submitButtonEl.current,
+          message: (
+            <div>
+              A Hit Assessment has <b>not</b> been selected. <br />
+              This would create a <b>detached project.</b>
+              <br />
+              Are you sure you want to proceed?
+            </div>
+          ),
+          icon: "pi pi-exclamation-triangle",
+          defaultFocus: "accept",
+          //accept,
+          reject() {
+            return;
+          },
+        });
+      }
+
       newProject.primaryOrgName = getOrgNameById(newProject.primaryOrgId);
 
-      newProject.haId = selectedHa.id;
-      newProject.compoundId = selectedHa.compoundEvoLatestMoleculeId;
-      newProject.compoundSMILES = selectedHa.compoundEvoLatestSMILES;
-      newProject.hitCompoundId = selectedHa.compoundId;
-      newProject.hitId = selectedHa.hitId;
+      if (newProject.selectedHa !== undefined) {
+        newProject.haId = selectedHa.id;
+        newProject.compoundId = selectedHa.compoundEvoLatestMoleculeId;
+        newProject.compoundSMILES = selectedHa.compoundEvoLatestSMILES;
+        newProject.hitCompoundId = selectedHa.compoundId;
+        newProject.hitId = selectedHa.hitId;
+      }
+
       console.log(newProject);
 
       addProject(newProject).then(() => {
@@ -262,6 +290,7 @@ const FPDAddNew = ({ closeSideBar }) => {
         </div>
 
         <Button
+          ref={submitButtonEl}
           icon="icon icon-common icon-database-submit"
           type="submit"
           label="Create Portfolio Project"
