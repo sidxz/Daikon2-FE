@@ -4,7 +4,7 @@ import { Button } from "primereact/button";
 import { ContextMenu } from "primereact/contextmenu";
 import { Dialog } from "primereact/dialog";
 import { Sidebar } from "primereact/sidebar";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import RichTextDisplay from "./RichTextDisplay/RichTextDisplay";
 import RichTextEditEditor from "./RichTextEditEditor/RichTextEditEditor";
 import RichTextEditHistory from "./RichTextEditHistory/RichTextEditHistory";
@@ -22,6 +22,14 @@ const RichTextEdit = ({
   const [displayHistorySideBar, setDisplayHistorySideBar] = useState(false);
   const [fetchHistoryCalled, setFetchHistoryCalled] = useState(false);
   const [data, setData] = useState({ ...baseData });
+
+  useEffect(() => {
+    setData({ ...baseData });
+  }, [baseData]);
+
+  console.log("RichTextEdit -> dataSelector", dataSelector);
+  console.log("RichTextEdit -> baseData", baseData);
+  console.log("RichTextEdit -> data", data);
 
   // check if data is null
   if (!data) {

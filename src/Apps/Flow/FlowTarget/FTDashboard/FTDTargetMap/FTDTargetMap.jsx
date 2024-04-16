@@ -1,181 +1,85 @@
-import * as echarts from "echarts";
 import ReactECharts from "echarts-for-react";
+import { observer } from "mobx-react-lite";
 import { InputSwitch } from "primereact/inputswitch";
 import { Slider } from "primereact/slider";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Loading from "../../../../../Library/Loading/Loading";
+import { RootStoreContext } from "../../../../../RootStore";
+import { chartOption, formatChartSeries } from "./FTDTargetMapHelper";
 
 const FTDTargetMap = () => {
   const [likeScoreCutoff, setLikeScoreCutoff] = useState(0.02);
   const [impactScoreCutoff, setImpactScoreCutoff] = useState(0.02);
   const [showLabel, setShowLabel] = useState(true);
+
+  const rootStore = useContext(RootStoreContext);
+  const { isFetchingTargets, targetList } = rootStore.targetStore;
+
+  const navigate = useNavigate();
+
+  if (isFetchingTargets) {
+    return <Loading message={"Fetching Targets..."} />;
+  }
+
   // Configure options for the chart
-  let option = {
-    backgroundColor: new echarts.graphic.RadialGradient(0.3, 0.3, 0.8, [
-      {
-        offset: 0,
-        color: "#fff",
-      },
-      {
-        offset: 1,
-        color: "#eee",
-      },
-    ]),
-    title: {
-      text: "Target Map",
-      left: "5cd tp%",
-      top: "2%",
-    },
+  let option = { ...chartOption };
 
-    legend: {
-      right: "7%",
-      top: "3%",
-      data: ["Target", "Screen", "HA", "Portfolio", "PostPortfolio"],
-    },
-    grid: {
-      left: "9%",
-      top: "10%",
-    },
-    xAxis: {
-      min: 0,
-      max: 1,
-      splitLine: {
-        show: true,
-        lineStyle: {
-          type: "dashed",
-        },
-      },
-      splitNumber: 10,
-      name: "Likelihood",
-      nameLocation: "center",
-      nameGap: 30,
-    },
-    yAxis: {
-      min: 0,
-      max: 1,
-      splitLine: {
-        show: true,
-        lineStyle: {
-          type: "dashed",
-        },
-      },
-      splitNumber: 10,
-      name: "Biological Impact",
-      nameLocation: "center",
-      nameGap: 30,
-    },
-    series: [
-      {
-        name: "Target",
-        type: "scatter",
-        label: {
-          position: "top",
+  var targetData = [];
+  var screenData = [];
+  var haData = [];
+  var portfolioData = [];
+  var postPortfolioData = [];
 
-          fontSize: 12,
-        },
-        emphasis: {
-          focus: "series",
-          label: {
-            position: "top",
-          },
-        },
-        itemStyle: {
-          shadowBlur: 10,
+  targetList.forEach((element) => {
+    console.log("FTDTargetMap -> target", element);
 
-          shadowOffsetY: 5,
-        },
-      },
-      {
-        name: "Screen",
-        type: "scatter",
-        label: {
-          position: "top",
+    if (
+      element.likeScore >= likeScoreCutoff &&
+      element.impactScore >= impactScoreCutoff
+    ) {
+      targetData.push([
+        element.likeScore,
+        element.impactScore,
+        element.id,
+        element.name,
+        element.type,
+        element.bucket,
+        element.currentStage,
+      ]);
+    }
+  });
 
-          fontSize: 12,
-        },
+  option.series = formatChartSeries(
+    targetData,
+    screenData,
+    haData,
+    portfolioData,
+    postPortfolioData,
+    true
+  );
 
-        emphasis: {
-          focus: "series",
-          label: {
-            position: "top",
-          },
-        },
-        itemStyle: {
-          shadowBlur: 10,
-
-          shadowOffsetY: 5,
-        },
-      },
-      {
-        name: "HA",
-        type: "scatter",
-        label: {
-          position: "top",
-
-          fontSize: 12,
-        },
-        emphasis: {
-          focus: "series",
-          label: {
-            position: "top",
-          },
-        },
-        itemStyle: {
-          shadowBlur: 10,
-
-          shadowOffsetY: 5,
-        },
-      },
-      {
-        name: "Portfolio",
-        type: "scatter",
-        label: {
-          position: "top",
-
-          fontSize: 12,
-        },
-        emphasis: {
-          focus: "series",
-          label: {
-            position: "top",
-          },
-        },
-        itemStyle: {
-          shadowBlur: 10,
-
-          shadowOffsetY: 5,
-        },
-      },
-      {
-        name: "PostPortfolio",
-        type: "scatter",
-        label: {
-          position: "top",
-
-          fontSize: 12,
-        },
-        emphasis: {
-          focus: "series",
-          label: {
-            position: "top",
-          },
-        },
-        itemStyle: {
-          shadowBlur: 10,
-
-          shadowOffsetY: 5,
-        },
-      },
-    ],
+  // Function to handle chart click events
+  let onChartClick = (params) => {
+    console.log("FTDTargetMap -> params", params.data[2]);
+    navigate(`/wf/target/viewer/${params.data[2]}`);
   };
+  // Attach click event listener to the chart
+  let onEvents = {
+    click: onChartClick,
+  };
+
   return (
-    <div className="flex flex-column w-full">
+    <div className="flex flex-column w-full border-0">
       <div className="flex">
         <ReactECharts
           option={option}
-          style={{ height: "45rem", width: "45rem" }}
+          onEvents={onEvents}
+          //className="w-full min-h-full"
+          style={{ width: "600px", height: "600px" }}
         />
       </div>
-      <div className="flex flex-column pl-5 pr-5">
+      <div className="flex flex-column pl-5 pr-5 border-0">
         <div className="flex h-3rem">
           <h4>
             <i className="icon icon-common icon-filter" /> Filters
@@ -191,7 +95,7 @@ const FTDTargetMap = () => {
               min={0}
               max={1}
               step={0.01}
-              value={0.02}
+              value={likeScoreCutoff}
               onChange={(e) => setLikeScoreCutoff(e.value)}
             />
           </div>
@@ -213,7 +117,7 @@ const FTDTargetMap = () => {
           </div>
         </div>
 
-        <div className="flex w-full align-content-center h-2rem column-gap-5">
+        <div className="flex w-full align-content-center h-2rem column-gap-5 pb-2">
           <div className="flex w-6 align-items-center">
             <h5>Display Target Label: </h5>
           </div>
@@ -230,4 +134,4 @@ const FTDTargetMap = () => {
   );
 };
 
-export default FTDTargetMap;
+export default observer(FTDTargetMap);

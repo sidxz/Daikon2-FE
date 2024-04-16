@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { BlockUI } from "primereact/blockui";
 import { ScrollPanel } from "primereact/scrollpanel";
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import Loading from "../../../../../Library/Loading/Loading";
 import RichTextEdit from "../../../../../Library/RichTextEdit/RichTextEdit";
 import { RootStoreContext } from "../../../../../RootStore";
@@ -18,8 +18,6 @@ const FTVCompassQuad = () => {
     isUpdatingTarget,
     updateTarget,
   } = rootStore.targetStore;
-
-  const [targetData, setTargetData] = useState(selectedTarget);
 
   if (isFetchingTarget) {
     return <Loading message={"Fetching Target..."} />;
