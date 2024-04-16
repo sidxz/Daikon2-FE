@@ -70,9 +70,36 @@ const FPDAddNew = ({ closeSideBar }) => {
     },
 
     onSubmit: (newProject) => {
+      console.log(selectedHa);
       console.log("newProject", newProject);
-      if (newProject.selectedHa === undefined) {
+
+      const submitFunc = () => {
+        console.log("submitFunc");
+        newProject.primaryOrgName = getOrgNameById(newProject.primaryOrgId);
+
+        if (newProject.selectedHa !== undefined) {
+          newProject.haId = selectedHa.id;
+          newProject.compoundId = selectedHa.compoundEvoLatestMoleculeId;
+          newProject.compoundSMILES = selectedHa.compoundEvoLatestSMILES;
+          newProject.hitCompoundId = selectedHa.compoundId;
+          newProject.hitId = selectedHa.hitId;
+        }
+
+        console.log(newProject);
+
+        addProject(newProject).then(() => {
+          closeSideBar();
+          formik.resetForm();
+        });
+      };
+
+      if (selectedHa === undefined) {
         console.log("No HA selected");
+
+        const reject = () => {
+          return;
+        };
+
         confirmPopup({
           target: submitButtonEl.current,
           message: (
@@ -84,30 +111,12 @@ const FPDAddNew = ({ closeSideBar }) => {
             </div>
           ),
           icon: "pi pi-exclamation-triangle",
-          defaultFocus: "accept",
-          //accept,
-          reject() {
-            return;
-          },
+          accept: submitFunc,
+          reject: reject,
         });
+      } else {
+        submitFunc();
       }
-
-      newProject.primaryOrgName = getOrgNameById(newProject.primaryOrgId);
-
-      if (newProject.selectedHa !== undefined) {
-        newProject.haId = selectedHa.id;
-        newProject.compoundId = selectedHa.compoundEvoLatestMoleculeId;
-        newProject.compoundSMILES = selectedHa.compoundEvoLatestSMILES;
-        newProject.hitCompoundId = selectedHa.compoundId;
-        newProject.hitId = selectedHa.hitId;
-      }
-
-      console.log(newProject);
-
-      addProject(newProject).then(() => {
-        closeSideBar();
-        formik.resetForm();
-      });
     },
   });
 
