@@ -24,6 +24,8 @@ const FHaDOverview = () => {
     return <Loading message={"Fetching HAs..."} />;
   }
 
+  console.log("FHaDOverview -> haList", haList);
+
   return (
     <div className="flex flex-column w-full">
       <div className="flex w-full ">

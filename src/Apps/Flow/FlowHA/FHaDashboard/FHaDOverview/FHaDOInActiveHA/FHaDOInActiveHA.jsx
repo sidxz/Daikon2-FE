@@ -61,7 +61,7 @@ const FHaDOInActiveHA = ({ hitAssessments }) => {
                 minWidth: "4rem",
               }}
             >
-              <FDate timestamp={new Date().getTime()} color="#d5a326" />
+              <FDate timestamp={ha?.statusLastModifiedDate} color="#d5a326" />
             </div>
           </div>
           <div className="flex w-full justify-content-center">
