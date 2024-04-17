@@ -16,6 +16,7 @@ import { appColors } from "../../../../../constants/colors";
 import { PortfolioIcon } from "../../../icons/PortfolioIcon";
 import * as Helper from "./FPVSettingsHelper";
 import FPVSettingsRemove from "./components/FPVSettingsRemove";
+import FPVSettingsUpdateAssociation from "./components/FPVSettingsUpdateAssociation";
 
 const FPVSettings = () => {
   const navigate = useNavigate();
@@ -81,6 +82,7 @@ const FPVSettings = () => {
             broad implications, impacting overall functionality, including
             features like the Horizon View, among others.
           </p>
+          <FPVSettingsUpdateAssociation />
         </Fieldset>
       </div>
 

@@ -30,6 +30,7 @@ export default class ProjectStore {
 
       isUpdatingProject: observable,
       updateProject: action,
+      updateProjectAssociation: action,
 
       isAddingProject: observable,
       addProject: action,
@@ -180,6 +181,28 @@ export default class ProjectStore {
         this.projectListRegistry.set(project.id, project);
         this.selectedProject = project;
         toast.success("Project updated successfully");
+      });
+    } catch (error) {
+      console.error("Error updating project:", error);
+    } finally {
+      runInAction(() => {
+        this.isUpdatingProject = false;
+      });
+    }
+  };
+
+  updateProjectAssociation = async (project) => {
+    this.isUpdatingProject = true;
+
+    try {
+      await ProjectAPI.updateAssociation(project);
+      runInAction(() => {
+        // update in project registry list
+        project = { ...this.selectedProject, ...project };
+        this.projectRegistry.set(project.id, project);
+        this.projectListRegistry.set(project.id, project);
+        this.selectedProject = project;
+        toast.success("Project HA association updated successfully");
       });
     } catch (error) {
       console.error("Error updating project:", error);
