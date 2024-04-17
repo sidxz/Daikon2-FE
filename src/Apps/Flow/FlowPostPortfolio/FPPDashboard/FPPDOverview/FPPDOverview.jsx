@@ -58,8 +58,8 @@ const FPPDOverview = () => {
             </div>
           </div>
 
-          <div className="flex pr-3">
-            <div className="flex pt-1 bg-white">
+          <div className="flex w-full  pr-3">
+            <div className="flex w-full pt-1 bg-white">
               <FPPDOIND />
             </div>
           </div>
@@ -88,8 +88,8 @@ const FPPDOverview = () => {
             </div>
           </div>
 
-          <div className="flex  pr-3">
-            <div className="flex  pt-1  bg-white">
+          <div className="flex w-full pr-3">
+            <div className="flex w-full pt-1  bg-white">
               <FPPDOP1 />
             </div>
           </div>
