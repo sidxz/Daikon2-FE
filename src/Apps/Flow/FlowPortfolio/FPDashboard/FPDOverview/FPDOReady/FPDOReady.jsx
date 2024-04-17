@@ -17,7 +17,7 @@ const FPDOReady = () => {
   if (!readyForPortfolio || readyForPortfolio.length === 0)
     return (
       <div className="flex justify-content-center w-full align-items-center text-sm	text-color-secondary ">
-        - No H2L projects are available -
+        - No projects are ready for portfolio -
       </div>
     );
 
@@ -49,7 +49,7 @@ const FPDOReady = () => {
                 minWidth: "4rem",
               }}
             >
-              rho
+              pks13
             </div>
 
             <div
