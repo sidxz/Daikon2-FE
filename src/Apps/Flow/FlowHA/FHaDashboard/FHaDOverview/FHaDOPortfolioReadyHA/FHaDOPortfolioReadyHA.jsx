@@ -17,14 +17,14 @@ const FHaDOPortfolioReadyHA = ({ hitAssessments }) => {
     );
   let hitAssessmentsComponent = hitAssessments.map((ha) => {
     return (
-      <div className="flex flex-column w-full shadow-1 hover:shadow-3">
+      <div className="flex flex-column w-full shadow-1 hover:shadow-3 border-round-md ">
         <div
           className="flex flex-column  justify-content-center cursor-pointer"
           onClick={() => {
             navigate(`/wf/ha/viewer/${ha.id}/information`);
           }}
         >
-          <div className="flex flex-column bg-green-100  justify-content-center">
+          <div className="flex flex-column bg-green-100  justify-content-center border-round-top-md ">
             <div
               className="flex p-2 text-lg text-green-800 justify-content-center"
               style={{
