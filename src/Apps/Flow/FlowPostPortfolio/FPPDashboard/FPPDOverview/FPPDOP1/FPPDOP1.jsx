@@ -24,7 +24,7 @@ const FPPDOP1 = () => {
       ? project.targetName
       : "Phenotypic";
     return (
-      <div className="flex flex-column w-full shadow-1 hover:shadow-3">
+      <div className="flex flex-column w-full shadow-1 hover:shadow-3 border-round-md ">
         <div
           className="flex flex-column  justify-content-center cursor-pointer "
           onClick={() => {
@@ -32,7 +32,7 @@ const FPPDOP1 = () => {
           }}
         >
           <div
-            className="flex flex-column justify-content-center "
+            className="flex flex-column justify-content-center border-round-top-md "
             style={{
               backgroundColor: "#6D86A9",
             }}
@@ -61,7 +61,7 @@ const FPPDOP1 = () => {
             </div>
 
             <div
-              className="flex justify-content-center w-full p-2 border-right-1 border-gray-100"
+              className="flex justify-content-center w-full"
               style={{
                 minWidth: "4rem",
               }}

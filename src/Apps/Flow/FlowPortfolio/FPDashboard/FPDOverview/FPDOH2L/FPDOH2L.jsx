@@ -25,7 +25,7 @@ const FPDOH2L = () => {
       ? project.targetName
       : "Phenotypic";
     return (
-      <div className="flex flex-column w-full shadow-1 hover:shadow-3">
+      <div className="flex flex-column w-full shadow-1 hover:shadow-3 border-round-md">
         <div
           className="flex flex-column  justify-content-center cursor-pointer "
           onClick={() => {
@@ -33,7 +33,7 @@ const FPDOH2L = () => {
           }}
         >
           <div
-            className="flex flex-column justify-content-center "
+            className="flex flex-column justify-content-center border-round-top-md "
             style={{
               backgroundColor: "#8c9f8b",
             }}
