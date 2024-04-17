@@ -43,16 +43,26 @@ const FlowDash = () => {
       <div className="flex">
         <FlowDashCards />
       </div>
-      <div className="flex flex-column p-2 w-4">
-        <Card
-          title={generateCardTitle(
-            "icon icon-common icon-newspaper",
-            "What's New?"
-          )}
-          className="w-full min-h-full"
-        >
-          <FlowDashWhatsNew />
-        </Card>
+
+      <div className="flex w-full gap-2 mt-4">
+        <div className="flex flex-column p-2 w-8">
+          <Card
+            title={generateCardTitle("ri-discuss-line", "Recent Discussions")}
+            className="w-full min-h-full"
+          ></Card>
+        </div>
+
+        <div className="flex flex-column p-2 w-4">
+          <Card
+            title={generateCardTitle(
+              "icon icon-common icon-newspaper",
+              "What's New?"
+            )}
+            className="w-full min-h-full"
+          >
+            <FlowDashWhatsNew />
+          </Card>
+        </div>
       </div>
     </div>
   );
