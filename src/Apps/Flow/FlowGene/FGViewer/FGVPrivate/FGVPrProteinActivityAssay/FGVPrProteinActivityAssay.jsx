@@ -43,7 +43,7 @@ const FGVPrProteinActivityAssay = ({ selectedGene }) => {
           <Button
             type="button"
             icon="icon icon-common icon-plus-circle"
-            label="Add Protein Activity Assay"
+            label="Add"
             className="p-button-text p-button-sm"
             style={{ height: "30px", marginRight: "5px" }}
             onClick={() => setDisplayAddSideBar(true)}
