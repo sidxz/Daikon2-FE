@@ -16,7 +16,7 @@ const FPDOLO = () => {
   if (!activeLOProjects || activeLOProjects.length === 0)
     return (
       <div className="flex justify-content-center w-full align-items-center text-sm	text-color-secondary ">
-        - No LO activeLOProjects are available -
+        - No LO projects are available -
       </div>
     );
   let projectsComponent = activeLOProjects.map((project) => {
@@ -48,7 +48,7 @@ const FPDOLO = () => {
                 minWidth: "4rem",
               }}
             >
-              rho
+              {project.alias}
             </div>
 
             <div

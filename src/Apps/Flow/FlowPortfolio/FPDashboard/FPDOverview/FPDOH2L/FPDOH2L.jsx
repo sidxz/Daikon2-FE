@@ -50,7 +50,7 @@ const FPDOH2L = () => {
                 minWidth: "4rem",
               }}
             >
-              rho
+              {project.alias}
             </div>
 
             <div

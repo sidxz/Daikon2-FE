@@ -17,7 +17,7 @@ const FPDOReady = () => {
   if (!readyForPortfolio || readyForPortfolio.length === 0)
     return (
       <div className="flex justify-content-center w-full align-items-center text-sm	text-color-secondary ">
-        - No H2L readyForPortfolio are available -
+        - No H2L projects are available -
       </div>
     );
 
@@ -67,7 +67,7 @@ const FPDOReady = () => {
                 minWidth: "4rem",
               }}
             >
-              <FDate timestamp={ha.statusCompleteSuccessDate} color="#4c6018" />
+              <FDate timestamp={ha.statusLastModifiedDate} color="#4c6018" />
             </div>
 
             <div
@@ -77,7 +77,7 @@ const FPDOReady = () => {
                 backgroundColor: "#e0c380",
               }}
             >
-              <FDate timestamp={ha.h2LPredictedStart} color="#FFFFFF" />
+              <FDate timestamp={ha.haPredictedStartDate} color="#FFFFFF" />
             </div>
           </div>
           <div className="flex p-2 w-full justify-content-center">

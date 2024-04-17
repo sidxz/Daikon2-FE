@@ -16,7 +16,7 @@ const FPDOSP = () => {
   if (!activeSPProjects || activeSPProjects.length === 0)
     return (
       <div className="flex justify-content-center w-full align-items-center text-sm	text-color-secondary ">
-        - No SP activeSPProjects are available -
+        - No SP projects are available -
       </div>
     );
   let projectsComponent = activeSPProjects.map((project) => {

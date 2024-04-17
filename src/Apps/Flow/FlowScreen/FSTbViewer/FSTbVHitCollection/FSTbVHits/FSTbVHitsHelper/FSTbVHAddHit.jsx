@@ -20,7 +20,6 @@ const FSTbVHAddHit = ({ hitCollectionId, closeSideBar }) => {
     initialValues: {
       library: "",
       librarySource: "",
-      method: "",
       mic: "",
       iC50: "",
       clusterGroup: "",
@@ -89,24 +88,6 @@ const FSTbVHAddHit = ({ hitCollectionId, closeSideBar }) => {
             })}
           />
           {getErrorMessage("librarySource")}
-        </div>
-
-        <div className="field">
-          <label
-            htmlFor="method"
-            className={classNames({ "p-error": isInvalid("method") })}
-          >
-            Method
-          </label>
-          <InputText
-            id="method"
-            value={formik.values.method}
-            onChange={formik.handleChange}
-            className={classNames({
-              "p-invalid": isInvalid("method"),
-            })}
-          />
-          {getErrorMessage("method")}
         </div>
 
         <div className="field">
