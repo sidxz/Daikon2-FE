@@ -22,7 +22,7 @@ const Comment = ({ id }) => {
 
   return (
     <div className="flex flex-column w-full border-1 border-50 p-2 border-round-md">
-      <div className="flex text-3xl w-full border-round-md mb-2 align-items-center">
+      <div className="flex text-xl w-full border-round-md mb-2 align-items-center">
         <FcComments />
         {selectedComment?.topic}
       </div>

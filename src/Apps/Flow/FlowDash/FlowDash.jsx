@@ -1,5 +1,6 @@
 import { Card } from "primereact/card";
 import React from "react";
+import CommentsByTags from "../../Comments/CommentsByTags/CommentsByTags";
 import "./FlowDash.css";
 import FlowDashCards from "./FlowDashCards/FlowDashCards";
 import FlowDashWhatsNew from "./FlowDashWhatsNew/FlowDashWhatsNew";
@@ -49,7 +50,11 @@ const FlowDash = () => {
           <Card
             title={generateCardTitle("ri-discuss-line", "Recent Discussions")}
             className="w-full min-h-full"
-          ></Card>
+          >
+            <div className="flex w-full pt-1">
+              <CommentsByTags tags={["Gene", "Rv2794c"]} />
+            </div>
+          </Card>
         </div>
 
         <div className="flex flex-column p-2 w-4">
