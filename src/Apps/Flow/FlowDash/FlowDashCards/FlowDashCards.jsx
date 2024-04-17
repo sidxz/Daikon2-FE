@@ -1,6 +1,8 @@
 import { observer } from "mobx-react-lite";
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { NavLink } from "react-router-dom";
+import Loading from "../../../../Library/Loading/Loading";
+import { RootStoreContext } from "../../../../RootStore";
 import { GeneIcon } from "../../icons/GeneIcon";
 import { HAIcon } from "../../icons/HAIcon";
 import { PortfolioIcon } from "../../icons/PortfolioIcon";
@@ -10,6 +12,101 @@ import { TargetIcon } from "../../icons/TargetIcon";
 import FlowDashCardsCircles from "./FlowDashCardsCircles/FlowDashCardsCircles";
 
 const FlowDashCards = () => {
+  const rootStore = useContext(RootStoreContext);
+
+  const { isGeneListCacheValid, isGeneListLoading, geneList, fetchGenes } =
+    rootStore.geneStore;
+
+  const {
+    targetList,
+    isFetchingTargets,
+    fetchTargets,
+    isTargetListCacheValid,
+  } = rootStore.targetStore;
+
+  const {
+    fetchScreens,
+    isScreenListCacheValid,
+    screenList,
+    isFetchingScreens,
+  } = rootStore.screenStore;
+
+  const { fetchHAs, isHaListCacheValid, haList, isFetchingHAs } =
+    rootStore.haStore;
+
+  const {
+    fetchProjects,
+    isProjectListCacheValid,
+    portfolioList,
+    postPortfolioList,
+    isFetchingProjects,
+  } = rootStore.projectStore;
+
+  useEffect(() => {
+    if (!isProjectListCacheValid) {
+      fetchProjects();
+    }
+  }, [isProjectListCacheValid, fetchProjects]);
+
+  useEffect(() => {
+    if (!isHaListCacheValid) {
+      fetchHAs();
+    }
+  }, [isHaListCacheValid, fetchHAs]);
+
+  useEffect(() => {
+    if (!isScreenListCacheValid) {
+      fetchScreens();
+    }
+  }, [isScreenListCacheValid, fetchScreens]);
+
+  useEffect(() => {
+    if (!isGeneListCacheValid) {
+      fetchGenes();
+    }
+  }, [isGeneListCacheValid, fetchGenes]);
+
+  useEffect(() => {
+    if (!isTargetListCacheValid) {
+      fetchTargets();
+    }
+  }, [fetchTargets, isTargetListCacheValid]);
+
+  if (
+    isGeneListLoading ||
+    isFetchingTargets ||
+    isFetchingScreens ||
+    isFetchingHAs ||
+    isFetchingProjects
+  ) {
+    return (
+      <Loading
+        message={
+          isGeneListLoading
+            ? "Fetching Genes..."
+            : isFetchingTargets
+            ? "Fetching Targets..."
+            : isFetchingScreens
+            ? "Fetching Screens..."
+            : isFetchingHAs
+            ? "Fetching HAs..."
+            : isFetchingProjects
+            ? "Fetching Projects..."
+            : "Fetching..."
+        }
+      />
+    );
+  }
+
+  const geneListLength = geneList ? geneList.length : 0;
+  const targetListLength = targetList ? targetList.length : 0;
+  const screenListLength = screenList ? screenList.length : 0;
+  const haListLength = haList ? haList.length : 0;
+  const portfolioListLength = portfolioList ? portfolioList.length : 0;
+  const postPortfolioListLength = postPortfolioList
+    ? postPortfolioList.length
+    : 0;
+
   return (
     <div className="flex justify-content-center gap-5 mt-2 ">
       {" "}
@@ -17,7 +114,7 @@ const FlowDashCards = () => {
         <NavLink to="gene/" style={{ textDecoration: "None" }}>
           <FlowDashCardsCircles
             svgIcon={<GeneIcon size={"25em"} />}
-            total="4173"
+            total={geneListLength}
           />
         </NavLink>
       </div>
@@ -26,7 +123,7 @@ const FlowDashCards = () => {
           <FlowDashCardsCircles
             // icon="icon icon-common icon-target"
             svgIcon={<TargetIcon size={"25em"} />}
-            total="105"
+            total={targetListLength}
           />
         </NavLink>
       </div>
@@ -35,34 +132,34 @@ const FlowDashCards = () => {
           <FlowDashCardsCircles
             // icon="icon icon-common icon-search"
             svgIcon={<ScreenIcon size={"25em"} />}
-            total="105"
+            total={screenListLength}
           />
         </NavLink>
       </div>
       <div className="flex">
-        <NavLink to="screen/" style={{ textDecoration: "None" }}>
+        <NavLink to="ha/" style={{ textDecoration: "None" }}>
           <FlowDashCardsCircles
             //  icon="icon icon-common icon-search"
             svgIcon={<HAIcon size={"25em"} />}
-            total="105"
+            total={haListLength}
           />
         </NavLink>
       </div>
       <div className="flex">
-        <NavLink to="screen/" style={{ textDecoration: "None" }}>
+        <NavLink to="portfolio/" style={{ textDecoration: "None" }}>
           <FlowDashCardsCircles
             // icon="icon icon-common icon-search"
             svgIcon={<PortfolioIcon size={"25em"} />}
-            total="105"
+            total={portfolioListLength}
           />
         </NavLink>
       </div>
       <div className="flex">
-        <NavLink to="screen/" style={{ textDecoration: "None" }}>
+        <NavLink to="post-portfolio/" style={{ textDecoration: "None" }}>
           <FlowDashCardsCircles
             // icon="icon icon-common icon-search"
             svgIcon={<PostPortfolioIcon size={"25em"} />}
-            total="105"
+            total={postPortfolioListLength}
           />
         </NavLink>
       </div>

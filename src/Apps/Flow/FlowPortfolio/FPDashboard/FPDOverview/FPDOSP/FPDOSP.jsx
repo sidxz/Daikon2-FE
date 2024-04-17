@@ -34,7 +34,7 @@ const FPDOSP = () => {
           <div
             className="flex flex-column justify-content-center "
             style={{
-              backgroundColor: "#d48e8f",
+              backgroundColor: "#75819a",
             }}
           >
             <div className="flex p-2 text-lg text-100 text-white-alpha-90 justify-content-center">

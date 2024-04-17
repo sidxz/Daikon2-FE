@@ -35,7 +35,7 @@ const FPDOH2L = () => {
           <div
             className="flex flex-column justify-content-center "
             style={{
-              backgroundColor: "#e0c380",
+              backgroundColor: "#8c9f8b",
             }}
           >
             <div className="flex p-2 text-lg text-100 text-white-alpha-90 justify-content-center">

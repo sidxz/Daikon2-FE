@@ -34,7 +34,7 @@ const FPDOReady = () => {
           <div
             className="flex flex-column justify-content-center "
             style={{
-              backgroundColor: "#c3cba8",
+              backgroundColor: "#6e8a9d",
             }}
           >
             <div className="flex p-2 text-lg text-100 text-white-alpha-90 justify-content-center">

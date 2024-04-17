@@ -34,7 +34,7 @@ const FPDOLO = () => {
           <div
             className="flex flex-column justify-content-center "
             style={{
-              backgroundColor: "#a38e74",
+              backgroundColor: "#9c8c79",
             }}
           >
             <div className="flex p-2 text-lg text-100 text-white-alpha-90 justify-content-center">
