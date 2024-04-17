@@ -19,37 +19,33 @@ const FPDOverview = () => {
     isProjectListCacheValid,
     projectList,
     isFetchingProjects,
+    activeH2LProjects,
+    activeLOProjects,
+    activeSPProjects,
+    allH2LProjects,
+    allLOProjects,
+    allSPProjects,
+    readyForPortfolio,
   } = rootStore.projectStore;
 
-  // const { filterH2LProjects, filterLOProjects, filterSPProjects } =
-  //   rootStore.portfolioStore;
+  const { fetchHAs, isHaListCacheValid, isFetchingHAs, haPortfolioReadyList } =
+    rootStore.haStore;
 
   useEffect(() => {
+    if (!isHaListCacheValid) {
+      fetchHAs();
+    }
+
     if (!isProjectListCacheValid) {
       fetchProjects();
     }
-  }, [isProjectListCacheValid, fetchProjects]);
+  }, [isHaListCacheValid, isProjectListCacheValid]);
 
   if (isFetchingProjects) {
     return <Loading message={"Fetching Projects..."} />;
   }
 
   console.log("projectList", projectList);
-
-  let h2lActiveProjects = projectList.filter(
-    (item) => item.stage === "H2L" && item.isProjectRemoved === false
-  );
-  let h2lProjects = projectList.filter((item) => item.stage === "H2L");
-
-  let loActiveProjects = projectList.filter(
-    (item) => item.stage === "LO" && item.isProjectRemoved === false
-  );
-  let loProjects = projectList.filter((item) => item.stage === "LO");
-
-  let spActiveProjects = projectList.filter(
-    (item) => item.stage === "SP" && item.isProjectRemoved === false
-  );
-  let spProjects = projectList.filter((item) => item.stage === "SP");
 
   return (
     <div className="flex flex-column w-full">
@@ -69,15 +65,13 @@ const FPDOverview = () => {
                 <b style={{ color: "#3c83bd" }}>READY FOR PORTFOLIO -</b>
               </div>
               <div className="flex">
-                <b style={{ color: "#00A86B" }}>
-                  {h2lActiveProjects.length} / {h2lProjects.length}
-                </b>
+                <b style={{ color: "#00A86B" }}>{readyForPortfolio.length}</b>
               </div>
             </div>
           </div>
           <div className="flex w-full pr-3">
             <div className="flex w-full  pt-1  bg-white">
-              <FPDOReady projects={h2lActiveProjects} />
+              <FPDOReady />
             </div>
           </div>
         </div>
@@ -98,14 +92,14 @@ const FPDOverview = () => {
               </div>
               <div className="flex">
                 <b style={{ color: "#00A86B" }}>
-                  {h2lActiveProjects.length} / {h2lProjects.length}
+                  {activeH2LProjects.length} / {allH2LProjects.length}
                 </b>
               </div>
             </div>
           </div>
           <div className="flex w-full pr-3">
             <div className="flex w-full  pt-1  bg-white">
-              <FPDOH2L projects={h2lActiveProjects} />
+              <FPDOH2L />
             </div>
           </div>
         </div>
@@ -127,7 +121,7 @@ const FPDOverview = () => {
               </div>
               <div className="flex">
                 <b style={{ color: "#00A86B" }}>
-                  {loActiveProjects.length} / {loProjects.length}
+                  {activeLOProjects.length} / {allLOProjects.length}
                 </b>
               </div>
             </div>
@@ -135,7 +129,7 @@ const FPDOverview = () => {
 
           <div className="flex w-full pr-3">
             <div className="flex w-full  pt-1 bg-white">
-              <FPDOLO projects={loActiveProjects} />
+              <FPDOLO />
             </div>
           </div>
         </div>
@@ -157,7 +151,7 @@ const FPDOverview = () => {
               </div>
               <div className="flex">
                 <b style={{ color: "#00A86B" }}>
-                  {spActiveProjects.length} / {spProjects.length}
+                  {activeSPProjects.length} / {allSPProjects.length}
                 </b>
               </div>
             </div>
@@ -165,7 +159,7 @@ const FPDOverview = () => {
 
           <div className="flex w-full pr-3">
             <div className="flex w-full  pt-1  bg-white">
-              <FPDOSP projects={spActiveProjects} />
+              <FPDOSP />
             </div>
           </div>
         </div>

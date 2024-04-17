@@ -1,21 +1,25 @@
 import { observer } from "mobx-react-lite";
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import FDate from "../../../../../../Library/FDate/FDate";
 import SmilesView from "../../../../../../Library/SmilesView/SmilesView";
+import { RootStoreContext } from "../../../../../../RootStore";
 import { AppOrgResolver } from "../../../../../../Shared/VariableResolvers/AppOrgResolver";
 
-const FPDOSP = ({ projects }) => {
+const FPDOSP = () => {
+  const rootStore = useContext(RootStoreContext);
+  const { activeSPProjects } = rootStore.projectStore;
+
   const { getOrgNameById } = AppOrgResolver();
   const navigate = useNavigate();
-  // check if projects is empty or not set or null
-  if (!projects || projects.length === 0)
+  // check if activeSPProjects is empty or not set or null
+  if (!activeSPProjects || activeSPProjects.length === 0)
     return (
       <div className="flex justify-content-center w-full align-items-center text-sm	text-color-secondary ">
-        - No SP projects are available -
+        - No SP activeSPProjects are available -
       </div>
     );
-  let projectsComponent = projects.map((project) => {
+  let projectsComponent = activeSPProjects.map((project) => {
     const displayTargetName = project.targetName
       ? project.targetName
       : "Phenotypic";
@@ -72,7 +76,7 @@ const FPDOSP = ({ projects }) => {
                 backgroundColor: "#53A9A8",
               }}
             >
-              <FDate timestamp={project.p1PredictedStart} color="#FFFFFF" />
+              <FDate timestamp={project?.indPredictedStart} color="#FFFFFF" />
             </div>
           </div>
           <div className="flex w-full p-2 justify-content-center">

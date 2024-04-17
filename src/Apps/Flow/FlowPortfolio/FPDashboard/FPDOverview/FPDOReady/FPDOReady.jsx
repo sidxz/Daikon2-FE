@@ -1,22 +1,27 @@
 import { observer } from "mobx-react-lite";
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import FDate from "../../../../../../Library/FDate/FDate";
 import SmilesView from "../../../../../../Library/SmilesView/SmilesView";
+import { RootStoreContext } from "../../../../../../RootStore";
 import { AppOrgResolver } from "../../../../../../Shared/VariableResolvers/AppOrgResolver";
 
-const FPDOReady = ({ projects }) => {
+const FPDOReady = () => {
   const { getOrgNameById } = AppOrgResolver();
   const navigate = useNavigate();
-  // check if projects is empty or not set or null
-  if (!projects || projects.length === 0)
+
+  const rootStore = useContext(RootStoreContext);
+  const { readyForPortfolio } = rootStore.projectStore;
+
+  // check if readyForPortfolio is empty or not set or null
+  if (!readyForPortfolio || readyForPortfolio.length === 0)
     return (
       <div className="flex justify-content-center w-full align-items-center text-sm	text-color-secondary ">
-        - No H2L projects are available -
+        - No H2L readyForPortfolio are available -
       </div>
     );
 
-  let projectsComponent = projects.map((project) => {
+  let projectsComponent = readyForPortfolio.map((project) => {
     const displayTargetName = project.targetName
       ? project.targetName
       : "Phenotypic";

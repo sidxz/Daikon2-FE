@@ -1,22 +1,26 @@
 import { observer } from "mobx-react-lite";
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import FDate from "../../../../../../Library/FDate/FDate";
 import SmilesView from "../../../../../../Library/SmilesView/SmilesView";
+import { RootStoreContext } from "../../../../../../RootStore";
 import { AppOrgResolver } from "../../../../../../Shared/VariableResolvers/AppOrgResolver";
 
-const FPDOH2L = ({ projects }) => {
+const FPDOH2L = () => {
+  const rootStore = useContext(RootStoreContext);
+  const { activeH2LProjects } = rootStore.projectStore;
+
   const { getOrgNameById } = AppOrgResolver();
   const navigate = useNavigate();
-  // check if projects is empty or not set or null
-  if (!projects || projects.length === 0)
+  // check if activeH2LProjects is empty or not set or null
+  if (!activeH2LProjects || activeH2LProjects.length === 0)
     return (
       <div className="flex justify-content-center w-full align-items-center text-sm	text-color-secondary ">
-        - No H2L projects are available -
+        - No H2L activeH2LProjects are available -
       </div>
     );
 
-  let projectsComponent = projects.map((project) => {
+  let projectsComponent = activeH2LProjects.map((project) => {
     const displayTargetName = project.targetName
       ? project.targetName
       : "Phenotypic";

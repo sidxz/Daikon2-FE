@@ -36,6 +36,20 @@ export default class ProjectStore {
 
       isDeletingProject: observable,
       deleteProject: action,
+
+      activeH2LProjects: computed,
+      activeLOProjects: computed,
+      activeSPProjects: computed,
+      activeINDProjects: computed,
+      activeP1Projects: computed,
+
+      readyForPortfolio: computed,
+
+      allH2LProjects: computed,
+      allLOProjects: computed,
+      allSPProjects: computed,
+      allINDProjects: computed,
+      allP1Projects: computed,
     });
   }
 
@@ -132,6 +146,7 @@ export default class ProjectStore {
   };
 
   addProject = async (project) => {
+    project.isProjectRemoved = false;
     this.isAddingProject = true;
     try {
       var res = await ProjectAPI.create(project);
@@ -141,6 +156,8 @@ export default class ProjectStore {
         this.projectRegistry.set(project.id, project);
         this.projectListRegistry.set(project.id, project);
         this.selectedProject = project;
+
+        console.log("addProject List", this.projectListRegistry);
         toast.success("Project added successfully");
       });
     } catch (error) {
@@ -197,4 +214,66 @@ export default class ProjectStore {
       });
     }
   };
+
+  /* Computed */
+
+  get activeH2LProjects() {
+    return this.projectList.filter(
+      (item) => item.stage === "H2L" && item.isProjectRemoved === false
+    );
+  }
+
+  get activeLOProjects() {
+    return this.projectList.filter(
+      (item) => item.stage === "LO" && item.isProjectRemoved === false
+    );
+  }
+
+  get activeSPProjects() {
+    return this.projectList.filter(
+      (item) => item.stage === "SP" && item.isProjectRemoved === false
+    );
+  }
+
+  get activeINDProjects() {
+    return this.projectList.filter(
+      (item) => item.stage === "IND" && item.isProjectRemoved === false
+    );
+  }
+
+  get activeP1Projects() {
+    return this.projectList.filter(
+      (item) => item.stage === "P1" && item.isProjectRemoved === false
+    );
+  }
+
+  get allH2LProjects() {
+    return this.projectList.filter((item) => item.stage === "H2L");
+  }
+
+  get allLOProjects() {
+    return this.projectList.filter((item) => item.stage === "LO");
+  }
+
+  get allSPProjects() {
+    return this.projectList.filter((item) => item.stage === "SP");
+  }
+
+  get allINDProjects() {
+    return this.projectList.filter((item) => item.stage === "IND");
+  }
+
+  get allP1Projects() {
+    return this.projectList.filter((item) => item.stage === "P1");
+  }
+
+  get readyForPortfolio() {
+    console.log(
+      "this.rootStore.haStore.haPortfolioReadyList",
+      this.rootStore.haStore.haPortfolioReadyList
+    );
+    return this.rootStore.haStore.haPortfolioReadyList.filter(
+      (ha) => !this.projectList.some((project) => project.haId === ha.id)
+    );
+  }
 }

@@ -99,13 +99,29 @@ const FPVInformation = () => {
       //className: "expected",
     });
 
+  isDateValid(selectedProject?.indPredictedStart) &&
+    timelineItems.add({
+      id: 6,
+      content: "IND Predicted Start",
+      start: selectedProject?.indPredictedStart,
+      //end: selectedProject.h2LPredictedStartDate,
+      //start: addDays(6),
+      //end: addDays(90),
+      className: "expected",
+    });
+
   const options = {
     stack: true,
     stackSubgroups: false,
   };
 
   return (
-    <div className="flex flex-column w-full gap-1">
+    <div
+      className="flex flex-column w-full gap-1"
+      style={{
+        filter: selectedProject?.isProjectRemoved ? "grayscale(100%)" : "none",
+      }}
+    >
       <div className="flex w-full">
         <BreadCrumb model={Helper.breadCrumbItems(navigate, selectedProject)} />
       </div>
@@ -137,14 +153,20 @@ const FPVInformation = () => {
           </Fieldset>
         </div>
         <div className="flex w-full m-0">
-          <Fieldset className="flex w-full" legend="Project Description">
+          <Fieldset
+            className="flex w-full"
+            legend="Portfolio Description & Notes"
+          >
             <FPVIProjectInfoDesc />
           </Fieldset>
         </div>
       </div>
 
       <div className="flex w-full">
-        <Fieldset className="m-0 flex-grow-1" legend="Compound Evolution">
+        <Fieldset
+          className="m-0 flex-grow-1"
+          legend="Project Compound Evolution"
+        >
           <PortfolioCompoundEvolution
             events={selectedProject?.portfolioCompoundEvolution}
           />

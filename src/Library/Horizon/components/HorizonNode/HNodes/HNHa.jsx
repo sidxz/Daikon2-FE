@@ -11,6 +11,13 @@ const HNHa = ({ dataObj, entryPoint }) => {
       onClick={() => {
         navigate(`/wf/ha/viewer/${dataObj?.id}`);
       }}
+      style={{
+        filter:
+          dataObj?.attributes?.isHAComplete === "True" &&
+          dataObj?.attributes?.isHASuccess === "False"
+            ? "grayscale(100%)"
+            : "none",
+      }}
     >
       {dataObj?.id === entryPoint && (
         <foreignObject x="-30" y="-40" width="12rem" height="12rem">

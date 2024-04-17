@@ -6,6 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../../../../Library/Loading/Loading";
 import { RootStoreContext } from "../../../../RootStore";
 import FPVInformation from "./FPVInformation/FPVInformation";
+import FPVSettings from "./FPVSettings/FPVSettings";
 import * as Helper from "./FPViewerHelper";
 
 const FPViewer = () => {
@@ -47,6 +48,7 @@ const FPViewer = () => {
             <Routes>
               <Route index element={<Navigate replace to="information/" />} />
               <Route path="information/*" element={<FPVInformation />} />
+              <Route path="settings/*" element={<FPVSettings />} />
             </Routes>
           </div>
         </div>

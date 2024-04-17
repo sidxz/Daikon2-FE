@@ -76,9 +76,9 @@ const SmilesView = ({ smiles, compoundId, width = 200, height = 200 }) => {
         style={{
           width: width,
           height: height,
-          marginTop: -20,
+          marginTop: -0,
           padding: 0,
-          marginBottom: -20,
+          marginBottom: 0,
         }}
       />
     </div>

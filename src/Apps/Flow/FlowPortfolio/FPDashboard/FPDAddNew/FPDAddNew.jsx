@@ -11,7 +11,6 @@ import PleaseWait from "../../../../../Library/PleaseWait/PleaseWait";
 import { RootStoreContext } from "../../../../../RootStore";
 import InputOrg from "../../../../../Shared/InputEditors/InputOrg";
 import { AppOrgResolver } from "../../../../../Shared/VariableResolvers/AppOrgResolver";
-import { stagePortfolioOptions } from "../../constants/stageOptions";
 
 const FPDAddNew = ({ closeSideBar }) => {
   const rootStore = useContext(RootStoreContext);
@@ -77,7 +76,7 @@ const FPDAddNew = ({ closeSideBar }) => {
         console.log("submitFunc");
         newProject.primaryOrgName = getOrgNameById(newProject.primaryOrgId);
 
-        if (newProject.selectedHa !== undefined) {
+        if (selectedHa !== undefined) {
           newProject.haId = selectedHa.id;
           newProject.compoundId = selectedHa.compoundEvoLatestMoleculeId;
           newProject.compoundSMILES = selectedHa.compoundEvoLatestSMILES;
@@ -86,7 +85,6 @@ const FPDAddNew = ({ closeSideBar }) => {
         }
 
         console.log(newProject);
-
         addProject(newProject).then(() => {
           closeSideBar();
           formik.resetForm();
@@ -252,7 +250,7 @@ const FPDAddNew = ({ closeSideBar }) => {
           {getErrorMessage("primaryOrgId")}
         </div>
 
-        <div className="field">
+        {/* <div className="field">
           <label
             htmlFor="stage"
             className={classNames({
@@ -277,7 +275,7 @@ const FPDAddNew = ({ closeSideBar }) => {
           />
 
           {getErrorMessage("stage")}
-        </div>
+        </div> */}
 
         <div className="field">
           <label

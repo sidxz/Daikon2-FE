@@ -20,6 +20,12 @@ const HNPortfolio = ({ dataObj, entryPoint }) => {
       onClick={() => {
         navigate(`/wf/${projectType}/viewer/${dataObj?.id}`);
       }}
+      style={{
+        filter:
+          dataObj?.attributes?.isProjectRemoved === "True"
+            ? "grayscale(100%)"
+            : "none",
+      }}
     >
       {dataObj?.id === entryPoint && (
         <foreignObject x="-50" y="-40" width="14rem" height="14rem">
