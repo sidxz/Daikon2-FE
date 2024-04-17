@@ -28,6 +28,7 @@ const MultiSelectFilter = ({
       onChange={(e) => options.filterApplyCallback(e.value)}
       placeholder={placeholder || "Select a filter"}
       className="p-column-filter"
+      showClear
     />
   );
 };

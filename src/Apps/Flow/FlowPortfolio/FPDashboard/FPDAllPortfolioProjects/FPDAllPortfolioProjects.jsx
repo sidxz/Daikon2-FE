@@ -59,8 +59,22 @@ const FPDAllPortfolioProjects = () => {
           />
 
           <Column
+            //field="isProjectRemoved"
+            header="Status"
+            body={Helper.statusBodyTemplate}
+            filter
+            filterField="isProjectRemoved"
+            filterElement={(options) =>
+              Helper.statusFilter(portfolioList, options)
+            }
+            showFilterMenu={false}
+            filterMatchMode="in"
+            className="narrow-column"
+          />
+
+          <Column
             field="stage"
-            header="Portfolio Stage"
+            header="Stage"
             filter
             filterField="stage"
             filterElement={(options) =>
@@ -70,6 +84,13 @@ const FPDAllPortfolioProjects = () => {
             filterMatchMode="in"
             className="narrow-column"
             body={Helper.stageBodyTemplate}
+          />
+
+          <Column
+            field="Date"
+            header="Predicted Date"
+            className="narrow-column"
+            body={Helper.dateBodyTemplate}
           />
         </DataTable>
       </div>
