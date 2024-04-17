@@ -41,18 +41,7 @@ export const sidePanelItems = (navigate) => {
         },
       ],
     },
-    {
-      label: "Actions",
-      items: [
-        {
-          label: "Promote to Screen",
-          icon: "pi pi-external-link",
-          command: () => {
-            navigate(`promote/`);
-          },
-        },
-      ],
-    },
+
     {
       label: "Admin",
       items: [

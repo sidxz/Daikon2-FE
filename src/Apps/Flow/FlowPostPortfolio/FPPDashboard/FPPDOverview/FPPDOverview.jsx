@@ -14,10 +14,11 @@ const FPPDOverview = () => {
     isProjectListCacheValid,
     projectList,
     isFetchingProjects,
+    activeINDProjects,
+    activeP1Projects,
+    allINDProjects,
+    allP1Projects,
   } = rootStore.projectStore;
-
-  // const { filterH2LProjects, filterLOProjects, filterSPProjects } =
-  //   rootStore.portfolioStore;
 
   useEffect(() => {
     if (!isProjectListCacheValid) {
@@ -30,16 +31,6 @@ const FPPDOverview = () => {
   }
 
   console.log("projectList", projectList);
-
-  let indActiveProjects = projectList.filter(
-    (item) => item.stage === "IND" && item.isProjectRemoved === false
-  );
-  let indProjects = projectList.filter((item) => item.stage === "IND");
-
-  let p1ActiveProjects = projectList.filter(
-    (item) => item.stage === "P1" && item.isProjectRemoved === false
-  );
-  let p1Projects = projectList.filter((item) => item.stage === "P1");
 
   return (
     <div className="flex flex-column w-full">
@@ -61,7 +52,7 @@ const FPPDOverview = () => {
               </div>
               <div className="flex">
                 <b style={{ color: "#00A86B" }}>
-                  {indActiveProjects.length} / {indProjects.length}
+                  {activeINDProjects.length} / {allINDProjects.length}
                 </b>
               </div>
             </div>
@@ -69,7 +60,7 @@ const FPPDOverview = () => {
 
           <div className="flex pr-3">
             <div className="flex pt-1 bg-white">
-              <FPPDOIND projects={indActiveProjects} />
+              <FPPDOIND />
             </div>
           </div>
         </div>
@@ -91,7 +82,7 @@ const FPPDOverview = () => {
               </div>
               <div className="flex">
                 <b style={{ color: "#00A86B" }}>
-                  {p1ActiveProjects.length} / {p1Projects.length}
+                  {activeP1Projects.length} / {allP1Projects.length}
                 </b>
               </div>
             </div>
@@ -99,7 +90,7 @@ const FPPDOverview = () => {
 
           <div className="flex  pr-3">
             <div className="flex  pt-1  bg-white">
-              <FPPDOP1 projects={p1ActiveProjects} />
+              <FPPDOP1 />
             </div>
           </div>
         </div>

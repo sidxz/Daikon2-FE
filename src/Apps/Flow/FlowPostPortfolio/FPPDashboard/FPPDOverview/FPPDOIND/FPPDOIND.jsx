@@ -1,21 +1,25 @@
 import { observer } from "mobx-react-lite";
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import FDate from "../../../../../../Library/FDate/FDate";
 import SmilesView from "../../../../../../Library/SmilesView/SmilesView";
+import { RootStoreContext } from "../../../../../../RootStore";
 import { AppOrgResolver } from "../../../../../../Shared/VariableResolvers/AppOrgResolver";
 
-const FPPDOIND = ({ projects }) => {
+const FPPDOIND = () => {
+  const rootStore = useContext(RootStoreContext);
+  const { activeINDProjects } = rootStore.projectStore;
+
   const { getOrgNameById } = AppOrgResolver();
   const navigate = useNavigate();
-  // check if projects is empty or not set or null
-  if (!projects || projects.length === 0)
+  // check if activeINDProjects is empty or not set or null
+  if (!activeINDProjects || activeINDProjects.length === 0)
     return (
       <div className="flex justify-content-center w-full align-items-center text-sm	text-color-secondary ">
         - No IND projects are available -
       </div>
     );
-  let projectsComponent = projects.map((project) => {
+  let projectsComponent = activeINDProjects.map((project) => {
     const displayTargetName = project.targetName
       ? project.targetName
       : "Phenotypic";
@@ -62,7 +66,7 @@ const FPPDOIND = ({ projects }) => {
                 minWidth: "4rem",
               }}
             >
-              <FDate timestamp={project.loStart} color="#52422D" />
+              <FDate timestamp={project.indStart} color="#52422D" />
             </div>
 
             <div
@@ -72,7 +76,7 @@ const FPPDOIND = ({ projects }) => {
                 backgroundColor: "#82c7df",
               }}
             >
-              <FDate timestamp={project.spPredictedStart} color="#FFFFFF" />
+              <FDate timestamp={project.p1PredictedStart} color="#FFFFFF" />
             </div>
           </div>
           <div className="flex w-full p-2 justify-content-center">

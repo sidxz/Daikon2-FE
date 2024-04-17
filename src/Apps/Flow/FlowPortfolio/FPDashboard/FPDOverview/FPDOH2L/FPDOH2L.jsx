@@ -16,7 +16,7 @@ const FPDOH2L = () => {
   if (!activeH2LProjects || activeH2LProjects.length === 0)
     return (
       <div className="flex justify-content-center w-full align-items-center text-sm	text-color-secondary ">
-        - No H2L activeH2LProjects are available -
+        - No H2L projects are available -
       </div>
     );
 
