@@ -34,7 +34,7 @@ const FPPDOIND = () => {
           <div
             className="flex flex-column justify-content-center "
             style={{
-              backgroundColor: "#53A9A8",
+              backgroundColor: "#6D9CA9",
             }}
           >
             <div className="flex p-2 text-lg text-100 text-white-alpha-90 justify-content-center">
@@ -43,7 +43,7 @@ const FPPDOIND = () => {
           </div>
           <div className="flex justify-content-center border-bottom-1 border-gray-100">
             <div
-              className="flex justify-content-center w-full  p-2 text-yellow-900 border-right-1 border-gray-100"
+              className="flex justify-content-center w-full  p-2 text-cyan-900 border-right-1 border-gray-100"
               style={{
                 minWidth: "4rem",
               }}
@@ -52,7 +52,7 @@ const FPPDOIND = () => {
             </div>
 
             <div
-              className="flex justify-content-center w-full  p-2 text-yellow-900 border-right-1 border-gray-100"
+              className="flex justify-content-center w-full  p-2 text-cyan-900 border-right-1 border-gray-100"
               style={{
                 minWidth: "4rem",
               }}
@@ -61,19 +61,19 @@ const FPPDOIND = () => {
             </div>
 
             <div
-              className="flex justify-content-center w-full p-2 text-yellow-900 border-right-1 border-gray-100"
+              className="flex justify-content-center w-full p-2 text-cyan-900 border-right-1 border-gray-100"
               style={{
                 minWidth: "4rem",
               }}
             >
-              <FDate timestamp={project.indStart} color="#52422D" />
+              <FDate timestamp={project.indStart} color="#154252" />
             </div>
 
             <div
               className="flex justify-content-center w-full p-2 text-100"
               style={{
                 minWidth: "4rem",
-                backgroundColor: "#82c7df",
+                backgroundColor: "#6D86A9",
               }}
             >
               <FDate timestamp={project.p1PredictedStart} color="#FFFFFF" />

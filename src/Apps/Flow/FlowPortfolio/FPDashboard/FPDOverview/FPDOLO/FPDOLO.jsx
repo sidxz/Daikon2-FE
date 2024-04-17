@@ -34,16 +34,16 @@ const FPDOLO = () => {
           <div
             className="flex flex-column justify-content-center "
             style={{
-              backgroundColor: "#9c8c79",
+              backgroundColor: "#6e8a9d",
             }}
           >
             <div className="flex p-2 text-lg text-100 text-white-alpha-90 justify-content-center">
               {project.name}
             </div>
           </div>
-          <div className="flex justify-content-center border-bottom-1 border-gray-100">
+          <div className="flex justify-content-center border-bottom-1 border-blue-100">
             <div
-              className="flex justify-content-center w-full  p-2 text-yellow-900 border-right-1 border-gray-100"
+              className="flex justify-content-center w-full  p-2 text-blue-900 border-right-1 border-blue-100"
               style={{
                 minWidth: "4rem",
               }}
@@ -52,7 +52,7 @@ const FPDOLO = () => {
             </div>
 
             <div
-              className="flex justify-content-center w-full  p-2 text-yellow-900 border-right-1 border-gray-100"
+              className="flex justify-content-center w-full  p-2 text-blue-900 border-right-1 border-blue-100"
               style={{
                 minWidth: "4rem",
               }}
@@ -61,19 +61,19 @@ const FPDOLO = () => {
             </div>
 
             <div
-              className="flex justify-content-center w-full p-2 text-yellow-900 border-right-1 border-gray-100"
+              className="flex justify-content-center w-full p-2 text-blue-900 border-right-1 border-blue-100"
               style={{
                 minWidth: "4rem",
               }}
             >
-              <FDate timestamp={project.loStart} color="#52422D" />
+              <FDate timestamp={project.loStart} color="#154252" />
             </div>
 
             <div
               className="flex justify-content-center w-full p-2 text-100"
               style={{
                 minWidth: "4rem",
-                backgroundColor: "#d48e8f",
+                backgroundColor: "#9A7581",
               }}
             >
               <FDate timestamp={project.spPredictedStart} color="#FFFFFF" />

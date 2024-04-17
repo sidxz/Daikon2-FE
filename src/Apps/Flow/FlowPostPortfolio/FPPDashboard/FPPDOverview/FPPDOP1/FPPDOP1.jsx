@@ -34,7 +34,7 @@ const FPPDOP1 = () => {
           <div
             className="flex flex-column justify-content-center "
             style={{
-              backgroundColor: "#82c7df",
+              backgroundColor: "#6D86A9",
             }}
           >
             <div className="flex p-2 text-lg text-100 text-white-alpha-90 justify-content-center">
@@ -43,7 +43,7 @@ const FPPDOP1 = () => {
           </div>
           <div className="flex justify-content-center border-bottom-1 border-gray-100">
             <div
-              className="flex justify-content-center w-full p-2 text-pink-600 border-right-1 border-gray-100"
+              className="flex justify-content-center w-full p-2 text-blue-900 border-right-1 border-gray-100"
               style={{
                 minWidth: "4rem",
               }}
@@ -52,7 +52,7 @@ const FPPDOP1 = () => {
             </div>
 
             <div
-              className="flex justify-content-center w-full p-2 text-pink-600 border-right-1 border-gray-100"
+              className="flex justify-content-center w-full p-2 text-blue-900 border-right-1 border-gray-100"
               style={{
                 minWidth: "4rem",
               }}
@@ -66,7 +66,7 @@ const FPPDOP1 = () => {
                 minWidth: "4rem",
               }}
             >
-              <FDate timestamp={project.p1Start} color="#2d8bad" />
+              <FDate timestamp={project.p1Start} color="#224255" />
             </div>
           </div>
           <div className="flex w-full p-2 justify-content-center">
