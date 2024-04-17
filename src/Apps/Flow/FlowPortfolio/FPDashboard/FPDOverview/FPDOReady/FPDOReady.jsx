@@ -17,7 +17,7 @@ const FPDOReady = () => {
   if (!readyForPortfolio || readyForPortfolio.length === 0)
     return (
       <div className="flex justify-content-center w-full align-items-center text-sm	text-color-secondary ">
-        - No H2L readyForPortfolio are available -
+        - No projects are ready for portfolio -
       </div>
     );
 
@@ -34,7 +34,7 @@ const FPDOReady = () => {
           <div
             className="flex flex-column justify-content-center "
             style={{
-              backgroundColor: "#c3cba8",
+              backgroundColor: "#9c8c79",
             }}
           >
             <div className="flex p-2 text-lg text-100 text-white-alpha-90 justify-content-center">
@@ -42,18 +42,18 @@ const FPDOReady = () => {
             </div>
           </div>
 
-          <div className="flex justify-content-center border-green-100 border-bottom-1">
+          <div className="flex justify-content-center border-yellow-100 border-bottom-1">
             <div
-              className="flex justify-content-center w-full p-2 text-green-800 border-right-1 border-green-100"
+              className="flex justify-content-center w-full p-2 text-yellow-800 border-right-1 border-yellow-100"
               style={{
                 minWidth: "4rem",
               }}
             >
-              rho
+              pks13
             </div>
 
             <div
-              className="flex justify-content-center w-full p-2 text-green-800 border-right-1 border-green-100"
+              className="flex justify-content-center w-full p-2 text-yellow-800 border-right-1 border-yellow-100"
               style={{
                 minWidth: "4rem",
               }}
@@ -62,22 +62,22 @@ const FPDOReady = () => {
             </div>
 
             <div
-              className="flex justify-content-center w-full p-2 text-green-800 border-right-1 border-green-100"
+              className="flex justify-content-center w-full p-2"
               style={{
                 minWidth: "4rem",
               }}
             >
-              <FDate timestamp={ha.statusCompleteSuccessDate} color="#4c6018" />
+              <FDate timestamp={ha.statusLastModifiedDate} color="#8c7217" />
             </div>
 
             <div
-              className="flex justify-content-center w-full p-2 text-100"
+              className="flex justify-content-center w-full p-2"
               style={{
                 minWidth: "4rem",
-                backgroundColor: "#e0c380",
+                backgroundColor: "#8c9f8b",
               }}
             >
-              <FDate timestamp={ha.h2LPredictedStart} color="#FFFFFF" />
+              <FDate timestamp={ha.haPredictedStartDate} color="#FFFFFF" />
             </div>
           </div>
           <div className="flex p-2 w-full justify-content-center">

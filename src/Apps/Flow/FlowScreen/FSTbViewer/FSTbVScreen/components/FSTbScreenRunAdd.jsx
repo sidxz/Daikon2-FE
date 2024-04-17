@@ -116,7 +116,7 @@ const FSTbScreenRunAdd = ({ screenId, closeSideBar }) => {
               "p-error": isInvalid("noOfCompoundsScreened"),
             })}
           >
-            MIC
+            No. of compounds screened
           </label>
           <InputText
             id="noOfCompoundsScreened"

@@ -16,7 +16,7 @@ const FPDOH2L = () => {
   if (!activeH2LProjects || activeH2LProjects.length === 0)
     return (
       <div className="flex justify-content-center w-full align-items-center text-sm	text-color-secondary ">
-        - No H2L activeH2LProjects are available -
+        - No H2L projects are available -
       </div>
     );
 
@@ -35,7 +35,7 @@ const FPDOH2L = () => {
           <div
             className="flex flex-column justify-content-center "
             style={{
-              backgroundColor: "#e0c380",
+              backgroundColor: "#8c9f8b",
             }}
           >
             <div className="flex p-2 text-lg text-100 text-white-alpha-90 justify-content-center">
@@ -43,18 +43,18 @@ const FPDOH2L = () => {
             </div>
           </div>
 
-          <div className="flex justify-content-center border-yellow-100 border-bottom-1">
+          <div className="flex justify-content-center border-green-100 border-bottom-1">
             <div
-              className="flex justify-content-center w-full p-2 text-yellow-800 border-right-1 border-yellow-100"
+              className="flex justify-content-center w-full p-2 text-green-800 border-right-1 border-green-100"
               style={{
                 minWidth: "4rem",
               }}
             >
-              rho
+              {project.alias}
             </div>
 
             <div
-              className="flex justify-content-center w-full p-2 text-yellow-800 border-right-1 border-yellow-100"
+              className="flex justify-content-center w-full p-2 text-green-800 border-right-1 border-green-100"
               style={{
                 minWidth: "4rem",
               }}
@@ -63,19 +63,19 @@ const FPDOH2L = () => {
             </div>
 
             <div
-              className="flex justify-content-center w-full p-2 text-yellow-800 border-right-1 border-yellow-100"
+              className="flex justify-content-center w-full p-2 text-green-800 border-right-1 border-green-100"
               style={{
                 minWidth: "4rem",
               }}
             >
-              <FDate timestamp={project.h2LStart} color="#8a6a19" />
+              <FDate timestamp={project.h2LStart} color="#384612" />
             </div>
 
             <div
               className="flex justify-content-center w-full p-2 text-100"
               style={{
                 minWidth: "4rem",
-                backgroundColor: "#a38e74",
+                backgroundColor: "#6e8a9d",
               }}
             >
               <FDate timestamp={project.loPredictedStart} color="#FFFFFF" />

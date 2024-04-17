@@ -60,6 +60,20 @@ const FPPDAllPostPortfolioProjects = () => {
           />
 
           <Column
+            //field="isProjectRemoved"
+            header="Status"
+            body={Helper.statusBodyTemplate}
+            filter
+            filterField="isProjectRemoved"
+            filterElement={(options) =>
+              Helper.statusFilter(postPortfolioList, options)
+            }
+            showFilterMenu={false}
+            filterMatchMode="in"
+            className="narrow-column"
+          />
+
+          <Column
             field="stage"
             header="Post Portfolio Stage"
             filter
@@ -71,6 +85,13 @@ const FPPDAllPostPortfolioProjects = () => {
             filterMatchMode="in"
             className="narrow-column"
             body={Helper.stageBodyTemplate}
+          />
+
+          <Column
+            field="Date"
+            header="Predicted Date"
+            className="narrow-column"
+            body={Helper.dateBodyTemplate}
           />
         </DataTable>
       </div>

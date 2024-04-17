@@ -1,21 +1,25 @@
 import { observer } from "mobx-react-lite";
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import FDate from "../../../../../../Library/FDate/FDate";
 import SmilesView from "../../../../../../Library/SmilesView/SmilesView";
+import { RootStoreContext } from "../../../../../../RootStore";
 import { AppOrgResolver } from "../../../../../../Shared/VariableResolvers/AppOrgResolver";
 
-const FPPDOIND = ({ projects }) => {
+const FPPDOIND = () => {
+  const rootStore = useContext(RootStoreContext);
+  const { activeINDProjects } = rootStore.projectStore;
+
   const { getOrgNameById } = AppOrgResolver();
   const navigate = useNavigate();
-  // check if projects is empty or not set or null
-  if (!projects || projects.length === 0)
+  // check if activeINDProjects is empty or not set or null
+  if (!activeINDProjects || activeINDProjects.length === 0)
     return (
       <div className="flex justify-content-center w-full align-items-center text-sm	text-color-secondary ">
         - No IND projects are available -
       </div>
     );
-  let projectsComponent = projects.map((project) => {
+  let projectsComponent = activeINDProjects.map((project) => {
     const displayTargetName = project.targetName
       ? project.targetName
       : "Phenotypic";
@@ -30,7 +34,7 @@ const FPPDOIND = ({ projects }) => {
           <div
             className="flex flex-column justify-content-center "
             style={{
-              backgroundColor: "#53A9A8",
+              backgroundColor: "#6D9CA9",
             }}
           >
             <div className="flex p-2 text-lg text-100 text-white-alpha-90 justify-content-center">
@@ -39,7 +43,7 @@ const FPPDOIND = ({ projects }) => {
           </div>
           <div className="flex justify-content-center border-bottom-1 border-gray-100">
             <div
-              className="flex justify-content-center w-full  p-2 text-yellow-900 border-right-1 border-gray-100"
+              className="flex justify-content-center w-full  p-2 text-cyan-900 border-right-1 border-gray-100"
               style={{
                 minWidth: "4rem",
               }}
@@ -48,7 +52,7 @@ const FPPDOIND = ({ projects }) => {
             </div>
 
             <div
-              className="flex justify-content-center w-full  p-2 text-yellow-900 border-right-1 border-gray-100"
+              className="flex justify-content-center w-full  p-2 text-cyan-900 border-right-1 border-gray-100"
               style={{
                 minWidth: "4rem",
               }}
@@ -57,22 +61,22 @@ const FPPDOIND = ({ projects }) => {
             </div>
 
             <div
-              className="flex justify-content-center w-full p-2 text-yellow-900 border-right-1 border-gray-100"
+              className="flex justify-content-center w-full p-2 text-cyan-900 border-right-1 border-gray-100"
               style={{
                 minWidth: "4rem",
               }}
             >
-              <FDate timestamp={project.loStart} color="#52422D" />
+              <FDate timestamp={project.indStart} color="#154252" />
             </div>
 
             <div
               className="flex justify-content-center w-full p-2 text-100"
               style={{
                 minWidth: "4rem",
-                backgroundColor: "#82c7df",
+                backgroundColor: "#6D86A9",
               }}
             >
-              <FDate timestamp={project.spPredictedStart} color="#FFFFFF" />
+              <FDate timestamp={project.p1PredictedStart} color="#FFFFFF" />
             </div>
           </div>
           <div className="flex w-full p-2 justify-content-center">

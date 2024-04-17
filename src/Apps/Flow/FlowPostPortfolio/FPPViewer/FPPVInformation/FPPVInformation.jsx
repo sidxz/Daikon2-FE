@@ -103,19 +103,25 @@ const FPPVInformation = () => {
 
       <div className="flex flex-row m-0 w-full">
         <div className="flex m-0 flex-grow-1">
-          <Fieldset className="flex" legend="Project Information">
+          <Fieldset className="flex" legend="Team Info">
             <FPPVIProjectInfoPriority />
           </Fieldset>
         </div>
         <div className="flex w-full m-0">
-          <Fieldset className="flex w-full" legend="Project Description">
+          <Fieldset
+            className="flex w-full"
+            legend="Post Portfolio Description & Notes"
+          >
             <FPPVIProjectInfoDesc />
           </Fieldset>
         </div>
       </div>
 
       <div className="flex w-full">
-        <Fieldset className="m-0 flex-grow-1" legend="Compound Evolution">
+        <Fieldset
+          className="m-0 flex-grow-1"
+          legend="Project Compound Evolution"
+        >
           <PortfolioCompoundEvolution
             events={selectedProject?.portfolioCompoundEvolution}
           />

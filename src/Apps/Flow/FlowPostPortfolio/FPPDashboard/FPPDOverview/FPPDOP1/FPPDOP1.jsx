@@ -1,21 +1,25 @@
 import { observer } from "mobx-react-lite";
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import FDate from "../../../../../../Library/FDate/FDate";
 import SmilesView from "../../../../../../Library/SmilesView/SmilesView";
+import { RootStoreContext } from "../../../../../../RootStore";
 import { AppOrgResolver } from "../../../../../../Shared/VariableResolvers/AppOrgResolver";
 
-const FPPDOP1 = ({ projects }) => {
+const FPPDOP1 = () => {
+  const rootStore = useContext(RootStoreContext);
+  const { activeP1Projects } = rootStore.projectStore;
+
   const { getOrgNameById } = AppOrgResolver();
   const navigate = useNavigate();
-  // check if projects is empty or not set or null
-  if (!projects || projects.length === 0)
+  // check if activeP1Projects is empty or not set or null
+  if (!activeP1Projects || activeP1Projects.length === 0)
     return (
       <div className="flex justify-content-center w-full align-items-center text-sm	text-color-secondary ">
         - No P1 projects are available -
       </div>
     );
-  let projectsComponent = projects.map((project) => {
+  let projectsComponent = activeP1Projects.map((project) => {
     const displayTargetName = project.targetName
       ? project.targetName
       : "Phenotypic";
@@ -30,7 +34,7 @@ const FPPDOP1 = ({ projects }) => {
           <div
             className="flex flex-column justify-content-center "
             style={{
-              backgroundColor: "#82c7df",
+              backgroundColor: "#6D86A9",
             }}
           >
             <div className="flex p-2 text-lg text-100 text-white-alpha-90 justify-content-center">
@@ -39,7 +43,7 @@ const FPPDOP1 = ({ projects }) => {
           </div>
           <div className="flex justify-content-center border-bottom-1 border-gray-100">
             <div
-              className="flex justify-content-center w-full p-2 text-pink-600 border-right-1 border-gray-100"
+              className="flex justify-content-center w-full p-2 text-blue-900 border-right-1 border-gray-100"
               style={{
                 minWidth: "4rem",
               }}
@@ -48,7 +52,7 @@ const FPPDOP1 = ({ projects }) => {
             </div>
 
             <div
-              className="flex justify-content-center w-full p-2 text-pink-600 border-right-1 border-gray-100"
+              className="flex justify-content-center w-full p-2 text-blue-900 border-right-1 border-gray-100"
               style={{
                 minWidth: "4rem",
               }}
@@ -62,7 +66,7 @@ const FPPDOP1 = ({ projects }) => {
                 minWidth: "4rem",
               }}
             >
-              <FDate timestamp={project.spStart} color="#2d8bad" />
+              <FDate timestamp={project.p1Start} color="#224255" />
             </div>
           </div>
           <div className="flex w-full p-2 justify-content-center">

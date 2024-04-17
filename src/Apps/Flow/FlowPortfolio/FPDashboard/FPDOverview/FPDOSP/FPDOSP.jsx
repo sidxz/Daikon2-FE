@@ -16,7 +16,7 @@ const FPDOSP = () => {
   if (!activeSPProjects || activeSPProjects.length === 0)
     return (
       <div className="flex justify-content-center w-full align-items-center text-sm	text-color-secondary ">
-        - No SP activeSPProjects are available -
+        - No SP projects are available -
       </div>
     );
   let projectsComponent = activeSPProjects.map((project) => {
@@ -34,7 +34,7 @@ const FPDOSP = () => {
           <div
             className="flex flex-column justify-content-center "
             style={{
-              backgroundColor: "#d48e8f",
+              backgroundColor: "#9A7581",
             }}
           >
             <div className="flex p-2 text-lg text-100 text-white-alpha-90 justify-content-center">
@@ -43,7 +43,7 @@ const FPDOSP = () => {
           </div>
           <div className="flex justify-content-center border-bottom-1 border-gray-100">
             <div
-              className="flex justify-content-center w-full p-2 text-pink-600 border-right-1 border-gray-100"
+              className="flex justify-content-center w-full p-2 text-pink-800 border-right-1 border-gray-100"
               style={{
                 minWidth: "4rem",
               }}
@@ -52,7 +52,7 @@ const FPDOSP = () => {
             </div>
 
             <div
-              className="flex justify-content-center w-full p-2 text-pink-600 border-right-1 border-gray-100"
+              className="flex justify-content-center w-full p-2 text-pink-800 border-right-1 border-gray-100"
               style={{
                 minWidth: "4rem",
               }}
@@ -66,14 +66,14 @@ const FPDOSP = () => {
                 minWidth: "4rem",
               }}
             >
-              <FDate timestamp={project.spStart} color="#2d8bad" />
+              <FDate timestamp={project.spStart} color="#55222e" />
             </div>
 
             <div
               className="flex justify-content-center w-full p-2 text-100"
               style={{
                 minWidth: "4rem",
-                backgroundColor: "#53A9A8",
+                backgroundColor: "#6D9CA9",
               }}
             >
               <FDate timestamp={project?.indPredictedStart} color="#FFFFFF" />
