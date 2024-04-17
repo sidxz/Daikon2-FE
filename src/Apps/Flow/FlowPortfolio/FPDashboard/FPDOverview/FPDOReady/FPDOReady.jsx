@@ -21,16 +21,14 @@ const FPDOReady = () => {
       </div>
     );
 
-  let projectsComponent = readyForPortfolio.map((project) => {
-    const displayTargetName = project.targetName
-      ? project.targetName
-      : "Phenotypic";
+  let projectsComponent = readyForPortfolio.map((ha) => {
+    const displayTargetName = ha.targetName ? ha.targetName : "Phenotypic";
     return (
       <div className="flex flex-column w-full shadow-1 hover:shadow-3">
         <div
           className="flex flex-column  justify-content-center cursor-pointer "
           onClick={() => {
-            navigate(`/wf/portfolio/viewer/${project.id}/information`);
+            navigate(`/wf/ha/viewer/${ha.id}/`);
           }}
         >
           <div
@@ -40,7 +38,7 @@ const FPDOReady = () => {
             }}
           >
             <div className="flex p-2 text-lg text-100 text-white-alpha-90 justify-content-center">
-              {project.name}
+              {ha.name}
             </div>
           </div>
 
@@ -60,7 +58,7 @@ const FPDOReady = () => {
                 minWidth: "4rem",
               }}
             >
-              {getOrgNameById(project?.primaryOrgId)}
+              {getOrgNameById(ha?.primaryOrgId)}
             </div>
 
             <div
@@ -69,10 +67,7 @@ const FPDOReady = () => {
                 minWidth: "4rem",
               }}
             >
-              <FDate
-                timestamp={project.statusCompleteSuccessDate}
-                color="#4c6018"
-              />
+              <FDate timestamp={ha.statusCompleteSuccessDate} color="#4c6018" />
             </div>
 
             <div
@@ -82,15 +77,15 @@ const FPDOReady = () => {
                 backgroundColor: "#e0c380",
               }}
             >
-              <FDate timestamp={project.h2LPredictedStart} color="#FFFFFF" />
+              <FDate timestamp={ha.h2LPredictedStart} color="#FFFFFF" />
             </div>
           </div>
           <div className="flex p-2 w-full justify-content-center">
             <SmilesView
               smiles={
-                project.compoundEvoLatestSMILES != null
-                  ? project.compoundEvoLatestSMILES
-                  : project.compoundSMILES
+                ha.compoundEvoLatestSMILES != null
+                  ? ha.compoundEvoLatestSMILES
+                  : ha.compoundSMILES
               }
               width={200}
               height={200}
