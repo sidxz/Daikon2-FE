@@ -62,7 +62,7 @@ const FPDOReady = () => {
             </div>
 
             <div
-              className="flex justify-content-center w-full p-2 text-yellow-800 border-right-1 border-yellow-100"
+              className="flex justify-content-center w-full p-2"
               style={{
                 minWidth: "4rem",
               }}
