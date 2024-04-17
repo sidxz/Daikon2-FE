@@ -1,6 +1,7 @@
 import { configure } from "mobx";
 import { createContext } from "react";
 import AdminUserManagementStore from "./Apps/Admin/AdminUserManagement/Stores/AdminUserManagementStore";
+import CommentStore from "./Apps/Comments/Stores/CommentStore";
 import GeneCrispriStrainStore from "./Apps/Flow/FlowGene/Stores/GeneCrispriStrainStore";
 import GeneEssentialityStore from "./Apps/Flow/FlowGene/Stores/GeneEssentialityStore";
 import GeneHypomorphStore from "./Apps/Flow/FlowGene/Stores/GeneHypomorphStore";
@@ -67,6 +68,8 @@ export class RootStore {
   qnaireStore;
 
   horizonStore;
+
+  commentStore;
   constructor() {
     /* Auth */
     this.authStore = new AuthStore(this);
@@ -116,6 +119,9 @@ export class RootStore {
 
     /* Horizon */
     this.horizonStore = new HorizonStore(this);
+
+    /* Comments */
+    this.commentStore = new CommentStore(this);
   }
 }
 
