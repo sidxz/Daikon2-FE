@@ -1,4 +1,10 @@
-import { action, makeObservable, observable, runInAction } from "mobx";
+import {
+  action,
+  computed,
+  makeObservable,
+  observable,
+  runInAction,
+} from "mobx";
 import CommentAPI from "../api/CommentAPI";
 
 export default class CommentStore {
@@ -13,9 +19,10 @@ export default class CommentStore {
       isFetchingComment: observable,
       commentRegistry: observable,
       isCommentRegistryCacheValid: observable,
-      selectedComment: observable,
       commentListByTags: action,
       commentListByTagsAny: action,
+
+      getComment: computed,
     });
   }
 
@@ -24,7 +31,6 @@ export default class CommentStore {
   isFetchingComment = false;
   commentRegistry = new Map();
   isCommentRegistryCacheValid = false;
-  selectedComment = null;
 
   // Actions
 
@@ -77,7 +83,6 @@ export default class CommentStore {
       const comment = this.commentRegistry.get(id);
       if (comment) {
         this.isFetchingComment = false;
-        this.selectedComment = comment;
       }
     }
     try {
@@ -85,7 +90,6 @@ export default class CommentStore {
       runInAction(() => {
         this.commentRegistry.set(comment.id, comment);
         this.isCommentRegistryCacheValid = true;
-        this.selectedComment = comment;
       });
     } catch (error) {
       console.error("Error fetching comment:", error);
@@ -95,4 +99,9 @@ export default class CommentStore {
       });
     }
   };
+
+  // Computed
+  get getComment() {
+    return (id) => this.commentRegistry.get(id);
+  }
 }

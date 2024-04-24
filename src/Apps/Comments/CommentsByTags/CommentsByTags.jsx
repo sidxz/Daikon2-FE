@@ -1,4 +1,5 @@
 import { observer } from "mobx-react-lite";
+import { Button } from "primereact/button";
 import React, { useContext, useEffect } from "react";
 import { RootStoreContext } from "../../../RootStore";
 import Comment from "../Comment/Comment";
@@ -27,7 +28,7 @@ const CommentsByTags = ({ tags }) => {
       <div className="flex flex-column w-full card-container">
         <div className="table-header flex flex-row w-full shadow-0 fadein">
           <div className="flex justify-content-end w-full">
-            {/* <div className="flex flex-grow min-w-max">
+            <div className="flex flex-grow min-w-max">
               <Button
                 type="button"
                 icon="pi pi-plus"
@@ -35,11 +36,10 @@ const CommentsByTags = ({ tags }) => {
                 className="p-button-text p-button-sm"
                 //onClick={() => setVisible(true)}
               />
-            </div> */}
+            </div>
           </div>
         </div>
-        <div className="flex w-full"></div>
-        {commentsRender}
+        <div className="flex flex-column w-full gap-2">{commentsRender}</div>
       </div>
     </>
   );
