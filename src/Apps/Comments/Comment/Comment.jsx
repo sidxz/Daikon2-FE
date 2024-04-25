@@ -7,6 +7,7 @@ import { Menu } from "primereact/menu";
 import { Sidebar } from "primereact/sidebar";
 import React, { useContext, useRef, useState } from "react";
 import { FcComments } from "react-icons/fc";
+import FDate from "../../../Library/FDate/FDate";
 import { RootStoreContext } from "../../../RootStore";
 import AuthorTag from "../../../Shared/TagGenerators/AuthorTag/AuthorTag";
 import CommentTags from "../../../Shared/TagGenerators/CommentTags/CommentTags";
@@ -66,12 +67,15 @@ const Comment = ({ id }) => {
   return (
     <>
       <div className="flex flex-column w-full border-1 border-50 p-2 border-round-md text-color">
-        <div className="flex text-xl font-semibold w-full border-round-md m-2 align-items-center gap-2">
+        <div className="flex w-full border-round-md m-2 align-items-center gap-2">
           <div className="flex">
             <FcComments />
           </div>
-          <div className="flex">{comment?.topic}</div>
-          <div className="flex">
+          <div className="flex flex-grow-1 text-xl font-semibold">
+            {comment?.topic}
+          </div>
+
+          <div className="flex justify-content-end">
             <Menu
               model={commentMenuItems}
               popup
@@ -80,7 +84,7 @@ const Comment = ({ id }) => {
             />
             <Button
               icon="pi pi-ellipsis-h"
-              className="p-button-sm p-0 m-0"
+              className="p-button-sm p-0 m-0 mr-2"
               outlined
               severity="secondary"
               onClick={(event) => commentMenu.current.toggle(event)}
@@ -90,11 +94,13 @@ const Comment = ({ id }) => {
           </div>
         </div>
         <div className="flex w-full align-items-center border-round-md">
-          <div className="flex w-full gap-2">
+          <div className="flex w-full gap-2 align-items-center">
             <div className="flex">
               <AuthorTag userId={comment?.createdById} />
             </div>
-            <div className="flex">on 15/05/2024</div>
+            <div className="flex text-sm text-gray-500 font-normal">
+              <FDate timestamp={comment?.dateCreated} color="#8191a6" />
+            </div>
           </div>
           <div className="flex justify-content-end w-full">
             <CommentTags tags={comment?.tags} />{" "}
