@@ -22,6 +22,9 @@ export default class CommentStore {
       commentListByTags: action,
       commentListByTagsAny: action,
 
+      updateComment: action,
+      isUpdatingComment: observable,
+
       getComment: computed,
     });
   }
@@ -31,6 +34,7 @@ export default class CommentStore {
   isFetchingComment = false;
   commentRegistry = new Map();
   isCommentRegistryCacheValid = false;
+  isUpdatingComment = false;
 
   // Actions
 
@@ -56,6 +60,22 @@ export default class CommentStore {
     } finally {
       runInAction(() => {
         this.isFetchingComments = false;
+      });
+    }
+  };
+
+  updateComment = async (comment) => {
+    this.isUpdatingComment = true;
+    try {
+      const updatedComment = await CommentAPI.update(comment);
+      runInAction(() => {
+        this.commentRegistry.set(updatedComment.id, updatedComment);
+      });
+    } catch (error) {
+      console.error("Error updating comment:", error);
+    } finally {
+      runInAction(() => {
+        this.isUpdatingComment = false;
       });
     }
   };

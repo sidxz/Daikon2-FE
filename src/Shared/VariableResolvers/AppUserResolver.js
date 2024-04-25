@@ -9,5 +9,11 @@ export const AppUserResolver = () => {
     return appVars.userNames[userId];
   };
 
-  return { getUserFullNameById };
+  const getIdFromUserFullName = (fullName) => {
+    return Object.keys(appVars.userNames).find(
+      (key) => appVars.userNames[key] === fullName
+    );
+  };
+
+  return { getUserFullNameById, getIdFromUserFullName };
 };
