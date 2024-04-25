@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
-import { Button } from "primereact/button";
 import React, { useContext, useEffect } from "react";
+import Loading from "../../../Library/Loading/Loading";
 import { RootStoreContext } from "../../../RootStore";
 import Comment from "../Comment/Comment";
 
@@ -8,12 +8,20 @@ const CommentsByTags = ({ tags }) => {
   console.log("tags", tags);
 
   const rootStore = useContext(RootStoreContext);
-  const { fetchCommentsByTags, isFetchingComments, commentListByTags } =
-    rootStore.commentStore;
+  const {
+    fetchCommentsByTags,
+    isFetchingComments,
+    commentListByTags,
+    isCommentRegistryCacheValid,
+    commentRegistry,
+  } = rootStore.commentStore;
 
   useEffect(() => {
-    fetchCommentsByTags(tags);
-  }, [fetchCommentsByTags, tags]);
+    console.log("useEffect CommentsByTags");
+    if (!isCommentRegistryCacheValid) fetchCommentsByTags(tags);
+  }, [fetchCommentsByTags, tags, commentRegistry, isCommentRegistryCacheValid]);
+
+  if (isFetchingComments) return <Loading message={"Fetching comments..."} />;
 
   console.log(commentListByTags(tags));
 
@@ -26,19 +34,6 @@ const CommentsByTags = ({ tags }) => {
   return (
     <>
       <div className="flex flex-column w-full card-container">
-        <div className="table-header flex flex-row w-full shadow-0 fadein">
-          <div className="flex justify-content-end w-full">
-            <div className="flex flex-grow min-w-max">
-              <Button
-                type="button"
-                icon="pi pi-plus"
-                label="New Discussion"
-                className="p-button-text p-button-sm"
-                //onClick={() => setVisible(true)}
-              />
-            </div>
-          </div>
-        </div>
         <div className="flex flex-column w-full gap-2">{commentsRender}</div>
       </div>
     </>

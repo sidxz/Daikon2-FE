@@ -4,6 +4,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import SecHeading from "../../../../../Library/SecHeading/SecHeading";
 import { appColors } from "../../../../../constants/colors";
+import AddComment from "../../../../Comments/AddComment/AddComment";
 import CommentsByTags from "../../../../Comments/CommentsByTags/CommentsByTags";
 import { GeneIcon } from "../../../icons/GeneIcon";
 
@@ -42,7 +43,13 @@ const FGVComments = ({ selectedGene }) => {
         />
       </div>
       <div className="flex w-full pt-1">
-        <CommentsByTags tags={["Gene", "Rv2794c"]} />
+        <AddComment
+          resourceId={selectedGene.id}
+          tags={["Gene", selectedGene.accessionNumber, selectedGene?.name]}
+        />
+      </div>
+      <div className="flex w-full pt-1">
+        <CommentsByTags tags={["Gene", selectedGene.accessionNumber]} />
       </div>
     </div>
   );

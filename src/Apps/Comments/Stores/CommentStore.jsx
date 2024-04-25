@@ -22,6 +22,9 @@ export default class CommentStore {
       commentListByTags: action,
       commentListByTagsAny: action,
 
+      addComment: action,
+      isAddingComment: observable,
+
       updateComment: action,
       isUpdatingComment: observable,
 
@@ -35,6 +38,7 @@ export default class CommentStore {
   commentRegistry = new Map();
   isCommentRegistryCacheValid = false;
   isUpdatingComment = false;
+  isAddingComment = false;
 
   // Actions
 
@@ -64,12 +68,30 @@ export default class CommentStore {
     }
   };
 
+  addComment = async (comment) => {
+    this.isAddingComment = true;
+    try {
+      const newComment = await CommentAPI.create(comment);
+      runInAction(() => {
+        this.commentRegistry.set(newComment.id, newComment);
+        this.isCommentRegistryCacheValid = false;
+      });
+    } catch (error) {
+      console.error("Error adding comment:", error);
+    } finally {
+      runInAction(() => {
+        this.isAddingComment = false;
+      });
+    }
+  };
+
   updateComment = async (comment) => {
     this.isUpdatingComment = true;
     try {
       const updatedComment = await CommentAPI.update(comment);
       runInAction(() => {
         this.commentRegistry.set(updatedComment.id, updatedComment);
+        this.isCommentRegistryCacheValid = false;
       });
     } catch (error) {
       console.error("Error updating comment:", error);
@@ -81,15 +103,28 @@ export default class CommentStore {
   };
 
   commentListByTags = (tags) => {
-    return Array.from(this.commentRegistry.values()).filter((comment) =>
-      tags.every((tag) => comment.tags.includes(tag))
-    );
+    if (tags.length === 0) {
+      return;
+    }
+
+    return Array.from(this.commentRegistry.values()).filter((comment) => {
+      if (comment?.tags === undefined) {
+        return;
+      }
+      return tags.every((tag) => comment?.tags.includes(tag));
+    });
   };
 
   commentListByTagsAny = (tags) => {
-    return Array.from(this.commentRegistry.values()).filter((comment) =>
-      tags.some((tag) => comment.tags.includes(tag))
-    );
+    if (tags.length === 0) {
+      return;
+    }
+    return Array.from(this.commentRegistry.values()).filter((comment) => {
+      if (comment?.tags === undefined) {
+        return;
+      }
+      return tags.some((tag) => comment?.tags.includes(tag));
+    });
   };
 
   fetchComment = async (id, inValidateCache = false) => {
