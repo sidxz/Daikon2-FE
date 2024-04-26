@@ -13,15 +13,28 @@ const CommentsByTags = ({ tags }) => {
   const {
     fetchCommentsByTags,
     isFetchingComments,
-    commentListByTags,
+    commentListByTagsAny,
     isCommentRegistryCacheValid,
     commentRegistry,
+    currentCommentTagsHash,
   } = rootStore.commentStore;
 
   useEffect(() => {
     console.log("useEffect CommentsByTags");
-    if (!isCommentRegistryCacheValid) fetchCommentsByTags(tags);
-  }, [fetchCommentsByTags, tags, commentRegistry, isCommentRegistryCacheValid]);
+    console.log("isCommentRegistryCacheValid", isCommentRegistryCacheValid);
+    console.log("currentCommentTagsHash", currentCommentTagsHash);
+    console.log("tags", tags.join());
+    if (!isCommentRegistryCacheValid || currentCommentTagsHash != tags.join()) {
+      console.log("fetchCommentsByTags <---->");
+      fetchCommentsByTags(tags);
+    }
+  }, [
+    fetchCommentsByTags,
+    tags,
+    commentRegistry,
+    isCommentRegistryCacheValid,
+    currentCommentTagsHash,
+  ]);
 
   if (isFetchingComments)
     return (
@@ -30,9 +43,9 @@ const CommentsByTags = ({ tags }) => {
       </div>
     );
 
-  console.log(commentListByTags(tags));
+  console.log(commentListByTagsAny(tags));
 
-  let comments = commentListByTags(tags);
+  let comments = commentListByTagsAny(tags);
   if (comments.length === 0)
     return (
       <div className="flex w-full text-color-secondary">

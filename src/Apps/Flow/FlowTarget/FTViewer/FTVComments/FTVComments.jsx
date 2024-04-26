@@ -6,24 +6,24 @@ import SecHeading from "../../../../../Library/SecHeading/SecHeading";
 import { appColors } from "../../../../../constants/colors";
 import AddComment from "../../../../Comments/AddComment/AddComment";
 import CommentsByTags from "../../../../Comments/CommentsByTags/CommentsByTags";
-import { GeneIcon } from "../../../icons/GeneIcon";
+import { TargetIcon } from "../../../icons/TargetIcon";
 
-const FGVComments = ({ selectedGene }) => {
+const FTVComments = ({ selectedTarget }) => {
   const navigate = useNavigate();
   const breadCrumbItems = [
     {
-      label: "Genes",
+      label: "Targets",
       command: () => {
-        navigate("/wf/gene/");
+        navigate("/wf/target/");
       },
     },
     {
-      label: selectedGene.accessionNumber,
+      label: selectedTarget.name,
       command: () => {
-        navigate(`/wf/gene/${selectedGene.id}`);
+        navigate(`/wf/target/viewer/${selectedTarget.id}`);
       },
     },
-    { label: "Discussion" },
+    { label: "Compass" },
   ];
 
   return (
@@ -33,28 +33,24 @@ const FGVComments = ({ selectedGene }) => {
       </div>
       <div className="flex w-full">
         <SecHeading
-          svgIcon={<GeneIcon size={"25em"} />}
-          heading={selectedGene.accessionNumber}
-          accessionNumber={selectedGene.accessionNumber}
+          svgIcon={<TargetIcon size={"25em"} />}
+          heading={"Target - " + selectedTarget.name}
+          color={appColors.sectionHeadingBg.target}
           displayHorizon={true}
-          color={appColors.sectionHeadingBg.gene}
-          breadCrumbItems={breadCrumbItems}
-          entryPoint={selectedGene?.id}
+          entryPoint={selectedTarget?.id}
         />
       </div>
       <div className="flex w-full pt-1">
         <AddComment
-          resourceId={selectedGene.id}
-          tags={["Gene", selectedGene.accessionNumber, selectedGene?.name]}
+          resourceId={selectedTarget.id}
+          tags={["Target", selectedTarget.name]}
         />
       </div>
       <div className="flex w-full pt-1">
-        <CommentsByTags
-          tags={[selectedGene.accessionNumber, selectedGene?.name]}
-        />
+        <CommentsByTags tags={["Target", selectedTarget.name]} />
       </div>
     </div>
   );
 };
 
-export default observer(FGVComments);
+export default observer(FTVComments);

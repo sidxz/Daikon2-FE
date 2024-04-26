@@ -11,6 +11,7 @@ import {
 import Loading from "../../../../Library/Loading/Loading";
 import { RootStoreContext } from "../../../../RootStore";
 import FTImpactValues from "./FTImpactValues/FTImpactValues";
+import FTVComments from "./FTVComments/FTVComments";
 import FTVCompass from "./FTVCompass/FTVCompass";
 import FTVPromotionQ from "./FTVPromotionQ/FTVPromotionQ";
 import FTVScorecard from "./FTVScorecard/FTVScorecard";
@@ -52,25 +53,17 @@ const FTViewer = () => {
         <div className="flex w-full">
           <Routes>
             <Route index element={<Navigate replace to="compass/" />} />
-            <Route
-              path="scorecard/"
-              element={<FTVScorecard selectedGene={selectedTarget} />}
-            />
-            <Route
-              path="compass/"
-              element={<FTVCompass selectedGene={selectedTarget} />}
-            />
+            <Route path="scorecard/" element={<FTVScorecard />} />
+            <Route path="compass/" element={<FTVCompass />} />
             <Route
               path="promotion-questionnaire/"
-              element={<FTVPromotionQ selectedGene={selectedTarget} />}
+              element={<FTVPromotionQ />}
             />
+            <Route path="impact/" element={<FTImpactValues />} />
+            <Route path="settings/" element={<FTVSettings />} />
             <Route
-              path="impact/"
-              element={<FTImpactValues selectedGene={selectedTarget} />}
-            />
-            <Route
-              path="settings/"
-              element={<FTVSettings selectedGene={selectedTarget} />}
+              path="discussion/"
+              element={<FTVComments selectedTarget={selectedTarget} />}
             />
           </Routes>
         </div>

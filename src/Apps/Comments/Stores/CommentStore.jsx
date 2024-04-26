@@ -44,6 +44,8 @@ export default class CommentStore {
 
       workingOnReplyId: observable,
       workingOnCommentId: observable,
+
+      currentCommentTagsHash: observable,
     });
   }
 
@@ -60,17 +62,18 @@ export default class CommentStore {
   isDeletingReply = false;
   workingOnReplyId = null;
   workingOnCommentId = null;
+  currentCommentTagsHash = "";
 
   // Actions
 
   fetchCommentsByTags = async (tags, inValidateCache = false) => {
+    console.log("ACTION fetchCommentsByTags", tags);
     if (inValidateCache) {
       this.isCommentRegistryCacheValid = false;
     }
-    if (this.isCommentRegistryCacheValid) {
-      return;
-    }
+
     this.isFetchingComments = true;
+    this.currentCommentTagsHash = tags.join();
     try {
       const comments = await CommentAPI.listByTags(tags);
       console.log("comments", comments);
@@ -154,7 +157,9 @@ export default class CommentStore {
       if (comment?.tags === undefined) {
         return;
       }
-      return tags.every((tag) => comment?.tags.includes(tag));
+      return tags.every((tag) =>
+        comment?.tags.map((t) => t.toLowerCase()).includes(tag.toLowerCase())
+      );
     });
   };
 
@@ -166,7 +171,9 @@ export default class CommentStore {
       if (comment?.tags === undefined) {
         return;
       }
-      return tags.some((tag) => comment?.tags.includes(tag));
+      return tags.some((tag) =>
+        comment?.tags.map((t) => t.toLowerCase()).includes(tag.toLowerCase())
+      );
     });
   };
 
