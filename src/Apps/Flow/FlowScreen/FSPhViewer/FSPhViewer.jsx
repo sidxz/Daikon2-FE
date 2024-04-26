@@ -10,6 +10,7 @@ import {
 } from "react-router-dom";
 import Loading from "../../../../Library/Loading/Loading";
 import { RootStoreContext } from "../../../../RootStore";
+import FSPhComments from "./FSPhComments/FSPhComments";
 import FSPhVHitCollection from "./FSPhVHitCollection/FSPhVHitCollection";
 import FSPhVHitCollectionSelection from "./FSPhVHitCollection/FSPhVHitCollectionSelection";
 import FSPhVScreen from "./FSPhVScreen/FSPhVScreen";
@@ -72,6 +73,11 @@ const FSPhViewer = () => {
               <Route
                 path="settings/"
                 element={<FSPhVSettings selectedScreen={selectedScreen} />}
+              />
+
+              <Route
+                path="discussion/"
+                element={<FSPhComments selectedScreen={selectedScreen} />}
               />
             </Routes>
           </div>

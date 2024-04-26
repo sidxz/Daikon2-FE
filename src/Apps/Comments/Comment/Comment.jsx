@@ -131,7 +131,7 @@ const Comment = ({ id }) => {
       </div>
 
       <div className="flex w-full"></div>
-      <div className="flex w-full pl-2 line-height-3">
+      <div className="flex flex-column w-full pl-4 line-height-3">
         {cleanupAndParse(comment?.description)}
       </div>
       <div className="flex w-full pl-6">

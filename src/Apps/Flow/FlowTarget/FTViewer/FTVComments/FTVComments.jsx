@@ -23,7 +23,7 @@ const FTVComments = ({ selectedTarget }) => {
         navigate(`/wf/target/viewer/${selectedTarget.id}`);
       },
     },
-    { label: "Compass" },
+    { label: "Discussion" },
   ];
 
   return (
@@ -43,11 +43,17 @@ const FTVComments = ({ selectedTarget }) => {
       <div className="flex w-full pt-1">
         <AddComment
           resourceId={selectedTarget.id}
-          tags={["Target", selectedTarget.name]}
+          tags={[
+            ...selectedTarget.associatedGenesFlattened
+              .split(",")
+              .map((gene) => gene.trim()),
+            "Target",
+            selectedTarget.name,
+          ]}
         />
       </div>
       <div className="flex w-full pt-1">
-        <CommentsByTags tags={["Target", selectedTarget.name]} />
+        <CommentsByTags tags={[selectedTarget.name]} />
       </div>
     </div>
   );

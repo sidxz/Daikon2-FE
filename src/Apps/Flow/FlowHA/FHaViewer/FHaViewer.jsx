@@ -5,6 +5,7 @@ import { Navigate, Route, Routes } from "react-router";
 import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../../../../Library/Loading/Loading";
 import { RootStoreContext } from "../../../../RootStore";
+import FHaVComments from "./FHaVComments/FHaVComments";
 import FHaVInformation from "./FHaVInformation/FHaVInformation";
 import * as Helper from "./FHaViewerHelper";
 
@@ -42,6 +43,10 @@ const FHaViewer = () => {
             <Routes>
               <Route index element={<Navigate replace to="information/" />} />
               <Route path="information/*" element={<FHaVInformation />} />
+              <Route
+                path="discussion/*"
+                element={<FHaVComments selectedHa={selectedHa} />}
+              />
             </Routes>
           </div>
         </div>
