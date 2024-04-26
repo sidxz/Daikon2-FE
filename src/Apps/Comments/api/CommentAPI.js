@@ -13,15 +13,17 @@ const CommentAPI = {
   },
   create: (comment) => axiosWithAuth.post("/v2/comment", comment),
   update: (comment) => axiosWithAuth.put(`/v2/comment/${comment.id}`, comment),
+  delete: (id) => axiosWithAuth.delete(`/v2/comment/${id}`),
+  getById: (id) => axiosWithAuth.get(`/v2/comment/by-id/${id}`),
   reply: (reply) =>
     axiosWithAuth.post(`/v2/comment/${reply.commentId}/reply`, reply),
   updateReply: (reply) =>
     axiosWithAuth.put(
-      `/v2/comment/${reply.commentId}/update-reply/${reply.id}`,
+      `/v2/comment/${reply.commentId}/reply/${reply.id}`,
       reply
     ),
-  delete: (id) => axiosWithAuth.delete(`/v2/comment/${id}`),
-  getById: (id) => axiosWithAuth.get(`/v2/comment/by-id/${id}`),
+  deleteReply: (reply) =>
+    axiosWithAuth.delete(`/v2/comment/${reply.commentId}/reply/${reply.id}`),
 };
 
 export default CommentAPI;

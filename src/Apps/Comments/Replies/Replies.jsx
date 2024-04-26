@@ -13,9 +13,17 @@ const Replies = ({ comment, setComment }) => {
         <AddReply comment={comment} setComment={setComment} />
       </div>
       <div className="flex flex-column gap-2 w-full pl-4 border-round-md align-items-center border-left-1 border-50">
-        {comment?.replies.map((reply, index) => {
-          return <Reply key={reply.id} reply={reply} />;
-        })}
+        {comment.replies &&
+          comment.replies.map((reply, index) => {
+            return (
+              <Reply
+                key={reply.id}
+                reply={reply}
+                comment={comment}
+                setComment={setComment}
+              />
+            );
+          })}
       </div>
     </div>
   );

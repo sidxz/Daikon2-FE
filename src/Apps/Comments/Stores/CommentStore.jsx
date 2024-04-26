@@ -28,10 +28,22 @@ export default class CommentStore {
       updateComment: action,
       isUpdatingComment: observable,
 
+      deleteComment: action,
+      isDeletingComment: observable,
+
       getComment: computed,
 
       addReply: action,
       isAddingReply: observable,
+
+      updateReply: action,
+      isUpdatingReply: observable,
+
+      deleteReply: action,
+      isDeletingReply: observable,
+
+      workingOnReplyId: observable,
+      workingOnCommentId: observable,
     });
   }
 
@@ -42,7 +54,12 @@ export default class CommentStore {
   isCommentRegistryCacheValid = false;
   isUpdatingComment = false;
   isAddingComment = false;
+  isDeletingComment = false;
   isAddingReply = false;
+  isUpdatingReply = false;
+  isDeletingReply = false;
+  workingOnReplyId = null;
+  workingOnCommentId = null;
 
   // Actions
 
@@ -92,6 +109,7 @@ export default class CommentStore {
 
   updateComment = async (comment) => {
     this.isUpdatingComment = true;
+    this.workingOnCommentId = comment.id;
     try {
       const updatedComment = await CommentAPI.update(comment);
       runInAction(() => {
@@ -103,6 +121,26 @@ export default class CommentStore {
     } finally {
       runInAction(() => {
         this.isUpdatingComment = false;
+        this.workingOnCommentId = null;
+      });
+    }
+  };
+
+  deleteComment = async (comment) => {
+    this.isDeletingComment = true;
+    this.workingOnCommentId = comment.id;
+    try {
+      await CommentAPI.delete(comment.id);
+      runInAction(() => {
+        this.commentRegistry.delete(comment.id);
+        //this.isCommentRegistryCacheValid = false;
+      });
+    } catch (error) {
+      console.error("Error deleting comment:", error);
+    } finally {
+      runInAction(() => {
+        this.isDeletingComment = false;
+        this.workingOnCommentId = null;
       });
     }
   };
@@ -182,6 +220,71 @@ export default class CommentStore {
     } finally {
       runInAction(() => {
         this.isAddingReply = false;
+      });
+    }
+  };
+
+  updateReply = async (reply) => {
+    const commentId = reply.commentId;
+    if (!commentId) {
+      console.error("No commentId provided for reply");
+      return;
+    }
+    this.isUpdatingReply = true;
+    this.workingOnReplyId = reply.id;
+    try {
+      const updatedReply = await CommentAPI.updateReply(reply);
+      runInAction(() => {
+        const comment = this.commentRegistry.get(commentId);
+        if (comment) {
+          const replyIndex = comment.replies.findIndex(
+            (r) => r.id === updatedReply.id
+          );
+          if (replyIndex >= 0) {
+            comment.replies[replyIndex] = updatedReply;
+            this.commentRegistry.set(commentId, comment);
+          }
+        }
+      });
+    } catch (error) {
+      console.error("Error updating reply:", error);
+    } finally {
+      runInAction(() => {
+        this.isUpdatingReply = false;
+        this.workingOnReplyId = null;
+      });
+    }
+  };
+
+  deleteReply = async (reply) => {
+    const commentId = reply.commentId;
+    if (!commentId) {
+      console.error("No commentId provided for reply");
+      return;
+    }
+    this.isDeletingReply = true;
+    this.workingOnReplyId = reply.id;
+    try {
+      await CommentAPI.deleteReply(reply);
+      runInAction(() => {
+        const comment = this.commentRegistry.get(commentId);
+        if (comment) {
+          const replyIndex = comment.replies.findIndex(
+            (r) => r.id === reply.id
+          );
+          if (replyIndex >= 0) {
+            comment.replies.splice(replyIndex, 1);
+            this.commentRegistry.set(commentId, comment);
+          }
+        }
+      });
+    } catch (error) {
+      console.error("Error deleting reply:", error);
+      throw error;
+    } finally {
+      runInAction(() => {
+        this.isDeletingReply = false;
+        this.workingOnReplyId = null;
       });
     }
   };
