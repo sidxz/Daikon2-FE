@@ -50,7 +50,8 @@ const EditCommentSidebar = ({ comment, closeSideBar, setComment }) => {
       updateComment(data).then(() => {
         closeSideBar();
         formik.resetForm();
-        setComment(data);
+        let updatedComment = { ...comment, ...data };
+        setComment(updatedComment);
       });
     },
   });

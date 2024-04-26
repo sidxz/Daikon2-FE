@@ -1,13 +1,19 @@
+import { Avatar } from "primereact/avatar";
 import { Tag } from "primereact/tag";
 import React from "react";
-import { FaUser } from "react-icons/fa6";
+import { AppUserResolver } from "../../VariableResolvers/AppUserResolver";
 
 const AuthorTag = ({ userId }) => {
-  // if (!userId) {
-  //   return <></>;
-  // }
+  const { getIdFromUserFullName, getUserFullNameById } = AppUserResolver();
 
-  let author = "Siddhant Rath";
+  let author = getUserFullNameById(userId);
+  if (!author) {
+    author = "Unknown";
+  }
+  let authorInitials = author
+    .split(" ")
+    .map((n) => n[0])
+    .join("");
   return (
     <Tag
       style={{
@@ -18,7 +24,8 @@ const AuthorTag = ({ userId }) => {
     >
       <div className="flex align-items-center gap-2 pl-2 m-0">
         <div className="flex text-bluegray-500 font-normal">
-          <FaUser />
+          {/* <FaUser /> */}
+          <Avatar label={authorInitials} size="normal" />
         </div>
         <div className="flex">
           {" "}

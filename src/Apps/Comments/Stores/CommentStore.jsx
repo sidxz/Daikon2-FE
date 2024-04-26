@@ -29,6 +29,9 @@ export default class CommentStore {
       isUpdatingComment: observable,
 
       getComment: computed,
+
+      addReply: action,
+      isAddingReply: observable,
     });
   }
 
@@ -39,6 +42,7 @@ export default class CommentStore {
   isCommentRegistryCacheValid = false;
   isUpdatingComment = false;
   isAddingComment = false;
+  isAddingReply = false;
 
   // Actions
 
@@ -73,6 +77,7 @@ export default class CommentStore {
     try {
       const newComment = await CommentAPI.create(comment);
       runInAction(() => {
+        newComment.replies = [];
         this.commentRegistry.set(newComment.id, newComment);
         this.isCommentRegistryCacheValid = false;
       });
@@ -91,7 +96,7 @@ export default class CommentStore {
       const updatedComment = await CommentAPI.update(comment);
       runInAction(() => {
         this.commentRegistry.set(updatedComment.id, updatedComment);
-        this.isCommentRegistryCacheValid = false;
+        //this.isCommentRegistryCacheValid = false;
       });
     } catch (error) {
       console.error("Error updating comment:", error);
@@ -151,6 +156,32 @@ export default class CommentStore {
     } finally {
       runInAction(() => {
         this.isFetchingComment = false;
+      });
+    }
+  };
+
+  addReply = async (reply) => {
+    const { commentId } = reply;
+    if (!commentId) {
+      console.error("No commentId provided for reply");
+      return;
+    }
+    this.isAddingReply = true;
+    try {
+      const newReply = await CommentAPI.reply(reply);
+      runInAction(() => {
+        const comment = this.commentRegistry.get(commentId);
+        if (comment) {
+          comment.replies.push(newReply);
+          this.commentRegistry.set(commentId, comment);
+          //this.isCommentRegistryCacheValid = false;
+        }
+      });
+    } catch (error) {
+      console.error("Error adding reply:", error);
+    } finally {
+      runInAction(() => {
+        this.isAddingReply = false;
       });
     }
   };
