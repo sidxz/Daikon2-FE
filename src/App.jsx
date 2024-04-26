@@ -1,7 +1,8 @@
 import { observer } from "mobx-react-lite";
+import "primeicons/primeicons.css";
 import { PrimeReactProvider } from "primereact/api";
 //import "primereact/resources/themes/nano/theme.css";
-import "primeicons/primeicons.css";
+import "primereact/resources/themes/viva-light/theme.css";
 import React from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
