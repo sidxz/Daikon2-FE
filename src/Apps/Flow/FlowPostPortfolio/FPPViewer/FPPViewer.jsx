@@ -5,6 +5,7 @@ import { Navigate, Route, Routes } from "react-router";
 import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../../../../Library/Loading/Loading";
 import { RootStoreContext } from "../../../../RootStore";
+import FPPVComments from "./FPPVComments/FPPVComments";
 import FPPVInformation from "./FPPVInformation/FPPVInformation";
 import FPPVSettings from "./FPPVSettings/FPPVSettings";
 import * as Helper from "./FPPViewerHelper";
@@ -48,6 +49,10 @@ const FPPViewer = () => {
             <Routes>
               <Route index element={<Navigate replace to="information/" />} />
               <Route path="information/*" element={<FPPVInformation />} />
+              <Route
+                path="discussion/*"
+                element={<FPPVComments selectedProject={selectedProject} />}
+              />
               <Route path="settings/*" element={<FPPVSettings />} />
             </Routes>
           </div>
