@@ -1,10 +1,12 @@
 import { useFormik } from "formik";
+import { observer } from "mobx-react-lite";
 import { Button } from "primereact/button";
 import { Dropdown } from "primereact/dropdown";
 import { InputTextarea } from "primereact/inputtextarea";
 import { Sidebar } from "primereact/sidebar";
 import { classNames } from "primereact/utils";
 import React, { useContext, useState } from "react";
+import LoadingBlockUI from "../../../../../../Library/LoadingBlockUI/LoadingBlockUI";
 import { RootStoreContext } from "../../../../../../RootStore";
 import PostPortfolioPriorityGauge from "../../../shared/PostPortfolioPriorityGauge";
 import PostPortfolioProbabilityGauge from "../../../shared/PostPortfolioProbabilityGauge";
@@ -26,6 +28,7 @@ const FPPVIProjectInfoPriority = () => {
       probability: selectedProject.probability,
       probabilityNote: selectedProject.probabilityNote,
     },
+    enableReinitialize: true,
     validate: (values) => {
       const errors = {};
       // if (!values.priority) errors.priority = "Priority is required";
@@ -95,101 +98,103 @@ const FPPVIProjectInfoPriority = () => {
         header={<h2>Team Settings</h2>}
         onHide={() => setVisible(false)}
       >
-        <div className="card w-full">
-          <form onSubmit={formik.handleSubmit} className="p-fluid">
-            <div className="field">
-              <label
-                htmlFor="priority"
-                className={classNames({
-                  "p-error": isInvalid("priority"),
-                })}
-              >
-                Priority
-              </label>
-              <Dropdown
-                id="priority"
-                value={formik.values.priority}
-                options={["High", "Medium", "Low"]}
-                onChange={formik.handleChange}
-                placeholder="Select Priority"
-              />
+        <LoadingBlockUI blocked={isUpdatingProject}>
+          <div className="card w-full">
+            <form onSubmit={formik.handleSubmit} className="p-fluid">
+              <div className="field">
+                <label
+                  htmlFor="priority"
+                  className={classNames({
+                    "p-error": isInvalid("priority"),
+                  })}
+                >
+                  Priority
+                </label>
+                <Dropdown
+                  id="priority"
+                  value={formik.values.priority}
+                  options={["High", "Medium", "Low"]}
+                  onChange={formik.handleChange}
+                  placeholder="Select Priority"
+                />
 
-              {getErrorMessage("priority")}
-            </div>
+                {getErrorMessage("priority")}
+              </div>
 
-            <div className="field">
-              <label
-                htmlFor="priorityNote"
-                className={classNames({
-                  "p-error": isInvalid("priorityNote"),
-                })}
-              >
-                Priority Note
-              </label>
-              <InputTextarea
-                id="priorityNote"
-                value={formik.values.priorityNote}
-                onChange={formik.handleChange}
-                className={classNames({
-                  "p-invalid": isInvalid("priorityNote"),
-                })}
-              />
+              <div className="field">
+                <label
+                  htmlFor="priorityNote"
+                  className={classNames({
+                    "p-error": isInvalid("priorityNote"),
+                  })}
+                >
+                  Priority Note
+                </label>
+                <InputTextarea
+                  id="priorityNote"
+                  value={formik.values.priorityNote}
+                  onChange={formik.handleChange}
+                  className={classNames({
+                    "p-invalid": isInvalid("priorityNote"),
+                  })}
+                />
 
-              {getErrorMessage("priorityNote")}
-            </div>
+                {getErrorMessage("priorityNote")}
+              </div>
 
-            <div className="field">
-              <label
-                htmlFor="probability"
-                className={classNames({
-                  "p-error": isInvalid("probability"),
-                })}
-              >
-                Probability
-              </label>
-              <Dropdown
-                id="probability"
-                value={formik.values.probability}
-                options={["High", "Medium", "Low"]}
-                onChange={formik.handleChange}
-                placeholder="Select Probability"
-              />
-              {getErrorMessage("probability")}
-            </div>
-            <div className="field">
-              <label
-                htmlFor="probabilityNote"
-                className={classNames({
-                  "p-error": isInvalid("probabilityNote"),
-                })}
-              >
-                Probability Note
-              </label>
-              <InputTextarea
-                id="probabilityNote"
-                value={formik.values.probabilityNote}
-                onChange={formik.handleChange}
-                className={classNames({
-                  "p-invalid": isInvalid("probabilityNote"),
-                })}
-              />
+              <div className="field">
+                <label
+                  htmlFor="probability"
+                  className={classNames({
+                    "p-error": isInvalid("probability"),
+                  })}
+                >
+                  Probability
+                </label>
+                <Dropdown
+                  id="probability"
+                  value={formik.values.probability}
+                  options={["High", "Medium", "Low"]}
+                  onChange={formik.handleChange}
+                  placeholder="Select Probability"
+                />
+                {getErrorMessage("probability")}
+              </div>
+              <div className="field">
+                <label
+                  htmlFor="probabilityNote"
+                  className={classNames({
+                    "p-error": isInvalid("probabilityNote"),
+                  })}
+                >
+                  Probability Note
+                </label>
+                <InputTextarea
+                  id="probabilityNote"
+                  value={formik.values.probabilityNote}
+                  onChange={formik.handleChange}
+                  className={classNames({
+                    "p-invalid": isInvalid("probabilityNote"),
+                  })}
+                />
 
-              {getErrorMessage("probabilityNote")}
-            </div>
-            <div className="flex justify-content-end">
-              <Button
-                icon="icon icon-common icon-database-submit"
-                type="submit"
-                label="Save"
-                className="p-button-secondary p-button-sm"
-                loading={isUpdatingProject}
-              />
-            </div>
-          </form>
-        </div>
+                {getErrorMessage("probabilityNote")}
+              </div>
+              <div className="flex justify-content-end">
+                <Button
+                  icon="icon icon-common icon-database-submit"
+                  type="submit"
+                  label="Save"
+                  className="p-button-secondary p-button-sm"
+                  loading={isUpdatingProject}
+                />
+              </div>
+            </form>
+          </div>
+        </LoadingBlockUI>
       </Sidebar>
     </>
   );
 };
 
-export default FPPVIProjectInfoPriority;
+export default observer(FPPVIProjectInfoPriority);
