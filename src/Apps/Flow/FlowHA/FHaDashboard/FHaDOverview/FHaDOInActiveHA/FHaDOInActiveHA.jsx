@@ -18,14 +18,14 @@ const FHaDOInActiveHA = ({ hitAssessments }) => {
 
   let hitAssessmentsComponent = hitAssessments.map((ha) => {
     return (
-      <div className="flex flex-column w-full shadow-1 hover:shadow-3">
+      <div className="flex flex-column w-full shadow-1 hover:shadow-3 border-round-md ">
         <div
           className="flex flex-column  justify-content-center cursor-pointer"
           onClick={() => {
             navigate(`/wf/ha/viewer/${ha.id}/information`);
           }}
         >
-          <div className="flex flex-column bg-yellow-100  justify-content-center">
+          <div className="flex flex-column bg-yellow-100  justify-content-center border-round-top-md ">
             <div
               className="flex p-2 text-lg text-yellow-800 justify-content-center"
               style={{
@@ -61,14 +61,14 @@ const FHaDOInActiveHA = ({ hitAssessments }) => {
                 minWidth: "4rem",
               }}
             >
-              <FDate timestamp={new Date().getTime()} color="#d5a326" />
+              <FDate timestamp={ha?.statusLastModifiedDate} color="#d5a326" />
             </div>
           </div>
           <div className="flex w-full justify-content-center">
             <SmilesView
               smiles={ha.compoundEvoLatestSMILES}
-              width={180}
-              height={180}
+              width={200}
+              height={200}
             />
           </div>
         </div>

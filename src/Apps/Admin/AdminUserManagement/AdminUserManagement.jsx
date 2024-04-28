@@ -4,7 +4,6 @@ import React, { useContext, useEffect } from "react";
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import Loading from "../../../Library/Loading/Loading";
 import { RootStoreContext } from "../../../RootStore";
-import AD_UM_Orgs from "./AD_UM_Orgs/AD_UM_Orgs";
 import AD_UM_Users from "./AD_UM_Users/AD_UM_Users";
 import * as Helper from "./AdminUserManagementHelper";
 const AdminUserManagement = () => {
@@ -35,7 +34,7 @@ const AdminUserManagement = () => {
               element={<Navigate replace to="user-management/users" />}
             />
             <Route path="user-management/users" element={<AD_UM_Users />} />
-            <Route path="user-management/orgs" element={<AD_UM_Orgs />} />
+            {/* <Route path="user-management/orgs" element={<AD_UM_Orgs />} /> */}
           </Routes>
         </div>
       </div>

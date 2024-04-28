@@ -1,10 +1,12 @@
 import { useFormik } from "formik";
 import { Button } from "primereact/button";
 import { Dropdown } from "primereact/dropdown";
-import { InputText } from "primereact/inputtext";
-import { InputTextarea } from "primereact/inputtextarea";
 import { classNames } from "primereact/utils";
 import React from "react";
+import InputTextAreaDVar from "../../../../../../Shared/DVarEditors/InputTextAreaDVar";
+import InputTextDVar from "../../../../../../Shared/DVarEditors/InputTextDVar";
+import { generateDefaultDVar } from "../../../../../../Shared/DVariable/DVarDefaults";
+import { classificationOptionsDVar } from "../../../constants/classificationOptions";
 
 const FGVPrEssentialityAddForm = ({
   selectedGene,
@@ -12,23 +14,16 @@ const FGVPrEssentialityAddForm = ({
   addEssentiality,
   closeSidebar,
 }) => {
-  const classificationOptions = [
-    { name: "Essential", value: "Essential" },
-    { name: "Essential-Domain", value: "Essential-Domain" },
-    { name: "Growth-Advantage", value: "Growth-Advantage" },
-    { name: "Growth-Defect", value: "Growth-Defect" },
-    { name: "Non-Essential", value: "Non-Essential" },
-    { name: "Uncertain", value: "Uncertain" },
-  ];
+  const classificationOptions = classificationOptionsDVar;
 
   const formik = useFormik({
     initialValues: {
-      classification: "",
-      condition: "",
-      strain: "",
-      method: "",
-      reference: "",
-      notes: "",
+      classification: generateDefaultDVar(),
+      condition: generateDefaultDVar(),
+      strain: generateDefaultDVar(),
+      method: generateDefaultDVar(),
+      reference: generateDefaultDVar(),
+      note: generateDefaultDVar(),
     },
 
     validate: (values) => {
@@ -87,10 +82,9 @@ const FGVPrEssentialityAddForm = ({
           >
             Condition
           </label>
-          <InputTextarea
+          <InputTextAreaDVar
             id="condition"
-            value={formik.values.condition}
-            onChange={formik.handleChange}
+            formik={formik}
             className={classNames({
               "p-invalid": isInvalid("condition"),
             })}
@@ -107,10 +101,9 @@ const FGVPrEssentialityAddForm = ({
           >
             Strain
           </label>
-          <InputText
+          <InputTextDVar
             id="strain"
-            value={formik.values.strain}
-            onChange={formik.handleChange}
+            formik={formik}
             className={classNames({
               "p-invalid": isInvalid("strain"),
             })}
@@ -127,10 +120,9 @@ const FGVPrEssentialityAddForm = ({
           >
             Method
           </label>
-          <InputText
+          <InputTextDVar
             id="method"
-            value={formik.values.method}
-            onChange={formik.handleChange}
+            formik={formik}
             className={classNames({
               "p-invalid": isInvalid("method"),
             })}
@@ -147,10 +139,9 @@ const FGVPrEssentialityAddForm = ({
           >
             Reference
           </label>
-          <InputText
+          <InputTextDVar
             id="reference"
-            value={formik.values.reference}
-            onChange={formik.handleChange}
+            formik={formik}
             className={classNames({
               "p-invalid": isInvalid("reference"),
             })}
@@ -160,22 +151,21 @@ const FGVPrEssentialityAddForm = ({
 
         <div className="field">
           <label
-            htmlFor="notes"
+            htmlFor="note"
             className={classNames({
-              "p-error": isInvalid("notes"),
+              "p-error": isInvalid("note"),
             })}
           >
             Notes
           </label>
-          <InputTextarea
-            id="notes"
-            value={formik.values.notes}
-            onChange={formik.handleChange}
+          <InputTextAreaDVar
+            id="note"
+            formik={formik}
             className={classNames({
-              "p-invalid": isInvalid("notes"),
+              "p-invalid": isInvalid("note"),
             })}
           />
-          {getErrorMessage("notes")}
+          {getErrorMessage("note")}
         </div>
 
         <div className="flex justify-content-end">

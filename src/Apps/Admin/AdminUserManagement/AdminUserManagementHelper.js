@@ -11,13 +11,13 @@ export const sidePanelItems = (navigate) => {
           },
         },
 
-        {
-          label: "Organizations",
-          icon: "pi pi-fw pi-users",
-          command: () => {
-            navigate(`/admin/user-management/user-management/orgs/`);
-          },
-        },
+        // {
+        //   label: "Organizations",
+        //   icon: "pi pi-fw pi-users",
+        //   command: () => {
+        //     navigate(`/admin/user-management/user-management/orgs/`);
+        //   },
+        // },
       ],
     },
   ];

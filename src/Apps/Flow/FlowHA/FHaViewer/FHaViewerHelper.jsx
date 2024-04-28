@@ -24,13 +24,6 @@ export const sidePanelItems = (navigate) => {
       label: "Admin Section",
       items: [
         {
-          label: "Promote to H2L",
-          icon: "pi pi-external-link",
-          command: () => {
-            navigate(`promote/`);
-          },
-        },
-        {
           label: "Settings",
           icon: "pi pi-cog",
           command: () => {

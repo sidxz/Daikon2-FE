@@ -35,7 +35,7 @@ export const sidePanelItems = (navigate) => {
           label: "Promote to Target",
           icon: "pi pi-external-link",
           command: () => {
-            navigate(`promote/`);
+            navigate(`/wf/target/sourcing/tpq/`);
           },
         },
       ],

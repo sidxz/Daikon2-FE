@@ -15,6 +15,8 @@ import { appColors } from "../../../../../constants/colors";
 import { PortfolioIcon } from "../../../icons/PortfolioIcon";
 import PortfolioCompoundEvolution from "../../shared/HaCompoundEvolution/PortfolioCompoundEvolution";
 import PortfolioStageDropdown from "../../shared/PortfolioStageDropdown";
+import FPVIProjectInfoDesc from "./FPVIProjectInfo/FPVIProjectInfoDesc";
+import FPVIProjectInfoPriority from "./FPVIProjectInfo/FPVIProjectInfoPriority";
 import * as Helper from "./FPVInformationHelper";
 
 const FPVInformation = () => {
@@ -97,13 +99,29 @@ const FPVInformation = () => {
       //className: "expected",
     });
 
+  isDateValid(selectedProject?.indPredictedStart) &&
+    timelineItems.add({
+      id: 6,
+      content: "IND Predicted Start",
+      start: selectedProject?.indPredictedStart,
+      //end: selectedProject.h2LPredictedStartDate,
+      //start: addDays(6),
+      //end: addDays(90),
+      className: "expected",
+    });
+
   const options = {
     stack: true,
     stackSubgroups: false,
   };
 
   return (
-    <div className="flex flex-column w-full gap-1">
+    <div
+      className="flex flex-column w-full gap-1"
+      style={{
+        filter: selectedProject?.isProjectRemoved ? "grayscale(100%)" : "none",
+      }}
+    >
       <div className="flex w-full">
         <BreadCrumb model={Helper.breadCrumbItems(navigate, selectedProject)} />
       </div>
@@ -127,8 +145,28 @@ const FPVInformation = () => {
       <div className="flex w-full">
         <VisTimeline items={timelineItems} options={options} groups={groups} />
       </div>
+
+      <div className="flex flex-row m-0 w-full">
+        <div className="flex m-0 flex-grow-1">
+          <Fieldset className="flex" legend="Team Info">
+            <FPVIProjectInfoPriority />
+          </Fieldset>
+        </div>
+        <div className="flex w-full m-0">
+          <Fieldset
+            className="flex w-full"
+            legend="Portfolio Description & Notes"
+          >
+            <FPVIProjectInfoDesc />
+          </Fieldset>
+        </div>
+      </div>
+
       <div className="flex w-full">
-        <Fieldset className="m-0 flex-grow-1" legend="Compound Evolution">
+        <Fieldset
+          className="m-0 flex-grow-1"
+          legend="Project Compound Evolution"
+        >
           <PortfolioCompoundEvolution
             events={selectedProject?.portfolioCompoundEvolution}
           />

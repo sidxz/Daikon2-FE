@@ -8,12 +8,14 @@ const GeneCrispriStrainAPI = {
 
   update: (data) =>
     axiosWithAuth.put(
-      `/v2/gene/${data.geneId}/crispri-strain/${data.crispriStrainId}`,
+      `/v2/gene/${data.geneId}/crispri-strain/${data.id}`,
       data
     ),
 
-  delete: (id, crispriStrainId) =>
-    axiosWithAuth.delete(`/v2/gene/${id}/crispri-strain/${crispriStrainId}`),
+  delete: (geneId, crispriStrainId) =>
+    axiosWithAuth.delete(
+      `/v2/gene/${geneId}/crispri-strain/${crispriStrainId}`
+    ),
 };
 
 export default GeneCrispriStrainAPI;

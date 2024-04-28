@@ -2,15 +2,18 @@ import { observer } from "mobx-react-lite";
 import { BreadCrumb } from "primereact/breadcrumb";
 import { Button } from "primereact/button";
 import { DataView } from "primereact/dataview";
+import { Dialog } from "primereact/dialog";
 import { Fieldset } from "primereact/fieldset";
 import { InputText } from "primereact/inputtext";
 import { Menu } from "primereact/menu";
 import { Slider } from "primereact/slider";
 import React, { useContext, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import JSMEditor from "../../../Library/JSME/JSMEditor";
 import SecHeading from "../../../Library/SecHeading/SecHeading";
 import { RootStoreContext } from "../../../RootStore";
 import { appColors } from "../../../constants/colors";
+import { MolecuLogixIcon } from "../Icons/MolecuLogixIcon";
 import MolDbAPI from "../api/MolDbAPI";
 import MLSimilarSearchCard from "./MLSimilarSearchCard/MLSimilarSearchCard";
 import * as Helper from "./MLogixSimilarSearchHelper";
@@ -23,6 +26,7 @@ const MLogixSimilarSearch = () => {
   const [similarityThreshold, setSimilarityThreshold] = useState(20);
 
   const rootStore = useContext(RootStoreContext);
+  const [showStructureEditor, setShowStructureEditor] = useState(false);
 
   const searchForSimilarMolecules = () => {
     MolDbAPI.findSimilarMolecules(
@@ -69,13 +73,24 @@ const MLogixSimilarSearch = () => {
 
           <div className="flex w-full gap-2">
             <Fieldset legend="Search" className="w-full">
-              <div className="flex w-full">
+              <div className="flex w-full align-items-center">
                 <div className="flex w-11 p-2">
-                  <InputText
-                    className="text-lg w-full"
-                    value={searchValue}
-                    onChange={(e) => setSearchValue(e.target.value)}
-                  />
+                  <div className="flex w-full">
+                    <InputText
+                      className="text-lg w-full"
+                      value={searchValue}
+                      onChange={(e) => setSearchValue(e.target.value)}
+                    />
+                  </div>
+                  <div className="flex border-1 border-50 p-0">
+                    <Button
+                      text
+                      type="button"
+                      icon={<MolecuLogixIcon size={32} />}
+                      label="Structure Editor"
+                      onClick={() => setShowStructureEditor(true)}
+                    />
+                  </div>
                 </div>
                 <div className="flex-column">
                   <div className="flex w-14rem p-2">
@@ -108,6 +123,23 @@ const MLogixSimilarSearch = () => {
           </div>
         </div>
       </div>
+      <Dialog
+        visible={showStructureEditor}
+        closable={false}
+        modal={false}
+        showHeader={false}
+        onHide={() => setShowStructureEditor(false)}
+      >
+        <div className="flex pt-5">
+          <JSMEditor
+            initialSmiles={searchValue}
+            onSave={(s) => {
+              setShowStructureEditor(false);
+              setSearchValue(s);
+            }}
+          />
+        </div>
+      </Dialog>
     </div>
   );
 };

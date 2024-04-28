@@ -25,6 +25,7 @@ export const appColors = {
     sp: "#D86D6F",
     ind: "#53A9A8",
     portfolio: "#DCB14E",
+    postPortfolio: "#8A6D52",
   },
 
   molecuLogix: {

@@ -36,7 +36,7 @@ export default class GeneHypomorphStore {
       var res = await GeneHypomorphAPI.create(hypomorph);
       runInAction(() => {
         // Add hypomorph to gene hypomorph list
-        hypomorph.hypomorphId = res.id;
+        hypomorph.id = res.id;
 
         this.rootStore.geneStore.selectedGene.hypomorphs.push(hypomorph);
         const gene = this.rootStore.geneStore.geneRegistry.get(
@@ -62,9 +62,9 @@ export default class GeneHypomorphStore {
     hypomorph.geneId =
       hypomorph.geneId?.trim() || this.rootStore.geneStore.selectedGene.id;
 
-    // Ensure hypomorph.hypomorphId is not null, undefined, or empty
-    if (!hypomorph.hypomorphId?.trim()) {
-      throw new Error("hypomorphId is required and cannot be empty.");
+    // Ensure hypomorph.id is not null, undefined, or empty
+    if (!hypomorph.id?.trim()) {
+      throw new Error("id is required and cannot be empty.");
     }
 
     try {
@@ -76,14 +76,14 @@ export default class GeneHypomorphStore {
         );
 
         const indexOfEss = gene.hypomorphs.findIndex(
-          (e) => e.hypomorphId === hypomorph.hypomorphId
+          (e) => e.id === hypomorph.id
         );
         gene.hypomorphs[indexOfEss] = hypomorph;
 
         // update the same in selected gene
         const selectedGene = this.rootStore.geneStore.selectedGene;
         const selectedIndex = selectedGene.hypomorphs.findIndex(
-          (e) => e.hypomorphId === hypomorph.hypomorphId
+          (e) => e.id === hypomorph.id
         );
 
         selectedGene.hypomorphs[selectedIndex] = hypomorph;
@@ -99,30 +99,28 @@ export default class GeneHypomorphStore {
     }
   };
 
-  deleteHypomorph = async (hypomorphId) => {
+  deleteHypomorph = async (id) => {
     this.isDeletingHypomorph = true;
 
     const geneId = this.rootStore.geneStore.selectedGene.id;
 
-    // Ensure hypomorphId is not null, undefined, or empty
-    if (!hypomorphId?.trim()) {
-      throw new Error("hypomorphId is required and cannot be empty.");
+    // Ensure id is not null, undefined, or empty
+    if (!id?.trim()) {
+      throw new Error("id is required and cannot be empty.");
     }
 
     try {
-      await GeneHypomorphAPI.delete(geneId, hypomorphId);
+      await GeneHypomorphAPI.delete(geneId, id);
       runInAction(() => {
         // remove hypomorph from gene hypomorph list
         const gene = this.rootStore.geneStore.geneRegistry.get(geneId);
-        const indexOfEss = gene.hypomorphs.findIndex(
-          (e) => e.hypomorphId === hypomorphId
-        );
+        const indexOfEss = gene.hypomorphs.findIndex((e) => e.id === id);
         gene.hypomorphs.splice(indexOfEss, 1);
 
         // remove the same from selected gene
         const selectedGene = this.rootStore.geneStore.selectedGene;
         const selectedIndex = selectedGene.hypomorphs.findIndex(
-          (e) => e.hypomorphId === hypomorphId
+          (e) => e.id === id
         );
         selectedGene.hypomorphs.splice(selectedIndex, 1);
 

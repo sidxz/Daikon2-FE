@@ -8,8 +8,9 @@ import { Sidebar } from "primereact/sidebar";
 import React, { useContext, useState } from "react";
 import EmbeddedHelp from "../../../../../../Library/EmbeddedHelp/EmbeddedHelp";
 import { RootStoreContext } from "../../../../../../RootStore";
-import { orgDropDown } from "../../../../../../Shared/FormEditors/OrgDropDown";
-import { TextAreaRowEditor } from "../../../../../../Shared/TableRowEditors/TextAreaRowEditor";
+import TableRowBodyDVar from "../../../../../../Shared/DVariable/TableRowBodyDVar";
+import { OrgRowEditorDVar } from "../../../../../../Shared/TableRowEditorsDVar/OrgRowEditorDVar";
+import { TextAreaRowEditorDVar } from "../../../../../../Shared/TableRowEditorsDVar/TextAreaRowEditorDVar";
 import FGVPrUnpublishedStructuralInformationAddForm from "./FGVPrUnpublishedStructuralInformationAddForm";
 
 const FGVPrUnpublishedStructuralInformation = ({ selectedGene }) => {
@@ -39,7 +40,7 @@ const FGVPrUnpublishedStructuralInformation = ({ selectedGene }) => {
           <Button
             type="button"
             icon="icon icon-common icon-plus-circle"
-            label="Add Unpublished Structural Information"
+            label="Add"
             className="p-button-text p-button-sm"
             style={{ height: "30px", marginRight: "5px" }}
             onClick={() => setDisplayAddSideBar(true)}
@@ -58,9 +59,7 @@ const FGVPrUnpublishedStructuralInformation = ({ selectedGene }) => {
   const deleteBodyTemplate = (rowData) => {
     const accept = () => {
       // Delete unpublishedStructuralInformation
-      deleteUnpublishedStructuralInformation(
-        rowData.unpublishedStructuralInformationId
-      );
+      deleteUnpublishedStructuralInformation(rowData.id);
     };
     const reject = () => {
       // Do nothing
@@ -97,7 +96,7 @@ const FGVPrUnpublishedStructuralInformation = ({ selectedGene }) => {
         <DataTable
           value={selectedGene.unpublishedStructuralInformations}
           editMode="row"
-          dataKey="unpublishedStructuralInformationId"
+          dataKey="id"
           showGridlines
           removableSort
           header={tableHeader}
@@ -108,40 +107,49 @@ const FGVPrUnpublishedStructuralInformation = ({ selectedGene }) => {
           <Column
             field="organization"
             header="Organization"
+            body={(rowData) => (
+              <TableRowBodyDVar dVar={rowData?.organization} isOrg={true} />
+            )}
             sortable
-            editor={(options) => orgDropDown(options)}
+            editor={(options) => OrgRowEditorDVar(options)}
           />
 
           <Column
             field="method"
             header="Method"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => <TableRowBodyDVar dVar={rowData?.method} />}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
           <Column
             field="resolution"
             header="Resolution"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => <TableRowBodyDVar dVar={rowData?.resolution} />}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
           <Column
             field="url"
             header="URL"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => <TableRowBodyDVar dVar={rowData?.url} />}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
           <Column
             field="ligands"
             header="Ligands"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => <TableRowBodyDVar dVar={rowData?.ligands} />}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
           <Column
             field="reference"
             header="Reference"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => <TableRowBodyDVar dVar={rowData?.reference} />}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
 
           <Column
             field="researcher"
             header="Researcher"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => <TableRowBodyDVar dVar={rowData?.researcher} />}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
           <Column
             rowEditor

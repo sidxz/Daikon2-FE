@@ -10,7 +10,7 @@ import EmbeddedHelp from "../../../../../../Library/EmbeddedHelp/EmbeddedHelp";
 import FDate from "../../../../../../Library/FDate/FDate";
 import { RootStoreContext } from "../../../../../../RootStore";
 import { CalendarRowEditor } from "../../../../../../Shared/TableRowEditors/CalendarRowEditor";
-import { TextAreaRowEditor } from "../../../../../../Shared/TableRowEditors/TextAreaRowEditor";
+import { TextAreaRowEditorDVar } from "../../../../../../Shared/TableRowEditorsDVar/TextAreaRowEditorDVar";
 import FGVPrHypomorphAddForm from "./FGVPrHypomorphAddForm";
 
 const FGVPrHypomorph = ({ selectedGene }) => {
@@ -41,7 +41,7 @@ const FGVPrHypomorph = ({ selectedGene }) => {
           <Button
             type="button"
             icon="icon icon-common icon-plus-circle"
-            label="Add Hypomorph"
+            label="Add"
             className="p-button-text p-button-sm"
             style={{ height: "30px", marginRight: "5px" }}
             onClick={() => setDisplayAddSideBar(true)}
@@ -60,7 +60,7 @@ const FGVPrHypomorph = ({ selectedGene }) => {
   const deleteBodyTemplate = (rowData) => {
     const accept = () => {
       // Delete hypomorph
-      deleteHypomorph(rowData.hypomorphId);
+      deleteHypomorph(rowData.id);
     };
     const reject = () => {
       // Do nothing
@@ -92,51 +92,60 @@ const FGVPrHypomorph = ({ selectedGene }) => {
         <DataTable
           value={selectedGene.hypomorphs}
           editMode="row"
-          dataKey="hypomorphId"
+          dataKey="id"
           showGridlines
           removableSort
+          size="small"
           header={tableHeader}
           onRowEditComplete={(e) => updateHypomorph(e.newData)}
         >
           <Column
             field="knockdownStrain"
             header="Knockdown Strain"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => (
+              <TableRowBodyDVar dVar={rowData?.knockdownStrain} />
+            )}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
           <Column
             field="method"
             header="Method"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => <TableRowBodyDVar dVar={rowData?.method} />}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
           <Column
             field="pmid"
             header="PMID"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => <TableRowBodyDVar dVar={rowData?.pmid} />}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
           <Column
             field="dateProduced"
             header="Date Produced"
             editor={(options) => CalendarRowEditor(options)}
             body={(rowData) =>
-              rowData.dateProduced && (
-                <FDate timestamp={rowData.dateProduced} hideTime={true} />
+              rowData?.dateProduced?.value && (
+                <FDate timestamp={rowData.dateProduced.value} hideTime={true} />
               )
             }
           />
           <Column
             field="url"
             header="URL"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => <TableRowBodyDVar dVar={rowData?.url} />}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
           <Column
             field="purity"
             header="Purity"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => <TableRowBodyDVar dVar={rowData?.purity} />}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
           <Column
             field="notes"
             header="Notes"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => <TableRowBodyDVar dVar={rowData?.notes} />}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
           <Column
             rowEditor

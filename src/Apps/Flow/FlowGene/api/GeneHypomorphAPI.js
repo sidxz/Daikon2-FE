@@ -7,13 +7,10 @@ const GeneHypomorphAPI = {
     axiosWithAuth.post(`/v2/gene/${data.geneId}/hypomorph`, data),
 
   update: (data) =>
-    axiosWithAuth.put(
-      `/v2/gene/${data.geneId}/hypomorph/${data.hypomorphId}`,
-      data
-    ),
+    axiosWithAuth.put(`/v2/gene/${data.geneId}/hypomorph/${data.id}`, data),
 
-  delete: (id, hypomorphId) =>
-    axiosWithAuth.delete(`/v2/gene/${id}/hypomorph/${hypomorphId}`),
+  delete: (geneId, hypomorphId) =>
+    axiosWithAuth.delete(`/v2/gene/${geneId}/hypomorph/${hypomorphId}`),
 };
 
 export default GeneHypomorphAPI;

@@ -8,7 +8,8 @@ import { Sidebar } from "primereact/sidebar";
 import React, { useContext, useState } from "react";
 import EmbeddedHelp from "../../../../../../Library/EmbeddedHelp/EmbeddedHelp";
 import { RootStoreContext } from "../../../../../../RootStore";
-import { TextAreaRowEditor } from "../../../../../../Shared/TableRowEditors/TextAreaRowEditor";
+import TableRowBodyDVar from "../../../../../../Shared/DVariable/TableRowBodyDVar";
+import { TextAreaRowEditorDVar } from "../../../../../../Shared/TableRowEditorsDVar/TextAreaRowEditorDVar";
 import FGVPrCrispriStrainAddForm from "./FGVPrCrispriStrainAddForm";
 
 const FGVPrCrispriStrain = ({ selectedGene }) => {
@@ -39,7 +40,7 @@ const FGVPrCrispriStrain = ({ selectedGene }) => {
           <Button
             type="button"
             icon="icon icon-common icon-plus-circle"
-            label="Add Crispri Strain"
+            label="Add"
             className="p-button-text p-button-sm"
             style={{ height: "30px", marginRight: "5px" }}
             onClick={() => setDisplayAddSideBar(true)}
@@ -58,7 +59,7 @@ const FGVPrCrispriStrain = ({ selectedGene }) => {
   const deleteBodyTemplate = (rowData) => {
     const accept = () => {
       // Delete crispriStrain
-      deleteCrispriStrain(rowData.crispriStrainId);
+      deleteCrispriStrain(rowData.id);
     };
     const reject = () => {
       // Do nothing
@@ -90,7 +91,7 @@ const FGVPrCrispriStrain = ({ selectedGene }) => {
         <DataTable
           value={selectedGene.crispriStrains}
           editMode="row"
-          dataKey="crispriStrainId"
+          dataKey="id"
           showGridlines
           removableSort
           header={tableHeader}
@@ -99,13 +100,17 @@ const FGVPrCrispriStrain = ({ selectedGene }) => {
           <Column
             field="crispriStrainName"
             header="Crispri Strain Name"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => (
+              <TableRowBodyDVar dVar={rowData?.crispriStrainName} />
+            )}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
 
           <Column
             field="notes"
             header="Notes"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => <TableRowBodyDVar dVar={rowData?.notes} />}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
           <Column
             rowEditor

@@ -1,11 +1,9 @@
 import { useFormik } from "formik";
 import { Button } from "primereact/button";
-import { Dropdown } from "primereact/dropdown";
-import { InputText } from "primereact/inputtext";
-import { InputTextarea } from "primereact/inputtextarea";
 import { classNames } from "primereact/utils";
 import React from "react";
-import { orgDropDownOptions } from "../../../../../../Shared/FormEditors/OrgDropDown";
+import InputTextAreaDVar from "../../../../../../Shared/DVarEditors/InputTextAreaDVar";
+import { generateDefaultDVar } from "../../../../../../Shared/DVariable/DVarDefaults";
 
 const FGVPrResistanceMutationAddForm = ({
   selectedGene,
@@ -15,15 +13,15 @@ const FGVPrResistanceMutationAddForm = ({
 }) => {
   const formik = useFormik({
     initialValues: {
-      mutation: "",
-      isolate: "",
-      parentStrain: "",
-      organization: "",
-      compound: "",
-      researcher: "",
-      notes: "",
-      reference: "",
-      shiftInMIC: "",
+      mutation: generateDefaultDVar(),
+      isolate: generateDefaultDVar(),
+      parentStrain: generateDefaultDVar(),
+      organization: generateDefaultDVar(),
+      compound: generateDefaultDVar(),
+      researcher: generateDefaultDVar(),
+      notes: generateDefaultDVar(),
+      reference: generateDefaultDVar(),
+      shiftInMIC: generateDefaultDVar(),
     },
 
     validate: (values) => {
@@ -59,10 +57,9 @@ const FGVPrResistanceMutationAddForm = ({
           >
             Mutation *
           </label>
-          <InputTextarea
+          <InputTextAreaDVar
             id="mutation"
-            value={formik.values.mutation}
-            onChange={formik.handleChange}
+            formik={formik}
             className={classNames({
               "p-invalid": isInvalid("mutation"),
             })}
@@ -80,10 +77,9 @@ const FGVPrResistanceMutationAddForm = ({
           >
             Isolate
           </label>
-          <InputTextarea
+          <InputTextAreaDVar
             id="isolate"
-            value={formik.values.isolate}
-            onChange={formik.handleChange}
+            formik={formik}
             className={classNames({
               "p-invalid": isInvalid("isolate"),
             })}
@@ -100,10 +96,9 @@ const FGVPrResistanceMutationAddForm = ({
           >
             Parent Strain
           </label>
-          <InputText
+          <InputTextAreaDVar
             id="parentStrain"
-            value={formik.values.parentStrain}
-            onChange={formik.handleChange}
+            formik={formik}
             className={classNames({
               "p-invalid": isInvalid("parentStrain"),
             })}
@@ -120,10 +115,9 @@ const FGVPrResistanceMutationAddForm = ({
           >
             Compound
           </label>
-          <InputText
+          <InputTextAreaDVar
             id="compound"
-            value={formik.values.compound}
-            onChange={formik.handleChange}
+            formik={formik}
             className={classNames({
               "p-invalid": isInvalid("compound"),
             })}
@@ -140,10 +134,9 @@ const FGVPrResistanceMutationAddForm = ({
           >
             Researcher
           </label>
-          <InputText
+          <InputTextAreaDVar
             id="researcher"
-            value={formik.values.researcher}
-            onChange={formik.handleChange}
+            formik={formik}
             className={classNames({
               "p-invalid": isInvalid("researcher"),
             })}
@@ -154,19 +147,18 @@ const FGVPrResistanceMutationAddForm = ({
         <div className="field">
           <label
             htmlFor="organization"
-            className={classNames({ "p-error": isInvalid("organization") })}
+            className={classNames({
+              "p-error": isInvalid("organization"),
+            })}
           >
-            Organization *
+            Organization
           </label>
-          <Dropdown
+          <InputTextAreaDVar
             id="organization"
-            value={formik.values.organization}
-            options={orgDropDownOptions}
-            onChange={formik.handleChange}
-            placeholder="Select a organization"
-            optionLabel="name"
-            autoFocus
-            className={classNames({ "p-invalid": isInvalid("organization") })}
+            formik={formik}
+            className={classNames({
+              "p-invalid": isInvalid("organization"),
+            })}
           />
           {getErrorMessage("organization")}
         </div>
@@ -180,10 +172,9 @@ const FGVPrResistanceMutationAddForm = ({
           >
             Shift In MIC
           </label>
-          <InputText
+          <InputTextAreaDVar
             id="shiftInMIC"
-            value={formik.values.shiftInMIC}
-            onChange={formik.handleChange}
+            formik={formik}
             className={classNames({
               "p-invalid": isInvalid("shiftInMIC"),
             })}
@@ -200,10 +191,9 @@ const FGVPrResistanceMutationAddForm = ({
           >
             Notes
           </label>
-          <InputTextarea
+          <InputTextAreaDVar
             id="notes"
-            value={formik.values.notes}
-            onChange={formik.handleChange}
+            formik={formik}
             className={classNames({
               "p-invalid": isInvalid("notes"),
             })}
@@ -220,10 +210,9 @@ const FGVPrResistanceMutationAddForm = ({
           >
             Reference
           </label>
-          <InputTextarea
+          <InputTextAreaDVar
             id="reference"
-            value={formik.values.reference}
-            onChange={formik.handleChange}
+            formik={formik}
             className={classNames({
               "p-invalid": isInvalid("reference"),
             })}

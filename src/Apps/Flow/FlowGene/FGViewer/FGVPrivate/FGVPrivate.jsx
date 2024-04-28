@@ -33,6 +33,20 @@ const FGVPrivate = ({ selectedGene }) => {
     { label: "Private Data" },
   ];
 
+  let temp = {
+    id: "60f3b3b3b3b3b3b3b3b3b3b3",
+    essentialities: [],
+    proteinProductions: [],
+    proteinActivityAssays: [],
+    hypomorphs: [],
+    crispriStrains: [],
+    resistanceMutations: [],
+    vulnerabilities: [],
+    unpublishedStructuralInformations: [],
+  };
+
+  console.log("selectedGene", selectedGene);
+
   return (
     <div className="flex flex-column w-full">
       <div className="flex w-full">

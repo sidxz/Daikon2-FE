@@ -65,7 +65,7 @@ const FTDashboard = () => {
         />
       </div>
       <div className="flex max-w-full p-1">
-        <div className="flex w-5">
+        <div className="flex" style={{ width: "600px" }}>
           <FTDTargetMap />
         </div>
         <div className="flex w-7">

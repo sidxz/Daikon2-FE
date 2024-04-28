@@ -8,7 +8,8 @@ import { Sidebar } from "primereact/sidebar";
 import React, { useContext, useState } from "react";
 import EmbeddedHelp from "../../../../../../Library/EmbeddedHelp/EmbeddedHelp";
 import { RootStoreContext } from "../../../../../../RootStore";
-import { TextAreaRowEditor } from "../../../../../../Shared/TableRowEditors/TextAreaRowEditor";
+import TableRowBodyDVar from "../../../../../../Shared/DVariable/TableRowBodyDVar";
+import { TextAreaRowEditorDVar } from "../../../../../../Shared/TableRowEditorsDVar/TextAreaRowEditorDVar";
 import FGVPrEssentialityAddForm from "./FGVPrEssentialityAddForm";
 import * as Helper from "./FGVPrEssentialityHelper";
 
@@ -41,7 +42,7 @@ const FGVPrEssentiality = ({ selectedGene }) => {
           <Button
             type="button"
             icon="icon icon-common icon-plus-circle"
-            label="Add Essentiality"
+            label="Add"
             className="p-button-text p-button-sm"
             style={{ height: "30px", marginRight: "5px" }}
             onClick={() => setDisplayAddSideBar(true)}
@@ -61,7 +62,7 @@ const FGVPrEssentiality = ({ selectedGene }) => {
   const deleteBodyTemplate = (rowData) => {
     const accept = () => {
       // Delete essentiality
-      deleteEssentiality(rowData.essentialityId);
+      deleteEssentiality(rowData.id);
     };
     const reject = () => {
       // Do nothing
@@ -92,37 +93,47 @@ const FGVPrEssentiality = ({ selectedGene }) => {
         <DataTable
           value={selectedGene.essentialities}
           editMode="row"
-          dataKey="essentialityId"
+          dataKey="id"
           showGridlines
           removableSort
+          size="small"
           header={tableHeader}
           onRowEditComplete={(e) => updateEssentiality(e.newData)}
         >
           <Column
             field="classification"
             header="Classification"
+            body={(rowData) => (
+              <TableRowBodyDVar dVar={rowData?.classification} />
+            )}
             sortable
+            sortField="classification.value"
             editor={(options) => Helper.classificationEditor(options)}
           />
           <Column
             field="condition"
             header="Condition"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => <TableRowBodyDVar dVar={rowData?.condition} />}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
+
           <Column
             field="method"
             header="Method"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => <TableRowBodyDVar dVar={rowData?.method} />}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
           <Column
             field="reference"
             header="Reference"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => <TableRowBodyDVar dVar={rowData?.reference} />}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
           <Column
-            field="notes"
+            field="note"
             header="Notes"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => <TableRowBodyDVar dVar={rowData?.note} />}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
           <Column
             rowEditor

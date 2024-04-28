@@ -1,10 +1,11 @@
 import { useFormik } from "formik";
 import { Button } from "primereact/button";
-import { Calendar } from "primereact/calendar";
-import { InputText } from "primereact/inputtext";
-import { InputTextarea } from "primereact/inputtextarea";
 import { classNames } from "primereact/utils";
 import React from "react";
+import CalendarDVar from "../../../../../../Shared/DVarEditors/CalendarDVar";
+import InputTextAreaDVar from "../../../../../../Shared/DVarEditors/InputTextAreaDVar";
+import InputTextDVar from "../../../../../../Shared/DVarEditors/InputTextDVar";
+import { generateDefaultDVar } from "../../../../../../Shared/DVariable/DVarDefaults";
 
 const FGVPrHypomorphAddForm = ({
   selectedGene,
@@ -14,13 +15,13 @@ const FGVPrHypomorphAddForm = ({
 }) => {
   const formik = useFormik({
     initialValues: {
-      knockdownStrain: "",
-      method: "",
-      dateProduced: "",
-      pmid: "",
-      url: "",
-      notes: "",
-      purity: "",
+      knockdownStrain: generateDefaultDVar(),
+      method: generateDefaultDVar(),
+      dateProduced: generateDefaultDVar(),
+      pmid: generateDefaultDVar(),
+      url: generateDefaultDVar(),
+      notes: generateDefaultDVar(),
+      purity: generateDefaultDVar(),
     },
 
     validate: (values) => {
@@ -57,10 +58,9 @@ const FGVPrHypomorphAddForm = ({
           >
             Knockdown Strain *
           </label>
-          <InputTextarea
+          <InputTextAreaDVar
             id="knockdownStrain"
-            value={formik.values.knockdownStrain}
-            onChange={formik.handleChange}
+            formik={formik}
             className={classNames({
               "p-invalid": isInvalid("knockdownStrain"),
             })}
@@ -78,10 +78,9 @@ const FGVPrHypomorphAddForm = ({
           >
             Method
           </label>
-          <InputTextarea
+          <InputTextAreaDVar
             id="method"
-            value={formik.values.method}
-            onChange={formik.handleChange}
+            formik={formik}
             className={classNames({
               "p-invalid": isInvalid("method"),
             })}
@@ -98,10 +97,9 @@ const FGVPrHypomorphAddForm = ({
           >
             Date Produced
           </label>
-          <Calendar
+          <CalendarDVar
             id="dateProduced"
-            value={formik.values.dateProduced}
-            onChange={(e) => formik.setFieldValue("dateProduced", e.value)}
+            formik={formik}
             className={classNames({
               "p-invalid": isInvalid("dateProduced"),
             })}
@@ -118,10 +116,9 @@ const FGVPrHypomorphAddForm = ({
           >
             PMID
           </label>
-          <InputText
+          <InputTextAreaDVar
             id="pmid"
-            value={formik.values.pmid}
-            onChange={formik.handleChange}
+            formik={formik}
             className={classNames({
               "p-invalid": isInvalid("pmid"),
             })}
@@ -138,10 +135,9 @@ const FGVPrHypomorphAddForm = ({
           >
             URL
           </label>
-          <InputText
+          <InputTextDVar
             id="url"
-            value={formik.values.url}
-            onChange={formik.handleChange}
+            formik={formik}
             className={classNames({
               "p-invalid": isInvalid("url"),
             })}
@@ -158,10 +154,9 @@ const FGVPrHypomorphAddForm = ({
           >
             Purity
           </label>
-          <InputText
+          <InputTextDVar
             id="purity"
-            value={formik.values.purity}
-            onChange={formik.handleChange}
+            formik={formik}
             className={classNames({
               "p-invalid": isInvalid("purity"),
             })}
@@ -178,10 +173,9 @@ const FGVPrHypomorphAddForm = ({
           >
             Notes
           </label>
-          <InputTextarea
+          <InputTextAreaDVar
             id="notes"
-            value={formik.values.notes}
-            onChange={formik.handleChange}
+            formik={formik}
             className={classNames({
               "p-invalid": isInvalid("notes"),
             })}

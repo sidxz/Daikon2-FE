@@ -11,7 +11,7 @@ const FPDAllPortfolioProjects = () => {
   const {
     fetchProjects,
     isProjectListCacheValid,
-    projectList,
+    portfolioList,
     isFetchingProjects,
   } = rootStore.projectStore;
 
@@ -30,7 +30,7 @@ const FPDAllPortfolioProjects = () => {
       <div className="flex w-full">
         <DataTable
           className="w-full"
-          value={projectList}
+          value={portfolioList}
           paginator
           rows={10}
           filterDisplay="row"
@@ -52,7 +52,21 @@ const FPDAllPortfolioProjects = () => {
             body={Helper.orgBodyTemplate}
             filter
             // filterField="primaryOrgName"
-            // filterElement={(options) => Helper.orgFilter(projectList, options)}
+            // filterElement={(options) => Helper.orgFilter(portfolioList, options)}
+            showFilterMenu={false}
+            filterMatchMode="in"
+            className="narrow-column"
+          />
+
+          <Column
+            //field="isProjectRemoved"
+            header="Status"
+            body={Helper.statusBodyTemplate}
+            filter
+            filterField="isProjectRemoved"
+            filterElement={(options) =>
+              Helper.statusFilter(portfolioList, options)
+            }
             showFilterMenu={false}
             filterMatchMode="in"
             className="narrow-column"
@@ -60,16 +74,23 @@ const FPDAllPortfolioProjects = () => {
 
           <Column
             field="stage"
-            header="Portfolio Stage"
+            header="Stage"
             filter
             filterField="stage"
             filterElement={(options) =>
-              Helper.projectStageFilter(projectList, options)
+              Helper.projectStageFilter(portfolioList, options)
             }
             showFilterMenu={false}
             filterMatchMode="in"
             className="narrow-column"
             body={Helper.stageBodyTemplate}
+          />
+
+          <Column
+            field="Date"
+            header="Predicted Date"
+            className="narrow-column"
+            body={Helper.dateBodyTemplate}
           />
         </DataTable>
       </div>

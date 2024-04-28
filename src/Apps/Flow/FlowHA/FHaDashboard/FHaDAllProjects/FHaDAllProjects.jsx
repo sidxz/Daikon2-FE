@@ -21,6 +21,8 @@ const FHaDAllProjects = () => {
     return <Loading message={"Fetching HAs..."} />;
   }
 
+  console.log("haList", haList);
+
   return (
     <div className="flex flex-column min-w-full fadein animation-duration-500">
       <div className="flex w-full">
@@ -55,11 +57,11 @@ const FHaDAllProjects = () => {
           />
 
           <Column
-            field="haStatus"
+            field="status"
             header="HA Status"
             filter
-            filterField="haStatus"
-            filterElement={(options) => Helper.haStatusFilter(haList, options)}
+            filterField="status"
+            filterElement={(options) => Helper.statusFilter(haList, options)}
             showFilterMenu={false}
             filterMatchMode="in"
             className="narrow-column"

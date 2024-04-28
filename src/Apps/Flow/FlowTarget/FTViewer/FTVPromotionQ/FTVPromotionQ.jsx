@@ -214,11 +214,11 @@ const FTVPromotionQ = () => {
     let header = (
       <div className="flex flex-row w-full p-2 border-1 border-50 surface-ground border-round-md">
         <div className="flex justify-content-start gap-2">
-          <div className="flex flex-grow min-w-max">
+          {/* <div className="flex flex-grow min-w-max">
             Approved By : {selectedTQ?.requestedTargetName}{" "}
           </div>
           <div className="flex flex-grow min-w-max">Last Edit :</div>
-          <div className="flex flex-grow min-w-max">Last Edit on :</div>
+          <div className="flex flex-grow min-w-max">Last Edit on :</div> */}
         </div>
         <div className="flex justify-content-end w-full gap-2">
           <div className="flex flex-grow min-w-max">

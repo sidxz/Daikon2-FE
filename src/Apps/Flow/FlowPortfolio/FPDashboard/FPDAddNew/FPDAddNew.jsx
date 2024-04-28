@@ -1,16 +1,16 @@
 import { useFormik } from "formik";
 import { observer } from "mobx-react-lite";
 import { Button } from "primereact/button";
+import { confirmPopup } from "primereact/confirmpopup";
 import { Dropdown } from "primereact/dropdown";
 import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
 import { classNames } from "primereact/utils";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import PleaseWait from "../../../../../Library/PleaseWait/PleaseWait";
 import { RootStoreContext } from "../../../../../RootStore";
 import InputOrg from "../../../../../Shared/InputEditors/InputOrg";
 import { AppOrgResolver } from "../../../../../Shared/VariableResolvers/AppOrgResolver";
-import { stagePortfolioOptions } from "../../constants/stageOptions";
 
 const FPDAddNew = ({ closeSideBar }) => {
   const rootStore = useContext(RootStoreContext);
@@ -25,6 +25,8 @@ const FPDAddNew = ({ closeSideBar }) => {
     projectList,
     isFetchingProjects,
   } = rootStore.projectStore;
+
+  const submitButtonEl = useRef(null);
 
   useEffect(() => {
     if (!isHaListCacheValid) {
@@ -67,19 +69,52 @@ const FPDAddNew = ({ closeSideBar }) => {
     },
 
     onSubmit: (newProject) => {
-      newProject.primaryOrgName = getOrgNameById(newProject.primaryOrgId);
+      console.log(selectedHa);
+      console.log("newProject", newProject);
 
-      newProject.haId = selectedHa.id;
-      newProject.compoundId = selectedHa.compoundEvoLatestMoleculeId;
-      newProject.compoundSMILES = selectedHa.compoundEvoLatestSMILES;
-      newProject.hitCompoundId = selectedHa.compoundId;
-      newProject.hitId = selectedHa.hitId;
-      console.log(newProject);
+      const submitFunc = () => {
+        console.log("submitFunc");
+        newProject.primaryOrgName = getOrgNameById(newProject.primaryOrgId);
 
-      addProject(newProject).then(() => {
-        closeSideBar();
-        formik.resetForm();
-      });
+        if (selectedHa !== undefined) {
+          newProject.haId = selectedHa.id;
+          newProject.compoundId = selectedHa.compoundEvoLatestMoleculeId;
+          newProject.compoundSMILES = selectedHa.compoundEvoLatestSMILES;
+          newProject.hitCompoundId = selectedHa.compoundId;
+          newProject.hitId = selectedHa.hitId;
+        }
+
+        console.log(newProject);
+        addProject(newProject).then(() => {
+          closeSideBar();
+          formik.resetForm();
+        });
+      };
+
+      if (selectedHa === undefined) {
+        console.log("No HA selected");
+
+        const reject = () => {
+          return;
+        };
+
+        confirmPopup({
+          target: submitButtonEl.current,
+          message: (
+            <div>
+              A Hit Assessment has <b>not</b> been selected. <br />
+              This would create a <b>detached project.</b>
+              <br />
+              Are you sure you want to proceed?
+            </div>
+          ),
+          icon: "pi pi-exclamation-triangle",
+          accept: submitFunc,
+          reject: reject,
+        });
+      } else {
+        submitFunc();
+      }
     },
   });
 
@@ -215,7 +250,7 @@ const FPDAddNew = ({ closeSideBar }) => {
           {getErrorMessage("primaryOrgId")}
         </div>
 
-        <div className="field">
+        {/* <div className="field">
           <label
             htmlFor="stage"
             className={classNames({
@@ -240,7 +275,7 @@ const FPDAddNew = ({ closeSideBar }) => {
           />
 
           {getErrorMessage("stage")}
-        </div>
+        </div> */}
 
         <div className="field">
           <label
@@ -262,6 +297,7 @@ const FPDAddNew = ({ closeSideBar }) => {
         </div>
 
         <Button
+          ref={submitButtonEl}
           icon="icon icon-common icon-database-submit"
           type="submit"
           label="Create Portfolio Project"

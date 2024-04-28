@@ -1,88 +1,94 @@
 import { observer } from "mobx-react-lite";
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import FDate from "../../../../../../Library/FDate/FDate";
 import SmilesView from "../../../../../../Library/SmilesView/SmilesView";
+import { RootStoreContext } from "../../../../../../RootStore";
 import { AppOrgResolver } from "../../../../../../Shared/VariableResolvers/AppOrgResolver";
 
-const FPDOLO = ({ projects }) => {
+const FPDOLO = () => {
+  const rootStore = useContext(RootStoreContext);
+  const { activeLOProjects } = rootStore.projectStore;
+
   const { getOrgNameById } = AppOrgResolver();
   const navigate = useNavigate();
-  // check if projects is empty or not set or null
-  if (!projects || projects.length === 0)
+  // check if activeLOProjects is empty or not set or null
+  if (!activeLOProjects || activeLOProjects.length === 0)
     return (
       <div className="flex justify-content-center w-full align-items-center text-sm	text-color-secondary ">
         - No LO projects are available -
       </div>
     );
-  let projectsComponent = projects.map((project) => {
+  let projectsComponent = activeLOProjects.map((project) => {
     const displayTargetName = project.targetName
       ? project.targetName
       : "Phenotypic";
     return (
-      <div className="flex flex-column w-full shadow-1 hover:shadow-3">
+      <div className="flex flex-column w-full shadow-1 hover:shadow-3 border-round-md">
         <div
           className="flex flex-column  justify-content-center cursor-pointer "
           onClick={() => {
             navigate(`/wf/portfolio/viewer/${project.id}/information`);
           }}
         >
-          <div className="flex flex-column bg-indigo-100  justify-content-center ">
-            <div className="flex p-2 text-lg text-indigo-800 justify-content-center">
+          <div
+            className="flex flex-column justify-content-center border-round-top-md"
+            style={{
+              backgroundColor: "#6e8a9d",
+            }}
+          >
+            <div className="flex p-2 text-lg text-100 text-white-alpha-90 justify-content-center">
               {project.name}
             </div>
           </div>
-          <div className="flex ">
-            <div className="flex flex-column justify-content-center  border-indigo-100">
-              <div
-                className="flex justify-content-center w-full p-2 text-indigo-600 border-right-1 border-indigo-100"
-                style={{
-                  minWidth: "5rem",
-                }}
-              >
-                {displayTargetName}
-              </div>
-
-              <div
-                className="flex flex-column justify-content-center w-full p-2 text-indigo-600 border-right-1 border-indigo-100"
-                style={{
-                  minWidth: "5rem",
-                }}
-              >
-                {getOrgNameById(project?.primaryOrgId)}
-              </div>
-
-              <div
-                className="flex flex-column justify-content-center w-full p-2 text-indigo-600 border-right-1 border-indigo-100"
-                style={{
-                  minWidth: "5rem",
-                }}
-              >
-                <FDate timestamp={project.dateCreated} color="#b44761" />
-              </div>
-              <div
-                className="flex flex-column justify-content-center w-full p-2 text-indigo-600 border-right-1 border-indigo-100"
-                style={{
-                  minWidth: "5rem",
-                }}
-              >
-                <FDate
-                  timestamp={project.projectPredictedStart}
-                  color="#4761b4"
-                />
-              </div>
+          <div className="flex justify-content-center border-bottom-1 border-blue-100">
+            <div
+              className="flex justify-content-center w-full  p-2 text-blue-900 border-right-1 border-blue-100"
+              style={{
+                minWidth: "4rem",
+              }}
+            >
+              {project.alias}
             </div>
-            <div className="flex w-full justify-content-center">
-              <SmilesView
-                smiles={
-                  project.compoundEvoLatestSMILES != null
-                    ? project.compoundEvoLatestSMILES
-                    : project.compoundSMILES
-                }
-                width={100}
-                height={100}
-              />
+
+            <div
+              className="flex justify-content-center w-full  p-2 text-blue-900 border-right-1 border-blue-100"
+              style={{
+                minWidth: "4rem",
+              }}
+            >
+              {getOrgNameById(project?.primaryOrgId)}
             </div>
+
+            <div
+              className="flex justify-content-center w-full p-2 text-blue-900 border-right-1 border-blue-100"
+              style={{
+                minWidth: "4rem",
+              }}
+            >
+              <FDate timestamp={project.loStart} color="#154252" />
+            </div>
+
+            <div
+              className="flex justify-content-center w-full p-2 text-100"
+              style={{
+                minWidth: "4rem",
+                backgroundColor: "#9A7581",
+              }}
+            >
+              <FDate timestamp={project.spPredictedStart} color="#FFFFFF" />
+            </div>
+          </div>
+          <div className="flex w-full p-2 justify-content-center">
+            <SmilesView
+              smiles={
+                project.compoundEvoLatestSMILES != null
+                  ? project.compoundEvoLatestSMILES
+                  : project.compoundSMILES
+              }
+              width={200}
+              height={200}
+            />
           </div>
         </div>
       </div>

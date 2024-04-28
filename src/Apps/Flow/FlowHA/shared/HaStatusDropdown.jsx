@@ -15,13 +15,39 @@ const HaStatusDropdown = ({ readOnlyStatus, readOnly = false }) => {
   const rootStore = useContext(RootStoreContext);
 
   const { selectedHa, isUpdatingHa, updateHa } = rootStore.haStore;
-
+  const statuses = statusOptions;
   // The set of available options for the status of a ha
+
+  // Render the component based on readOnly flag
+  // Temporarily handle new status as NA
+  if (readOnly === true) {
+    if (readOnlyStatus === null) {
+      return (
+        <div className="flex align-items-center align-self-center gap-2">
+          <div className="flex flex-column">
+            <FcExpired />
+          </div>
+          <div className="flex flex-column">Status Not Set</div>
+        </div>
+      );
+    }
+    let status = statuses.find(
+      (option) => option.value === readOnlyStatus
+    )?.name;
+    return (
+      <div className="flex align-items-center gap-2 bg-white p-2 m-0">
+        <div className="flex flex-column">
+          {statuses.find((option) => option.value === readOnlyStatus)?.icon}
+        </div>
+        <div className="flex flex-column">
+          {readOnlyStatus ? status : "Not Available"}
+        </div>
+      </div>
+    );
+  }
   if (!selectedHa) {
     return <> </>;
   }
-
-  const statuses = statusOptions;
 
   // Template for rendering a selected status option
   const optionTemplate = (option) => {
@@ -69,31 +95,6 @@ const HaStatusDropdown = ({ readOnlyStatus, readOnly = false }) => {
       updateHa(updatedHa);
     }
   };
-
-  // Render the component based on readOnly flag
-  // Temporarily handle new status as NA
-  if (readOnly) {
-    if (readOnlyStatus === null) {
-      return (
-        <div className="flex align-items-center align-self-center gap-2">
-          <div className="flex flex-column">
-            <FcExpired />
-          </div>
-          <div className="flex flex-column">Status Not Set</div>
-        </div>
-      );
-    }
-    return (
-      <div className="flex align-items-center gap-2 bg-white p-2 m-0">
-        <div className="flex flex-column">
-          {statuses.find((option) => option.value === readOnlyStatus)?.icon}
-        </div>
-        <div className="flex flex-column">
-          {readOnlyStatus ? readOnlyStatus : "Not Available"}
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="flex">

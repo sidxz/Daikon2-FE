@@ -8,7 +8,8 @@ import { Sidebar } from "primereact/sidebar";
 import React, { useContext, useState } from "react";
 import EmbeddedHelp from "../../../../../../Library/EmbeddedHelp/EmbeddedHelp";
 import { RootStoreContext } from "../../../../../../RootStore";
-import { TextAreaRowEditor } from "../../../../../../Shared/TableRowEditors/TextAreaRowEditor";
+import TableRowBodyDVar from "../../../../../../Shared/DVariable/TableRowBodyDVar";
+import { TextAreaRowEditorDVar } from "../../../../../../Shared/TableRowEditorsDVar/TextAreaRowEditorDVar";
 import FGVPrProteinActivityAssayAddForm from "./FGVPrProteinActivityAssayAddForm";
 
 const FGVPrProteinActivityAssay = ({ selectedGene }) => {
@@ -42,7 +43,7 @@ const FGVPrProteinActivityAssay = ({ selectedGene }) => {
           <Button
             type="button"
             icon="icon icon-common icon-plus-circle"
-            label="Add Protein Activity Assay"
+            label="Add"
             className="p-button-text p-button-sm"
             style={{ height: "30px", marginRight: "5px" }}
             onClick={() => setDisplayAddSideBar(true)}
@@ -61,7 +62,7 @@ const FGVPrProteinActivityAssay = ({ selectedGene }) => {
   const deleteBodyTemplate = (rowData) => {
     const accept = () => {
       // Delete proteinActivityAssay
-      deleteProteinActivityAssay(rowData.proteinActivityAssayId);
+      deleteProteinActivityAssay(rowData.id);
     };
     const reject = () => {
       // Do nothing
@@ -97,41 +98,48 @@ const FGVPrProteinActivityAssay = ({ selectedGene }) => {
         <DataTable
           value={selectedGene.proteinActivityAssays}
           editMode="row"
-          dataKey="proteinActivityAssayId"
+          dataKey="id"
           showGridlines
           removableSort
+          size="small"
           header={tableHeader}
           onRowEditComplete={(e) => updateProteinActivityAssay(e.newData)}
         >
           <Column
             field="assay"
             header="Assay"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => <TableRowBodyDVar dVar={rowData?.assay} />}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
           <Column
             field="method"
             header="Method"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => <TableRowBodyDVar dVar={rowData?.method} />}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
           <Column
             field="pmid"
             header="PMID"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => <TableRowBodyDVar dVar={rowData?.pmid} />}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
           <Column
             field="url"
             header="URL"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => <TableRowBodyDVar dVar={rowData?.url} />}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
           <Column
             field="throughput"
             header="Throughput"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => <TableRowBodyDVar dVar={rowData?.throughput} />}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
           <Column
             field="reference"
             header="Reference"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => <TableRowBodyDVar dVar={rowData?.reference} />}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
           <Column
             rowEditor

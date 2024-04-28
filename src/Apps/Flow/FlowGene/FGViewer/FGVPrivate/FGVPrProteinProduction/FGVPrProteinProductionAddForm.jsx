@@ -1,10 +1,11 @@
 import { useFormik } from "formik";
 import { Button } from "primereact/button";
-import { Calendar } from "primereact/calendar";
-import { InputText } from "primereact/inputtext";
-import { InputTextarea } from "primereact/inputtextarea";
 import { classNames } from "primereact/utils";
 import React from "react";
+import CalendarDVar from "../../../../../../Shared/DVarEditors/CalendarDVar";
+import InputTextAreaDVar from "../../../../../../Shared/DVarEditors/InputTextAreaDVar";
+import InputTextDVar from "../../../../../../Shared/DVarEditors/InputTextDVar";
+import { generateDefaultDVar } from "../../../../../../Shared/DVariable/DVarDefaults";
 
 const FGVPrProteinProductionAddForm = ({
   selectedGene,
@@ -14,13 +15,13 @@ const FGVPrProteinProductionAddForm = ({
 }) => {
   const formik = useFormik({
     initialValues: {
-      production: "",
-      method: "",
-      dateProduced: "",
-      pmid: "",
-      url: "",
-      notes: "",
-      purity: "",
+      production: generateDefaultDVar(),
+      method: generateDefaultDVar(),
+      dateProduced: generateDefaultDVar(),
+      pmid: generateDefaultDVar(),
+      url: generateDefaultDVar(),
+      notes: generateDefaultDVar(),
+      purity: generateDefaultDVar(),
     },
 
     validate: (values) => {
@@ -56,10 +57,9 @@ const FGVPrProteinProductionAddForm = ({
           >
             Production *
           </label>
-          <InputTextarea
+          <InputTextAreaDVar
             id="production"
-            value={formik.values.production}
-            onChange={formik.handleChange}
+            formik={formik}
             className={classNames({
               "p-invalid": isInvalid("production"),
             })}
@@ -77,10 +77,9 @@ const FGVPrProteinProductionAddForm = ({
           >
             Method
           </label>
-          <InputTextarea
+          <InputTextAreaDVar
             id="method"
-            value={formik.values.method}
-            onChange={formik.handleChange}
+            formik={formik}
             className={classNames({
               "p-invalid": isInvalid("method"),
             })}
@@ -97,10 +96,9 @@ const FGVPrProteinProductionAddForm = ({
           >
             Date Produced
           </label>
-          <Calendar
+          <CalendarDVar
             id="dateProduced"
-            value={formik.values.dateProduced}
-            onChange={(e) => formik.setFieldValue("dateProduced", e.value)}
+            formik={formik}
             className={classNames({
               "p-invalid": isInvalid("dateProduced"),
             })}
@@ -117,10 +115,9 @@ const FGVPrProteinProductionAddForm = ({
           >
             PMID
           </label>
-          <InputText
+          <InputTextDVar
             id="pmid"
-            value={formik.values.pmid}
-            onChange={formik.handleChange}
+            formik={formik}
             className={classNames({
               "p-invalid": isInvalid("pmid"),
             })}
@@ -137,10 +134,9 @@ const FGVPrProteinProductionAddForm = ({
           >
             URL
           </label>
-          <InputText
+          <InputTextDVar
             id="url"
-            value={formik.values.url}
-            onChange={formik.handleChange}
+            formik={formik}
             className={classNames({
               "p-invalid": isInvalid("url"),
             })}
@@ -157,10 +153,9 @@ const FGVPrProteinProductionAddForm = ({
           >
             Purity
           </label>
-          <InputText
+          <InputTextDVar
             id="purity"
-            value={formik.values.purity}
-            onChange={formik.handleChange}
+            formik={formik}
             className={classNames({
               "p-invalid": isInvalid("purity"),
             })}
@@ -177,10 +172,9 @@ const FGVPrProteinProductionAddForm = ({
           >
             Notes
           </label>
-          <InputTextarea
+          <InputTextAreaDVar
             id="notes"
-            value={formik.values.notes}
-            onChange={formik.handleChange}
+            formik={formik}
             className={classNames({
               "p-invalid": isInvalid("notes"),
             })}

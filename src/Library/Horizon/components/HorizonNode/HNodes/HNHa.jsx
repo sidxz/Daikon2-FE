@@ -1,13 +1,22 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { HAIcon } from "../../../../../Apps/Flow/icons/HAIcon";
 import { AppOrgResolver } from "../../../../../Shared/VariableResolvers/AppOrgResolver";
 
 const HNHa = ({ dataObj, entryPoint }) => {
   const { getOrgAliasById } = AppOrgResolver();
+  const navigate = useNavigate();
   return (
     <g
       onClick={() => {
-        navigate(`/wf/gene/${dataObj?.id}`);
+        navigate(`/wf/ha/viewer/${dataObj?.id}`);
+      }}
+      style={{
+        filter:
+          dataObj?.attributes?.isHAComplete === "True" &&
+          dataObj?.attributes?.isHASuccess === "False"
+            ? "grayscale(100%)"
+            : "none",
       }}
     >
       {dataObj?.id === entryPoint && (

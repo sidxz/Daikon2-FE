@@ -37,7 +37,7 @@ export default class GeneProteinActivityAssayStore {
       var res = await GeneProteinActivityAssayAPI.create(proteinActivityAssay);
       runInAction(() => {
         // Add proteinActivityAssay to gene proteinActivityAssay list
-        proteinActivityAssay.proteinActivityAssayId = res.id;
+        proteinActivityAssay.id = res.id;
 
         this.rootStore.geneStore.selectedGene.proteinActivityAssays.push(
           proteinActivityAssay
@@ -66,11 +66,9 @@ export default class GeneProteinActivityAssayStore {
       proteinActivityAssay.geneId?.trim() ||
       this.rootStore.geneStore.selectedGene.id;
 
-    // Ensure proteinActivityAssay.proteinActivityAssayId is not null, undefined, or empty
-    if (!proteinActivityAssay.proteinActivityAssayId?.trim()) {
-      throw new Error(
-        "proteinActivityAssayId is required and cannot be empty."
-      );
+    // Ensure proteinActivityAssay.id is not null, undefined, or empty
+    if (!proteinActivityAssay.id?.trim()) {
+      throw new Error("id is required and cannot be empty.");
     }
 
     try {
@@ -82,18 +80,14 @@ export default class GeneProteinActivityAssayStore {
         );
 
         const indexOfEss = gene.proteinActivityAssays.findIndex(
-          (e) =>
-            e.proteinActivityAssayId ===
-            proteinActivityAssay.proteinActivityAssayId
+          (e) => e.id === proteinActivityAssay.id
         );
         gene.proteinActivityAssays[indexOfEss] = proteinActivityAssay;
 
         // update the same in selected gene
         const selectedGene = this.rootStore.geneStore.selectedGene;
         const selectedIndex = selectedGene.proteinActivityAssays.findIndex(
-          (e) =>
-            e.proteinActivityAssayId ===
-            proteinActivityAssay.proteinActivityAssayId
+          (e) => e.id === proteinActivityAssay.id
         );
 
         selectedGene.proteinActivityAssays[selectedIndex] =
@@ -110,32 +104,30 @@ export default class GeneProteinActivityAssayStore {
     }
   };
 
-  deleteProteinActivityAssay = async (proteinActivityAssayId) => {
+  deleteProteinActivityAssay = async (id) => {
     this.isDeletingProteinActivityAssay = true;
 
     const geneId = this.rootStore.geneStore.selectedGene.id;
 
-    // Ensure proteinActivityAssayId is not null, undefined, or empty
-    if (!proteinActivityAssayId?.trim()) {
-      throw new Error(
-        "proteinActivityAssayId is required and cannot be empty."
-      );
+    // Ensure id is not null, undefined, or empty
+    if (!id?.trim()) {
+      throw new Error("id is required and cannot be empty.");
     }
 
     try {
-      await GeneProteinActivityAssayAPI.delete(geneId, proteinActivityAssayId);
+      await GeneProteinActivityAssayAPI.delete(geneId, id);
       runInAction(() => {
         // remove proteinActivityAssay from gene proteinActivityAssay list
         const gene = this.rootStore.geneStore.geneRegistry.get(geneId);
         const indexOfEss = gene.proteinActivityAssays.findIndex(
-          (e) => e.proteinActivityAssayId === proteinActivityAssayId
+          (e) => e.id === id
         );
         gene.proteinActivityAssays.splice(indexOfEss, 1);
 
         // remove the same from selected gene
         const selectedGene = this.rootStore.geneStore.selectedGene;
         const selectedIndex = selectedGene.proteinActivityAssays.findIndex(
-          (e) => e.proteinActivityAssayId === proteinActivityAssayId
+          (e) => e.id === id
         );
         selectedGene.proteinActivityAssays.splice(selectedIndex, 1);
 

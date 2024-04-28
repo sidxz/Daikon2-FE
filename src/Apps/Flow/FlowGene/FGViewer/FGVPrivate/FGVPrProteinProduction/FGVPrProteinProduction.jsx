@@ -9,8 +9,9 @@ import React, { useContext, useState } from "react";
 import EmbeddedHelp from "../../../../../../Library/EmbeddedHelp/EmbeddedHelp";
 import FDate from "../../../../../../Library/FDate/FDate";
 import { RootStoreContext } from "../../../../../../RootStore";
-import { CalendarRowEditor } from "../../../../../../Shared/TableRowEditors/CalendarRowEditor";
-import { TextAreaRowEditor } from "../../../../../../Shared/TableRowEditors/TextAreaRowEditor";
+import TableRowBodyDVar from "../../../../../../Shared/DVariable/TableRowBodyDVar";
+import { CalendarRowEditorDVar } from "../../../../../../Shared/TableRowEditorsDVar/CalendarRowEditorDVar";
+import { TextAreaRowEditorDVar } from "../../../../../../Shared/TableRowEditorsDVar/TextAreaRowEditorDVar";
 import FGVPrProteinProductionAddForm from "./FGVPrProteinProductionAddForm";
 
 const FGVPrProteinProduction = ({ selectedGene }) => {
@@ -43,7 +44,7 @@ const FGVPrProteinProduction = ({ selectedGene }) => {
           <Button
             type="button"
             icon="icon icon-common icon-plus-circle"
-            label="Add Protein Production"
+            label="Add"
             className="p-button-text p-button-sm"
             style={{ height: "30px", marginRight: "5px" }}
             onClick={() => setDisplayAddSideBar(true)}
@@ -62,7 +63,7 @@ const FGVPrProteinProduction = ({ selectedGene }) => {
   const deleteBodyTemplate = (rowData) => {
     const accept = () => {
       // Delete proteinProduction
-      deleteProteinProduction(rowData.proteinProductionId);
+      deleteProteinProduction(rowData.id);
     };
     const reject = () => {
       // Do nothing
@@ -96,51 +97,58 @@ const FGVPrProteinProduction = ({ selectedGene }) => {
         <DataTable
           value={selectedGene.proteinProductions}
           editMode="row"
-          dataKey="proteinProductionId"
+          dataKey="id"
           showGridlines
           removableSort
+          size="small"
           header={tableHeader}
           onRowEditComplete={(e) => updateProteinProduction(e.newData)}
         >
           <Column
             field="production"
             header="Production"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => <TableRowBodyDVar dVar={rowData?.production} />}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
           <Column
             field="method"
             header="Method"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => <TableRowBodyDVar dVar={rowData?.method} />}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
           <Column
             field="pmid"
             header="PMID"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => <TableRowBodyDVar dVar={rowData?.pmid} />}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
           <Column
             field="dateProduced"
             header="Date Produced"
-            editor={(options) => CalendarRowEditor(options)}
+            editor={(options) => CalendarRowEditorDVar(options)}
             body={(rowData) =>
-              rowData.dateProduced && (
-                <FDate timestamp={rowData.dateProduced} hideTime={true} />
+              rowData?.dateProduced?.value && (
+                <FDate timestamp={rowData.dateProduced.value} hideTime={true} />
               )
             }
           />
           <Column
             field="url"
             header="URL"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => <TableRowBodyDVar dVar={rowData?.url} />}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
           <Column
             field="purity"
             header="Purity"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => <TableRowBodyDVar dVar={rowData?.purity} />}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
           <Column
             field="notes"
             header="Notes"
-            editor={(options) => TextAreaRowEditor(options)}
+            body={(rowData) => <TableRowBodyDVar dVar={rowData?.notes} />}
+            editor={(options) => TextAreaRowEditorDVar(options)}
           />
           <Column
             rowEditor

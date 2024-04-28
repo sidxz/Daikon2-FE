@@ -37,7 +37,7 @@ export default class GeneResistanceMutationStore {
       var res = await GeneResistanceMutationAPI.create(resistanceMutation);
       runInAction(() => {
         // Add resistanceMutation to gene resistanceMutation list
-        resistanceMutation.resistanceMutationId = res.id;
+        resistanceMutation.id = res.id;
 
         this.rootStore.geneStore.selectedGene.resistanceMutations.push(
           resistanceMutation
@@ -66,9 +66,9 @@ export default class GeneResistanceMutationStore {
       resistanceMutation.geneId?.trim() ||
       this.rootStore.geneStore.selectedGene.id;
 
-    // Ensure resistanceMutation.resistanceMutationId is not null, undefined, or empty
-    if (!resistanceMutation.resistanceMutationId?.trim()) {
-      throw new Error("resistanceMutationId is required and cannot be empty.");
+    // Ensure resistanceMutation.id is not null, undefined, or empty
+    if (!resistanceMutation.id?.trim()) {
+      throw new Error("id is required and cannot be empty.");
     }
 
     try {
@@ -80,16 +80,14 @@ export default class GeneResistanceMutationStore {
         );
 
         const indexOfEss = gene.resistanceMutations.findIndex(
-          (e) =>
-            e.resistanceMutationId === resistanceMutation.resistanceMutationId
+          (e) => e.id === resistanceMutation.id
         );
         gene.resistanceMutations[indexOfEss] = resistanceMutation;
 
         // update the same in selected gene
         const selectedGene = this.rootStore.geneStore.selectedGene;
         const selectedIndex = selectedGene.resistanceMutations.findIndex(
-          (e) =>
-            e.resistanceMutationId === resistanceMutation.resistanceMutationId
+          (e) => e.id === resistanceMutation.id
         );
 
         selectedGene.resistanceMutations[selectedIndex] = resistanceMutation;
@@ -105,30 +103,30 @@ export default class GeneResistanceMutationStore {
     }
   };
 
-  deleteResistanceMutation = async (resistanceMutationId) => {
+  deleteResistanceMutation = async (id) => {
     this.isDeletingResistanceMutation = true;
 
     const geneId = this.rootStore.geneStore.selectedGene.id;
 
-    // Ensure resistanceMutationId is not null, undefined, or empty
-    if (!resistanceMutationId?.trim()) {
-      throw new Error("resistanceMutationId is required and cannot be empty.");
+    // Ensure id is not null, undefined, or empty
+    if (!id?.trim()) {
+      throw new Error("id is required and cannot be empty.");
     }
 
     try {
-      await GeneResistanceMutationAPI.delete(geneId, resistanceMutationId);
+      await GeneResistanceMutationAPI.delete(geneId, id);
       runInAction(() => {
         // remove resistanceMutation from gene resistanceMutation list
         const gene = this.rootStore.geneStore.geneRegistry.get(geneId);
         const indexOfEss = gene.resistanceMutations.findIndex(
-          (e) => e.resistanceMutationId === resistanceMutationId
+          (e) => e.id === id
         );
         gene.resistanceMutations.splice(indexOfEss, 1);
 
         // remove the same from selected gene
         const selectedGene = this.rootStore.geneStore.selectedGene;
         const selectedIndex = selectedGene.resistanceMutations.findIndex(
-          (e) => e.resistanceMutationId === resistanceMutationId
+          (e) => e.id === id
         );
         selectedGene.resistanceMutations.splice(selectedIndex, 1);
 

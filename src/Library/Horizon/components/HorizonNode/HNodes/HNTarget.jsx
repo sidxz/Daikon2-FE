@@ -1,11 +1,13 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { TargetIcon } from "../../../../../Apps/Flow/icons/TargetIcon";
 
 const HNTarget = ({ dataObj, entryPoint }) => {
+  const navigate = useNavigate();
   return (
     <g
       onClick={() => {
-        navigate(`/wf/gene/${dataObj?.id}`);
+        navigate(`/wf/target/viewer/${dataObj?.id}`);
       }}
     >
       {dataObj?.id === entryPoint && (

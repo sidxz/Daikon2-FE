@@ -10,6 +10,7 @@ import {
 } from "react-router-dom";
 import Loading from "../../../../Library/Loading/Loading";
 import { RootStoreContext } from "../../../../RootStore";
+import FSTbComments from "./FSTbComments/FSTbComments";
 import FSTbVHitCollection from "./FSTbVHitCollection/FSTbVHitCollection";
 import FSTbVHitCollectionSelection from "./FSTbVHitCollection/FSTbVHitCollectionSelection";
 import FSTbVScreen from "./FSTbVScreen/FSTbVScreen";
@@ -97,6 +98,10 @@ const FSTbViewer = () => {
               <Route
                 path="settings/"
                 element={<FSTbVSettings selectedScreen={selectedScreen} />}
+              />
+              <Route
+                path="discussion/"
+                element={<FSTbComments selectedScreen={selectedScreen} />}
               />
             </Routes>
           </div>

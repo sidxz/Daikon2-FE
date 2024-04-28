@@ -2,7 +2,12 @@ import { BreadCrumb } from "primereact/breadcrumb";
 import { Chip } from "primereact/chip";
 import { Fieldset } from "primereact/fieldset";
 import React, { useContext, useState } from "react";
-import { FcBusiness, FcHighPriority, FcMediumPriority } from "react-icons/fc";
+import {
+  FcBusiness,
+  FcHighPriority,
+  FcMediumPriority,
+  FcTreeStructure,
+} from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
 import Loading from "../../../../../Library/Loading/Loading";
 import SecHeading from "../../../../../Library/SecHeading/SecHeading";
@@ -11,6 +16,7 @@ import { appColors } from "../../../../../constants/colors";
 import * as Helper from "./FSPhVSettingsHelper";
 import FSPhVSettings_Basic from "./components/FSPhVSettings_Basic";
 import FSPhVSettings_Rename from "./components/FSPhVSettings_Rename";
+import FSPhVSettings_UpdateTarget from "./components/FSPhVSettings_UpdateTarget";
 
 const FSPhVSettings = () => {
   const navigate = useNavigate();
@@ -77,7 +83,25 @@ const FSPhVSettings = () => {
               <FSPhVSettings_Basic />
             </Fieldset>
           </div>
-
+          <div className="flex w-full  mt-2">
+            <Fieldset
+              className="w-full"
+              legend={
+                <>
+                  <FcTreeStructure className="mr-2" />
+                  Update Target Association
+                </>
+              }
+            >
+              <p className="m-0 p-2">
+                The settings below are designed to modify inter-section
+                relationships throughout the app. Updating these settings will
+                have broad implications, impacting overall functionality,
+                including features like the Horizon View, among others.
+              </p>
+              <FSPhVSettings_UpdateTarget />
+            </Fieldset>
+          </div>
           <div className="flex w-full  mt-2">
             <Fieldset
               legend={

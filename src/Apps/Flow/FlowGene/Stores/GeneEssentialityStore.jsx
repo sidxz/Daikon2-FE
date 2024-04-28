@@ -36,7 +36,7 @@ export default class GeneEssentialityStore {
       var res = await GeneEssentialityAPI.create(essentiality);
       runInAction(() => {
         // Add essentiality to gene essentiality list
-        essentiality.essentialityId = res.id;
+        essentiality.id = res.id;
 
         this.rootStore.geneStore.selectedGene.essentialities.push(essentiality);
         const gene = this.rootStore.geneStore.geneRegistry.get(
@@ -62,9 +62,9 @@ export default class GeneEssentialityStore {
     essentiality.geneId =
       essentiality.geneId?.trim() || this.rootStore.geneStore.selectedGene.id;
 
-    // Ensure essentiality.essentialityId is not null, undefined, or empty
-    if (!essentiality.essentialityId?.trim()) {
-      throw new Error("essentialityId is required and cannot be empty.");
+    // Ensure essentiality.id is not null, undefined, or empty
+    if (!essentiality.id?.trim()) {
+      throw new Error("Id of essentiality is required and cannot be empty.");
     }
 
     try {
@@ -76,14 +76,14 @@ export default class GeneEssentialityStore {
         );
 
         const indexOfEss = gene.essentialities.findIndex(
-          (e) => e.essentialityId === essentiality.essentialityId
+          (e) => e.id === essentiality.id
         );
         gene.essentialities[indexOfEss] = essentiality;
 
         // update the same in selected gene
         const selectedGene = this.rootStore.geneStore.selectedGene;
         const selectedIndex = selectedGene.essentialities.findIndex(
-          (e) => e.essentialityId === essentiality.essentialityId
+          (e) => e.id === essentiality.id
         );
 
         selectedGene.essentialities[selectedIndex] = essentiality;
