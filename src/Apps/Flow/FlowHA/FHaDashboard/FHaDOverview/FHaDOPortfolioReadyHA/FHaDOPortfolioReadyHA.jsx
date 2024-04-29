@@ -41,9 +41,7 @@ const FHaDOPortfolioReadyHA = ({ hitAssessments }) => {
               style={{
                 minWidth: "4rem",
               }}
-            >
-              rho
-            </div>
+            ></div>
 
             <div
               className="flex justify-content-center w-4 p-2 text-green-600 border-right-1 border-green-100"

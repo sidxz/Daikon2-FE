@@ -41,9 +41,7 @@ const FHaDOActiveHA = ({ hitAssessments }) => {
               style={{
                 minWidth: "4rem",
               }}
-            >
-              rho
-            </div>
+            ></div>
 
             <div
               className="flex justify-content-center w-4 p-2 text-blue-600 border-right-1 border-blue-100"
