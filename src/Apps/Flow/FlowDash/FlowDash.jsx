@@ -1,10 +1,10 @@
+import { observer } from "mobx-react-lite";
 import { Card } from "primereact/card";
 import React from "react";
 import CommentsByTags from "../../Comments/CommentsByTags/CommentsByTags";
 import "./FlowDash.css";
 import FlowDashCards from "./FlowDashCards/FlowDashCards";
 import FlowDashWhatsNew from "./FlowDashWhatsNew/FlowDashWhatsNew";
-
 const FlowDash = () => {
   let generateCardTitle = (icon, title) => {
     return (
@@ -73,4 +73,4 @@ const FlowDash = () => {
   );
 };
 
-export default FlowDash;
+export default observer(FlowDash);
