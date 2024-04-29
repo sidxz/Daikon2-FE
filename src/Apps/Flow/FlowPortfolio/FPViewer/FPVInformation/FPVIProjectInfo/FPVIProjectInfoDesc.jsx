@@ -39,6 +39,7 @@ const FPVIProjectInfoDesc = () => {
       loDescription: selectedProject.loDescription,
       spDescription: selectedProject.spDescription,
     },
+    enableReinitialize: true,
     validate: (values) => {
       const errors = {};
       // if (!values.priority) errors.priority = "Priority is required";
