@@ -33,13 +33,13 @@ const MLSimilarSearchCard = ({ molecule, navigate }) => {
           </p>
         </div>
         <div className="flex">
-          <p className="text-lg m-0 text-color-secondary	">
-            Mol Weight : {molecule.molecularWeight}
+          <p className="text-lg m-0 text-color-secondary">
+            Mol Weight : {molecule.molecularWeight.toFixed(2)}
           </p>
         </div>
         <div className="flex">
-          <p className="text-lg m-0 text-color-secondary	">
-            TPSA : {molecule.tpsa}
+          <p className="text-lg m-0 text-color-secondary">
+            TPSA : {molecule.tpsa.toFixed(2)}
           </p>
         </div>
       </div>
