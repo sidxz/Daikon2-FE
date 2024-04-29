@@ -1,4 +1,5 @@
 import { useFormik } from "formik";
+import { observer } from "mobx-react-lite";
 import { Button } from "primereact/button";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
@@ -34,6 +35,7 @@ const FPPVIProjectInfoDesc = () => {
       indDescription: selectedProject.indDescription,
       p1Description: selectedProject.p1Description,
     },
+    enableReinitialize: true,
     validate: (values) => {
       const errors = {};
       // if (!values.priority) errors.priority = "Priority is required";
@@ -170,4 +172,4 @@ const FPPVIProjectInfoDesc = () => {
   );
 };
 
-export default FPPVIProjectInfoDesc;
+export default observer(FPPVIProjectInfoDesc);
