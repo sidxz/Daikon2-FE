@@ -4,6 +4,7 @@ import { Chip } from "primereact/chip";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import SecHeading from "../../../../../Library/SecHeading/SecHeading";
+import { AppOrgResolver } from "../../../../../Shared/VariableResolvers/AppOrgResolver";
 import { appColors } from "../../../../../constants/colors";
 import AddComment from "../../../../Comments/AddComment/AddComment";
 import CommentsByTags from "../../../../Comments/CommentsByTags/CommentsByTags";
@@ -13,6 +14,7 @@ import { FormatScreeningMethod } from "../../shared/Formatters";
 const FSTbComments = ({ selectedScreen }) => {
   console.log(selectedScreen);
   const navigate = useNavigate();
+  const { getOrgNameById } = AppOrgResolver();
   const breadCrumbItems = [
     {
       label: "Screens",
@@ -57,7 +59,7 @@ const FSTbComments = ({ selectedScreen }) => {
               icon="icon icon-common icon-circle-notch"
             />,
             <Chip
-              label={selectedScreen?.primaryOrgName}
+              label={getOrgNameById(ha?.primaryOrgId)}
               icon="ri-organization-chart"
               className="mr-3"
             />,

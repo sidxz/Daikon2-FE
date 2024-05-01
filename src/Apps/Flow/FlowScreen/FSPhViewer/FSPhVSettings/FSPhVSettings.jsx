@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import Loading from "../../../../../Library/Loading/Loading";
 import SecHeading from "../../../../../Library/SecHeading/SecHeading";
 import { RootStoreContext } from "../../../../../RootStore";
+import { AppOrgResolver } from "../../../../../Shared/VariableResolvers/AppOrgResolver";
 import { appColors } from "../../../../../constants/colors";
 import * as Helper from "./FSPhVSettingsHelper";
 import FSPhVSettings_Basic from "./components/FSPhVSettings_Basic";
@@ -21,6 +22,7 @@ import FSPhVSettings_UpdateTarget from "./components/FSPhVSettings_UpdateTarget"
 const FSPhVSettings = () => {
   const navigate = useNavigate();
   const rootStore = useContext(RootStoreContext);
+  const { getOrgNameById } = AppOrgResolver();
 
   const { fetchScreen, isFetchingScreen, selectedScreen } =
     rootStore.screenStore;
@@ -58,7 +60,7 @@ const FSPhVSettings = () => {
               color={appColors.sectionHeadingBg.screen}
               customElements={[
                 <Chip
-                  label={selectedScreen?.primaryOrgName}
+                  label={getOrgNameById(ha?.primaryOrgId)}
                   icon="ri-organization-chart"
                   className="mr-3"
                 />,

@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import Loading from "../../../../../Library/Loading/Loading";
 import SecHeading from "../../../../../Library/SecHeading/SecHeading";
 import { RootStoreContext } from "../../../../../RootStore";
+import { AppOrgResolver } from "../../../../../Shared/VariableResolvers/AppOrgResolver";
 import { appColors } from "../../../../../constants/colors";
 import { FormatScreeningMethod } from "../../shared/Formatters";
 import * as Helper from "./FSTbVSettingsHelper";
@@ -23,6 +24,7 @@ import FSTbVSettings_UpdateTarget from "./components/FSTbVSettings_UpdateTarget"
 const FSTbVSettings = () => {
   const navigate = useNavigate();
   const rootStore = useContext(RootStoreContext);
+  const { getOrgNameById } = AppOrgResolver();
 
   const { fetchScreen, isFetchingScreen, selectedScreen } =
     rootStore.screenStore;
@@ -64,7 +66,7 @@ const FSTbVSettings = () => {
                   icon="icon icon-common icon-circle-notch"
                 />,
                 <Chip
-                  label={selectedScreen?.primaryOrgName}
+                  label={getOrgNameById(ha?.primaryOrgId)}
                   icon="ri-organization-chart"
                   className="mr-3"
                 />,
