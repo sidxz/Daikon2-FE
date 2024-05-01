@@ -59,7 +59,7 @@ const FSPhComments = ({ selectedScreen }) => {
               icon="icon icon-common icon-circle-notch"
             />,
             <Chip
-              label={getOrgNameById(ha?.primaryOrgId)}
+              label={getOrgNameById(selectedScreen?.primaryOrgId)}
               icon="ri-organization-chart"
               className="mr-3"
             />,

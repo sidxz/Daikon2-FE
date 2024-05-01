@@ -60,7 +60,7 @@ const FSPhVSettings = () => {
               color={appColors.sectionHeadingBg.screen}
               customElements={[
                 <Chip
-                  label={getOrgNameById(ha?.primaryOrgId)}
+                  label={getOrgNameById(selectedScreen?.primaryOrgId)}
                   icon="ri-organization-chart"
                   className="mr-3"
                 />,
