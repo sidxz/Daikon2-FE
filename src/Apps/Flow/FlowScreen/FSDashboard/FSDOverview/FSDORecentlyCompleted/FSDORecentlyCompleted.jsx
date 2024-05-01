@@ -1,9 +1,11 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { AppOrgResolver } from "../../../../../../Shared/VariableResolvers/AppOrgResolver";
 import { FormatScreeningMethod } from "../../../shared/Formatters";
 
 const FSDORecentlyCompleted = ({ screens }) => {
   const navigate = useNavigate();
+  const { getOrgAliasById } = AppOrgResolver();
 
   if (!screens || screens.length === 0)
     return (
@@ -22,7 +24,7 @@ const FSDORecentlyCompleted = ({ screens }) => {
           </div>
 
           <div className="p-1 white-space-nowrap justify-content-center bg-white text-700 text-xs w-6 overflow-hidden text-overflow-ellipsis border-green-100">
-            {screen.primaryOrgName}
+            {getOrgAliasById(screen?.primaryOrgId)}
           </div>
         </div>
         <div

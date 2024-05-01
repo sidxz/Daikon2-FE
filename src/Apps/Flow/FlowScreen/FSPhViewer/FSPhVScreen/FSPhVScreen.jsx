@@ -15,6 +15,7 @@ import { RootStoreContext } from "../../../../../RootStore";
 import { CalendarRowEditor } from "../../../../../Shared/TableRowEditors/CalendarRowEditor";
 import { ScientistRowEditor } from "../../../../../Shared/TableRowEditors/ScientistRowEditor";
 import { TextRowEditor } from "../../../../../Shared/TableRowEditors/TextRowEditor";
+import { AppOrgResolver } from "../../../../../Shared/VariableResolvers/AppOrgResolver";
 import { appColors } from "../../../../../constants/colors";
 import { PhenoScreenIcon } from "../../../icons/PhenoScreenIcon";
 import * as Helper from "./FSPhVScreenHelper";
@@ -27,6 +28,7 @@ const FSPhVScreen = ({}) => {
 
   const { fetchScreen, isFetchingScreen, selectedScreen } =
     rootStore.screenStore;
+  const { getOrgNameById } = AppOrgResolver();
 
   const {
     updateScreenRun,
@@ -97,7 +99,7 @@ const FSPhVScreen = ({}) => {
               color={appColors.sectionHeadingBg.screen}
               customElements={[
                 <Chip
-                  label={selectedScreen?.primaryOrgName}
+                  label={getOrgNameById(selectedScreen?.primaryOrgId)}
                   icon="ri-organization-chart"
                   className="mr-3"
                 />,
