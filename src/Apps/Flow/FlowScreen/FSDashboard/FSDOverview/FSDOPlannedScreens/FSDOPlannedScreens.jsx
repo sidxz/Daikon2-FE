@@ -1,10 +1,11 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { AppOrgResolver } from "../../../../../../Shared/VariableResolvers/AppOrgResolver";
 import { FormatScreeningMethod } from "../../../shared/Formatters";
 
 const FSDOPlannedScreens = ({ screens }) => {
   const navigate = useNavigate();
-
+  const { getOrgAliasById } = AppOrgResolver();
   if (!screens || screens.length === 0)
     return (
       <div className="flex justify-content-center align-items-center w-full text-sm	text-color-secondary">
@@ -23,7 +24,7 @@ const FSDOPlannedScreens = ({ screens }) => {
           </div>
 
           <div className="p-1 white-space-nowrap justify-content-center bg-white text-700 text-xs w-6 overflow-hidden text-overflow-ellipsis border-purple-100">
-            {screen.primaryOrgName}
+            {getOrgAliasById(screen?.primaryOrgId)}
           </div>
         </div>
         <div

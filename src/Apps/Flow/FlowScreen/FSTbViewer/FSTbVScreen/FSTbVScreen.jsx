@@ -15,6 +15,7 @@ import { RootStoreContext } from "../../../../../RootStore";
 import { CalendarRowEditor } from "../../../../../Shared/TableRowEditors/CalendarRowEditor";
 import { ScientistRowEditor } from "../../../../../Shared/TableRowEditors/ScientistRowEditor";
 import { TextRowEditor } from "../../../../../Shared/TableRowEditors/TextRowEditor";
+import { AppOrgResolver } from "../../../../../Shared/VariableResolvers/AppOrgResolver";
 import { appColors } from "../../../../../constants/colors";
 import { ScreenIcon } from "../../../icons/ScreenIcon";
 import { FormatScreeningMethod } from "../../shared/Formatters";
@@ -28,6 +29,7 @@ const FSTbVScreen = ({}) => {
 
   const { fetchScreen, isFetchingScreen, selectedScreen } =
     rootStore.screenStore;
+  const { getOrgNameById } = AppOrgResolver();
 
   const {
     updateScreenRun,
@@ -102,7 +104,7 @@ const FSTbVScreen = ({}) => {
                   icon="icon icon-common icon-circle-notch"
                 />,
                 <Chip
-                  label={selectedScreen?.primaryOrgName}
+                  label={getOrgNameById(selectedScreen?.primaryOrgId)}
                   icon="ri-organization-chart"
                   className="mr-3"
                 />,

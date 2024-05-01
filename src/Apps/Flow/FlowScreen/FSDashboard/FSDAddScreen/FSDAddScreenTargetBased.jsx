@@ -84,6 +84,9 @@ const FSDAddScreenTargetBased = ({ closeSideBar }) => {
         };
       }
 
+      // console.log(newScreen);
+      // return;
+
       addScreen(newScreen).then(() => {
         closeSideBar();
         formik.resetForm();
