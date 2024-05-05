@@ -3,10 +3,11 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import FDate from "../../../../../../Library/FDate/FDate";
 import SmilesView from "../../../../../../Library/SmilesView/SmilesView";
+import TargetFromGraph from "../../../../../../Shared/ActiveComponents/TargetFromGraph/TargetFromGraph";
 import { AppOrgResolver } from "../../../../../../Shared/VariableResolvers/AppOrgResolver";
 
 const FHaDOActiveHA = ({ hitAssessments }) => {
-  const { getOrgNameById } = AppOrgResolver();
+  const { getOrgAliasById } = AppOrgResolver();
   const navigate = useNavigate();
 
   if (!hitAssessments || hitAssessments.length === 0)
@@ -41,7 +42,9 @@ const FHaDOActiveHA = ({ hitAssessments }) => {
               style={{
                 minWidth: "4rem",
               }}
-            ></div>
+            >
+              <TargetFromGraph elementId={ha.id} />
+            </div>
 
             <div
               className="flex justify-content-center w-4 p-2 text-blue-600 border-right-1 border-blue-100"
@@ -49,7 +52,7 @@ const FHaDOActiveHA = ({ hitAssessments }) => {
                 minWidth: "4rem",
               }}
             >
-              {getOrgNameById(ha?.primaryOrgId)}
+              {getOrgAliasById(ha?.primaryOrgId)}
             </div>
 
             <div

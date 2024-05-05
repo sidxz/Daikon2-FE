@@ -34,10 +34,10 @@ class AxiosWithAuth {
     const tokenExpiryMilliseconds = tokenExpirySeconds * 1000;
 
     const currentTimeMilliseconds = Date.now();
-    console.log(
-      "AxiosWithAuth -> Token will expire in Minutes : ",
-      (tokenExpiryMilliseconds - currentTimeMilliseconds) / (1000 * 60)
-    );
+    // console.log(
+    //   "AxiosWithAuth -> Token will expire in Minutes : ",
+    //   (tokenExpiryMilliseconds - currentTimeMilliseconds) / (1000 * 60)
+    // );
     return (
       tokenExpirySeconds &&
       tokenExpiryMilliseconds - currentTimeMilliseconds < tokenExpiryThreshold
@@ -48,10 +48,10 @@ class AxiosWithAuth {
     this.axiosWithAuth.interceptors.request.use(
       (config) => {
         if (this.accessToken) {
-          console.log(
-            "AxiosWithAuth -> setInterceptors -> this.accessToken",
-            this.accessToken
-          );
+          // console.log(
+          //   "AxiosWithAuth -> setInterceptors -> this.accessToken",
+          //   this.accessToken
+          // );
           config.headers.Authorization = `Bearer ${this.accessToken}`;
         }
         return config;

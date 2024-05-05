@@ -125,7 +125,13 @@ const FHaDOverview = () => {
             <div className="flex w-full  pt-1 bg-white">
               <FHaDOPortfolioReadyHA
                 hitAssessments={haList.filter(
-                  (item) => item.status === "CompleteSuccess"
+                  (item) =>
+                    item.status === "CompleteSuccess" &&
+                    item.statusLastModifiedDate &&
+                    new Date(item.statusLastModifiedDate) >
+                      new Date(
+                        new Date().setFullYear(new Date().getFullYear() - 1)
+                      )
                 )}
               />
             </div>

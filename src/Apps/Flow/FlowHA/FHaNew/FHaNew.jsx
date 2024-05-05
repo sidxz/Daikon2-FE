@@ -85,7 +85,7 @@ const FHANew = () => {
       };
 
       console.log("FHANew -> data", data);
-      //return;
+      return;
       addHa(data).then(() => {
         formik.resetForm();
         navigate("/wf/ha/dash/all-projects/");

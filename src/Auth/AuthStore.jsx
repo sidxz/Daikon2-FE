@@ -42,7 +42,7 @@ export default class AuthStore {
     try {
       const user = await AuthApi.validate();
       runInAction(() => {
-        console.log("AuthStore -> fetchUser -> user", user);
+        //console.log("AuthStore -> fetchUser -> user", user);
         this.user = user;
         this.isUserValidated = true;
       });

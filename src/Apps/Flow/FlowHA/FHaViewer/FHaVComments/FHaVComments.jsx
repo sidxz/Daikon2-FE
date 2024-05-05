@@ -22,15 +22,15 @@ const FSTbComments = ({ selectedHa }) => {
   let [screenTag, setScreenTag] = useState(null);
   let [isScreenTagFetched, setIsScreenTagFetched] = useState(false);
 
-  let hitId = Object.keys(selectedHa.associatedHitIds).map(
-    (key) => selectedHa.associatedHitIds[key]
-  )[0];
+  let hitId = selectedHa.hitId;
 
   if (hitId !== undefined) {
     ScreenViewAPI.hitView(hitId).then((res) => {
       setScreenTag(res.screenName);
       setIsScreenTagFetched(true);
     });
+  } else {
+    setIsScreenTagFetched(true);
   }
 
   console.log("screenTag", screenTag);

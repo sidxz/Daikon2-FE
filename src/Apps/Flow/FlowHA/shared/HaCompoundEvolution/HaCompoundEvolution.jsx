@@ -93,14 +93,15 @@ const HaCompoundEvolution = () => {
                     <div className="flex">
                       <Chip label={<FDate timestamp={evo?.evolutionDate} />} />
                     </div>
-                    <div className="flex align-items-center">
-                      <i className="pi pi-arrow-left text-xs text-200" />
-                    </div>
+
                     <div className="flex align-items-center text-sm text-500">
-                      {index == 0 ? "(Latest)" : ""}
+                      {index == 0 ? "(Initial)" : ""}
                       {index == selectedHa?.haCompoundEvolution.length - 1
-                        ? "(Initial)"
+                        ? "(Latest)"
                         : ""}
+                    </div>
+                    <div className="flex align-items-center">
+                      <i className="pi pi-arrow-right text-xs text-200" />
                     </div>
                   </div>
                 </Divider>

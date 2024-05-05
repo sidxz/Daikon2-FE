@@ -40,10 +40,8 @@ const HNScreen = ({ dataObj, entryPoint }) => {
                   : "Phenotypic Screen"}
               </span>
             </b>
-
             <br />
             {dataObj?.attributes?.name}
-
             {dataObj?.attributes?.screenType === "target-based" && (
               <>
                 <br />

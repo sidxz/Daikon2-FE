@@ -34,13 +34,13 @@ const Container = ({ userManager }) => {
     const fetchSSOUser = async () => {
       try {
         const _ssoUser = await userManager.getUser();
-        console.log("SSO User", _ssoUser);
+        //console.log("SSO User", _ssoUser);
         const expiresAtTimestamp = _ssoUser?.expires_at;
         const expiresAtDate = new Date(expiresAtTimestamp * 1000); // Multiply by 1000 to convert seconds to milliseconds
-        console.log("SSO User Expires at", expiresAtDate);
+        //console.log("SSO User Expires at", expiresAtDate);
         setSsoUser(_ssoUser);
         if (_ssoUser?.expired) {
-          console.log("SSO User expired, redirecting to login...");
+          //console.log("SSO User expired, redirecting to login...");
           await userManager.signinRedirect();
         }
         fetchUser();

@@ -27,7 +27,7 @@ const Login = ({ userManager }) => {
     }
   };
 
-  console.log("localStorage.setItem redirectUrl", window.location.pathname);
+  //console.log("localStorage.setItem redirectUrl", window.location.pathname);
   localStorage.setItem("redirectUrl", window.location.pathname);
 
   // Check if LoginComponent is set before rendering

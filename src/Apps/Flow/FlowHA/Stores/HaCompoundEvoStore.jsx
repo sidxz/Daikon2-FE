@@ -54,7 +54,7 @@ export default class HaCompoundEvoStore {
         // sort by evolutionDate
         hitAssessment.haCompoundEvolution =
           hitAssessment.haCompoundEvolution.sort(
-            (a, b) => new Date(b.evolutionDate) - new Date(a.evolutionDate)
+            (a, b) => new Date(a.evolutionDate) - new Date(b.evolutionDate)
           );
 
         this.rootStore.haStore.selectedHa = hitAssessment;
@@ -107,7 +107,7 @@ export default class HaCompoundEvoStore {
         // sort by evolutionDate
         hitAssessment.haCompoundEvolution =
           hitAssessment.haCompoundEvolution.sort(
-            (a, b) => new Date(b.evolutionDate) - new Date(a.evolutionDate)
+            (a, b) => new Date(a.evolutionDate) - new Date(b.evolutionDate)
           );
 
         this.rootStore.haStore.selectedHa = hitAssessment;
