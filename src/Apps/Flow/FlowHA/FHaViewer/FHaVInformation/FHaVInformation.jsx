@@ -85,11 +85,11 @@ const FHaVInformation = () => {
       group: "group1",
     });
 
-  isDateValid(selectedHa?.terminationDate) &&
+  isDateValid(selectedHa?.removalDate) &&
     timelineItems.add({
       id: 5,
       content: "Termination Date",
-      start: selectedHa?.terminationDate,
+      start: selectedHa?.removalDate,
       group: "group1",
     });
 

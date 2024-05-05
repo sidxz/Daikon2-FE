@@ -54,7 +54,7 @@ export default class ProjectCompoundEvoStore {
 
         // sort by evolutionDate
         project.compoundEvolution = project.compoundEvolution.sort(
-          (a, b) => new Date(b.evolutionDate) - new Date(a.evolutionDate)
+          (a, b) => new Date(a.evolutionDate) - new Date(b.evolutionDate)
         );
 
         this.rootStore.projectStore.selectedProject = project;
@@ -106,7 +106,7 @@ export default class ProjectCompoundEvoStore {
 
         // sort by evolutionDate
         project.compoundEvolution = project.compoundEvolution.sort(
-          (a, b) => new Date(b.evolutionDate) - new Date(a.evolutionDate)
+          (a, b) => new Date(a.evolutionDate) - new Date(b.evolutionDate)
         );
 
         this.rootStore.projectStore.selectedProject = project;
