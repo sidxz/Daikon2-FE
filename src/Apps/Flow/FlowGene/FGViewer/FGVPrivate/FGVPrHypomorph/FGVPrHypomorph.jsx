@@ -7,9 +7,8 @@ import { DataTable } from "primereact/datatable";
 import { Sidebar } from "primereact/sidebar";
 import React, { useContext, useState } from "react";
 import EmbeddedHelp from "../../../../../../Library/EmbeddedHelp/EmbeddedHelp";
-import FDate from "../../../../../../Library/FDate/FDate";
 import { RootStoreContext } from "../../../../../../RootStore";
-import { CalendarRowEditor } from "../../../../../../Shared/TableRowEditors/CalendarRowEditor";
+import TableRowBodyDVar from "../../../../../../Shared/DVariable/TableRowBodyDVar";
 import { TextAreaRowEditorDVar } from "../../../../../../Shared/TableRowEditorsDVar/TextAreaRowEditorDVar";
 import FGVPrHypomorphAddForm from "./FGVPrHypomorphAddForm";
 
@@ -101,46 +100,81 @@ const FGVPrHypomorph = ({ selectedGene }) => {
         >
           <Column
             field="knockdownStrain"
-            header="Knockdown Strain"
+            header="Knockdown strain"
             body={(rowData) => (
               <TableRowBodyDVar dVar={rowData?.knockdownStrain} />
             )}
             editor={(options) => TextAreaRowEditorDVar(options)}
           />
           <Column
-            field="method"
-            header="Method"
-            body={(rowData) => <TableRowBodyDVar dVar={rowData?.method} />}
+            field="phenotype"
+            header="Phenotype"
+            body={(rowData) => <TableRowBodyDVar dVar={rowData?.phenotype} />}
             editor={(options) => TextAreaRowEditorDVar(options)}
           />
           <Column
-            field="pmid"
-            header="PMID"
-            body={(rowData) => <TableRowBodyDVar dVar={rowData?.pmid} />}
+            field="growthDefect"
+            header="Growth defect"
+            body={(rowData) => (
+              <TableRowBodyDVar dVar={rowData?.growthDefect} />
+            )}
+            editor={(options) => TextAreaRowEditorDVar(options)}
+          />
+
+          <Column
+            field="growthDefectSeverity"
+            header="Growth defect severity"
+            body={(rowData) => (
+              <TableRowBodyDVar dVar={rowData?.growthDefectSeverity} />
+            )}
             editor={(options) => TextAreaRowEditorDVar(options)}
           />
           <Column
-            field="dateProduced"
-            header="Date Produced"
-            editor={(options) => CalendarRowEditor(options)}
-            body={(rowData) =>
-              rowData?.dateProduced?.value && (
-                <FDate timestamp={rowData.dateProduced.value} hideTime={true} />
-              )
-            }
-          />
-          <Column
-            field="url"
-            header="URL"
-            body={(rowData) => <TableRowBodyDVar dVar={rowData?.url} />}
+            field="knockdownLevel"
+            header="Knockdown level"
+            body={(rowData) => (
+              <TableRowBodyDVar dVar={rowData?.knockdownLevel} />
+            )}
             editor={(options) => TextAreaRowEditorDVar(options)}
           />
           <Column
-            field="purity"
-            header="Purity"
-            body={(rowData) => <TableRowBodyDVar dVar={rowData?.purity} />}
+            field="estimatedKnockdownRelativeToWT"
+            header="Estimated knockdown relative to WT"
+            body={(rowData) => (
+              <TableRowBodyDVar
+                dVar={rowData?.estimatedKnockdownRelativeToWT}
+              />
+            )}
             editor={(options) => TextAreaRowEditorDVar(options)}
           />
+
+          <Column
+            field="estimateBasedOn"
+            header="Estimate based on"
+            body={(rowData) => (
+              <TableRowBodyDVar dVar={rowData?.estimateBasedOn} />
+            )}
+            editor={(options) => TextAreaRowEditorDVar(options)}
+          />
+          <Column
+            field="selectivelySensitizesToOnTargetInhibitors"
+            header="Selectively sensitizes to OnTargetInhibitors"
+            body={(rowData) => (
+              <TableRowBodyDVar
+                dVar={rowData?.selectivelySensitizesToOnTargetInhibitors}
+              />
+            )}
+            editor={(options) => TextAreaRowEditorDVar(options)}
+          />
+          <Column
+            field="suitableForScreening"
+            header="Suitable for screening"
+            body={(rowData) => (
+              <TableRowBodyDVar dVar={rowData?.suitableForScreening} />
+            )}
+            editor={(options) => TextAreaRowEditorDVar(options)}
+          />
+
           <Column
             field="notes"
             header="Notes"

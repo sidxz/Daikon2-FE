@@ -113,8 +113,13 @@ const FPPVIProjectInfoPriority = () => {
                 <Dropdown
                   id="priority"
                   value={formik.values.priority}
-                  options={["High", "Medium", "Low"]}
-                  onChange={formik.handleChange}
+                  optionLabel="name"
+                  optionValue="name"
+                  options={[
+                    { name: "High" },
+                    { name: "Medium" },
+                    { name: "Low" },
+                  ]}
                   placeholder="Select Priority"
                 />
 
@@ -154,7 +159,13 @@ const FPPVIProjectInfoPriority = () => {
                 <Dropdown
                   id="probability"
                   value={formik.values.probability}
-                  options={["High", "Medium", "Low"]}
+                  optionLabel="name"
+                  optionValue="name"
+                  options={[
+                    { name: "High" },
+                    { name: "Medium" },
+                    { name: "Low" },
+                  ]}
                   onChange={formik.handleChange}
                   placeholder="Select Probability"
                 />

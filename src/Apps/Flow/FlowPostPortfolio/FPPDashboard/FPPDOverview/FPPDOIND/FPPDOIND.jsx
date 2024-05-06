@@ -4,13 +4,14 @@ import { useNavigate } from "react-router-dom";
 import FDate from "../../../../../../Library/FDate/FDate";
 import SmilesView from "../../../../../../Library/SmilesView/SmilesView";
 import { RootStoreContext } from "../../../../../../RootStore";
+import TargetFromGraph from "../../../../../../Shared/ActiveComponents/TargetFromGraph/TargetFromGraph";
 import { AppOrgResolver } from "../../../../../../Shared/VariableResolvers/AppOrgResolver";
 
 const FPPDOIND = () => {
   const rootStore = useContext(RootStoreContext);
   const { activeINDProjects } = rootStore.projectStore;
 
-  const { getOrgNameById } = AppOrgResolver();
+  const { getOrgAliasById } = AppOrgResolver();
   const navigate = useNavigate();
   // check if activeINDProjects is empty or not set or null
   if (!activeINDProjects || activeINDProjects.length === 0)
@@ -48,7 +49,7 @@ const FPPDOIND = () => {
                 minWidth: "4rem",
               }}
             >
-              rho
+              <FDate timestamp={project.indStart} color="#154252" />
             </div>
 
             <div
@@ -57,7 +58,7 @@ const FPPDOIND = () => {
                 minWidth: "4rem",
               }}
             >
-              {getOrgNameById(project?.primaryOrgId)}
+              {getOrgAliasById(project?.primaryOrgId)}
             </div>
 
             <div
@@ -66,11 +67,11 @@ const FPPDOIND = () => {
                 minWidth: "4rem",
               }}
             >
-              <FDate timestamp={project.indStart} color="#154252" />
+              <TargetFromGraph elementId={project.id} />
             </div>
 
             <div
-              className="flex justify-content-center w-full text-100"
+              className="flex justify-content-center align-items-center w-full text-100"
               style={{
                 minWidth: "4rem",
                 backgroundColor: "#6D86A9",

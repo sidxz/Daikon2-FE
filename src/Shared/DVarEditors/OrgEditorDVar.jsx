@@ -6,8 +6,8 @@ const OrgEditorDVar = ({ id, formik, ...props }) => {
   const rootStore = useContext(RootStoreContext);
   const { appVars } = rootStore.authStore;
 
-  let opts = Object.keys(appVars.orgs).map((key) => {
-    return { name: appVars.orgs[key], value: key };
+  let opts = Object.keys(appVars.orgsAlias).map((key) => {
+    return { name: appVars.orgsAlias[key], value: key };
   });
 
   return (

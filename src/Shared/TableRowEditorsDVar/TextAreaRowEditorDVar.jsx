@@ -11,7 +11,7 @@ export const TextAreaRowEditorDVar = (options) => {
       autoResize
       className="w-full"
       type="text"
-      value={options.value.value}
+      value={options.value ? options.value.value : ""}
       onChange={(e) => onchangeDVar(e)}
     />
   );

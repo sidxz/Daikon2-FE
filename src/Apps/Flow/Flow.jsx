@@ -15,7 +15,7 @@ const Flow = () => {
       <div className="block mb-2">
         <FlowMenuBar />
       </div>
-      <div className="flex w-full pl-3 pr-3 fadein animation-duration-1000">
+      <div className="flex w-full max-w-full pl-3 pr-3 fadein animation-duration-1000">
         <Routes>
           <Route index element={<FlowDash />} />
           <Route path="gene/*" element={<FlowGeneApp />} />

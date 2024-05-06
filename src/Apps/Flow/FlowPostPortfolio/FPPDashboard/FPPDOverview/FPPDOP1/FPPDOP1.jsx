@@ -4,13 +4,14 @@ import { useNavigate } from "react-router-dom";
 import FDate from "../../../../../../Library/FDate/FDate";
 import SmilesView from "../../../../../../Library/SmilesView/SmilesView";
 import { RootStoreContext } from "../../../../../../RootStore";
+import TargetFromGraph from "../../../../../../Shared/ActiveComponents/TargetFromGraph/TargetFromGraph";
 import { AppOrgResolver } from "../../../../../../Shared/VariableResolvers/AppOrgResolver";
 
 const FPPDOP1 = () => {
   const rootStore = useContext(RootStoreContext);
   const { activeP1Projects } = rootStore.projectStore;
 
-  const { getOrgNameById } = AppOrgResolver();
+  const { getOrgAliasById } = AppOrgResolver();
   const navigate = useNavigate();
   // check if activeP1Projects is empty or not set or null
   if (!activeP1Projects || activeP1Projects.length === 0)
@@ -43,30 +44,29 @@ const FPPDOP1 = () => {
           </div>
           <div className="flex justify-content-center border-bottom-1 border-gray-100">
             <div
-              className="flex justify-content-center w-full p-2 text-blue-900 border-right-1 border-gray-100"
-              style={{
-                minWidth: "4rem",
-              }}
-            >
-              rho
-            </div>
-
-            <div
-              className="flex justify-content-center w-full p-2 text-blue-900 border-right-1 border-gray-100"
-              style={{
-                minWidth: "4rem",
-              }}
-            >
-              {getOrgNameById(project?.primaryOrgId)}
-            </div>
-
-            <div
-              className="flex justify-content-center w-full"
+              className="flex justify-content-center align-items-center w-full"
               style={{
                 minWidth: "4rem",
               }}
             >
               <FDate timestamp={project.p1Start} color="#224255" />
+            </div>
+            <div
+              className="flex justify-content-center w-full p-2 text-blue-900 border-right-1 border-gray-100"
+              style={{
+                minWidth: "4rem",
+              }}
+            >
+              <TargetFromGraph elementId={project.id} />
+            </div>
+
+            <div
+              className="flex justify-content-center w-full p-2 text-blue-900 border-right-1 border-gray-100"
+              style={{
+                minWidth: "4rem",
+              }}
+            >
+              {getOrgAliasById(project?.primaryOrgId)}
             </div>
           </div>
           <div className="flex w-full p-2 justify-content-center">

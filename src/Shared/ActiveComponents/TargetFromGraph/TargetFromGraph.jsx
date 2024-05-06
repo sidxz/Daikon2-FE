@@ -24,7 +24,14 @@ const TargetFromGraph = ({ elementId }) => {
       </>
     );
 
-  return <>{targetName}</>;
+  return (
+    <div
+      className="surface-overlay white-space-nowrap overflow-hidden text-overflow-ellipsis"
+      style={{ width: "5em" }}
+    >
+      {targetName}
+    </div>
+  );
 };
 
 export default TargetFromGraph;

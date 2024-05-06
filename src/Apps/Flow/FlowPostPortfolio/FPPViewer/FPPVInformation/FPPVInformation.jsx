@@ -12,6 +12,7 @@ import { RootStoreContext } from "../../../../../RootStore";
 import { DateValidators } from "../../../../../Shared/Validators/DateValidators";
 import { AppOrgResolver } from "../../../../../Shared/VariableResolvers/AppOrgResolver";
 import { appColors } from "../../../../../constants/colors";
+import HaCompoundEvolution from "../../../FlowHA/shared/HaCompoundEvolution/HaCompoundEvolution";
 import PortfolioCompoundEvolution from "../../../FlowPortfolio/shared/HaCompoundEvolution/PortfolioCompoundEvolution";
 import { PostPortfolioIcon } from "../../../icons/PostPortfolioIcon";
 import PostPortfolioStageDropdown from "../../shared/PostPortfolioStageDropdown";
@@ -44,9 +45,75 @@ const FPPVInformation = () => {
 
   const timelineItems = new DataSet([]);
 
-  isDateValid(selectedProject?.indStart) &&
+  isDateValid(selectedProject?.h2LStart) &&
     timelineItems.add({
       id: 1,
+      content: "H2L Actual Start",
+      start: selectedProject?.h2LStart,
+      //end: selectedProject.h2LPredictedStartDate,
+      //start: addDays(6),
+      //end: addDays(90),
+      //className: "expected",
+    });
+
+  isDateValid(selectedProject?.loPredictedStart) &&
+    timelineItems.add({
+      id: 2,
+      content: "LO Predicted Start",
+      start: selectedProject?.loPredictedStart,
+      //end: selectedProject.h2LPredictedStartDate,
+      //start: addDays(6),
+      //end: addDays(90),
+      className: "expected",
+    });
+
+  isDateValid(selectedProject?.loStart) &&
+    timelineItems.add({
+      id: 3,
+      content: "LO Actual Start",
+      start: selectedProject?.loStart,
+      //end: selectedProject.h2LPredictedStartDate,
+      //start: addDays(6),
+      //end: addDays(90),
+      //className: "expected",
+    });
+
+  isDateValid(selectedProject?.spPredictedStart) &&
+    timelineItems.add({
+      id: 4,
+      content: "SP Predicted Start",
+      start: selectedProject?.spPredictedStart,
+      //end: selectedProject.h2LPredictedStartDate,
+      //start: addDays(6),
+      //end: addDays(90),
+      className: "expected",
+    });
+
+  isDateValid(selectedProject?.spStart) &&
+    timelineItems.add({
+      id: 5,
+      content: "SP Actual Start",
+      start: selectedProject?.spStart,
+      //end: selectedProject.h2LPredictedStartDate,
+      //start: addDays(6),
+      //end: addDays(90),
+      //className: "expected",
+    });
+
+  isDateValid(selectedProject?.indPredictedStart) &&
+    timelineItems.add({
+      id: 6,
+      content: "IND Predicted Start",
+      start: selectedProject?.indPredictedStart,
+      //end: selectedProject.h2LPredictedStartDate,
+      //start: addDays(6),
+      //end: addDays(90),
+      className: "expected",
+    });
+
+  isDateValid(selectedProject?.indStart) &&
+    timelineItems.add({
+      id: 7,
       content: "IND Actual Start",
       start: selectedProject?.indStart,
       //end: selectedProject.indPredictedStart,
@@ -57,7 +124,7 @@ const FPPVInformation = () => {
 
   isDateValid(selectedProject?.p1PredictedStart) &&
     timelineItems.add({
-      id: 2,
+      id: 8,
       content: "P1 Predicted Start",
       start: selectedProject?.p1PredictedStart,
       className: "expected",
@@ -65,7 +132,7 @@ const FPPVInformation = () => {
 
   isDateValid(selectedProject?.p1Start) &&
     timelineItems.add({
-      id: 3,
+      id: 9,
       content: "P1 Actual Start",
       start: selectedProject?.p1Start,
     });
@@ -124,6 +191,17 @@ const FPPVInformation = () => {
         >
           <PortfolioCompoundEvolution
             events={selectedProject?.portfolioCompoundEvolution}
+          />
+        </Fieldset>
+      </div>
+      <div className="flex w-full">
+        <Fieldset
+          className="m-0 flex-grow-1"
+          legend="Hit Assessment Compound Evolution"
+        >
+          <HaCompoundEvolution
+            haId={selectedProject.haId}
+            showMenuBar={false}
           />
         </Fieldset>
       </div>

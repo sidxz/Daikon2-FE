@@ -29,10 +29,10 @@ const FGViewer = () => {
     return (
       <div className="flex w-full">
         <div className="flex gap-2 w-full">
-          <div className="flex">
-            <Menu model={Helper.sidePanelItems(navigate)} />
+          <div className="flex border-0" style={{ width: "12%" }}>
+            <Menu model={Helper.sidePanelItems(navigate)} className="w-full" />
           </div>
-          <div className="flex w-full">
+          <div className="flex border-0" style={{ width: "88%" }}>
             <Routes>
               <Route index element={<Navigate replace to="public/" />} />
               <Route

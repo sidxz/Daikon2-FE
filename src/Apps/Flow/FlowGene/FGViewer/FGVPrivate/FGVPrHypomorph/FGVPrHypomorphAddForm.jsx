@@ -2,7 +2,6 @@ import { useFormik } from "formik";
 import { Button } from "primereact/button";
 import { classNames } from "primereact/utils";
 import React from "react";
-import CalendarDVar from "../../../../../../Shared/DVarEditors/CalendarDVar";
 import InputTextAreaDVar from "../../../../../../Shared/DVarEditors/InputTextAreaDVar";
 import InputTextDVar from "../../../../../../Shared/DVarEditors/InputTextDVar";
 import { generateDefaultDVar } from "../../../../../../Shared/DVariable/DVarDefaults";
@@ -16,20 +15,24 @@ const FGVPrHypomorphAddForm = ({
   const formik = useFormik({
     initialValues: {
       knockdownStrain: generateDefaultDVar(),
-      method: generateDefaultDVar(),
-      dateProduced: generateDefaultDVar(),
-      pmid: generateDefaultDVar(),
-      url: generateDefaultDVar(),
+      phenotype: generateDefaultDVar(),
+      growthDefect: generateDefaultDVar(),
+      growthDefectSeverity: generateDefaultDVar(),
       notes: generateDefaultDVar(),
-      purity: generateDefaultDVar(),
+      knockdownLevel: generateDefaultDVar(),
+
+      estimatedKnockdownRelativeToWT: generateDefaultDVar(),
+      estimateBasedOn: generateDefaultDVar(),
+      selectivelySensitizesToOnTargetInhibitors: generateDefaultDVar(),
+      suitableForScreening: generateDefaultDVar(),
     },
 
     validate: (values) => {
       const errors = {};
       if (!values.knockdownStrain)
-        errors.knockdownStrain = "Production is required.";
-      // Additional validations can be added here
-      return errors;
+        //errors.knockdownStrain = "Knockdown Strain is required.";
+        // Additional validations can be added here
+        return errors;
     },
 
     onSubmit: (hypomorph) => {
@@ -56,7 +59,7 @@ const FGVPrHypomorphAddForm = ({
             htmlFor="knockdownStrain"
             className={classNames({ "p-error": isInvalid("knockdownStrain") })}
           >
-            Knockdown Strain *
+            Knockdown strain
           </label>
           <InputTextAreaDVar
             id="knockdownStrain"
@@ -71,97 +74,156 @@ const FGVPrHypomorphAddForm = ({
 
         <div className="field">
           <label
-            htmlFor="method"
+            htmlFor="phenotype"
             className={classNames({
-              "p-error": isInvalid("method"),
+              "p-error": isInvalid("phenotype"),
             })}
           >
-            Method
+            Phenotype
           </label>
           <InputTextAreaDVar
-            id="method"
+            id="phenotype"
             formik={formik}
             className={classNames({
-              "p-invalid": isInvalid("method"),
+              "p-invalid": isInvalid("phenotype"),
             })}
           />
-          {getErrorMessage("method")}
+          {getErrorMessage("phenotype")}
         </div>
 
         <div className="field">
           <label
-            htmlFor="dateProduced"
+            htmlFor="growthDefect"
             className={classNames({
-              "p-error": isInvalid("dateProduced"),
+              "p-error": isInvalid("growthDefect"),
             })}
           >
-            Date Produced
-          </label>
-          <CalendarDVar
-            id="dateProduced"
-            formik={formik}
-            className={classNames({
-              "p-invalid": isInvalid("dateProduced"),
-            })}
-          />
-          {getErrorMessage("dateProduced")}
-        </div>
-
-        <div className="field">
-          <label
-            htmlFor="pmid"
-            className={classNames({
-              "p-error": isInvalid("pmid"),
-            })}
-          >
-            PMID
+            Growth defect
           </label>
           <InputTextAreaDVar
-            id="pmid"
+            id="growthDefect"
             formik={formik}
             className={classNames({
-              "p-invalid": isInvalid("pmid"),
+              "p-invalid": isInvalid("growthDefect"),
             })}
           />
-          {getErrorMessage("pmid")}
+          {getErrorMessage("growthDefect")}
         </div>
 
         <div className="field">
           <label
-            htmlFor="url"
+            htmlFor="growthDefectSeverity"
             className={classNames({
-              "p-error": isInvalid("url"),
+              "p-error": isInvalid("growthDefectSeverity"),
             })}
           >
-            URL
+            Growth defect severity
           </label>
           <InputTextDVar
-            id="url"
+            id="growthDefectSeverity"
             formik={formik}
             className={classNames({
-              "p-invalid": isInvalid("url"),
+              "p-invalid": isInvalid("growthDefectSeverity"),
             })}
           />
-          {getErrorMessage("url")}
+          {getErrorMessage("growthDefectSeverity")}
         </div>
 
         <div className="field">
           <label
-            htmlFor="purity"
+            htmlFor="knockdownLevel"
             className={classNames({
-              "p-error": isInvalid("purity"),
+              "p-error": isInvalid("knockdownLevel"),
             })}
           >
-            Purity
+            knockdownLevel
           </label>
           <InputTextDVar
-            id="purity"
+            id="knockdownLevel"
             formik={formik}
             className={classNames({
-              "p-invalid": isInvalid("purity"),
+              "p-invalid": isInvalid("knockdownLevel"),
             })}
           />
-          {getErrorMessage("purity")}
+          {getErrorMessage("knockdownLevel")}
+        </div>
+
+        <div className="field">
+          <label
+            htmlFor="estimatedKnockdownRelativeToWT"
+            className={classNames({
+              "p-error": isInvalid("estimatedKnockdownRelativeToWT"),
+            })}
+          >
+            Estimated knockdown relative to WT
+          </label>
+          <InputTextDVar
+            id="estimatedKnockdownRelativeToWT"
+            formik={formik}
+            className={classNames({
+              "p-invalid": isInvalid("estimatedKnockdownRelativeToWT"),
+            })}
+          />
+          {getErrorMessage("estimatedKnockdownRelativeToWT")}
+        </div>
+
+        <div className="field">
+          <label
+            htmlFor="estimateBasedOn"
+            className={classNames({
+              "p-error": isInvalid("estimateBasedOn"),
+            })}
+          >
+            Estimate based on
+          </label>
+          <InputTextDVar
+            id="estimateBasedOn"
+            formik={formik}
+            className={classNames({
+              "p-invalid": isInvalid("estimateBasedOn"),
+            })}
+          />
+          {getErrorMessage("estimateBasedOn")}
+        </div>
+
+        <div className="field">
+          <label
+            htmlFor="selectivelySensitizesToOnTargetInhibitors"
+            className={classNames({
+              "p-error": isInvalid("selectivelySensitizesToOnTargetInhibitors"),
+            })}
+          >
+            Selectively sensitizes to OnTargetInhibitors
+          </label>
+          <InputTextDVar
+            id="selectivelySensitizesToOnTargetInhibitors"
+            formik={formik}
+            className={classNames({
+              "p-invalid": isInvalid(
+                "selectivelySensitizesToOnTargetInhibitors"
+              ),
+            })}
+          />
+          {getErrorMessage("selectivelySensitizesToOnTargetInhibitors")}
+        </div>
+
+        <div className="field">
+          <label
+            htmlFor="suitableForScreening"
+            className={classNames({
+              "p-error": isInvalid("suitableForScreening"),
+            })}
+          >
+            Suitable for screening
+          </label>
+          <InputTextDVar
+            id="suitableForScreening"
+            formik={formik}
+            className={classNames({
+              "p-invalid": isInvalid("suitableForScreening"),
+            })}
+          />
+          {getErrorMessage("suitableForScreening")}
         </div>
 
         <div className="field">

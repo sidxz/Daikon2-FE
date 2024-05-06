@@ -91,6 +91,7 @@ const FGVPrEssentiality = ({ selectedGene }) => {
     <>
       <BlockUI blocked={isUpdatingEssentiality || isDeletingEssentiality}>
         <DataTable
+          className="p-datatable-sm"
           value={selectedGene.essentialities}
           editMode="row"
           dataKey="id"

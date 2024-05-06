@@ -9,7 +9,7 @@ export const CalendarRowEditorDVar = (options) => {
   return (
     <Calendar
       inputId="edit_date"
-      value={new Date(options.value.value)}
+      value={new Date(options.value?.value)}
       onChange={(e) => onchangeDVar(e)}
       showButtonBar
       // If you want to allow clearing the date, you can enable the clear button

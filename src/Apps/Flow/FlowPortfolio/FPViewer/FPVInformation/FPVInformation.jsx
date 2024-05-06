@@ -12,6 +12,7 @@ import { RootStoreContext } from "../../../../../RootStore";
 import { DateValidators } from "../../../../../Shared/Validators/DateValidators";
 import { AppOrgResolver } from "../../../../../Shared/VariableResolvers/AppOrgResolver";
 import { appColors } from "../../../../../constants/colors";
+import HaCompoundEvolution from "../../../FlowHA/shared/HaCompoundEvolution/HaCompoundEvolution";
 import { PortfolioIcon } from "../../../icons/PortfolioIcon";
 import PortfolioCompoundEvolution from "../../shared/HaCompoundEvolution/PortfolioCompoundEvolution";
 import PortfolioStageDropdown from "../../shared/PortfolioStageDropdown";
@@ -169,6 +170,17 @@ const FPVInformation = () => {
         >
           <PortfolioCompoundEvolution
             events={selectedProject?.portfolioCompoundEvolution}
+          />
+        </Fieldset>
+      </div>
+      <div className="flex w-full">
+        <Fieldset
+          className="m-0 flex-grow-1"
+          legend="Hit Assessment Compound Evolution"
+        >
+          <HaCompoundEvolution
+            haId={selectedProject.haId}
+            showMenuBar={false}
           />
         </Fieldset>
       </div>

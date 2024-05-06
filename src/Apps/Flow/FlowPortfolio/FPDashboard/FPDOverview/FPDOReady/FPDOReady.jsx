@@ -7,7 +7,7 @@ import { RootStoreContext } from "../../../../../../RootStore";
 import { AppOrgResolver } from "../../../../../../Shared/VariableResolvers/AppOrgResolver";
 
 const FPDOReady = () => {
-  const { getOrgNameById } = AppOrgResolver();
+  const { getOrgAliasById } = AppOrgResolver();
   const navigate = useNavigate();
 
   const rootStore = useContext(RootStoreContext);
@@ -58,7 +58,7 @@ const FPDOReady = () => {
                 minWidth: "4rem",
               }}
             >
-              {getOrgNameById(ha?.primaryOrgId)}
+              {getOrgAliasById(ha?.primaryOrgId)}
             </div>
 
             <div

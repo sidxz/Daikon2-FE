@@ -4,13 +4,14 @@ import { useNavigate } from "react-router-dom";
 import FDate from "../../../../../../Library/FDate/FDate";
 import SmilesView from "../../../../../../Library/SmilesView/SmilesView";
 import { RootStoreContext } from "../../../../../../RootStore";
+import TargetFromGraph from "../../../../../../Shared/ActiveComponents/TargetFromGraph/TargetFromGraph";
 import { AppOrgResolver } from "../../../../../../Shared/VariableResolvers/AppOrgResolver";
 
 const FPDOSP = () => {
   const rootStore = useContext(RootStoreContext);
   const { activeSPProjects } = rootStore.projectStore;
 
-  const { getOrgNameById } = AppOrgResolver();
+  const { getOrgAliasById } = AppOrgResolver();
   const navigate = useNavigate();
   // check if activeSPProjects is empty or not set or null
   if (!activeSPProjects || activeSPProjects.length === 0)
@@ -48,7 +49,7 @@ const FPDOSP = () => {
                 minWidth: "4rem",
               }}
             >
-              rho
+              <FDate timestamp={project.spStart} color="#55222e" />
             </div>
 
             <div
@@ -57,7 +58,7 @@ const FPDOSP = () => {
                 minWidth: "4rem",
               }}
             >
-              {getOrgNameById(project?.primaryOrgId)}
+              {getOrgAliasById(project?.primaryOrgId)}
             </div>
 
             <div
@@ -66,7 +67,7 @@ const FPDOSP = () => {
                 minWidth: "4rem",
               }}
             >
-              <FDate timestamp={project.spStart} color="#55222e" />
+              <TargetFromGraph elementId={project.id} />
             </div>
 
             <div

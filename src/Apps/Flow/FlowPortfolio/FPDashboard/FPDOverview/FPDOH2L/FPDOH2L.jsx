@@ -4,13 +4,14 @@ import { useNavigate } from "react-router-dom";
 import FDate from "../../../../../../Library/FDate/FDate";
 import SmilesView from "../../../../../../Library/SmilesView/SmilesView";
 import { RootStoreContext } from "../../../../../../RootStore";
+import TargetFromGraph from "../../../../../../Shared/ActiveComponents/TargetFromGraph/TargetFromGraph";
 import { AppOrgResolver } from "../../../../../../Shared/VariableResolvers/AppOrgResolver";
 
 const FPDOH2L = () => {
   const rootStore = useContext(RootStoreContext);
   const { activeH2LProjects } = rootStore.projectStore;
 
-  const { getOrgNameById } = AppOrgResolver();
+  const { getOrgAliasById } = AppOrgResolver();
   const navigate = useNavigate();
   // check if activeH2LProjects is empty or not set or null
   if (!activeH2LProjects || activeH2LProjects.length === 0)
@@ -50,25 +51,25 @@ const FPDOH2L = () => {
                 minWidth: "4rem",
               }}
             >
-              {project.alias}
-            </div>
-
-            <div
-              className="flex justify-content-center w-full p-2 text-green-800 border-right-1 border-green-100"
-              style={{
-                minWidth: "4rem",
-              }}
-            >
-              {getOrgNameById(project?.primaryOrgId)}
-            </div>
-
-            <div
-              className="flex justify-content-center w-full p-2 text-green-800 border-right-1 border-green-100"
-              style={{
-                minWidth: "4rem",
-              }}
-            >
               <FDate timestamp={project.h2LStart} color="#384612" />
+            </div>
+
+            <div
+              className="flex justify-content-center w-full p-2 text-green-800 border-right-1 border-green-100"
+              style={{
+                minWidth: "4rem",
+              }}
+            >
+              {getOrgAliasById(project?.primaryOrgId)}
+            </div>
+
+            <div
+              className="flex justify-content-center w-full p-2 text-green-800 border-right-1 border-green-100"
+              style={{
+                minWidth: "4rem",
+              }}
+            >
+              <TargetFromGraph elementId={project.id} />
             </div>
 
             <div

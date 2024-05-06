@@ -4,13 +4,14 @@ import { useNavigate } from "react-router-dom";
 import FDate from "../../../../../../Library/FDate/FDate";
 import SmilesView from "../../../../../../Library/SmilesView/SmilesView";
 import { RootStoreContext } from "../../../../../../RootStore";
+import TargetFromGraph from "../../../../../../Shared/ActiveComponents/TargetFromGraph/TargetFromGraph";
 import { AppOrgResolver } from "../../../../../../Shared/VariableResolvers/AppOrgResolver";
 
 const FPDOLO = () => {
   const rootStore = useContext(RootStoreContext);
   const { activeLOProjects } = rootStore.projectStore;
 
-  const { getOrgNameById } = AppOrgResolver();
+  const { getOrgAliasById } = AppOrgResolver();
   const navigate = useNavigate();
   // check if activeLOProjects is empty or not set or null
   if (!activeLOProjects || activeLOProjects.length === 0)
@@ -48,7 +49,7 @@ const FPDOLO = () => {
                 minWidth: "4rem",
               }}
             >
-              {project.alias}
+              <FDate timestamp={project.loStart} color="#154252" />
             </div>
 
             <div
@@ -57,7 +58,7 @@ const FPDOLO = () => {
                 minWidth: "4rem",
               }}
             >
-              {getOrgNameById(project?.primaryOrgId)}
+              {getOrgAliasById(project?.primaryOrgId)}
             </div>
 
             <div
@@ -66,7 +67,7 @@ const FPDOLO = () => {
                 minWidth: "4rem",
               }}
             >
-              <FDate timestamp={project.loStart} color="#154252" />
+              <TargetFromGraph elementId={project.id} />
             </div>
 
             <div

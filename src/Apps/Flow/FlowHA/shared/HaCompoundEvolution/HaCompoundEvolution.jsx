@@ -5,7 +5,7 @@ import { confirmPopup } from "primereact/confirmpopup";
 import { Divider } from "primereact/divider";
 import { Sidebar } from "primereact/sidebar";
 import { Tag } from "primereact/tag";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import FDate from "../../../../../Library/FDate/FDate";
 import PleaseWait from "../../../../../Library/PleaseWait/PleaseWait";
 import SmilesView from "../../../../../Library/SmilesView/SmilesView";
@@ -14,9 +14,9 @@ import HaCompoundEvolutionAdd from "./components/HaCompoundEvolutionAdd";
 import HaCompoundEvolutionEdit from "./components/HaCompoundEvolutionEdit";
 import HaCompoundEvolutionMenuBar from "./components/HaCompoundEvolutionMenuBar";
 
-const HaCompoundEvolution = () => {
+const HaCompoundEvolution = ({ haId, showMenuBar = true }) => {
   const rootStore = useContext(RootStoreContext);
-  const { selectedHa, isFetchingHa } = rootStore.haStore;
+  const { selectedHa, isFetchingHa, fetchHa } = rootStore.haStore;
   const { isDeletingHaCEvo, isAddingHaCEvo, isUpdatingHaCEvo, deleteHaCEvo } =
     rootStore.haCompoundEvoStore;
 
@@ -24,6 +24,12 @@ const HaCompoundEvolution = () => {
   const [displayEditCEvoSideBar, setDisplayEditCEvoSideBar] = useState(false);
   const [selectedCEvo, setSelectedCEvo] = useState(null);
   const [isNotesExpanded, setIsNotesExpanded] = useState(false);
+
+  useEffect(() => {
+    if (haId) {
+      fetchHa(haId);
+    }
+  }, [haId]);
 
   if (isFetchingHa || isDeletingHaCEvo || isAddingHaCEvo || isUpdatingHaCEvo) {
     return <PleaseWait />;
@@ -76,9 +82,11 @@ const HaCompoundEvolution = () => {
   return (
     <div className="flex flex-column p-align-center w-full">
       <div className="flex ">
-        <HaCompoundEvolutionMenuBar
-          setDisplayAddCEvoSideBar={setDisplayAddCEvoSideBar}
-        />
+        {showMenuBar && (
+          <HaCompoundEvolutionMenuBar
+            setDisplayAddCEvoSideBar={setDisplayAddCEvoSideBar}
+          />
+        )}
       </div>
       <div className="flex flex-wrap">
         {selectedHa?.haCompoundEvolution?.map((evo, index) => (
