@@ -5,6 +5,7 @@ import { InputText } from "primereact/inputtext";
 import { classNames } from "primereact/utils";
 import React, { useContext, useEffect, useState } from "react";
 import { FcExpired } from "react-icons/fc";
+import { GiMolecule } from "react-icons/gi";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Loading from "../../../../Library/Loading/Loading";
 import SecHeading from "../../../../Library/SecHeading/SecHeading";
@@ -21,6 +22,7 @@ import { InputTextarea } from "primereact/inputtextarea";
 import { toast } from "react-toastify";
 import InputMultiOrg from "../../../../Shared/InputEditors/InputMultiOrg";
 import { statusOptions } from "../constants/statusOptions";
+import FHaNewMoleculePicker from "./components/FHaNewMoleculePicker/FHaNewMoleculePicker";
 const FHANew = () => {
   const [searchParams] = useSearchParams();
   const encodedData = searchParams.get("data");
@@ -30,8 +32,9 @@ const FHANew = () => {
     decodedData = JSON.parse(decodedDataString);
   }
   const [baseHitData, setBaseHitData] = useState(decodedData);
+  const [selectedMolecule, setSelectedMolecule] = useState(null);
 
-  console.log("FHANew -> baseHitData", baseHitData);
+  //console.log("FHANew -> baseHitData", baseHitData);
 
   // make sure screen and hits are prefetched
 
@@ -74,22 +77,36 @@ const FHANew = () => {
     },
 
     onSubmit: (newHa) => {
-      if (baseHitData == null) {
-        toast.error("Please select hit molecules before submitting.");
+      if (baseHitData == null && selectedMolecule == null) {
+        toast.error("Please select molecules before submitting.");
         return;
       }
+      if (baseHitData != null || selectedMolecule != null) {
+        let data = {};
+        if (selectedMolecule == null) {
+          {
+            data = {
+              ...newHa,
+              ...baseHitData,
+            };
+          }
+        } else {
+          {
+            data = {
+              ...newHa,
+            };
+            data["compoundId"] = selectedMolecule.id;
+            data["compoundSMILES"] = selectedMolecule.smilesCanonical;
+          }
+        }
 
-      let data = {
-        ...newHa,
-        ...baseHitData,
-      };
-
-      console.log("FHANew -> data", data);
-      return;
-      addHa(data).then(() => {
-        formik.resetForm();
-        navigate("/wf/ha/dash/all-projects/");
-      });
+        console.log("FHANew -> data", data);
+        //return;
+        addHa(data).then(() => {
+          formik.resetForm();
+          navigate("/wf/ha/dash/all-projects/");
+        });
+      }
     },
   });
 
@@ -147,20 +164,52 @@ const FHANew = () => {
           displayHorizon={false}
         />
       </div>
-      <div className="flex w-full  border-1 border-50">
-        {baseHitData == null ? (
-          <FHaNewHitPicker
-            baseHitData={baseHitData}
-            setBaseHitData={setBaseHitData}
-          />
-        ) : (
-          <FHaNewBaseHitData baseHitData={baseHitData} />
-        )}
-      </div>
+      {selectedMolecule == null && (
+        <>
+          <div className="flex w-full border-1 border-50">
+            <Divider align="left">
+              <div className="inline-flex align-items-center">
+                <GiMolecule />
+                <b>Select molecule from screening hits</b>
+              </div>
+            </Divider>
+          </div>
+          <div className="flex w-full  border-1 border-50">
+            {baseHitData == null ? (
+              <FHaNewHitPicker
+                baseHitData={baseHitData}
+                setBaseHitData={setBaseHitData}
+              />
+            ) : (
+              <FHaNewBaseHitData baseHitData={baseHitData} />
+            )}
+          </div>{" "}
+        </>
+      )}
+      {baseHitData == null && (
+        <>
+          <div className="flex w-full border-1 border-50">
+            <Divider align="left">
+              <div className="inline-flex align-items-center">
+                <GiMolecule />
+
+                <b>Or select molecule from registry</b>
+              </div>
+            </Divider>
+          </div>
+          <div className="flex w-full border-1 border-50">
+            <FHaNewMoleculePicker
+              selectedMolecule={selectedMolecule}
+              setSelectedMolecule={setSelectedMolecule}
+            />
+          </div>
+        </>
+      )}
+
       <div className="flex w-full border-1 border-50">
         <div className="flex w-3">
           <Divider align="center" type="solid">
-            Project Details
+            <b>Project Details</b>
           </Divider>
         </div>
         <div className="flex w-9 p-4 m-4">

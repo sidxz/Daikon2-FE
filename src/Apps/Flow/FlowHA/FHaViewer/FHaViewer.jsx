@@ -8,6 +8,7 @@ import { RootStoreContext } from "../../../../RootStore";
 import FHaVComments from "./FHaVComments/FHaVComments";
 import FHaVInformation from "./FHaVInformation/FHaVInformation";
 import * as Helper from "./FHaViewerHelper";
+import FHaVSettings from "./FHaVSettings/FHaVSettings";
 
 const FHaViewer = () => {
   const params = useParams();
@@ -47,6 +48,7 @@ const FHaViewer = () => {
                 path="discussion/*"
                 element={<FHaVComments selectedHa={selectedHa} />}
               />
+               <Route path="settings/*" element={<FHaVSettings />} />
             </Routes>
           </div>
         </div>

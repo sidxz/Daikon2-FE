@@ -17,6 +17,7 @@ import { appColors } from "../../../../../constants/colors";
 import { PostPortfolioIcon } from "../../../icons/PostPortfolioIcon";
 
 import * as Helper from "./FPPVSettingsHelper";
+import FPPVSettingsDates from "./components/FPPVSettingsDates";
 import FPPVSettingsRemove from "./components/FPPVSettingsRemove";
 import FPPVSettingsUpdateAssociation from "./components/FPPVSettingsUpdateAssociation";
 
@@ -66,6 +67,23 @@ const FPPVSettings = () => {
           color={appColors.sectionHeadingBg.project}
           entryPoint={selectedProject?.id}
         />
+      </div>
+
+      <div className="flex w-full  mt-2">
+        <Fieldset
+          className="w-full"
+          legend={
+            <>
+              <FcTreeStructure className="mr-2" />
+              Update Project Dates
+            </>
+          }
+        >
+          <p className="m-0 p-2">
+            Updating these settings will have impact post portfolio projects.
+          </p>
+          <FPPVSettingsDates />
+        </Fieldset>
       </div>
 
       <div className="flex w-full  mt-2">

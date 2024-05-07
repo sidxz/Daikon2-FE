@@ -16,7 +16,7 @@ const FHaNewBaseHitData = ({ baseHitData }) => {
     getHitCollection,
   } = rootStore.hitCollectionStore;
 
-  console.log("FHaNewBaseHitData -> baseHitData", baseHitData);
+  //console.log("FHaNewBaseHitData -> baseHitData", baseHitData);
 
   useEffect(() => {
     fetchHitCollectionsOfScreen(baseHitData.screenId);
@@ -26,10 +26,10 @@ const FHaNewBaseHitData = ({ baseHitData }) => {
     return <PleaseWait />;
   }
 
-  console.log(
-    "FHaNewBaseHitData -> hitCollectionOfScreen",
-    hitCollectionOfScreen(baseHitData.screenId)
-  );
+  // console.log(
+  //   "FHaNewBaseHitData -> hitCollectionOfScreen",
+  //   hitCollectionOfScreen(baseHitData.screenId)
+  // );
 
   if (
     !isFetchingHitCollection &&

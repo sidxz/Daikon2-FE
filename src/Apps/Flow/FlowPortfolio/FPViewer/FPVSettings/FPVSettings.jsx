@@ -15,6 +15,7 @@ import { RootStoreContext } from "../../../../../RootStore";
 import { appColors } from "../../../../../constants/colors";
 import { PortfolioIcon } from "../../../icons/PortfolioIcon";
 import * as Helper from "./FPVSettingsHelper";
+import FPVSettingsDates from "./components/FPVSettingsDates";
 import FPVSettingsRemove from "./components/FPVSettingsRemove";
 import FPVSettingsUpdateAssociation from "./components/FPVSettingsUpdateAssociation";
 
@@ -66,6 +67,23 @@ const FPVSettings = () => {
         />
       </div>
 
+      <div className="flex w-full  mt-2">
+        <Fieldset
+          className="w-full"
+          legend={
+            <>
+              <FcTreeStructure className="mr-2" />
+              Update Project Dates
+            </>
+          }
+        >
+          <p className="m-0 p-2">
+            Updating these dates will have impact the portfolio and
+            post-portfolio projects
+          </p>
+          <FPVSettingsDates />
+        </Fieldset>
+      </div>
       <div className="flex w-full  mt-2">
         <Fieldset
           className="w-full"

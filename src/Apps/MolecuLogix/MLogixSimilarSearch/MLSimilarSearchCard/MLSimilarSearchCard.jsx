@@ -24,7 +24,7 @@ const MLSimilarSearchCard = ({ molecule, navigate }) => {
         </div>
         <div className="flex">
           <p className="text-xl m-0">
-            Similarity : {molecule.similarity * 100} %
+            Similarity : {(molecule.similarity * 100).toFixed(0)} %
           </p>
         </div>
         <div className="flex">
