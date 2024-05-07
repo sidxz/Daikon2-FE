@@ -46,29 +46,31 @@ const FHaVInformation = () => {
     { id: "group2", content: "group2" },
   ]);
 
-  const timelineItems = new DataSet([
-    {
+  const timelineItems = new DataSet([]);
+
+  isDateValid(selectedHa?.dateCreated) &&
+    timelineItems.add({
       id: 1,
       content: "Created",
-      start: selectedHa.dateCreated,
+      start: selectedHa?.dateCreated,
       //start: today,
       group: "group1",
-    },
+    });
 
-    {
+  isDateValid(selectedHa?.haPredictedStartDate) &&
+    timelineItems.add({
       id: 2,
       content: "Predicted Start",
-      start: selectedHa.haPredictedStartDate,
+      start: selectedHa?.haPredictedStartDate,
       //start: addDays(5),
       group: "group1",
-    },
-  ]);
+    });
 
-  isDateValid(selectedHa.haStartDate) &&
+  isDateValid(selectedHa?.haStartDate) &&
     timelineItems.add({
       id: 3,
       content: "Actual Start",
-      start: selectedHa.haStartDate,
+      start: selectedHa?.haStartDate,
       //end: selectedHa.h2LPredictedStartDate,
       //start: addDays(6),
       //end: addDays(90),

@@ -56,7 +56,7 @@ export default class MoleculeStore {
       const molecules = await MolDbAPI.listMolecules();
       runInAction(() => {
         molecules.forEach((molecule) => {
-          console.log(molecule);
+          //console.log(molecule);
           // round off molecularWeight and tpsa to 2 decimal places
           molecule.molecularWeight = molecule.molecularWeight.toFixed(2);
           molecule.tpsa = molecule.tpsa.toFixed(2);
@@ -145,7 +145,7 @@ export default class MoleculeStore {
     try {
       let res = await MolDbAPI.findSimilarMolecules(smiles, threshold, limit);
       runInAction(() => {
-        console.log(res);
+        //console.log(res);
         this.isFindingSimilarMolecules = false;
       });
     } catch (error) {
