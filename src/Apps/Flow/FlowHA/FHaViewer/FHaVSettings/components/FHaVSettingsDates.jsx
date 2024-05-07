@@ -60,7 +60,7 @@ const FHaVSettingsDates = ({}) => {
                       <Calendar
                         id="haPredictedStartDate"
                         name="haPredictedStartDate"
-                        value={values.haPredictedStartDate}
+                        value={new Date(values?.haPredictedStartDate)}
                         viewDate={values.haPredictedStartDate}
                         onChange={handleChange}
                         onBlur={handleBlur}
