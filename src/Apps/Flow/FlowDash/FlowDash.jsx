@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { Card } from "primereact/card";
 import React from "react";
-import CommentsByTags from "../../Comments/CommentsByTags/CommentsByTags";
+import MostRecentComments from "../../Comments/MostRecentComments/MostRecentComments";
 import "./FlowDash.css";
 import FlowDashCards from "./FlowDashCards/FlowDashCards";
 import FlowDashWhatsNew from "./FlowDashWhatsNew/FlowDashWhatsNew";
@@ -52,7 +52,7 @@ const FlowDash = () => {
             className="w-full min-h-full"
           >
             <div className="flex w-full pt-1">
-              <CommentsByTags tags={["Gene", "Rv2794c"]} />
+              <MostRecentComments />
             </div>
           </Card>
         </div>

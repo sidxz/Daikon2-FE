@@ -22,6 +22,10 @@ export default class CommentStore {
       commentListByTags: action,
       commentListByTagsAny: action,
 
+      fetchMostRecentComments: action,
+      isFetchingMostRecentComments: observable,
+      mostRecentComments: computed,
+
       addComment: action,
       isAddingComment: observable,
 
@@ -64,6 +68,8 @@ export default class CommentStore {
   workingOnCommentId = null;
   currentCommentTagsHash = "";
 
+  isFetchingMostRecentComments = false;
+
   // Actions
 
   fetchCommentsByTags = async (tags, inValidateCache = false) => {
@@ -91,6 +97,32 @@ export default class CommentStore {
       });
     }
   };
+
+  fetchMostRecentComments = async () => {
+    this.isFetchingMostRecentComments = true;
+    try {
+      const comments = await CommentAPI.getMostRecent();
+      runInAction(() => {
+        comments.forEach((comment) => {
+          this.commentRegistry.set(comment.id, comment);
+        });
+        this.isCommentRegistryCacheValid = true;
+      });
+    } catch (error) {
+      console.error("Error fetching most recent comments:", error);
+    } finally {
+      runInAction(() => {
+        this.isFetchingMostRecentComments = false;
+      });
+    }
+  };
+
+  get mostRecentComments() {
+    // Return most recent comments sorted by dateCreated
+    return Array.from(this.commentRegistry.values()).sort(
+      (a, b) => b.dateCreated - a.dateCreated
+    );
+  }
 
   addComment = async (comment) => {
     this.isAddingComment = true;

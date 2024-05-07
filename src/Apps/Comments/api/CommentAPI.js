@@ -15,6 +15,7 @@ const CommentAPI = {
   update: (comment) => axiosWithAuth.put(`/v2/comment/${comment.id}`, comment),
   delete: (id) => axiosWithAuth.delete(`/v2/comment/${id}`),
   getById: (id) => axiosWithAuth.get(`/v2/comment/by-id/${id}`),
+  getMostRecent: () => axiosWithAuth.get("/v2/comment/most-recent?count=5"),
   reply: (reply) =>
     axiosWithAuth.post(`/v2/comment/${reply.commentId}/reply`, reply),
   updateReply: (reply) =>

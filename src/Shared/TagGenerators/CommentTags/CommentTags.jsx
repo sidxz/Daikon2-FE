@@ -10,6 +10,7 @@ const CommentTags = ({ tags }) => {
   let generateTagsUI = tags.map((tag) => {
     return (
       <Tag
+        key={tag}
         style={{
           background:
             "linear-gradient(-225deg, #336633 0%, #558855 48%, #77aa77 100%)",
