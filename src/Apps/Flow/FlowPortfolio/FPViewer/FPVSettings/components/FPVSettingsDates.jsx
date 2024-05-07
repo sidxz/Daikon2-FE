@@ -60,7 +60,7 @@ const FPVSettingsDates = ({}) => {
             }) => (
               <form onSubmit={handleSubmit} className="p-fluid">
                 <div className="flex flex-column">
-                  <div className="flex gap-3">
+                  <div className="flex gap-2">
                     <div className="field">
                       <label htmlFor="h2LPredictedStart">
                         H2L Predicted Start Date
@@ -68,7 +68,7 @@ const FPVSettingsDates = ({}) => {
                       <Calendar
                         id="h2LPredictedStart"
                         name="h2LPredictedStart"
-                        value={values.h2LPredictedStart}
+                        value={new Date(values?.h2LPredictedStart)}
                         viewDate={values.h2LPredictedStart}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -80,7 +80,7 @@ const FPVSettingsDates = ({}) => {
                       <Calendar
                         id="h2LStart"
                         name="h2LStart"
-                        value={values.h2LStart}
+                        value={new Date(values?.h2LStart)}
                         viewDate={values.h2LStart}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -94,7 +94,7 @@ const FPVSettingsDates = ({}) => {
                       <Calendar
                         id="loPredictedStart"
                         name="loPredictedStart"
-                        value={values.loPredictedStart}
+                        value={new Date(values?.loPredictedStart)}
                         viewDate={values.loPredictedStart}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -106,7 +106,7 @@ const FPVSettingsDates = ({}) => {
                       <Calendar
                         id="loStart"
                         name="loStart"
-                        value={values.loStart}
+                        value={new Date(values?.loStart)}
                         viewDate={values.loStart}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -120,7 +120,7 @@ const FPVSettingsDates = ({}) => {
                       <Calendar
                         id="spPredictedStart"
                         name="spPredictedStart"
-                        value={values.spPredictedStart}
+                        value={new Date(values?.spPredictedStart)}
                         viewDate={values.spPredictedStart}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -132,12 +132,13 @@ const FPVSettingsDates = ({}) => {
                       <Calendar
                         id="spStart"
                         name="spStart"
-                        value={values.spStart}
+                        value={new Date(values?.spStart)}
                         viewDate={values.spStart}
                         onChange={handleChange}
                         onBlur={handleBlur}
                       />
                     </div>
+
                     <div className="field">
                       <label htmlFor="submit" className="text-white-alpha-10">
                         -
