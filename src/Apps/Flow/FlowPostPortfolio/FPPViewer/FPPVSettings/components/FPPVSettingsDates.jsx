@@ -62,7 +62,7 @@ const FPPVSettingsDates = ({}) => {
                       <Calendar
                         id="indPredictedStart"
                         name="indPredictedStart"
-                        value={values.indPredictedStart}
+                        value={new Date(values?.indPredictedStart)}
                         viewDate={values.indPredictedStart}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -74,7 +74,7 @@ const FPPVSettingsDates = ({}) => {
                       <Calendar
                         id="indStart"
                         name="indStart"
-                        value={values.indStart}
+                        value={new Date(values?.indStart)}
                         viewDate={values.indStart}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -88,7 +88,7 @@ const FPPVSettingsDates = ({}) => {
                       <Calendar
                         id="p1PredictedStart"
                         name="p1PredictedStart"
-                        value={values.p1PredictedStart}
+                        value={new Date(values?.p1PredictedStart)}
                         viewDate={values.p1PredictedStart}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -100,7 +100,7 @@ const FPPVSettingsDates = ({}) => {
                       <Calendar
                         id="p1Start"
                         name="p1Start"
-                        value={values.p1Start}
+                        value={new Date(values?.p1Start)}
                         viewDate={values.p1Start}
                         onChange={handleChange}
                         onBlur={handleBlur}
