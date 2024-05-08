@@ -7,6 +7,7 @@ import {
 } from "mobx";
 import { toast } from "react-toastify";
 import TargetAPI from "../api/TargetAPI";
+import TargetHorizonAPI from "../api/TargetHorizonAPI";
 
 export default class TargetStore {
   rootStore;
@@ -37,6 +38,13 @@ export default class TargetStore {
 
       updateGeneAssociation: action,
       renameTarget: action,
+
+      fetchTargetRelations: action,
+      isFetchingTargetRelations: observable,
+      isTargetRelationsCacheValid: observable,
+      targetRelationsRegistry: observable,
+
+      targetListWithRelations: computed,
     });
   }
 
@@ -53,6 +61,10 @@ export default class TargetStore {
   isUpdatingTarget = false;
   isAddingTarget = false;
   isDeletingTarget = false;
+
+  isFetchingTargetRelations = false;
+  isTargetRelationsCacheValid = false;
+  targetRelationsRegistry = new Map();
 
   // Actions
 
@@ -262,4 +274,42 @@ export default class TargetStore {
       });
     }
   };
+
+  fetchTargetRelations = async (inValidateCache = false) => {
+    if (inValidateCache) {
+      this.isTargetRelationsCacheValid = false;
+    }
+    if (this.isTargetRelationsCacheValid) {
+      return;
+    }
+    this.isFetchingTargetRelations = true;
+    try {
+      const targetRelations = await TargetHorizonAPI.listTargetRelations();
+      runInAction(() => {
+        targetRelations.forEach((targetRelation) => {
+          this.targetRelationsRegistry.set(
+            targetRelation.targetId,
+            targetRelation?.highestRelationship
+          );
+        });
+        this.isTargetRelationsCacheValid = true;
+      });
+    } catch (error) {
+      console.error("Error fetching target relations:", error);
+    } finally {
+      runInAction(() => {
+        this.isFetchingTargetRelations = false;
+      });
+    }
+  };
+
+  get targetListWithRelations() {
+    return this.targetList.map((target) => {
+      const highestRelationship = this.targetRelationsRegistry.get(target.id);
+      return {
+        ...target,
+        highestRelationship: highestRelationship,
+      };
+    });
+  }
 }
