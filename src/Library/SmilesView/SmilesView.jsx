@@ -45,7 +45,7 @@ const SmilesView = ({ smiles, compoundId, width = 200, height = 200 }) => {
       label: "View Compound",
       icon: "icon icon-common icon-math",
       command: () => {
-        navigate("/tools/compounds/" + compoundId);
+        navigate("/moleculogix/molecule/" + compoundId);
       },
     });
   }

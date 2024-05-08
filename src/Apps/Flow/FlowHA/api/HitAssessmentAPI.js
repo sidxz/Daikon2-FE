@@ -6,6 +6,7 @@ const HitAssessmentAPI = {
   list: () => axiosWithAuth.get("/v2/hit-assessment"),
   create: (ha) => axiosWithAuth.post("/v2/hit-assessment", ha),
   update: (ha) => axiosWithAuth.put(`/v2/hit-assessment/${ha.id}`, ha),
+  rename: (ha) => axiosWithAuth.put(`/v2/hit-assessment/${ha.id}/rename`, ha),
   delete: (id) => axiosWithAuth.delete(`/v2/hit-assessment/${id}`),
   getById: (id) => axiosWithAuth.get(`/v2/hit-assessment/by-id/${id}`),
 };

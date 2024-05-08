@@ -29,6 +29,9 @@ export default class HAStore {
       isUpdatingHa: observable,
       updateHa: action,
 
+      isRenamingHa: observable,
+      renameHa: action,
+
       isAddingHa: observable,
       addHa: action,
 
@@ -52,6 +55,7 @@ export default class HAStore {
   isUpdatingHa = false;
   isAddingHa = false;
   isDeletingHa = false;
+  isRenamingHa = false;
 
   // Actions
 
@@ -158,6 +162,27 @@ export default class HAStore {
     } finally {
       runInAction(() => {
         this.isUpdatingHa = false;
+      });
+    }
+  };
+
+  renameHa = async (ha) => {
+    this.isRenamingHa = true;
+
+    try {
+      await HitAssessmentAPI.rename(ha);
+      runInAction(() => {
+        // update in ha registry list
+        this.haRegistry.set(ha.id, ha);
+        this.haListRegistry.set(ha.id, ha);
+        this.selectedHa = ha;
+        toast.success("HA renamed successfully");
+      });
+    } catch (error) {
+      console.error("Error updating ha:", error);
+    } finally {
+      runInAction(() => {
+        this.isRenamingHa = false;
       });
     }
   };

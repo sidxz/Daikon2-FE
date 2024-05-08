@@ -10,7 +10,8 @@ import { RootStoreContext } from "../../../../../../RootStore";
 const FHaVSettingsRename = () => {
   const rootStore = useContext(RootStoreContext);
 
-  const { isUpdatingHa, selectedHa, isFetchingHa } = rootStore.haStore;
+  const { renameHa, isRenamingHa, selectedHa, isFetchingHa } =
+    rootStore.haStore;
 
   const formik = useFormik({
     initialValues: {
@@ -23,10 +24,10 @@ const FHaVSettingsRename = () => {
       return errors;
     },
 
-    // onSubmit: (newHa) => {
-    //   var haToSubmit = { ...selectedHa, ...newHa };
-    //   renameHa(haToSubmit);
-    // },
+    onSubmit: (newHa) => {
+      var haToSubmit = { ...selectedHa, ...newHa };
+      renameHa(haToSubmit);
+    },
   });
 
   const isInvalid = (field) => formik.touched[field] && formik.errors[field];
@@ -36,7 +37,7 @@ const FHaVSettingsRename = () => {
     );
 
   return (
-    <BlockUI blocked={isUpdatingHa || isFetchingHa}>
+    <BlockUI blocked={isRenamingHa || isFetchingHa}>
       <div className="card w-full">
         <form onSubmit={formik.handleSubmit} className="p-fluid">
           <div className="field">
@@ -63,7 +64,7 @@ const FHaVSettingsRename = () => {
             type="submit"
             label="Save"
             className="p-mt-2 w-2"
-            loading={isUpdatingHa}
+            loading={isRenamingHa}
           />
         </form>
       </div>
