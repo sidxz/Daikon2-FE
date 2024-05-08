@@ -38,6 +38,9 @@ export default class ProjectStore {
       isDeletingProject: observable,
       deleteProject: action,
 
+      isRenamingProject: observable,
+      renameProject: action,
+
       activeH2LProjects: computed,
       activeLOProjects: computed,
       activeSPProjects: computed,
@@ -67,6 +70,7 @@ export default class ProjectStore {
   isUpdatingProject = false;
   isAddingProject = false;
   isDeletingProject = false;
+  isRenamingProject = false;
 
   // Actions
 
@@ -234,6 +238,27 @@ export default class ProjectStore {
     } finally {
       runInAction(() => {
         this.isDeletingProject = false;
+      });
+    }
+  };
+
+  renameProject = async (project) => {
+    this.isRenamingProject = true;
+
+    try {
+      await ProjectAPI.rename(project);
+      runInAction(() => {
+        // update in project registry list
+        this.projectRegistry.set(project.id, project);
+        this.projectListRegistry.set(project.id, project);
+        this.selectedProject = project;
+        toast.success("Project renamed successfully");
+      });
+    } catch (error) {
+      console.error("Error updating project:", error);
+    } finally {
+      runInAction(() => {
+        this.isRenamingProject = false;
       });
     }
   };
