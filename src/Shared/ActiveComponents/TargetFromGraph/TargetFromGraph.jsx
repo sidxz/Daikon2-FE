@@ -7,6 +7,7 @@ const TargetFromGraph = ({ elementId }) => {
   const [targetType, setTargetType] = useState(null);
   const [targetId, setTargetId] = useState(null);
 
+  console.log("elementId", elementId);
   useEffect(() => {
     // Fetch target data from graph using elementId
     GraphAPI.findTarget(elementId).then((res) => {
@@ -16,7 +17,18 @@ const TargetFromGraph = ({ elementId }) => {
     });
   }, [elementId]);
 
-  if (targetId && !targetName) return <></>;
+  console.log("targetName", targetName);
+
+  if (targetId && !targetName)
+    return (
+      <div
+        className="surface-overlay white-space-nowrap overflow-hidden text-overflow-ellipsis"
+        style={{ width: "5em" }}
+      >
+        Unknown
+      </div>
+    );
+
   if (!targetName)
     return (
       <>
