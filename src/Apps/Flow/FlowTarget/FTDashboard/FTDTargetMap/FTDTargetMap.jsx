@@ -2,7 +2,7 @@ import ReactECharts from "echarts-for-react";
 import { observer } from "mobx-react-lite";
 import { InputSwitch } from "primereact/inputswitch";
 import { Slider } from "primereact/slider";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Loading from "../../../../../Library/Loading/Loading";
 import { RootStoreContext } from "../../../../../RootStore";
@@ -14,13 +14,29 @@ const FTDTargetMap = () => {
   const [showLabel, setShowLabel] = useState(true);
 
   const rootStore = useContext(RootStoreContext);
-  const { isFetchingTargets, targetList } = rootStore.targetStore;
+  const {
+    isFetchingTargets,
+    targetList,
+    fetchTargetRelations,
+    isFetchingTargetRelations,
+    targetListWithRelations,
+    isTargetRelationsCacheValid,
+  } = rootStore.targetStore;
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isTargetRelationsCacheValid) fetchTargetRelations();
+  }, [fetchTargetRelations, isTargetRelationsCacheValid]);
 
   if (isFetchingTargets) {
     return <Loading message={"Fetching Targets..."} />;
   }
+
+  console.log(
+    "FTDTargetMap -> targetListWithRelations",
+    targetListWithRelations
+  );
 
   // Configure options for the chart
   let option = { ...chartOption };
@@ -31,24 +47,78 @@ const FTDTargetMap = () => {
   var portfolioData = [];
   var postPortfolioData = [];
 
-  targetList.forEach((element) => {
-    console.log("FTDTargetMap -> target", element);
+  if (
+    !isFetchingTargetRelations &&
+    targetListWithRelations.length > 0 &&
+    isTargetRelationsCacheValid
+  ) {
+    targetListWithRelations.forEach((element) => {
+      if (
+        element.likeScore >= likeScoreCutoff &&
+        element.impactScore >= impactScoreCutoff
+      ) {
+        if (element.highestRelationship === "Target") {
+          targetData.push([
+            element.likeScore,
+            element.impactScore,
+            element.id,
+            element.name,
+            element.type,
+            element.bucket,
+            element.currentStage,
+          ]);
+        }
 
-    if (
-      element.likeScore >= likeScoreCutoff &&
-      element.impactScore >= impactScoreCutoff
-    ) {
-      targetData.push([
-        element.likeScore,
-        element.impactScore,
-        element.id,
-        element.name,
-        element.type,
-        element.bucket,
-        element.currentStage,
-      ]);
-    }
-  });
+        if (element.highestRelationship === "Screen") {
+          screenData.push([
+            element.likeScore,
+            element.impactScore,
+            element.id,
+            element.name,
+            element.type,
+            element.bucket,
+            element.currentStage,
+          ]);
+        }
+
+        if (element.highestRelationship === "HitAssessment") {
+          haData.push([
+            element.likeScore,
+            element.impactScore,
+            element.id,
+            element.name,
+            element.type,
+            element.bucket,
+            element.currentStage,
+          ]);
+        }
+
+        if (element.highestRelationship === "Portfolio") {
+          portfolioData.push([
+            element.likeScore,
+            element.impactScore,
+            element.id,
+            element.name,
+            element.type,
+            element.bucket,
+            element.currentStage,
+          ]);
+        }
+
+        if (element.highestRelationship === "PostPortfolio") {
+          postPortfolioData.push([
+            element.likeScore,
+            element.impactScore,
+            element.id,
+            element.name,
+            element.type,
+            element.bucket,
+            element.currentStage,
+          ]);
+        }
+      }
+    });
+  }
 
   option.series = formatChartSeries(
     targetData,
