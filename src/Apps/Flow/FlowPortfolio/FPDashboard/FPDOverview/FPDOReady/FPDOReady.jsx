@@ -22,7 +22,7 @@ const FPDOReady = () => {
     );
 
   let projectsComponent = readyForPortfolio.map((ha) => {
-    const displayTargetName = ha.targetName ? ha.targetName : "Phenotypic";
+    const displayTargetName = ha.targetName ? ha.targetName : "Unknown";
     return (
       <div className="flex flex-column w-full shadow-1 hover:shadow-3 border-round-md ">
         <div
