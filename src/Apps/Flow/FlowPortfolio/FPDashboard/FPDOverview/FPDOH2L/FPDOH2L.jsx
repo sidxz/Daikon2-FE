@@ -24,7 +24,7 @@ const FPDOH2L = () => {
   let projectsComponent = activeH2LProjects.map((project) => {
     const displayTargetName = project.targetName
       ? project.targetName
-      : "Phenotypic";
+      : "Unknown";
     return (
       <div className="flex flex-column w-full shadow-1 hover:shadow-3 border-round-md">
         <div
