@@ -19,6 +19,7 @@ import { PostPortfolioIcon } from "../../../icons/PostPortfolioIcon";
 import * as Helper from "./FPPVSettingsHelper";
 import FPPVSettingsDates from "./components/FPPVSettingsDates";
 import FPPVSettingsRemove from "./components/FPPVSettingsRemove";
+import FPPVSettingsRename from "./components/FPPVSettingsRename";
 import FPPVSettingsUpdateAssociation from "./components/FPPVSettingsUpdateAssociation";
 
 const FPPVSettings = () => {
@@ -122,6 +123,7 @@ const FPPVSettings = () => {
             extensive effects on the app's functionality, especially since some
             features may be organized or accessed by their names.
           </p>
+          <FPPVSettingsRename />
         </Fieldset>
       </div>
       <div className="flex w-full  mt-2">
