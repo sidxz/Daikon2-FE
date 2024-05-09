@@ -1,3 +1,4 @@
+import { observer } from "mobx-react-lite";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import React, { useContext, useEffect } from "react";
@@ -8,7 +9,6 @@ import { RootStoreContext } from "../../../../RootStore";
 import { AppOrgResolver } from "../../../../Shared/VariableResolvers/AppOrgResolver";
 import { RoleResolver } from "../../../../Shared/VariableResolvers/RoleResolver";
 import { appColors } from "../../../../constants/colors";
-
 const AD_UM_Users = () => {
   const rootStore = useContext(RootStoreContext);
   const { fetchUsers, userList, isFetchingUsers } =
@@ -113,4 +113,4 @@ const AD_UM_Users = () => {
   );
 };
 
-export default AD_UM_Users;
+export default observer(AD_UM_Users);
