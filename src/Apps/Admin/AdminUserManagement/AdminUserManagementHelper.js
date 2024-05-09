@@ -7,14 +7,14 @@ export const sidePanelItems = (navigate) => {
           label: "Users",
           icon: "pi pi-fw pi-user-plus",
           command: () => {
-            navigate(`/admin/user-management/user-management/users/`);
+            navigate(`/admin/user-management/users`);
           },
         },
         {
           label: "Organizations",
           icon: "pi pi-fw pi-users",
           command: () => {
-            navigate(`/admin/user-management/user-management/orgs/`);
+            navigate(`/admin/user-management/orgs/`);
           },
         },
       ],

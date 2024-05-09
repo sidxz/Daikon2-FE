@@ -20,7 +20,7 @@ const AdminMenuBar = () => {
     {
       label: "User Management",
       icon: "pi pi-fw pi-user-plus",
-      command: () => navigate("user-management/"),
+      command: () => navigate("user-management/users/"),
     },
     // {
     //   label: "API Management",

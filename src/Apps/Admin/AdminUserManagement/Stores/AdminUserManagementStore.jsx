@@ -5,6 +5,7 @@ import {
   observable,
   runInAction,
 } from "mobx";
+import { toast } from "react-toastify";
 import AdminOrgAPI from "../api/AdminOrgAPI";
 import AdminUserAPI from "../api/AdminUserAPI";
 
@@ -24,6 +25,9 @@ export default class AdminUserManagementStore {
       fetchUser: action,
       isFetchingUser: observable,
       selectedUser: observable,
+
+      addUser: action,
+      isAddingUser: observable,
 
       updateUser: action,
       isUpdatingUser: observable,
@@ -48,6 +52,7 @@ export default class AdminUserManagementStore {
   userRegistry = new Map();
 
   isFetchingUser = false;
+  isAddingUser = false;
   isUpdatingUser = false;
   selectedUser = null;
 
@@ -101,12 +106,30 @@ export default class AdminUserManagementStore {
     }
   };
 
-  updateUser = async (id, data) => {
+  addUser = async (data) => {
+    this.isAddingUser = true;
+    try {
+      const user = await AdminUserAPI.create(data);
+      runInAction(() => {
+        this.userRegistry.set(user.id, user);
+        toast.success("User added successfully");
+      });
+    } catch (error) {
+      console.error("Error adding user", error);
+    } finally {
+      runInAction(() => {
+        this.isAddingUser = false;
+      });
+    }
+  };
+
+  updateUser = async (data) => {
     this.isUpdatingUser = true;
     try {
-      await AdminUserAPI.update(id, data);
+      await AdminUserAPI.update(data.id, data);
       runInAction(() => {
-        this.userRegistry.set(id, data);
+        this.userRegistry.set(data.id, data);
+        toast.success("User updated successfully");
       });
     } catch (error) {
       console.error("Error updating user", error);
@@ -177,7 +200,13 @@ export default class AdminUserManagementStore {
 
   // Computed
   get userList() {
-    return Array.from(this.userRegistry.values());
+    let uList = Array.from(this.userRegistry.values());
+    runInAction(() => {
+      uList.map((u) => {
+        u.appOrgAlias = this.rootStore.authStore.appVars.orgsAlias[u.appOrgId];
+      });
+    });
+    return uList;
   }
 
   get orgList() {

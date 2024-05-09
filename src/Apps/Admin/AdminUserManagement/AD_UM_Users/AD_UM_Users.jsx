@@ -1,14 +1,16 @@
 import { observer } from "mobx-react-lite";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
-import React, { useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Sidebar } from "primereact/sidebar";
+import React, { useContext, useEffect, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import Loading from "../../../../Library/Loading/Loading";
 import SecHeading from "../../../../Library/SecHeading/SecHeading";
 import { RootStoreContext } from "../../../../RootStore";
 import { AppOrgResolver } from "../../../../Shared/VariableResolvers/AppOrgResolver";
 import { RoleResolver } from "../../../../Shared/VariableResolvers/RoleResolver";
 import { appColors } from "../../../../constants/colors";
+import AD_UM_UserAdd from "./components/AD_UM_UserAdd";
 const AD_UM_Users = () => {
   const rootStore = useContext(RootStoreContext);
   const { fetchUsers, userList, isFetchingUsers } =
@@ -17,6 +19,8 @@ const AD_UM_Users = () => {
   const navigate = useNavigate();
   const { getOrgAliasById } = AppOrgResolver();
   const { getRoleNameById } = RoleResolver();
+
+  const [displayAddSideBar, setDisplayAddSideBar] = useState(false);
 
   useEffect(() => {
     fetchUsers();
@@ -33,10 +37,17 @@ const AD_UM_Users = () => {
           icon="pi pi-fw pi-user-plus"
           heading="User Management"
           color={appColors.admin.userManagement.users}
+          customButtons={[
+            {
+              label: "New User",
+              icon: "pi pi-plus",
+              action: () => setDisplayAddSideBar(true),
+            },
+          ]}
         />
       </div>
       <div className="flex w-full">
-        <DataTable value={userList} paginator rows={10} filterDisplay="row">
+        <DataTable value={userList} paginator rows={50} filterDisplay="row">
           <Column
             field="email"
             header="Email"
@@ -44,6 +55,11 @@ const AD_UM_Users = () => {
             filterMatchMode="contains"
             filterPlaceholder="Search"
             className="narrow-column"
+            body={(rowData) => (
+              <NavLink to={`/admin/user-management/users/${rowData.id}`}>
+                {rowData.email}
+              </NavLink>
+            )}
             sortable
           />
           <Column
@@ -65,13 +81,12 @@ const AD_UM_Users = () => {
             sortable
           />
           <Column
-            field="appOrgId"
+            field="appOrgAlias"
             header="App Org"
-            // filter
-            // filterMatchMode="contains"
-            // filterPlaceholder="Search"
+            filter
+            filterMatchMode="contains"
+            filterPlaceholder="Search"
             className="narrow-column"
-            body={(rowData) => getOrgAliasById(rowData.appOrgId)}
             sortable
           />
           <Column
@@ -109,6 +124,15 @@ const AD_UM_Users = () => {
           />
         </DataTable>
       </div>
+      <Sidebar
+        visible={displayAddSideBar}
+        position="right"
+        onHide={() => setDisplayAddSideBar(false)}
+        className="p-sidebar-sm"
+        header={"Edit User"}
+      >
+        <AD_UM_UserAdd closeSideBar={() => setDisplayAddSideBar(false)} />
+      </Sidebar>
     </div>
   );
 };

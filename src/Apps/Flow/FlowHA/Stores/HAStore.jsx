@@ -85,7 +85,14 @@ export default class HAStore {
   };
 
   get haList() {
-    return Array.from(this.haListRegistry.values());
+    let has = Array.from(this.haListRegistry.values());
+    runInAction(() => {
+      has.map((ha) => {
+        ha.primaryOrgAlias =
+          this.rootStore.authStore.appVars.orgsAlias[ha.primaryOrgId];
+      });
+    });
+    return has;
   }
 
   get haPortfolioReadyList() {

@@ -47,14 +47,10 @@ const FPDAllPortfolioProjects = () => {
           />
 
           <Column
-            field="primaryOrgId"
+            field="primaryOrgAlias"
             header="Primary Org"
-            body={Helper.orgBodyTemplate}
             filter
-            // filterField="primaryOrgName"
-            // filterElement={(options) => Helper.orgFilter(portfolioList, options)}
-            showFilterMenu={false}
-            filterMatchMode="in"
+            filterMatchMode="contains"
             className="narrow-column"
           />
 

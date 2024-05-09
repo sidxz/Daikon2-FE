@@ -104,18 +104,36 @@ export default class ProjectStore {
   }
 
   get portfolioList() {
-    return this.projectList.filter(
+    var pList = this.projectList.filter(
       (project) =>
         project.stage === "H2L" ||
         project.stage === "LO" ||
         project.stage === "SP"
     );
+
+    runInAction(() => {
+      pList.map((p) => {
+        p.primaryOrgAlias =
+          this.rootStore.authStore.appVars.orgsAlias[p.primaryOrgId];
+      });
+    });
+
+    return pList;
   }
 
   get postPortfolioList() {
-    return this.projectList.filter(
+    var pList = this.projectList.filter(
       (project) => project.stage === "IND" || project.stage === "P1"
     );
+
+    runInAction(() => {
+      pList.map((p) => {
+        p.primaryOrgAlias =
+          this.rootStore.authStore.appVars.orgsAlias[p.primaryOrgId];
+      });
+    });
+
+    return pList;
   }
 
   fetchProject = async (projectId, inValidateCache = false) => {
