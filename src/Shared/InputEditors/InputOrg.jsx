@@ -11,6 +11,8 @@ const InputOrg = (props) => {
     value: id, // Use the key as the option value
     name: name, // Use the value as the option label
   }));
+  // sort the orgs by name
+  orgDropDownOptions.sort((a, b) => a.name.localeCompare(b.name));
 
   return (
     <Dropdown

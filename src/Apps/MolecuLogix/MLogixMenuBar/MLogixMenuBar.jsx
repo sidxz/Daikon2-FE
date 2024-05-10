@@ -1,6 +1,8 @@
 import { TabMenu } from "primereact/tabmenu";
 import React, { useState } from "react";
+import { CiViewTable } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
+
 import "./MLogixMenuBar.css";
 
 import { useEffect } from "react";
@@ -18,6 +20,8 @@ const MLogixMenuBar = () => {
       setActiveIndex(3);
     } else if (location.pathname.includes("/moleculogix/draw/")) {
       setActiveIndex(4);
+    } else if (location.pathname.includes("/moleculogix/dash/")) {
+      setActiveIndex(5);
     } else if (location.pathname.includes("/moleculogix")) {
       setActiveIndex(1); // Assuming index 1 corresponds to "MolecuLogix", adjusted from 0
     } else {
@@ -50,6 +54,11 @@ const MLogixMenuBar = () => {
       label: "Draw",
       icon: "icon icon-conceptual icon-chemical",
       command: () => navigate("draw/"),
+    },
+    {
+      label: "Dashboard",
+      icon: <CiViewTable className="mr-2 flex" />,
+      command: () => navigate("dash/"),
     },
 
     // { label: "Clinical", icon: "icon icon-conceptual icon-proteins" },

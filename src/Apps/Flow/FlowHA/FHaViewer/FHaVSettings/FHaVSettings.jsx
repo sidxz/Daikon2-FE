@@ -14,6 +14,7 @@ import { HAIcon } from "../../../icons/HAIcon";
 import * as Helper from "./FHaVSettingsHelper";
 import FHaVSettingsDates from "./components/FHaVSettingsDates";
 import FHaVSettingsRemove from "./components/FHaVSettingsRemove";
+import FHaVSettingsRename from "./components/FHaVSettingsRename";
 
 const FHaVSettings = () => {
   const navigate = useNavigate();
@@ -89,6 +90,7 @@ const FHaVSettings = () => {
             extensive effects on the app's functionality, especially since some
             features may be organized or accessed by their names.
           </p>
+          <FHaVSettingsRename />
         </Fieldset>
       </div>
       <div className="flex w-full  mt-2">

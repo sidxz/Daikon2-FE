@@ -21,8 +21,6 @@ const FHaDAllProjects = () => {
     return <Loading message={"Fetching HAs..."} />;
   }
 
-  console.log("haList", haList);
-
   return (
     <div className="flex flex-column min-w-full fadein animation-duration-500">
       <div className="flex w-full">
@@ -45,14 +43,10 @@ const FHaDAllProjects = () => {
           />
 
           <Column
-            field="primaryOrgName"
+            field="primaryOrgAlias"
             header="Primary Org"
-            body={Helper.orgBodyTemplate}
             filter
-            // filterField="primaryOrgName"
-            // filterElement={(options) => Helper.orgFilter(haList, options)}
-            showFilterMenu={false}
-            filterMatchMode="in"
+            filterMatchMode="contains"
             className="narrow-column"
           />
 

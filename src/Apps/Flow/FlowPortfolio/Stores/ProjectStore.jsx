@@ -38,6 +38,9 @@ export default class ProjectStore {
       isDeletingProject: observable,
       deleteProject: action,
 
+      isRenamingProject: observable,
+      renameProject: action,
+
       activeH2LProjects: computed,
       activeLOProjects: computed,
       activeSPProjects: computed,
@@ -67,6 +70,7 @@ export default class ProjectStore {
   isUpdatingProject = false;
   isAddingProject = false;
   isDeletingProject = false;
+  isRenamingProject = false;
 
   // Actions
 
@@ -100,18 +104,36 @@ export default class ProjectStore {
   }
 
   get portfolioList() {
-    return this.projectList.filter(
+    var pList = this.projectList.filter(
       (project) =>
         project.stage === "H2L" ||
         project.stage === "LO" ||
         project.stage === "SP"
     );
+
+    runInAction(() => {
+      pList.map((p) => {
+        p.primaryOrgAlias =
+          this.rootStore.authStore.appVars.orgsAlias[p.primaryOrgId];
+      });
+    });
+
+    return pList;
   }
 
   get postPortfolioList() {
-    return this.projectList.filter(
+    var pList = this.projectList.filter(
       (project) => project.stage === "IND" || project.stage === "P1"
     );
+
+    runInAction(() => {
+      pList.map((p) => {
+        p.primaryOrgAlias =
+          this.rootStore.authStore.appVars.orgsAlias[p.primaryOrgId];
+      });
+    });
+
+    return pList;
   }
 
   fetchProject = async (projectId, inValidateCache = false) => {
@@ -234,6 +256,27 @@ export default class ProjectStore {
     } finally {
       runInAction(() => {
         this.isDeletingProject = false;
+      });
+    }
+  };
+
+  renameProject = async (project) => {
+    this.isRenamingProject = true;
+
+    try {
+      await ProjectAPI.rename(project);
+      runInAction(() => {
+        // update in project registry list
+        this.projectRegistry.set(project.id, project);
+        this.projectListRegistry.set(project.id, project);
+        this.selectedProject = project;
+        toast.success("Project renamed successfully");
+      });
+    } catch (error) {
+      console.error("Error updating project:", error);
+    } finally {
+      runInAction(() => {
+        this.isRenamingProject = false;
       });
     }
   };

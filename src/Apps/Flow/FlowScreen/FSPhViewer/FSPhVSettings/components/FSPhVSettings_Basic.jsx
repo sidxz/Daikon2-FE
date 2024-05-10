@@ -7,7 +7,6 @@ import { Dropdown } from "primereact/dropdown";
 import { InputTextarea } from "primereact/inputtextarea";
 import { classNames } from "primereact/utils";
 import React, { useContext } from "react";
-import FDate from "../../../../../../Library/FDate/FDate";
 import Loading from "../../../../../../Library/Loading/Loading";
 import { RootStoreContext } from "../../../../../../RootStore";
 import InputOrg from "../../../../../../Shared/InputEditors/InputOrg";
@@ -170,17 +169,10 @@ const FSPhVSettings_Basic = () => {
               @Override Latest Status Change Date
             </label>
             <div className="flex gap-2 align-items-center">
-              <div className="flex border-1 border-50 p-2">
-                Current :{" "}
-                <FDate
-                  timestamp={selectedScreen.latestStatusChangeDate}
-                  hideTime={true}
-                />
-              </div>
               <div className="flex">
                 <Calendar
                   id="latestStatusChangeDate"
-                  value={formik.values.latestStatusChangeDate}
+                  value={new Date(formik.values?.latestStatusChangeDate)}
                   onChange={(e) =>
                     formik.setFieldValue("latestStatusChangeDate", e.value)
                   }

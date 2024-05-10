@@ -17,6 +17,7 @@ import { PortfolioIcon } from "../../../icons/PortfolioIcon";
 import * as Helper from "./FPVSettingsHelper";
 import FPVSettingsDates from "./components/FPVSettingsDates";
 import FPVSettingsRemove from "./components/FPVSettingsRemove";
+import FPVSettingsRename from "./components/FPVSettingsRename";
 import FPVSettingsUpdateAssociation from "./components/FPVSettingsUpdateAssociation";
 
 const FPVSettings = () => {
@@ -120,6 +121,7 @@ const FPVSettings = () => {
             extensive effects on the app's functionality, especially since some
             features may be organized or accessed by their names.
           </p>
+          <FPVSettingsRename />
         </Fieldset>
       </div>
       <div className="flex w-full  mt-2">

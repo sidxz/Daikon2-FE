@@ -21,18 +21,18 @@ const TitleBarSidePanel = ({ toggle, user }) => {
           label: "User Management",
           icon: "pi pi-fw pi-user-plus",
           command: () => {
-            navigate("/admin/user-management");
+            navigate("/admin/user-management/users");
             toggle();
           },
         },
-        {
-          label: "API Management",
-          icon: "pi pi-fw pi-cloud",
-          command: () => {
-            navigate("/admin/api-management");
-            toggle();
-          },
-        },
+        // {
+        //   label: "API Management",
+        //   icon: "pi pi-fw pi-cloud",
+        //   command: () => {
+        //     navigate("/admin/api-management");
+        //     toggle();
+        //   },
+        // },
         {
           label: "Role Management",
           icon: "pi pi-fw pi-users",

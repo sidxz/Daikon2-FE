@@ -3,8 +3,13 @@ import { Tag } from "primereact/tag";
 import React from "react";
 import { AppUserResolver } from "../../VariableResolvers/AppUserResolver";
 
-const AuthorTag = ({ userId }) => {
+const AuthorTag = ({ userId, size = "normal" }) => {
   const { getIdFromUserFullName, getUserFullNameById } = AppUserResolver();
+  let textClass = "text-bluegray-500 font-normal";
+
+  if (size === "xlarge") {
+    textClass = "text-bluegray-500 font-normal text-lg";
+  }
 
   let author = getUserFullNameById(userId);
   if (!author) {
@@ -25,13 +30,11 @@ const AuthorTag = ({ userId }) => {
       <div className="flex align-items-center gap-2 pl-2 m-0">
         <div className="flex text-bluegray-500 font-normal">
           {/* <FaUser /> */}
-          <Avatar label={authorInitials} size="normal" />
+          <Avatar label={authorInitials} size={size} />
         </div>
         <div className="flex">
           {" "}
-          <span className="text-sm text-bluegray-500 font-normal">
-            {author}
-          </span>
+          <span className={textClass}>{author}</span>
         </div>
       </div>
     </Tag>

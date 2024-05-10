@@ -20,18 +20,18 @@ const AdminMenuBar = () => {
     {
       label: "User Management",
       icon: "pi pi-fw pi-user-plus",
-      command: () => navigate("user-management/"),
+      command: () => navigate("user-management/users/"),
     },
     // {
     //   label: "API Management",
     //   icon: "pi pi-fw pi-cloud",
     //   command: () => navigate("api-management/"),
     // },
-    // {
-    //   label: "Role Management",
-    //   icon: "pi pi-fw pi-users",
-    //   command: () => navigate("role-management/"),
-    // },
+    {
+      label: "Role Management",
+      icon: "pi pi-fw pi-users",
+      command: () => navigate("role-management/"),
+    },
 
     // { label: "Clinical", icon: "icon icon-conceptual icon-proteins" },
   ];

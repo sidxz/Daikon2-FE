@@ -15,7 +15,7 @@ const MolecuLogix = () => {
       </div>
       <div className="flex w-full pl-3 pr-3 fadein animation-duration-1000">
         <Routes>
-          <Route index element={<MLogixDash />} />
+          <Route index element={<MLogixSimilarSearch />} />
           <Route path="dash/" element={<MLogixDash />} />
           <Route path="all/" element={<MLogixAllMolecules />} />
           <Route path="molecule/:id" element={<MLogixMoleculeView />} />

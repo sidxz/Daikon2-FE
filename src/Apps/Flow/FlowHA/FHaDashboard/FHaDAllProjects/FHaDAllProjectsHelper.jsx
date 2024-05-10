@@ -10,8 +10,8 @@ export let nameBodyTemplate = (rowData) => {
 };
 
 export let orgBodyTemplate = (rowData) => {
-  const { getOrgNameById } = AppOrgResolver();
-  return getOrgNameById(rowData.primaryOrgId);
+  const { getOrgAliasById } = AppOrgResolver();
+  return getOrgAliasById(rowData.primaryOrgId);
 };
 
 export const statusBodyTemplate = (rowData) => {
@@ -22,13 +22,17 @@ export const haStatusFilter = (data, options) => (
   <MultiSelectFilter data={data} filterProperty="status" options={options} />
 );
 
-export const orgFilter = (data, options) => (
-  <MultiSelectFilter
-    data={data}
-    filterProperty="primaryOrgName"
-    options={options}
-  />
-);
+export const orgFilter = (data, options) => {
+  const { getOrgAliasById } = AppOrgResolver();
+  return (
+    <MultiSelectFilter
+      data={data}
+      filterProperty="primaryOrgId"
+      options={options}
+      labelMapper={getOrgAliasById}
+    />
+  );
+};
 
 export const statusFilter = (data, options) => (
   <MultiSelect

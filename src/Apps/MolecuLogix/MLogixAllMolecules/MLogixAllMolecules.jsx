@@ -44,7 +44,7 @@ const MLogixAllMolecules = () => {
         <div className="flex w-full">
           <SecHeading
             icon="icon icon-conceptual icon-dna"
-            heading="Molecules"
+            heading="All Molecules"
             color={appColors.molecuLogix.heading}
             customButtons={[
               {
@@ -65,6 +65,8 @@ const MLogixAllMolecules = () => {
             value={moleculeList}
             listTemplate={(items) => listTemplate(items, navigate)}
             layout="grid"
+            paginator
+            rows={60}
           />
         </div>
       </div>

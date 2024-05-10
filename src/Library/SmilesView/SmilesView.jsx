@@ -32,13 +32,20 @@ const SmilesView = ({ smiles, compoundId, width = 200, height = 200 }) => {
         toast.success("Copied " + smiles + " to clipboard");
       },
     },
+    {
+      label: "Find Similar",
+      icon: "icon icon-common icon-search",
+      command: () => {
+        navigate(`/moleculogix/search/${smiles}`);
+      },
+    },
   ];
   if (compoundId) {
     contextMenuItems.push({
       label: "View Compound",
       icon: "icon icon-common icon-math",
       command: () => {
-        navigate("/tools/compounds/" + compoundId);
+        navigate("/moleculogix/molecule/" + compoundId);
       },
     });
   }
