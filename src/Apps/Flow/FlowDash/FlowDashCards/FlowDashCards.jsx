@@ -115,6 +115,7 @@ const FlowDashCards = () => {
           <FlowDashCardsCircles
             svgIcon={<GeneIcon size={"25em"} />}
             total={geneListLength}
+            isLoading={isGeneListLoading}
           />
         </NavLink>
       </div>
@@ -124,6 +125,7 @@ const FlowDashCards = () => {
             // icon="icon icon-common icon-target"
             svgIcon={<TargetIcon size={"25em"} />}
             total={targetListLength}
+            isLoading={isFetchingTargets}
           />
         </NavLink>
       </div>
@@ -133,6 +135,7 @@ const FlowDashCards = () => {
             // icon="icon icon-common icon-search"
             svgIcon={<ScreenIcon size={"25em"} />}
             total={screenListLength}
+            isLoading={isFetchingScreens}
           />
         </NavLink>
       </div>
@@ -142,6 +145,7 @@ const FlowDashCards = () => {
             //  icon="icon icon-common icon-search"
             svgIcon={<HAIcon size={"25em"} />}
             total={haListLength}
+            isLoading={isFetchingHAs}
           />
         </NavLink>
       </div>
@@ -151,6 +155,7 @@ const FlowDashCards = () => {
             // icon="icon icon-common icon-search"
             svgIcon={<PortfolioIcon size={"25em"} />}
             total={portfolioListLength}
+            isLoading={isFetchingProjects}
           />
         </NavLink>
       </div>
@@ -160,6 +165,7 @@ const FlowDashCards = () => {
             // icon="icon icon-common icon-search"
             svgIcon={<PostPortfolioIcon size={"25em"} />}
             total={postPortfolioListLength}
+            isLoading={isFetchingProjects}
           />
         </NavLink>
       </div>
