@@ -36,6 +36,24 @@ const FSPhVHitCollectionSelection = ({ selectedScreen }) => {
     selectedHitCollection,
   ]);
 
+  useEffect(() => {
+    if (
+      !isFetchingHitCollection &&
+      hitCollectionOfScreen(selectedScreen.id).length > 0
+    ) {
+      // get id of first hit collection
+      const hitCollectionId = hitCollectionOfScreen(selectedScreen.id)[0].id;
+      navigate(
+        `/wf/screen/viewer/ph/${selectedScreen.id}/hits/${hitCollectionId}`
+      );
+    }
+  }, [
+    isFetchingHitCollection,
+    hitCollectionOfScreen,
+    selectedScreen,
+    navigate,
+  ]);
+
   const header = <> </>;
   const footer = (
     <>
@@ -111,17 +129,6 @@ const FSPhVHitCollectionSelection = ({ selectedScreen }) => {
           />
         </Sidebar>
       </>
-    );
-  }
-
-  if (
-    !isFetchingHitCollection &&
-    hitCollectionOfScreen(selectedScreen.id).length > 0
-  ) {
-    // get id of first hit collection
-    const hitCollectionId = hitCollectionOfScreen(selectedScreen.id)[0].id;
-    navigate(
-      `/wf/screen/viewer/ph/${selectedScreen.id}/hits/${hitCollectionId}`
     );
   }
 
