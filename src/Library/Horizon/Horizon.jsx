@@ -1,4 +1,5 @@
 import { observer } from "mobx-react-lite";
+import { ProgressBar } from "primereact/progressbar";
 import React, { useContext, useEffect, useMemo } from "react";
 import Tree from "react-d3-tree";
 import { RootStoreContext } from "../../RootStore";
@@ -36,7 +37,7 @@ const Horizon = ({ entryPoint }) => {
   }, [selectedHorizon]);
 
   if (isFetchingHorizon) {
-    return <>Loading...</>;
+    return <ProgressBar mode="indeterminate" style={{ height: "6px" }} />;
   }
 
   console.log(selectedHorizon);
