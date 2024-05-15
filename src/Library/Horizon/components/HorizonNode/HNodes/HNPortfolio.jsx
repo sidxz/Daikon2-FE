@@ -9,6 +9,9 @@ const HNPortfolio = ({ dataObj, entryPoint }) => {
   const { getOrgAliasById } = AppOrgResolver();
   const navigate = useNavigate();
 
+  const portfolioStages = ["H2L", "LO", "SP"];
+  const postPortfolioStages = ["IND", "P1"];
+
   const projectType =
     dataObj?.attributes?.stage === "H2L" ||
     dataObj?.attributes?.stage === "LO" ||
@@ -48,23 +51,36 @@ const HNPortfolio = ({ dataObj, entryPoint }) => {
             {getOrgAliasById(dataObj?.attributes?.orgId)}
             <br />
 
-            <div className="flex">
+            {portfolioStages.includes(dataObj?.attributes?.stage) && (
               <div className="flex">
-                <PortfolioIcon size={15} />
+                <div className="flex">
+                  <PortfolioIcon size={15} />
+                </div>
+                <div className="flex">
+                  Portfolio / {dataObj?.attributes?.stage}
+                </div>
               </div>
-              <div className="flex">
-                Portfolio / {dataObj?.attributes?.stage}
-              </div>
-            </div>
+            )}
 
-            <div className="flex">
-              <div className="flex">
-                <PostPortfolioIcon size={15} />
-              </div>
-              <div className="flex">
-                Post Portfolio / {dataObj?.attributes?.stage}
-              </div>
-            </div>
+            {postPortfolioStages.includes(dataObj?.attributes?.stage) && (
+              <>
+                <div className="flex">
+                  <div className="flex">
+                    <PortfolioIcon size={15} />
+                  </div>
+                  <div className="flex">Portfolio / Complete</div>
+                </div>
+
+                <div className="flex">
+                  <div className="flex">
+                    <PostPortfolioIcon size={15} />
+                  </div>
+                  <div className="flex">
+                    Post Portfolio / {dataObj?.attributes?.stage}
+                  </div>
+                </div>
+              </>
+            )}
           </p>
         </div>
       </foreignObject>
