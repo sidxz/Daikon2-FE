@@ -1,5 +1,6 @@
 import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
+import { FcRight } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
 import FDate from "../../../../../../Library/FDate/FDate";
 import SmilesView from "../../../../../../Library/SmilesView/SmilesView";
@@ -49,9 +50,13 @@ const FPDOH2L = () => {
               className="flex justify-content-center w-full p-2 text-green-800 border-right-1 border-green-100"
               style={{
                 minWidth: "4rem",
+                backgroundColor: "#9c8c79",
               }}
             >
-              <FDate timestamp={project.h2LStart} color="#384612" />
+              <div className="pr-2">
+                <FcRight />
+              </div>
+              <FDate timestamp={project.h2LStart} color="#FFFFFF" />
             </div>
 
             <div
@@ -80,6 +85,9 @@ const FPDOH2L = () => {
               }}
             >
               <FDate timestamp={project.loPredictedStart} color="#FFFFFF" />
+              <div className="pl-2">
+                <FcRight />
+              </div>
             </div>
           </div>
           <div className="flex w-full p-2 justify-content-center">

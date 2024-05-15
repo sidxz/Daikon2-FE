@@ -61,7 +61,7 @@ const FHaDOPortfolioReadyHA = ({ hitAssessments }) => {
                 minWidth: "4rem",
               }}
             >
-              <FDate timestamp={ha?.statusLastModifiedDate} color="#008000" />
+              <FDate timestamp={ha?.statusLastModifiedDate} color="#769425" />
             </div>
           </div>
           <div className="flex w-full justify-content-center">
