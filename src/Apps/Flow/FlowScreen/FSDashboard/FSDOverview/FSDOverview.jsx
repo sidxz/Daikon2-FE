@@ -30,6 +30,8 @@ const FSDOverview = () => {
     return <Loading message={"Fetching Screens..."} />;
   }
 
+  console.log("screenListTargetBased", screenListTargetBased);
+
   let sortByDate = (a, b) => {
     // Handle default or null dateModified by using dateCreated instead
     const dateA =
@@ -43,6 +45,10 @@ const FSDOverview = () => {
 
     return dateA - dateB; // Sort by dateModified or dateCreated if dateModified is default or null
   };
+
+  const currentDate = new Date();
+  const sixMonthsAgo = new Date();
+  sixMonthsAgo.setMonth(currentDate.getMonth() - 6);
 
   return (
     <div className="flex flex-column w-full">
@@ -159,7 +165,14 @@ const FSDOverview = () => {
         <div className="flex w-full border-1 border-50 justify-content-center">
           <FSDORecentlyCompleted
             screens={screenListTargetBased
-              .filter((item) => item.status === "Completed") // Filter by Ongoing status
+              .filter((item) => item.status === "Completed")
+              .filter((item) => {
+                const latestStatusDate = new Date(item.latestStatusChangeDate);
+                return (
+                  latestStatusDate >= sixMonthsAgo &&
+                  latestStatusDate <= currentDate
+                );
+              })
               .sort(sortByDate)}
           />
         </div>
@@ -205,7 +218,15 @@ const FSDOverview = () => {
         <div className="flex w-full border-1 border-50 justify-content-center">
           <FSDORecentlyCompleted
             screens={screenListPhenotypic
-              .filter((item) => item.status === "Completed") // Filter by Ongoing status
+              .filter((item) => item.status === "Completed")
+              .filter((item) => item.status === "Completed")
+              .filter((item) => {
+                const latestStatusDate = new Date(item.latestStatusChangeDate);
+                return (
+                  latestStatusDate >= sixMonthsAgo &&
+                  latestStatusDate <= currentDate
+                );
+              })
               .sort(sortByDate)}
           />
         </div>
