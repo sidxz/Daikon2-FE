@@ -51,7 +51,7 @@ const FPPDOP1 = () => {
                 backgroundColor: "#6D9CA9",
               }}
             >
-              <div className="pr-2">
+              <div className="pr-2 ">
                 <FcRight />
               </div>
               <FDate timestamp={project.p1Start} color="#FFFFFF" />
