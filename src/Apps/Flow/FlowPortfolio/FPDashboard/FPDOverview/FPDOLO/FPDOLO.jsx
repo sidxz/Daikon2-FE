@@ -1,6 +1,5 @@
 import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
-import { FcRight } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
 import FDate from "../../../../../../Library/FDate/FDate";
 import SmilesView from "../../../../../../Library/SmilesView/SmilesView";
@@ -45,17 +44,18 @@ const FPDOLO = () => {
           </div>
           <div className="flex justify-content-center border-bottom-1 border-blue-100">
             <div
-              className="flex justify-content-center w-full  p-2 text-blue-900 border-right-1 border-blue-100"
+              className="flex justify-content-center align-items-center w-full  p-2 text-blue-900 border-right-1 border-blue-100"
               style={{
                 minWidth: "4rem",
                 backgroundColor: "#8c9f8b",
               }}
             >
-              {" "}
-              <div className="pr-2">
-                <FcRight />
+              <div className="flex mr-1 text-white">
+                <i className="pi pi-angle-double-right" />
               </div>
-              <FDate timestamp={project.loStart} color="#FFFFFF" />
+              <div className="flex">
+                <FDate timestamp={project.loStart} color="#FFFFFF" />
+              </div>
             </div>
 
             <div
@@ -77,16 +77,17 @@ const FPDOLO = () => {
             </div>
 
             <div
-              className="flex justify-content-center w-full p-2 text-100"
+              className="flex justify-content-center align-items-center w-full p-2 text-100"
               style={{
                 minWidth: "4rem",
                 backgroundColor: "#9A7581",
               }}
             >
-              {" "}
-              <FDate timestamp={project.spPredictedStart} color="#FFFFFF" />
-              <div className="pl-2">
-                <FcRight />
+              <div className="flex">
+                <FDate timestamp={project.spPredictedStart} color="#FFFFFF" />{" "}
+              </div>
+              <div className="flex ml-1 text-white">
+                <i className="pi pi-angle-double-right" />
               </div>
             </div>
           </div>
