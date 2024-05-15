@@ -37,6 +37,9 @@ export default class AdminUserManagementStore {
       orgRegistry: observable,
       isOrgRegistryCacheValid: observable,
 
+      addOrg: action,
+      isAddingOrg: observable,
+
       fetchOrg: action,
       isFetchingOrg: observable,
       selectedOrg: observable,
@@ -61,6 +64,7 @@ export default class AdminUserManagementStore {
   orgRegistry = new Map();
 
   isFetchingOrg = false;
+  isAddingOrg = false;
   isUpdatingOrg = false;
   selectedOrg = null;
 
@@ -178,6 +182,22 @@ export default class AdminUserManagementStore {
     } finally {
       runInAction(() => {
         this.isFetchingOrg = false;
+      });
+    }
+  };
+
+  addOrg = async (data) => {
+    this.isAddingOrg = true;
+    try {
+      const org = await AdminOrgAPI.create(data);
+      runInAction(() => {
+        this.orgRegistry.set(org.id, org);
+      });
+    } catch (error) {
+      console.error("Error adding org", error);
+    } finally {
+      runInAction(() => {
+        this.isAddingOrg = false;
       });
     }
   };

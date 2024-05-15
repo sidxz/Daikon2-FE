@@ -4,6 +4,7 @@ import React, { useContext, useEffect } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import Loading from "../../../Library/Loading/Loading";
 import { RootStoreContext } from "../../../RootStore";
+import AD_UM_OrgEdit from "./AD_UM_Orgs/AD_UM_EditOrg/AD_UM_OrgEdit";
 import AD_UM_Orgs from "./AD_UM_Orgs/AD_UM_Orgs";
 import AD_UM_UserEdit from "./AD_UM_Users/AD_UM_EditUser/AD_UM_UserEdit";
 import AD_UM_Users from "./AD_UM_Users/AD_UM_Users";
@@ -36,6 +37,7 @@ const AdminUserManagement = () => {
             <Route path="users/:id/*" element={<AD_UM_UserEdit />} />
             <Route path="users" element={<AD_UM_Users />} />
 
+            <Route path="orgs/:id/*" element={<AD_UM_OrgEdit />} />
             <Route path="orgs" element={<AD_UM_Orgs />} />
           </Routes>
         </div>
