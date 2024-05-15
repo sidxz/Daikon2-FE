@@ -1,6 +1,5 @@
 import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
-import { FcRight } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
 import FDate from "../../../../../../Library/FDate/FDate";
 import SmilesView from "../../../../../../Library/SmilesView/SmilesView";
@@ -46,16 +45,18 @@ const FPDOReady = () => {
 
           <div className="flex justify-content-center border-yellow-100 border-bottom-1">
             <div
-              className="flex justify-content-center w-full p-2 text-yellow-800 border-right-1 border-yellow-100"
+              className="flex justify-content-center align-items-center w-full p-2 text-yellow-800 border-right-1 border-yellow-100"
               style={{
                 minWidth: "4rem",
                 backgroundColor: "#cddca4",
               }}
             >
-              <div className="pr-2">
-                <FcRight />
+              <div className="flex mr-1 text-white">
+                <i className="pi pi-angle-double-right" />
               </div>
-              <FDate timestamp={ha.statusLastModifiedDate} color="#FFFFFF" />
+              <div className="flex">
+                <FDate timestamp={ha.statusLastModifiedDate} color="#FFFFFF" />
+              </div>
             </div>
 
             <div
@@ -77,15 +78,17 @@ const FPDOReady = () => {
             </div>
 
             <div
-              className="flex justify-content-center w-full p-2 text-100"
+              className="flex justify-content-center align-items-center w-full p-2 text-100"
               style={{
                 minWidth: "4rem",
                 backgroundColor: "#8c9f8b",
               }}
             >
-              <FDate timestamp={ha.statusLastModifiedDate} color="#FFFFFF" />
-              <div className="pl-2">
-                <FcRight />
+              <div className="flex">
+                <FDate timestamp={ha.statusLastModifiedDate} color="#FFFFFF" />{" "}
+              </div>
+              <div className="flex ml-1 text-white">
+                <i className="pi pi-angle-double-right" />
               </div>
             </div>
           </div>
