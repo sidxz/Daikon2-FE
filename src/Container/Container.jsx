@@ -8,6 +8,7 @@ import Admin from "../Apps/Admin/Admin";
 import Flow from "../Apps/Flow/Flow";
 import MolecuLogix from "../Apps/MolecuLogix/MolecuLogix";
 import Questionnaire from "../Apps/Questionnaire/Questionnaire";
+import Support from "../Apps/Support/Support";
 import Login from "../Auth/Login/Login";
 import UnauthorizedUser from "../Auth/UnauthorizedUser/UnauthorizedUser";
 import Loading from "../Library/Loading/Loading";
@@ -85,6 +86,7 @@ const Container = ({ userManager }) => {
         <Route path="admin/*" element={<Admin />} />
         <Route path="moleculogix/*" element={<MolecuLogix />} />
         <Route path="questionnaire/*" element={<Questionnaire />} />
+        <Route path="support/*" element={<Support />} />
       </Routes>
       <Footer />
     </div>
