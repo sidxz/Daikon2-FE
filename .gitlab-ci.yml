@@ -1,13 +1,19 @@
-stages:
-  - build
-  - push
+image: docker:latest
+
+services:
+  - docker:dind
 
 variables:
   DOCKER_DRIVER: overlay2
   IMAGE_TAG: $CI_REGISTRY_IMAGE/daikon-fe-lab:$CI_COMMIT_REF_NAME
 
 before_script:
+  - docker info
   - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+
+stages:
+  - build
+  - push
 
 build:
   stage: build
