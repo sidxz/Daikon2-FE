@@ -1,14 +1,15 @@
 import { observer } from "mobx-react-lite";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
-import React, { useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Sidebar } from "primereact/sidebar";
+import React, { useContext, useEffect, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import Loading from "../../../../Library/Loading/Loading";
 import SecHeading from "../../../../Library/SecHeading/SecHeading";
 import { RootStoreContext } from "../../../../RootStore";
 import { AppOrgResolver } from "../../../../Shared/VariableResolvers/AppOrgResolver";
-import { RoleResolver } from "../../../../Shared/VariableResolvers/RoleResolver";
 import { appColors } from "../../../../constants/colors";
+import AD_UM_OrgAdd from "./components/AD_UM_OrgAdd";
 const AD_UM_Orgs = () => {
   const rootStore = useContext(RootStoreContext);
   const { fetchOrgs, orgList, isFetchingOrgs } =
@@ -16,7 +17,8 @@ const AD_UM_Orgs = () => {
 
   const navigate = useNavigate();
   const { getOrgAliasById } = AppOrgResolver();
-  const { getRoleNameById } = RoleResolver();
+
+  const [displayAddSideBar, setDisplayAddSideBar] = useState(false);
 
   useEffect(() => {
     fetchOrgs();
@@ -32,7 +34,14 @@ const AD_UM_Orgs = () => {
         <SecHeading
           icon="pi pi-fw pi-user-plus"
           heading="User Management"
-          color={appColors.admin.userManagement.users}
+          color={appColors.admin.userManagement.orgs}
+          customButtons={[
+            {
+              label: "New Org",
+              icon: "pi pi-plus",
+              action: () => setDisplayAddSideBar(true),
+            },
+          ]}
         />
       </div>
       <div className="flex w-full">
@@ -44,6 +53,11 @@ const AD_UM_Orgs = () => {
             filterMatchMode="contains"
             filterPlaceholder="Search"
             className="narrow-column"
+            body={(rowData) => (
+              <NavLink to={`/admin/user-management/orgs/${rowData.id}`}>
+                {rowData.name}
+              </NavLink>
+            )}
             sortable
           />
           <Column
@@ -85,6 +99,15 @@ const AD_UM_Orgs = () => {
           />
         </DataTable>
       </div>
+      <Sidebar
+        visible={displayAddSideBar}
+        position="right"
+        onHide={() => setDisplayAddSideBar(false)}
+        className="p-sidebar-sm"
+        header={"Add Org"}
+      >
+        <AD_UM_OrgAdd closeSideBar={() => setDisplayAddSideBar(false)} />
+      </Sidebar>
     </div>
   );
 };

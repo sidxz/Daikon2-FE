@@ -44,12 +44,18 @@ const FPDOSP = () => {
           </div>
           <div className="flex justify-content-center border-bottom-1 border-gray-100">
             <div
-              className="flex justify-content-center w-full p-2 text-pink-800 border-right-1 border-gray-100"
+              className="flex justify-content-center align-items-center w-full p-2 text-pink-800 border-right-1 border-gray-100"
               style={{
                 minWidth: "4rem",
+                backgroundColor: "#6e8a9d",
               }}
             >
-              <FDate timestamp={project.spStart} color="#55222e" />
+              <div className="flex mr-1 text-white">
+                <i className="pi pi-angle-double-right" />
+              </div>
+              <div className="flex">
+                <FDate timestamp={project.spStart} color="#FFFFFF" />{" "}
+              </div>
             </div>
 
             <div
@@ -71,13 +77,19 @@ const FPDOSP = () => {
             </div>
 
             <div
-              className="flex justify-content-center w-full p-2 text-100"
+              className="flex justify-content-center align-items-center w-full p-2 text-100"
               style={{
                 minWidth: "4rem",
                 backgroundColor: "#6D9CA9",
               }}
             >
-              <FDate timestamp={project?.indPredictedStart} color="#FFFFFF" />
+              {" "}
+              <div className="flex">
+                <FDate timestamp={project?.indPredictedStart} color="#FFFFFF" />{" "}
+              </div>
+              <div className="flex ml-1 text-white">
+                <i className="pi pi-angle-double-right" />
+              </div>
             </div>
           </div>
           <div className="flex w-full p-2 justify-content-center">

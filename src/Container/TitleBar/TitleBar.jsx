@@ -21,9 +21,21 @@ const TitleBar = ({ signOut, ssoUser }) => {
 
   const Strains = [{ name: "Mycobacterium tuberculosis H37Rv", code: "H37Rv" }];
   const FeedbackOptions = [
-    { label: "Bug Report", value: "bug-report" },
-    { label: "Feature Request", value: "feature-request" },
-    { label: "Data Discrepancy ", value: "data-discrepancy" },
+    {
+      label: "Bug Report",
+      value: "bug-report",
+      command: () => navigate("bug-report/"),
+    },
+    {
+      label: "Feature Request",
+      value: "feature-request",
+      command: () => navigate("feature-request/"),
+    },
+    {
+      label: "Data Discrepancy ",
+      value: "data-discrepancy",
+      command: () => navigate("data-discrepancy/"),
+    },
   ];
 
   const feedbackOptionTemplate = (option) => {
@@ -47,7 +59,7 @@ const TitleBar = ({ signOut, ssoUser }) => {
   };
 
   let onFeedback = (e) => {
-    navigate("/developer/" + e.value);
+    navigate("/support/" + e.value);
   };
 
   return (

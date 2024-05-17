@@ -47,9 +47,15 @@ const FPPDOP1 = () => {
               className="flex justify-content-center align-items-center w-full"
               style={{
                 minWidth: "4rem",
+                backgroundColor: "#6D9CA9",
               }}
             >
-              <FDate timestamp={project.p1Start} color="#224255" />
+              <div className="flex mr-1 text-white">
+                <i className="pi pi-angle-double-right" />
+              </div>
+              <div className="flex">
+                <FDate timestamp={project.p1Start} color="#FFFFFF" />
+              </div>
             </div>
             <div
               className="flex justify-content-center w-full p-2 text-blue-900 border-right-1 border-gray-100"

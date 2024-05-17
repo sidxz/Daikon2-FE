@@ -46,12 +46,18 @@ const FPDOH2L = () => {
 
           <div className="flex justify-content-center border-green-100 border-bottom-1">
             <div
-              className="flex justify-content-center w-full p-2 text-green-800 border-right-1 border-green-100"
+              className="flex justify-content-center align-items-center w-full p-2 text-green-800 border-right-1 border-green-100"
               style={{
                 minWidth: "4rem",
+                backgroundColor: "#9c8c79",
               }}
             >
-              <FDate timestamp={project.h2LStart} color="#384612" />
+              <div className="flex mr-1 text-white">
+                <i className="pi pi-angle-double-right" />
+              </div>
+              <div className="flex">
+                <FDate timestamp={project.h2LStart} color="#FFFFFF" />
+              </div>
             </div>
 
             <div
@@ -73,13 +79,18 @@ const FPDOH2L = () => {
             </div>
 
             <div
-              className="flex justify-content-center w-full p-2 text-100"
+              className="flex justify-content-center align-items-center w-full p-2 text-100"
               style={{
                 minWidth: "4rem",
                 backgroundColor: "#6e8a9d",
               }}
             >
-              <FDate timestamp={project.loPredictedStart} color="#FFFFFF" />
+              <div className="flex">
+                <FDate timestamp={project.loPredictedStart} color="#FFFFFF" />{" "}
+              </div>
+              <div className="flex ml-1 text-white">
+                <i className="pi pi-angle-double-right" />
+              </div>
             </div>
           </div>
           <div className="flex w-full p-2 justify-content-center">

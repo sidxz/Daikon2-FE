@@ -129,7 +129,7 @@ const AD_UM_Users = () => {
         position="right"
         onHide={() => setDisplayAddSideBar(false)}
         className="p-sidebar-sm"
-        header={"Edit User"}
+        header={"Add User"}
       >
         <AD_UM_UserAdd closeSideBar={() => setDisplayAddSideBar(false)} />
       </Sidebar>

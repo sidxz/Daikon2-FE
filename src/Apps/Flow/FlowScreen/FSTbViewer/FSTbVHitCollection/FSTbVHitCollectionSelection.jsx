@@ -36,6 +36,24 @@ const FSTbVHitCollectionSelection = ({ selectedScreen }) => {
     selectedHitCollection,
   ]);
 
+  useEffect(() => {
+    if (
+      !isFetchingHitCollection &&
+      hitCollectionOfScreen(selectedScreen.id).length > 0
+    ) {
+      // get id of first hit collection
+      const hitCollectionId = hitCollectionOfScreen(selectedScreen.id)[0].id;
+      navigate(
+        `/wf/screen/viewer/tb/${selectedScreen.id}/hits/${hitCollectionId}`
+      );
+    }
+  }, [
+    isFetchingHitCollection,
+    hitCollectionOfScreen,
+    selectedScreen,
+    navigate,
+  ]);
+
   const header = <> </>;
   const footer = (
     <>
@@ -114,18 +132,7 @@ const FSTbVHitCollectionSelection = ({ selectedScreen }) => {
     );
   }
 
-  if (
-    !isFetchingHitCollection &&
-    hitCollectionOfScreen(selectedScreen.id).length > 0
-  ) {
-    // get id of first hit collection
-    const hitCollectionId = hitCollectionOfScreen(selectedScreen.id)[0].id;
-    navigate(
-      `/wf/screen/viewer/tb/${selectedScreen.id}/hits/${hitCollectionId}`
-    );
-  }
-
-  return <div>Loading..</div>;
+  return <Loading />;
 };
 
 export default observer(FSTbVHitCollectionSelection);
