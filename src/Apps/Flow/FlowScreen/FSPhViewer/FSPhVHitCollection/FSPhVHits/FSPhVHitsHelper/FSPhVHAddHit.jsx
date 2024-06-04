@@ -3,12 +3,18 @@ import { observer } from "mobx-react-lite";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { classNames } from "primereact/utils";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { RootStoreContext } from "../../../../../../../RootStore";
+import { Dialog } from "primereact/dialog";
+import JSMEditor from "../../../../../../../Library/JSME/JSMEditor";
+import { InputTextarea } from "primereact/inputtextarea";
+import { MolecuLogixIcon } from "../../../../../../MolecuLogix/Icons/MolecuLogixIcon";
 
 const FSPhVHAddHit = ({ hitCollectionId, closeSideBar }) => {
   const rootStore = useContext(RootStoreContext);
   const { isAddingHit, addHit } = rootStore.hitStore;
+
+  const [showStructureEditor, setShowStructureEditor] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -145,14 +151,28 @@ const FSPhVHAddHit = ({ hitCollectionId, closeSideBar }) => {
           >
             Compound Structure (SMILES)
           </label>
-          <InputText
-            id="requestedSMILES"
-            value={formik.values.requestedSMILES}
-            onChange={formik.handleChange}
-            className={classNames({
-              "p-invalid": isInvalid("requestedSMILES"),
-            })}
-          />
+          <div className="flex">
+            <div className="flex w-full">
+              <InputTextarea
+                id="requestedSMILES"
+                value={formik.values.requestedSMILES}
+                onChange={formik.handleChange}
+                className={classNames({
+                  "p-invalid": isInvalid("requestedSMILES"),
+                })}
+              />
+            </div>
+            <div className="flex border-1 border-50 p-2">
+              <Button
+                text
+                type="button"
+                icon={<MolecuLogixIcon size={32} />}
+                label="Structure Editor"
+                onClick={() => setShowStructureEditor(true)}
+              />
+            </div>
+          </div>
+
           {getErrorMessage("requestedSMILES")}
         </div>
 
@@ -166,6 +186,31 @@ const FSPhVHAddHit = ({ hitCollectionId, closeSideBar }) => {
           />
         </div>
       </form>
+      <Dialog
+        visible={showStructureEditor}
+        closable={false}
+        modal={false}
+        showHeader={false}
+        onHide={() => setShowStructureEditor(false)}
+        style={{
+          width: "52rem",
+          height: "44rem",
+          overflow: "hidden !important",
+        }}
+        pt={{
+          content: { style: { overflow: "hidden" } },
+        }}
+      >
+        <div className="flex pt-5" style={{ overflow: "hidden" }}>
+          <JSMEditor
+            initialSmiles={formik.values.requestedSMILES}
+            onSave={(s) => {
+              setShowStructureEditor(false);
+              formik.setFieldValue("requestedSMILES", s);
+            }}
+          />
+        </div>
+      </Dialog>
     </div>
   );
 };
