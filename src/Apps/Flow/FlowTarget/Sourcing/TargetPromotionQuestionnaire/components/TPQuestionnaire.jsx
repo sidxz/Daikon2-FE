@@ -25,6 +25,7 @@ const TPQuestionnaire = ({ selectedGenes, proteinName }) => {
     isCacheValid,
     getGenePromotionDataObj,
     submitPromotionQuestionnaire,
+    isPromotionQuestionnaireSubmitting,
   } = rootStore.targetSourcingStore;
 
   const [targetPromotionFormValue, setTargetPromotionFormValue] = useState({});
@@ -243,6 +244,9 @@ const TPQuestionnaire = ({ selectedGenes, proteinName }) => {
           promotionQuestionsRegistry={questionsRegistry}
           submitTargetPromotionFormValueForm={() =>
             submitTargetPromotionFormValueForm()
+          }
+          isPromotionQuestionnaireSubmitting={
+            isPromotionQuestionnaireSubmitting
           }
         />
       </Dialog>
