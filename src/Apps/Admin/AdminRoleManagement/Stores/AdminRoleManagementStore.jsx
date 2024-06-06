@@ -70,11 +70,13 @@ export default class AdminRoleManagementStore {
   };
 
   fetchRole = async (id) => {
+    console.log("fetchRole", id);
     this.isFetchingRole = true;
     try {
       const role = await AdminRolesAPI.read(id);
       runInAction(() => {
         this.selectedRole = role;
+        this.roleRegistry.set(role.id, role);
       });
     } catch (error) {
       console.error("Error fetching role", error);
@@ -108,6 +110,7 @@ export default class AdminRoleManagementStore {
       await AdminRolesAPI.update(data.id, data);
       runInAction(() => {
         this.roleRegistry.set(data.id, data);
+        this.selectedRole = data;
         toast.success("Role updated successfully");
       });
     } catch (error) {
