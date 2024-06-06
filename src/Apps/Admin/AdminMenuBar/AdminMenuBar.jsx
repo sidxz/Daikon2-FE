@@ -12,8 +12,8 @@ const AdminMenuBar = () => {
 
   useEffect(() => {
     if (location.pathname.includes("/user-management/")) setActiveIndex(0);
-    else if (location.pathname.includes("/api-management/")) setActiveIndex(1);
-    else if (location.pathname.includes("/role-management/")) setActiveIndex(2);
+    // else if (location.pathname.includes("/api-management/")) setActiveIndex(1);
+    else if (location.pathname.includes("/role-management/")) setActiveIndex(1);
   }, [location, setActiveIndex]);
 
   const items = [
@@ -30,10 +30,8 @@ const AdminMenuBar = () => {
     {
       label: "Role Management",
       icon: "pi pi-fw pi-users",
-      command: () => navigate("role-management/"),
+      command: () => navigate("role-management/roles/"),
     },
-
-    // { label: "Clinical", icon: "icon icon-conceptual icon-proteins" },
   ];
   return (
     <div className="AdminMenuBar flex justify-content-center flex-wrap">
