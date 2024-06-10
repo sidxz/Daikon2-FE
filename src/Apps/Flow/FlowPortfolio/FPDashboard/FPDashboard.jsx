@@ -3,14 +3,18 @@ import { Sidebar } from "primereact/sidebar";
 import React, { useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import SecHeading from "../../../../Library/SecHeading/SecHeading";
+import { AppRoleResolver } from "../../../../Shared/VariableResolvers/AppRoleResolver";
 import { appColors } from "../../../../constants/colors";
 import { PortfolioIcon } from "../../icons/PortfolioIcon";
+import { PortfolioAdminRoleName } from "../constants/roles";
 import FPDAddNew from "./FPDAddNew/FPDAddNew";
 import FPDAllPortfolioProjects from "./FPDAllPortfolioProjects/FPDAllPortfolioProjects";
 import FPDMenuBar from "./FPDMenuBar/FPDMenuBar";
 import FPDOverview from "./FPDOverview/FPDOverview";
 const FPDashboard = () => {
   const [displayAddSideBar, setDisplayAddSideBar] = useState(false);
+
+  const { isUserInAnyOfRoles } = AppRoleResolver();
 
   const addSideBarHeader = (
     <div className="flex align-items-center gap-2">
@@ -19,6 +23,15 @@ const FPDashboard = () => {
     </div>
   );
 
+  var titleBarButtons = [];
+  if (isUserInAnyOfRoles([PortfolioAdminRoleName])) {
+    titleBarButtons.push({
+      label: "New Portfolio",
+      icon: "pi pi-plus",
+      action: () => setDisplayAddSideBar(true),
+    });
+  }
+
   return (
     <div className="flex flex-column min-w-full fadein animation-duration-500">
       <div className="flex w-full">
@@ -26,13 +39,7 @@ const FPDashboard = () => {
           svgIcon={<PortfolioIcon size={"25em"} />}
           heading="Portfolio"
           color={appColors.sectionHeadingBg.portfolio}
-          customButtons={[
-            {
-              label: "New Portfolio",
-              icon: "pi pi-plus",
-              action: () => setDisplayAddSideBar(true),
-            },
-          ]}
+          customButtons={titleBarButtons}
           displayHorizon={false}
         />
       </div>

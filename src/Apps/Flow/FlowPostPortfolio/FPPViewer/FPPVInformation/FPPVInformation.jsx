@@ -19,10 +19,14 @@ import PostPortfolioStageDropdown from "../../shared/PostPortfolioStageDropdown"
 import FPPVIProjectInfoDesc from "./FPPVIProjectInfo/FPPVIProjectInfoDesc";
 import FPPVIProjectInfoPriority from "./FPPVIProjectInfo/FPPVIProjectInfoPriority";
 import * as Helper from "./FPPVInformationHelper";
+import { AppRoleResolver } from "../../../../../Shared/VariableResolvers/AppRoleResolver";
+import { PostPortfolioAdminRoleName } from "../../constants/roles";
 
 const FPPVInformation = () => {
   const rootStore = useContext(RootStoreContext);
   const { selectedProject, isFetchingProject } = rootStore.projectStore;
+
+  const { isUserInAnyOfRoles } = AppRoleResolver();
 
   if (isFetchingProject) {
     return <Loading message={"Fetching Portfolios..."} />;
@@ -142,6 +146,27 @@ const FPPVInformation = () => {
     stackSubgroups: false,
   };
 
+  var titleBarButtons = [];
+
+  if (isUserInAnyOfRoles([PostPortfolioAdminRoleName])) {
+    titleBarButtons.push(<PostPortfolioStageDropdown />);
+  } else {
+    titleBarButtons.push(
+      <PostPortfolioStageDropdown
+        readOnly={true}
+        readOnlyStage={selectedProject.stage}
+      />
+    );
+  }
+
+  titleBarButtons.push(
+    <Chip
+      label={getOrgNameById(selectedProject?.primaryOrgId)}
+      icon="ri-organization-chart"
+      className="mr-3"
+    />
+  );
+
   return (
     <div className="flex flex-column w-full gap-1">
       <div className="flex w-full">
@@ -154,14 +179,7 @@ const FPPVInformation = () => {
           displayHorizon={true}
           color={appColors.sectionHeadingBg.project}
           entryPoint={selectedProject?.id}
-          customElements={[
-            <PostPortfolioStageDropdown />,
-            <Chip
-              label={getOrgNameById(selectedProject?.primaryOrgId)}
-              icon="ri-organization-chart"
-              className="mr-3"
-            />,
-          ]}
+          customElements={titleBarButtons}
         />
       </div>
       <div className="flex w-full">

@@ -4,7 +4,10 @@ import React, { useContext, useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router";
 import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../../../../Library/Loading/Loading";
+import NotFound from "../../../../Library/NotFound/NotFound";
 import { RootStoreContext } from "../../../../RootStore";
+import { AppRoleResolver } from "../../../../Shared/VariableResolvers/AppRoleResolver";
+import { PortfolioAdminRoleName } from "../constants/roles";
 import FPVComments from "./FPVComments/FPVComments";
 import FPVInformation from "./FPVInformation/FPVInformation";
 import FPVSettings from "./FPVSettings/FPVSettings";
@@ -20,6 +23,8 @@ const FPViewer = () => {
     isFetchingProject,
     isProjectRegistryCacheValid,
   } = rootStore.projectStore;
+
+  const { isUserInAnyOfRoles } = AppRoleResolver();
 
   useEffect(() => {
     if (
@@ -53,7 +58,10 @@ const FPViewer = () => {
                 path="discussion/*"
                 element={<FPVComments selectedProject={selectedProject} />}
               />
-              <Route path="settings/*" element={<FPVSettings />} />
+              {isUserInAnyOfRoles([PortfolioAdminRoleName]) && (
+                <Route path="settings/*" element={<FPVSettings />} />
+              )}
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </div>
         </div>
