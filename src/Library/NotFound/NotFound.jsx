@@ -14,7 +14,10 @@ const NotFound = () => {
             ></i>
             <p className="flex m-2">
               Sorry, the page you are looking for does not exist. Please check
-              the URL or return to the <NavLink to="/">homepage.</NavLink>
+              the URL or return to the{" "}
+              <NavLink className="" to="/">
+                homepage.
+              </NavLink>
             </p>
           </div>
         </Card>
