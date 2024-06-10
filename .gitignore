@@ -2,8 +2,7 @@
 
 # App Secrets
 /src/config.js
-/src/config/authConfig.*
-/src/config/axiosConfig.jsx
+/src/config/
 
 # dependencies
 /node_modules
