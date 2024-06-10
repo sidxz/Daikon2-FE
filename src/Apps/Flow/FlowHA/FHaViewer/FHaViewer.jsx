@@ -4,11 +4,14 @@ import React, { useContext, useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router";
 import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../../../../Library/Loading/Loading";
+import NotFound from "../../../../Library/NotFound/NotFound";
 import { RootStoreContext } from "../../../../RootStore";
+import { AppRoleResolver } from "../../../../Shared/VariableResolvers/AppRoleResolver";
+import { HaAdminRoleName } from "../constants/roles";
 import FHaVComments from "./FHaVComments/FHaVComments";
 import FHaVInformation from "./FHaVInformation/FHaVInformation";
-import * as Helper from "./FHaViewerHelper";
 import FHaVSettings from "./FHaVSettings/FHaVSettings";
+import * as Helper from "./FHaViewerHelper";
 
 const FHaViewer = () => {
   const params = useParams();
@@ -16,6 +19,8 @@ const FHaViewer = () => {
   const rootStore = useContext(RootStoreContext);
   const { fetchHa, selectedHa, isFetchingHa, isHaRegistryCacheValid } =
     rootStore.haStore;
+
+  const { isUserInAnyOfRoles } = AppRoleResolver();
 
   useEffect(() => {
     if (
@@ -48,7 +53,10 @@ const FHaViewer = () => {
                 path="discussion/*"
                 element={<FHaVComments selectedHa={selectedHa} />}
               />
-               <Route path="settings/*" element={<FHaVSettings />} />
+              {isUserInAnyOfRoles([HaAdminRoleName]) && (
+                <Route path="settings/*" element={<FHaVSettings />} />
+              )}
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </div>
         </div>
