@@ -1,3 +1,4 @@
+import { observer } from "mobx-react-lite";
 import { Button } from "primereact/button";
 import { Divider } from "primereact/divider";
 import React from "react";
@@ -32,6 +33,8 @@ const GenePromoteSummary = (props) => {
               label="Submit"
               icon="pi pi-arrow-right"
               className="p-button-success"
+              readOnly={props.isPromotionQuestionnaireSubmitting}
+              loading={props.isPromotionQuestionnaireSubmitting}
               onClick={() => {
                 props.submitTargetPromotionFormValueForm();
               }}
@@ -43,4 +46,4 @@ const GenePromoteSummary = (props) => {
   );
 };
 
-export default GenePromoteSummary;
+export default observer(GenePromoteSummary);

@@ -17,7 +17,7 @@ const Reply = ({ reply, comment, setComment }) => {
 
   const rootStore = useContext(RootStoreContext);
 
-  const { appVars } = rootStore.authStore;
+  const { appVars, user } = rootStore.authStore;
   const { deleteReply, isDeletingReply, isUpdatingReply, workingOnReplyId } =
     rootStore.commentStore;
 
@@ -34,8 +34,9 @@ const Reply = ({ reply, comment, setComment }) => {
     }
   };
 
-  const replyMenuItems = [
-    {
+  const replyMenuItems = [];
+  if (user.id === reply.createdById) {
+    replyMenuItems.push({
       label: "Reply options",
       items: [
         {
@@ -63,8 +64,20 @@ const Reply = ({ reply, comment, setComment }) => {
           },
         },
       ],
-    },
-  ];
+    });
+  } else {
+    replyMenuItems.push({
+      items: [
+        {
+          label: "No available actions",
+          icon: "pi pi-exclamation-triangle",
+          command: () => {
+            console.log("No available actions");
+          },
+        },
+      ],
+    });
+  }
 
   let skeletonRender = (
     <div className="flex w-full justify-content-center">

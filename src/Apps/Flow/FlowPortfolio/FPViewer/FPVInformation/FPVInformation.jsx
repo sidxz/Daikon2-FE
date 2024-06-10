@@ -11,9 +11,11 @@ import VisTimeline from "../../../../../Library/VisTimeline/VisTimeline";
 import { RootStoreContext } from "../../../../../RootStore";
 import { DateValidators } from "../../../../../Shared/Validators/DateValidators";
 import { AppOrgResolver } from "../../../../../Shared/VariableResolvers/AppOrgResolver";
+import { AppRoleResolver } from "../../../../../Shared/VariableResolvers/AppRoleResolver";
 import { appColors } from "../../../../../constants/colors";
 import HaCompoundEvolution from "../../../FlowHA/shared/HaCompoundEvolution/HaCompoundEvolution";
 import { PortfolioIcon } from "../../../icons/PortfolioIcon";
+import { PortfolioAdminRoleName } from "../../constants/roles";
 import PortfolioCompoundEvolution from "../../shared/HaCompoundEvolution/PortfolioCompoundEvolution";
 import PortfolioStageDropdown from "../../shared/PortfolioStageDropdown";
 import FPVIProjectInfoDesc from "./FPVIProjectInfo/FPVIProjectInfoDesc";
@@ -23,6 +25,8 @@ import * as Helper from "./FPVInformationHelper";
 const FPVInformation = () => {
   const rootStore = useContext(RootStoreContext);
   const { selectedProject, isFetchingProject } = rootStore.projectStore;
+
+  const { isUserInAnyOfRoles } = AppRoleResolver();
 
   if (isFetchingProject) {
     return <Loading message={"Fetching Portfolios..."} />;
@@ -116,6 +120,27 @@ const FPVInformation = () => {
     stackSubgroups: false,
   };
 
+  var titleBarButtons = [];
+
+  if (isUserInAnyOfRoles([PortfolioAdminRoleName])) {
+    titleBarButtons.push(<PortfolioStageDropdown />);
+  } else {
+    titleBarButtons.push(
+      <PortfolioStageDropdown
+        readOnly={true}
+        readOnlyStage={selectedProject.stage}
+      />
+    );
+  }
+
+  titleBarButtons.push(
+    <Chip
+      label={getOrgNameById(selectedProject?.primaryOrgId)}
+      icon="ri-organization-chart"
+      className="mr-3"
+    />
+  );
+
   return (
     <div
       className="flex flex-column w-full gap-1"
@@ -133,14 +158,7 @@ const FPVInformation = () => {
           displayHorizon={true}
           color={appColors.sectionHeadingBg.project}
           entryPoint={selectedProject?.id}
-          customElements={[
-            <PortfolioStageDropdown />,
-            <Chip
-              label={getOrgNameById(selectedProject?.primaryOrgId)}
-              icon="ri-organization-chart"
-              className="mr-3"
-            />,
-          ]}
+          customElements={titleBarButtons}
         />
       </div>
       <div className="flex w-full">

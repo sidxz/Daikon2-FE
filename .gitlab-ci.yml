@@ -1,0 +1,45 @@
+image: docker:latest
+
+services:
+  - docker:dind
+
+variables:
+  DOCKER_DRIVER: overlay2
+  IMAGE_TAG: "$CI_REGISTRY_IMAGE/daikon-fe-lab:$CI_COMMIT_REF_NAME"
+
+before_script:
+  - docker info
+  - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+
+stages:
+  - build
+  - push
+
+build:
+  stage: build
+  script:
+    # Create the authConfig.jsx file using a here-document and environment variables
+    - mkdir -p src/config
+    - |
+      echo "export const OIDCConfig = {
+        authority: \"${AUTHORITY}\",
+        client_id: \"${CLIENT_ID}\",
+        redirect_uri: window.location.origin + \"/auth/signin_redirect\",
+        response_type: \"code\",
+        scope: \"${SCOPE}\",
+        post_logout_redirect_uri: window.location.origin + \"/auth/signout_redirect\",
+        response_mode: \"query\", // or \"fragment\"
+        automaticSilentRenew: true,
+        silent_redirect_uri: window.location.origin + \"/auth/silent_redirect\",
+      };" > src/config/authConfig.jsx
+    # Build the Docker image
+    - docker build -t $IMAGE_TAG .
+  only:
+    - lab-main
+
+push:
+  stage: push
+  script:
+    - docker push $IMAGE_TAG
+  only:
+    - lab-main

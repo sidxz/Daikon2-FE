@@ -2,8 +2,9 @@ import { useFormik } from "formik";
 import { observer } from "mobx-react-lite";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
+import { ListBox } from "primereact/listbox";
 import { classNames } from "primereact/utils";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Loading from "../../../../../Library/Loading/Loading";
 import SecHeading from "../../../../../Library/SecHeading/SecHeading";
@@ -24,13 +25,20 @@ const AD_UM_UserEdit = () => {
     isUpdatingUser,
   } = rootStore.adminUserManagementStore;
 
+  const { fetchRoles, roleList, isFetchingRoles } =
+    rootStore.adminRoleManagementStore;
+
   const params = useParams();
 
-  useState(() => {
+  useEffect(() => {
     if (selectedUser === null || selectedUser?.id !== params?.id) {
       fetchUser(params?.id);
     }
   }, [params.id, fetchUser, selectedUser]);
+
+  useEffect(() => {
+    fetchRoles();
+  }, [fetchRoles]);
 
   const formik = useFormik({
     initialValues: {
@@ -52,6 +60,7 @@ const AD_UM_UserEdit = () => {
 
     onSubmit: (updatedUser) => {
       let data = { ...selectedUser, ...updatedUser };
+      console.log("updatedUser", data);
       updateUser(data);
     },
   });
@@ -63,8 +72,8 @@ const AD_UM_UserEdit = () => {
       <small className="p-error">{formik.errors[field]}</small>
     );
 
-  if (isFetchingUser) {
-    return <Loading message="Fetching User..." />;
+  if (isFetchingUser || isFetchingRoles) {
+    return <Loading message="Fetching User/roles..." />;
   }
 
   return (
@@ -159,6 +168,28 @@ const AD_UM_UserEdit = () => {
                   })}
                 />
                 {getErrorMessage("appOrgId")}
+              </div>
+
+              <div className="field">
+                <label
+                  htmlFor="Roles"
+                  className={classNames({
+                    "p-error": isInvalid("appRoleIds"),
+                  })}
+                >
+                  App Roles
+                </label>
+                <ListBox
+                  multiple
+                  value={formik.values.appRoleIds}
+                  onChange={(e) => formik.setFieldValue("appRoleIds", e.value)}
+                  options={roleList}
+                  optionLabel="normalizedName"
+                  optionValue="id"
+                  className={classNames({
+                    "p-invalid": isInvalid("appRoleIds"),
+                  })}
+                />
               </div>
 
               <div className="field">

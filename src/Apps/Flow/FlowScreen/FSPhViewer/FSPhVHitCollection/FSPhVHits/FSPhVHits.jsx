@@ -1,5 +1,4 @@
 import { observer } from "mobx-react-lite";
-import { BlockUI } from "primereact/blockui";
 import { Button } from "primereact/button";
 import { Column } from "primereact/column";
 import { confirmDialog } from "primereact/confirmdialog";
@@ -8,6 +7,7 @@ import { Dialog } from "primereact/dialog";
 import { Sidebar } from "primereact/sidebar";
 import React, { useContext, useEffect, useState } from "react";
 import Loading from "../../../../../../Library/Loading/Loading";
+import LoadingBlockUI from "../../../../../../Library/LoadingBlockUI/LoadingBlockUI";
 import { RootStoreContext } from "../../../../../../RootStore";
 import { TextRowEditor } from "../../../../../../Shared/TableRowEditors/TextRowEditor";
 import Vote from "../../../shared/Vote/Vote";
@@ -111,7 +111,7 @@ const FSPhVHits = ({ id }) => {
       <>
         <div className="flex flex-column w-full">
           <div className="flex w-full">
-            <BlockUI
+            <LoadingBlockUI
               blocked={
                 isDeletingHit ||
                 isAddingHit ||
@@ -213,7 +213,7 @@ const FSPhVHits = ({ id }) => {
                 />
                 <Column body={deleteBodyTemplate} header="Delete" />
               </DataTable>
-            </BlockUI>
+            </LoadingBlockUI>
           </div>
         </div>
         <Sidebar

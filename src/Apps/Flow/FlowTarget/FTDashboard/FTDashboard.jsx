@@ -10,6 +10,7 @@ import { TargetIcon } from "../../icons/TargetIcon";
 import FTDAddTarget from "./FTDAddTarget";
 import FTDDataTable from "./FTDDataTable/FTDDataTable";
 import FTDTargetMap from "./FTDTargetMap/FTDTargetMap";
+import { AppRoleResolver } from "../../../../Shared/VariableResolvers/AppRoleResolver";
 const FTDashboard = () => {
   const rootStore = useContext(RootStoreContext);
   const {
@@ -21,6 +22,8 @@ const FTDashboard = () => {
 
   const [displayAddSideBar, setDisplayAddSideBar] = useState(false);
   const navigate = useNavigate();
+
+  const { isUserInRoleByName } = AppRoleResolver();
 
   useEffect(() => {
     if (!isTargetListCacheValid) {
@@ -41,6 +44,20 @@ const FTDashboard = () => {
     </div>
   );
 
+  var headingButtons = [];
+  if (isUserInRoleByName("TARGET-PROMOTION-MODERATOR")) {
+    headingButtons.push({
+      label: "Awaiting Approval",
+      icon: "pi pi-stopwatch",
+      action: () => navigate("sourcing/approval"),
+    });
+  }
+  headingButtons.push({
+    label: "Add Target",
+    icon: "pi pi-plus",
+    action: () => setDisplayAddSideBar(true),
+  });
+
   return (
     <div className="flex flex-column min-w-full fadein animation-duration-500">
       <div className="flex w-full">
@@ -50,18 +67,7 @@ const FTDashboard = () => {
           heading="Targets"
           color={appColors.sectionHeadingBg.target}
           displayHorizon={false}
-          customButtons={[
-            {
-              label: "Awaiting Approval",
-              icon: "pi pi-stopwatch",
-              action: () => navigate("sourcing/approval"),
-            },
-            {
-              label: "Add Target",
-              icon: "pi pi-plus",
-              action: () => setDisplayAddSideBar(true),
-            },
-          ]}
+          customButtons={headingButtons}
         />
       </div>
       <div className="flex max-w-full p-1">

@@ -78,7 +78,8 @@ const FTApprovalView = () => {
       !isFetchingQuestions &&
       questionsRegistry.size > 0 &&
       Object.keys(targetPromotionFormValue).length === 0 &&
-      selectedTQ.response.length > 0
+      selectedTQ.response.length > 0 &&
+      selectedTQ.id === params.id
     ) {
       let loadFormValue = allQuestions?.reduce((acc, question) => {
         let ansItem = selectedTQ?.response.find(

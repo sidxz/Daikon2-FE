@@ -49,7 +49,7 @@ const FTVPromotionQ = () => {
       selectedTarget &&
       (selectedTQ === null || selectedTQ.targetId !== selectedTarget.id)
     ) {
-      console.log("FTVPromotionQ FETCHING TQ");
+      //console.log("FTVPromotionQ FETCHING TQ");
       fetchTQByTargetId(selectedTarget.id);
     }
   }, [selectedTarget, fetchTQByTargetId, selectedTQ]);
@@ -60,7 +60,8 @@ const FTVPromotionQ = () => {
     }
   }, [isCacheValid, fetchQuestions]);
 
-  console.log("FTVPromotionQ TARGET===", selectedTarget);
+  //console.log("FTVPromotionQ Selected TARGET===", selectedTarget?.name);
+  //console.log("FTVPromotionQ Selected TARGET Id===", selectedTarget?.id);
 
   if (isFetchingTQ || isFetchingTarget || isFetchingQuestions) {
     return <Loading message={"Loading Target Promotion Questionnaire"} />;
@@ -69,7 +70,8 @@ const FTVPromotionQ = () => {
       !isFetchingQuestions &&
       questionsRegistry.size > 0 &&
       Object.keys(targetPromotionFormValue).length === 0 &&
-      selectedTQ?.response?.length > 0
+      selectedTQ?.response?.length > 0 &&
+      selectedTQ?.targetId === selectedTarget?.id
     ) {
       let loadFormValue = allQuestions?.reduce((acc, question) => {
         let ansItem = selectedTQ?.response.find(
@@ -86,8 +88,9 @@ const FTVPromotionQ = () => {
         return acc;
       }, {});
 
-      console.log("loadFormValue");
-      console.log(loadFormValue);
+      //console.log("FTVPromotionQ -->>>>>> selectedTQ " + selectedTQ?.id);
+      //console.log("FTVPromotionQ loadFormValue");
+      //console.log(loadFormValue);
       setTargetPromotionFormValue(loadFormValue);
     }
 
@@ -208,8 +211,8 @@ const FTVPromotionQ = () => {
       }
     }
 
-    console.log("selectedTQ");
-    console.log(selectedTQ);
+    //console.log("selectedTQ");
+    //console.log(selectedTQ);
 
     let header = (
       <div className="flex flex-row w-full p-2 border-1 border-50 surface-ground border-round-md">
@@ -286,8 +289,8 @@ const FTVPromotionQ = () => {
 
     const submitTargetPromotionFormValueForm = () => {
       const data = formatTPFormValue();
-      console.log("===SUBMIT===");
-      console.log(data);
+      //console.log("===SUBMIT===");
+      //console.log(data);
       updateTQ(data);
     };
 

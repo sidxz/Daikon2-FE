@@ -86,7 +86,7 @@ const PostPortfolioStageDropdown = ({ readOnlyStage, readOnly = false }) => {
       );
     }
     return (
-      <div className="flex align-items-center gap-2 bg-white p-2 m-0">
+      <div className="flex align-items-center gap-2 bg-white p-2 pl-3 pr-3 m-0 border-1 border-50 border-round-md">
         <div className="flex flex-column">
           {stages.find((option) => option.value === readOnlyStage)?.icon}
         </div>

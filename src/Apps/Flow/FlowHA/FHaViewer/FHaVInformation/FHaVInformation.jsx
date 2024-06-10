@@ -11,8 +11,10 @@ import VisTimeline from "../../../../../Library/VisTimeline/VisTimeline";
 import { RootStoreContext } from "../../../../../RootStore";
 import { DateValidators } from "../../../../../Shared/Validators/DateValidators";
 import { AppOrgResolver } from "../../../../../Shared/VariableResolvers/AppOrgResolver";
+import { AppRoleResolver } from "../../../../../Shared/VariableResolvers/AppRoleResolver";
 import { appColors } from "../../../../../constants/colors";
 import { HAIcon } from "../../../icons/HAIcon";
+import { HaAdminRoleName } from "../../constants/roles";
 import HaCompoundEvolution from "../../shared/HaCompoundEvolution/HaCompoundEvolution";
 import HaStatusDropdown from "../../shared/HaStatusDropdown";
 import * as Helper from "./FHaVInformationHelper";
@@ -20,6 +22,8 @@ import * as Helper from "./FHaVInformationHelper";
 const FHaVInformation = () => {
   const rootStore = useContext(RootStoreContext);
   const { selectedHa, isFetchingHa } = rootStore.haStore;
+
+  const { isUserInAnyOfRoles } = AppRoleResolver();
 
   if (isFetchingHa) {
     return <Loading message={"Fetching HA..."} />;
@@ -108,6 +112,24 @@ const FHaVInformation = () => {
     stackSubgroups: false,
   };
 
+  var titleBarButtons = [];
+
+  if (isUserInAnyOfRoles([HaAdminRoleName])) {
+    titleBarButtons.push(<HaStatusDropdown />);
+  } else {
+    titleBarButtons.push(
+      <HaStatusDropdown readOnly={true} readOnlyStatus={selectedHa.status} />
+    );
+  }
+
+  titleBarButtons.push(
+    <Chip
+      label={getOrgNameById(selectedHa?.primaryOrgId)}
+      icon="ri-organization-chart"
+      className="mr-3"
+    />
+  );
+
   return (
     <div className="flex flex-column w-full gap-1">
       <div className="flex w-full">
@@ -120,14 +142,7 @@ const FHaVInformation = () => {
           displayHorizon={true}
           color={appColors.sectionHeadingBg.ha}
           entryPoint={selectedHa?.id}
-          customElements={[
-            <HaStatusDropdown />,
-            <Chip
-              label={getOrgNameById(selectedHa?.primaryOrgId)}
-              icon="ri-organization-chart"
-              className="mr-3"
-            />,
-          ]}
+          customElements={titleBarButtons}
         />
       </div>
       <div className="flex w-full">
