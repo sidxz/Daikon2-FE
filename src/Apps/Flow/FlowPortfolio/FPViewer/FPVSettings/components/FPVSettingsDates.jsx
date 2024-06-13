@@ -1,4 +1,5 @@
 import { Formik } from "formik";
+import { observer } from "mobx-react-lite";
 import { Button } from "primereact/button";
 import { Calendar } from "primereact/calendar";
 import React, { useContext } from "react";
@@ -162,4 +163,4 @@ const FPVSettingsDates = ({}) => {
   );
 };
 
-export default FPVSettingsDates;
+export default observer(FPVSettingsDates);

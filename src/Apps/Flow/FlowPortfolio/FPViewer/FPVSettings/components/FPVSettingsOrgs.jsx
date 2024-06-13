@@ -8,42 +8,41 @@ import { RootStoreContext } from "../../../../../../RootStore";
 import InputMultiOrg from "../../../../../../Shared/InputEditors/InputMultiOrg";
 import InputOrg from "../../../../../../Shared/InputEditors/InputOrg";
 
-const FHaVSettingsOrgs = ({}) => {
+const FPVSettingsOrgs = ({}) => {
   const navigate = useNavigate();
   const rootStore = useContext(RootStoreContext);
   const {
-    fetchHa,
-    selectedHa,
-    isFetchingHa,
-    isUpdatingHa,
-    updateHa,
-    isHaRegistryCacheValid,
-  } = rootStore.haStore;
+    fetchProject,
+    selectedProject,
+    isFetchingProject,
+    isProjectRegistryCacheValid,
+    updateProject,
+    isUpdatingProject,
+  } = rootStore.projectStore;
 
   const { appVars } = rootStore.authStore;
-  if (isFetchingHa) {
-    return <Loading message={"Fetching Ha..."} />;
+  if (isFetchingProject) {
+    return <Loading message={"Fetching Project..."} />;
   }
 
   const onFormikSubmit = (data) => {
-    const updatedHa = { ...selectedHa, ...data };
-
+    const updatedProject = { ...selectedProject, ...data };
+    console.log("updatedProject", updatedProject);
     // keep only the ids of the participating orgs if they are available in appVars.orgs
-    updatedHa.participatingOrgs = updatedHa.participatingOrgs.filter(
+    updatedProject.participatingOrgs = updatedProject.participatingOrgs.filter(
       (orgId) => appVars.orgs[orgId]
     );
-
-    updateHa(updatedHa);
+    updateProject(updatedProject);
   };
 
   return (
     <div className="flex min-w-full fadein animation-duration-500">
       <div className="card w-full p-3">
-        <LoadingBlockUI blocked={isUpdatingHa}>
+        <LoadingBlockUI blocked={isUpdatingProject}>
           <Formik
             initialValues={{
-              primaryOrgId: selectedHa?.primaryOrgId,
-              participatingOrgs: selectedHa?.participatingOrgs,
+              primaryOrgId: selectedProject?.primaryOrgId,
+              participatingOrgs: selectedProject?.participatingOrgs,
             }}
             onSubmit={onFormikSubmit}
           >
@@ -86,7 +85,7 @@ const FHaVSettingsOrgs = ({}) => {
                       type="submit"
                       label="Save Changes"
                       className="p-button-secondary w-12rem"
-                      loading={isUpdatingHa}
+                      loading={isUpdatingProject}
                     />
                   </div>
                 </div>
@@ -99,4 +98,4 @@ const FHaVSettingsOrgs = ({}) => {
   );
 };
 
-export default observer(FHaVSettingsOrgs);
+export default observer(FPVSettingsOrgs);

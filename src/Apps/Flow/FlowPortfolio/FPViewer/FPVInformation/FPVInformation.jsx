@@ -18,6 +18,7 @@ import { PortfolioIcon } from "../../../icons/PortfolioIcon";
 import { PortfolioAdminRoleName } from "../../constants/roles";
 import PortfolioCompoundEvolution from "../../shared/HaCompoundEvolution/PortfolioCompoundEvolution";
 import PortfolioStageDropdown from "../../shared/PortfolioStageDropdown";
+import FPVIOrgs from "./FPVIProjectInfo/FPVIOrgs";
 import FPVIProjectInfoDesc from "./FPVIProjectInfo/FPVIProjectInfoDesc";
 import FPVIProjectInfoPriority from "./FPVIProjectInfo/FPVIProjectInfoPriority";
 import * as Helper from "./FPVInformationHelper";
@@ -36,7 +37,7 @@ const FPVInformation = () => {
 
   const { isDateValid } = DateValidators();
 
-  const { getOrgNameById } = AppOrgResolver();
+  const { getOrgAliasById } = AppOrgResolver();
 
   // calculate the waiting to start date in days from the current date = current date - date created
   let waitingToStartDate = new Date() - new Date(selectedProject.dateCreated);
@@ -135,7 +136,7 @@ const FPVInformation = () => {
 
   titleBarButtons.push(
     <Chip
-      label={getOrgNameById(selectedProject?.primaryOrgId)}
+      label={getOrgAliasById(selectedProject?.primaryOrgId)}
       icon="ri-organization-chart"
       className="mr-3"
     />
@@ -165,6 +166,15 @@ const FPVInformation = () => {
         <VisTimeline items={timelineItems} options={options} groups={groups} />
       </div>
 
+      <div className="flex w-full">
+        <Fieldset
+          className="m-0 flex-grow-1"
+          legend="Organization & Collaboration"
+        >
+          <FPVIOrgs project={selectedProject} />
+        </Fieldset>
+      </div>
+
       <div className="flex flex-row m-0 w-full">
         <div className="flex m-0 flex-grow-1">
           <Fieldset className="flex" legend="Team Info">
@@ -174,7 +184,7 @@ const FPVInformation = () => {
         <div className="flex w-full m-0">
           <Fieldset
             className="flex w-full"
-            legend="Portfolio Description & Notes"
+            legend="Portfolio Achievements, Summary & Notes"
           >
             <FPVIProjectInfoDesc />
           </Fieldset>
