@@ -18,6 +18,7 @@ import { HaAdminRoleName } from "../../constants/roles";
 import HaCompoundEvolution from "../../shared/HaCompoundEvolution/HaCompoundEvolution";
 import HaStatusDropdown from "../../shared/HaStatusDropdown";
 import * as Helper from "./FHaVInformationHelper";
+import FHaVInfoOrgs from "./components/FHaVInfoOrgs";
 
 const FHaVInformation = () => {
   const rootStore = useContext(RootStoreContext);
@@ -31,7 +32,7 @@ const FHaVInformation = () => {
 
   const navigate = useNavigate();
 
-  const { getOrgNameById } = AppOrgResolver();
+  const { getOrgAliasById } = AppOrgResolver();
 
   // calculate the waiting to start date in days from the current date = current date - date created
   let waitingToStartDate = new Date() - new Date(selectedHa.dateCreated);
@@ -124,7 +125,7 @@ const FHaVInformation = () => {
 
   titleBarButtons.push(
     <Chip
-      label={getOrgNameById(selectedHa?.primaryOrgId)}
+      label={getOrgAliasById(selectedHa?.primaryOrgId)}
       icon="ri-organization-chart"
       className="mr-3"
     />
@@ -147,6 +148,14 @@ const FHaVInformation = () => {
       </div>
       <div className="flex w-full">
         <VisTimeline items={timelineItems} options={options} groups={groups} />
+      </div>
+      <div className="flex w-full">
+        <Fieldset
+          className="m-0 flex-grow-1"
+          legend="Organization & Collaboration"
+        >
+          <FHaVInfoOrgs ha={selectedHa} />
+        </Fieldset>
       </div>
       <div className="flex w-full">
         <Fieldset className="m-0 flex-grow-1" legend="Compound Evolution">

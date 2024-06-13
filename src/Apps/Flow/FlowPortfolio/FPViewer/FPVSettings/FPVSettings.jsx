@@ -3,7 +3,7 @@ import { BreadCrumb } from "primereact/breadcrumb";
 import { useContext, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../../../../../Library/Loading/Loading";
-
+import FPVSettingsOrgs from "./components/FPVSettingsOrgs";
 import { Fieldset } from "primereact/fieldset";
 import {
   FcHighPriority,
@@ -91,6 +91,19 @@ const FPVSettings = () => {
           legend={
             <>
               <FcTreeStructure className="mr-2" />
+              Update Organization
+            </>
+          }
+        >
+          <FPVSettingsOrgs />
+        </Fieldset>
+      </div>
+      <div className="flex w-full  mt-2">
+        <Fieldset
+          className="w-full bg-orange-50	border-1 border-yellow-400"
+          legend={
+            <>
+              <FcTreeStructure className="mr-2" />
               Update Hit Assessment Association
             </>
           }
@@ -113,7 +126,7 @@ const FPVSettings = () => {
               Rename Project
             </>
           }
-          className="w-full bg-orange-50	border-1 border-yellow-400	"
+          className="w-full bg-orange-50	border-1 border-yellow-400"
         >
           <p className="m-0 p-2">
             Adjusting the settings below will alter the relationships between

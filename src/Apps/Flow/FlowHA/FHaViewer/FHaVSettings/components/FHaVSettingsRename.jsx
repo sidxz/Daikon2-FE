@@ -38,7 +38,7 @@ const FHaVSettingsRename = () => {
 
   return (
     <BlockUI blocked={isRenamingHa || isFetchingHa}>
-      <div className="card w-full">
+      <div className="card w-full p-3">
         <form onSubmit={formik.handleSubmit} className="p-fluid">
           <div className="field">
             <label

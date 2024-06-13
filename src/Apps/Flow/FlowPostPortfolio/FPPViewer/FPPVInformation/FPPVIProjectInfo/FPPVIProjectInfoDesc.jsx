@@ -21,11 +21,11 @@ const FPPVIProjectInfoDesc = () => {
 
   let projectDescData = [
     {
-      name: "IND Description",
+      name: "IND",
       value: selectedProject.indDescription,
     },
     {
-      name: "P1 Description",
+      name: "P1",
       value: selectedProject.p1Description,
     },
   ];
@@ -87,7 +87,6 @@ const FPPVIProjectInfoDesc = () => {
                 if (!rowData?.value) {
                   return (
                     <div className="w-full">
-                      A description/note has not been provided.{" "}
                       <span
                         className="text-primary"
                         onClick={() => setVisible(true)}

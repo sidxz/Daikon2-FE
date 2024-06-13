@@ -6,6 +6,7 @@ import { Dialog } from "primereact/dialog";
 import { Fieldset } from "primereact/fieldset";
 import { InputText } from "primereact/inputtext";
 import { Menu } from "primereact/menu";
+import { Sidebar } from "primereact/sidebar";
 import { Slider } from "primereact/slider";
 import React, { useContext, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -14,6 +15,7 @@ import SecHeading from "../../../Library/SecHeading/SecHeading";
 import { RootStoreContext } from "../../../RootStore";
 import { appColors } from "../../../constants/colors";
 import { MolecuLogixIcon } from "../Icons/MolecuLogixIcon";
+import MLogixRegisterMolecule from "../MLogixAllMolecules/MLogixRegisterMolecule";
 import MolDbAPI from "../api/MolDbAPI";
 import MLSimilarSearchCard from "./MLSimilarSearchCard/MLSimilarSearchCard";
 import * as Helper from "./MLogixSimilarSearchHelper";
@@ -24,6 +26,8 @@ const MLogixSimilarSearch = () => {
   const [searchValue, setSearchValue] = useState(params.smiles || "");
   const [searchResults, setSearchResults] = useState([]);
   const [similarityThreshold, setSimilarityThreshold] = useState(20);
+
+  const [displayAddSideBar, setDisplayAddSideBar] = useState(false);
 
   const rootStore = useContext(RootStoreContext);
   const [showStructureEditor, setShowStructureEditor] = useState(false);
@@ -53,6 +57,12 @@ const MLogixSimilarSearch = () => {
     return <div className="grid grid-nogutter">{list}</div>;
   };
 
+  const addSideBarHeader = (
+    <div className="flex w-full justify-between items-center">
+      <h2 className="text-lg font-semibold">Register Molecule</h2>
+    </div>
+  );
+
   return (
     <div className="flex flex-column min-w-full fadein animation-duration-500">
       <div className="flex gap-2">
@@ -66,8 +76,16 @@ const MLogixSimilarSearch = () => {
           <div className="flex w-full">
             <SecHeading
               icon="icon icon-conceptual icon-structures-3d"
-              heading={"Similarity Search"}
-              color={appColors.sectionHeadingBg.screen}
+              svgIcon={<MolecuLogixIcon />}
+              heading={"Search by SMILES"}
+              color={appColors.molecuLogix.heading}
+              customButtons={[
+                {
+                  label: "Register Molecule",
+                  icon: "pi pi-plus",
+                  action: () => setDisplayAddSideBar(true),
+                },
+              ]}
             />
           </div>
 
@@ -140,6 +158,18 @@ const MLogixSimilarSearch = () => {
           />
         </div>
       </Dialog>
+
+      <Sidebar
+        visible={displayAddSideBar}
+        position="right"
+        onHide={() => setDisplayAddSideBar(false)}
+        className="p-sidebar-md"
+        header={addSideBarHeader}
+      >
+        <MLogixRegisterMolecule
+          closeSideBar={() => setDisplayAddSideBar(false)}
+        />
+      </Sidebar>
     </div>
   );
 };

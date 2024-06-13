@@ -1,7 +1,6 @@
 import { observer } from "mobx-react-lite";
 import React, { useContext, useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import Loading from "../../../../Library/Loading/Loading";
 import { RootStoreContext } from "../../../../RootStore";
 import { GeneIcon } from "../../icons/GeneIcon";
 import { HAIcon } from "../../icons/HAIcon";
@@ -72,31 +71,33 @@ const FlowDashCards = () => {
     }
   }, [fetchTargets, isTargetListCacheValid]);
 
-  if (
-    isGeneListLoading ||
-    isFetchingTargets ||
-    isFetchingScreens ||
-    isFetchingHAs ||
-    isFetchingProjects
-  ) {
-    return (
-      <Loading
-        message={
-          isGeneListLoading
-            ? "Fetching Genes..."
-            : isFetchingTargets
-            ? "Fetching Targets..."
-            : isFetchingScreens
-            ? "Fetching Screens..."
-            : isFetchingHAs
-            ? "Fetching HAs..."
-            : isFetchingProjects
-            ? "Fetching Projects..."
-            : "Fetching..."
-        }
-      />
-    );
-  }
+  // commented out loading to do a background fetch and not block the main dashboard
+
+  // if (
+  //   isGeneListLoading ||
+  //   isFetchingTargets ||
+  //   isFetchingScreens ||
+  //   isFetchingHAs ||
+  //   isFetchingProjects
+  // ) {
+  //   return (
+  //     <Loading
+  //       message={
+  //         isGeneListLoading
+  //           ? "Fetching Genes..."
+  //           : isFetchingTargets
+  //           ? "Fetching Targets..."
+  //           : isFetchingScreens
+  //           ? "Fetching Screens..."
+  //           : isFetchingHAs
+  //           ? "Fetching HAs..."
+  //           : isFetchingProjects
+  //           ? "Fetching Projects..."
+  //           : "Fetching..."
+  //       }
+  //     />
+  //   );
+  // }
 
   const geneListLength = geneList ? geneList.length : 0;
   const targetListLength = targetList ? targetList.length : 0;
