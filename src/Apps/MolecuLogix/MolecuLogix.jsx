@@ -1,5 +1,6 @@
 import React from "react";
 import { Route, Routes } from "react-router";
+import { Navigate } from "react-router-dom";
 import MLogixAllMolecules from "./MLogixAllMolecules/MLogixAllMolecules";
 import MLogixDash from "./MLogixDash/MLogixDash";
 import MLogixDraw from "./MLogixDraw/MLogixDraw";
@@ -15,7 +16,7 @@ const MolecuLogix = () => {
       </div>
       <div className="flex w-full pl-3 pr-3 fadein animation-duration-1000">
         <Routes>
-          <Route index element={<MLogixSimilarSearch />} />
+          <Route index element={<Navigate to="search/" />} />
           <Route path="dash/" element={<MLogixDash />} />
           <Route path="all/" element={<MLogixAllMolecules />} />
           <Route path="molecule/:id" element={<MLogixMoleculeView />} />

@@ -16,12 +16,12 @@ const MLogixMenuBar = () => {
   useEffect(() => {
     if (location.pathname.includes("/moleculogix/search")) {
       setActiveIndex(2);
-    } else if (location.pathname.includes("/moleculogix/all/")) {
-      setActiveIndex(3);
-    } else if (location.pathname.includes("/moleculogix/draw/")) {
-      setActiveIndex(4);
+      // } else if (location.pathname.includes("/moleculogix/all/")) {
+      //   setActiveIndex(3);
+      // } else if (location.pathname.includes("/moleculogix/draw/")) {
+      //   setActiveIndex(4);
     } else if (location.pathname.includes("/moleculogix/dash/")) {
-      setActiveIndex(5);
+      setActiveIndex(3);
     } else if (location.pathname.includes("/moleculogix")) {
       setActiveIndex(1); // Assuming index 1 corresponds to "MolecuLogix", adjusted from 0
     } else {
@@ -39,22 +39,24 @@ const MLogixMenuBar = () => {
       label: "MolecuLogix",
       icon: <MolecuLogixIcon />,
       command: () => navigate("/moleculogix"),
+      separator: true,
     },
+
     {
       label: "Search",
       icon: "icon icon-common icon-search",
       command: () => navigate("search/"),
     },
-    {
-      label: "All Molecules",
-      icon: "icon icon-common icon-search",
-      command: () => navigate("all/"),
-    },
-    {
-      label: "Draw",
-      icon: "icon icon-conceptual icon-chemical",
-      command: () => navigate("draw/"),
-    },
+    // {
+    //   label: "All Molecules",
+    //   icon: "icon icon-common icon-search",
+    //   command: () => navigate("all/"),
+    // },
+    // {
+    //   label: "Draw",
+    //   icon: "icon icon-conceptual icon-chemical",
+    //   command: () => navigate("draw/"),
+    // },
     {
       label: "Dashboard",
       icon: <CiViewTable className="mr-2 flex" />,
