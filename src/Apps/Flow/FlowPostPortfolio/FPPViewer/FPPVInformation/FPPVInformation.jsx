@@ -11,16 +11,17 @@ import VisTimeline from "../../../../../Library/VisTimeline/VisTimeline";
 import { RootStoreContext } from "../../../../../RootStore";
 import { DateValidators } from "../../../../../Shared/Validators/DateValidators";
 import { AppOrgResolver } from "../../../../../Shared/VariableResolvers/AppOrgResolver";
+import { AppRoleResolver } from "../../../../../Shared/VariableResolvers/AppRoleResolver";
 import { appColors } from "../../../../../constants/colors";
 import HaCompoundEvolution from "../../../FlowHA/shared/HaCompoundEvolution/HaCompoundEvolution";
+import FPVIOrgs from "../../../FlowPortfolio/FPViewer/FPVInformation/FPVIProjectInfo/FPVIOrgs";
 import PortfolioCompoundEvolution from "../../../FlowPortfolio/shared/HaCompoundEvolution/PortfolioCompoundEvolution";
 import { PostPortfolioIcon } from "../../../icons/PostPortfolioIcon";
+import { PostPortfolioAdminRoleName } from "../../constants/roles";
 import PostPortfolioStageDropdown from "../../shared/PostPortfolioStageDropdown";
 import FPPVIProjectInfoDesc from "./FPPVIProjectInfo/FPPVIProjectInfoDesc";
 import FPPVIProjectInfoPriority from "./FPPVIProjectInfo/FPPVIProjectInfoPriority";
 import * as Helper from "./FPPVInformationHelper";
-import { AppRoleResolver } from "../../../../../Shared/VariableResolvers/AppRoleResolver";
-import { PostPortfolioAdminRoleName } from "../../constants/roles";
 
 const FPPVInformation = () => {
   const rootStore = useContext(RootStoreContext);
@@ -186,6 +187,16 @@ const FPPVInformation = () => {
         <VisTimeline items={timelineItems} options={options} groups={groups} />
       </div>
 
+      <div className="flex w-full">
+        <Fieldset
+          className="m-0 flex-grow-1"
+          legend="Organization & Collaboration"
+        >
+          {/* Reusing: Component from Portfolio */}
+          <FPVIOrgs project={selectedProject} />
+        </Fieldset>
+      </div>
+
       <div className="flex flex-row m-0 w-full">
         <div className="flex m-0 flex-grow-1">
           <Fieldset className="flex" legend="Team Info">
@@ -195,7 +206,7 @@ const FPPVInformation = () => {
         <div className="flex w-full m-0">
           <Fieldset
             className="flex w-full"
-            legend="Post Portfolio Description & Notes"
+            legend="Post Portfolio Achievements, Summary & Notes"
           >
             <FPPVIProjectInfoDesc />
           </Fieldset>
