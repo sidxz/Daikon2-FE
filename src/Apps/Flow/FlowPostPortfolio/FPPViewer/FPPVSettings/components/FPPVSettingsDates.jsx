@@ -25,7 +25,7 @@ const FPPVSettingsDates = ({}) => {
 
   const onFormikSubmit = (data) => {
     const updatedProject = { ...selectedProject, ...data };
-    console.log("updatedProject", updatedProject);
+    //console.log("updatedProject", updatedProject);
     updateProject(updatedProject);
   };
 

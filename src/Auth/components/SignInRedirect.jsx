@@ -22,7 +22,7 @@ const SigninRedirect = ({ userManager }) => {
 
   useEffect(() => {
     if (user) {
-      console.log("SigninRedirect: user", user);
+      console.log("SigninRedirect: user");
       const redirectUrl = localStorage.getItem("redirectUrl") || "/";
       console.log("SigninRedirect: redirectUrl", redirectUrl);
       localStorage.removeItem("redirectUrl");

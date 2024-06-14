@@ -51,10 +51,10 @@ const FTVSettingsUpdateGeneAssociation = () => {
       });
       targetToSubmit.associatedGenes = associatedGenes;
 
-      console.log(
-        "FTVSettingsUpdateGeneAssociation -> targetToSubmit",
-        targetToSubmit
-      );
+      // console.log(
+      //   "FTVSettingsUpdateGeneAssociation -> targetToSubmit",
+      //   targetToSubmit
+      // );
 
       updateGeneAssociation(targetToSubmit);
     },

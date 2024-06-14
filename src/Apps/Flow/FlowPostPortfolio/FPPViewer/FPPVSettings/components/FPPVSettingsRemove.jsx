@@ -33,7 +33,7 @@ const FPVSettingsRemove = () => {
 
     onSubmit: (newProject) => {
       var projectToSubmit = { ...selectedProject, ...newProject };
-      console.log(projectToSubmit);
+      //console.log(projectToSubmit);
       updateProject(projectToSubmit);
       //renameTarget(targetToSubmit);
     },

@@ -16,7 +16,7 @@ import { HaAdminRoleName } from "../../constants/roles";
 import HaStatusDropdown from "../../shared/HaStatusDropdown";
 
 const FSTbComments = ({ selectedHa }) => {
-  console.log(selectedHa);
+  //console.log(selectedHa);
   const navigate = useNavigate();
 
   const { getOrgNameById } = AppOrgResolver();
@@ -36,7 +36,7 @@ const FSTbComments = ({ selectedHa }) => {
     setIsScreenTagFetched(true);
   }
 
-  console.log("screenTag", screenTag);
+  //console.log("screenTag", screenTag);
 
   const breadCrumbItems = [
     {

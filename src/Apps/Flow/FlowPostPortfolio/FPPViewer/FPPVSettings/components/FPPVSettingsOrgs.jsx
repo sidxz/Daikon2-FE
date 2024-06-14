@@ -27,7 +27,7 @@ const FPPVSettingsOrgs = ({}) => {
 
   const onFormikSubmit = (data) => {
     const updatedProject = { ...selectedProject, ...data };
-    console.log("updatedProject", updatedProject);
+    //console.log("updatedProject", updatedProject);
     // keep only the ids of the participating orgs if they are available in appVars.orgs
     updatedProject.participatingOrgs = updatedProject.participatingOrgs.filter(
       (orgId) => appVars.orgs[orgId]

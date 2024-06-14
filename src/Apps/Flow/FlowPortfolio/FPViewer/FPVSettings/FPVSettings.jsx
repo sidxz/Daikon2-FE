@@ -1,21 +1,21 @@
 import { observer } from "mobx-react-lite";
 import { BreadCrumb } from "primereact/breadcrumb";
-import { useContext, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import Loading from "../../../../../Library/Loading/Loading";
-import FPVSettingsOrgs from "./components/FPVSettingsOrgs";
 import { Fieldset } from "primereact/fieldset";
+import { useContext, useEffect } from "react";
 import {
   FcHighPriority,
   FcMediumPriority,
   FcTreeStructure,
 } from "react-icons/fc";
+import { useNavigate, useParams } from "react-router-dom";
+import Loading from "../../../../../Library/Loading/Loading";
 import SecHeading from "../../../../../Library/SecHeading/SecHeading";
 import { RootStoreContext } from "../../../../../RootStore";
 import { appColors } from "../../../../../constants/colors";
 import { PortfolioIcon } from "../../../icons/PortfolioIcon";
 import * as Helper from "./FPVSettingsHelper";
 import FPVSettingsDates from "./components/FPVSettingsDates";
+import FPVSettingsOrgs from "./components/FPVSettingsOrgs";
 import FPVSettingsRemove from "./components/FPVSettingsRemove";
 import FPVSettingsRename from "./components/FPVSettingsRename";
 import FPVSettingsUpdateAssociation from "./components/FPVSettingsUpdateAssociation";
@@ -37,7 +37,7 @@ const FPVSettings = () => {
       selectedProject?.id !== params?.id ||
       !isProjectRegistryCacheValid
     ) {
-      console.log("Fetching Project");
+      //console.log("Fetching Project");
       fetchProject(params.id);
     }
   }, [params.id, fetchProject, selectedProject, isProjectRegistryCacheValid]);

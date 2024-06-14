@@ -33,9 +33,9 @@ const HaCompoundEvolutionEdit = ({ existingCEvo, closeSideBar }) => {
 
     onSubmit: (cEvoToAdd) => {
       let updatedCEvo = { ...existingCEvo, ...cEvoToAdd };
-      console.log(updatedCEvo);
+      //console.log(updatedCEvo);
 
-      console.log(cEvoToAdd);
+      //console.log(cEvoToAdd);
       if (isEqual(existingCEvo, updatedCEvo)) {
         toast.info(
           "No modifications detected. Your current values are already saved."

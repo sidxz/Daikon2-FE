@@ -49,7 +49,7 @@ const FTViewer = () => {
   }
 
   if (selectedTarget) {
-    console.log("FTViewer -> selectedTarget", selectedTarget);
+    // console.log("FTViewer -> selectedTarget", selectedTarget);
     return (
       <div className="flex gap-2 w-full">
         <div className="flex">

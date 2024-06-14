@@ -39,7 +39,7 @@ const FTDashboard = () => {
     return <Loading message={"Fetching Targets..."} />;
   }
 
-  console.log("FTDashboard -> targetList", targetList);
+  //console.log("FTDashboard -> targetList", targetList);
 
   const addSideBarHeader = (
     <div className="flex align-items-center gap-2">

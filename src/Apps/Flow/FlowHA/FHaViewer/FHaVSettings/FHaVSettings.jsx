@@ -30,7 +30,7 @@ const FHaVSettings = () => {
       selectedHa?.id !== params?.id ||
       !isHaRegistryCacheValid
     ) {
-      console.log("Fetching Ha");
+      //console.log("Fetching Ha");
       fetchHa(params.id);
     }
   }, [params.id, fetchHa, selectedHa, isHaRegistryCacheValid]);

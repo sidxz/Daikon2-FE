@@ -35,7 +35,7 @@ const FPPDAddNew = ({ closeSideBar }) => {
   let onPromote = () => {
     let projectToSubmit = { ...projectToPromote };
     projectToSubmit.stage = "IND";
-    console.log("Project to Promote", projectToSubmit);
+    //console.log("Project to Promote", projectToSubmit);
     updateProject(projectToSubmit).then(() => {
       closeSideBar();
     });

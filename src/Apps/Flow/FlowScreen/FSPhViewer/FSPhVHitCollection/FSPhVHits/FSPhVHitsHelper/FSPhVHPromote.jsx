@@ -14,12 +14,12 @@ const FSPhVHPromote = ({
 }) => {
   const navigate = useNavigate();
   const [ddSelectedPrimaryHit, setDdSelectedPrimaryHit] = useState(null);
-  console.log("FSPhVHPromote -> selectedHits", selectedHits);
+  //console.log("FSPhVHPromote -> selectedHits", selectedHits);
 
   let onButtonNextClick = () => {
-    console.log("onButtonNextClick");
+    //console.log("onButtonNextClick");
     if (!ddSelectedPrimaryHit) {
-      console.log("Please select a primary molecule");
+      console.error("Please select a primary molecule");
       toast.error("Please select a primary molecule");
       return;
     }
@@ -37,11 +37,11 @@ const FSPhVHPromote = ({
       screenId: selectedScreen.id,
       compoundSMILES: ddSelectedPrimaryHit.molecule.smiles,
     };
-    console.log(data);
+    //console.log(data);
     const jsonDataString = JSON.stringify(data);
     const encodedData = btoa(jsonDataString);
 
-    console.log("encodedData", encodedData);
+    //console.log("encodedData", encodedData);
 
     navigate(`/wf/ha/new?data=${encodedData}`);
     closeSideBar();

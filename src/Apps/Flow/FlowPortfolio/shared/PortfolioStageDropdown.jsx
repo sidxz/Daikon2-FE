@@ -58,7 +58,7 @@ const PortfolioStageDropdown = ({ readOnlyStage, readOnly = false }) => {
   // Event handler for updating the selected stage
   // and making the confirm dialog visible
   const handleStageChange = (e) => {
-    console.log(e);
+    //console.log(e);
     setSelectedStage(e.value);
     setConfirmDialogVisible(true);
   };
@@ -74,7 +74,7 @@ const PortfolioStageDropdown = ({ readOnlyStage, readOnly = false }) => {
   // Temporarily handle new stage as NA
 
   if (readOnly) {
-    console.log("readOnlyStage", readOnlyStage);
+    //console.log("readOnlyStage", readOnlyStage);
     if (readOnlyStage === null) {
       return (
         <div className="flex align-items-center align-self-center gap-2">

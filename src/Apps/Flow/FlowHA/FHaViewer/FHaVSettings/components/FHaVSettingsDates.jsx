@@ -25,7 +25,7 @@ const FHaVSettingsDates = ({}) => {
 
   const onFormikSubmit = (data) => {
     const updatedHa = { ...selectedHa, ...data };
-    console.log("updatedHa", updatedHa);
+    //console.log("updatedHa", updatedHa);
     updateHa(updatedHa);
   };
 

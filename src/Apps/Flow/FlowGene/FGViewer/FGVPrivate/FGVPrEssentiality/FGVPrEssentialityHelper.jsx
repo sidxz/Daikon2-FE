@@ -2,7 +2,7 @@ import { Dropdown } from "primereact/dropdown";
 import { classificationOptionsDVar } from "../../../constants/classificationOptions";
 
 export const classificationEditor = (options) => {
-  console.log("classificationEditor options", options);
+  //console.log("classificationEditor options", options);
   return (
     <Dropdown
       id="classification"

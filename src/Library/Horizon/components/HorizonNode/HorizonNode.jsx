@@ -12,7 +12,7 @@ const HorizonNode = ({
   foreignObjectProps,
   entryPoint,
 }) => {
-  console.log(dataObj);
+  //console.log(dataObj);
 
   switch (dataObj.type) {
     case "Gene":

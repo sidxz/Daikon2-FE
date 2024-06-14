@@ -64,7 +64,7 @@ const AD_RM_Roles_Edit = () => {
 
     onSubmit: (updatedRole) => {
       let data = { ...selectedRole, ...updatedRole };
-      console.log("updatedRole", data);
+      //console.log("updatedRole", data);
       updateRole(data);
     },
   });

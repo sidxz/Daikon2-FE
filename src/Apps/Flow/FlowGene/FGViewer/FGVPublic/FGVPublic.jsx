@@ -14,7 +14,7 @@ import { GeneIcon } from "../../../icons/GeneIcon";
 import FGVPProteinDataBank from "./FGVPProteinDataBank/FGVPProteinDataBank";
 
 const FGVPublic = ({ selectedGene }) => {
-  console.log(selectedGene);
+  //console.log(selectedGene);
   const navigate = useNavigate();
   const breadCrumbItems = [
     {

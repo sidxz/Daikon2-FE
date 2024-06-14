@@ -38,7 +38,7 @@ const AD_RM_RoleAdd = ({ closeSideBar }) => {
     },
 
     onSubmit: (newRole) => {
-      console.log("newRole", newRole);
+      //console.log("newRole", newRole);
       addRole(newRole).then(() => {
         formik.resetForm();
         closeSideBar();
