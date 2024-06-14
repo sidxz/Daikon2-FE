@@ -70,7 +70,7 @@ export default class AdminRoleManagementStore {
   };
 
   fetchRole = async (id) => {
-    console.log("fetchRole", id);
+    //console.log("fetchRole", id);
     this.isFetchingRole = true;
     try {
       const role = await AdminRolesAPI.read(id);

@@ -216,8 +216,8 @@ const FTApprovalView = () => {
       }
     }
 
-    console.log("selectedTQ");
-    console.log(selectedTQ);
+    // console.log("selectedTQ");
+    // console.log(selectedTQ);
 
     let header = (
       <div className="flex flex-row w-full p-2 border-1 border-50 surface-ground border-round-md">

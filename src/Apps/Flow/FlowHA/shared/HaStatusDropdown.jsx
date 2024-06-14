@@ -84,7 +84,7 @@ const HaStatusDropdown = ({ readOnlyStatus, readOnly = false }) => {
   // Event handler for updating the selected status
   // and making the confirm dialog visible
   const handleStatusChange = (e) => {
-    console.log(e);
+    //console.log(e);
     setSelectedStatus(e.value);
     setConfirmDialogVisible(true);
   };

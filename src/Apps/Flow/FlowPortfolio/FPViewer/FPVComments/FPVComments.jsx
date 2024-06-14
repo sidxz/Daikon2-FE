@@ -16,7 +16,7 @@ import { PortfolioAdminRoleName } from "../../constants/roles";
 import PortfolioStageDropdown from "../../shared/PortfolioStageDropdown";
 
 const FPVComments = ({ selectedProject }) => {
-  console.log(selectedProject);
+  //console.log(selectedProject);
   const navigate = useNavigate();
 
   const { getOrgNameById } = AppOrgResolver();
@@ -32,7 +32,7 @@ const FPVComments = ({ selectedProject }) => {
     });
   }
 
-  console.log("screenTag", screenTag);
+  //console.log("screenTag", screenTag);
 
   const breadCrumbItems = [
     {

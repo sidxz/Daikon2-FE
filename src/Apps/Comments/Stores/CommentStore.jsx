@@ -82,7 +82,7 @@ export default class CommentStore {
     this.currentCommentTagsHash = tags.join();
     try {
       const comments = await CommentAPI.listByTags(tags);
-      console.log("comments", comments);
+      //console.log("comments", comments);
       runInAction(() => {
         comments.forEach((comment) => {
           this.commentRegistry.set(comment.id, comment);

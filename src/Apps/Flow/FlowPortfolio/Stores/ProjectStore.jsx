@@ -137,7 +137,7 @@ export default class ProjectStore {
   }
 
   fetchProject = async (projectId, inValidateCache = false) => {
-    console.log("fetchProject -> projectId", projectId);
+    //console.log("fetchProject -> projectId", projectId);
     if (inValidateCache) {
       this.isProjectRegistryCacheValid = false;
     }
@@ -180,7 +180,7 @@ export default class ProjectStore {
         this.projectListRegistry.set(project.id, project);
         this.selectedProject = project;
 
-        console.log("addProject List", this.projectListRegistry);
+        //console.log("addProject List", this.projectListRegistry);
         toast.success("Project added successfully");
       });
     } catch (error) {
@@ -334,10 +334,10 @@ export default class ProjectStore {
   }
 
   get readyForPortfolio() {
-    console.log(
-      "this.rootStore.haStore.haPortfolioReadyList",
-      this.rootStore.haStore.haPortfolioReadyList
-    );
+    // console.log(
+    //   "this.rootStore.haStore.haPortfolioReadyList",
+    //   this.rootStore.haStore.haPortfolioReadyList
+    // );
     return this.rootStore.haStore.haPortfolioReadyList.filter(
       (ha) => !this.projectList.some((project) => project.haId === ha.id)
     );

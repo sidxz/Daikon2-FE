@@ -1,7 +1,13 @@
+import { AppRoleResolver } from "../../../../Shared/VariableResolvers/AppRoleResolver";
 import { HitCollectionIcon } from "../../icons/HitCollectionIcon";
 import { ScreenIcon } from "../../icons/ScreenIcon";
+import { ScreenAdminRoleName } from "../constants/roles";
 
-export const sidePanelItems = (navigate, getRelatedScreens) => {
+export const sidePanelItems = (
+  navigate,
+  getRelatedScreens,
+  renderAdminModules
+) => {
   let relatedScreens = getRelatedScreens();
 
   // check if URL contains "hits" or "screens"
@@ -19,7 +25,7 @@ export const sidePanelItems = (navigate, getRelatedScreens) => {
       },
     };
   });
-  return [
+  let menuItems = [
     {
       label: "Sections",
       items: [
@@ -51,8 +57,10 @@ export const sidePanelItems = (navigate, getRelatedScreens) => {
       label: "Related Screens",
       items: [...relatedScreensItems],
     },
+  ];
 
-    {
+  if (renderAdminModules) {
+    menuItems.push({
       label: "Admin Section",
       items: [
         {
@@ -63,6 +71,8 @@ export const sidePanelItems = (navigate, getRelatedScreens) => {
           },
         },
       ],
-    },
-  ];
+    });
+  }
+
+  return menuItems;
 };

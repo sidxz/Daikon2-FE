@@ -5,12 +5,16 @@ import { useNavigate } from "react-router-dom";
 import Loading from "../../../../Library/Loading/Loading";
 import SecHeading from "../../../../Library/SecHeading/SecHeading";
 import { RootStoreContext } from "../../../../RootStore";
+import { AppRoleResolver } from "../../../../Shared/VariableResolvers/AppRoleResolver";
 import { appColors } from "../../../../constants/colors";
 import { TargetIcon } from "../../icons/TargetIcon";
+import {
+  TargetAdminRoleName,
+  TargetPromotionModeratorRoleName,
+} from "../constants/roles";
 import FTDAddTarget from "./FTDAddTarget";
 import FTDDataTable from "./FTDDataTable/FTDDataTable";
 import FTDTargetMap from "./FTDTargetMap/FTDTargetMap";
-import { AppRoleResolver } from "../../../../Shared/VariableResolvers/AppRoleResolver";
 const FTDashboard = () => {
   const rootStore = useContext(RootStoreContext);
   const {
@@ -23,7 +27,7 @@ const FTDashboard = () => {
   const [displayAddSideBar, setDisplayAddSideBar] = useState(false);
   const navigate = useNavigate();
 
-  const { isUserInRoleByName } = AppRoleResolver();
+  const { isUserInAnyOfRoles } = AppRoleResolver();
 
   useEffect(() => {
     if (!isTargetListCacheValid) {
@@ -35,7 +39,7 @@ const FTDashboard = () => {
     return <Loading message={"Fetching Targets..."} />;
   }
 
-  console.log("FTDashboard -> targetList", targetList);
+  //console.log("FTDashboard -> targetList", targetList);
 
   const addSideBarHeader = (
     <div className="flex align-items-center gap-2">
@@ -45,7 +49,9 @@ const FTDashboard = () => {
   );
 
   var headingButtons = [];
-  if (isUserInRoleByName("TARGET-PROMOTION-MODERATOR")) {
+  if (
+    isUserInAnyOfRoles([TargetPromotionModeratorRoleName, TargetAdminRoleName])
+  ) {
     headingButtons.push({
       label: "Awaiting Approval",
       icon: "pi pi-stopwatch",

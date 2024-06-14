@@ -32,7 +32,7 @@ const FPPVComments = ({ selectedProject }) => {
     });
   }
 
-  console.log("screenTag", screenTag);
+  //console.log("screenTag", screenTag);
 
   const breadCrumbItems = [
     {

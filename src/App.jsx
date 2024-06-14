@@ -16,7 +16,9 @@ import "/node_modules/primeflex/primeflex.css";
 const App = () => {
   var userManager = AppUserManager;
 
-  console.log("+++++++++++++ APP +++++++++++++++ ");
+  console.log("+++++++++++++ DAIKON APP +++++++++++++++ ");
+  console.log("Developed at Texas A&M University");
+  console.log("Bug reports: sid[at]tamu.edu");
 
   return (
     <PrimeReactProvider>

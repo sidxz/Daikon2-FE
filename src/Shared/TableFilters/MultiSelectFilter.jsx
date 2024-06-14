@@ -19,7 +19,7 @@ const MultiSelectFilter = ({
     return { label: labelMapper(item), value: item };
   });
 
-  console.log("filterOptions", filterOptions);
+  //console.log("filterOptions", filterOptions);
 
   return (
     <MultiSelect

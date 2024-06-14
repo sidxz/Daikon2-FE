@@ -43,7 +43,7 @@ const AddComment = ({ resourceId, tags }) => {
       data.mentions = data.mentionsInNameFormat.map((mention) =>
         getIdFromUserFullName(mention)
       );
-      console.log("added", data);
+      //console.log("added", data);
       addComment(data).then(() => {
         setDisplayAddSideBar(false);
         formik.resetForm();

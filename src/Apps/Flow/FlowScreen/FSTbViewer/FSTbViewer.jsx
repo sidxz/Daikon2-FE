@@ -9,7 +9,10 @@ import {
   useParams,
 } from "react-router-dom";
 import Loading from "../../../../Library/Loading/Loading";
+import NotFound from "../../../../Library/NotFound/NotFound";
 import { RootStoreContext } from "../../../../RootStore";
+import { AppRoleResolver } from "../../../../Shared/VariableResolvers/AppRoleResolver";
+import { ScreenAdminRoleName } from "../constants/roles";
 import FSTbComments from "./FSTbComments/FSTbComments";
 import FSTbVHitCollection from "./FSTbVHitCollection/FSTbVHitCollection";
 import FSTbVHitCollectionSelection from "./FSTbVHitCollection/FSTbVHitCollectionSelection";
@@ -28,6 +31,8 @@ const FSTbViewer = () => {
     isFetchingScreen,
     isScreenRegistryCacheValid,
   } = rootStore.screenStore;
+
+  const { isUserInAnyOfRoles } = AppRoleResolver();
 
   useEffect(() => {
     if (
@@ -49,6 +54,7 @@ const FSTbViewer = () => {
   if (isFetchingScreen) {
     return <Loading message={"Fetching Screen..."} />;
   }
+  let renderAdminModules = isUserInAnyOfRoles([ScreenAdminRoleName]);
 
   if (selectedScreen) {
     let getRelatedScreens = () => {
@@ -74,7 +80,13 @@ const FSTbViewer = () => {
       <div className="flex w-full">
         <div className="flex gap-2 w-full">
           <div className="flex">
-            <Menu model={Helper.sidePanelItems(navigate, getRelatedScreens)} />
+            <Menu
+              model={Helper.sidePanelItems(
+                navigate,
+                getRelatedScreens,
+                renderAdminModules
+              )}
+            />
           </div>
           <div className="flex w-full">
             <Routes>
@@ -95,14 +107,17 @@ const FSTbViewer = () => {
                 path="screens/"
                 element={<FSTbVScreen selectedScreen={selectedScreen} />}
               />
-              <Route
-                path="settings/"
-                element={<FSTbVSettings selectedScreen={selectedScreen} />}
-              />
+              {renderAdminModules && (
+                <Route
+                  path="settings/"
+                  element={<FSTbVSettings selectedScreen={selectedScreen} />}
+                />
+              )}
               <Route
                 path="discussion/"
                 element={<FSTbComments selectedScreen={selectedScreen} />}
               />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </div>
         </div>

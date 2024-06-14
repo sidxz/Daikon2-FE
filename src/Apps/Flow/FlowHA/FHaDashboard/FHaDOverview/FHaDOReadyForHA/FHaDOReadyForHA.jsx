@@ -17,7 +17,7 @@ const FHaDOReadyForHA = ({ hitAssessments }) => {
       </div>
     );
 
-  console.log("FHaDOReadyForHA -> hitAssessments", hitAssessments);
+  //console.log("FHaDOReadyForHA -> hitAssessments", hitAssessments);
 
   let hitAssessmentsComponent = hitAssessments.map((ha) => {
     return (

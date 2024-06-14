@@ -20,7 +20,7 @@ const FPVIProjectInfoPriority = () => {
     isUpdatingProject,
   } = rootStore.projectStore;
 
-  console.log("selectedProject", selectedProject);
+  //console.log("selectedProject", selectedProject);
 
   const formik = useFormik({
     initialValues: {
@@ -38,7 +38,7 @@ const FPVIProjectInfoPriority = () => {
     },
     onSubmit: (pData) => {
       let newData = { ...selectedProject, ...pData };
-      console.log(newData);
+      //console.log(newData);
       updateProject(newData).then(() => {
         setVisible(false);
         formik.resetForm();
@@ -53,7 +53,7 @@ const FPVIProjectInfoPriority = () => {
       <small className="p-error">{formik.errors[field]}</small>
     );
 
-  console.log("formik initialValues", formik.initialValues);
+  //console.log("formik initialValues", formik.initialValues);
 
   return (
     <>

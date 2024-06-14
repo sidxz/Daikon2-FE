@@ -1,7 +1,10 @@
 import { observer } from "mobx-react-lite";
 import { Button } from "primereact/button";
 import { confirmDialog } from "primereact/confirmdialog";
-import React from "react";
+import { Sidebar } from "primereact/sidebar";
+import React, { useState } from "react";
+import AddComment from "../../../../Comments/AddComment/AddComment";
+import CommentsByTags from "../../../../Comments/CommentsByTags/CommentsByTags";
 import VotingButtonPanel from "./VoteComponents/VotingButtonPanel";
 import VotingChartPanel from "./VoteComponents/VotingChartPanel";
 /*
@@ -13,6 +16,8 @@ one voting element is present in the screen.
 
 const Vote = ({
   hit,
+  hitCollection,
+  screen,
   updateHit,
   isUpdatingHit,
   userId,
@@ -20,7 +25,22 @@ const Vote = ({
   isVotesHidden = true,
   isOneClickVotingEnabled = false,
 }) => {
+  const [isDiscussionSideBarVisible, setIsDiscussionSideBarVisible] =
+    useState(false);
   if (hit) {
+    var commentTags = [
+      "Vote",
+      screen?.name,
+      hitCollection?.name,
+      hit?.molecule?.name,
+    ];
+    if (hit?.molecule?.name === undefined) {
+      commentTags.push(hit.id);
+    }
+
+    commentTags = commentTags.filter(
+      (tag) => tag !== undefined && tag !== null && tag !== ""
+    );
     const PanelUserAlreadyVoted = () => {
       return (
         <div className="w-min">
@@ -110,26 +130,25 @@ const Vote = ({
             <Button
               label="Comments"
               icon="pi pi-comments"
-              //onClick={() => setShowVotingComment(true)}
+              onClick={() => setIsDiscussionSideBarVisible(true)}
               className="p-button-sm p-button-plain p-button-text"
             />
           </div>
         </div>
-        {/* <Dialog
-          //header=""
-          //className="w-full"
-          //footer={footer}
-          //icons={myIcon}
-          visible={showVotingComment}
-          style={{ width: "90vw", height: "90vh" }}
-          modal
-          onHide={() => setShowVotingComment(false)}
+        <Sidebar
+          visible={isDiscussionSideBarVisible}
+          position="right"
+          onHide={() => setIsDiscussionSideBarVisible(false)}
+          className="p-sidebar-lg"
+          header={<div className="flex text-lg font-bold">Comments</div>}
         >
-          <VotingDiscussion
-            reference={discussionReference}
-            tagsFilters={discussionTags}
-          />
-        </Dialog> */}
+          <div className="flex w-full pt-1">
+            <AddComment resourceId={hit.id} tags={[...commentTags]} />
+          </div>
+          <div className="flex w-full pt-1">
+            <CommentsByTags tags={[...commentTags]} any={false} />
+          </div>
+        </Sidebar>
       </React.Fragment>
     );
   }

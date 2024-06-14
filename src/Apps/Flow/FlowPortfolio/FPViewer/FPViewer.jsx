@@ -32,7 +32,7 @@ const FPViewer = () => {
       selectedProject?.id !== params?.id ||
       !isProjectRegistryCacheValid
     ) {
-      console.log("Fetching Project");
+      //console.log("Fetching Project");
       fetchProject(params.id);
     }
   }, [params.id, fetchProject, selectedProject, isProjectRegistryCacheValid]);
@@ -41,7 +41,7 @@ const FPViewer = () => {
     return <Loading message={"Fetching Project..."} />;
   }
 
-  console.log("FProjectViewer -> selectedProject", selectedProject);
+  //console.log("FProjectViewer -> selectedProject", selectedProject);
 
   if (selectedProject) {
     return (

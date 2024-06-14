@@ -154,7 +154,7 @@ export default class AdminUserManagementStore {
     this.isFetchingOrgs = true;
     try {
       const orgs = await AdminOrgAPI.list();
-      console.log("store", orgs);
+      //console.log("store", orgs);
       runInAction(() => {
         orgs.forEach((org) => {
           this.orgRegistry.set(org.id, org);

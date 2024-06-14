@@ -7,7 +7,7 @@ const TargetFromGraph = ({ elementId }) => {
   const [targetType, setTargetType] = useState(null);
   const [targetId, setTargetId] = useState(null);
 
-  console.log("elementId", elementId);
+  //console.log("elementId", elementId);
   useEffect(() => {
     // Fetch target data from graph using elementId
     GraphAPI.findTarget(elementId).then((res) => {
@@ -17,7 +17,7 @@ const TargetFromGraph = ({ elementId }) => {
     });
   }, [elementId]);
 
-  console.log("targetName", targetName);
+  //console.log("targetName", targetName);
 
   if (targetId && !targetName)
     return (

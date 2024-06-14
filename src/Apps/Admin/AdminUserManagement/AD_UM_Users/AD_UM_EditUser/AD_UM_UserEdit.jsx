@@ -14,7 +14,7 @@ import AuthorTag from "../../../../../Shared/TagGenerators/AuthorTag/AuthorTag";
 import { appColors } from "../../../../../constants/colors";
 
 const AD_UM_UserEdit = () => {
-  console.log("AD_UM_UserEdit -> Render");
+  //console.log("AD_UM_UserEdit -> Render");
 
   const rootStore = useContext(RootStoreContext);
   const {
@@ -60,7 +60,7 @@ const AD_UM_UserEdit = () => {
 
     onSubmit: (updatedUser) => {
       let data = { ...selectedUser, ...updatedUser };
-      console.log("updatedUser", data);
+      //console.log("updatedUser", data);
       updateUser(data);
     },
   });

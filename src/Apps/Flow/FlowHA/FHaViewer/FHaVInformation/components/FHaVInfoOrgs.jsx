@@ -4,7 +4,7 @@ import { AppOrgResolver } from "../../../../../../Shared/VariableResolvers/AppOr
 
 const FHaVInfoOrgs = ({ ha }) => {
   const { getOrgNameById } = AppOrgResolver();
-  console.log(ha);
+  //console.log(ha);
 
   let pOrgRender = (
     <div className="flex p-1 border-1 border-50">

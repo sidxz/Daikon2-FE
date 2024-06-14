@@ -45,7 +45,7 @@ const FPDAddNew = ({ closeSideBar }) => {
   const availableHAs = haPortfolioReadyList.filter(
     (ha) => !projectList.some((project) => project.haId === ha.id)
   );
-  console.log("availableHAs", availableHAs);
+  //console.log("availableHAs", availableHAs);
 
   const formik = useFormik({
     initialValues: {
@@ -69,11 +69,11 @@ const FPDAddNew = ({ closeSideBar }) => {
     },
 
     onSubmit: (newProject) => {
-      console.log(selectedHa);
-      console.log("newProject", newProject);
+      //console.log(selectedHa);
+      //console.log("newProject", newProject);
 
       const submitFunc = () => {
-        console.log("submitFunc");
+        //console.log("submitFunc");
         newProject.primaryOrgName = getOrgNameById(newProject.primaryOrgId);
 
         if (selectedHa !== undefined) {
@@ -84,7 +84,7 @@ const FPDAddNew = ({ closeSideBar }) => {
           newProject.hitId = selectedHa.hitId;
         }
 
-        console.log(newProject);
+        //console.log(newProject);
         addProject(newProject).then(() => {
           closeSideBar();
           formik.resetForm();
@@ -92,7 +92,7 @@ const FPDAddNew = ({ closeSideBar }) => {
       };
 
       if (selectedHa === undefined) {
-        console.log("No HA selected");
+        //console.log("No HA selected");
 
         const reject = () => {
           return;

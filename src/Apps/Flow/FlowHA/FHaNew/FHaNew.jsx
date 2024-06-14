@@ -100,7 +100,7 @@ const FHANew = () => {
           }
         }
 
-        console.log("FHANew -> data", data);
+        //console.log("FHANew -> data", data);
         //return;
         addHa(data).then(() => {
           formik.resetForm();

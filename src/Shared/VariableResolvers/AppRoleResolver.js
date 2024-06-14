@@ -32,8 +32,10 @@ export const AppRoleResolver = () => {
   };
 
   const isUserInAnyOfRoles = (roleNames) => {
-    return user.appRoleIds.some((roleId) =>
-      roleNames.includes(getRoleNameById(roleId))
+    return user.appRoleIds.some(
+      (roleId) =>
+        roleNames.includes(getRoleNameById(roleId)) ||
+        user.appRoleIds.includes(getRoleIdByName("ROOT"))
     );
   };
 

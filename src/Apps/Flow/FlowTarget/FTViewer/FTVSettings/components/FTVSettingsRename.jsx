@@ -27,10 +27,10 @@ const FTVSettingsRename = () => {
     onSubmit: (newTarget) => {
       var targetToSubmit = { ...selectedTarget, ...newTarget };
 
-      console.log(
-        "FTVSettingsUpdateGeneAssociation -> targetToSubmit",
-        targetToSubmit
-      );
+      // console.log(
+      //   "FTVSettingsUpdateGeneAssociation -> targetToSubmit",
+      //   targetToSubmit
+      // );
 
       renameTarget(targetToSubmit);
     },

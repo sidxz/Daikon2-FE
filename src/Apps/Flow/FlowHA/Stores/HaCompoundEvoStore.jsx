@@ -47,8 +47,8 @@ export default class HaCompoundEvoStore {
         const hitAssessment = this.rootStore.haStore.haRegistry.get(
           cEvo.hitAssessmentId
         );
-        console.log("Found hitAssessment from registry", hitAssessment);
-        console.log("Adding cEvo to hitAssessment", cEvo);
+        //console.log("Found hitAssessment from registry", hitAssessment);
+        //console.log("Adding cEvo to hitAssessment", cEvo);
         hitAssessment.haCompoundEvolution.push(cEvo);
 
         // sort by evolutionDate
@@ -89,7 +89,7 @@ export default class HaCompoundEvoStore {
     // set stage to HA
     cEvo.stage = this.rootStore.haStore.selectedHa.stage || "HA";
 
-    console.log("updateHaCEvo", cEvo);
+    //console.log("updateHaCEvo", cEvo);
 
     try {
       await HaCompoundEvoAPI.update(cEvo);

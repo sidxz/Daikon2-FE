@@ -48,8 +48,8 @@ export default class ProjectCompoundEvoStore {
         const project = this.rootStore.projectStore.projectRegistry.get(
           cEvo.projectId
         );
-        console.log("Found project from registry", project);
-        console.log("Adding cEvo to project", cEvo);
+        //console.log("Found project from registry", project);
+        //console.log("Adding cEvo to project", cEvo);
         project.compoundEvolution.push(cEvo);
 
         // sort by evolutionDate
@@ -89,7 +89,7 @@ export default class ProjectCompoundEvoStore {
     // set stage to H2L
     cEvo.stage = this.rootStore.projectStore.selectedProject.stage || "H2L";
 
-    console.log("updateProjectCEvo", cEvo);
+    //console.log("updateProjectCEvo", cEvo);
 
     try {
       await ProjectCompoundEvoAPI.update(cEvo);

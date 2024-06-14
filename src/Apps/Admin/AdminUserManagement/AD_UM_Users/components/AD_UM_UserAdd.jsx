@@ -34,7 +34,7 @@ const AD_UM_UserAdd = ({ closeSideBar }) => {
     },
 
     onSubmit: (newUser) => {
-      console.log("newUser", newUser);
+      //console.log("newUser", newUser);
       addUser(newUser).then(() => {
         formik.resetForm();
         closeSideBar();

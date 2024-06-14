@@ -12,13 +12,13 @@ const NotFound = () => {
               className="pi pi-exclamation-triangle"
               style={{ fontSize: "3em", color: "var(--primary-color)" }}
             ></i>
-            <p className="flex m-2">
+            <p className="flex m-0">
               Sorry, the page you are looking for does not exist. Please check
-              the URL or return to the{" "}
-              <NavLink className="" to="/">
-                homepage.
-              </NavLink>
+              the URL or return to the
             </p>
+            <NavLink className="m-0" to="/">
+              homepage.
+            </NavLink>
           </div>
         </Card>
       </div>

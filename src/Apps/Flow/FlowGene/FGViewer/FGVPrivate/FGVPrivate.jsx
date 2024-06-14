@@ -45,7 +45,7 @@ const FGVPrivate = ({ selectedGene }) => {
     unpublishedStructuralInformations: [],
   };
 
-  console.log("selectedGene", selectedGene);
+  //console.log("selectedGene", selectedGene);
 
   return (
     <div className="flex flex-column w-full">

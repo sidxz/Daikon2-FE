@@ -19,21 +19,19 @@ export const projectStageFilter = (data, options) => (
 );
 
 export const statusFilter = (data, options) => (
-  console.log("options", options),
-  (
-    <MultiSelect
-      value={options.value}
-      optionLabel="label"
-      optionValue="value"
-      options={[
-        { label: "Active", value: false },
-        { label: "Removed", value: true },
-      ]}
-      onChange={(e) => options.filterApplyCallback(e.value)}
-      className="p-column-filter"
-      showClear
-    />
-  )
+  //console.log("options", options),
+  <MultiSelect
+    value={options.value}
+    optionLabel="label"
+    optionValue="value"
+    options={[
+      { label: "Active", value: false },
+      { label: "Removed", value: true },
+    ]}
+    onChange={(e) => options.filterApplyCallback(e.value)}
+    className="p-column-filter"
+    showClear
+  />
 );
 
 export const orgFilter = (data, options) => (
