@@ -3,9 +3,12 @@ import { HitCollectionIcon } from "../../icons/HitCollectionIcon";
 import { ScreenIcon } from "../../icons/ScreenIcon";
 import { ScreenAdminRoleName } from "../constants/roles";
 
-export const sidePanelItems = (navigate, getRelatedScreens) => {
+export const sidePanelItems = (
+  navigate,
+  getRelatedScreens,
+  renderAdminModules
+) => {
   let relatedScreens = getRelatedScreens();
-  const { isUserInAnyOfRoles } = AppRoleResolver();
 
   // check if URL contains "hits" or "screens"
   let url = window.location.href;
@@ -56,7 +59,7 @@ export const sidePanelItems = (navigate, getRelatedScreens) => {
     },
   ];
 
-  if (isUserInAnyOfRoles([ScreenAdminRoleName])) {
+  if (renderAdminModules) {
     menuItems.push({
       label: "Admin Section",
       items: [

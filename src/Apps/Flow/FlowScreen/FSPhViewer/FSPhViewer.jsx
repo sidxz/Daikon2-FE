@@ -48,12 +48,14 @@ const FSPhViewer = () => {
     return <Loading message={"Fetching Screen..."} />;
   }
 
+  let renderAdminModules = isUserInAnyOfRoles([ScreenAdminRoleName]);
+
   if (selectedScreen) {
     return (
       <div className="flex w-full">
         <div className="flex gap-2 w-full">
           <div className="flex">
-            <Menu model={Helper.sidePanelItems(navigate)} />
+            <Menu model={Helper.sidePanelItems(navigate, renderAdminModules)} />
           </div>
           <div className="flex w-full">
             <Routes>
@@ -75,7 +77,7 @@ const FSPhViewer = () => {
                 element={<FSPhVScreen selectedScreen={selectedScreen} />}
               />
 
-              {isUserInAnyOfRoles([ScreenAdminRoleName]) && (
+              {renderAdminModules && (
                 <Route
                   path="settings/"
                   element={<FSPhVSettings selectedScreen={selectedScreen} />}

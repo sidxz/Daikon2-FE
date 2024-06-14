@@ -54,6 +54,7 @@ const FSTbViewer = () => {
   if (isFetchingScreen) {
     return <Loading message={"Fetching Screen..."} />;
   }
+  let renderAdminModules = isUserInAnyOfRoles([ScreenAdminRoleName]);
 
   if (selectedScreen) {
     let getRelatedScreens = () => {
@@ -79,7 +80,13 @@ const FSTbViewer = () => {
       <div className="flex w-full">
         <div className="flex gap-2 w-full">
           <div className="flex">
-            <Menu model={Helper.sidePanelItems(navigate, getRelatedScreens)} />
+            <Menu
+              model={Helper.sidePanelItems(
+                navigate,
+                getRelatedScreens,
+                renderAdminModules
+              )}
+            />
           </div>
           <div className="flex w-full">
             <Routes>
@@ -100,7 +107,7 @@ const FSTbViewer = () => {
                 path="screens/"
                 element={<FSTbVScreen selectedScreen={selectedScreen} />}
               />
-              {isUserInAnyOfRoles([ScreenAdminRoleName]) && (
+              {renderAdminModules && (
                 <Route
                   path="settings/"
                   element={<FSTbVSettings selectedScreen={selectedScreen} />}

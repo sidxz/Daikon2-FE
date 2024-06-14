@@ -1,10 +1,7 @@
-import { AppRoleResolver } from "../../../../Shared/VariableResolvers/AppRoleResolver";
 import { HitCollectionIcon } from "../../icons/HitCollectionIcon";
 import { PhenoScreenIcon } from "../../icons/PhenoScreenIcon";
-import { ScreenAdminRoleName } from "../constants/roles";
 
-export const sidePanelItems = (navigate) => {
-  const { isUserInAnyOfRoles } = AppRoleResolver();
+export const sidePanelItems = (navigate, renderAdminModules) => {
   const menuItems = [];
   menuItems.push({
     label: "Sections",
@@ -34,7 +31,7 @@ export const sidePanelItems = (navigate) => {
     ],
   });
 
-  if (isUserInAnyOfRoles([ScreenAdminRoleName])) {
+  if (renderAdminModules) {
     menuItems.push({
       label: "Admin Section",
       items: [
