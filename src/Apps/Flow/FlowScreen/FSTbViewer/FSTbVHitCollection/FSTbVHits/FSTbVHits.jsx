@@ -10,6 +10,8 @@ import Loading from "../../../../../../Library/Loading/Loading";
 import LoadingBlockUI from "../../../../../../Library/LoadingBlockUI/LoadingBlockUI";
 import { RootStoreContext } from "../../../../../../RootStore";
 import { TextRowEditor } from "../../../../../../Shared/TableRowEditors/TextRowEditor";
+import { AppRoleResolver } from "../../../../../../Shared/VariableResolvers/AppRoleResolver";
+import { ScreenAdminRoleName } from "../../../constants/roles";
 import Vote from "../../../shared/Vote/Vote";
 import FSTbVHAddHit from "./FSTbVHitsHelper/FSTbVHAddHit";
 import { FSTbVHDataTableHeader } from "./FSTbVHitsHelper/FSTbVHDataTableHeader";
@@ -36,6 +38,8 @@ const FSTbVHits = ({ id }) => {
     isBatchInsertingHits,
   } = rootStore.hitStore;
   const { user } = rootStore.authStore;
+
+  const { isUserInAnyOfRoles } = AppRoleResolver();
 
   useEffect(() => {
     if (
@@ -218,7 +222,9 @@ const FSTbVHits = ({ id }) => {
                   // headerStyle={{ width: "10%", minWidth: "8rem" }}
                   bodyStyle={{ textAlign: "center" }}
                 />
-                <Column body={deleteBodyTemplate} header="Delete" />
+                {isUserInAnyOfRoles([ScreenAdminRoleName]) && (
+                  <Column body={deleteBodyTemplate} header="Delete" />
+                )}
               </DataTable>
             </LoadingBlockUI>
           </div>

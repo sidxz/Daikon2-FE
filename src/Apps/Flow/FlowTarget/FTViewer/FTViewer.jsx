@@ -9,7 +9,10 @@ import {
   useParams,
 } from "react-router-dom";
 import Loading from "../../../../Library/Loading/Loading";
+import NotFound from "../../../../Library/NotFound/NotFound";
 import { RootStoreContext } from "../../../../RootStore";
+import { AppRoleResolver } from "../../../../Shared/VariableResolvers/AppRoleResolver";
+import { TargetAdminRoleName } from "../constants/roles";
 import FTImpactValues from "./FTImpactValues/FTImpactValues";
 import FTVComments from "./FTVComments/FTVComments";
 import FTVCompass from "./FTVCompass/FTVCompass";
@@ -28,6 +31,8 @@ const FTViewer = () => {
     isFetchingTarget,
     isTargetRegistryCacheValid,
   } = rootStore.targetStore;
+
+  const { isUserInAnyOfRoles } = AppRoleResolver();
 
   useEffect(() => {
     if (
@@ -59,12 +64,17 @@ const FTViewer = () => {
               path="promotion-questionnaire/"
               element={<FTVPromotionQ />}
             />
-            <Route path="impact/" element={<FTImpactValues />} />
-            <Route path="settings/" element={<FTVSettings />} />
+            {isUserInAnyOfRoles([TargetAdminRoleName]) && (
+              <Route path="impact/" element={<FTImpactValues />} />
+            )}
+            {isUserInAnyOfRoles([TargetAdminRoleName]) && (
+              <Route path="settings/" element={<FTVSettings />} />
+            )}
             <Route
               path="discussion/"
               element={<FTVComments selectedTarget={selectedTarget} />}
             />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
       </div>

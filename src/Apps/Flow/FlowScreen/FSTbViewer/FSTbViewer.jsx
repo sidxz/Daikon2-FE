@@ -9,7 +9,10 @@ import {
   useParams,
 } from "react-router-dom";
 import Loading from "../../../../Library/Loading/Loading";
+import NotFound from "../../../../Library/NotFound/NotFound";
 import { RootStoreContext } from "../../../../RootStore";
+import { AppRoleResolver } from "../../../../Shared/VariableResolvers/AppRoleResolver";
+import { ScreenAdminRoleName } from "../constants/roles";
 import FSTbComments from "./FSTbComments/FSTbComments";
 import FSTbVHitCollection from "./FSTbVHitCollection/FSTbVHitCollection";
 import FSTbVHitCollectionSelection from "./FSTbVHitCollection/FSTbVHitCollectionSelection";
@@ -28,6 +31,8 @@ const FSTbViewer = () => {
     isFetchingScreen,
     isScreenRegistryCacheValid,
   } = rootStore.screenStore;
+
+  const { isUserInAnyOfRoles } = AppRoleResolver();
 
   useEffect(() => {
     if (
@@ -95,14 +100,17 @@ const FSTbViewer = () => {
                 path="screens/"
                 element={<FSTbVScreen selectedScreen={selectedScreen} />}
               />
-              <Route
-                path="settings/"
-                element={<FSTbVSettings selectedScreen={selectedScreen} />}
-              />
+              {isUserInAnyOfRoles([ScreenAdminRoleName]) && (
+                <Route
+                  path="settings/"
+                  element={<FSTbVSettings selectedScreen={selectedScreen} />}
+                />
+              )}
               <Route
                 path="discussion/"
                 element={<FSTbComments selectedScreen={selectedScreen} />}
               />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </div>
         </div>

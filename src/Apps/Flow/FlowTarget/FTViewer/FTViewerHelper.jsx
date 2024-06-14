@@ -1,37 +1,49 @@
-export const sidePanelItems = (navigate) => {
-  return [
-    {
-      label: "Sections",
-      items: [
-        {
-          label: "Compass",
-          icon: "icon icon-common icon-compass",
-          command: () => {
-            navigate(`compass/`);
-          },
-        },
-        {
-          label: "Scorecard",
-          icon: "icon icon-common icon-flag-checkered",
-          command: () => {
-            navigate(`scorecard/`);
-          },
-        },
+import { AppRoleResolver } from "../../../../Shared/VariableResolvers/AppRoleResolver";
+import { TargetAdminRoleName } from "../constants/roles";
 
-        {
-          label: "Promotion Info",
-          icon: "icon icon-common icon-info",
-          command: () => {
-            navigate(`promotion-questionnaire/`);
-          },
+export const sidePanelItems = (navigate) => {
+  const { isUserInAnyOfRoles } = AppRoleResolver();
+
+  var sideMenu = [];
+  sideMenu.push({
+    label: "Sections",
+    items: [
+      {
+        label: "Compass",
+        icon: "icon icon-common icon-compass",
+        command: () => {
+          navigate(`compass/`);
         },
-        {
-          label: "Discussion",
-          icon: "ri-discuss-line",
-          command: () => {
-            navigate("discussion/");
-          },
+      },
+      {
+        label: "Scorecard",
+        icon: "icon icon-common icon-flag-checkered",
+        command: () => {
+          navigate(`scorecard/`);
         },
+      },
+
+      {
+        label: "Promotion Info",
+        icon: "icon icon-common icon-info",
+        command: () => {
+          navigate(`promotion-questionnaire/`);
+        },
+      },
+      {
+        label: "Discussion",
+        icon: "ri-discuss-line",
+        command: () => {
+          navigate("discussion/");
+        },
+      },
+    ],
+  });
+
+  if (isUserInAnyOfRoles([TargetAdminRoleName])) {
+    sideMenu.push({
+      label: "Admin",
+      items: [
         {
           label: "Impact Values",
           icon: "icon icon-common icon-bolt",
@@ -39,12 +51,6 @@ export const sidePanelItems = (navigate) => {
             navigate("impact/");
           },
         },
-      ],
-    },
-
-    {
-      label: "Admin",
-      items: [
         {
           label: "Settings",
           icon: "pi pi-cog",
@@ -53,6 +59,8 @@ export const sidePanelItems = (navigate) => {
           },
         },
       ],
-    },
-  ];
+    });
+  }
+
+  return sideMenu;
 };

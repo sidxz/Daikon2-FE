@@ -9,7 +9,10 @@ import {
   useParams,
 } from "react-router-dom";
 import Loading from "../../../../Library/Loading/Loading";
+import NotFound from "../../../../Library/NotFound/NotFound";
 import { RootStoreContext } from "../../../../RootStore";
+import { AppRoleResolver } from "../../../../Shared/VariableResolvers/AppRoleResolver";
+import { ScreenAdminRoleName } from "../constants/roles";
 import FSPhComments from "./FSPhComments/FSPhComments";
 import FSPhVHitCollection from "./FSPhVHitCollection/FSPhVHitCollection";
 import FSPhVHitCollectionSelection from "./FSPhVHitCollection/FSPhVHitCollectionSelection";
@@ -28,6 +31,8 @@ const FSPhViewer = () => {
     isFetchingScreen,
     isScreenRegistryCacheValid,
   } = rootStore.screenStore;
+
+  const { isUserInAnyOfRoles } = AppRoleResolver();
 
   useEffect(() => {
     if (
@@ -70,15 +75,18 @@ const FSPhViewer = () => {
                 element={<FSPhVScreen selectedScreen={selectedScreen} />}
               />
 
-              <Route
-                path="settings/"
-                element={<FSPhVSettings selectedScreen={selectedScreen} />}
-              />
+              {isUserInAnyOfRoles([ScreenAdminRoleName]) && (
+                <Route
+                  path="settings/"
+                  element={<FSPhVSettings selectedScreen={selectedScreen} />}
+                />
+              )}
 
               <Route
                 path="discussion/"
                 element={<FSPhComments selectedScreen={selectedScreen} />}
               />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </div>
         </div>
