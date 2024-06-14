@@ -26,8 +26,6 @@ const FSDTargetBased = () => {
     return <Loading message={"Fetching Screens..."} />;
   }
 
-  console.log("screenListTargetBased", screenListTargetBased);
-
   return (
     <div className="flex flex-column min-w-full fadein animation-duration-500">
       <div className="flex w-full">
