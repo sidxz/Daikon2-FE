@@ -3,6 +3,7 @@ import { BlockUI } from "primereact/blockui";
 import { ConfirmDialog } from "primereact/confirmdialog";
 import { Dropdown } from "primereact/dropdown";
 import React, { useContext, useState } from "react";
+
 import {
   FcDataSheet,
   FcExpired,
@@ -22,7 +23,7 @@ const ScreenStatusDropdown = ({ readOnlyStatus, readOnly = false }) => {
     rootStore.screenStore;
 
   // The set of available options for the status of a screen
-  const statusOptions = [
+  let statusOptions = [
     { name: "Planned", icon: <FcPlanner /> },
     { name: "Assay Development", icon: <FcDataSheet /> },
     { name: "Ongoing", icon: <FcNeutralTrading /> },
@@ -79,7 +80,7 @@ const ScreenStatusDropdown = ({ readOnlyStatus, readOnly = false }) => {
   // Render the component based on readOnly flag
   // Temporarily handle new status as NA
   if (readOnly) {
-    if (readOnlyStatus === null) {
+    if (readOnlyStatus === null || readOnlyStatus === "New") {
       return (
         <div className="flex align-items-center align-self-center gap-2">
           <div className="flex flex-column">

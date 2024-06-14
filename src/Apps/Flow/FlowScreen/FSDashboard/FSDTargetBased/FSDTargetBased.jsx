@@ -26,6 +26,8 @@ const FSDTargetBased = () => {
     return <Loading message={"Fetching Screens..."} />;
   }
 
+  console.log("screenListTargetBased", screenListTargetBased);
+
   return (
     <div className="flex flex-column min-w-full fadein animation-duration-500">
       <div className="flex w-full">
@@ -79,15 +81,10 @@ const FSDTargetBased = () => {
           />
 
           <Column
-            field="primaryOrgName"
+            field="primaryOrgAlias"
             header="Primary Org"
             filter
-            filterField="primaryOrgName"
-            filterElement={(options) =>
-              Helper.orgFilter(screenListTargetBased, options)
-            }
-            showFilterMenu={false}
-            filterMatchMode="in"
+            filterMatchMode="contains"
             className="narrow-column"
           />
 
