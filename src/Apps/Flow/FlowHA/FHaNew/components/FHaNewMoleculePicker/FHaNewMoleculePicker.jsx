@@ -52,6 +52,7 @@ const FHaNewMoleculePicker = ({ selectedMolecule, setSelectedMolecule }) => {
           //itemTemplate={moleculeTemplate}
           filter
           showClear
+          loading={isFetchingMolecules}
         />
       </div>
     </div>

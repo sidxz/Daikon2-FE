@@ -58,8 +58,22 @@ export default class MoleculeStore {
         molecules.forEach((molecule) => {
           //console.log(molecule);
           // round off molecularWeight and tpsa to 2 decimal places
-          molecule.molecularWeight = molecule.molecularWeight.toFixed(2);
-          molecule.tpsa = molecule.tpsa.toFixed(2);
+          if (
+            molecule.molecularWeight != null &&
+            molecule.molecularWeight !== ""
+          ) {
+            molecule.molecularWeight = parseFloat(
+              molecule.molecularWeight
+            ).toFixed(2);
+          } else {
+            molecule.molecularWeight = 0;
+          }
+
+          if (molecule.tpsa != null && molecule.tpsa !== "") {
+            molecule.tpsa = parseFloat(molecule.tpsa).toFixed(2);
+          } else {
+            molecule.tpsa = 0;
+          }
           this.moleculeRegistry.set(molecule.id, molecule);
         });
         this.isMoleculeListCacheValid = true;
