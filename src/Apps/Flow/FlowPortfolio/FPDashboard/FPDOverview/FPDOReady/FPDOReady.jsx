@@ -17,7 +17,7 @@ const FPDOReady = () => {
   // check if readyForPortfolio is empty or not set or null
   if (!readyForPortfolio || readyForPortfolio.length === 0)
     return (
-      <div className="flex justify-content-center w-full align-items-center text-sm	text-color-secondary ">
+      <div className="flex justify-content-center w-full align-items-center text-sm	text-color-secondary">
         - No projects are ready for portfolio -
       </div>
     );
@@ -25,7 +25,10 @@ const FPDOReady = () => {
   let projectsComponent = readyForPortfolio.map((ha) => {
     const displayTargetName = ha.targetName ? ha.targetName : "Unknown";
     return (
-      <div className="flex flex-column w-full shadow-1 hover:shadow-3 border-round-md ">
+      <div
+        className="flex flex-column w-full shadow-1 hover:shadow-3 border-round-md"
+        key={project.id}
+      >
         <div
           className="flex flex-column  justify-content-center cursor-pointer "
           onClick={() => {
