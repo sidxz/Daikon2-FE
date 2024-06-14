@@ -3,6 +3,7 @@ import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { Sidebar } from "primereact/sidebar";
 import React, { useContext, useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
 import Loading from "../../../Library/Loading/Loading";
 import SecHeading from "../../../Library/SecHeading/SecHeading";
 import { RootStoreContext } from "../../../RootStore";
@@ -69,6 +70,13 @@ const MLogixDash = () => {
             filterPlaceholder="Search"
             className="narrow-column"
             sortable
+            body={(rowData) => {
+              return (
+                <NavLink to={"/moleculogix/molecule/" + rowData.id}>
+                  {rowData.name}
+                </NavLink>
+              );
+            }}
           />
 
           <Column

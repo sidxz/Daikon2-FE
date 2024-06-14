@@ -151,6 +151,7 @@ const PortfolioCompoundEvolution = () => {
                 >
                   <SmilesView
                     smiles={evo?.molecule?.smiles}
+                    compoundId={evo?.molecule?.id}
                     width={300}
                     height={300}
                   />
