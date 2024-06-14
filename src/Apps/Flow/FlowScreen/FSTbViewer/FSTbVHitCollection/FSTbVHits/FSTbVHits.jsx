@@ -97,6 +97,8 @@ const FSTbVHits = ({ id }) => {
     return (
       <Vote
         hit={rowData}
+        hitCollection={selectedHitCollection}
+        screen={selectedScreen}
         isUpdatingHit={isUpdatingHit}
         updateHit={updateHit}
         userId={user.id}

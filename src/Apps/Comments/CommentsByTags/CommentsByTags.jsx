@@ -6,26 +6,21 @@ import { RootStoreContext } from "../../../RootStore";
 import CommentTags from "../../../Shared/TagGenerators/CommentTags/CommentTags";
 import Comment from "../Comment/Comment";
 
-const CommentsByTags = ({ tags }) => {
-  console.log("tags", tags);
-
+const CommentsByTags = ({ tags, any = true }) => {
   const rootStore = useContext(RootStoreContext);
   const {
     fetchCommentsByTags,
     isFetchingComments,
     commentListByTagsAny,
+    commentListByTags,
     isCommentRegistryCacheValid,
     commentRegistry,
     currentCommentTagsHash,
   } = rootStore.commentStore;
 
   useEffect(() => {
-    console.log("useEffect CommentsByTags");
-    console.log("isCommentRegistryCacheValid", isCommentRegistryCacheValid);
-    console.log("currentCommentTagsHash", currentCommentTagsHash);
-    console.log("tags", tags.join());
     if (!isCommentRegistryCacheValid || currentCommentTagsHash != tags.join()) {
-      console.log("fetchCommentsByTags <---->");
+      // console.log("fetchCommentsByTags <---->");
       fetchCommentsByTags(tags);
     }
   }, [
@@ -43,9 +38,8 @@ const CommentsByTags = ({ tags }) => {
       </div>
     );
 
-  console.log(commentListByTagsAny(tags));
+  let comments = any ? commentListByTagsAny(tags) : commentListByTags(tags);
 
-  let comments = commentListByTagsAny(tags);
   if (comments.length === 0)
     return (
       <div className="flex w-full text-color-secondary">
