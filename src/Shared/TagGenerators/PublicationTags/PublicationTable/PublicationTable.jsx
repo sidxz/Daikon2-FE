@@ -74,8 +74,6 @@ const PublicationTable = ({ publications }) => {
     <div className="flex w-full">
       <DataTable
         value={pubData}
-        paginator
-        rows={30}
         //loading={isGeneListLoading}
         className="w-full"
         emptyMessage="Loading..."

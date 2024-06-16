@@ -9,8 +9,7 @@ const PublicationTags = ({ publications }) => {
   if (!publications || publications.length === 0) {
     return <></>;
   }
-  console.log("publications", publications);
-
+  //console.log("Publications", publications);
   const headerElement = (
     <div className="inline-flex align-items-center justify-content-center gap-2">
       <span className="font-bold white-space-nowrap">Publications</span>
