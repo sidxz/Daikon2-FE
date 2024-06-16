@@ -1,6 +1,7 @@
 import { Dialog } from "primereact/dialog";
 import { Tag } from "primereact/tag";
 import React, { useState } from "react";
+import { BsJournals } from "react-icons/bs";
 import { IoIosJournal } from "react-icons/io";
 import PublicationTable from "./PublicationTable/PublicationTable";
 
@@ -12,6 +13,7 @@ const PublicationTags = ({ publications }) => {
   //console.log("Publications", publications);
   const headerElement = (
     <div className="inline-flex align-items-center justify-content-center gap-2">
+      <BsJournals />
       <span className="font-bold white-space-nowrap">Publications</span>
     </div>
   );
