@@ -5,8 +5,8 @@ import { FormatScreeningMethod } from "../../shared/Formatters";
 import ScreenStatusDropdown from "../../shared/ScreenStatusDropdown";
 export const rowGroupHeaderTemplate = (data) => {
   return (
-    <div className="flex align-items-center gap-2">
-      <TargetIcon size="16px" grayscale={1} />
+    <div className="flex align-items-center gap-2 bg-gray-50 p-2 border-round-md">
+      <TargetIcon size="16px" grayscale={0} />
       <span className="font-bold">{data.associatedTargetsFlattened}</span>
     </div>
   );
@@ -35,12 +35,4 @@ export const methodFilter = (data, options) => (
 
 export const screenStatusFilter = (data, options) => (
   <MultiSelectFilter data={data} filterProperty="status" options={options} />
-);
-
-export const orgFilter = (data, options) => (
-  <MultiSelectFilter
-    data={data}
-    filterProperty="primaryOrgName"
-    options={options}
-  />
 );

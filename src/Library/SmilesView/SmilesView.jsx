@@ -25,14 +25,6 @@ const SmilesView = ({ smiles, compoundId, width = 200, height = 200 }) => {
 
   const contextMenuItems = [
     {
-      label: "Copy Smiles String",
-      icon: "icon icon-conceptual icon-structures",
-      command: () => {
-        navigator.clipboard.writeText(smiles);
-        toast.success("Copied " + smiles + " to clipboard");
-      },
-    },
-    {
       label: "Find Similar",
       icon: "icon icon-common icon-search",
       command: () => {
@@ -49,6 +41,14 @@ const SmilesView = ({ smiles, compoundId, width = 200, height = 200 }) => {
       },
     });
   }
+  contextMenuItems.push({
+    label: "Copy Smiles String",
+    icon: "pi pi-copy",
+    command: () => {
+      navigator.clipboard.writeText(smiles);
+      toast.success("Copied " + smiles + " to clipboard");
+    },
+  });
 
   if (
     smiles === "c1ccccc1" ||

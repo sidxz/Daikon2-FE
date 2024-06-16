@@ -54,15 +54,10 @@ const FSDPhenotypic = () => {
           />
 
           <Column
-            field="primaryOrgName"
+            field="primaryOrgAlias"
             header="Primary Org"
             filter
-            filterField="primaryOrgName"
-            filterElement={(options) =>
-              Helper.orgFilter(screenListPhenotypic, options)
-            }
-            showFilterMenu={false}
-            filterMatchMode="in"
+            filterMatchMode="contains"
             className="narrow-column"
           />
 

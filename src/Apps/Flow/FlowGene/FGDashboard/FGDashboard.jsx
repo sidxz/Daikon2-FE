@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Loading from "../../../../Library/Loading/Loading";
 import SecHeading from "../../../../Library/SecHeading/SecHeading";
 import { RootStoreContext } from "../../../../RootStore";
@@ -17,6 +17,12 @@ const FGDashboard = () => {
     fetchGenes,
     availableGeneFunctionalCategories,
   } = rootStore.geneStore;
+
+  const [filters, setFilters] = useState({
+    accessionNumber: { value: "Rv", matchMode: "contains" },
+    name: { value: "", matchMode: "contains" },
+    functionalCategory: { value: "", matchMode: "contains" },
+  });
 
   useEffect(() => {
     if (!isGeneListCacheValid) {
@@ -46,6 +52,8 @@ const FGDashboard = () => {
           filterDisplay="row"
           className="w-full"
           emptyMessage="Loading..."
+          filters={filters}
+          onFilter={(e) => setFilters(e.filters)}
         >
           <Column
             field="accessionNumber"

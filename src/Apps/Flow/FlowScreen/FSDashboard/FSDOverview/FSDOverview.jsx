@@ -180,7 +180,7 @@ const FSDOverview = () => {
 
       <div className="flex w-full pt-4">
         <div
-          className="flex max-w-1 p-4 align-items-center justify-content-center bg-bluegray-400 text-white"
+          className="flex max-w-1 p-4 align-items-center justify-content-center bg-orange-400 text-white"
           style={{
             textOrientation: "sideways-right",
             writingMode: "vertical-rl",

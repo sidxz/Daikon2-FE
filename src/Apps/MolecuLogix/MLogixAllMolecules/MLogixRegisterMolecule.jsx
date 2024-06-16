@@ -1,4 +1,5 @@
 import { useFormik } from "formik";
+import { observer } from "mobx-react-lite";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
@@ -142,4 +143,4 @@ const MLogixRegisterMolecule = ({ closeSideBar }) => {
   );
 };
 
-export default MLogixRegisterMolecule;
+export default observer(MLogixRegisterMolecule);

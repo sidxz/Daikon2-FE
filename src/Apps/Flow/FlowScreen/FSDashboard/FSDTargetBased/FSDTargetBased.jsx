@@ -79,15 +79,10 @@ const FSDTargetBased = () => {
           />
 
           <Column
-            field="primaryOrgName"
+            field="primaryOrgAlias"
             header="Primary Org"
             filter
-            filterField="primaryOrgName"
-            filterElement={(options) =>
-              Helper.orgFilter(screenListTargetBased, options)
-            }
-            showFilterMenu={false}
-            filterMatchMode="in"
+            filterMatchMode="contains"
             className="narrow-column"
           />
 
