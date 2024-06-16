@@ -1,8 +1,13 @@
 import { observer } from "mobx-react-lite";
+import { Button } from "primereact/button";
 import { Dropdown } from "primereact/dropdown";
-import React, { useContext, useEffect } from "react";
+import { Menu } from "primereact/menu";
+import { Sidebar } from "primereact/sidebar";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import SmilesView from "../../../../../../Library/SmilesView/SmilesView";
 import { RootStoreContext } from "../../../../../../RootStore";
+import { MolecuLogixIcon } from "../../../../../MolecuLogix/Icons/MolecuLogixIcon";
+import MLogixRegisterMolecule from "../../../../../MolecuLogix/MLogixAllMolecules/MLogixRegisterMolecule";
 
 const FHaNewMoleculePicker = ({ selectedMolecule, setSelectedMolecule }) => {
   const rootStore = useContext(RootStoreContext);
@@ -12,6 +17,9 @@ const FHaNewMoleculePicker = ({ selectedMolecule, setSelectedMolecule }) => {
     isFetchingMolecules,
     isMoleculeRegistryCacheValid,
   } = rootStore.moleculeStore;
+
+  const sideMenu = useRef(null);
+  const [displayAddSideBar, setDisplayAddSideBar] = useState(false);
 
   useEffect(() => {
     if (!isMoleculeRegistryCacheValid) {
@@ -39,8 +47,29 @@ const FHaNewMoleculePicker = ({ selectedMolecule, setSelectedMolecule }) => {
     );
   };
 
+  const sideMenuItems = [
+    {
+      label: "Options",
+      items: [
+        {
+          label: "Register New Molecule",
+          icon: <MolecuLogixIcon />,
+          command: () => {
+            setDisplayAddSideBar(true);
+          },
+        },
+      ],
+    },
+  ];
+
+  const addSideBarHeader = (
+    <div className="flex w-full justify-between items-center">
+      <h2 className="text-lg font-semibold">Register Molecule</h2>
+    </div>
+  );
+
   return (
-    <div className="flex flex-column w-full">
+    <div className="flex flex w-full gap-2">
       <div className="flex w-full">
         <Dropdown
           value={selectedMolecule}
@@ -55,6 +84,30 @@ const FHaNewMoleculePicker = ({ selectedMolecule, setSelectedMolecule }) => {
           loading={isFetchingMolecules}
         />
       </div>
+      <div className="flex min-w-max align-items-center justify-content-center border-1 border-200 border-round-md mr-5">
+        <Menu model={sideMenuItems} popup ref={sideMenu} id={"side_menu"} />
+        <Button
+          icon="pi pi-ellipsis-h"
+          className="p-button border-1 border-50"
+          outlined
+          severity="secondary"
+          onClick={(event) => sideMenu.current.toggle(event)}
+          aria-controls="popup_menu_left"
+          aria-haspopup
+        />
+      </div>
+
+      <Sidebar
+        visible={displayAddSideBar}
+        position="right"
+        onHide={() => setDisplayAddSideBar(false)}
+        className="p-sidebar-md"
+        header={addSideBarHeader}
+      >
+        <MLogixRegisterMolecule
+          closeSideBar={() => setDisplayAddSideBar(false)}
+        />
+      </Sidebar>
     </div>
   );
 };
