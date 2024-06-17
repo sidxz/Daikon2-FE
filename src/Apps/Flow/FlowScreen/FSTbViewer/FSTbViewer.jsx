@@ -35,11 +35,18 @@ const FSTbViewer = () => {
   const { isUserInAnyOfRoles } = AppRoleResolver();
 
   useEffect(() => {
+    // console.log(
+    //   "FSTbViewer -> useEffect -> fetchScreen",
+    //   params.id,
+    //   selectedScreen?.id,
+    //   isScreenRegistryCacheValid
+    // );
     if (
       selectedScreen === undefined ||
       selectedScreen?.id !== params?.id ||
       !isScreenRegistryCacheValid
     ) {
+      console.log("FSTbViewer -> useEffect -> fetchScreen FETCHING", params.id);
       fetchScreens();
       fetchScreen(params.id);
     }
@@ -56,7 +63,7 @@ const FSTbViewer = () => {
   }
   let renderAdminModules = isUserInAnyOfRoles([ScreenAdminRoleName]);
 
-  if (selectedScreen) {
+  if (selectedScreen && selectedScreen?.id === params?.id) {
     let getRelatedScreens = () => {
       // Find out other screens having the same target in associatedTargets
       let relatedScreens = [];

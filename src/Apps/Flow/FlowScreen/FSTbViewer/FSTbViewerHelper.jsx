@@ -1,7 +1,5 @@
-import { AppRoleResolver } from "../../../../Shared/VariableResolvers/AppRoleResolver";
 import { HitCollectionIcon } from "../../icons/HitCollectionIcon";
 import { ScreenIcon } from "../../icons/ScreenIcon";
-import { ScreenAdminRoleName } from "../constants/roles";
 
 export const sidePanelItems = (
   navigate,
@@ -19,12 +17,17 @@ export const sidePanelItems = (
       label: screen.name,
       icon: <ScreenIcon size={"18em"} grayscale={1} />,
       command: () => {
+        // console.log(
+        //   "NAV:",
+        //   "/wf/screen/viewer/tb/" + screen.name + (isHits ? "/hits/" : "/")
+        // );
         navigate(
           "/wf/screen/viewer/tb/" + screen.id + (isHits ? "/hits/" : "/")
         );
       },
     };
   });
+
   let menuItems = [
     {
       label: "Sections",
