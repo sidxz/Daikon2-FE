@@ -6,14 +6,27 @@ import { useNavigate } from "react-router-dom";
 import { AdminIcon } from "../../../Apps/Admin/icons/AdminIcon";
 import { MolecuLogixIcon } from "../../../Apps/MolecuLogix/Icons/MolecuLogixIcon";
 import { QuestionnaireIcon } from "../../../Apps/Questionnaire/icons/QuestionnaireIcon";
+import { AppRoleResolver } from "../../../Shared/VariableResolvers/AppRoleResolver";
 import mainLogo from "../../../assets/logo-daikon.png";
 import { appVersion } from "../../../constants/appVersion";
 import "./TitleBarSidePanel.css";
 const TitleBarSidePanel = ({ toggle, user }) => {
   const navigate = useNavigate();
+  const { isUserInAnyOfRoles } = AppRoleResolver();
 
   const items = [
     {
+      label: "MolecuLogix",
+      icon: <MolecuLogixIcon size={"18em"} />,
+      command: () => {
+        navigate("/moleculogix");
+        toggle();
+      },
+    },
+  ];
+
+  if (isUserInAnyOfRoles(["APP-ADMIN"])) {
+    items.push({
       label: "Admin",
       icon: <AdminIcon size={"18em"} />,
       items: [
@@ -25,14 +38,6 @@ const TitleBarSidePanel = ({ toggle, user }) => {
             toggle();
           },
         },
-        // {
-        //   label: "API Management",
-        //   icon: "pi pi-fw pi-cloud",
-        //   command: () => {
-        //     navigate("/admin/api-management");
-        //     toggle();
-        //   },
-        // },
         {
           label: "Role Management",
           icon: "pi pi-fw pi-users",
@@ -42,24 +47,17 @@ const TitleBarSidePanel = ({ toggle, user }) => {
           },
         },
       ],
-    },
-    {
-      label: "MolecuLogix",
-      icon: <MolecuLogixIcon size={"18em"} />,
-      command: () => {
-        navigate("/moleculogix");
-        toggle();
-      },
-    },
-    {
+    });
+
+    items.push({
       label: "Questionnaires",
       icon: <QuestionnaireIcon size={"18em"} />,
       command: () => {
         navigate("/questionnaire");
         toggle();
       },
-    },
-  ];
+    });
+  }
 
   return (
     <div className="flex flex-column">

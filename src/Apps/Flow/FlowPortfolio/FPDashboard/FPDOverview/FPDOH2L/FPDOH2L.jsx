@@ -26,7 +26,10 @@ const FPDOH2L = () => {
       ? project.targetName
       : "Unknown";
     return (
-      <div className="flex flex-column w-full shadow-1 hover:shadow-3 border-round-md">
+      <div
+        className="flex flex-column w-full shadow-1 hover:shadow-3 border-round-md"
+        key={project.id}
+      >
         <div
           className="flex flex-column  justify-content-center cursor-pointer "
           onClick={() => {

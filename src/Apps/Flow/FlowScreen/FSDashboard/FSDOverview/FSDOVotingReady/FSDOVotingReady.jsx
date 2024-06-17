@@ -15,7 +15,10 @@ const FSDOVotingReady = ({ screens }) => {
     );
   let screensComponent = screens.map((screen) => {
     return (
-      <div className="flex flex-wrap flex-column bg-orange-50 shadow-1 hover:shadow-3 w-15rem">
+      <div
+        className="flex flex-wrap flex-column bg-orange-50 shadow-1 hover:shadow-3 w-15rem"
+        key={screen.id}
+      >
         <div className="flex align-items-end justify-content-end">
           <div className="p-1 white-space-nowrap justify-content-center bg-white text-700 text-xs w-6 overflow-hidden text-overflow-ellipsis border-right-1 border-orange-100">
             {screen.screenType == "phenotypic"

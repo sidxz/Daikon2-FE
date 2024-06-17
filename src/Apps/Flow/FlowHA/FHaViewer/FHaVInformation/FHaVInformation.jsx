@@ -11,15 +11,20 @@ import VisTimeline from "../../../../../Library/VisTimeline/VisTimeline";
 import { RootStoreContext } from "../../../../../RootStore";
 import { DateValidators } from "../../../../../Shared/Validators/DateValidators";
 import { AppOrgResolver } from "../../../../../Shared/VariableResolvers/AppOrgResolver";
+import { AppRoleResolver } from "../../../../../Shared/VariableResolvers/AppRoleResolver";
 import { appColors } from "../../../../../constants/colors";
 import { HAIcon } from "../../../icons/HAIcon";
+import { HaAdminRoleName } from "../../constants/roles";
 import HaCompoundEvolution from "../../shared/HaCompoundEvolution/HaCompoundEvolution";
 import HaStatusDropdown from "../../shared/HaStatusDropdown";
 import * as Helper from "./FHaVInformationHelper";
+import FHaVInfoOrgs from "./components/FHaVInfoOrgs";
 
 const FHaVInformation = () => {
   const rootStore = useContext(RootStoreContext);
   const { selectedHa, isFetchingHa } = rootStore.haStore;
+
+  const { isUserInAnyOfRoles } = AppRoleResolver();
 
   if (isFetchingHa) {
     return <Loading message={"Fetching HA..."} />;
@@ -27,7 +32,7 @@ const FHaVInformation = () => {
 
   const navigate = useNavigate();
 
-  const { getOrgNameById } = AppOrgResolver();
+  const { getOrgAliasById } = AppOrgResolver();
 
   // calculate the waiting to start date in days from the current date = current date - date created
   let waitingToStartDate = new Date() - new Date(selectedHa.dateCreated);
@@ -108,6 +113,24 @@ const FHaVInformation = () => {
     stackSubgroups: false,
   };
 
+  var titleBarButtons = [];
+
+  if (isUserInAnyOfRoles([HaAdminRoleName])) {
+    titleBarButtons.push(<HaStatusDropdown />);
+  } else {
+    titleBarButtons.push(
+      <HaStatusDropdown readOnly={true} readOnlyStatus={selectedHa.status} />
+    );
+  }
+
+  titleBarButtons.push(
+    <Chip
+      label={getOrgAliasById(selectedHa?.primaryOrgId)}
+      icon="ri-organization-chart"
+      className="mr-3"
+    />
+  );
+
   return (
     <div className="flex flex-column w-full gap-1">
       <div className="flex w-full">
@@ -120,18 +143,19 @@ const FHaVInformation = () => {
           displayHorizon={true}
           color={appColors.sectionHeadingBg.ha}
           entryPoint={selectedHa?.id}
-          customElements={[
-            <HaStatusDropdown />,
-            <Chip
-              label={getOrgNameById(selectedHa?.primaryOrgId)}
-              icon="ri-organization-chart"
-              className="mr-3"
-            />,
-          ]}
+          customElements={titleBarButtons}
         />
       </div>
       <div className="flex w-full">
         <VisTimeline items={timelineItems} options={options} groups={groups} />
+      </div>
+      <div className="flex w-full">
+        <Fieldset
+          className="m-0 flex-grow-1"
+          legend="Organization & Collaboration"
+        >
+          <FHaVInfoOrgs ha={selectedHa} />
+        </Fieldset>
       </div>
       <div className="flex w-full">
         <Fieldset className="m-0 flex-grow-1" legend="Compound Evolution">

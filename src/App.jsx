@@ -16,7 +16,10 @@ import "/node_modules/primeflex/primeflex.css";
 const App = () => {
   var userManager = AppUserManager;
 
-  console.log("+++++++++++++ APP +++++++++++++++ ");
+  console.log("+++++++++++++ DAIKON APP +++++++++++++++ ");
+  console.log("Starting...");
+  //console.log("Developed at Texas A&M University");
+  console.log("Bug reports: https://github.com/sidxz/Daikon2-FE");
 
   return (
     <PrimeReactProvider>

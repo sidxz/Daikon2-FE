@@ -25,7 +25,7 @@ const EditReply = ({ reply, comment, setComment, closeSideBar }) => {
 
     onSubmit: (data) => {
       let updatedReply = { ...reply, ...data };
-      console.log("updated", updatedReply);
+      //console.log("updated", updatedReply);
 
       updateReply(updatedReply).then(() => {
         closeSideBar();

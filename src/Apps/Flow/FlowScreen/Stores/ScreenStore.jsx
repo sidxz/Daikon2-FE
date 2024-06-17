@@ -84,7 +84,14 @@ export default class ScreenStore {
   };
 
   get screenList() {
-    return Array.from(this.screenListRegistry.values());
+    let screens = Array.from(this.screenListRegistry.values());
+    runInAction(() => {
+      screens.map((screen) => {
+        screen.primaryOrgAlias =
+          this.rootStore.authStore.appVars.orgsAlias[screen.primaryOrgId];
+      });
+    });
+    return screens;
   }
 
   get screenListTargetBased() {

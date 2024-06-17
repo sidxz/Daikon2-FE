@@ -1,4 +1,5 @@
 import { Formik } from "formik";
+import { observer } from "mobx-react-lite";
 import { Button } from "primereact/button";
 import { Calendar } from "primereact/calendar";
 import React, { useContext } from "react";
@@ -24,7 +25,7 @@ const FHaVSettingsDates = ({}) => {
 
   const onFormikSubmit = (data) => {
     const updatedHa = { ...selectedHa, ...data };
-    console.log("updatedHa", updatedHa);
+    //console.log("updatedHa", updatedHa);
     updateHa(updatedHa);
   };
 
@@ -116,4 +117,4 @@ const FHaVSettingsDates = ({}) => {
   );
 };
 
-export default FHaVSettingsDates;
+export default observer(FHaVSettingsDates);

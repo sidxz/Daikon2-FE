@@ -18,6 +18,7 @@ import { PostPortfolioIcon } from "../../../icons/PostPortfolioIcon";
 
 import * as Helper from "./FPPVSettingsHelper";
 import FPPVSettingsDates from "./components/FPPVSettingsDates";
+import FPPVSettingsOrgs from "./components/FPPVSettingsOrgs";
 import FPPVSettingsRemove from "./components/FPPVSettingsRemove";
 import FPPVSettingsRename from "./components/FPPVSettingsRename";
 import FPPVSettingsUpdateAssociation from "./components/FPPVSettingsUpdateAssociation";
@@ -39,7 +40,7 @@ const FPPVSettings = () => {
       selectedProject?.id !== params?.id ||
       !isProjectRegistryCacheValid
     ) {
-      console.log("Fetching Project");
+      //console.log("Fetching Project");
       fetchProject(params.id);
     }
   }, [params.id, fetchProject, selectedProject, isProjectRegistryCacheValid]);
@@ -84,6 +85,20 @@ const FPPVSettings = () => {
             Updating these settings will have impact post portfolio projects.
           </p>
           <FPPVSettingsDates />
+        </Fieldset>
+      </div>
+
+      <div className="flex w-full  mt-2">
+        <Fieldset
+          className="w-full"
+          legend={
+            <>
+              <FcTreeStructure className="mr-2" />
+              Update Organization
+            </>
+          }
+        >
+          <FPPVSettingsOrgs />
         </Fieldset>
       </div>
 

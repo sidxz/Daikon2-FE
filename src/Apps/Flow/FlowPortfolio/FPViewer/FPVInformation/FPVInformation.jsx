@@ -11,11 +11,14 @@ import VisTimeline from "../../../../../Library/VisTimeline/VisTimeline";
 import { RootStoreContext } from "../../../../../RootStore";
 import { DateValidators } from "../../../../../Shared/Validators/DateValidators";
 import { AppOrgResolver } from "../../../../../Shared/VariableResolvers/AppOrgResolver";
+import { AppRoleResolver } from "../../../../../Shared/VariableResolvers/AppRoleResolver";
 import { appColors } from "../../../../../constants/colors";
 import HaCompoundEvolution from "../../../FlowHA/shared/HaCompoundEvolution/HaCompoundEvolution";
 import { PortfolioIcon } from "../../../icons/PortfolioIcon";
+import { PortfolioAdminRoleName } from "../../constants/roles";
 import PortfolioCompoundEvolution from "../../shared/HaCompoundEvolution/PortfolioCompoundEvolution";
 import PortfolioStageDropdown from "../../shared/PortfolioStageDropdown";
+import FPVIOrgs from "./FPVIProjectInfo/FPVIOrgs";
 import FPVIProjectInfoDesc from "./FPVIProjectInfo/FPVIProjectInfoDesc";
 import FPVIProjectInfoPriority from "./FPVIProjectInfo/FPVIProjectInfoPriority";
 import * as Helper from "./FPVInformationHelper";
@@ -23,6 +26,8 @@ import * as Helper from "./FPVInformationHelper";
 const FPVInformation = () => {
   const rootStore = useContext(RootStoreContext);
   const { selectedProject, isFetchingProject } = rootStore.projectStore;
+
+  const { isUserInAnyOfRoles } = AppRoleResolver();
 
   if (isFetchingProject) {
     return <Loading message={"Fetching Portfolios..."} />;
@@ -32,7 +37,7 @@ const FPVInformation = () => {
 
   const { isDateValid } = DateValidators();
 
-  const { getOrgNameById } = AppOrgResolver();
+  const { getOrgAliasById } = AppOrgResolver();
 
   // calculate the waiting to start date in days from the current date = current date - date created
   let waitingToStartDate = new Date() - new Date(selectedProject.dateCreated);
@@ -116,6 +121,27 @@ const FPVInformation = () => {
     stackSubgroups: false,
   };
 
+  var titleBarButtons = [];
+
+  if (isUserInAnyOfRoles([PortfolioAdminRoleName])) {
+    titleBarButtons.push(<PortfolioStageDropdown />);
+  } else {
+    titleBarButtons.push(
+      <PortfolioStageDropdown
+        readOnly={true}
+        readOnlyStage={selectedProject.stage}
+      />
+    );
+  }
+
+  titleBarButtons.push(
+    <Chip
+      label={getOrgAliasById(selectedProject?.primaryOrgId)}
+      icon="ri-organization-chart"
+      className="mr-3"
+    />
+  );
+
   return (
     <div
       className="flex flex-column w-full gap-1"
@@ -133,18 +159,20 @@ const FPVInformation = () => {
           displayHorizon={true}
           color={appColors.sectionHeadingBg.project}
           entryPoint={selectedProject?.id}
-          customElements={[
-            <PortfolioStageDropdown />,
-            <Chip
-              label={getOrgNameById(selectedProject?.primaryOrgId)}
-              icon="ri-organization-chart"
-              className="mr-3"
-            />,
-          ]}
+          customElements={titleBarButtons}
         />
       </div>
       <div className="flex w-full">
         <VisTimeline items={timelineItems} options={options} groups={groups} />
+      </div>
+
+      <div className="flex w-full">
+        <Fieldset
+          className="m-0 flex-grow-1"
+          legend="Organization & Collaboration"
+        >
+          <FPVIOrgs project={selectedProject} />
+        </Fieldset>
       </div>
 
       <div className="flex flex-row m-0 w-full">
@@ -156,7 +184,7 @@ const FPVInformation = () => {
         <div className="flex w-full m-0">
           <Fieldset
             className="flex w-full"
-            legend="Portfolio Description & Notes"
+            legend="Portfolio Achievements, Summary & Notes"
           >
             <FPVIProjectInfoDesc />
           </Fieldset>

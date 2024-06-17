@@ -35,7 +35,7 @@ const AddReply = ({ comment, setComment }) => {
       commentId: comment.id,
       body: reply,
     };
-    console.log("submit", formattedReply);
+    //console.log("submit", formattedReply);
     addReply(formattedReply).then(() => {
       setReply("");
       setEditorVisible(false);
@@ -69,7 +69,7 @@ const AddReply = ({ comment, setComment }) => {
               label="Reply"
               className="text-center w-full gap-2"
               onClick={() => {
-                console.log("reply", reply);
+                //console.log("reply", reply);
                 onSubmit();
               }}
             >

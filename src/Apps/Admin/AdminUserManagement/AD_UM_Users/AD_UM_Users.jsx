@@ -8,7 +8,7 @@ import Loading from "../../../../Library/Loading/Loading";
 import SecHeading from "../../../../Library/SecHeading/SecHeading";
 import { RootStoreContext } from "../../../../RootStore";
 import { AppOrgResolver } from "../../../../Shared/VariableResolvers/AppOrgResolver";
-import { RoleResolver } from "../../../../Shared/VariableResolvers/RoleResolver";
+import { AppRoleResolver } from "../../../../Shared/VariableResolvers/AppRoleResolver";
 import { appColors } from "../../../../constants/colors";
 import AD_UM_UserAdd from "./components/AD_UM_UserAdd";
 const AD_UM_Users = () => {
@@ -18,7 +18,7 @@ const AD_UM_Users = () => {
 
   const navigate = useNavigate();
   const { getOrgAliasById } = AppOrgResolver();
-  const { getRoleNameById } = RoleResolver();
+  const { getRoleNameById } = AppRoleResolver();
 
   const [displayAddSideBar, setDisplayAddSideBar] = useState(false);
 

@@ -6,18 +6,21 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SecHeading from "../../../../../Library/SecHeading/SecHeading";
 import { AppOrgResolver } from "../../../../../Shared/VariableResolvers/AppOrgResolver";
+import { AppRoleResolver } from "../../../../../Shared/VariableResolvers/AppRoleResolver";
 import { appColors } from "../../../../../constants/colors";
 import AddComment from "../../../../Comments/AddComment/AddComment";
 import CommentsByTags from "../../../../Comments/CommentsByTags/CommentsByTags";
 import ScreenViewAPI from "../../../FlowScreen/api/ScreenViewAPI";
 import { HAIcon } from "../../../icons/HAIcon";
+import { HaAdminRoleName } from "../../constants/roles";
 import HaStatusDropdown from "../../shared/HaStatusDropdown";
 
 const FSTbComments = ({ selectedHa }) => {
-  console.log(selectedHa);
+  //console.log(selectedHa);
   const navigate = useNavigate();
 
   const { getOrgNameById } = AppOrgResolver();
+  const { isUserInAnyOfRoles } = AppRoleResolver();
 
   let [screenTag, setScreenTag] = useState(null);
   let [isScreenTagFetched, setIsScreenTagFetched] = useState(false);
@@ -33,42 +36,41 @@ const FSTbComments = ({ selectedHa }) => {
     setIsScreenTagFetched(true);
   }
 
-  console.log("screenTag", screenTag);
+  //console.log("screenTag", screenTag);
 
   const breadCrumbItems = [
     {
-      label: "Sections",
-      items: [
-        {
-          label: "HA Information",
-          icon: "icon icon-common icon-circle-notch",
-          command: () => {
-            navigate("information/");
-          },
-        },
-        {
-          label: "Discussion",
-          icon: "ri-discuss-line",
-          command: () => {
-            navigate("discussion/");
-          },
-        },
-      ],
+      label: "HAs",
+      command: () => {
+        navigate("/wf/ha/");
+      },
     },
-
     {
-      label: "Admin Section",
-      items: [
-        {
-          label: "Settings",
-          icon: "pi pi-cog",
-          command: () => {
-            navigate("settings/");
-          },
-        },
-      ],
+      label: selectedHa.name,
+      command: () => {
+        navigate(`/wf/ha/viewer/${selectedHa.id}`);
+      },
     },
+    { label: "Discussion" },
   ];
+
+  var titleBarButtons = [];
+
+  if (isUserInAnyOfRoles([HaAdminRoleName])) {
+    titleBarButtons.push(<HaStatusDropdown />);
+  } else {
+    titleBarButtons.push(
+      <HaStatusDropdown readOnly={true} readOnlyStatus={selectedHa.status} />
+    );
+  }
+
+  titleBarButtons.push(
+    <Chip
+      label={getOrgNameById(selectedHa?.primaryOrgId)}
+      icon="ri-organization-chart"
+      className="mr-3"
+    />
+  );
 
   return (
     <div className="flex flex-column w-full">
@@ -82,14 +84,7 @@ const FSTbComments = ({ selectedHa }) => {
           displayHorizon={true}
           color={appColors.sectionHeadingBg.ha}
           entryPoint={selectedHa?.id}
-          customElements={[
-            <HaStatusDropdown />,
-            <Chip
-              label={getOrgNameById(selectedHa?.primaryOrgId)}
-              icon="ri-organization-chart"
-              className="mr-3"
-            />,
-          ]}
+          customElements={titleBarButtons}
         />
       </div>
       <div className="flex w-full pt-1">

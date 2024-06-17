@@ -13,6 +13,10 @@ import FSTbVAddHitCollection from "./FSTbVAddHitCollection";
 import * as Helper from "./FSTbVHitCollectionHelper";
 
 const FSTbVHitCollectionSelection = ({ selectedScreen }) => {
+  console.log(
+    "FSTbVHitCollectionSelection -> selectedScreen",
+    selectedScreen.name
+  );
   const navigate = useNavigate();
   const rootStore = useContext(RootStoreContext);
   const {
@@ -26,7 +30,15 @@ const FSTbVHitCollectionSelection = ({ selectedScreen }) => {
   const [displayAddSideBar, setDisplayAddSideBar] = useState(false);
 
   useEffect(() => {
+    // console.log(
+    //   "useEffect -> fetchHitCollectionsOfScreen",
+    //   selectedScreen.name
+    // );
     if (!isHitCollectionRegistryCacheValid(selectedScreen.id)) {
+      // console.log(
+      //   "useEffect -> fetchHitCollectionsOfScreen FETCHING",
+      //   selectedScreen.name
+      // );
       fetchHitCollectionsOfScreen(selectedScreen.id);
     }
   }, [
@@ -37,12 +49,23 @@ const FSTbVHitCollectionSelection = ({ selectedScreen }) => {
   ]);
 
   useEffect(() => {
+    //console.log("useEffect -> hitCollectionOfScreen", selectedScreen.name);
     if (
       !isFetchingHitCollection &&
       hitCollectionOfScreen(selectedScreen.id).length > 0
     ) {
       // get id of first hit collection
+      // console.log(
+      //   "useEffect -> hitCollectionOfScreen",
+      //   selectedScreen.name,
+      //   hitCollectionOfScreen(selectedScreen.id)[0].name
+      // );
       const hitCollectionId = hitCollectionOfScreen(selectedScreen.id)[0].id;
+      // console.log(
+      //   "useEffect -> hitCollectionOfScreen will navigate",
+      //   selectedScreen.name,
+      //   hitCollectionId
+      // );
       navigate(
         `/wf/screen/viewer/tb/${selectedScreen.id}/hits/${hitCollectionId}`
       );

@@ -12,7 +12,7 @@ export const sidePanelItems = (navigate) => {
         },
 
         {
-          label: "Org Private Data",
+          label: "Private Data",
           icon: "ri-git-repository-private-fill",
           command: () => {
             navigate(`private/`);

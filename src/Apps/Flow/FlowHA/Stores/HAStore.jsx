@@ -100,7 +100,7 @@ export default class HAStore {
   }
 
   fetchHa = async (haId, inValidateCache = false) => {
-    console.log("fetchHa -> haId", haId);
+    //console.log("fetchHa -> haId", haId);
     if (inValidateCache) {
       this.isHaRegistryCacheValid = false;
     }

@@ -4,7 +4,10 @@ import React, { useContext, useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router";
 import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../../../../Library/Loading/Loading";
+import NotFound from "../../../../Library/NotFound/NotFound";
 import { RootStoreContext } from "../../../../RootStore";
+import { AppRoleResolver } from "../../../../Shared/VariableResolvers/AppRoleResolver";
+import { PostPortfolioAdminRoleName } from "../constants/roles";
 import FPPVComments from "./FPPVComments/FPPVComments";
 import FPPVInformation from "./FPPVInformation/FPPVInformation";
 import FPPVSettings from "./FPPVSettings/FPPVSettings";
@@ -21,13 +24,15 @@ const FPPViewer = () => {
     isProjectRegistryCacheValid,
   } = rootStore.projectStore;
 
+  const { isUserInAnyOfRoles } = AppRoleResolver();
+
   useEffect(() => {
     if (
       selectedProject === undefined ||
       selectedProject?.id !== params?.id ||
       !isProjectRegistryCacheValid
     ) {
-      console.log("Fetching Project");
+      //console.log("Fetching Project");
       fetchProject(params.id);
     }
   }, [params.id, fetchProject, selectedProject, isProjectRegistryCacheValid]);
@@ -36,7 +41,7 @@ const FPPViewer = () => {
     return <Loading message={"Fetching Project..."} />;
   }
 
-  console.log("FProjectViewer -> selectedProject", selectedProject);
+  //console.log("FProjectViewer -> selectedProject", selectedProject);
 
   if (selectedProject) {
     return (
@@ -53,7 +58,10 @@ const FPPViewer = () => {
                 path="discussion/*"
                 element={<FPPVComments selectedProject={selectedProject} />}
               />
-              <Route path="settings/*" element={<FPPVSettings />} />
+              {isUserInAnyOfRoles([PostPortfolioAdminRoleName]) && (
+                <Route path="settings/*" element={<FPPVSettings />} />
+              )}
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </div>
         </div>

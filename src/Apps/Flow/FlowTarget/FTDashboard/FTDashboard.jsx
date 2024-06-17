@@ -5,8 +5,13 @@ import { useNavigate } from "react-router-dom";
 import Loading from "../../../../Library/Loading/Loading";
 import SecHeading from "../../../../Library/SecHeading/SecHeading";
 import { RootStoreContext } from "../../../../RootStore";
+import { AppRoleResolver } from "../../../../Shared/VariableResolvers/AppRoleResolver";
 import { appColors } from "../../../../constants/colors";
 import { TargetIcon } from "../../icons/TargetIcon";
+import {
+  TargetAdminRoleName,
+  TargetPromotionModeratorRoleName,
+} from "../constants/roles";
 import FTDAddTarget from "./FTDAddTarget";
 import FTDDataTable from "./FTDDataTable/FTDDataTable";
 import FTDTargetMap from "./FTDTargetMap/FTDTargetMap";
@@ -22,6 +27,8 @@ const FTDashboard = () => {
   const [displayAddSideBar, setDisplayAddSideBar] = useState(false);
   const navigate = useNavigate();
 
+  const { isUserInAnyOfRoles } = AppRoleResolver();
+
   useEffect(() => {
     if (!isTargetListCacheValid) {
       fetchTargets();
@@ -32,7 +39,7 @@ const FTDashboard = () => {
     return <Loading message={"Fetching Targets..."} />;
   }
 
-  console.log("FTDashboard -> targetList", targetList);
+  //console.log("FTDashboard -> targetList", targetList);
 
   const addSideBarHeader = (
     <div className="flex align-items-center gap-2">
@@ -40,6 +47,22 @@ const FTDashboard = () => {
       <span className="font-bold">Source Target</span>
     </div>
   );
+
+  var headingButtons = [];
+  if (
+    isUserInAnyOfRoles([TargetPromotionModeratorRoleName, TargetAdminRoleName])
+  ) {
+    headingButtons.push({
+      label: "Awaiting Approval",
+      icon: "pi pi-stopwatch",
+      action: () => navigate("sourcing/approval"),
+    });
+  }
+  headingButtons.push({
+    label: "Add Target",
+    icon: "pi pi-plus",
+    action: () => setDisplayAddSideBar(true),
+  });
 
   return (
     <div className="flex flex-column min-w-full fadein animation-duration-500">
@@ -50,18 +73,7 @@ const FTDashboard = () => {
           heading="Targets"
           color={appColors.sectionHeadingBg.target}
           displayHorizon={false}
-          customButtons={[
-            {
-              label: "Awaiting Approval",
-              icon: "pi pi-stopwatch",
-              action: () => navigate("sourcing/approval"),
-            },
-            {
-              label: "Add Target",
-              icon: "pi pi-plus",
-              action: () => setDisplayAddSideBar(true),
-            },
-          ]}
+          customButtons={headingButtons}
         />
       </div>
       <div className="flex max-w-full p-1">

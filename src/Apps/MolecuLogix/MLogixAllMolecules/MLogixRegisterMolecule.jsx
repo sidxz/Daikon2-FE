@@ -1,15 +1,21 @@
 import { useFormik } from "formik";
+import { observer } from "mobx-react-lite";
 import { Button } from "primereact/button";
+import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
 import { classNames } from "primereact/utils";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
+import JSMEditor from "../../../Library/JSME/JSMEditor";
 import { RootStoreContext } from "../../../RootStore";
+import { MolecuLogixIcon } from "../Icons/MolecuLogixIcon";
 
 const MLogixRegisterMolecule = ({ closeSideBar }) => {
   const rootStore = useContext(RootStoreContext);
 
   const { registerMolecule, isRegisteringMolecule } = rootStore.moleculeStore;
+
+  const [showStructureEditor, setShowStructureEditor] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -74,16 +80,29 @@ const MLogixRegisterMolecule = ({ closeSideBar }) => {
             >
               SMILES *
             </label>
-            <InputTextarea
-              id="requestedSMILES"
-              answer="requestedSMILES"
-              value={formik.values.requestedSMILES}
-              onChange={formik.handleChange}
-              className={classNames({
-                "p-invalid": isInvalid("requestedSMILES"),
-              })}
-            />
-            {getErrorMessage("requestedSMILES")}
+            <div className="flex">
+              <div className="flex w-full">
+                <InputTextarea
+                  id="requestedSMILES"
+                  answer="requestedSMILES"
+                  value={formik.values.requestedSMILES}
+                  onChange={formik.handleChange}
+                  className={classNames({
+                    "p-invalid": isInvalid("requestedSMILES"),
+                  })}
+                />
+                {getErrorMessage("requestedSMILES")}
+              </div>
+              <div className="flex border-1 border-50 p-2">
+                <Button
+                  text
+                  type="button"
+                  icon={<MolecuLogixIcon size={32} />}
+                  label="Structure Editor"
+                  onClick={() => setShowStructureEditor(true)}
+                />
+              </div>
+            </div>
           </div>
 
           <Button
@@ -94,9 +113,34 @@ const MLogixRegisterMolecule = ({ closeSideBar }) => {
             loading={isRegisteringMolecule}
           />
         </form>
+        <Dialog
+          visible={showStructureEditor}
+          closable={false}
+          modal={false}
+          showHeader={false}
+          onHide={() => setShowStructureEditor(false)}
+          style={{
+            width: "52rem",
+            height: "44rem",
+            overflow: "hidden !important",
+          }}
+          pt={{
+            content: { style: { overflow: "hidden" } },
+          }}
+        >
+          <div className="flex pt-5" style={{ overflow: "hidden" }}>
+            <JSMEditor
+              initialSmiles={formik.values.requestedSMILES}
+              onSave={(s) => {
+                setShowStructureEditor(false);
+                formik.setFieldValue("requestedSMILES", s);
+              }}
+            />
+          </div>
+        </Dialog>
       </div>
     </>
   );
 };
 
-export default MLogixRegisterMolecule;
+export default observer(MLogixRegisterMolecule);

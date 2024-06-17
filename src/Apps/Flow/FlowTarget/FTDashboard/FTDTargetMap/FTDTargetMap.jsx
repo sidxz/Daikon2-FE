@@ -33,10 +33,10 @@ const FTDTargetMap = () => {
     return <Loading message={"Fetching Targets..."} />;
   }
 
-  console.log(
-    "FTDTargetMap -> targetListWithRelations",
-    targetListWithRelations
-  );
+  // console.log(
+  //   "FTDTargetMap -> targetListWithRelations",
+  //   targetListWithRelations
+  // );
 
   // Configure options for the chart
   let option = { ...chartOption };
@@ -131,7 +131,7 @@ const FTDTargetMap = () => {
 
   // Function to handle chart click events
   let onChartClick = (params) => {
-    console.log("FTDTargetMap -> params", params.data[2]);
+    //console.log("FTDTargetMap -> params", params.data[2]);
     navigate(`/wf/target/viewer/${params.data[2]}`);
   };
   // Attach click event listener to the chart

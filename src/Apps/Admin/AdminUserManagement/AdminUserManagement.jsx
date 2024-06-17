@@ -24,7 +24,7 @@ const AdminUserManagement = () => {
     return <Loading message="Fetching users" />;
   }
 
-  console.log("AdminUserManagement -> Render");
+  //console.log("AdminUserManagement -> Render");
 
   return (
     <div className="flex w-full">

@@ -37,7 +37,7 @@ const FPPVIProjectInfoPriority = () => {
     },
     onSubmit: (pData) => {
       let newData = { ...selectedProject, ...pData };
-      console.log(newData);
+      //console.log(newData);
       updateProject(newData).then(() => {
         setVisible(false);
         formik.resetForm();

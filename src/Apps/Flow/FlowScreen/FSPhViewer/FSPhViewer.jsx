@@ -9,7 +9,10 @@ import {
   useParams,
 } from "react-router-dom";
 import Loading from "../../../../Library/Loading/Loading";
+import NotFound from "../../../../Library/NotFound/NotFound";
 import { RootStoreContext } from "../../../../RootStore";
+import { AppRoleResolver } from "../../../../Shared/VariableResolvers/AppRoleResolver";
+import { ScreenAdminRoleName } from "../constants/roles";
 import FSPhComments from "./FSPhComments/FSPhComments";
 import FSPhVHitCollection from "./FSPhVHitCollection/FSPhVHitCollection";
 import FSPhVHitCollectionSelection from "./FSPhVHitCollection/FSPhVHitCollectionSelection";
@@ -29,6 +32,8 @@ const FSPhViewer = () => {
     isScreenRegistryCacheValid,
   } = rootStore.screenStore;
 
+  const { isUserInAnyOfRoles } = AppRoleResolver();
+
   useEffect(() => {
     if (
       selectedScreen === undefined ||
@@ -43,12 +48,14 @@ const FSPhViewer = () => {
     return <Loading message={"Fetching Screen..."} />;
   }
 
-  if (selectedScreen) {
+  let renderAdminModules = isUserInAnyOfRoles([ScreenAdminRoleName]);
+
+  if (selectedScreen && selectedScreen?.id === params?.id) {
     return (
       <div className="flex w-full">
         <div className="flex gap-2 w-full">
           <div className="flex">
-            <Menu model={Helper.sidePanelItems(navigate)} />
+            <Menu model={Helper.sidePanelItems(navigate, renderAdminModules)} />
           </div>
           <div className="flex w-full">
             <Routes>
@@ -70,15 +77,18 @@ const FSPhViewer = () => {
                 element={<FSPhVScreen selectedScreen={selectedScreen} />}
               />
 
-              <Route
-                path="settings/"
-                element={<FSPhVSettings selectedScreen={selectedScreen} />}
-              />
+              {renderAdminModules && (
+                <Route
+                  path="settings/"
+                  element={<FSPhVSettings selectedScreen={selectedScreen} />}
+                />
+              )}
 
               <Route
                 path="discussion/"
                 element={<FSPhComments selectedScreen={selectedScreen} />}
               />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </div>
         </div>

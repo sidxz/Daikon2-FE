@@ -27,9 +27,9 @@ const RichTextEdit = ({
     setData({ ...baseData });
   }, [baseData]);
 
-  console.log("RichTextEdit -> dataSelector", dataSelector);
-  console.log("RichTextEdit -> baseData", baseData);
-  console.log("RichTextEdit -> data", data);
+  // console.log("RichTextEdit -> dataSelector", dataSelector);
+  // console.log("RichTextEdit -> baseData", baseData);
+  // console.log("RichTextEdit -> data", data);
 
   // check if data is null
   if (!data) {

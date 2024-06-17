@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { RootStoreContext } from "../../RootStore";
 
-export const RoleResolver = () => {
+export const AppRoleResolver = () => {
   const rootStore = useContext(RootStoreContext);
   const { appVars, user } = rootStore.authStore;
 
@@ -15,22 +15,27 @@ export const RoleResolver = () => {
   };
 
   const getUserRoleNames = () => {
-    return user.roles.map((roleId) => {
+    return user.appRoleIds.map((roleId) => {
       return getRoleNameById(roleId);
     });
   };
 
   const isUserInRoleById = (roleId) => {
-    return user.roles.includes(roleId);
+    return user.appRoleIds.includes(roleId);
   };
 
   const isUserInRoleByName = (roleName) => {
-    return user.roles.includes(getRoleIdByName(roleName));
+    return (
+      user.appRoleIds.includes(getRoleIdByName(roleName)) ||
+      user.appRoleIds.includes(getRoleIdByName("ROOT"))
+    );
   };
 
   const isUserInAnyOfRoles = (roleNames) => {
-    return user.roles.some((roleId) =>
-      roleNames.includes(getRoleNameById(roleId))
+    return user.appRoleIds.some(
+      (roleId) =>
+        roleNames.includes(getRoleNameById(roleId)) ||
+        user.appRoleIds.includes(getRoleIdByName("ROOT"))
     );
   };
 

@@ -59,7 +59,7 @@ const PortfolioCompoundEvolution = () => {
 
   const onDeleteBtnClick = (event, cEvo) => {
     const accept = () => {
-      console.log("Delete");
+      //console.log("Delete");
       deleteProjectCEvo(selectedProject.id, cEvo.id);
     };
 
@@ -67,7 +67,7 @@ const PortfolioCompoundEvolution = () => {
       console.log("Cancel");
     };
 
-    console.log(cEvo);
+    //console.log(cEvo);
     confirmPopup({
       target: event.currentTarget,
       message: "Do you want to delete this record?",
@@ -151,6 +151,7 @@ const PortfolioCompoundEvolution = () => {
                 >
                   <SmilesView
                     smiles={evo?.molecule?.smiles}
+                    compoundId={evo?.molecule?.id}
                     width={300}
                     height={300}
                   />

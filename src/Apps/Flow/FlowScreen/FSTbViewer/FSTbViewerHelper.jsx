@@ -1,7 +1,11 @@
 import { HitCollectionIcon } from "../../icons/HitCollectionIcon";
 import { ScreenIcon } from "../../icons/ScreenIcon";
 
-export const sidePanelItems = (navigate, getRelatedScreens) => {
+export const sidePanelItems = (
+  navigate,
+  getRelatedScreens,
+  renderAdminModules
+) => {
   let relatedScreens = getRelatedScreens();
 
   // check if URL contains "hits" or "screens"
@@ -13,13 +17,18 @@ export const sidePanelItems = (navigate, getRelatedScreens) => {
       label: screen.name,
       icon: <ScreenIcon size={"18em"} grayscale={1} />,
       command: () => {
+        // console.log(
+        //   "NAV:",
+        //   "/wf/screen/viewer/tb/" + screen.name + (isHits ? "/hits/" : "/")
+        // );
         navigate(
           "/wf/screen/viewer/tb/" + screen.id + (isHits ? "/hits/" : "/")
         );
       },
     };
   });
-  return [
+
+  let menuItems = [
     {
       label: "Sections",
       items: [
@@ -51,8 +60,10 @@ export const sidePanelItems = (navigate, getRelatedScreens) => {
       label: "Related Screens",
       items: [...relatedScreensItems],
     },
+  ];
 
-    {
+  if (renderAdminModules) {
+    menuItems.push({
       label: "Admin Section",
       items: [
         {
@@ -63,6 +74,8 @@ export const sidePanelItems = (navigate, getRelatedScreens) => {
           },
         },
       ],
-    },
-  ];
+    });
+  }
+
+  return menuItems;
 };

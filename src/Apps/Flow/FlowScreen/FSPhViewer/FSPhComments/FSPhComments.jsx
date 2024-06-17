@@ -12,7 +12,7 @@ import { ScreenIcon } from "../../../icons/ScreenIcon";
 import { FormatScreeningMethod } from "../../shared/Formatters";
 
 const FSPhComments = ({ selectedScreen }) => {
-  console.log(selectedScreen);
+  //console.log(selectedScreen);
   const navigate = useNavigate();
   const { getOrgNameById } = AppOrgResolver();
   const breadCrumbItems = [

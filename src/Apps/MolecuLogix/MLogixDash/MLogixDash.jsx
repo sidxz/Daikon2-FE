@@ -3,10 +3,12 @@ import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { Sidebar } from "primereact/sidebar";
 import React, { useContext, useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
 import Loading from "../../../Library/Loading/Loading";
 import SecHeading from "../../../Library/SecHeading/SecHeading";
 import { RootStoreContext } from "../../../RootStore";
 import { appColors } from "../../../constants/colors";
+import { MolecuLogixIcon } from "../Icons/MolecuLogixIcon";
 import MLogixRegisterMolecule from "../MLogixAllMolecules/MLogixRegisterMolecule";
 const MLogixDash = () => {
   const rootStore = useContext(RootStoreContext);
@@ -40,6 +42,7 @@ const MLogixDash = () => {
       <div className="flex w-full">
         <SecHeading
           icon="icon icon-conceptual icon-dna"
+          svgIcon={<MolecuLogixIcon />}
           heading="Molecules"
           color={appColors.molecuLogix.heading}
           customButtons={[
@@ -52,7 +55,13 @@ const MLogixDash = () => {
         />
       </div>
       <div className="flex w-full">
-        <DataTable value={moleculeList} paginator rows={10} filterDisplay="row">
+        <DataTable
+          value={moleculeList}
+          paginator
+          rows={10}
+          filterDisplay="row"
+          className="w-full"
+        >
           <Column
             field="name"
             header="Name"
@@ -61,6 +70,13 @@ const MLogixDash = () => {
             filterPlaceholder="Search"
             className="narrow-column"
             sortable
+            body={(rowData) => {
+              return (
+                <NavLink to={"/moleculogix/molecule/" + rowData.id}>
+                  {rowData.name}
+                </NavLink>
+              );
+            }}
           />
 
           <Column

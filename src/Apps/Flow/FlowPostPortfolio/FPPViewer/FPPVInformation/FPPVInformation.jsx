@@ -11,10 +11,13 @@ import VisTimeline from "../../../../../Library/VisTimeline/VisTimeline";
 import { RootStoreContext } from "../../../../../RootStore";
 import { DateValidators } from "../../../../../Shared/Validators/DateValidators";
 import { AppOrgResolver } from "../../../../../Shared/VariableResolvers/AppOrgResolver";
+import { AppRoleResolver } from "../../../../../Shared/VariableResolvers/AppRoleResolver";
 import { appColors } from "../../../../../constants/colors";
 import HaCompoundEvolution from "../../../FlowHA/shared/HaCompoundEvolution/HaCompoundEvolution";
+import FPVIOrgs from "../../../FlowPortfolio/FPViewer/FPVInformation/FPVIProjectInfo/FPVIOrgs";
 import PortfolioCompoundEvolution from "../../../FlowPortfolio/shared/HaCompoundEvolution/PortfolioCompoundEvolution";
 import { PostPortfolioIcon } from "../../../icons/PostPortfolioIcon";
+import { PostPortfolioAdminRoleName } from "../../constants/roles";
 import PostPortfolioStageDropdown from "../../shared/PostPortfolioStageDropdown";
 import FPPVIProjectInfoDesc from "./FPPVIProjectInfo/FPPVIProjectInfoDesc";
 import FPPVIProjectInfoPriority from "./FPPVIProjectInfo/FPPVIProjectInfoPriority";
@@ -23,6 +26,8 @@ import * as Helper from "./FPPVInformationHelper";
 const FPPVInformation = () => {
   const rootStore = useContext(RootStoreContext);
   const { selectedProject, isFetchingProject } = rootStore.projectStore;
+
+  const { isUserInAnyOfRoles } = AppRoleResolver();
 
   if (isFetchingProject) {
     return <Loading message={"Fetching Portfolios..."} />;
@@ -142,6 +147,27 @@ const FPPVInformation = () => {
     stackSubgroups: false,
   };
 
+  var titleBarButtons = [];
+
+  if (isUserInAnyOfRoles([PostPortfolioAdminRoleName])) {
+    titleBarButtons.push(<PostPortfolioStageDropdown />);
+  } else {
+    titleBarButtons.push(
+      <PostPortfolioStageDropdown
+        readOnly={true}
+        readOnlyStage={selectedProject.stage}
+      />
+    );
+  }
+
+  titleBarButtons.push(
+    <Chip
+      label={getOrgNameById(selectedProject?.primaryOrgId)}
+      icon="ri-organization-chart"
+      className="mr-3"
+    />
+  );
+
   return (
     <div className="flex flex-column w-full gap-1">
       <div className="flex w-full">
@@ -154,18 +180,21 @@ const FPPVInformation = () => {
           displayHorizon={true}
           color={appColors.sectionHeadingBg.project}
           entryPoint={selectedProject?.id}
-          customElements={[
-            <PostPortfolioStageDropdown />,
-            <Chip
-              label={getOrgNameById(selectedProject?.primaryOrgId)}
-              icon="ri-organization-chart"
-              className="mr-3"
-            />,
-          ]}
+          customElements={titleBarButtons}
         />
       </div>
       <div className="flex w-full">
         <VisTimeline items={timelineItems} options={options} groups={groups} />
+      </div>
+
+      <div className="flex w-full">
+        <Fieldset
+          className="m-0 flex-grow-1"
+          legend="Organization & Collaboration"
+        >
+          {/* Reusing: Component from Portfolio */}
+          <FPVIOrgs project={selectedProject} />
+        </Fieldset>
       </div>
 
       <div className="flex flex-row m-0 w-full">
@@ -177,7 +206,7 @@ const FPPVInformation = () => {
         <div className="flex w-full m-0">
           <Fieldset
             className="flex w-full"
-            legend="Post Portfolio Description & Notes"
+            legend="Post Portfolio Achievements, Summary & Notes"
           >
             <FPPVIProjectInfoDesc />
           </Fieldset>

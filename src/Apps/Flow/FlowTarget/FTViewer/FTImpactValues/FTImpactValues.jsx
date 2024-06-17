@@ -40,7 +40,7 @@ const FTImpactValues = () => {
 
   const onFormikSubmit = (data) => {
     const updatedTarget = { ...selectedTarget, ...data };
-    console.log("updatedTarget", updatedTarget);
+    //console.log("updatedTarget", updatedTarget);
     updateTarget(updatedTarget);
   };
 

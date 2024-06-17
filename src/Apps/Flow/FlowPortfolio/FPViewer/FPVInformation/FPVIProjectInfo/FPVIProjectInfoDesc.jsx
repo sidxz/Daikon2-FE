@@ -20,15 +20,15 @@ const FPVIProjectInfoDesc = () => {
 
   let projectDescData = [
     {
-      name: "H2L Description",
+      name: "H2L",
       value: selectedProject.h2LDescription,
     },
     {
-      name: "LO Description",
+      name: "LO",
       value: selectedProject.loDescription,
     },
     {
-      name: "SP Description",
+      name: "SP",
       value: selectedProject.spDescription,
     },
   ];
@@ -64,7 +64,7 @@ const FPVIProjectInfoDesc = () => {
     );
 
   return (
-    <>
+    <div className="flex w-full">
       <div className="flex flex-column min-w-full border-0">
         <div className="table-header flex flex-row w-full shadow-0 fadein">
           <div className="flex justify-content-end w-full">
@@ -79,7 +79,7 @@ const FPVIProjectInfoDesc = () => {
             </div>
           </div>
         </div>
-        <div className="flex w-full gap-1">
+        <div className="flex w-full gap-1 ">
           <DataTable
             value={projectDescData}
             className="HideDataTableHeader w-full"
@@ -91,7 +91,6 @@ const FPVIProjectInfoDesc = () => {
                 if (!rowData?.value) {
                   return (
                     <div className="w-full">
-                      A description/note has not been provided.{" "}
                       <span
                         className="text-primary"
                         onClick={() => setVisible(true)}
@@ -193,7 +192,7 @@ const FPVIProjectInfoDesc = () => {
           </form>
         </div>
       </Sidebar>
-    </>
+    </div>
   );
 };
 

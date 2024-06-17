@@ -1,5 +1,6 @@
 import { configure } from "mobx";
 import { createContext } from "react";
+import AdminRoleManagementStore from "./Apps/Admin/AdminRoleManagement/Stores/AdminRoleManagementStore";
 import AdminUserManagementStore from "./Apps/Admin/AdminUserManagement/Stores/AdminUserManagementStore";
 import CommentStore from "./Apps/Comments/Stores/CommentStore";
 import GeneCrispriStrainStore from "./Apps/Flow/FlowGene/Stores/GeneCrispriStrainStore";
@@ -64,6 +65,7 @@ export class RootStore {
   moleculeStore;
 
   adminUserManagementStore;
+  adminRoleManagementStore;
 
   qnaireStore;
 
@@ -113,6 +115,7 @@ export class RootStore {
 
     /* Admin */
     this.adminUserManagementStore = new AdminUserManagementStore(this);
+    this.adminRoleManagementStore = new AdminRoleManagementStore(this);
 
     /* Questionnaire */
     this.qnaireStore = new QnaireStore(this);

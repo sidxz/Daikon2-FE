@@ -25,6 +25,7 @@ const Comment = ({ id }) => {
     isDeletingComment,
     isUpdatingComment,
   } = rootStore.commentStore;
+  const { appVars, user } = rootStore.authStore;
   const [comment, setComment] = useState({ ...getComment(id) });
   useState(() => {
     fetchComment(id);
@@ -50,8 +51,9 @@ const Comment = ({ id }) => {
     return <></>;
   }
 
-  const commentMenuItems = [
-    {
+  const commentMenuItems = [];
+  if (user.id === comment.createdById) {
+    commentMenuItems.push({
       items: [
         {
           label: "Edit",
@@ -78,8 +80,20 @@ const Comment = ({ id }) => {
           },
         },
       ],
-    },
-  ];
+    });
+  } else {
+    commentMenuItems.push({
+      items: [
+        {
+          label: "No available actions",
+          icon: "pi pi-exclamation-triangle",
+          command: () => {
+            console.log("No available actions");
+          },
+        },
+      ],
+    });
+  }
 
   let skeletonRender = (
     <div className="flex w-full justify-content-center">

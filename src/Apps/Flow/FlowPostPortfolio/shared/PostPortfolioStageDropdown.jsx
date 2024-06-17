@@ -58,7 +58,7 @@ const PostPortfolioStageDropdown = ({ readOnlyStage, readOnly = false }) => {
   // Event handler for updating the selected stage
   // and making the confirm dialog visible
   const handleStageChange = (e) => {
-    console.log(e);
+    //console.log(e);
     setSelectedStage(e.value);
     setConfirmDialogVisible(true);
   };
@@ -74,7 +74,7 @@ const PostPortfolioStageDropdown = ({ readOnlyStage, readOnly = false }) => {
   // Temporarily handle new stage as NA
 
   if (readOnly) {
-    console.log("readOnlyStage", readOnlyStage);
+    //console.log("readOnlyStage", readOnlyStage);
     if (readOnlyStage === null) {
       return (
         <div className="flex align-items-center align-self-center gap-2">
@@ -86,7 +86,7 @@ const PostPortfolioStageDropdown = ({ readOnlyStage, readOnly = false }) => {
       );
     }
     return (
-      <div className="flex align-items-center gap-2 bg-white p-2 m-0">
+      <div className="flex align-items-center gap-2 bg-white p-2 pl-3 pr-3 m-0 border-1 border-50 border-round-md">
         <div className="flex flex-column">
           {stages.find((option) => option.value === readOnlyStage)?.icon}
         </div>

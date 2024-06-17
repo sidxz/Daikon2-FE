@@ -41,7 +41,7 @@ const PortfolioCompoundEvolutionAdd = ({ project, closeSideBar }) => {
     onSubmit: (cEvoToAdd) => {
       cEvoToAdd.projectId = project.id;
       cEvoToAdd.stage = project.stage;
-      console.log(cEvoToAdd);
+      //console.log(cEvoToAdd);
       //return;
       addProjectCEvo(cEvoToAdd).then(() => {
         closeSideBar();

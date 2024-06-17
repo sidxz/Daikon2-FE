@@ -12,7 +12,9 @@ import Support from "../Apps/Support/Support";
 import Login from "../Auth/Login/Login";
 import UnauthorizedUser from "../Auth/UnauthorizedUser/UnauthorizedUser";
 import Loading from "../Library/Loading/Loading";
+import NotFound from "../Library/NotFound/NotFound";
 import { RootStoreContext } from "../RootStore";
+import { AppRoleResolver } from "../Shared/VariableResolvers/AppRoleResolver";
 import Footer from "./Footer/Footer";
 import TitleBar from "./TitleBar/TitleBar";
 
@@ -30,6 +32,8 @@ const Container = ({ userManager }) => {
     globalValues,
     appVars,
   } = authStore;
+
+  const { isUserInAnyOfRoles } = AppRoleResolver();
 
   useEffect(() => {
     const fetchSSOUser = async () => {
@@ -70,9 +74,9 @@ const Container = ({ userManager }) => {
     return <Loading message={"Fetching app data..."} />;
   if (!user) return <UnauthorizedUser onSignOut={signOut} ssoUser={ssoUser} />;
 
-  console.log("Container user", user);
-  console.log("Container appVars", appVars);
-  console.log("Container globalValues", globalValues);
+  // console.log("Container user", user);
+  // console.log("Container appVars", appVars);
+  // console.log("Container globalValues", globalValues);
 
   return (
     <div className="App">
@@ -83,10 +87,15 @@ const Container = ({ userManager }) => {
       <Routes>
         <Route index element={<Navigate replace to="wf/" />} />
         <Route path="wf/*" element={<Flow />} />
-        <Route path="admin/*" element={<Admin />} />
-        <Route path="moleculogix/*" element={<MolecuLogix />} />
-        <Route path="questionnaire/*" element={<Questionnaire />} />
         <Route path="support/*" element={<Support />} />
+        <Route path="moleculogix/*" element={<MolecuLogix />} />
+        {isUserInAnyOfRoles(["APP-ADMIN"]) && (
+          <Route path="admin/*" element={<Admin />} />
+        )}
+        {isUserInAnyOfRoles(["APP-ADMIN"]) && (
+          <Route path="questionnaire/*" element={<Questionnaire />} />
+        )}
+        <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
     </div>

@@ -13,6 +13,7 @@ import { appColors } from "../../../../../constants/colors";
 import { HAIcon } from "../../../icons/HAIcon";
 import * as Helper from "./FHaVSettingsHelper";
 import FHaVSettingsDates from "./components/FHaVSettingsDates";
+import FHaVSettingsOrgs from "./components/FHaVSettingsOrgs";
 import FHaVSettingsRemove from "./components/FHaVSettingsRemove";
 import FHaVSettingsRename from "./components/FHaVSettingsRename";
 
@@ -29,7 +30,7 @@ const FHaVSettings = () => {
       selectedHa?.id !== params?.id ||
       !isHaRegistryCacheValid
     ) {
-      console.log("Fetching Ha");
+      //console.log("Fetching Ha");
       fetchHa(params.id);
     }
   }, [params.id, fetchHa, selectedHa, isHaRegistryCacheValid]);
@@ -65,7 +66,7 @@ const FHaVSettings = () => {
               HA Dates
             </>
           }
-          className="w-full bg-orange-50	border-1 border-yellow-400	"
+          className="w-full border-1 border-50"
         >
           <p className="m-0 p-2">
             Adjusting the dates below will alter the HA dates within the app.
@@ -73,8 +74,21 @@ const FHaVSettings = () => {
           <FHaVSettingsDates />
         </Fieldset>
       </div>
+      <div className="flex w-full mt-2">
+        <Fieldset
+          legend={
+            <>
+              <FcLowPriority className="mr-2" />
+              Orgs
+            </>
+          }
+          className="w-full border-1 border-50"
+        >
+          <FHaVSettingsOrgs />
+        </Fieldset>
+      </div>
 
-      <div className="flex w-full  mt-2">
+      <div className="flex w-full mt-2">
         <Fieldset
           legend={
             <>

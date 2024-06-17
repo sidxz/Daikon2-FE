@@ -37,7 +37,7 @@ const FPPVSettingsUpdateAssociation = () => {
     }
   }, [haList, selectedProject.haId]);
 
-  console.log("selectedHa", selectedHa);
+  //console.log("selectedHa", selectedHa);
 
   let submit = () => {
     var projectToSubmit = {};
@@ -48,7 +48,7 @@ const FPPVSettingsUpdateAssociation = () => {
     projectToSubmit.hitCompoundId = selectedHa.compoundId;
     projectToSubmit.hitId = selectedHa.hitId;
 
-    console.log(projectToSubmit);
+    //console.log(projectToSubmit);
     updateProjectAssociation(projectToSubmit);
   };
 

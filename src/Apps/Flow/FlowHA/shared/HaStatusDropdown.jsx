@@ -35,7 +35,7 @@ const HaStatusDropdown = ({ readOnlyStatus, readOnly = false }) => {
       (option) => option.value === readOnlyStatus
     )?.name;
     return (
-      <div className="flex align-items-center gap-2 bg-white p-2 m-0">
+      <div className="flex align-items-center gap-2 bg-white p-2 pl-3 pr-3 m-0 border-1 border-50 border-round-md">
         <div className="flex flex-column">
           {statuses.find((option) => option.value === readOnlyStatus)?.icon}
         </div>
@@ -84,7 +84,7 @@ const HaStatusDropdown = ({ readOnlyStatus, readOnly = false }) => {
   // Event handler for updating the selected status
   // and making the confirm dialog visible
   const handleStatusChange = (e) => {
-    console.log(e);
+    //console.log(e);
     setSelectedStatus(e.value);
     setConfirmDialogVisible(true);
   };

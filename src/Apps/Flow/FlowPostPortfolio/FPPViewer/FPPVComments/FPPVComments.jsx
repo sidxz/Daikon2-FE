@@ -6,11 +6,13 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SecHeading from "../../../../../Library/SecHeading/SecHeading";
 import { AppOrgResolver } from "../../../../../Shared/VariableResolvers/AppOrgResolver";
+import { AppRoleResolver } from "../../../../../Shared/VariableResolvers/AppRoleResolver";
 import { appColors } from "../../../../../constants/colors";
 import AddComment from "../../../../Comments/AddComment/AddComment";
 import CommentsByTags from "../../../../Comments/CommentsByTags/CommentsByTags";
 import ScreenViewAPI from "../../../FlowScreen/api/ScreenViewAPI";
 import { PostPortfolioIcon } from "../../../icons/PostPortfolioIcon";
+import { PostPortfolioAdminRoleName } from "../../constants/roles";
 import PostPortfolioStageDropdown from "../../shared/PostPortfolioStageDropdown";
 
 const FPPVComments = ({ selectedProject }) => {
@@ -18,6 +20,7 @@ const FPPVComments = ({ selectedProject }) => {
   const navigate = useNavigate();
 
   const { getOrgNameById } = AppOrgResolver();
+  const { isUserInAnyOfRoles } = AppRoleResolver();
 
   let [screenTag, setScreenTag] = useState(null);
   let [isScreenTagFetched, setIsScreenTagFetched] = useState(false);
@@ -29,7 +32,7 @@ const FPPVComments = ({ selectedProject }) => {
     });
   }
 
-  console.log("screenTag", screenTag);
+  //console.log("screenTag", screenTag);
 
   const breadCrumbItems = [
     {
@@ -47,6 +50,27 @@ const FPPVComments = ({ selectedProject }) => {
     { label: "Discussion" },
   ];
 
+  var titleBarButtons = [];
+
+  if (isUserInAnyOfRoles([PostPortfolioAdminRoleName])) {
+    titleBarButtons.push(<PostPortfolioStageDropdown />);
+  } else {
+    titleBarButtons.push(
+      <PostPortfolioStageDropdown
+        readOnly={true}
+        readOnlyStage={selectedProject.stage}
+      />
+    );
+  }
+
+  titleBarButtons.push(
+    <Chip
+      label={getOrgNameById(selectedProject?.primaryOrgId)}
+      icon="ri-organization-chart"
+      className="mr-3"
+    />
+  );
+
   return (
     <div className="flex flex-column w-full">
       <div className="flex w-full">
@@ -59,14 +83,7 @@ const FPPVComments = ({ selectedProject }) => {
           displayHorizon={true}
           color={appColors.sectionHeadingBg.project}
           entryPoint={selectedProject?.id}
-          customElements={[
-            <PostPortfolioStageDropdown />,
-            <Chip
-              label={getOrgNameById(selectedProject?.primaryOrgId)}
-              icon="ri-organization-chart"
-              className="mr-3"
-            />,
-          ]}
+          customElements={titleBarButtons}
         />
       </div>
       <div className="flex w-full pt-1">

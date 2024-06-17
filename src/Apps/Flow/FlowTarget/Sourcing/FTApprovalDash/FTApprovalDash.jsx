@@ -30,7 +30,7 @@ const FTApprovalDash = () => {
     return <Loading message={"Fetching Targets..."} />;
   }
 
-  console.log("FTApproval -> TQUnapproved", TQUnapproved);
+  //console.log("FTApproval -> TQUnapproved", TQUnapproved);
 
   // construct the list of questionnaires
   const qListElements = TQUnapproved?.map((q) => {

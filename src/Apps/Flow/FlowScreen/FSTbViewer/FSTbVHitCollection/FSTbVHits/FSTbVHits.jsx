@@ -1,5 +1,4 @@
 import { observer } from "mobx-react-lite";
-import { BlockUI } from "primereact/blockui";
 import { Button } from "primereact/button";
 import { Column } from "primereact/column";
 import { confirmDialog } from "primereact/confirmdialog";
@@ -8,8 +7,11 @@ import { Dialog } from "primereact/dialog";
 import { Sidebar } from "primereact/sidebar";
 import React, { useContext, useEffect, useState } from "react";
 import Loading from "../../../../../../Library/Loading/Loading";
+import LoadingBlockUI from "../../../../../../Library/LoadingBlockUI/LoadingBlockUI";
 import { RootStoreContext } from "../../../../../../RootStore";
 import { TextRowEditor } from "../../../../../../Shared/TableRowEditors/TextRowEditor";
+import { AppRoleResolver } from "../../../../../../Shared/VariableResolvers/AppRoleResolver";
+import { ScreenAdminRoleName } from "../../../constants/roles";
 import Vote from "../../../shared/Vote/Vote";
 import FSTbVHAddHit from "./FSTbVHitsHelper/FSTbVHAddHit";
 import { FSTbVHDataTableHeader } from "./FSTbVHitsHelper/FSTbVHDataTableHeader";
@@ -36,6 +38,8 @@ const FSTbVHits = ({ id }) => {
     isBatchInsertingHits,
   } = rootStore.hitStore;
   const { user } = rootStore.authStore;
+
+  const { isUserInAnyOfRoles } = AppRoleResolver();
 
   useEffect(() => {
     if (
@@ -97,6 +101,8 @@ const FSTbVHits = ({ id }) => {
     return (
       <Vote
         hit={rowData}
+        hitCollection={selectedHitCollection}
+        screen={selectedScreen}
         isUpdatingHit={isUpdatingHit}
         updateHit={updateHit}
         userId={user.id}
@@ -111,7 +117,7 @@ const FSTbVHits = ({ id }) => {
       <>
         <div className="flex flex-column w-full">
           <div className="flex w-full">
-            <BlockUI
+            <LoadingBlockUI
               blocked={
                 isDeletingHit ||
                 isAddingHit ||
@@ -216,9 +222,11 @@ const FSTbVHits = ({ id }) => {
                   // headerStyle={{ width: "10%", minWidth: "8rem" }}
                   bodyStyle={{ textAlign: "center" }}
                 />
-                <Column body={deleteBodyTemplate} header="Delete" />
+                {isUserInAnyOfRoles([ScreenAdminRoleName]) && (
+                  <Column body={deleteBodyTemplate} header="Delete" />
+                )}
               </DataTable>
-            </BlockUI>
+            </LoadingBlockUI>
           </div>
         </div>
         <Sidebar

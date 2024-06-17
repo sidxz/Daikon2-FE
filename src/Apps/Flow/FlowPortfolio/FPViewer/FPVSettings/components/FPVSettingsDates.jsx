@@ -1,4 +1,5 @@
 import { Formik } from "formik";
+import { observer } from "mobx-react-lite";
 import { Button } from "primereact/button";
 import { Calendar } from "primereact/calendar";
 import React, { useContext } from "react";
@@ -25,7 +26,7 @@ const FPVSettingsDates = ({}) => {
 
   const onFormikSubmit = (data) => {
     const updatedProject = { ...selectedProject, ...data };
-    console.log("updatedProject", updatedProject);
+    //console.log("updatedProject", updatedProject);
     updateProject(updatedProject);
   };
 
@@ -162,4 +163,4 @@ const FPVSettingsDates = ({}) => {
   );
 };
 
-export default FPVSettingsDates;
+export default observer(FPVSettingsDates);

@@ -4,7 +4,10 @@ import React, { useContext, useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router";
 import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../../../../Library/Loading/Loading";
+import NotFound from "../../../../Library/NotFound/NotFound";
 import { RootStoreContext } from "../../../../RootStore";
+import { AppRoleResolver } from "../../../../Shared/VariableResolvers/AppRoleResolver";
+import { PortfolioAdminRoleName } from "../constants/roles";
 import FPVComments from "./FPVComments/FPVComments";
 import FPVInformation from "./FPVInformation/FPVInformation";
 import FPVSettings from "./FPVSettings/FPVSettings";
@@ -21,13 +24,15 @@ const FPViewer = () => {
     isProjectRegistryCacheValid,
   } = rootStore.projectStore;
 
+  const { isUserInAnyOfRoles } = AppRoleResolver();
+
   useEffect(() => {
     if (
       selectedProject === undefined ||
       selectedProject?.id !== params?.id ||
       !isProjectRegistryCacheValid
     ) {
-      console.log("Fetching Project");
+      //console.log("Fetching Project");
       fetchProject(params.id);
     }
   }, [params.id, fetchProject, selectedProject, isProjectRegistryCacheValid]);
@@ -36,7 +41,7 @@ const FPViewer = () => {
     return <Loading message={"Fetching Project..."} />;
   }
 
-  console.log("FProjectViewer -> selectedProject", selectedProject);
+  //console.log("FProjectViewer -> selectedProject", selectedProject);
 
   if (selectedProject) {
     return (
@@ -53,7 +58,10 @@ const FPViewer = () => {
                 path="discussion/*"
                 element={<FPVComments selectedProject={selectedProject} />}
               />
-              <Route path="settings/*" element={<FPVSettings />} />
+              {isUserInAnyOfRoles([PortfolioAdminRoleName]) && (
+                <Route path="settings/*" element={<FPVSettings />} />
+              )}
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </div>
         </div>

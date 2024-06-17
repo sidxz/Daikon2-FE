@@ -40,7 +40,7 @@ const Horizon = ({ entryPoint }) => {
     return <ProgressBar mode="indeterminate" style={{ height: "6px" }} />;
   }
 
-  console.log(selectedHorizon);
+  //console.log(selectedHorizon);
 
   if (selectedHorizon !== null && !isFetchingHorizon) {
     return (

@@ -2,6 +2,7 @@ import { observer } from "mobx-react-lite";
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import AdminMenuBar from "./AdminMenuBar/AdminMenuBar";
+import AdminRoleManagement from "./AdminRoleManagement/AdminRoleManagement";
 import AdminUserManagement from "./AdminUserManagement/AdminUserManagement";
 const Admin = () => {
   return (
@@ -13,6 +14,7 @@ const Admin = () => {
         <Routes>
           <Route index element={<AdminUserManagement />} />
           <Route path="user-management/*" element={<AdminUserManagement />} />
+          <Route path="role-management/*" element={<AdminRoleManagement />} />
         </Routes>
       </div>
     </div>

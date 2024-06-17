@@ -45,7 +45,7 @@ const FPDOverview = () => {
     return <Loading message={"Fetching Projects..."} />;
   }
 
-  console.log("projectList", projectList);
+  //console.log("projectList", projectList);
 
   return (
     <div className="flex flex-column w-full">
