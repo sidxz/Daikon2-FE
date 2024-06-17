@@ -50,7 +50,7 @@ const FSPhViewer = () => {
 
   let renderAdminModules = isUserInAnyOfRoles([ScreenAdminRoleName]);
 
-  if (selectedScreen) {
+  if (selectedScreen && selectedScreen?.id === params?.id) {
     return (
       <div className="flex w-full">
         <div className="flex gap-2 w-full">
