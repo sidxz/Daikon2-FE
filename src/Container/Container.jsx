@@ -74,9 +74,15 @@ const Container = ({ userManager }) => {
     return <Loading message={"Fetching app data..."} />;
   if (!user) return <UnauthorizedUser onSignOut={signOut} ssoUser={ssoUser} />;
 
-  // console.log("Container user", user);
-  // console.log("Container appVars", appVars);
-  // console.log("Container globalValues", globalValues);
+  console.log("Container user", user);
+  console.log("Container appVars", appVars);
+  console.log("Container globalValues", globalValues);
+  console.log(
+    "Connected to Server Version : ",
+    globalValues?.appVersion?.version,
+    " - ",
+    globalValues?.appVersion?.name
+  );
 
   return (
     <div className="App">

@@ -33,7 +33,7 @@ const AD_UM_Orgs = () => {
       <div className="flex w-full">
         <SecHeading
           icon="pi pi-fw pi-user-plus"
-          heading="User Management"
+          heading="Orgs Management"
           color={appColors.admin.userManagement.orgs}
           customButtons={[
             {
