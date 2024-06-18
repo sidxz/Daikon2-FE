@@ -50,7 +50,7 @@ const MLogixMoleculeView = () => {
             </div>
 
             <div className="flex w-full gap-2">
-              <div className="flex">
+              <div className="flex max-w-7">
                 <MLMViewGeneralInfo selectedMolecule={selectedMolecule} />
               </div>
               <div className="flex">
