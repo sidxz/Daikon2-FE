@@ -58,7 +58,13 @@ const FHaVSettingsDates = ({}) => {
               isSubmitting,
               /* and other goodies */
             }) => (
-              <form onSubmit={handleSubmit} className="p-fluid">
+              <form
+                onSubmit={handleSubmit}
+                className="p-fluid"
+                onKeyDown={(e) => {
+                  e.key === "Enter" && e.preventDefault();
+                }}
+              >
                 <div className="flex gap-3">
                   <div className="flex gap-4">
                     <div className="field">

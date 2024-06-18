@@ -38,6 +38,13 @@ const FPPVSettingsDates = ({}) => {
     updateProject(updatedProject);
   };
 
+  const handleKeyDown = (event) => {
+    console.log("event.key", event.key);
+    if (event.key === "Enter") {
+      event.preventDefault();
+    }
+  };
+
   return (
     <div className="flex flex-column min-w-full fadein animation-duration-500">
       <div className="card w-full p-3">
@@ -61,7 +68,13 @@ const FPPVSettingsDates = ({}) => {
               isSubmitting,
               /* and other goodies */
             }) => (
-              <form onSubmit={handleSubmit} className="p-fluid">
+              <form
+                onSubmit={handleSubmit}
+                className="p-fluid"
+                onKeyDown={(e) => {
+                  e.key === "Enter" && e.preventDefault();
+                }}
+              >
                 <div className="flex flex-column">
                   <div className="flex gap-3">
                     <div className="field">

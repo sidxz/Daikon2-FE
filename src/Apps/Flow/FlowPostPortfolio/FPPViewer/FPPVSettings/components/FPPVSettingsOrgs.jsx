@@ -56,7 +56,13 @@ const FPPVSettingsOrgs = ({}) => {
               isSubmitting,
               /* and other goodies */
             }) => (
-              <form onSubmit={handleSubmit} className="p-fluid">
+              <form
+                onSubmit={handleSubmit}
+                className="p-fluid"
+                onKeyDown={(e) => {
+                  e.key === "Enter" && e.preventDefault();
+                }}
+              >
                 <div className="flex flex-column">
                   <div className="field">
                     <label htmlFor="primaryOrgId">Primary Organization</label>

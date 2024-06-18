@@ -194,6 +194,9 @@ const FSTbVSettings_Basic = () => {
                   className={classNames({
                     "p-invalid": isInvalid("latestStatusChangeDate"),
                   })}
+                  onKeyDown={(e) => {
+                    e.key === "Enter" && e.preventDefault();
+                  }}
                 />
               </div>
             </div>
