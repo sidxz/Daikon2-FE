@@ -6,6 +6,7 @@ import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import LoadingBlockUI from "../../../../../../Library/LoadingBlockUI/LoadingBlockUI";
 import { RootStoreContext } from "../../../../../../RootStore";
+import { DateInit } from "../../../../../../Shared/DateLib/DateInit";
 
 const FHaVSettingsDates = ({}) => {
   const navigate = useNavigate();
@@ -25,6 +26,10 @@ const FHaVSettingsDates = ({}) => {
 
   const onFormikSubmit = (data) => {
     const updatedHa = { ...selectedHa, ...data };
+    updatedHa.haPredictedStartDate = DateInit(updatedHa.haPredictedStartDate);
+    updatedHa.haStartDate = DateInit(updatedHa.haStartDate);
+    updatedHa.h2LPredictedStartDate = DateInit(updatedHa.h2LPredictedStartDate);
+
     //console.log("updatedHa", updatedHa);
     updateHa(updatedHa);
   };
@@ -35,9 +40,11 @@ const FHaVSettingsDates = ({}) => {
         <LoadingBlockUI blocked={isUpdatingHa}>
           <Formik
             initialValues={{
-              haPredictedStartDate: selectedHa?.haPredictedStartDate,
-              haStartDate: selectedHa?.haStartDate,
-              h2LPredictedStartDate: selectedHa?.h2LPredictedStartDate,
+              haPredictedStartDate: DateInit(selectedHa?.haPredictedStartDate),
+              haStartDate: DateInit(selectedHa?.haStartDate),
+              h2LPredictedStartDate: DateInit(
+                selectedHa?.h2LPredictedStartDate
+              ),
             }}
             onSubmit={onFormikSubmit}
           >
@@ -61,7 +68,7 @@ const FHaVSettingsDates = ({}) => {
                       <Calendar
                         id="haPredictedStartDate"
                         name="haPredictedStartDate"
-                        value={new Date(values?.haPredictedStartDate)}
+                        value={values?.haPredictedStartDate}
                         viewDate={values.haPredictedStartDate}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -74,7 +81,7 @@ const FHaVSettingsDates = ({}) => {
                       <Calendar
                         id="haStartDate"
                         name="haStartDate"
-                        value={new Date(values?.haStartDate)}
+                        value={values?.haStartDate}
                         viewDate={values.haStartDate}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -87,7 +94,7 @@ const FHaVSettingsDates = ({}) => {
                       <Calendar
                         id="h2LPredictedStartDate"
                         name="h2LPredictedStartDate"
-                        value={new Date(values?.h2LPredictedStartDate)}
+                        value={values?.h2LPredictedStartDate}
                         viewDate={values.h2LPredictedStartDate}
                         onChange={handleChange}
                         onBlur={handleBlur}

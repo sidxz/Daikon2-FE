@@ -9,6 +9,7 @@ import { classNames } from "primereact/utils";
 import React, { useContext, useEffect } from "react";
 import Loading from "../../../../../../Library/Loading/Loading";
 import { RootStoreContext } from "../../../../../../RootStore";
+import { DateInit } from "../../../../../../Shared/DateLib/DateInit";
 import InputOrg from "../../../../../../Shared/InputEditors/InputOrg";
 import { AppOrgResolver } from "../../../../../../Shared/VariableResolvers/AppOrgResolver";
 import { GlobalValuesResolver } from "../../../../../../Shared/VariableResolvers/GlobalValuesResolver";
@@ -44,7 +45,7 @@ const FSTbVSettings_Basic = () => {
       method: selectedScreen.method,
       primaryOrgId: selectedScreen.primaryOrgId,
       primaryOrgName: selectedScreen.primaryOrgName,
-      latestStatusChangeDate: selectedScreen.latestStatusChangeDate,
+      latestStatusChangeDate: DateInit(selectedScreen.latestStatusChangeDate),
 
       // participatingOrgsId: [],
     },
@@ -60,6 +61,9 @@ const FSTbVSettings_Basic = () => {
     onSubmit: (newScreen) => {
       var screenToSubmit = { ...selectedScreen, ...newScreen };
       screenToSubmit.primaryOrgName = getOrgNameById(newScreen.primaryOrgId);
+      screenToSubmit.latestStatusChangeDate = DateInit(
+        screenToSubmit.latestStatusChangeDate
+      );
 
       // if (newScreen.participatingOrgsId.length > 0) {
       //   newScreen.participatingOrgsId.forEach((orgId) => {
@@ -183,7 +187,7 @@ const FSTbVSettings_Basic = () => {
               <div className="flex">
                 <Calendar
                   id="latestStatusChangeDate"
-                  value={new Date(formik.values?.latestStatusChangeDate)}
+                  value={formik.values?.latestStatusChangeDate}
                   onChange={(e) =>
                     formik.setFieldValue("latestStatusChangeDate", e.value)
                   }
