@@ -109,6 +109,12 @@ class AxiosWithAuth {
           toast.error(errorMessage);
       }
     } else if (error.request) {
+      console.log("Error Request:", error.message);
+      if (error?.message?.includes("Network Error")) {
+        console.error(
+          "********* Server connection Error: Unable to connect to the server *********"
+        );
+      }
       console.error("No response received:", error.request);
       errorMessage =
         "The request was made but no response was received. Please check your network connection.";
