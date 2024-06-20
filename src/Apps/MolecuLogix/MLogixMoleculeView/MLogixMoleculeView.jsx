@@ -9,6 +9,7 @@ import { RootStoreContext } from "../../../RootStore";
 import { appColors } from "../../../constants/colors";
 import MLMViewGeneralInfo from "./MLMViewComponents/MLMViewGeneralInfo";
 import MLMViewStructure from "./MLMViewComponents/MLMViewStructure";
+import MLMViewStructureCanonical from "./MLMViewComponents/MLMViewStructureCanonical";
 import * as Helper from "./MLogixMoleculeViewHelper";
 
 const MLogixMoleculeView = () => {
@@ -55,6 +56,11 @@ const MLogixMoleculeView = () => {
               </div>
               <div className="flex">
                 <MLMViewStructure selectedMolecule={selectedMolecule} />
+              </div>
+              <div className="flex">
+                <MLMViewStructureCanonical
+                  selectedMolecule={selectedMolecule}
+                />
               </div>
             </div>
           </div>
