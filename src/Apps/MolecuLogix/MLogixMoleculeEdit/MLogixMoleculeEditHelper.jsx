@@ -2,18 +2,19 @@ export const sidePanelItems = (navigate, selectedMolecule) => {
   return [
     {
       label: "Sections",
-      items: [],
+      items: [
+        {
+          label: "View Molecule",
+          icon: "icon icon-conceptual icon-structures-3d",
+          command: () => {
+            navigate(`/moleculogix/molecule/${selectedMolecule.id}`);
+          },
+        },
+      ],
     },
     {
       label: "Actions",
       items: [
-        {
-          label: "Find Similar Molecules",
-          icon: "icon icon-common icon-database-submit",
-          command: () => {
-            navigate(`/moleculogix/search/${selectedMolecule.smilesCanonical}`);
-          },
-        },
         {
           label: "Edit Molecule",
           icon: "icon icon-common icon-edit",
@@ -39,6 +40,9 @@ export const breadCrumbItems = (selectedMolecule, navigate) => {
       command: () => {
         navigate(`/moleculogix/molecule/${selectedMolecule.id}`);
       },
+    },
+    {
+      label: "Edit",
     },
   ];
 };

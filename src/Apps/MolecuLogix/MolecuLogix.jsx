@@ -5,6 +5,7 @@ import MLogixAllMolecules from "./MLogixAllMolecules/MLogixAllMolecules";
 import MLogixDash from "./MLogixDash/MLogixDash";
 import MLogixDraw from "./MLogixDraw/MLogixDraw";
 import MLogixMenuBar from "./MLogixMenuBar/MLogixMenuBar";
+import MLogixMoleculeEdit from "./MLogixMoleculeEdit/MLogixMoleculeEdit";
 import MLogixMoleculeView from "./MLogixMoleculeView/MLogixMoleculeView";
 import MLogixSimilarSearch from "./MLogixSimilarSearch/MLogixSimilarSearch";
 
@@ -19,6 +20,7 @@ const MolecuLogix = () => {
           <Route index element={<Navigate to="search/" />} />
           <Route path="dash/" element={<MLogixDash />} />
           <Route path="all/" element={<MLogixAllMolecules />} />
+          <Route path="molecule/:id/edit" element={<MLogixMoleculeEdit />} />
           <Route path="molecule/:id" element={<MLogixMoleculeView />} />
           <Route path="search/:smiles" element={<MLogixSimilarSearch />} />
           <Route path="search/" element={<MLogixSimilarSearch />} />

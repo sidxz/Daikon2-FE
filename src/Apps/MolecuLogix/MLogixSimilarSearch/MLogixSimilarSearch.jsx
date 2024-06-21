@@ -23,7 +23,7 @@ import * as Helper from "./MLogixSimilarSearchHelper";
 const MLogixSimilarSearch = () => {
   const navigate = useNavigate();
   const params = useParams();
-  const [searchValue, setSearchValue] = useState(params.smiles || "");
+  const [searchValue, setSearchValue] = useState(params.smiles ?? "");
   const [searchResults, setSearchResults] = useState([]);
   const [similarityThreshold, setSimilarityThreshold] = useState(20);
 

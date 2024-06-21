@@ -170,7 +170,7 @@ const FSTbVHits = ({ id }) => {
                   ></Column>
                 )}
                 <Column
-                  field={(rowData) => rowData?.molecule?.smiles}
+                  field={(rowData) => rowData?.molecule?.smilesCanonical}
                   header="Structure"
                   body={StructureBodyTemplate}
                 />
