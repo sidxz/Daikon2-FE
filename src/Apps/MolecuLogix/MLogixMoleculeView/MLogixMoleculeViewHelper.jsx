@@ -1,10 +1,38 @@
+import { AppRoleResolver } from "../../../Shared/VariableResolvers/AppRoleResolver";
+import { MLogixAdminRoleName } from "../constants/roles";
+
 export const sidePanelItems = (navigate, selectedMolecule) => {
-  return [
+  const { isUserInAnyOfRoles } = AppRoleResolver();
+
+  let items = [
     {
       label: "Sections",
       items: [],
     },
-    {
+  ];
+
+  if (isUserInAnyOfRoles([MLogixAdminRoleName])) {
+    items.push({
+      label: "Actions",
+      items: [
+        {
+          label: "Find Similar Molecules",
+          icon: "icon icon-common icon-database-submit",
+          command: () => {
+            navigate(`/moleculogix/search/${selectedMolecule.smilesCanonical}`);
+          },
+        },
+        {
+          label: "Edit Molecule",
+          icon: "icon icon-common icon-edit",
+          command: () => {
+            navigate(`/moleculogix/molecule/${selectedMolecule.id}/edit`);
+          },
+        },
+      ],
+    });
+  } else {
+    items.push({
       label: "Actions",
       items: [
         {
@@ -15,8 +43,10 @@ export const sidePanelItems = (navigate, selectedMolecule) => {
           },
         },
       ],
-    },
-  ];
+    });
+  }
+
+  return items;
 };
 
 export const breadCrumbItems = (selectedMolecule, navigate) => {

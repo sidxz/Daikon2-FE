@@ -28,6 +28,9 @@ export default class MoleculeStore {
       registerMolecule: action,
       isRegisteringMolecule: observable,
 
+      updateMolecule: action,
+      isUpdatingMolecule: observable,
+
       findSimilarMolecules: action,
       isFindingSimilarMolecules: observable,
     });
@@ -40,6 +43,7 @@ export default class MoleculeStore {
   isMoleculeRegistryCacheValid = false;
   selectedMolecule = null;
   isRegisteringMolecule = false;
+  isUpdatingMolecule = false;
   isFindingSimilarMolecules = false;
 
   // Actions
@@ -150,6 +154,30 @@ export default class MoleculeStore {
     } finally {
       runInAction(() => {
         this.isRegisteringMolecule = false;
+      });
+    }
+  };
+
+  updateMolecule = async (molecule) => {
+    // reject if molecule smiles is not set
+    if (!molecule.requestedSMILES) {
+      toast.error("Molecule smiles is required");
+      throw new Error("Molecule smiles is required");
+    }
+
+    this.isUpdatingMolecule = true;
+    try {
+      const res = await MolDbAPI.updateMolecule(molecule);
+      runInAction(() => {
+        this.moleculeRegistry.set(res.id, res);
+        this.selectedMolecule = res;
+        toast.success("Molecule updated successfully");
+      });
+    } catch (error) {
+      console.error("Error updating molecule:", error);
+    } finally {
+      runInAction(() => {
+        this.isUpdatingMolecule = false;
       });
     }
   };

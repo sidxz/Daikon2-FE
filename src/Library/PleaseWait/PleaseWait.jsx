@@ -1,10 +1,10 @@
 import { ProgressBar } from "primereact/progressbar";
 import React from "react";
 
-const PleaseWait = () => {
+const PleaseWait = ({ height = "6px" }) => {
   return (
     <>
-      <ProgressBar mode="indeterminate" style={{ height: "6px" }} />
+      <ProgressBar mode="indeterminate" style={{ height: height }} />
     </>
   );
 };
