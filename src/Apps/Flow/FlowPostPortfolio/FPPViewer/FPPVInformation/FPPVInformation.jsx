@@ -10,6 +10,7 @@ import SecHeading from "../../../../../Library/SecHeading/SecHeading";
 import VisTimeline from "../../../../../Library/VisTimeline/VisTimeline";
 import { RootStoreContext } from "../../../../../RootStore";
 import { DateValidators } from "../../../../../Shared/Validators/DateValidators";
+import { isValidGuid } from "../../../../../Shared/Validators/GUIDValidator";
 import { AppOrgResolver } from "../../../../../Shared/VariableResolvers/AppOrgResolver";
 import { AppRoleResolver } from "../../../../../Shared/VariableResolvers/AppRoleResolver";
 import { appColors } from "../../../../../constants/colors";
@@ -223,17 +224,19 @@ const FPPVInformation = () => {
           />
         </Fieldset>
       </div>
-      <div className="flex w-full">
-        <Fieldset
-          className="m-0 flex-grow-1"
-          legend="Hit Assessment Compound Evolution"
-        >
-          <HaCompoundEvolution
-            haId={selectedProject.haId}
-            showMenuBar={false}
-          />
-        </Fieldset>
-      </div>
+      {isValidGuid(selectedProject.haId) && (
+        <div className="flex w-full">
+          <Fieldset
+            className="m-0 flex-grow-1"
+            legend="Hit Assessment Compound Evolution"
+          >
+            <HaCompoundEvolution
+              haId={selectedProject.haId}
+              showMenuBar={false}
+            />
+          </Fieldset>
+        </div>
+      )}
     </div>
   );
 };
