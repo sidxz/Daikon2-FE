@@ -3,6 +3,7 @@ import { isEqual } from "lodash";
 import { observer } from "mobx-react-lite";
 import { Button } from "primereact/button";
 import { Calendar } from "primereact/calendar";
+import { Dropdown } from "primereact/dropdown";
 import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
 import { classNames } from "primereact/utils";
@@ -10,10 +11,13 @@ import React, { useContext } from "react";
 import { toast } from "react-toastify";
 import LoadingBlockUI from "../../../../../../Library/LoadingBlockUI/LoadingBlockUI";
 import { RootStoreContext } from "../../../../../../RootStore";
+import { stagePostPortfolioOptions } from "../../../../FlowPostPortfolio/constants/stageOptions";
+import { stagePortfolioOptions } from "../../../constants/stageOptions";
 
 const PortfolioCompoundEvolutionEdit = ({ existingCEvo, closeSideBar }) => {
+  console.log("existingCEvo", existingCEvo);
   const rootStore = useContext(RootStoreContext);
-  const { isUpdatingProjectCEvo, updateProjectCEvo, selected } =
+  const { isUpdatingProjectCEvo, updateProjectCEvo } =
     rootStore.projectCompoundEvoStore;
 
   const formik = useFormik({
@@ -22,6 +26,7 @@ const PortfolioCompoundEvolutionEdit = ({ existingCEvo, closeSideBar }) => {
       notes: existingCEvo?.notes || "",
       mic: existingCEvo?.mic || null,
       iC50: existingCEvo?.iC50 || null,
+      stage: existingCEvo?.stage || null,
     },
 
     validate: (values) => {
@@ -34,7 +39,6 @@ const PortfolioCompoundEvolutionEdit = ({ existingCEvo, closeSideBar }) => {
 
     onSubmit: (cEvoToAdd) => {
       let updatedCEvo = { ...existingCEvo, ...cEvoToAdd };
-      //console.log(updatedCEvo);
 
       //console.log(cEvoToAdd);
       if (isEqual(existingCEvo, updatedCEvo)) {
@@ -142,6 +146,27 @@ const PortfolioCompoundEvolutionEdit = ({ existingCEvo, closeSideBar }) => {
               })}
             />
             {getErrorMessage("notes")}
+          </div>
+
+          <div className="field">
+            <label
+              htmlFor="stage"
+              className={classNames({ "p-error": isInvalid("stage") })}
+            >
+              Stage
+            </label>
+            <Dropdown
+              id="stage"
+              value={formik.values.stage}
+              options={[...stagePortfolioOptions, ...stagePostPortfolioOptions]}
+              onChange={formik.handleChange}
+              optionLabel="name"
+              optionValue="value"
+              className={classNames({
+                "p-invalid": isInvalid("stage"),
+              })}
+            />
+            {getErrorMessage("stage")}
           </div>
 
           <div className="flex justify-content-end">

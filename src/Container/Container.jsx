@@ -45,7 +45,7 @@ const Container = ({ userManager }) => {
         //console.log("SSO User Expires at", expiresAtDate);
         setSsoUser(_ssoUser);
         if (_ssoUser?.expired) {
-          //console.log("SSO User expired, redirecting to login...");
+          console.log("SSO User expired, redirecting to login...");
           await userManager.signinRedirect();
         }
         fetchUser();
