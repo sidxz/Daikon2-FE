@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import Loading from "../../../../../../Library/Loading/Loading";
 import LoadingBlockUI from "../../../../../../Library/LoadingBlockUI/LoadingBlockUI";
 import { RootStoreContext } from "../../../../../../RootStore";
+import { DateInit } from "../../../../../../Shared/DateLib/DateInit";
 
 const FPVSettingsDates = ({}) => {
   const navigate = useNavigate();
@@ -24,9 +25,26 @@ const FPVSettingsDates = ({}) => {
     return <Loading message={"Fetching Project..."} />;
   }
 
+  console.log("selectedProject", selectedProject);
+
   const onFormikSubmit = (data) => {
+    console.log("data", data);
     const updatedProject = { ...selectedProject, ...data };
-    //console.log("updatedProject", updatedProject);
+    updateProject.h2LPredictedStart = DateInit(
+      updatedProject.h2LPredictedStart
+    );
+    updateProject.h2LStart = DateInit(updatedProject.h2LStart);
+    updateProject.loPredictedStart = DateInit(updatedProject.loPredictedStart);
+    updateProject.loStart = DateInit(updatedProject.loStart);
+    updateProject.spPredictedStart = DateInit(updatedProject.spPredictedStart);
+    updateProject.spStart = DateInit(updatedProject.spStart);
+    updateProject.indPredictedStart = DateInit(
+      updatedProject.indPredictedStart
+    );
+    updateProject.indStart = DateInit(updatedProject.indStart);
+    updateProject.p1PredictedStart = DateInit(updatedProject.p1PredictedStart);
+    updateProject.p1Start = DateInit(updatedProject.p1Start);
+    console.log("updatedProject", updatedProject);
     updateProject(updatedProject);
   };
 
@@ -36,16 +54,16 @@ const FPVSettingsDates = ({}) => {
         <LoadingBlockUI blocked={isUpdatingProject}>
           <Formik
             initialValues={{
-              h2LPredictedStart: selectedProject?.h2LPredictedStart,
-              h2LStart: selectedProject?.h2LStart,
-              loPredictedStart: selectedProject?.loPredictedStart,
-              loStart: selectedProject?.loStart,
-              spPredictedStart: selectedProject?.spPredictedStart,
-              spStart: selectedProject?.spStart,
-              indPredictedStart: selectedProject?.indPredictedStart,
-              indStart: selectedProject?.indStart,
-              p1PredictedStart: selectedProject?.p1PredictedStart,
-              p1Start: selectedProject?.p1Start,
+              h2LPredictedStart: DateInit(selectedProject?.h2LPredictedStart),
+              h2LStart: DateInit(selectedProject?.h2LStart),
+              loPredictedStart: DateInit(selectedProject?.loPredictedStart),
+              loStart: DateInit(selectedProject?.loStart),
+              spPredictedStart: DateInit(selectedProject?.spPredictedStart),
+              spStart: DateInit(selectedProject?.spStart),
+              indPredictedStart: DateInit(selectedProject?.indPredictedStart),
+              indStart: DateInit(selectedProject?.indStart),
+              p1PredictedStart: DateInit(selectedProject?.p1PredictedStart),
+              p1Start: DateInit(selectedProject?.p1Start),
             }}
             onSubmit={onFormikSubmit}
           >
@@ -59,7 +77,13 @@ const FPVSettingsDates = ({}) => {
               isSubmitting,
               /* and other goodies */
             }) => (
-              <form onSubmit={handleSubmit} className="p-fluid">
+              <form
+                onSubmit={handleSubmit}
+                className="p-fluid"
+                onKeyDown={(e) => {
+                  e.key === "Enter" && e.preventDefault();
+                }}
+              >
                 <div className="flex flex-column">
                   <div className="flex gap-2">
                     <div className="field">
@@ -69,7 +93,7 @@ const FPVSettingsDates = ({}) => {
                       <Calendar
                         id="h2LPredictedStart"
                         name="h2LPredictedStart"
-                        value={new Date(values?.h2LPredictedStart)}
+                        value={values?.h2LPredictedStart}
                         viewDate={values.h2LPredictedStart}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -81,7 +105,7 @@ const FPVSettingsDates = ({}) => {
                       <Calendar
                         id="h2LStart"
                         name="h2LStart"
-                        value={new Date(values?.h2LStart)}
+                        value={values?.h2LStart}
                         viewDate={values.h2LStart}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -95,7 +119,7 @@ const FPVSettingsDates = ({}) => {
                       <Calendar
                         id="loPredictedStart"
                         name="loPredictedStart"
-                        value={new Date(values?.loPredictedStart)}
+                        value={values?.loPredictedStart}
                         viewDate={values.loPredictedStart}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -107,7 +131,7 @@ const FPVSettingsDates = ({}) => {
                       <Calendar
                         id="loStart"
                         name="loStart"
-                        value={new Date(values?.loStart)}
+                        value={values?.loStart}
                         viewDate={values.loStart}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -121,7 +145,7 @@ const FPVSettingsDates = ({}) => {
                       <Calendar
                         id="spPredictedStart"
                         name="spPredictedStart"
-                        value={new Date(values?.spPredictedStart)}
+                        value={values?.spPredictedStart}
                         viewDate={values.spPredictedStart}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -133,7 +157,7 @@ const FPVSettingsDates = ({}) => {
                       <Calendar
                         id="spStart"
                         name="spStart"
-                        value={new Date(values?.spStart)}
+                        value={values?.spStart}
                         viewDate={values.spStart}
                         onChange={handleChange}
                         onBlur={handleBlur}

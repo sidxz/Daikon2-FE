@@ -45,7 +45,7 @@ const Container = ({ userManager }) => {
         //console.log("SSO User Expires at", expiresAtDate);
         setSsoUser(_ssoUser);
         if (_ssoUser?.expired) {
-          //console.log("SSO User expired, redirecting to login...");
+          console.log("SSO User expired, redirecting to login...");
           await userManager.signinRedirect();
         }
         fetchUser();
@@ -77,6 +77,12 @@ const Container = ({ userManager }) => {
   // console.log("Container user", user);
   // console.log("Container appVars", appVars);
   // console.log("Container globalValues", globalValues);
+  console.log(
+    "Connected to Server Version : ",
+    globalValues?.appVersion?.version,
+    " - ",
+    globalValues?.appVersion?.name
+  );
 
   return (
     <div className="App">

@@ -11,6 +11,7 @@ import { Slider } from "primereact/slider";
 import React, { useContext, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import JSMEditor from "../../../Library/JSME/JSMEditor";
+import PleaseWait from "../../../Library/PleaseWait/PleaseWait";
 import SecHeading from "../../../Library/SecHeading/SecHeading";
 import { RootStoreContext } from "../../../RootStore";
 import { appColors } from "../../../constants/colors";
@@ -23,9 +24,10 @@ import * as Helper from "./MLogixSimilarSearchHelper";
 const MLogixSimilarSearch = () => {
   const navigate = useNavigate();
   const params = useParams();
-  const [searchValue, setSearchValue] = useState(params.smiles || "");
+  const [searchValue, setSearchValue] = useState(params.smiles ?? "");
   const [searchResults, setSearchResults] = useState([]);
   const [similarityThreshold, setSimilarityThreshold] = useState(20);
+  const [loading, setLoading] = useState(false); // Loading state
 
   const [displayAddSideBar, setDisplayAddSideBar] = useState(false);
 
@@ -33,14 +35,16 @@ const MLogixSimilarSearch = () => {
   const [showStructureEditor, setShowStructureEditor] = useState(false);
 
   const searchForSimilarMolecules = () => {
-    MolDbAPI.findSimilarMolecules(
-      searchValue,
-      similarityThreshold / 100,
-      10
-    ).then((response) => {
-      //console.log(response);
-      setSearchResults(response);
-    });
+    setLoading(true); // Set loading to true before the API call
+    MolDbAPI.findSimilarMolecules(searchValue, similarityThreshold / 100, 10)
+      .then((response) => {
+        setSearchResults(response);
+        setLoading(false); // Set loading to false after the API call
+      })
+      .catch((error) => {
+        console.error(error);
+        setLoading(false); // Set loading to false if there's an error
+      });
   };
 
   const searchItemTemplate = (molecule, index) => {
@@ -97,6 +101,7 @@ const MLogixSimilarSearch = () => {
                     <InputText
                       className="text-lg w-full"
                       value={searchValue}
+                      disabled={loading}
                       onChange={(e) => setSearchValue(e.target.value)}
                     />
                   </div>
@@ -106,6 +111,7 @@ const MLogixSimilarSearch = () => {
                       type="button"
                       icon={<MolecuLogixIcon size={32} />}
                       label="Structure Editor"
+                      disabled={loading}
                       onClick={() => setShowStructureEditor(true)}
                     />
                   </div>
@@ -116,6 +122,7 @@ const MLogixSimilarSearch = () => {
                       value={similarityThreshold}
                       onChange={(e) => setSimilarityThreshold(e.value)}
                       className="w-full"
+                      disabled={loading}
                     />
                   </div>
                   <div className="flex p-2">
@@ -125,6 +132,8 @@ const MLogixSimilarSearch = () => {
                 <div className="flex p-2">
                   <Button
                     label="Search"
+                    loading={loading}
+                    disabled={searchValue === ""}
                     onClick={() => searchForSimilarMolecules()}
                   />
                 </div>
@@ -132,11 +141,16 @@ const MLogixSimilarSearch = () => {
             </Fieldset>
           </div>
           <div className="flex w-full gap-2">
-            <div className="card">
-              <DataView
-                value={searchResults}
-                listTemplate={searchListTemplate}
-              />
+            <div className="card w-full m-2 fadein animation-duration-500">
+              {loading ? (
+                <PleaseWait height="50px" />
+              ) : (
+                <DataView
+                  className="fadein animation-duration-500"
+                  value={searchResults}
+                  listTemplate={searchListTemplate}
+                />
+              )}
             </div>
           </div>
         </div>

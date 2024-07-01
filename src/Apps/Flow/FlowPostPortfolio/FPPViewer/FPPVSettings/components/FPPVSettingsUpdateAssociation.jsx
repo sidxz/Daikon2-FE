@@ -65,7 +65,6 @@ const FPPVSettingsUpdateAssociation = () => {
           }}
           placeholder="Select HA"
           optionLabel="name"
-          autoFocus
           className="text-base text-color surface-overlay"
           loading={isUpdatingProject}
           readOnly={isUpdatingProject}

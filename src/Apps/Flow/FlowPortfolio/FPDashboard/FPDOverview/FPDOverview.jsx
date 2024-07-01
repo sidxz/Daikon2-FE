@@ -5,11 +5,13 @@ import { FcClock } from "react-icons/fc";
 import { GiTestTubes } from "react-icons/gi";
 import { IoMdList } from "react-icons/io";
 import Loading from "../../../../../Library/Loading/Loading";
+import PleaseWait from "../../../../../Library/PleaseWait/PleaseWait";
 import { RootStoreContext } from "../../../../../RootStore";
 import FPDOH2L from "./FPDOH2L/FPDOH2L";
 import FPDOLO from "./FPDOLO/FPDOLO";
 import FPDOReady from "./FPDOReady/FPDOReady";
 import FPDOSP from "./FPDOSP/FPDOSP";
+import { Skeleton } from "primereact/skeleton";
 
 const FPDOverview = () => {
   const rootStore = useContext(RootStoreContext);
@@ -70,8 +72,16 @@ const FPDOverview = () => {
             </div>
           </div>
           <div className="flex w-full pr-3">
-            <div className="flex w-full  pt-1  bg-white">
-              <FPDOReady />
+            <div className="flex w-full pt-1 bg-white">
+              {isFetchingHAs ? (
+                <Skeleton
+                  className="flex m-1 border-round-md border-0 shadow-1"
+                  width="100%"
+                  height="12rem"
+                />
+              ) : (
+                <FPDOReady />
+              )}
             </div>
           </div>
         </div>

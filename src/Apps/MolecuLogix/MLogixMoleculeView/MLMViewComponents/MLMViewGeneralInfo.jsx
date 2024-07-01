@@ -36,7 +36,7 @@ const MLMViewGeneralInfo = ({ selectedMolecule }) => {
       <Fieldset className="m-0 flex-grow-1" legend="General Information">
         <DataTable value={generalInfoData} className="HideDataTableHeader">
           <Column field="name"></Column>
-          <Column field="value"></Column>
+          <Column style={{ wordBreak: "break-all" }} field="value"></Column>
         </DataTable>
       </Fieldset>
     </div>

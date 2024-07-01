@@ -192,6 +192,7 @@ export default class AdminUserManagementStore {
       const org = await AdminOrgAPI.create(data);
       runInAction(() => {
         this.orgRegistry.set(org.id, org);
+        toast.success("Org Added successfully");
       });
     } catch (error) {
       console.error("Error adding org", error);
@@ -202,12 +203,13 @@ export default class AdminUserManagementStore {
     }
   };
 
-  updateOrg = async (id, data) => {
+  updateOrg = async (data) => {
     this.isUpdatingOrg = true;
     try {
-      await AdminOrgAPI.update(id, data);
+      await AdminOrgAPI.update(data.id, data);
       runInAction(() => {
-        this.orgRegistry.set(id, data);
+        this.orgRegistry.set(data.id, data);
+        toast.success("Org updated successfully");
       });
     } catch (error) {
       console.error("Error updating org", error);
