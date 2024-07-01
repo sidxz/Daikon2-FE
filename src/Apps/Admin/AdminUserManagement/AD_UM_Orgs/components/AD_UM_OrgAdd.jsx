@@ -1,6 +1,7 @@
 import { useFormik } from "formik";
 import { observer } from "mobx-react-lite";
 import { Button } from "primereact/button";
+import { InputSwitch } from "primereact/inputswitch";
 import { InputText } from "primereact/inputtext";
 import { classNames } from "primereact/utils";
 import React, { useContext, useEffect } from "react";
@@ -20,7 +21,9 @@ const AD_UM_OrgAdd = ({ closeSideBar }) => {
       alias: "",
       address: "",
       phone: "",
+      isInternal: false,
     },
+    enableReinitialize: true,
 
     validate: (values) => {
       const errors = {};
@@ -125,6 +128,30 @@ const AD_UM_OrgAdd = ({ closeSideBar }) => {
             })}
           />
           {getErrorMessage("phone")}
+        </div>
+
+        <div className="flex gap-4 m-2 align-items-center">
+          <div className="flex">
+            <label
+              htmlFor="isInternal"
+              className={classNames({
+                "p-error": isInvalid("isInternal"),
+              })}
+            >
+              Is Internal? Internal Orgs are not visible in UI org dropdowns.
+            </label>
+          </div>
+          <div className="flex">
+            <InputSwitch
+              id="isInternal"
+              checked={formik.values.isInternal}
+              onChange={(e) => formik.setFieldValue("isInternal", e.value)}
+              className={classNames({
+                "p-invalid": isInvalid("isInternal"),
+              })}
+            />
+            {getErrorMessage("isInternal")}
+          </div>
         </div>
 
         <div className="field">

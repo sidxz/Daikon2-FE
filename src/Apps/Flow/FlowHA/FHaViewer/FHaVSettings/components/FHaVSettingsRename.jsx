@@ -39,7 +39,13 @@ const FHaVSettingsRename = () => {
   return (
     <BlockUI blocked={isRenamingHa || isFetchingHa}>
       <div className="card w-full p-3">
-        <form onSubmit={formik.handleSubmit} className="p-fluid">
+        <form
+          onSubmit={formik.handleSubmit}
+          className="p-fluid"
+          onKeyDown={(e) => {
+            e.key === "Enter" && e.preventDefault();
+          }}
+        >
           <div className="field">
             <label
               htmlFor="name"

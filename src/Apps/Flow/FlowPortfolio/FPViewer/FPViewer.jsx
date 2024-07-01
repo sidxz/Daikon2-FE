@@ -41,7 +41,7 @@ const FPViewer = () => {
     return <Loading message={"Fetching Project..."} />;
   }
 
-  //console.log("FProjectViewer -> selectedProject", selectedProject);
+  console.log("FProjectViewer -> selectedProject", selectedProject);
 
   if (selectedProject) {
     return (

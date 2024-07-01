@@ -111,6 +111,7 @@ const FSPhVHits = ({ id }) => {
   };
 
   if (selectedHitCollection !== undefined && !isFetchingHitCollection) {
+    console.log("selectedHitCollection", selectedHitCollection);
     return (
       <>
         <div className="flex flex-column w-full">
@@ -168,7 +169,7 @@ const FSPhVHits = ({ id }) => {
                   ></Column>
                 )}
                 <Column
-                  field={(rowData) => rowData?.molecule?.smiles}
+                  field={(rowData) => rowData?.molecule?.smilesCanonical}
                   header="Structure"
                   body={StructureBodyTemplate}
                 />

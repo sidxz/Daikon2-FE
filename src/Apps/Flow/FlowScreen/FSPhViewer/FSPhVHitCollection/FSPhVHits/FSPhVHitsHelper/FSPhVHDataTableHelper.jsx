@@ -14,7 +14,7 @@ export const StructureBodyTemplate = (rowData) => {
         </div>
         <div className="flex">
           <SmilesView
-            smiles={rowData?.requestedSMILES}
+            smiles={rowData?.molecule?.smilesCanonical}
             compoundId={rowData?.molecule?.id}
             width={"250"}
             height={"250"}

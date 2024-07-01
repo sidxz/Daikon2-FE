@@ -86,9 +86,6 @@ export default class ProjectCompoundEvoStore {
     }
     cEvo.hitId = cEvo.id;
 
-    // set stage to H2L
-    cEvo.stage = this.rootStore.projectStore.selectedProject.stage || "H2L";
-
     //console.log("updateProjectCEvo", cEvo);
 
     try {

@@ -43,7 +43,13 @@ const FPVSettingsRename = () => {
   return (
     <BlockUI blocked={isRenamingProject || isFetchingProject}>
       <div className="card w-full">
-        <form onSubmit={formik.handleSubmit} className="p-fluid">
+        <form
+          onSubmit={formik.handleSubmit}
+          className="p-fluid"
+          onKeyDown={(e) => {
+            e.key === "Enter" && e.preventDefault();
+          }}
+        >
           <div className="field">
             <label
               htmlFor="name"

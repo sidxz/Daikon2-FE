@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import Loading from "../../../../../../Library/Loading/Loading";
 import LoadingBlockUI from "../../../../../../Library/LoadingBlockUI/LoadingBlockUI";
 import { RootStoreContext } from "../../../../../../RootStore";
+import { DateInit } from "../../../../../../Shared/DateLib/DateInit";
 
 const FPPVSettingsDates = ({}) => {
   const navigate = useNavigate();
@@ -25,8 +26,23 @@ const FPPVSettingsDates = ({}) => {
 
   const onFormikSubmit = (data) => {
     const updatedProject = { ...selectedProject, ...data };
+
+    updatedProject.indPredictedStart = DateInit(
+      updatedProject.indPredictedStart
+    );
+    updatedProject.indStart = DateInit(updatedProject.indStart);
+    updatedProject.p1PredictedStart = DateInit(updatedProject.p1PredictedStart);
+    updatedProject.p1Start = DateInit(updatedProject.p1Start);
+
     //console.log("updatedProject", updatedProject);
     updateProject(updatedProject);
+  };
+
+  const handleKeyDown = (event) => {
+    console.log("event.key", event.key);
+    if (event.key === "Enter") {
+      event.preventDefault();
+    }
   };
 
   return (
@@ -35,10 +51,10 @@ const FPPVSettingsDates = ({}) => {
         <LoadingBlockUI blocked={isUpdatingProject}>
           <Formik
             initialValues={{
-              indPredictedStart: selectedProject?.indPredictedStart,
-              indStart: selectedProject?.indStart,
-              p1PredictedStart: selectedProject?.p1PredictedStart,
-              p1Start: selectedProject?.p1Start,
+              indPredictedStart: DateInit(selectedProject?.indPredictedStart),
+              indStart: DateInit(selectedProject?.indStart),
+              p1PredictedStart: DateInit(selectedProject?.p1PredictedStart),
+              p1Start: DateInit(selectedProject?.p1Start),
             }}
             onSubmit={onFormikSubmit}
           >
@@ -52,7 +68,13 @@ const FPPVSettingsDates = ({}) => {
               isSubmitting,
               /* and other goodies */
             }) => (
-              <form onSubmit={handleSubmit} className="p-fluid">
+              <form
+                onSubmit={handleSubmit}
+                className="p-fluid"
+                onKeyDown={(e) => {
+                  e.key === "Enter" && e.preventDefault();
+                }}
+              >
                 <div className="flex flex-column">
                   <div className="flex gap-3">
                     <div className="field">
@@ -62,7 +84,7 @@ const FPPVSettingsDates = ({}) => {
                       <Calendar
                         id="indPredictedStart"
                         name="indPredictedStart"
-                        value={new Date(values?.indPredictedStart)}
+                        value={values?.indPredictedStart}
                         viewDate={values.indPredictedStart}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -74,7 +96,7 @@ const FPPVSettingsDates = ({}) => {
                       <Calendar
                         id="indStart"
                         name="indStart"
-                        value={new Date(values?.indStart)}
+                        value={values?.indStart}
                         viewDate={values.indStart}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -88,7 +110,7 @@ const FPPVSettingsDates = ({}) => {
                       <Calendar
                         id="p1PredictedStart"
                         name="p1PredictedStart"
-                        value={new Date(values?.p1PredictedStart)}
+                        value={values?.p1PredictedStart}
                         viewDate={values.p1PredictedStart}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -100,7 +122,7 @@ const FPPVSettingsDates = ({}) => {
                       <Calendar
                         id="p1Start"
                         name="p1Start"
-                        value={new Date(values?.p1Start)}
+                        value={values?.p1Start}
                         viewDate={values.p1Start}
                         onChange={handleChange}
                         onBlur={handleBlur}

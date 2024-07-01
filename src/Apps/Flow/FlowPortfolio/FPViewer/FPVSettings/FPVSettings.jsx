@@ -79,8 +79,8 @@ const FPVSettings = () => {
           }
         >
           <p className="m-0 p-2">
-            Updating these dates will have impact the portfolio and
-            post-portfolio projects
+            Updating these dates will impact the portfolio and post-portfolio
+            projects
           </p>
           <FPVSettingsDates />
         </Fieldset>
