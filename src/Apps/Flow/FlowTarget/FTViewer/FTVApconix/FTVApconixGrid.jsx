@@ -1,4 +1,5 @@
 import React from "react";
+import { FaGaugeSimpleHigh } from "react-icons/fa6";
 
 const FTVApconixGrid = () => {
   let data = [
@@ -103,60 +104,71 @@ const FTVApconixGrid = () => {
   ];
 
   let getColor = (value) => {
-    if (value === "H") return "bg-red-400";
-    if (value === "M") return "bg-yellow-400";
-    if (value === "L") return "bg-green-400";
+    if (value === "H") return "bg-red-300";
+    if (value === "M") return "bg-yellow-300";
+    if (value === "L") return "bg-green-300";
     return "";
   };
   const showPriorityDot = (priority) => {
-    if (priority){
-        return (
-            (<span className="pi pi-circle-fill"></span>
-            )
-        )
+    if (priority) {
+      return <FaGaugeSimpleHigh />;
     }
-    return (
-        <></>
-    )
+    return <></>;
   };
 
   let dataRender = data.map((item, index) => {
     return (
-      <div className="flex w-full gap-4" key={index}>
-        <div className="flex w-18rem p-2 align-items-left justify-content-left bg-teal-400 text-white">
+      <div className="flex gap-2 max-w-min	 border-1 border-50" key={index}>
+        <div className="flex w-18rem p-2 align-items-left justify-content-left text-base bg-blue-50 text-blue-900">
           {item.Topic}
         </div>
-        <div className={`flex gap-2 w-15rem p-2 align-items-center justify-content-center ${getColor(item.Impact)}`}>
+        <div
+          className={`flex gap-2 w-18rem p-2 align-items-center justify-content-center border-round-md ${getColor(
+            item.Impact
+          )}`}
+        >
           <div className="flex align-items-center justify-content-center">
-          {item.Impact}
+            {item.Impact}
           </div>
-          
-          <div className="flex align-items-center justify-content-center">{item.ImpactPriority && showPriorityDot(item.ImpactPriority)}</div>
-          
+
+          <div className="flex align-items-center justify-content-center">
+            {item.ImpactPriority && showPriorityDot(item.ImpactPriority)}
+          </div>
         </div>
         <div
-          className={`flex gap-2 w-15rem p-2 align-items-center justify-content-center ${getColor(
+          className={`flex gap-2 w-18rem p-2 align-items-center justify-content-center border-round-md ${getColor(
             item.Likelihood
           )}`}
         >
           <div className="flex align-items-center justify-content-center">
-          {item.Likelihood}
+            {item.Likelihood}
           </div>
-          
-          <div className="flex align-items-left justify-content-left">{item.LikelihoodPriority && showPriorityDot(item.LikelihoodPriority)}</div>
-          
-          
+
+          <div className="flex align-items-left justify-content-left">
+            {item.LikelihoodPriority &&
+              showPriorityDot(item.LikelihoodPriority)}
+          </div>
         </div>
       </div>
     );
   });
 
   return (
-    <div className="flex flex-column w-full gap-2">
-      <div className="flex w-full gap-1">
-        <div className="flex w-20rem p-2 align-items-center justify-content-center"></div>
-        <div className="flex w-15rem p-2 align-items-center justify-content-center">Impact</div>
-        <div className="flex w-15rem p-2 align-items-center justify-content-center">Likelihood</div>
+    <div className="flex flex-column gap-2 ">
+      <div className="flex gap-2 ">
+        <div className="flex gap-2 w-18rem p-2 align-items-center justify-content-center"></div>
+        <div
+          className="flex gap-2 w-18rem p-2 align-items-center justify-content-center text-base bg-blue-50 text-blue-900"
+          
+        >
+          Impact
+        </div>
+        <div
+          className="flex gap-2 w-18rem p-2 align-items-center justify-content-center text-base bg-blue-50 text-blue-900"
+          
+        >
+          Likelihood
+        </div>
       </div>
       {dataRender}
     </div>
