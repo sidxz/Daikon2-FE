@@ -119,6 +119,7 @@ const FTVApconixGrid = () => {
   let dataRender = data.map((item, index) => {
     return (
       <div className="flex gap-2 max-w-min	 border-1 border-50" key={index}>
+        
         <div className="flex w-18rem p-2 align-items-left justify-content-left text-base bg-blue-50 text-blue-900">
           {item.Topic}
         </div>
@@ -155,6 +156,7 @@ const FTVApconixGrid = () => {
 
   return (
     <div className="flex flex-column gap-2 ">
+        <h4>Potential organ toxicity if the mammalian target is engaged </h4>
       <div className="flex gap-2 ">
         <div className="flex gap-2 w-18rem p-2 align-items-center justify-content-center"></div>
         <div

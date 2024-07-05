@@ -123,7 +123,7 @@ const FTVApconix = () => {
           <div className="flex p-2 text-lg">
             <FTVApconixGrid />
           </div>
-          <div className="flex flex-column  p-2 text-lg">
+          <div className="flex align-items-top justify-content-end text-lg">
             <FTVApconixLegend />
             
           </div>
