@@ -1,125 +1,164 @@
 import React from "react";
-import "./FTVApconixGrid.css";
-import { FcPlanner } from "react-icons/fc";
 
 const FTVApconixGrid = () => {
-  return (
-    <div className="flex">
-      <div className="flex">
-        <div className="flex flex-column">
-          <div className="flex w-1 p-2 align-items-center bg-white">&nbsp;</div>
-          <div className="flex">
-            <div className="flex w-full p-2 align-items-center justify-content-center bg-teal-400 text-white">
-              Carcinogenesis
-            </div>
-          </div>
-          <div className="flex w-full pt-2">
-            <div className="flex w-full p-2 align-items-center justify-content-center bg-teal-400 text-white">
-              Cardiovascular
-            </div>
-          </div>
-          <div className="flex w-full pt-2">
-            <div className="flex w-full p-2 align-items-center justify-content-center bg-teal-400 text-white">
-              Endocrine
-            </div>
-          </div>
-          <div className="flex w-full pt-2">
-            <div className="flex w-full p-2  align-items-center justify-content-center bg-teal-400 text-white">
-              Gastrointestinal
-            </div>
-          </div>
-          <div className="flex w-full pt-2">
-            <div className="flex w-full p-2  align-items-center justify-content-center bg-teal-400 text-white">
-              Hematological and Immune
-            </div>
-          </div>
-          <div className="flex w-full pt-2">
-            <div className="flex w-full p-2  align-items-center justify-content-center bg-teal-400 text-white">
-              Hepatobiliary
-            </div>
-          </div>
-          <div className="flex w-full pt-2">
-            <div className="flex w-full p-2  align-items-center justify-content-center bg-teal-400 text-white">
-              Integumentary
-            </div>
-          </div>
-          <div className="flex w-full pt-2">
-            <div className="flex w-full p-2  align-items-center justify-content-center bg-teal-400 text-white">
-              Nervous
-            </div>
-          </div>
-          <div className="flex w-full pt-2">
-            <div className="flex w-full p-2  align-items-center justify-content-center bg-teal-400 text-white">
-              Embryofetal Developmental Toxicity
-            </div>
-          </div>
-          <div className="flex w-full pt-2">
-            <div className="flex w-full p-2  align-items-center justify-content-center bg-teal-400 text-white">
-              Reproductive Female
-            </div>
-          </div>
-          <div className="flex w-full pt-2">
-            <div className="flex w-full p-2  align-items-center justify-content-center bg-teal-400 text-white">
-              Reproductive Male
-            </div>
-          </div>
-          <div className="flex w-full pt-2">
-            <div className="flex w-full p-2  align-items-center justify-content-center bg-teal-400 text-white">
-              Respiratory
-            </div>
-          </div>
-          <div className="flex w-full pt-2">
-            <div className="flex w-full p-2  align-items-center justify-content-center bg-teal-400 text-white">
-              Sensory
-            </div>
-          </div>
+  let data = [
+    {
+      Topic: "Carcinogenesis",
+      Impact: "M",
+      ImpactPriority: false,
+      Likelihood: "L",
+      LikelihoodPriority: false,
+    },
+    {
+      Topic: "Cardiovascular",
+      Impact: "",
+      ImpactPriority: false,
+      Likelihood: "",
+      LikelihoodPriority: false,
+    },
+    {
+      Topic: "Endocrine",
+      Impact: "M",
+      ImpactPriority: false,
+      Likelihood: "L",
+      LikelihoodPriority: false,
+    },
+    {
+      Topic: "Gastrointestinal",
+      Impact: "",
+      ImpactPriority: false,
+      Likelihood: "",
+      LikelihoodPriority: false,
+    },
+    {
+      Topic: "Hematological and Immune",
+      Impact: "",
+      ImpactPriority: false,
+      Likelihood: "",
+      LikelihoodPriority: false,
+    },
+    {
+      Topic: "Hepatobiliary",
+      Impact: "",
+      ImpactPriority: false,
+      Likelihood: "",
+      LikelihoodPriority: false,
+    },
+    {
+      Topic: "Integumentary",
+      Impact: "",
+      ImpactPriority: false,
+      Likelihood: "",
+      LikelihoodPriority: false,
+    },
+    {
+      Topic: "Nervous",
+      Impact: "H",
+      ImpactPriority: false,
+      Likelihood: "L",
+      LikelihoodPriority: false,
+    },
+    {
+      Topic: "Embryofetal Developmental Toxicity",
+      Impact: "H",
+      ImpactPriority: true,
+      Likelihood: "M",
+      LikelihoodPriority: false,
+    },
+    {
+      Topic: "Reproductive Female",
+      Impact: "H",
+      ImpactPriority: true,
+      Likelihood: "M",
+      LikelihoodPriority: false,
+    },
+    {
+      Topic: "Reproductive Male",
+      Impact: "",
+      ImpactPriority: false,
+      Likelihood: "",
+      LikelihoodPriority: false,
+    },
+    {
+      Topic: "Respiratory",
+      Impact: "",
+      ImpactPriority: false,
+      Likelihood: "",
+      LikelihoodPriority: false,
+    },
+    {
+      Topic: "Sensory",
+      Impact: "M",
+      ImpactPriority: true,
+      Likelihood: "M",
+      LikelihoodPriority: false,
+    },
+    {
+      Topic: "Urinary",
+      Impact: "",
+      ImpactPriority: false,
+      Likelihood: "",
+      LikelihoodPriority: false,
+    },
+  ];
 
-          <div className="flex w-full pt-2">
-            <div className="flex w-full p-2  align-items-center justify-content-center bg-teal-400 text-white">
-              Urinary
-            </div>
+  let getColor = (value) => {
+    if (value === "H") return "bg-red-400";
+    if (value === "M") return "bg-yellow-400";
+    if (value === "L") return "bg-green-400";
+    return "";
+  };
+  const showPriorityDot = (priority) => {
+    if (priority){
+        return (
+            (<span className="pi pi-circle-fill"></span>
+            )
+        )
+    }
+    return (
+        <></>
+    )
+  };
+
+  let dataRender = data.map((item, index) => {
+    return (
+      <div className="flex w-full gap-4" key={index}>
+        <div className="flex w-18rem p-2 align-items-left justify-content-left bg-teal-400 text-white">
+          {item.Topic}
+        </div>
+        <div className={`flex gap-2 w-15rem p-2 align-items-center justify-content-center ${getColor(item.Impact)}`}>
+          <div className="flex align-items-center justify-content-center">
+          {item.Impact}
           </div>
+          
+          <div className="flex align-items-center justify-content-center">{item.ImpactPriority && showPriorityDot(item.ImpactPriority)}</div>
+          
+        </div>
+        <div
+          className={`flex gap-2 w-15rem p-2 align-items-center justify-content-center ${getColor(
+            item.Likelihood
+          )}`}
+        >
+          <div className="flex align-items-center justify-content-center">
+          {item.Likelihood}
+          </div>
+          
+          <div className="flex align-items-left justify-content-left">{item.LikelihoodPriority && showPriorityDot(item.LikelihoodPriority)}</div>
+          
+          
         </div>
       </div>
-      <div className="flex w-full surface-0">
-        <div className="flex w-1 p-4 align-items-center bg-white">&nbsp;</div>
-        <div className="flex w-3 text-sm">
-          <div
-            className="flex text-lg"
-            style={{
-              color: "#3c83bd",
-            }}
-          >
-            <div className="flex">
-              <b>Risk</b>
-            </div>
-          </div>
-        </div>
-        <div className="flex w-3 text-sm ">
-          <div
-            className="flex text-lg"
-            style={{
-              color: "#3c83bd",
-            }}
-          >
-            <div className="flex">
-              <b>Impact</b>
-            </div>
-          </div>
-        </div>
-        <div className="flex w-3 text-sm">
-          <div
-            className="flex text-lg"
-            style={{
-              color: "#3c83bd",
-            }}
-          >
-            <div className="flex">
-              <b>Likelihood </b>
-            </div>
-          </div>
-        </div>
+    );
+  });
+
+  return (
+    <div className="flex flex-column w-full gap-2">
+      <div className="flex w-full gap-1">
+        <div className="flex w-20rem p-2 align-items-center justify-content-center"></div>
+        <div className="flex w-15rem p-2 align-items-center justify-content-center">Impact</div>
+        <div className="flex w-15rem p-2 align-items-center justify-content-center">Likelihood</div>
       </div>
+      {dataRender}
     </div>
   );
 };
