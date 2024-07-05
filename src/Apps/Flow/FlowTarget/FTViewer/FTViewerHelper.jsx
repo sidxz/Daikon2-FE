@@ -16,6 +16,13 @@ export const sidePanelItems = (navigate) => {
         },
       },
       {
+        label: "Apconix",
+        icon: "pi pi-file-word",
+        command: () => {
+          navigate(`apconix/`);
+        },
+      },
+      {
         label: "Scorecard",
         icon: "icon icon-common icon-flag-checkered",
         command: () => {
