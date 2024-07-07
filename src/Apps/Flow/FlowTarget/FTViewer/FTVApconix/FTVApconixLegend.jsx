@@ -41,8 +41,8 @@ const FTVApconixLegend = () => {
       cardiovascular (CV), endocrine (EN), gastrointestinal (GI), hematological and immune (HI), hepatobiliary (HB), integumentary (IN), nervous (NS), 
       EFD embryofetal developmental toxicity (EFD) reproductive female (RF), reproductive male (RM), respiratory (RI), sensory (SE), urinary (UR).
       Key (High-Moderate impact and likelihood) risks that should be prioritized for derisking or assessment in exploratory toxicology studies and in  the standard toxicology program are 
-      indicated by
-      <span className="sticky"><FaGaugeSimpleHigh /></span>
+      indicated by <FaGaugeSimpleHigh />
+      
       </div>
       
         
