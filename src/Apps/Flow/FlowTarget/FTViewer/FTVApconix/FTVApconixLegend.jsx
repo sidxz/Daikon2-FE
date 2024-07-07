@@ -36,7 +36,7 @@ const FTVApconixLegend = () => {
         Drug binding domain not known, less than 1000 X in vitro selectivity toward Mtb target demonstrated, or mammalian screen not feasible
         </div>
       </div>
-      <div className="flex text-sm font-italic text-blue-900 border-1">
+      <div className="flex text-sm font-italic text-blue-900">
       Mammalian off-target risk profile. Risks are rated by Impact/Likelihood (H/M/L – High/Moderate/Low) across each organ system and process: carcinogenesis (CA), 
       cardiovascular (CV), endocrine (EN), gastrointestinal (GI), hematological and immune (HI), hepatobiliary (HB), integumentary (IN), nervous (NS), 
       EFD embryofetal developmental toxicity (EFD) reproductive female (RF), reproductive male (RM), respiratory (RI), sensory (SE), urinary (UR).
