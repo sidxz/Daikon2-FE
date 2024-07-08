@@ -26,7 +26,7 @@ const MLogixSimilarSearch = () => {
   const params = useParams();
   const [searchValue, setSearchValue] = useState(params.smiles ?? "");
   const [searchResults, setSearchResults] = useState([]);
-  const [similarityThreshold, setSimilarityThreshold] = useState(20);
+  const [similarityThreshold, setSimilarityThreshold] = useState(98);
   const [loading, setLoading] = useState(false); // Loading state
 
   const [displayAddSideBar, setDisplayAddSideBar] = useState(false);
@@ -36,7 +36,7 @@ const MLogixSimilarSearch = () => {
 
   const searchForSimilarMolecules = () => {
     setLoading(true); // Set loading to true before the API call
-    MolDbAPI.findSimilarMolecules(searchValue, similarityThreshold / 100, 10)
+    MolDbAPI.findSimilarMolecules(searchValue, similarityThreshold / 100, 100)
       .then((response) => {
         setSearchResults(response);
         setLoading(false); // Set loading to false after the API call

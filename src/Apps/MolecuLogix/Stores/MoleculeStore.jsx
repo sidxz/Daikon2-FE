@@ -182,7 +182,7 @@ export default class MoleculeStore {
     }
   };
 
-  findSimilarMolecules = async (smiles, threshold = 0.01, limit = 10) => {
+  findSimilarMolecules = async (smiles, threshold = 0.01, limit = 30) => {
     this.isFindingSimilarMolecules = true;
     try {
       let res = await MolDbAPI.findSimilarMolecules(smiles, threshold, limit);
