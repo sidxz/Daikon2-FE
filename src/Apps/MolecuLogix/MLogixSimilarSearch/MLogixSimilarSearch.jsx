@@ -26,7 +26,7 @@ const MLogixSimilarSearch = () => {
   const params = useParams();
   const [searchValue, setSearchValue] = useState(params.smiles ?? "");
   const [searchResults, setSearchResults] = useState([]);
-  const [similarityThreshold, setSimilarityThreshold] = useState(98);
+  const [similarityThreshold, setSimilarityThreshold] = useState(90);
   const [loading, setLoading] = useState(false); // Loading state
 
   const [displayAddSideBar, setDisplayAddSideBar] = useState(false);
