@@ -9,6 +9,7 @@ const FTVSafetyAssessmentGrid = () => {
       ImpactPriority: false,
       Likelihood: "L",
       LikelihoodPriority: false,
+      Note: "",
     },
     {
       Topic: "Cardiovascular",
@@ -16,6 +17,7 @@ const FTVSafetyAssessmentGrid = () => {
       ImpactPriority: false,
       Likelihood: "",
       LikelihoodPriority: false,
+      Note: "",
     },
     {
       Topic: "Endocrine",
@@ -23,6 +25,7 @@ const FTVSafetyAssessmentGrid = () => {
       ImpactPriority: false,
       Likelihood: "L",
       LikelihoodPriority: false,
+      Note: "",
     },
     {
       Topic: "Gastrointestinal",
@@ -30,6 +33,7 @@ const FTVSafetyAssessmentGrid = () => {
       ImpactPriority: false,
       Likelihood: "",
       LikelihoodPriority: false,
+      Note: "",
     },
     {
       Topic: "Hematological and Immune",
@@ -37,6 +41,7 @@ const FTVSafetyAssessmentGrid = () => {
       ImpactPriority: false,
       Likelihood: "",
       LikelihoodPriority: false,
+      Note: "",
     },
     {
       Topic: "Hepatobiliary",
@@ -44,6 +49,7 @@ const FTVSafetyAssessmentGrid = () => {
       ImpactPriority: false,
       Likelihood: "",
       LikelihoodPriority: false,
+      Note: "",
     },
     {
       Topic: "Integumentary",
@@ -51,6 +57,7 @@ const FTVSafetyAssessmentGrid = () => {
       ImpactPriority: false,
       Likelihood: "",
       LikelihoodPriority: false,
+      Note: "",
     },
     {
       Topic: "Nervous",
@@ -58,6 +65,7 @@ const FTVSafetyAssessmentGrid = () => {
       ImpactPriority: false,
       Likelihood: "L",
       LikelihoodPriority: false,
+      Note: "",
     },
     {
       Topic: "Embryofetal Developmental Toxicity",
@@ -65,6 +73,7 @@ const FTVSafetyAssessmentGrid = () => {
       ImpactPriority: true,
       Likelihood: "M",
       LikelihoodPriority: false,
+      Note: "",
     },
     {
       Topic: "Reproductive Female",
@@ -72,6 +81,7 @@ const FTVSafetyAssessmentGrid = () => {
       ImpactPriority: true,
       Likelihood: "M",
       LikelihoodPriority: false,
+      Note: "",
     },
     {
       Topic: "Reproductive Male",
@@ -79,6 +89,7 @@ const FTVSafetyAssessmentGrid = () => {
       ImpactPriority: false,
       Likelihood: "",
       LikelihoodPriority: false,
+      Note: "",
     },
     {
       Topic: "Respiratory",
@@ -86,6 +97,7 @@ const FTVSafetyAssessmentGrid = () => {
       ImpactPriority: false,
       Likelihood: "",
       LikelihoodPriority: false,
+      Note: "",
     },
     {
       Topic: "Sensory",
@@ -93,6 +105,7 @@ const FTVSafetyAssessmentGrid = () => {
       ImpactPriority: true,
       Likelihood: "M",
       LikelihoodPriority: false,
+      Note: "",
     },
     {
       Topic: "Urinary",
@@ -100,6 +113,7 @@ const FTVSafetyAssessmentGrid = () => {
       ImpactPriority: false,
       Likelihood: "",
       LikelihoodPriority: false,
+      Note: "",
     },
   ];
 
