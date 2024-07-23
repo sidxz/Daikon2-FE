@@ -16,7 +16,7 @@ export const sidePanelItems = (navigate) => {
         },
       },
       {
-        label: "Apconix",
+        label: "Toxicology",
         icon: "pi pi-file-word",
         command: () => {
           navigate(`apconix/`);
