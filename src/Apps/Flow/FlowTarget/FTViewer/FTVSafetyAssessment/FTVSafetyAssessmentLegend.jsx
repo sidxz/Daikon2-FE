@@ -1,7 +1,7 @@
 import React from "react";
 import { FaGaugeSimpleHigh } from "react-icons/fa6";
 
-const FTVApconixLegend = () => {
+const FTVSafetyAssessmentLegend = () => {
   return (
     <div className="flex w-10 flex-column gap-2 ">
       <h4>Mammalian off-target selectivity rating</h4>
@@ -46,4 +46,4 @@ const FTVApconixLegend = () => {
   );
 };
 
-export default FTVApconixLegend;
+export default FTVSafetyAssessmentLegend;

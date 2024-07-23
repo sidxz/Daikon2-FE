@@ -16,10 +16,10 @@ export const sidePanelItems = (navigate) => {
         },
       },
       {
-        label: "Toxicology",
+        label: "Safety Assessment",
         icon: "pi pi-file-word",
         command: () => {
-          navigate(`apconix/`);
+          navigate(`safety-assessment/`);
         },
       },
       {
