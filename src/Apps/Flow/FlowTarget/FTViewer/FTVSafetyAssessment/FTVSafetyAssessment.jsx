@@ -1,14 +1,13 @@
 import { observer } from "mobx-react-lite";
 import { BreadCrumb } from "primereact/breadcrumb";
 import { Fieldset } from "primereact/fieldset";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { Formik } from "formik";
-import { InputText } from "primereact/inputtext";
 import Loading from "../../../../../Library/Loading/Loading";
 import SecHeading from "../../../../../Library/SecHeading/SecHeading";
 import { RootStoreContext } from "../../../../../RootStore";
+import { DVariableResolver } from "../../../../../Shared/DVariable/DVariableResolver";
 import { appColors } from "../../../../../constants/colors";
 import { TargetIcon } from "../../../icons/TargetIcon";
 import FTVSafetyAssessmentGrid from "./FTVSafetyAssessmentGrid";
@@ -28,9 +27,43 @@ const FTVSafetyAssessment = () => {
     isTargetRegistryCacheValid,
   } = rootStore.targetStore;
 
+  const {
+    fetchToxicologyOfTarget,
+    toxicologyRegistry,
+    isFetchingToxicologyOfTarget,
+    toxicologyOfSelectedTarget,
+  } = rootStore.targetSafetyAssessmentStore;
+
+  useEffect(() => {
+    fetchToxicologyOfTarget(selectedTarget?.id);
+  }, [selectedTarget]);
+
   if (isFetchingTarget) {
     return <Loading message={"Fetching Target..."} />;
   }
+
+  if (isFetchingToxicologyOfTarget) {
+    return <Loading message={"Fetching Toxicology..."} />;
+  }
+
+  let mammalianOffTarget = DVariableResolver(
+    toxicologyOfSelectedTarget.find(
+      (item) => DVariableResolver(item.topic) === "mammalian-off-target"
+    )?.note
+  );
+
+  let mtbDrugBindingDomain = DVariableResolver(
+    toxicologyOfSelectedTarget.find(
+      (item) => DVariableResolver(item.topic) === "mtb-drug-binding-domain"
+    )?.note
+  );
+  let source = DVariableResolver(
+    toxicologyOfSelectedTarget.find(
+      (item) => DVariableResolver(item.topic) === "source"
+    )?.note
+  );
+
+  //console.log("toxicologyOfSelectedTarget", toxicologyOfSelectedTarget);
 
   return (
     <div className="flex flex-column min-w-full fadein animation-duration-500 gap-0">
@@ -50,35 +83,25 @@ const FTVSafetyAssessment = () => {
       <div className="flex w-full">
         <Fieldset className="m-0 w-full" legend="General information">
           <div className="flex gap-5">
-          <div className="flex">
-                    <div className="flex gap-5 m-3 w-full">
-                     
-                      <div className="field flex items-center gap-3">
-                        <div
-                          className="text-lg pl-2 pr-4 flex align-items-center justify-content-center text-lg"
-                          
-                        >
-                          Mammalian off target : {selectedTarget.note}
-                        </div>
-                      </div>
-                      <div className="field flex items-center gap-5">
-                        <div
-                          className="text-lg pl-4 pr-4 flex align-items-center justify-content-center text-lg"
-                          
-                        >
-                          Mtb drug binding domain : {selectedTarget.note}
-                        </div>
-                      </div>
-                      <div className="field flex items-center gap-3">
-                        <div
-                          className="text-lg  pl-4 pr-2 flex align-items-center justify-content-center text-lg"
-                          
-                        >
-                          Data Source : Apconix
-                        </div>
-                      </div>
-                    </div>
+            <div className="flex">
+              <div className="flex gap-5 m-3 w-full">
+                <div className="field flex items-center gap-3">
+                  <div className="text-lg pl-2 pr-4 flex align-items-center justify-content-center text-lg">
+                    Mammalian off target : {mammalianOffTarget}
                   </div>
+                </div>
+                <div className="field flex items-center gap-5">
+                  <div className="text-lg pl-4 pr-4 flex align-items-center justify-content-center text-lg">
+                    Mtb drug binding domain : {mtbDrugBindingDomain}
+                  </div>
+                </div>
+                <div className="field flex items-center gap-3">
+                  <div className="text-lg  pl-4 pr-2 flex align-items-center justify-content-center text-lg">
+                    Data Source : {source}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </Fieldset>
       </div>
@@ -87,7 +110,7 @@ const FTVSafetyAssessment = () => {
         <Fieldset className="m-0 w-full" legend="Risk Matrix">
           <div className="flex w-full gap-2">
             <div className="flex p-2 text-lg">
-              <FTVSafetyAssessmentGrid />
+              <FTVSafetyAssessmentGrid data={toxicologyOfSelectedTarget} />
             </div>
             <div className="flex align-items-top justify-content-end text-lg">
               <FTVSafetyAssessmentLegend />

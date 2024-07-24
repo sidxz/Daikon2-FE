@@ -1,121 +1,15 @@
 import React from "react";
 import { FaGaugeSimpleHigh } from "react-icons/fa6";
+import { DVariableResolver } from "../../../../../Shared/DVariable/DVariableResolver";
 
-const FTVSafetyAssessmentGrid = () => {
-  let data = [
-    {
-      Topic: "Carcinogenesis",
-      Impact: "M",
-      ImpactPriority: false,
-      Likelihood: "L",
-      LikelihoodPriority: false,
-      Note: "",
-    },
-    {
-      Topic: "Cardiovascular",
-      Impact: "",
-      ImpactPriority: false,
-      Likelihood: "",
-      LikelihoodPriority: false,
-      Note: "",
-    },
-    {
-      Topic: "Endocrine",
-      Impact: "M",
-      ImpactPriority: false,
-      Likelihood: "L",
-      LikelihoodPriority: false,
-      Note: "",
-    },
-    {
-      Topic: "Gastrointestinal",
-      Impact: "",
-      ImpactPriority: false,
-      Likelihood: "",
-      LikelihoodPriority: false,
-      Note: "",
-    },
-    {
-      Topic: "Hematological and Immune",
-      Impact: "",
-      ImpactPriority: false,
-      Likelihood: "",
-      LikelihoodPriority: false,
-      Note: "",
-    },
-    {
-      Topic: "Hepatobiliary",
-      Impact: "",
-      ImpactPriority: false,
-      Likelihood: "",
-      LikelihoodPriority: false,
-      Note: "",
-    },
-    {
-      Topic: "Integumentary",
-      Impact: "",
-      ImpactPriority: false,
-      Likelihood: "",
-      LikelihoodPriority: false,
-      Note: "",
-    },
-    {
-      Topic: "Nervous",
-      Impact: "H",
-      ImpactPriority: false,
-      Likelihood: "L",
-      LikelihoodPriority: false,
-      Note: "",
-    },
-    {
-      Topic: "Embryofetal Developmental Toxicity",
-      Impact: "H",
-      ImpactPriority: true,
-      Likelihood: "M",
-      LikelihoodPriority: false,
-      Note: "",
-    },
-    {
-      Topic: "Reproductive Female",
-      Impact: "H",
-      ImpactPriority: true,
-      Likelihood: "M",
-      LikelihoodPriority: false,
-      Note: "",
-    },
-    {
-      Topic: "Reproductive Male",
-      Impact: "",
-      ImpactPriority: false,
-      Likelihood: "",
-      LikelihoodPriority: false,
-      Note: "",
-    },
-    {
-      Topic: "Respiratory",
-      Impact: "",
-      ImpactPriority: false,
-      Likelihood: "",
-      LikelihoodPriority: false,
-      Note: "",
-    },
-    {
-      Topic: "Sensory",
-      Impact: "M",
-      ImpactPriority: true,
-      Likelihood: "M",
-      LikelihoodPriority: false,
-      Note: "",
-    },
-    {
-      Topic: "Urinary",
-      Impact: "",
-      ImpactPriority: false,
-      Likelihood: "",
-      LikelihoodPriority: false,
-      Note: "",
-    },
-  ];
+const FTVSafetyAssessmentGrid = ({ data }) => {
+  // filter the data and remove topic = mammalian-off-target or mtb-drug-binding-domain or source
+  data = data.filter(
+    (item) =>
+      DVariableResolver(item.topic) !== "mammalian-off-target" &&
+      DVariableResolver(item.topic) !== "mtb-drug-binding-domain" &&
+      DVariableResolver(item.topic) !== "source"
+  );
 
   let getColor = (value) => {
     if (value === "H") return "bg-red-300";
@@ -134,33 +28,34 @@ const FTVSafetyAssessmentGrid = () => {
     return (
       <div className="flex gap-2 max-w-min	 border-1 border-50" key={index}>
         <div className="flex w-18rem p-2 align-items-left justify-content-left text-base bg-blue-50 text-blue-900">
-          {item.Topic}
+          {DVariableResolver(item?.topic)}
         </div>
         <div
           className={`flex gap-2 w-18rem p-2 align-items-center justify-content-center border-round-md ${getColor(
-            item.Impact
+            DVariableResolver(item?.impact)
           )}`}
         >
           <div className="flex align-items-center justify-content-center">
-            {item.Impact}
+            {DVariableResolver(item?.impact)}
           </div>
 
           <div className="flex align-items-center justify-content-center">
-            {item.ImpactPriority && showPriorityDot(item.ImpactPriority)}
+            {DVariableResolver(item?.impactPriority) &&
+              showPriorityDot(DVariableResolver(item?.impactPriority))}
           </div>
         </div>
         <div
           className={`flex gap-2 w-18rem p-2 align-items-center justify-content-center border-round-md ${getColor(
-            item.Likelihood
+            DVariableResolver(item?.likelihood)
           )}`}
         >
           <div className="flex align-items-center justify-content-center">
-            {item.Likelihood}
+            {DVariableResolver(item?.likelihood)}
           </div>
 
           <div className="flex align-items-left justify-content-left">
-            {item.LikelihoodPriority &&
-              showPriorityDot(item.LikelihoodPriority)}
+            {DVariableResolver(item?.likelihoodPriority) &&
+              showPriorityDot(DVariableResolver(item?.likelihoodPriority))}
           </div>
         </div>
       </div>
