@@ -6,6 +6,8 @@ import FTViewer from "./FTViewer/FTViewer";
 import FTApprovalDash from "./Sourcing/FTApprovalDash/FTApprovalDash";
 import FTApprovalView from "./Sourcing/FTApprovalView/FTApprovalView";
 import TargetPromotionQuestionnaire from "./Sourcing/TargetPromotionQuestionnaire/TargetPromotionQuestionnaire";
+import FTImportData from "./Sourcing/FTImportData/FTImportData";
+
 const FlowTarget = () => {
   return (
     <>
@@ -18,6 +20,7 @@ const FlowTarget = () => {
         <Route path="sourcing/approval/" element={<FTApprovalDash />} />
         <Route path="sourcing/approval/:id/*" element={<FTApprovalView />} />
         <Route path="viewer/:id/*" element={<FTViewer />} />
+        <Route path="sourcing/import/" element={<FTImportData />} />
       </Routes>
     </>
   );
