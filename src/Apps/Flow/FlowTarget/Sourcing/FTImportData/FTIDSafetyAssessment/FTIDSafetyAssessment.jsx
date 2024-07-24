@@ -1,3 +1,4 @@
+import { observer } from 'mobx-react-lite'
 import React from 'react'
 
 const FTIDSafetyAssessment = () => {
@@ -6,4 +7,4 @@ const FTIDSafetyAssessment = () => {
   )
 }
 
-export default FTIDSafetyAssessment
+export default observer(FTIDSafetyAssessment)

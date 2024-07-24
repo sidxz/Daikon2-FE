@@ -20,7 +20,7 @@ const FlowTarget = () => {
         <Route path="sourcing/approval/" element={<FTApprovalDash />} />
         <Route path="sourcing/approval/:id/*" element={<FTApprovalView />} />
         <Route path="viewer/:id/*" element={<FTViewer />} />
-        <Route path="sourcing/import/" element={<FTImportData />} />
+        <Route path="sourcing/import/*" element={<FTImportData />} />
       </Routes>
     </>
   );
