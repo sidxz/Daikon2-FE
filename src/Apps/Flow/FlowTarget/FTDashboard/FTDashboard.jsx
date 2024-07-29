@@ -58,6 +58,11 @@ const FTDashboard = () => {
       action: () => navigate("sourcing/approval"),
     });
   }
+  // headingButtons.push({
+  //   label: "Import Data",
+  //   icon: "pi pi-plus",
+  //   action: () => navigate("sourcing/import")
+  // });
   headingButtons.push({
     label: "Add Target",
     icon: "pi pi-plus",

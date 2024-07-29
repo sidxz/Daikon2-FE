@@ -12,6 +12,6 @@ export const breadCrumbItems = (selectedTarget, navigate) => {
         navigate(`/wf/target/viewer/${selectedTarget.id}`);
       },
     },
-    { label: "Apconix" },
+    { label: "Safety Assessment" },
   ];
 };
