@@ -1,5 +1,6 @@
 import { AppRoleResolver } from "../../../../Shared/VariableResolvers/AppRoleResolver";
 import { TargetAdminRoleName } from "../constants/roles";
+import { AiTwotoneSafetyCertificate } from "react-icons/ai";
 
 export const sidePanelItems = (navigate) => {
   const { isUserInAnyOfRoles } = AppRoleResolver();
@@ -17,7 +18,7 @@ export const sidePanelItems = (navigate) => {
       },
       {
         label: "Safety Assessment",
-        icon: "pi pi-file-word",
+        icon: <AiTwotoneSafetyCertificate className="flex mr-2" />,
         command: () => {
           navigate(`safety-assessment/`);
         },

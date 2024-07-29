@@ -4,6 +4,7 @@ import { Fieldset } from "primereact/fieldset";
 import React, { useContext, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
+import { Card } from "primereact/card";
 import Loading from "../../../../../Library/Loading/Loading";
 import SecHeading from "../../../../../Library/SecHeading/SecHeading";
 import { RootStoreContext } from "../../../../../RootStore";
@@ -63,10 +64,8 @@ const FTVSafetyAssessment = () => {
     )?.note
   );
 
-  //console.log("toxicologyOfSelectedTarget", toxicologyOfSelectedTarget);
-
-  return (
-    <div className="flex flex-column min-w-full fadein animation-duration-500 gap-0">
+  let headerRender = (
+    <>
       <div className="flex w-full">
         <BreadCrumb model={Helper.breadCrumbItems(selectedTarget, navigate)} />
       </div>
@@ -79,6 +78,30 @@ const FTVSafetyAssessment = () => {
           entryPoint={selectedTarget?.id}
         />
       </div>
+    </>
+  );
+  let noDataRender = (
+    <div className="flex flex-column min-w-full fadein animation-duration-500 gap-0">
+      <Card title="Safety Assessment">
+        There are no records for this target.
+      </Card>
+    </div>
+  );
+
+  if (toxicologyOfSelectedTarget?.length === 0) {
+    return (
+      <div className="flex flex-column min-w-full fadein animation-duration-500 gap-0">
+        {headerRender}
+        {noDataRender}
+      </div>
+    );
+  }
+
+  //console.log("toxicologyOfSelectedTarget", toxicologyOfSelectedTarget);
+
+  return (
+    <div className="flex flex-column min-w-full fadein animation-duration-500 gap-0">
+      {headerRender}
 
       <div className="flex w-full">
         <Fieldset className="m-0 w-full" legend="General information">
