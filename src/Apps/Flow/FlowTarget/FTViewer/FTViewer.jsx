@@ -20,6 +20,7 @@ import FTVPromotionQ from "./FTVPromotionQ/FTVPromotionQ";
 import FTVScorecard from "./FTVScorecard/FTVScorecard";
 import FTVSettings from "./FTVSettings/FTVSettings";
 import * as Helper from "./FTViewerHelper";
+import FTVSafetyAssessment from "./FTVSafetyAssessment/FTVSafetyAssessment";
 const FTViewer = () => {
   const navigate = useNavigate();
   const rootStore = useContext(RootStoreContext);
@@ -60,6 +61,7 @@ const FTViewer = () => {
             <Route index element={<Navigate replace to="compass/" />} />
             <Route path="scorecard/" element={<FTVScorecard />} />
             <Route path="compass/" element={<FTVCompass />} />
+            <Route path="safety-assessment/" element={<FTVSafetyAssessment />} />
             <Route
               path="promotion-questionnaire/"
               element={<FTVPromotionQ />}

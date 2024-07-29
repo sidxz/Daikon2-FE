@@ -11,7 +11,6 @@ class AxiosWithAuth {
   async init() {
     const ssoUser = await AppUserManager.getUser();
     this.accessToken = ssoUser ? ssoUser.access_token : null;
-
     this.axiosWithAuth = axios.create({
       ...AxiosConfig,
     });
@@ -80,6 +79,9 @@ class AxiosWithAuth {
           break;
         case 401:
           errorMessage = "Unauthorized. Please login again.";
+          // do sso login
+          // TEST: under observation of behavior
+          AppUserManager.signinSilent();
           toast.error(errorMessage);
           break;
         case 403:
