@@ -1,6 +1,8 @@
 import { Button } from "primereact/button";
+import { InputText } from "primereact/inputtext";
 import { ToggleButton } from "primereact/togglebutton";
 import React from "react";
+import { MolecuLogixIcon } from "../../../../../../MolecuLogix/Icons/MolecuLogixIcon";
 import { ExportHitsToExcel } from "./FSTbVHExcelExport";
 import FSTbVHExcelImport from "./FSTbVHExcelImport";
 import { DtFieldsToExcelColumnMapping } from "./FSTbVHitsConstants";
@@ -18,6 +20,9 @@ export const FSTbVHDataTableHeader = ({
   isOneClickVotingEnabled,
   setIsOneClickVotingEnabled,
   showPromoteSideBar,
+  subStructureHighlight,
+  setSubStructureHighlight,
+  setShowStructureEditor,
 }) => {
   if (selectedHitCollection === undefined) return <p>Loading...</p>;
 
@@ -25,6 +30,29 @@ export const FSTbVHDataTableHeader = ({
     return (
       <div className="table-header flex flex-row w-full">
         <div className="flex justify-content-start gap-1">
+          <div className="flex flex-grow min-w-max w-full">
+            <div className="flex border-1 border-50">
+              <div className="flex w-full">
+                <InputText
+                  id="subSmiles"
+                  placeholder="Substructure"
+                  className="border-0"
+                  value={subStructureHighlight}
+                  onChange={(e) => setSubStructureHighlight(e.target.value)}
+                />
+              </div>
+              <div className="flex border-1 border-50 p-0">
+                <Button
+                  text
+                  type="button"
+                  icon={<MolecuLogixIcon size={18} />}
+                  label=""
+                  onClick={() => setShowStructureEditor(true)}
+                />
+              </div>
+            </div>
+          </div>
+
           {!selectionEnabled && (
             <div className="flex flex-grow min-w-max w-full">
               <Button

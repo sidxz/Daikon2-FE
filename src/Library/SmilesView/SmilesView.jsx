@@ -16,7 +16,6 @@ const SmilesView = ({
   const cm = useRef(null);
 
   let canId = smiles + Date.now() + Math.floor(Math.random() * 100);
-
   const navigate = useNavigate();
 
   const contextMenuItems = [
@@ -77,7 +76,6 @@ const SmilesView = ({
       <ContextMenu model={contextMenuItems} ref={cm} />
       <MoleculeStructure
         id={canId}
-        ref={svgElementRef}
         className={canId}
         structure={smiles}
         subStructure={subStructure}

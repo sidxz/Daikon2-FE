@@ -1,6 +1,6 @@
 import SmilesView from "../../../../../../../Library/SmilesView/SmilesView";
 
-export const StructureBodyTemplate = (rowData) => {
+export const StructureBodyTemplate = (rowData, subStructureHighlight) => {
   return (
     <>
       <div
@@ -15,6 +15,7 @@ export const StructureBodyTemplate = (rowData) => {
         <div className="flex w-full h-full">
           <SmilesView
             smiles={rowData?.molecule?.smilesCanonical}
+            subStructure={subStructureHighlight}
             compoundId={rowData?.molecule?.id}
             width={250}
             height={250}
