@@ -35,7 +35,7 @@ export const FSTbVHDataTableHeader = ({
               <div className="flex w-full">
                 <InputText
                   id="subSmiles"
-                  placeholder="Substructure"
+                  placeholder="Highlight Substructure"
                   className="border-0"
                   value={subStructureHighlight}
                   onChange={(e) => setSubStructureHighlight(e.target.value)}

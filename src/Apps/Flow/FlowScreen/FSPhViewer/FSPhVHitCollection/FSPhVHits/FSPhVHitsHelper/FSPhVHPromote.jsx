@@ -61,11 +61,7 @@ const FSPhVHPromote = ({
           className="flex align-items-center justify-content-center"
           style={{ width: "200px", height: "200px" }}
         >
-          <SmilesView
-            smiles={hit?.requestedSMILES}
-            width={"200"}
-            height={"200"}
-          />
+          <SmilesView smiles={hit?.requestedSMILES} width={200} height={200} />
         </div>
       </div>
     );
