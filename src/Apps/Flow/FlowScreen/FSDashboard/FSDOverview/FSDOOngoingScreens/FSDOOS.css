@@ -1,0 +1,29 @@
+/* Add this CSS to your stylesheet or create a CSS module */
+.tooltip-container {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .tooltip-container .tooltip-text {
+    visibility: hidden;
+    width: 200px; /* Adjust the width as needed */
+    background-color: #fbdcdc;
+    color: #8b1010;
+    text-align: center;
+    border-radius: 5px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%; /* Adjust position as needed */
+    left: 50%;
+    margin-left: -80px; /* Center the tooltip */
+    opacity: 0;
+    transition: opacity 0.3s;
+    white-space: nowrap; /* Prevents text wrapping */
+  }
+  
+  .tooltip-container:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+  }
+  
