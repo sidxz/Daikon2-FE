@@ -8,6 +8,7 @@ import SecHeading from "../../../Library/SecHeading/SecHeading";
 import { RootStoreContext } from "../../../RootStore";
 import { appColors } from "../../../constants/colors";
 import MLMViewGeneralInfo from "./MLMViewComponents/MLMViewGeneralInfo";
+import MLMViewRelations from "./MLMViewComponents/MLMViewRelations/MLMViewRelations";
 import MLMViewStructure from "./MLMViewComponents/MLMViewStructure";
 import MLMViewStructureCanonical from "./MLMViewComponents/MLMViewStructureCanonical";
 import * as Helper from "./MLogixMoleculeViewHelper";
@@ -62,6 +63,9 @@ const MLogixMoleculeView = () => {
                   selectedMolecule={selectedMolecule}
                 />
               </div>
+            </div>
+            <div className="flex w-full gap-2">
+              <MLMViewRelations selectedMolecule={selectedMolecule} />
             </div>
           </div>
         </div>

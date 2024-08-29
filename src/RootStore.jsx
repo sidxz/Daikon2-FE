@@ -25,6 +25,7 @@ import TargetPQStore from "./Apps/Flow/FlowTarget/Stores/TargetPQStore";
 import TargetSafetyAssessmentStore from "./Apps/Flow/FlowTarget/Stores/TargetSafetyAssessmentStore";
 import TargetSourcingStore from "./Apps/Flow/FlowTarget/Stores/TargetSourcingStore";
 import TargetStore from "./Apps/Flow/FlowTarget/Stores/TargetStore";
+import MoleculeAssociationStore from "./Apps/MolecuLogix/Stores/MoleculeAssociationStore";
 import MoleculeStore from "./Apps/MolecuLogix/Stores/MoleculeStore";
 import QnaireStore from "./Apps/Questionnaire/Stores/QnaireStore";
 import AuthStore from "./Auth/AuthStore";
@@ -72,6 +73,7 @@ export class RootStore {
   qnaireStore;
 
   horizonStore;
+  moleculeAssociationStore;
 
   commentStore;
   constructor() {
@@ -125,6 +127,7 @@ export class RootStore {
 
     /* Horizon */
     this.horizonStore = new HorizonStore(this);
+    this.moleculeAssociationStore = new MoleculeAssociationStore(this);
 
     /* Comments */
     this.commentStore = new CommentStore(this);
