@@ -65,6 +65,8 @@ const FSTbVHits = ({ id }) => {
     return <Loading message={"Fetching Hit Collection..."} />;
   }
 
+  console.log("FSTbVHits: selectedHitCollection", selectedHitCollection);
+
   const addHitSideBarHeader = (
     <div className="flex align-items-center gap-2">
       <i className="icon icon-common icon-plus-circle"></i>

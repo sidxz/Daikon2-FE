@@ -2,6 +2,10 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { AppOrgResolver } from "../../../../../../Shared/VariableResolvers/AppOrgResolver";
 import { FormatScreeningMethod } from "../../../shared/Formatters";
+import FDate from "../../../../../../Library/FDate/FDate";
+import { FaClock } from "react-icons/fa6";
+import { getClockIconData } from "../FSDOHelper";
+import "./FSDOOS.css";
 
 const FSDOOngoingScreens = ({ screens }) => {
   const navigate = useNavigate();
@@ -21,14 +25,41 @@ const FSDOOngoingScreens = ({ screens }) => {
         key={screen.id}
       >
         <div className="flex align-items-end justify-content-end">
-          <div className="p-1 white-space-nowrap justify-content-center bg-white text-700 text-xs w-6 overflow-hidden text-overflow-ellipsis border-right-1 border-cyan-100">
+          <div className="p-1 white-space-nowrap justify-content-center bg-white text-700 text-xs w-7 overflow-hidden text-overflow-ellipsis border-right-1 border-cyan-100">
             {screen.screenType == "phenotypic"
               ? "Phenotypic"
               : FormatScreeningMethod(screen.method)}
           </div>
 
-          <div className="p-1 white-space-nowrap justify-content-center bg-white text-700 text-xs w-6 overflow-hidden text-overflow-ellipsis border-cyan-100">
+          <div className="p-1 white-space-nowrap justify-content-center bg-white text-700 text-xs w-5 overflow-hidden text-overflow-ellipsis border-right-1 border-cyan-100">
             {getOrgAliasById(screen?.primaryOrgId)}
+          </div>
+
+          <div className="p-1 white-space-nowrap justify-content-center bg-white text-700 text-xs w-6 overflow-hidden text-overflow-ellipsis border-cyan-100">
+            <FDate
+              timestamp={
+                screen?.isModified
+                  ? screen?.latestStatusChangeDate
+                  : screen?.dateCreated
+              }
+            />
+          </div>
+
+          <div className="tooltip-container justify-content-center bg-white">
+            {(() => {
+              const dateToCheck = screen?.isModified
+                ? screen?.latestStatusChangeDate
+                : screen?.dateCreated;
+              const { color: iconColor, tooltipText } =
+                getClockIconData(dateToCheck);
+
+              return iconColor ? (
+                <>
+                  <FaClock style={{ color: iconColor }} />
+                  <span className="tooltip-text">{tooltipText}</span>
+                </>
+              ) : null;
+            })()}
           </div>
         </div>
 
