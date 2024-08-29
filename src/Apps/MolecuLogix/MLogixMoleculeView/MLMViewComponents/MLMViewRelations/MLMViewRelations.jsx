@@ -8,6 +8,7 @@ import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { RootStoreContext } from "../../../../../RootStore";
 import { AppOrgResolver } from "../../../../../Shared/VariableResolvers/AppOrgResolver";
+import { generateIcon } from "./MLMRelIconGen";
 import { generateLink } from "./MLMRelLinkGen";
 
 const MLMViewRelations = ({ selectedMolecule }) => {
@@ -37,9 +38,9 @@ const MLMViewRelations = ({ selectedMolecule }) => {
   const propertiesToInclude = [
     "stage",
     "screenType",
-    "screenStatus",
     "status",
     "orgId",
+    "relationship",
   ];
 
   console.log(associations);
@@ -54,7 +55,7 @@ const MLMViewRelations = ({ selectedMolecule }) => {
     }
     const propertiesArray = Object.keys(filteredProperties).map((key) => ({
       name: _.startCase(key),
-      value: filteredProperties[key],
+      value: _.startCase(filteredProperties[key]),
     }));
     return {
       nodeType: item.nodeType,
@@ -69,53 +70,46 @@ const MLMViewRelations = ({ selectedMolecule }) => {
 
   const itemTemplate = (node, index) => {
     return (
-      <div className="col-3 p-2" key={node.uniId}>
-        <div className="flex flex-column w-full shadow-1 hover:shadow-3 border-round-md">
+      <div
+        className="flex p-2 justify-content-center align-items-center"
+        key={node.uniId}
+      >
+        <div className="flex flex-column justify-content-center align-items-center shadow-1 hover:shadow-2 border-round-md pl-4 pr-4">
           <div
-            className="flex flex-column  justify-content-center cursor-pointer "
+            className="flex flex-column justify-content-center cursor-pointer "
             onClick={() => {
               navigate(generateLink(associations, node.uniId));
             }}
           >
-            <div
-              className="flex flex-column justify-content-center border-round-top-md "
-              style={{
-                backgroundColor: "#eee",
-              }}
-            >
-              <div className="flex p-2 text-lg text-100 text-black-alpha-90 justify-content-center">
-                {node.nodeName}
+            <div className="flex">
+              <div className="flex border-circle w-3rem h-3rem m-2 align-items-left justify-content-center flex-column gap-1">
+                <div className="flex">
+                  {generateIcon(associations, node.uniId)}
+                </div>
+                {/* <div className="flex text-sm">{node.nodeType}</div> */}
+              </div>
+              <div className="flex flex-column">
+                <div className="flex pt-2 text-lg text-100 text-black-alpha-90 justify-content-left">
+                  {node.nodeName}
+                </div>
+                <div className="flex p-0 text-sm text-100 text-black-alpha-50 justify-content-left">
+                  {/* {_.startCase(node.nodeRelation.toLowerCase())} */}
+                  {_.startCase(node.nodeType)}
+                </div>
               </div>
             </div>
-            <div className="flex justify-content-center border-green-100 border-bottom-1">
-              <div
-                className="flex justify-content-center align-items-center w-full p-2 text-700 border-right-1 border-green-100"
-                style={{
-                  minWidth: "4rem",
-                }}
-              >
-                {_.startCase(node.nodeType)}
-              </div>
 
-              <div
-                className="flex justify-content-center align-items-center w-full p-2 text-700"
-                style={{
-                  minWidth: "4rem",
-                }}
-              >
-                {_.startCase(node.nodeRelation.toLowerCase())}
-              </div>
-            </div>
-            <div className="flex w-full p-2 justify-content-left">
+            {/* <div className="flex p-0 text-sm text-100 text-black-alpha-90 justify-content-left">
+              {_.startCase(node.nodeRelation.toLowerCase())}
+            </div> */}
+
+            <div className="flex w-full p-0 justify-content-left text-sm">
               <DataTable
                 value={node.properties}
                 className="HideDataTableHeader"
               >
-                <Column field="name"></Column>
-                <Column
-                  style={{ wordBreak: "break-all" }}
-                  field="value"
-                ></Column>
+                <Column className="text-sm" field="name"></Column>
+                <Column className="text-sm" field="value"></Column>
               </DataTable>
             </div>
           </div>

@@ -37,7 +37,7 @@ const SmilesView = ({
     });
   }
   contextMenuItems.push({
-    label: "Copy Smiles String",
+    label: "Copy SMILES",
     icon: "pi pi-copy",
     command: () => {
       navigator.clipboard.writeText(smiles);
