@@ -57,7 +57,7 @@ const FHaNewBaseHitData = ({ baseHitData }) => {
             className="flex align-items-center justify-content-center"
             style={{ width: "200px", height: "200px" }}
           >
-            <SmilesView smiles={primarySMILES} width={"200"} height={"200"} />
+            <SmilesView smiles={primarySMILES} width={200} height={200} />
           </div>
         </div>
         <div className="flex flex-column w-1/2">
@@ -75,8 +75,8 @@ const FHaNewBaseHitData = ({ baseHitData }) => {
                 <SmilesView
                   key={index}
                   smiles={smiles}
-                  width={"200"}
-                  height={"200"}
+                  width={200}
+                  height={200}
                 />
               </div>
             ))}

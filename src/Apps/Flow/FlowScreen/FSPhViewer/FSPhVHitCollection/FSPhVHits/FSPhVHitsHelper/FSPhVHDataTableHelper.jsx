@@ -12,12 +12,12 @@ export const StructureBodyTemplate = (rowData) => {
             <Tag severity="success" value="Promoted"></Tag>
           )}
         </div>
-        <div className="flex">
+        <div className="flex w-full h-full">
           <SmilesView
             smiles={rowData?.molecule?.smilesCanonical}
             compoundId={rowData?.molecule?.id}
-            width={"250"}
-            height={"250"}
+            width={250}
+            height={250}
           />
         </div>
       </div>
