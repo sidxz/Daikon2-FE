@@ -122,123 +122,119 @@ const FSTbVHits = ({ id }) => {
       <>
         <div className="flex flex-column w-full">
           <div className="flex w-full">
-            <LoadingBlockUI
-              blocked={
+            <DataTable
+              loading={
                 isDeletingHit ||
                 isAddingHit ||
                 isUpdatingHit ||
                 isBatchInsertingHits
               }
-              containerClassName="w-full"
+              className="p-datatable-gridlines w-full border-0"
+              size="small"
+              //ref={dt}
+              editMode="row"
+              onRowEditComplete={(e) => updateHit(e.newData)}
+              dataKey="id"
+              value={selectedHitCollection?.hits}
+              paginator
+              scrollable
+              rows={100}
+              sortField="clusterGroup"
+              sortOrder={1}
+              header={
+                <FSTbVHDataTableHeader
+                  showAddHitSideBar={() => setDisplayAddHitSideBar(true)}
+                  selectedHitCollection={selectedHitCollection}
+                  selectedScreen={selectedScreen}
+                  showFileUploadDialog={() => setShowFileUploadDialog(true)}
+                  selectionEnabled={selectionEnabled}
+                  setSelectionEnabled={setSelectionEnabled}
+                  selectedHits={selectedHits}
+                  setSelectedHits={setSelectedHits}
+                  isVotesHidden={isVotesHidden}
+                  setIsVotesHidden={setIsVotesHidden}
+                  isOneClickVotingEnabled={isOneClickVotingEnabled}
+                  setIsOneClickVotingEnabled={setIsOneClickVotingEnabled}
+                  showPromoteSideBar={() => setIsPromoteSideBarVisible(true)}
+                  subStructureHighlight={subStructureHighlight}
+                  setSubStructureHighlight={setSubStructureHighlight}
+                  setShowStructureEditor={setShowStructureEditor}
+                />
+              }
+              //globalFilter={globalFilter}
+              emptyMessage="No hits found."
+              resizableColumns
+              columnResizeMode="fit"
+              showGridlines
+              selection={selectedHits}
+              onSelectionChange={(e) => setSelectedHits(e.value)}
             >
-              <DataTable
-                className="p-datatable-gridlines w-full"
-                size="small"
-                //ref={dt}
-                editMode="row"
-                onRowEditComplete={(e) => updateHit(e.newData)}
-                dataKey="id"
-                value={selectedHitCollection?.hits}
-                paginator
-                scrollable
-                rows={100}
-                sortField="clusterGroup"
-                sortOrder={1}
-                header={
-                  <FSTbVHDataTableHeader
-                    showAddHitSideBar={() => setDisplayAddHitSideBar(true)}
-                    selectedHitCollection={selectedHitCollection}
-                    selectedScreen={selectedScreen}
-                    showFileUploadDialog={() => setShowFileUploadDialog(true)}
-                    selectionEnabled={selectionEnabled}
-                    setSelectionEnabled={setSelectionEnabled}
-                    selectedHits={selectedHits}
-                    setSelectedHits={setSelectedHits}
-                    isVotesHidden={isVotesHidden}
-                    setIsVotesHidden={setIsVotesHidden}
-                    isOneClickVotingEnabled={isOneClickVotingEnabled}
-                    setIsOneClickVotingEnabled={setIsOneClickVotingEnabled}
-                    showPromoteSideBar={() => setIsPromoteSideBarVisible(true)}
-                    subStructureHighlight={subStructureHighlight}
-                    setSubStructureHighlight={setSubStructureHighlight}
-                    setShowStructureEditor={setShowStructureEditor}
-                  />
+              {selectionEnabled && (
+                <Column
+                  selectionMode="multiple"
+                  headerStyle={{ width: "3em" }}
+                  className="fadein"
+                ></Column>
+              )}
+              <Column
+                field={(rowData) => rowData?.molecule?.smilesCanonical}
+                header="Structure"
+                body={(rowData) =>
+                  StructureBodyTemplate(rowData, subStructureHighlight)
                 }
-                //globalFilter={globalFilter}
-                emptyMessage="No hits found."
-                resizableColumns
-                columnResizeMode="fit"
-                showGridlines
-                selection={selectedHits}
-                onSelectionChange={(e) => setSelectedHits(e.value)}
-              >
-                {selectionEnabled && (
-                  <Column
-                    selectionMode="multiple"
-                    headerStyle={{ width: "3em" }}
-                    className="fadein"
-                  ></Column>
-                )}
-                <Column
-                  field={(rowData) => rowData?.molecule?.smilesCanonical}
-                  header="Structure"
-                  body={(rowData) =>
-                    StructureBodyTemplate(rowData, subStructureHighlight)
-                  }
-                />
+              />
 
-                <Column
-                  field={"library"}
-                  header="Library"
-                  editor={(options) => TextRowEditor(options)}
-                  sortable
-                />
-                <Column
-                  field={"librarySource"}
-                  header="Source"
-                  editor={(options) => TextRowEditor(options)}
-                />
+              <Column
+                field={"library"}
+                header="Library"
+                editor={(options) => TextRowEditor(options)}
+                sortable
+              />
+              <Column
+                field={"librarySource"}
+                header="Source"
+                editor={(options) => TextRowEditor(options)}
+              />
 
-                <Column
-                  field={(rowData) => rowData?.molecule?.name}
-                  header="Compound Name"
-                />
-                <Column
-                  field={"iC50"}
-                  header="IC50 (&micro;M) "
-                  editor={(options) => TextRowEditor(options)}
-                  sortable
-                />
-                <Column
-                  field={"mic"}
-                  header="MIC (&micro;M)"
-                  editor={(options) => TextRowEditor(options)}
-                  sortable
-                />
-                <Column
-                  field={"clusterGroup"}
-                  header="Cluster"
-                  editor={(options) => TextRowEditor(options)}
-                  sortable
-                />
-                <Column
-                  field="voteScore"
-                  header="Vote"
-                  body={votingBodyTemplate}
-                  sortable
-                />
+              <Column
+                field={(rowData) => rowData?.molecule?.name}
+                header="Compound Name"
+              />
+              <Column
+                field={"iC50"}
+                header="IC50 (&micro;M) "
+                editor={(options) => TextRowEditor(options)}
+                sortable
+              />
+              <Column
+                field={"mic"}
+                header="MIC (&micro;M)"
+                editor={(options) => TextRowEditor(options)}
+                sortable
+              />
+              <Column
+                field={"clusterGroup"}
+                header="Cluster"
+                editor={(options) => TextRowEditor(options)}
+                sortable
+              />
+              <Column
+                field="voteScore"
+                header="Vote"
+                body={votingBodyTemplate}
+                sortable
+              />
 
-                <Column
-                  rowEditor
-                  header="Edit"
-                  // headerStyle={{ width: "10%", minWidth: "8rem" }}
-                  bodyStyle={{ textAlign: "center" }}
-                />
-                {isUserInAnyOfRoles([ScreenAdminRoleName]) && (
-                  <Column body={deleteBodyTemplate} header="Delete" />
-                )}
-              </DataTable>
-            </LoadingBlockUI>
+              <Column
+                rowEditor
+                header="Edit"
+                // headerStyle={{ width: "10%", minWidth: "8rem" }}
+                bodyStyle={{ textAlign: "center" }}
+              />
+              {isUserInAnyOfRoles([ScreenAdminRoleName]) && (
+                <Column body={deleteBodyTemplate} header="Delete" />
+              )}
+            </DataTable>
           </div>
         </div>
         {/* substructure highlight editor */}
