@@ -66,7 +66,7 @@ const MLMViewRelations = ({ selectedMolecule }) => {
     };
   });
 
-  //data = data.filter((item) => item.nodeRelation !== "INITIAL_HIT_MOLECULE");
+  data = data.filter((item) => item.nodeRelation !== "INITIAL_HIT_MOLECULE");
 
   const itemTemplate = (node, index) => {
     return (
