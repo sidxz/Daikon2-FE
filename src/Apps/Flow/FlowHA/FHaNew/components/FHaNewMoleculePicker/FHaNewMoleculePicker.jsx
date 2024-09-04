@@ -39,8 +39,8 @@ const FHaNewMoleculePicker = ({ selectedMolecule, setSelectedMolecule }) => {
         >
           <SmilesView
             smiles={molecule?.smilesCanonical}
-            width={"200"}
-            height={"200"}
+            width={200}
+            height={200}
           />
         </div>
       </div>

@@ -33,17 +33,12 @@ const FSDOverview = () => {
   //console.log("screenListTargetBased", screenListTargetBased);
 
   let sortByDate = (a, b) => {
-    // Handle default or null dateModified by using dateCreated instead
-    const dateA =
-      a.dateModified && a.dateModified !== "0001-01-01T00:00:00Z"
-        ? new Date(a.dateModified)
-        : new Date(a.dateCreated);
-    const dateB =
-      b.dateModified && b.dateModified !== "0001-01-01T00:00:00Z"
-        ? new Date(b.dateModified)
-        : new Date(b.dateCreated);
 
-    return dateA - dateB; // Sort by dateModified or dateCreated if dateModified is default or null
+    // Handle default or null dateModified by using dateCreated instead
+    const dateA = a?.isModified ? new Date(a.latestStatusChangeDate) : new Date(a.dateCreated);
+    const dateB = b?.isModified ? new Date(b.latestStatusChangeDate) : new Date(b.dateCreated);
+  
+    return dateB - dateA; // Sort by dateModified or dateCreated if dateModified is default or null
   };
 
   const currentDate = new Date();
@@ -180,7 +175,7 @@ const FSDOverview = () => {
 
       <div className="flex w-full pt-4">
         <div
-          className="flex max-w-1 p-4 align-items-center justify-content-center bg-orange-400 text-white"
+          className="flex max-w-1 p-4 align-items-center justify-content-center bg-blue-400 text-white"
           style={{
             textOrientation: "sideways-right",
             writingMode: "vertical-rl",

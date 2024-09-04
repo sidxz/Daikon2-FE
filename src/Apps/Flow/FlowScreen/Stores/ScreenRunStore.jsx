@@ -116,22 +116,54 @@ export default class ScreenRunStore {
   /**
    * Batch insert screen runs
    */
+  // batchInsertScreenRuns = async (editedRows) => {
+  //   this.isBatchInsertingScreenRuns = true;
+
+  //   const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+  //   try {
+  //     const promises = editedRows.map(async (editedRow) => {
+  //       // Fix ids
+  //       editedRow.screenId = this.rootStore.screenStore.selectedScreen.id;
+  //       await delay(500);
+  //       if (editedRow.status === "New") {
+  //         return await this.addScreenRun(editedRow, true);
+  //       } else if (editedRow.status === "Modified") {
+  //         return await this.updateScreenRun(editedRow, true);
+  //       }
+  //     });
+
+  //     await Promise.all(promises);
+  //     toast.success("Batch insertion/update completed successfully");
+  //   } catch (error) {
+  //     console.error(error);
+  //   } finally {
+  //     runInAction(() => {
+  //       this.isBatchInsertingScreenRuns = false;
+  //     });
+  //   }
+  // };
+
   batchInsertScreenRuns = async (editedRows) => {
     this.isBatchInsertingScreenRuns = true;
 
+    const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
     try {
-      const promises = editedRows.map(async (editedRow) => {
+      for (const editedRow of editedRows) {
         // Fix ids
         editedRow.screenId = this.rootStore.screenStore.selectedScreen.id;
 
         if (editedRow.status === "New") {
-          return await this.addScreenRun(editedRow, true);
+          await this.addScreenRun(editedRow, true);
         } else if (editedRow.status === "Modified") {
-          return await this.updateScreenRun(editedRow, true);
+          await this.updateScreenRun(editedRow, true);
         }
-      });
 
-      await Promise.all(promises);
+        // Add a delay between each insert to prevent server overload
+        await delay(300); // 500ms delay, adjust as needed
+      }
+
       toast.success("Batch insertion/update completed successfully");
     } catch (error) {
       console.error(error);

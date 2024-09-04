@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@rdkit/rdkit": "^2023.9.2-1.0.0",
     "axios": "^1.6.8",
     "dompurify": "^3.1.1",
     "echarts-for-react": "^3.0.2",
@@ -39,9 +40,9 @@
     "react-router-dom": "^6.23.0",
     "react-toastify": "^10.0.5",
     "remixicon": "^4.2.0",
-    "smiles-drawer": "^2.1.7",
     "vis-data": "^7.1.9",
     "vis-timeline": "^7.7.3",
+    "vite-plugin-wasm": "^3.3.0",
     "xml-js": "^1.6.11"
   },
   "devDependencies": {
