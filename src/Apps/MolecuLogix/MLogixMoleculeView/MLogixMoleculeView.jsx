@@ -8,8 +8,9 @@ import SecHeading from "../../../Library/SecHeading/SecHeading";
 import { RootStoreContext } from "../../../RootStore";
 import { appColors } from "../../../constants/colors";
 import MLMViewGeneralInfo from "./MLMViewComponents/MLMViewGeneralInfo";
+import MLMViewIdentifiers from "./MLMViewComponents/MLMViewIdentifiers/MLMViewIdentifiers";
+import MLMViewOtherInfo from "./MLMViewComponents/MLMViewOtherInfo";
 import MLMViewRelations from "./MLMViewComponents/MLMViewRelations/MLMViewRelations";
-import MLMViewStructure from "./MLMViewComponents/MLMViewStructure";
 import MLMViewStructureCanonical from "./MLMViewComponents/MLMViewStructureCanonical";
 import * as Helper from "./MLogixMoleculeViewHelper";
 
@@ -31,6 +32,7 @@ const MLogixMoleculeView = () => {
   }
 
   if (selectedMolecule) {
+    console.log("selectedMolecule", selectedMolecule);
     return (
       <div className="flex flex-column min-w-full fadein animation-duration-500">
         <div className="flex gap-2">
@@ -51,20 +53,26 @@ const MLogixMoleculeView = () => {
               />
             </div>
 
-            <div className="flex w-full gap-2">
-              <div className="flex max-w-7">
+            <div
+              className="flex w-full gap-1 border-1 border-50 p-1 border-round-md"
+              style={{ minHeight: "33rem" }}
+            >
+              <div className="flex border-0">
                 <MLMViewGeneralInfo selectedMolecule={selectedMolecule} />
-              </div>
-              <div className="flex">
-                <MLMViewStructure selectedMolecule={selectedMolecule} />
               </div>
               <div className="flex">
                 <MLMViewStructureCanonical
                   selectedMolecule={selectedMolecule}
                 />
               </div>
+              <div className="flex border-0">
+                <MLMViewIdentifiers selectedMolecule={selectedMolecule} />
+              </div>
             </div>
-            <div className="flex w-full gap-2">
+            <div className="flex gap-2">
+              <MLMViewOtherInfo selectedMolecule={selectedMolecule} />
+            </div>
+            <div className="flex gap-2">
               <MLMViewRelations selectedMolecule={selectedMolecule} />
             </div>
           </div>

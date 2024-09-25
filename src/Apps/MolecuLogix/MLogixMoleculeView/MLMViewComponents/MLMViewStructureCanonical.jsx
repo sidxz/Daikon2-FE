@@ -5,7 +5,7 @@ import SmilesView from "../../../../Library/SmilesView/SmilesView";
 const MLMViewStructureCanonical = ({ selectedMolecule }) => {
   return (
     <div className="flex pt-2">
-      <Fieldset className="m-0 flex-grow-1" legend="Structure SMILES Canonical">
+      <Fieldset className="m-0 flex-grow-1" legend="Structure">
         <SmilesView
           smiles={selectedMolecule?.smilesCanonical}
           width={400}
