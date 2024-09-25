@@ -8,7 +8,7 @@ import { useNavigate, useSearchParams } from "react-router-dom"; // useSearchPar
 import { RootStoreContext } from "../../../../RootStore";
 import MolDbAPI from "../../api/MolDbAPI";
 import { MolecuLogixIcon } from "../../Icons/MolecuLogixIcon";
-import SearchWithConditions from "./SearchWithConditions";
+import SearchConditions from "./SearchConditions";
 
 const SearchBar = ({}) => {
   const navigate = useNavigate();
@@ -256,7 +256,7 @@ const SearchBar = ({}) => {
             <label className="text-color-secondary text-sm">Optional</label>
           }
         >
-          <SearchWithConditions
+          <SearchConditions
             conditions={conditions}
             setConditions={setConditions}
           />

@@ -3,7 +3,7 @@ import { Dropdown } from "primereact/dropdown";
 import { InputNumber } from "primereact/inputnumber";
 import React from "react";
 
-const SearchWithConditions = ({ conditions, setConditions }) => {
+const SearchConditions = ({ conditions, setConditions }) => {
   const properties = [
     { label: "Molecule Mass (g/mol)", value: "molecularWeight" },
     { label: "cLog P", value: "cLogP" },
@@ -122,4 +122,4 @@ const SearchWithConditions = ({ conditions, setConditions }) => {
   );
 };
 
-export default SearchWithConditions;
+export default SearchConditions;
