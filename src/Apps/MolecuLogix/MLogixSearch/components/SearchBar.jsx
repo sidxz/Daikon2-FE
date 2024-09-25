@@ -3,8 +3,8 @@ import { Button } from "primereact/button";
 import { Fieldset } from "primereact/fieldset";
 import { InputText } from "primereact/inputtext";
 import { RadioButton } from "primereact/radiobutton";
-import React, { useContext, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom"; // useSearchParams instead of useParams
 import { RootStoreContext } from "../../../../RootStore";
 import MolDbAPI from "../../api/MolDbAPI";
 import { MolecuLogixIcon } from "../../Icons/MolecuLogixIcon";
@@ -12,45 +12,94 @@ import SearchWithConditions from "./SearchWithConditions";
 
 const SearchBar = ({}) => {
   const navigate = useNavigate();
-  const params = useParams();
-  const [searchValue, setSearchValue] = useState(params.smiles ?? "");
-  const [searchType, setSearchType] = useState("similarity");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchValue, setSearchValue] = useState(
+    searchParams.get("smiles") || ""
+  );
+  const [searchType, setSearchType] = useState(
+    searchParams.get("searchType") || "similarity"
+  );
   const [searchResults, setSearchResults] = useState([]);
-  const [loading, setLoading] = useState(false); // Loading state
+  const [loading, setLoading] = useState(false);
   const [showStructureEditor, setShowStructureEditor] = useState(false);
-  const [similarityThreshold, setSimilarityThreshold] = useState(90);
-  const [searchLimit, setSearchLimit] = useState(100);
+  const [similarityThreshold, setSimilarityThreshold] = useState(
+    Number(searchParams.get("threshold") || 90)
+  );
+  const [searchLimit, setSearchLimit] = useState(
+    Number(searchParams.get("limit") || 100)
+  );
   const [conditions, setConditions] = useState([
     { property: null, min: "", max: "" },
   ]);
 
   const rootStore = useContext(RootStoreContext);
 
-  const conditionsQueryGenerator = (params) => {
+  // Function to extract conditions from URL query params
+  const extractConditionsFromUrl = () => {
+    const newConditions = [];
+
+    searchParams.forEach((value, key) => {
+      // Detect condition parameters (ends with "Min" or "Max")
+      if (key.endsWith("Min") || key.endsWith("Max")) {
+        const property = key.replace(/Min|Max/, "");
+        const isMin = key.endsWith("Min");
+        const existingCondition = newConditions.find(
+          (condition) => condition.property === property
+        );
+
+        if (existingCondition) {
+          existingCondition[isMin ? "min" : "max"] = value;
+        } else {
+          newConditions.push({
+            property,
+            min: isMin ? value : "",
+            max: isMin ? "" : value,
+          });
+        }
+      }
+    });
+
+    return newConditions.length > 0
+      ? newConditions
+      : [{ property: null, min: "", max: "" }];
+  };
+
+  // On component mount, initialize conditions from URL params
+  useEffect(() => {
+    const initialConditions = extractConditionsFromUrl();
+    setConditions(initialConditions);
+  }, []);
+
+  // Function to sync state with URL
+  const syncUrlWithParams = () => {
+    const params = {
+      smiles: searchValue,
+      threshold: similarityThreshold,
+      limit: searchLimit,
+      searchType,
+    };
+
     conditions.forEach((condition) => {
       if (condition.property) {
-        if (
-          condition.min !== "" &&
-          condition.min !== null &&
-          condition.min !== undefined
-        ) {
+        if (condition.min) {
           params[`${condition.property}Min`] = condition.min;
         }
-        if (
-          condition.max !== "" &&
-          condition.max !== null &&
-          condition.max !== undefined
-        ) {
+        if (condition.max) {
           params[`${condition.property}Max`] = condition.max;
         }
       }
     });
+
+    setSearchParams(params); // Update the URL query string
   };
+
+  useEffect(() => {
+    // Sync URL with params whenever any search parameter changes
+    syncUrlWithParams();
+  }, [searchValue, searchType, similarityThreshold, searchLimit, conditions]);
 
   const searchForSimilarMolecules = () => {
     setLoading(true);
-
-    // Construct the base URL with the similarity parameters
 
     const params = {
       smiles: searchValue,
@@ -58,18 +107,23 @@ const SearchBar = ({}) => {
       limit: searchLimit,
     };
 
-    // Add additional filter conditions (min/max for selected properties)
-    conditionsQueryGenerator(params);
+    conditions.forEach((condition) => {
+      if (condition.property) {
+        if (condition.min) {
+          params[`${condition.property}Min`] = condition.min;
+        }
+        if (condition.max) {
+          params[`${condition.property}Max`] = condition.max;
+        }
+      }
+    });
 
-    // Convert params to a query string
     const queryString = new URLSearchParams(params).toString();
-
-    console.log(queryString);
 
     MolDbAPI.findSimilarMolecules(queryString)
       .then((response) => {
-        setSearchResults(response);
         console.log(response);
+        setSearchResults(response);
         setLoading(false);
       })
       .catch((error) => {
@@ -84,9 +138,7 @@ const SearchBar = ({}) => {
         console.log("Substructure search");
         break;
       case "similarity":
-        console.log("Similarity search");
         return searchForSimilarMolecules();
-        break;
       case "exact":
         console.log("Exact search");
         break;
@@ -119,7 +171,6 @@ const SearchBar = ({}) => {
             icon={<MolecuLogixIcon size={28} />}
             label="Launch Structure Editor"
             disabled={loading}
-            //onClick={() => setShowStructureEditor(true)}
           />
         </div>
         <div>
