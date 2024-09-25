@@ -21,10 +21,8 @@ const MolDbAPI = {
       params: { similarityThreshold: 1, maxResults: 1 },
     }),
 
-  findSimilarMolecules: (smiles, threshold, limit) =>
-    axiosWithAuth.get(`/v2/molecule/similar/${encodeURIComponent(smiles)}`, {
-      params: { similarityThreshold: threshold, maxResults: limit },
-    }),
+  findSimilarMolecules: (queryString) =>
+    axiosWithAuth.get(`/v2/molecule/similar?${queryString}`),
 };
 
 export default MolDbAPI;

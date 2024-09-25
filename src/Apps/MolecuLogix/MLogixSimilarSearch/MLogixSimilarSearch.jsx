@@ -18,7 +18,7 @@ import { appColors } from "../../../constants/colors";
 import { MolecuLogixIcon } from "../Icons/MolecuLogixIcon";
 import MLogixRegisterMolecule from "../MLogixAllMolecules/MLogixRegisterMolecule";
 import MolDbAPI from "../api/MolDbAPI";
-import MLSimilarSearchCard from "./MLSimilarSearchCard/MLSimilarSearchCard";
+import MLSimilarSearchResultCard from "./MLSimilarSearchResult/MLSimilarSearchResultCard";
 import * as Helper from "./MLogixSimilarSearchHelper";
 
 const MLogixSimilarSearch = () => {
@@ -48,7 +48,9 @@ const MLogixSimilarSearch = () => {
   };
 
   const searchItemTemplate = (molecule, index) => {
-    return <MLSimilarSearchCard molecule={molecule} navigate={navigate} />;
+    return (
+      <MLSimilarSearchResultCard molecule={molecule} navigate={navigate} />
+    );
   };
 
   const searchListTemplate = (items) => {
@@ -81,7 +83,7 @@ const MLogixSimilarSearch = () => {
             <SecHeading
               icon="icon icon-conceptual icon-structures-3d"
               svgIcon={<MolecuLogixIcon />}
-              heading={"Search by SMILES"}
+              heading={"Search"}
               color={appColors.molecuLogix.heading}
               customButtons={[
                 {

@@ -67,7 +67,7 @@ const MLMViewOtherInfo = ({ selectedMolecule }) => {
 
   let other3 = [
     {
-      name: "fsP3",
+      name: "FsP3",
       value: selectedMolecule.fsP3,
     },
     {
@@ -82,7 +82,7 @@ const MLMViewOtherInfo = ({ selectedMolecule }) => {
 
   let other3b = [
     {
-      name: "qed",
+      name: "QED",
       value: selectedMolecule.qed,
     },
     {
@@ -90,7 +90,7 @@ const MLMViewOtherInfo = ({ selectedMolecule }) => {
       value: selectedMolecule.radicalElectrons,
     },
     {
-      name: "sas",
+      name: "SAS",
       value: selectedMolecule.sas,
     },
   ];

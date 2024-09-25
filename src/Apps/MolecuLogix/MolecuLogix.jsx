@@ -7,6 +7,7 @@ import MLogixDraw from "./MLogixDraw/MLogixDraw";
 import MLogixMenuBar from "./MLogixMenuBar/MLogixMenuBar";
 import MLogixMoleculeEdit from "./MLogixMoleculeEdit/MLogixMoleculeEdit";
 import MLogixMoleculeView from "./MLogixMoleculeView/MLogixMoleculeView";
+import MLogixSearch from "./MLogixSearch/MLogixSearch";
 import MLogixSimilarSearch from "./MLogixSimilarSearch/MLogixSimilarSearch";
 
 const MolecuLogix = () => {
@@ -23,7 +24,7 @@ const MolecuLogix = () => {
           <Route path="molecule/:id/edit" element={<MLogixMoleculeEdit />} />
           <Route path="molecule/:id" element={<MLogixMoleculeView />} />
           <Route path="search/:smiles" element={<MLogixSimilarSearch />} />
-          <Route path="search/" element={<MLogixSimilarSearch />} />
+          <Route path="search/" element={<MLogixSearch />} />
           <Route path="draw/*" element={<MLogixDraw />} />
         </Routes>
       </div>

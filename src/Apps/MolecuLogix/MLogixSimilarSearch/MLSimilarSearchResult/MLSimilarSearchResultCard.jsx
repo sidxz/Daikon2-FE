@@ -2,7 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import SmilesView from "../../../../Library/SmilesView/SmilesView";
 
-const MLSimilarSearchCard = ({ molecule, navigate }) => {
+const MLSimilarSearchResultCard = ({ molecule, navigate }) => {
   return (
     <div
       className="flex w-full gap-2 border-1 border-50 p-2 m-1"
@@ -47,4 +47,4 @@ const MLSimilarSearchCard = ({ molecule, navigate }) => {
   );
 };
 
-export default MLSimilarSearchCard;
+export default MLSimilarSearchResultCard;
