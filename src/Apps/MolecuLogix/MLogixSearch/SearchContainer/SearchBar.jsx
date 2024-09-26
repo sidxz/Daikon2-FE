@@ -1,10 +1,12 @@
 import { observer } from "mobx-react-lite";
 import { Button } from "primereact/button";
+import { Dialog } from "primereact/dialog";
 import { Fieldset } from "primereact/fieldset";
 import { InputText } from "primereact/inputtext";
 import { RadioButton } from "primereact/radiobutton";
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom"; // useSearchParams instead of useParams
+import JSMEditor from "../../../../Library/JSME/JSMEditor";
 import { RootStoreContext } from "../../../../RootStore";
 import MolDbAPI from "../../api/MolDbAPI";
 import { MolecuLogixIcon } from "../../Icons/MolecuLogixIcon";
@@ -204,127 +206,149 @@ const SearchBar = ({}) => {
   console.log("searchResults", searchResults);
 
   return (
-    <div className="flex w-full flex-column gap-1 p-3">
-      {/* Search Input and Buttons */}
-      <div className="flex w-full align-items-center gap-3">
-        <div className="flex-grow-1">
-          <InputText
-            className="w-full text-lg"
-            placeholder="Enter search query: SMILES or Name"
-            autoFocus
-            value={searchValue}
-            disabled={loading}
-            onChange={(e) => setSearchValue(e.target.value)}
-          />
+    <>
+      <div className="flex w-full flex-column gap-1 p-3">
+        {/* Search Input and Buttons */}
+        <div className="flex w-full align-items-center gap-3">
+          <div className="flex-grow-1">
+            <InputText
+              className="w-full text-lg"
+              placeholder="Enter search query: SMILES or Name"
+              autoFocus
+              value={searchValue}
+              disabled={loading}
+              onChange={(e) => setSearchValue(e.target.value)}
+            />
+          </div>
+          <div className="flex">
+            <Button
+              text
+              type="button"
+              icon={<MolecuLogixIcon size={28} />}
+              label="Launch Structure Editor"
+              disabled={loading}
+              onClick={() => setShowStructureEditor(true)}
+            />
+          </div>
+          <div>
+            <Button
+              className="p-button-lg"
+              label="Search"
+              size="large"
+              loading={loading}
+              disabled={searchValue === ""}
+              onClick={() => searchAPI()}
+            />
+          </div>
         </div>
-        <div className="flex">
-          <Button
-            text
-            type="button"
-            icon={<MolecuLogixIcon size={28} />}
-            label="Launch Structure Editor"
-            disabled={loading}
-          />
+
+        {/* Radio Buttons */}
+        <div className="flex w-full border-1 border-50 border-round-md p-3 align-items-center">
+          <div className="flex-grow-1 flex gap-4">
+            <div className="flex align-items-center">
+              <RadioButton
+                inputId="substructure"
+                name="searchType"
+                value="substructure"
+                onChange={(e) => setSearchType(e.value) && setSearchResults([])}
+                checked={searchType === "substructure"}
+              />
+              <label htmlFor="substructure" className="ml-2">
+                Substructure
+              </label>
+            </div>
+            <div className="flex align-items-center">
+              <RadioButton
+                inputId="similarity"
+                name="searchType"
+                value="similarity"
+                onChange={(e) => setSearchType(e.value) && setSearchResults([])}
+                checked={searchType === "similarity"}
+              />
+              <label htmlFor="similarity" className="ml-2">
+                Similarity
+              </label>
+            </div>
+            <div className="flex align-items-center">
+              <RadioButton
+                inputId="exact"
+                name="searchType"
+                value="exact"
+                onChange={(e) => setSearchType(e.value) && setSearchResults([])}
+                checked={searchType === "exact"}
+              />
+              <label htmlFor="exact" className="ml-2">
+                Exact
+              </label>
+            </div>
+            <div className="flex align-items-center">
+              <RadioButton
+                inputId="name"
+                name="searchType"
+                value="name"
+                onChange={(e) => setSearchType(e.value) && setSearchResults([])}
+                checked={searchType === "name"}
+              />
+              <label htmlFor="name" className="ml-2">
+                By Name
+              </label>
+            </div>
+          </div>
+          <div className="flex align-items-center gap-2">
+            <label className="text-color-secondary text-sm">
+              Limit Results
+            </label>
+            <InputText
+              className="text-sm w-4rem p-1"
+              keyfilter="int"
+              value={searchLimit}
+              onChange={(e) => setSearchLimit(e.target.value)}
+            />
+          </div>
         </div>
-        <div>
-          <Button
-            className="p-button-lg"
-            label="Search"
-            size="large"
+
+        {/* Filters */}
+        <div className="flex w-full align-items-center">
+          <Fieldset
+            className="w-full flex-grow-1"
+            legend={
+              <label className="text-color-secondary text-sm">Optional</label>
+            }
+          >
+            <SearchConditions
+              conditions={conditions}
+              setConditions={setConditions}
+            />
+          </Fieldset>
+        </div>
+
+        <div className="flex w-full align-items-center">
+          <SearchResults
+            results={searchResults}
             loading={loading}
-            disabled={searchValue === ""}
-            onClick={() => searchAPI()}
+            searchType={searchType}
+            searchValue={searchValue}
           />
         </div>
       </div>
-
-      {/* Radio Buttons */}
-      <div className="flex w-full border-1 border-50 border-round-md p-3 align-items-center">
-        <div className="flex-grow-1 flex gap-4">
-          <div className="flex align-items-center">
-            <RadioButton
-              inputId="substructure"
-              name="searchType"
-              value="substructure"
-              onChange={(e) => setSearchType(e.value) && setSearchResults([])}
-              checked={searchType === "substructure"}
-            />
-            <label htmlFor="substructure" className="ml-2">
-              Substructure
-            </label>
-          </div>
-          <div className="flex align-items-center">
-            <RadioButton
-              inputId="similarity"
-              name="searchType"
-              value="similarity"
-              onChange={(e) => setSearchType(e.value) && setSearchResults([])}
-              checked={searchType === "similarity"}
-            />
-            <label htmlFor="similarity" className="ml-2">
-              Similarity
-            </label>
-          </div>
-          <div className="flex align-items-center">
-            <RadioButton
-              inputId="exact"
-              name="searchType"
-              value="exact"
-              onChange={(e) => setSearchType(e.value) && setSearchResults([])}
-              checked={searchType === "exact"}
-            />
-            <label htmlFor="exact" className="ml-2">
-              Exact
-            </label>
-          </div>
-          <div className="flex align-items-center">
-            <RadioButton
-              inputId="name"
-              name="searchType"
-              value="name"
-              onChange={(e) => setSearchType(e.value) && setSearchResults([])}
-              checked={searchType === "name"}
-            />
-            <label htmlFor="name" className="ml-2">
-              By Name
-            </label>
-          </div>
-        </div>
-        <div className="flex align-items-center gap-2">
-          <label className="text-color-secondary text-sm">Limit Results</label>
-          <InputText
-            className="text-sm w-4rem p-1"
-            keyfilter="int"
-            value={searchLimit}
-            onChange={(e) => setSearchLimit(e.target.value)}
+      <Dialog
+        visible={showStructureEditor}
+        closable={false}
+        modal={false}
+        showHeader={false}
+        onHide={() => setShowStructureEditor(false)}
+      >
+        <div className="flex pt-5">
+          <JSMEditor
+            initialSmiles={searchValue}
+            onSave={(s) => {
+              setShowStructureEditor(false);
+              setSearchValue(s);
+            }}
           />
         </div>
-      </div>
-
-      {/* Filters */}
-      <div className="flex w-full align-items-center">
-        <Fieldset
-          className="w-full flex-grow-1"
-          legend={
-            <label className="text-color-secondary text-sm">Optional</label>
-          }
-        >
-          <SearchConditions
-            conditions={conditions}
-            setConditions={setConditions}
-          />
-        </Fieldset>
-      </div>
-
-      <div className="flex w-full align-items-center">
-        <SearchResults
-          results={searchResults}
-          loading={loading}
-          searchType={searchType}
-          searchValue={searchValue}
-        />
-      </div>
-    </div>
+      </Dialog>
+    </>
   );
 };
 
