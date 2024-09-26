@@ -42,6 +42,11 @@ const SearchResultCard = ({ molecule, searchType, searchValue }) => {
             </p>
           </div>
         )}
+        {searchType === "name" && (
+          <div className="flex">
+            <p className="text-sm m-0">Synonyms : {molecule.synonyms}</p>
+          </div>
+        )}
 
         <div className="flex">
           <p className="text-lg m-0 text-color-secondary">

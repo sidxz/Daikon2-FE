@@ -106,7 +106,7 @@ const SearchBar = ({}) => {
       });
   };
 
-  /* Prepare Similar Molecule Search */
+  /* Prepare Exact Molecule Search */
   const searchForExact = () => {
     setLoading(true);
 
@@ -119,6 +119,29 @@ const SearchBar = ({}) => {
     const queryString = new URLSearchParams(params).toString();
 
     MolDbAPI.findSimilarMolecules(queryString)
+      .then((response) => {
+        console.log(response);
+        setSearchResults(response);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        setLoading(false);
+      });
+  };
+
+  /* Prepare By Name Molecule Search */
+  const searchByName = () => {
+    setLoading(true);
+
+    const params = {
+      name: searchValue,
+      limit: searchLimit,
+    };
+
+    const queryString = new URLSearchParams(params).toString();
+
+    MolDbAPI.findByName(queryString)
       .then((response) => {
         console.log(response);
         setSearchResults(response);
@@ -172,8 +195,7 @@ const SearchBar = ({}) => {
       case "exact":
         return searchForExact();
       case "name":
-        console.log("Name search");
-        break;
+        return searchByName();
       default:
         console.log("Invalid search type");
     }
