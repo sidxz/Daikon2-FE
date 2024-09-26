@@ -8,6 +8,8 @@ import { useNavigate, useSearchParams } from "react-router-dom"; // useSearchPar
 import { RootStoreContext } from "../../../../RootStore";
 import MolDbAPI from "../../api/MolDbAPI";
 import { MolecuLogixIcon } from "../../Icons/MolecuLogixIcon";
+import SearchResults from "../SearchResults/SearchResults";
+import { extractConditionsFromUrl } from "./helper";
 import SearchConditions from "./SearchConditions";
 
 const SearchBar = ({}) => {
@@ -34,42 +36,6 @@ const SearchBar = ({}) => {
 
   const rootStore = useContext(RootStoreContext);
 
-  // Function to extract conditions from URL query params
-  const extractConditionsFromUrl = () => {
-    const newConditions = [];
-
-    searchParams.forEach((value, key) => {
-      // Detect condition parameters (ends with "Min" or "Max")
-      if (key.endsWith("Min") || key.endsWith("Max")) {
-        const property = key.replace(/Min|Max/, "");
-        const isMin = key.endsWith("Min");
-        const existingCondition = newConditions.find(
-          (condition) => condition.property === property
-        );
-
-        if (existingCondition) {
-          existingCondition[isMin ? "min" : "max"] = value;
-        } else {
-          newConditions.push({
-            property,
-            min: isMin ? value : "",
-            max: isMin ? "" : value,
-          });
-        }
-      }
-    });
-
-    return newConditions.length > 0
-      ? newConditions
-      : [{ property: null, min: "", max: "" }];
-  };
-
-  // On component mount, initialize conditions from URL params
-  useEffect(() => {
-    const initialConditions = extractConditionsFromUrl();
-    setConditions(initialConditions);
-  }, []);
-
   // Function to sync state with URL
   const syncUrlWithParams = () => {
     const params = {
@@ -77,6 +43,7 @@ const SearchBar = ({}) => {
       threshold: similarityThreshold,
       limit: searchLimit,
       searchType,
+      conditions,
     };
 
     conditions.forEach((condition) => {
@@ -93,11 +60,18 @@ const SearchBar = ({}) => {
     setSearchParams(params); // Update the URL query string
   };
 
+  // On component mount, initialize conditions from URL params
+  useEffect(() => {
+    const initialConditions = extractConditionsFromUrl(searchParams);
+    setConditions(initialConditions);
+  }, []);
+
   useEffect(() => {
     // Sync URL with params whenever any search parameter changes
     syncUrlWithParams();
   }, [searchValue, searchType, similarityThreshold, searchLimit, conditions]);
 
+  /* Prepare Similar Molecule Search */
   const searchForSimilarMolecules = () => {
     setLoading(true);
 
@@ -132,11 +106,43 @@ const SearchBar = ({}) => {
       });
   };
 
+  const searchForSubstructure = () => {
+    setLoading(true);
+
+    const params = {
+      smiles: searchValue,
+      limit: searchLimit,
+    };
+
+    conditions.forEach((condition) => {
+      if (condition.property) {
+        if (condition.min) {
+          params[`${condition.property}Min`] = condition.min;
+        }
+        if (condition.max) {
+          params[`${condition.property}Max`] = condition.max;
+        }
+      }
+    });
+
+    const queryString = new URLSearchParams(params).toString();
+
+    MolDbAPI.findSubStructures(queryString)
+      .then((response) => {
+        console.log(response);
+        setSearchResults(response);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        setLoading(false);
+      });
+  };
+
   const searchAPI = () => {
     switch (searchType) {
       case "substructure":
-        console.log("Substructure search");
-        break;
+        return searchForSubstructure();
       case "similarity":
         return searchForSimilarMolecules();
       case "exact":
@@ -149,6 +155,8 @@ const SearchBar = ({}) => {
         console.log("Invalid search type");
     }
   };
+
+  console.log("searchResults", searchResults);
 
   return (
     <div className="flex w-full flex-column gap-1 p-3">
@@ -261,6 +269,15 @@ const SearchBar = ({}) => {
             setConditions={setConditions}
           />
         </Fieldset>
+      </div>
+
+      <div className="flex w-full align-items-center">
+        <SearchResults
+          results={searchResults}
+          loading={loading}
+          searchType={searchType}
+          searchValue={searchValue}
+        />
       </div>
     </div>
   );

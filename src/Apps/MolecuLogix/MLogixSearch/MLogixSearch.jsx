@@ -6,7 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import SecHeading from "../../../Library/SecHeading/SecHeading";
 import { appColors } from "../../../constants/colors";
 import { MolecuLogixIcon } from "../Icons/MolecuLogixIcon";
-import SearchBar from "./components/SearchBar";
+import SearchBar from "./SearchContainer/SearchBar";
 import * as Helper from "./helper";
 const MLogixSearch = () => {
   const navigate = useNavigate();

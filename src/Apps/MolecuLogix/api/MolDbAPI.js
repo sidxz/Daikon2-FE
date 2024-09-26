@@ -23,6 +23,9 @@ const MolDbAPI = {
 
   findSimilarMolecules: (queryString) =>
     axiosWithAuth.get(`/v2/molecule/similar?${queryString}`),
+
+  findSubStructures: (queryString) =>
+    axiosWithAuth.get(`/v2/molecule/substructure?${queryString}`),
 };
 
 export default MolDbAPI;
