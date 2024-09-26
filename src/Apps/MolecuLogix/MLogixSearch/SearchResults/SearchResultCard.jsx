@@ -6,6 +6,15 @@ import SmilesView from "../../../../Library/SmilesView/SmilesView";
 const SearchResultCard = ({ molecule, searchType, searchValue }) => {
   const navigate = useNavigate();
 
+  let navUrl = () => {
+    switch (searchType) {
+      case "substructure":
+        return `/moleculogix/molecule/${molecule.id}?substructure=${searchValue}`;
+      default:
+        return `/moleculogix/molecule/${molecule.id}`;
+    }
+  };
+
   return (
     <div
       className="flex gap-2 border-1 border-50 p-2 m-1 w-25rem	"
@@ -22,7 +31,7 @@ const SearchResultCard = ({ molecule, searchType, searchValue }) => {
       </div>
       <div className="flex flex-column gap-1">
         <div className="flex">
-          <NavLink to={`/moleculogix/molecule/${molecule.id}`}>
+          <NavLink to={navUrl()}>
             <p className="text-2xl m-0">{molecule.name}</p>
           </NavLink>
         </div>

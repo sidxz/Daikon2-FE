@@ -19,7 +19,7 @@ const SearchBar = ({}) => {
     searchParams.get("smiles") || ""
   );
   const [searchType, setSearchType] = useState(
-    searchParams.get("searchType") || "similarity"
+    searchParams.get("searchType") || "substructure"
   );
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -201,7 +201,7 @@ const SearchBar = ({}) => {
               inputId="substructure"
               name="searchType"
               value="substructure"
-              onChange={(e) => setSearchType(e.value)}
+              onChange={(e) => setSearchType(e.value) && setSearchResults([])}
               checked={searchType === "substructure"}
             />
             <label htmlFor="substructure" className="ml-2">
@@ -213,7 +213,7 @@ const SearchBar = ({}) => {
               inputId="similarity"
               name="searchType"
               value="similarity"
-              onChange={(e) => setSearchType(e.value)}
+              onChange={(e) => setSearchType(e.value) && setSearchResults([])}
               checked={searchType === "similarity"}
             />
             <label htmlFor="similarity" className="ml-2">
@@ -225,7 +225,7 @@ const SearchBar = ({}) => {
               inputId="exact"
               name="searchType"
               value="exact"
-              onChange={(e) => setSearchType(e.value)}
+              onChange={(e) => setSearchType(e.value) && setSearchResults([])}
               checked={searchType === "exact"}
             />
             <label htmlFor="exact" className="ml-2">
@@ -237,7 +237,7 @@ const SearchBar = ({}) => {
               inputId="name"
               name="searchType"
               value="name"
-              onChange={(e) => setSearchType(e.value)}
+              onChange={(e) => setSearchType(e.value) && setSearchResults([])}
               checked={searchType === "name"}
             />
             <label htmlFor="name" className="ml-2">

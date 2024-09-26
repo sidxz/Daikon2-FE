@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import { BreadCrumb } from "primereact/breadcrumb";
 import { Menu } from "primereact/menu";
 import React, { useContext, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import Loading from "../../../Library/Loading/Loading";
 import SecHeading from "../../../Library/SecHeading/SecHeading";
 import { RootStoreContext } from "../../../RootStore";
@@ -16,6 +16,7 @@ import * as Helper from "./MLogixMoleculeViewHelper";
 
 const MLogixMoleculeView = () => {
   const params = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const rootStore = useContext(RootStoreContext);
   const { fetchMolecule, isFetchingMolecule, selectedMolecule } =
@@ -63,6 +64,7 @@ const MLogixMoleculeView = () => {
               <div className="flex">
                 <MLMViewStructureCanonical
                   selectedMolecule={selectedMolecule}
+                  subStructure={searchParams.get("substructure")}
                 />
               </div>
               <div className="flex border-0">
