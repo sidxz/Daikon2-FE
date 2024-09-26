@@ -106,6 +106,30 @@ const SearchBar = ({}) => {
       });
   };
 
+  /* Prepare Similar Molecule Search */
+  const searchForExact = () => {
+    setLoading(true);
+
+    const params = {
+      smiles: searchValue,
+      threshold: 1,
+      limit: 1,
+    };
+
+    const queryString = new URLSearchParams(params).toString();
+
+    MolDbAPI.findSimilarMolecules(queryString)
+      .then((response) => {
+        console.log(response);
+        setSearchResults(response);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        setLoading(false);
+      });
+  };
+
   const searchForSubstructure = () => {
     setLoading(true);
 
@@ -146,8 +170,7 @@ const SearchBar = ({}) => {
       case "similarity":
         return searchForSimilarMolecules();
       case "exact":
-        console.log("Exact search");
-        break;
+        return searchForExact();
       case "name":
         console.log("Name search");
         break;
@@ -165,7 +188,7 @@ const SearchBar = ({}) => {
         <div className="flex-grow-1">
           <InputText
             className="w-full text-lg"
-            placeholder="Enter search query"
+            placeholder="Enter search query: SMILES or Name"
             autoFocus
             value={searchValue}
             disabled={loading}

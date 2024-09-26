@@ -23,7 +23,7 @@ const SmilesView = ({
       label: "Find Similar",
       icon: "icon icon-common icon-search",
       command: () => {
-        navigate(`/moleculogix/search/${encodeURIComponent(smiles)}`);
+        navigate(`/moleculogix/search?smiles=${smiles}&searchType=similarity`);
       },
     },
   ];
