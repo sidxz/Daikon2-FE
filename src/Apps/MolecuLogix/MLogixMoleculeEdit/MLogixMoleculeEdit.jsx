@@ -52,6 +52,7 @@ const MLogixMoleculeEdit = () => {
       id: selectedMolecule?.id,
       ids: selectedMolecule?.ids,
       name: selectedMolecule?.name,
+      synonyms: selectedMolecule?.synonyms,
       requestedSMILES: selectedMolecule?.smiles,
       synonyms: selectedMolecule?.synonyms,
     },
@@ -140,6 +141,26 @@ const MLogixMoleculeEdit = () => {
                           })}
                         />
                         {getErrorMessage("name")}
+                      </div>
+
+                      <div className="field">
+                        <label
+                          htmlFor="synonyms"
+                          className={classNames({
+                            "p-error": isInvalid("synonyms"),
+                          })}
+                        >
+                          Synonyms
+                        </label>
+                        <InputText
+                          id="synonyms"
+                          value={formik.values.synonyms}
+                          onChange={formik.handleChange}
+                          className={classNames({
+                            "p-invalid": isInvalid("synonyms"),
+                          })}
+                        />
+                        {getErrorMessage("synonyms")}
                       </div>
                     </Fieldset>
                   </div>

@@ -139,7 +139,7 @@ const MLMViewOtherInfo = ({ selectedMolecule }) => {
               <Column
                 field="value"
                 body={(rowData) =>
-                  rowData.name == "Formula"
+                  rowData.name === "Formula" && rowData.value
                     ? rowData.value.split(/(\d+)/).map((part, index) => {
                         // If it's a number, wrap it in a <sub> tag
                         if (!isNaN(part)) {
@@ -148,7 +148,7 @@ const MLMViewOtherInfo = ({ selectedMolecule }) => {
                         // Otherwise, just return the element as it is
                         return <span key={index}>{part}</span>;
                       })
-                    : rowData.value
+                    : rowData.value || ""
                 }
               ></Column>
             </DataTable>
