@@ -1,6 +1,5 @@
 import { TabMenu } from "primereact/tabmenu";
 import React, { useState } from "react";
-import { CiViewTable } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
 
 import "./MLogixMenuBar.css";
@@ -57,11 +56,6 @@ const MLogixMenuBar = () => {
     //   icon: "icon icon-conceptual icon-chemical",
     //   command: () => navigate("draw/"),
     // },
-    {
-      label: "Dashboard",
-      icon: <CiViewTable className="mr-2 flex" />,
-      command: () => navigate("dash/"),
-    },
 
     // { label: "Clinical", icon: "icon icon-conceptual icon-proteins" },
   ];
