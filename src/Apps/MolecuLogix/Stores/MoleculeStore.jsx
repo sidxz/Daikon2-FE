@@ -48,49 +48,6 @@ export default class MoleculeStore {
 
   // Actions
 
-  fetchMolecules = async (inValidateCache = false) => {
-    if (inValidateCache) {
-      this.isMoleculeListCacheValid = false;
-    }
-    if (this.isMoleculeListCacheValid) {
-      return;
-    }
-    this.isFetchingMolecules = true;
-    try {
-      const molecules = await MolDbAPI.listMolecules();
-      runInAction(() => {
-        molecules.forEach((molecule) => {
-          //console.log(molecule);
-          // round off molecularWeight and tpsa to 2 decimal places
-          if (
-            molecule.molecularWeight != null &&
-            molecule.molecularWeight !== ""
-          ) {
-            molecule.molecularWeight = parseFloat(
-              molecule.molecularWeight
-            ).toFixed(2);
-          } else {
-            molecule.molecularWeight = 0;
-          }
-
-          if (molecule.tpsa != null && molecule.tpsa !== "") {
-            molecule.tpsa = parseFloat(molecule.tpsa).toFixed(2);
-          } else {
-            molecule.tpsa = 0;
-          }
-          this.moleculeRegistry.set(molecule.id, molecule);
-        });
-        this.isMoleculeListCacheValid = true;
-      });
-    } catch (error) {
-      console.error("Error fetching molecules:", error);
-    } finally {
-      runInAction(() => {
-        this.isFetchingMolecules = false;
-      });
-    }
-  };
-
   get moleculeList() {
     return Array.from(this.moleculeRegistry.values());
   }
@@ -122,6 +79,53 @@ export default class MoleculeStore {
     } finally {
       runInAction(() => {
         this.isFetchingMolecule = false;
+      });
+    }
+  };
+
+  fetchMolecules = async (moleculeIds, inValidateCache = false) => {
+    if (inValidateCache) {
+      this.isMoleculeRegistryCacheValid = false;
+    }
+
+    this.isFetchingMolecules = true;
+    const moleculesToFetch = [];
+    const fetchedMolecules = [];
+
+    // Check cache for each molecule and collect ids for those not in cache
+    moleculeIds.forEach((id) => {
+      const molecule = this.moleculeRegistry.get(id);
+      if (molecule && this.isMoleculeRegistryCacheValid) {
+        fetchedMolecules.push(molecule);
+      } else {
+        moleculesToFetch.push(id);
+      }
+    });
+
+    if (moleculesToFetch.length === 0) {
+      // All molecules were found in the cache, return them
+      this.isFetchingMolecules = false;
+      return fetchedMolecules;
+    }
+
+    try {
+      const molecules = await MolDbAPI.getMoleculesByIds(moleculesToFetch);
+      runInAction(() => {
+        molecules.forEach((molecule) => {
+          molecule.molecularWeight = molecule.molecularWeight.toFixed(2);
+          molecule.tpsa = molecule.tpsa.toFixed(2);
+          this.moleculeRegistry.set(molecule.id, molecule);
+          fetchedMolecules.push(molecule);
+        });
+      });
+      return;
+      return fetchedMolecules;
+    } catch (error) {
+      console.error("Error fetching molecules:", error);
+      return fetchedMolecules; // Return the already fetched molecules from cache even in case of an error
+    } finally {
+      runInAction(() => {
+        this.isFetchingMolecules = false;
       });
     }
   };

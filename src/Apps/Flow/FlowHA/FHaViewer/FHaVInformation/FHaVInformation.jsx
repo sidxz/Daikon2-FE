@@ -18,6 +18,7 @@ import { HaAdminRoleName } from "../../constants/roles";
 import HaCompoundEvolution from "../../shared/HaCompoundEvolution/HaCompoundEvolution";
 import HaStatusDropdown from "../../shared/HaStatusDropdown";
 import * as Helper from "./FHaVInformationHelper";
+import FHaVAssociatedHits from "./components/FHaVAssociatedHits";
 import FHaVInfoOrgs from "./components/FHaVInfoOrgs";
 
 const FHaVInformation = () => {
@@ -160,6 +161,11 @@ const FHaVInformation = () => {
       <div className="flex w-full">
         <Fieldset className="m-0 flex-grow-1" legend="Compound Evolution">
           <HaCompoundEvolution events={selectedHa?.haCompoundEvolution} />
+        </Fieldset>
+      </div>
+      <div className="flex w-full">
+        <Fieldset className="m-0 flex-grow-1" legend="Associated Hits">
+          <FHaVAssociatedHits associatedHits={selectedHa?.associatedHits} />
         </Fieldset>
       </div>
     </div>

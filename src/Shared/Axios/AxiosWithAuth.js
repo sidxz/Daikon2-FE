@@ -138,8 +138,8 @@ class AxiosWithAuth {
 
   get = async (url, config = {}) => {
     await this.init();
-    const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-    await delay(2000);
+    // const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+    // await delay(3000);
     return this.axiosWithAuth.get(url, config).then(this.formatResponse);
   };
 

@@ -20,7 +20,7 @@ const SmilesView = ({
 
   const contextMenuItems = [
     {
-      label: "Find Similar",
+      label: "Find similar",
       icon: "icon icon-common icon-search",
       command: () => {
         navigate(`/moleculogix/search?smiles=${smiles}&searchType=similarity`);
@@ -29,7 +29,7 @@ const SmilesView = ({
   ];
   if (compoundId) {
     contextMenuItems.push({
-      label: "View Compound",
+      label: "View molecule",
       icon: "icon icon-common icon-math",
       command: () => {
         navigate("/moleculogix/molecule/" + compoundId);

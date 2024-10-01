@@ -100,8 +100,8 @@ const MLogixMoleculeEdit = () => {
               </div>
               <div className="flex w-full">
                 <SecHeading
-                  icon="icon icon-conceptual icon-structures-3d"
-                  heading={selectedMolecule.name}
+                  icon="icon icon-common icon-math"
+                  heading={"Molecule - " + selectedMolecule.name}
                   color={appColors.sectionHeadingBg.screen}
                 />
               </div>

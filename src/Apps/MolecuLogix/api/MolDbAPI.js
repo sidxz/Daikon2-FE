@@ -1,3 +1,4 @@
+import qs from "qs";
 import AxiosWithAuth from "../../../Shared/Axios/AxiosWithAuth";
 
 const axiosWithAuth = new AxiosWithAuth();
@@ -5,6 +6,12 @@ const axiosWithAuth = new AxiosWithAuth();
 const MolDbAPI = {
   listMolecules: () => axiosWithAuth.get("/v2/molecule/"),
   getMoleculeById: (id) => axiosWithAuth.get(`/v2/molecule/${id}`),
+  getMoleculesByIds: (ids) =>
+    axiosWithAuth.get("/v2/molecule/by-ids", {
+      params: { IDs: ids },
+      paramsSerializer: (params) =>
+        qs.stringify(params, { arrayFormat: "repeat" }),
+    }),
 
   registerMolecule: (molecule) => axiosWithAuth.post("/v2/molecule/", molecule),
   updateMolecule: (molecule) =>
