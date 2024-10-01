@@ -52,7 +52,6 @@ const MLogixMoleculeEdit = () => {
       id: selectedMolecule?.id,
       ids: selectedMolecule?.ids,
       name: selectedMolecule?.name,
-      synonyms: selectedMolecule?.synonyms,
       requestedSMILES: selectedMolecule?.smiles,
       synonyms: selectedMolecule?.synonyms,
     },
