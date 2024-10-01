@@ -193,9 +193,9 @@ const FHaNewHitPicker = ({ baseHitData, setBaseHitData }) => {
           {/* Submit Button */}
           <div className="flex w-full">
             <Button
-              label="Select Molecules"
+              label="Step 5 | Confirm"
               icon="pi pi-check"
-              className="p-button-secondary"
+              className="p-button-primary p-button-text border-1 border-50"
               onClick={handleSubmit}
             />
           </div>

@@ -122,6 +122,8 @@ const FHaNewMoleculePicker = ({ selectedMolecule, setSelectedMolecule }) => {
         <Menu model={sideMenuItems} popup ref={sideMenu} id={"side_menu"} />
         <Button
           icon="pi pi-ellipsis-h"
+          iconPos="right"
+          label="Other Options"
           className="p-button border-1 border-50"
           outlined
           severity="secondary"

@@ -169,9 +169,14 @@ const FHANew = () => {
         <>
           <div className="flex w-full border-1 border-50">
             <Divider align="left">
-              <div className="inline-flex align-items-center">
-                <GiMolecule />
-                <b>Select molecule from screening hits</b>
+              <div className="inline-flex align-items-center gap-2">
+                <div className="text-xl inline-flex align-items-center">
+                  <GiMolecule />
+                </div>
+
+                <div className="text-xl inline-flex align-items-center">
+                  Option 1 | Start with screening hits
+                </div>
               </div>
             </Divider>
           </div>
@@ -191,10 +196,14 @@ const FHANew = () => {
         <>
           <div className="flex w-full border-1 border-50">
             <Divider align="left">
-              <div className="inline-flex align-items-center">
-                <GiMolecule />
+              <div className="inline-flex align-items-center gap-2">
+                <div className="text-xl inline-flex align-items-center">
+                  <GiMolecule />
+                </div>
 
-                <b>Or | select molecule from vault</b>
+                <div className="text-xl inline-flex align-items-center">
+                  Option 2 | Start with a molecule from vault
+                </div>
               </div>
             </Divider>
           </div>
