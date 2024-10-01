@@ -32,15 +32,7 @@ const FSTbViewer = () => {
     isScreenRegistryCacheValid,
   } = rootStore.screenStore;
 
-  const {
-    fetchHitCollectionsOfScreen,
-    isFetchingHitCollection,
-    isHitCollectionRegistryCacheValid,
-    hitCollectionOfScreen,
-    selectedHitCollection,
-    getHitCollection,
-    isAddingHitCollection,
-  } = rootStore.hitCollectionStore;
+  const { fetchHitCollectionsOfScreen } = rootStore.hitCollectionStore;
 
   const { isUserInAnyOfRoles } = AppRoleResolver();
 

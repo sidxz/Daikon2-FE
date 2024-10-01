@@ -32,6 +32,8 @@ const FSPhViewer = () => {
     isScreenRegistryCacheValid,
   } = rootStore.screenStore;
 
+  const { fetchHitCollectionsOfScreen } = rootStore.hitCollectionStore;
+
   const { isUserInAnyOfRoles } = AppRoleResolver();
 
   useEffect(() => {
@@ -43,6 +45,12 @@ const FSPhViewer = () => {
       fetchScreen(params.id);
     }
   }, [params.id, fetchScreen, selectedScreen, isScreenRegistryCacheValid]);
+
+  useEffect(() => {
+    if (selectedScreen && selectedScreen?.id === params?.id) {
+      fetchHitCollectionsOfScreen(selectedScreen.id);
+    }
+  }, [selectedScreen, params.id, fetchHitCollectionsOfScreen]);
 
   if (isFetchingScreen) {
     return <Loading message={"Fetching Screen..."} />;
