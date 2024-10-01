@@ -30,7 +30,7 @@ const FTVCompassQuad = () => {
           <div
             className="flex flex-column w-6 border-1 border-50 border-round-md m-1 p-1"
             style={{
-              backgroundColor: "#D4F1F4",
+              backgroundColor: "#F0F4F8",
             }}
           >
             <div className="flex justify-content-center text-xl font-semibold border-bottom-1 border-50 p-1">
@@ -49,7 +49,7 @@ const FTVCompassQuad = () => {
           <div
             className="flex flex-column w-6 border-1 border-50 border-round-md m-1 p-1"
             style={{
-              backgroundColor: "#C4F5C7",
+              backgroundColor: "#D7E9EF",
             }}
           >
             <div className="flex justify-content-center text-xl font-semibold border-bottom-1 border-50 p-1">
@@ -70,7 +70,7 @@ const FTVCompassQuad = () => {
           <div
             className="flex flex-column w-6 border-1 border-50 border-round-md m-1 p-1"
             style={{
-              backgroundColor: "#C6B9D4",
+              backgroundColor: "#E2DFF0",
             }}
           >
             <div className="flex justify-content-center text-xl font-semibold border-bottom-1 border-50 p-1">
@@ -89,7 +89,7 @@ const FTVCompassQuad = () => {
           <div
             className="flex flex-column w-6 border-1 border-50 border-round-md m-1 p-1"
             style={{
-              backgroundColor: "#FFD8B8",
+              backgroundColor: "#F9E5DD",
             }}
           >
             <div className="flex justify-content-center text-xl font-semibold border-bottom-1 border-50 p-1">
