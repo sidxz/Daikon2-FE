@@ -73,6 +73,16 @@ const SearchBar = ({}) => {
     syncUrlWithParams();
   }, [searchValue, searchType, similarityThreshold, searchLimit, conditions]);
 
+  useEffect(() => {
+    const initialConditions = extractConditionsFromUrl(searchParams);
+    setConditions(initialConditions);
+
+    // Trigger the search if relevant query parameters are present
+    if (searchValue) {
+      searchAPI();
+    }
+  }, []); // Run only once when the component is mounted
+
   /* Prepare Similar Molecule Search */
   const searchForSimilarMolecules = () => {
     setLoading(true);

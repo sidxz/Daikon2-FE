@@ -1,6 +1,7 @@
 import { ContextMenu } from "primereact/contextmenu";
 import React, { useRef } from "react";
 import { FcPrivacy } from "react-icons/fc";
+import { VscSearchFuzzy } from "react-icons/vsc";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import MoleculeStructure from "../RDKit/MoleculeStructure/MoleculeStructure";
@@ -24,6 +25,15 @@ const SmilesView = ({
       icon: "icon icon-common icon-search",
       command: () => {
         navigate(`/moleculogix/search?smiles=${smiles}&searchType=similarity`);
+      },
+    },
+    {
+      label: "Find substructure",
+      icon: <VscSearchFuzzy className="mr-2" />,
+      command: () => {
+        navigate(
+          `/moleculogix/search?smiles=${smiles}&searchType=substructure`
+        );
       },
     },
   ];
