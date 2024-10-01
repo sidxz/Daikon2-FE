@@ -32,6 +32,16 @@ const FSTbViewer = () => {
     isScreenRegistryCacheValid,
   } = rootStore.screenStore;
 
+  const {
+    fetchHitCollectionsOfScreen,
+    isFetchingHitCollection,
+    isHitCollectionRegistryCacheValid,
+    hitCollectionOfScreen,
+    selectedHitCollection,
+    getHitCollection,
+    isAddingHitCollection,
+  } = rootStore.hitCollectionStore;
+
   const { isUserInAnyOfRoles } = AppRoleResolver();
 
   useEffect(() => {
@@ -57,6 +67,12 @@ const FSTbViewer = () => {
     isScreenRegistryCacheValid,
     fetchScreens,
   ]);
+
+  useEffect(() => {
+    if (selectedScreen && selectedScreen?.id === params?.id) {
+      fetchHitCollectionsOfScreen(selectedScreen.id);
+    }
+  }, [selectedScreen, params.id, fetchHitCollectionsOfScreen]);
 
   if (isFetchingScreen) {
     return <Loading message={"Fetching Screen..."} />;

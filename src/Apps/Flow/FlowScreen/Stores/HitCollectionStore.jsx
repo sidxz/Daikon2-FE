@@ -56,11 +56,13 @@ export default class HitCollectionStore {
   };
 
   fetchHitCollectionsOfScreen = async (screenId, inValidateCache = false) => {
+    console.log("fetchHitCollectionsOfScreen", screenId, inValidateCache);
     if (inValidateCache) {
       this.hitCollectionRegistryCache.set(screenId, false);
     }
 
     if (this.hitCollectionRegistryCache.get(screenId)) {
+      console.log("hitCollectionRegistryCache HIT");
       return;
     }
 
