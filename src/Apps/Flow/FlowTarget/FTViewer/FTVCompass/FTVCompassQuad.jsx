@@ -28,7 +28,7 @@ const FTVCompassQuad = () => {
       <BlockUI blocked={isUpdatingTarget}>
         <div className="flex w-full">
           <div
-            className="flex flex-column w-6 border-1 border-50 m-1 p-1"
+            className="flex flex-column w-6 border-1 border-50 border-round-md m-1 p-1"
             style={{
               backgroundColor: "#D4F1F4",
             }}
@@ -47,7 +47,7 @@ const FTVCompassQuad = () => {
             </div>
           </div>
           <div
-            className="flex flex-column w-6 border-1 border-50 m-1 p-1"
+            className="flex flex-column w-6 border-1 border-50 border-round-md m-1 p-1"
             style={{
               backgroundColor: "#C4F5C7",
             }}
@@ -68,7 +68,7 @@ const FTVCompassQuad = () => {
         </div>
         <div className="flex w-full">
           <div
-            className="flex flex-column w-6 border-1 border-50 m-1 p-1"
+            className="flex flex-column w-6 border-1 border-50 border-round-md m-1 p-1"
             style={{
               backgroundColor: "#C6B9D4",
             }}
@@ -87,7 +87,7 @@ const FTVCompassQuad = () => {
             </div>
           </div>
           <div
-            className="flex flex-column w-6 border-1 border-50 m-1 p-1"
+            className="flex flex-column w-6 border-1 border-50 border-round-md m-1 p-1"
             style={{
               backgroundColor: "#FFD8B8",
             }}
