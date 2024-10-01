@@ -100,7 +100,7 @@ const TitleBar = ({ signOut, ssoUser }) => {
             </div>
             <div className="flex align-items-center justify-content-center ">
               <Dropdown
-                className="BlackButton DropdownWhiteLabel"
+                className="BlackButton"
                 options={FeedbackOptions}
                 onChange={(e) => onFeedback(e)}
                 optionLabel="label"
@@ -111,7 +111,7 @@ const TitleBar = ({ signOut, ssoUser }) => {
 
             <div className="flex align-items-center justify-content-center ">
               <Dropdown
-                className="BlackButton DropdownWhiteLabel"
+                className="BlackButton"
                 value={"Mycobacterium tuberculosis H37Rv"}
                 options={Strains}
                 // onChange={onCityChange}
