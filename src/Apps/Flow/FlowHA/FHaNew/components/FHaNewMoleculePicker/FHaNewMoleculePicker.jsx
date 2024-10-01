@@ -1,25 +1,38 @@
 import { observer } from "mobx-react-lite";
+import { AutoComplete } from "primereact/autocomplete";
 import { Button } from "primereact/button";
-import { Dropdown } from "primereact/dropdown";
 import { Menu } from "primereact/menu";
 import { Sidebar } from "primereact/sidebar";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import SmilesView from "../../../../../../Library/SmilesView/SmilesView";
 import { RootStoreContext } from "../../../../../../RootStore";
+
 import { MolecuLogixIcon } from "../../../../../MolecuLogix/Icons/MolecuLogixIcon";
 import MLogixRegisterMolecule from "../../../../../MolecuLogix/MLogixAllMolecules/MLogixRegisterMolecule";
+import MolDbAPI from "../../../../../MolecuLogix/api/MolDbAPI";
 
 const FHaNewMoleculePicker = ({ selectedMolecule, setSelectedMolecule }) => {
   const rootStore = useContext(RootStoreContext);
-  const {
-    moleculeList,
-    fetchMolecules,
-    isFetchingMolecules,
-    isMoleculeRegistryCacheValid,
-  } = rootStore.moleculeStore;
+  const { isMoleculeRegistryCacheValid, fetchMolecules } =
+    rootStore.moleculeStore;
 
   const sideMenu = useRef(null);
   const [displayAddSideBar, setDisplayAddSideBar] = useState(false);
+  const [filteredMolecules, setFilteredMolecules] = useState([]);
+
+  const searchMolecules = async (event) => {
+    const query = "Limit=5&Name=" + event.query;
+    console.log("searchMolecules query:", query);
+    try {
+      const response = await MolDbAPI.findByName(query);
+      console.log("searchMolecules response:", response);
+      const molecules = response || [];
+      console.log("searchMolecules molecules:", molecules);
+      setFilteredMolecules(molecules);
+    } catch (error) {
+      console.error("Error fetching molecules by name:", error);
+    }
+  };
 
   useEffect(() => {
     if (!isMoleculeRegistryCacheValid) {
@@ -29,19 +42,39 @@ const FHaNewMoleculePicker = ({ selectedMolecule, setSelectedMolecule }) => {
 
   let moleculeTemplate = (molecule) => {
     return (
-      <div className="flex flex gap-1 border-1 border-50">
-        <div className="flex flex-column border-1 border-50">
-          <div className="flex  p-2">Name: {molecule?.name}</div>
-        </div>
-        <div
-          className="flex align-items-center justify-content-center"
-          style={{ width: "200px", height: "200px" }}
-        >
+      <div
+        className="flex gap-2 border-1 border-50 p-2 m-1 w-full"
+        id={molecule.id}
+        key={molecule.id}
+      >
+        <div className="flex border-1 border-50">
           <SmilesView
-            smiles={molecule?.smilesCanonical}
-            width={200}
-            height={200}
+            smiles={molecule.smilesCanonical}
+            subStructure={null}
+            width={150}
+            height={150}
           />
+        </div>
+        <div className="flex flex-column gap-1">
+          <div className="flex">
+            <p className="text-lg m-0">{molecule.name}</p>
+          </div>
+          <div className="flex">
+            <p className="text-sm m-0">Synonyms: {molecule.synonyms}</p>
+          </div>
+          <div className="flex">
+            <p className="m-0 text-color-secondary">
+              Mol Mass (g/mol): {molecule.molecularWeight}
+            </p>
+          </div>
+          <div className="flex">
+            <p className="m-0 text-color-secondary">
+              TPSA (Å²): {molecule.tpsa}
+            </p>
+          </div>
+          <div className="flex">
+            <p className="m-0 text-color-secondary">cLog P: {molecule.cLogP}</p>
+          </div>
         </div>
       </div>
     );
@@ -71,17 +104,18 @@ const FHaNewMoleculePicker = ({ selectedMolecule, setSelectedMolecule }) => {
   return (
     <div className="flex flex w-full gap-2">
       <div className="flex w-full">
-        <Dropdown
+        <AutoComplete
+          delay={500}
+          size={120}
+          style={{ width: "100%" }}
           value={selectedMolecule}
           onChange={(e) => setSelectedMolecule(e.value)}
-          options={moleculeList}
-          optionLabel="name"
-          placeholder="Select a Molecule"
-          className="w-full"
-          //itemTemplate={moleculeTemplate}
-          filter
-          showClear
-          loading={isFetchingMolecules}
+          suggestions={filteredMolecules}
+          completeMethod={searchMolecules}
+          field="name"
+          placeholder="Search for a Molecule by Name"
+          itemTemplate={moleculeTemplate}
+          forceSelection
         />
       </div>
       <div className="flex min-w-max align-items-center justify-content-center border-1 border-200 border-round-md mr-5">
