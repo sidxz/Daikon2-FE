@@ -50,6 +50,8 @@ export default class CommentStore {
       workingOnCommentId: observable,
 
       currentCommentTagsHash: observable,
+      lastFetchedTime: observable,
+      cacheDuration: observable,
     });
   }
 
@@ -69,6 +71,9 @@ export default class CommentStore {
   currentCommentTagsHash = "";
 
   isFetchingMostRecentComments = false;
+
+  cacheDuration = 5 * 60 * 1000; // 5 minutes in milliseconds
+  lastFetchedTime = null; // Keep track of when the data was last fetched
 
   // Actions
 
@@ -98,8 +103,21 @@ export default class CommentStore {
     }
   };
 
-  fetchMostRecentComments = async () => {
+  fetchMostRecentComments = async (inValidateCache = false) => {
     this.isFetchingMostRecentComments = true;
+
+    if (inValidateCache) {
+      this.isCommentRegistryCacheValid = false;
+    }
+
+    const currentTime = new Date().getTime();
+    if (
+      !inValidateCache &&
+      this.lastFetchedTime &&
+      currentTime - this.lastFetchedTime < this.cacheDuration
+    ) {
+      return; // Cache is valid, no need to refetch
+    }
     try {
       const comments = await CommentAPI.getMostRecent();
       runInAction(() => {

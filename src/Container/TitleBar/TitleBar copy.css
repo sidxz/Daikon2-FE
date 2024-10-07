@@ -8,18 +8,14 @@
   /* background: linear-gradient(to right, #42a5f5 0%, #1a237e 100%); */
 
   padding: 2px 0px;
-  box-shadow: #2a567c 0px 0px 5px;
-  margin-bottom: 5px;
 }
 
 .TitleBar .BlackButton {
   background: transparent;
   border: 0px solid #000000;
-  color: #2a567c;
 }
 
 .TitleBar .BlackButton:hover {
-  background: #ccc;
+  background: #2a567c;
   border: 0px solid #000000;
-  color: #2a567c;
 }

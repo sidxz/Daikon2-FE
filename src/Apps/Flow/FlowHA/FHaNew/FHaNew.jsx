@@ -20,6 +20,7 @@ import { Button } from "primereact/button";
 import { Dropdown } from "primereact/dropdown";
 import { InputTextarea } from "primereact/inputtextarea";
 import { toast } from "react-toastify";
+import SmilesView from "../../../../Library/SmilesView/SmilesView";
 import InputMultiOrg from "../../../../Shared/InputEditors/InputMultiOrg";
 import { statusOptions } from "../constants/statusOptions";
 import FHaNewMoleculePicker from "./components/FHaNewMoleculePicker/FHaNewMoleculePicker";
@@ -168,9 +169,14 @@ const FHANew = () => {
         <>
           <div className="flex w-full border-1 border-50">
             <Divider align="left">
-              <div className="inline-flex align-items-center">
-                <GiMolecule />
-                <b>Select molecule from screening hits</b>
+              <div className="inline-flex align-items-center gap-2">
+                <div className="text-xl inline-flex align-items-center">
+                  <GiMolecule />
+                </div>
+
+                <div className="text-xl inline-flex align-items-center">
+                  Option 1 | Start with screening hits
+                </div>
               </div>
             </Divider>
           </div>
@@ -190,10 +196,14 @@ const FHANew = () => {
         <>
           <div className="flex w-full border-1 border-50">
             <Divider align="left">
-              <div className="inline-flex align-items-center">
-                <GiMolecule />
+              <div className="inline-flex align-items-center gap-2">
+                <div className="text-xl inline-flex align-items-center">
+                  <GiMolecule />
+                </div>
 
-                <b>Or select molecule from registry</b>
+                <div className="text-xl inline-flex align-items-center">
+                  Option 2 | Start with a molecule from vault
+                </div>
               </div>
             </Divider>
           </div>
@@ -209,7 +219,50 @@ const FHANew = () => {
       <div className="flex w-full border-1 border-50">
         <div className="flex w-3">
           <Divider align="center" type="solid">
-            <b>Project Details</b>
+            {selectedMolecule?.id && (
+              <div
+                className="flex flex-column gap-2 border-1 border-50 p-2 m-1 w-full"
+                id={selectedMolecule.id}
+                key={selectedMolecule.id}
+              >
+                <div className="flex text-lg align-items-center justify-content-center">
+                  Selected Molecule
+                </div>
+                <div className="flex border-1 border-50">
+                  <SmilesView
+                    smiles={selectedMolecule.smilesCanonical}
+                    subStructure={null}
+                    width={150}
+                    height={150}
+                  />
+                </div>
+                <div className="flex flex-column gap-1">
+                  <div className="flex">
+                    <p className="text-lg m-0">{selectedMolecule.name}</p>
+                  </div>
+                  <div className="flex">
+                    <p className="text-sm m-0">
+                      Synonyms: {selectedMolecule.synonyms}
+                    </p>
+                  </div>
+                  <div className="flex">
+                    <p className="m-0 text-color-secondary">
+                      Mol Mass (g/mol): {selectedMolecule.molecularWeight}
+                    </p>
+                  </div>
+                  <div className="flex">
+                    <p className="m-0 text-color-secondary">
+                      TPSA (Å²): {selectedMolecule.tpsa}
+                    </p>
+                  </div>
+                  <div className="flex">
+                    <p className="m-0 text-color-secondary">
+                      cLog P: {selectedMolecule.cLogP}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
           </Divider>
         </div>
         <div className="flex w-9 p-4 m-4">

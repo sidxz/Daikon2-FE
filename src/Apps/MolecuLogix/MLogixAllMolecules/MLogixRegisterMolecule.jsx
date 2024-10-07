@@ -20,14 +20,13 @@ const MLogixRegisterMolecule = ({ closeSideBar }) => {
   const formik = useFormik({
     initialValues: {
       name: "",
-      requestedSMILES: "",
+      SMILES: "",
     },
 
     validate: (values) => {
       const errors = {};
       if (!values.name) errors.name = "Name is required.";
-      if (!values.requestedSMILES)
-        errors.requestedSMILES = "SMILES is required.";
+      if (!values.SMILES) errors.SMILES = "SMILES is required.";
       // Additional validations can be added here
       return errors;
     },
@@ -73,9 +72,9 @@ const MLogixRegisterMolecule = ({ closeSideBar }) => {
 
           <div className="field">
             <label
-              htmlFor="requestedSMILES"
+              htmlFor="SMILES"
               className={classNames({
-                "p-error": isInvalid("requestedSMILES"),
+                "p-error": isInvalid("SMILES"),
               })}
             >
               SMILES *
@@ -83,15 +82,15 @@ const MLogixRegisterMolecule = ({ closeSideBar }) => {
             <div className="flex">
               <div className="flex w-full">
                 <InputTextarea
-                  id="requestedSMILES"
-                  answer="requestedSMILES"
-                  value={formik.values.requestedSMILES}
+                  id="SMILES"
+                  answer="SMILES"
+                  value={formik.values.SMILES}
                   onChange={formik.handleChange}
                   className={classNames({
-                    "p-invalid": isInvalid("requestedSMILES"),
+                    "p-invalid": isInvalid("SMILES"),
                   })}
                 />
-                {getErrorMessage("requestedSMILES")}
+                {getErrorMessage("SMILES")}
               </div>
               <div className="flex border-1 border-50 p-2">
                 <Button
@@ -130,10 +129,10 @@ const MLogixRegisterMolecule = ({ closeSideBar }) => {
         >
           <div className="flex pt-5" style={{ overflow: "hidden" }}>
             <JSMEditor
-              initialSmiles={formik.values.requestedSMILES}
+              initialSmiles={formik.values.SMILES}
               onSave={(s) => {
                 setShowStructureEditor(false);
-                formik.setFieldValue("requestedSMILES", s);
+                formik.setFieldValue("SMILES", s);
               }}
             />
           </div>

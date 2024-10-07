@@ -33,10 +33,11 @@
 }
 .Loading .LoadingWrap {
   position: relative;
-  background: linear-gradient(to right, #44aa99 0%, #332288 100%);
+  background: linear-gradient(to right, #57a1c9 0%, #1e3d7b 100%);
   width: 610px;
   height: 210px;
   z-index: 2005;
+  border-radius: 10px;
 }
 
 .Loading .LoadingBox {
@@ -46,4 +47,5 @@
   width: 600px;
   height: 200px;
   z-index: 2005;
+  border-radius: 10px;
 }
