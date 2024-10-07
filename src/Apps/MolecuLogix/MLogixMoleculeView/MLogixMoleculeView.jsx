@@ -32,6 +32,8 @@ const MLogixMoleculeView = () => {
     return <Loading message={"Fetching Molecule..."} />;
   }
 
+  console.log("selectedMolecule", selectedMolecule);
+
   if (selectedMolecule) {
     console.log("selectedMolecule", selectedMolecule);
     return (

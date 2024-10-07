@@ -69,7 +69,7 @@ export default class MoleculeStore {
     try {
       const molecule = await MolDbAPI.getMoleculeById(moleculeId);
       runInAction(() => {
-        molecule.molecularWeight = molecule.molecularWeight.toFixed(2);
+        molecule.molecularWeight = molecule?.molecularWeight?.toFixed(2);
         molecule.tpsa = molecule.tpsa.toFixed(2);
         this.moleculeRegistry.set(molecule.id, molecule);
         this.selectedMolecule = molecule;
@@ -118,7 +118,6 @@ export default class MoleculeStore {
           fetchedMolecules.push(molecule);
         });
       });
-      return;
       return fetchedMolecules;
     } catch (error) {
       console.error("Error fetching molecules:", error);
@@ -131,8 +130,10 @@ export default class MoleculeStore {
   };
 
   registerMolecule = async (molecule) => {
+    console.log("Registering molecule:", molecule);
+
     // reject if molecule smiles is not set
-    if (!molecule.requestedSMILES) {
+    if (!molecule.SMILES) {
       toast.error("Molecule smiles is required");
       throw new Error("Molecule smiles is required");
     }
@@ -144,14 +145,20 @@ export default class MoleculeStore {
         // check if res has property similarity
         // if yes, then the molecule is already registered
 
+        console.log("res:", res);
+
         if (res.wasAlreadyRegistered) {
           toast.warning(
-            `The molecule is already registered under name: ${res.name}`
+            `The molecule is already registered under name: ${res.name}, added ${molecule.name} as a synonym`
           );
         } else {
           this.moleculeRegistry.set(res.id, res);
           toast.success("Molecule registered successfully");
         }
+        res.molecularWeight = res.molecularWeight.toFixed(2);
+        res.tpsa = res.tpsa.toFixed(2);
+        this.moleculeRegistry.set(res.id, res);
+        this.selectedMolecule = res;
       });
     } catch (error) {
       console.error("Error registering molecule:", error);
