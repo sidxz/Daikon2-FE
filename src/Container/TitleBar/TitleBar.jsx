@@ -77,7 +77,7 @@ const TitleBar = ({ signOut, ssoUser }) => {
             </div>
             <div className="flex align-items-center justify-content-center ml-2">
               <Button
-                className="BlackButton text-2xl p-0"
+                className="BlackButton text-2xl p-0 pl-1 pr-1 mr-1 ml-1 font-semibold fadein animation-duration-1000"
                 onClick={() => navigate("/")}
               >
                 D A I K O N
@@ -100,7 +100,7 @@ const TitleBar = ({ signOut, ssoUser }) => {
             </div>
             <div className="flex align-items-center justify-content-center ">
               <Dropdown
-                className="BlackButton DropdownWhiteLabel"
+                className="BlackButton"
                 options={FeedbackOptions}
                 onChange={(e) => onFeedback(e)}
                 optionLabel="label"
@@ -111,7 +111,7 @@ const TitleBar = ({ signOut, ssoUser }) => {
 
             <div className="flex align-items-center justify-content-center ">
               <Dropdown
-                className="BlackButton DropdownWhiteLabel"
+                className="BlackButton"
                 value={"Mycobacterium tuberculosis H37Rv"}
                 options={Strains}
                 // onChange={onCityChange}

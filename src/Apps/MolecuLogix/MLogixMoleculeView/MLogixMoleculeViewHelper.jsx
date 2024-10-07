@@ -20,9 +20,7 @@ export const sidePanelItems = (navigate, selectedMolecule) => {
           icon: "icon icon-common icon-database-submit",
           command: () => {
             navigate(
-              `/moleculogix/search/${encodeURIComponent(
-                selectedMolecule.smilesCanonical
-              )}`
+              `/moleculogix/search?smiles=${selectedMolecule.smilesCanonical}&searchType=similarity`
             );
           },
         },
@@ -44,9 +42,7 @@ export const sidePanelItems = (navigate, selectedMolecule) => {
           icon: "icon icon-common icon-database-submit",
           command: () => {
             navigate(
-              `/moleculogix/search/${encodeURIComponent(
-                selectedMolecule.smilesCanonical
-              )}`
+              `/moleculogix/search?smiles=${selectedMolecule.smilesCanonical}&searchType=similarity`
             );
           },
         },

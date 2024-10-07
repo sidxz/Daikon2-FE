@@ -33,11 +33,14 @@ const FSDOverview = () => {
   //console.log("screenListTargetBased", screenListTargetBased);
 
   let sortByDate = (a, b) => {
-
     // Handle default or null dateModified by using dateCreated instead
-    const dateA = a?.isModified ? new Date(a.latestStatusChangeDate) : new Date(a.dateCreated);
-    const dateB = b?.isModified ? new Date(b.latestStatusChangeDate) : new Date(b.dateCreated);
-  
+    const dateA = a?.isModified
+      ? new Date(a.latestStatusChangeDate)
+      : new Date(a.dateCreated);
+    const dateB = b?.isModified
+      ? new Date(b.latestStatusChangeDate)
+      : new Date(b.dateCreated);
+
     return dateB - dateA; // Sort by dateModified or dateCreated if dateModified is default or null
   };
 

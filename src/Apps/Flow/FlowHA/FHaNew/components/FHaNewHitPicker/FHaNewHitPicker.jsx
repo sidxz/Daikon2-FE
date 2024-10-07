@@ -2,16 +2,16 @@ import { observer } from "mobx-react-lite";
 import { Button } from "primereact/button";
 import { Dropdown } from "primereact/dropdown";
 import { MultiSelect } from "primereact/multiselect";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import LoadingBlockUI from "../../../../../../Library/LoadingBlockUI/LoadingBlockUI";
 import SmilesView from "../../../../../../Library/SmilesView/SmilesView";
 import { RootStoreContext } from "../../../../../../RootStore";
 
 const FHaNewHitPicker = ({ baseHitData, setBaseHitData }) => {
-  const [ddSelectedScreen, setDdSelectedScreen] = useState(null);
-  const [ddSelectedHitCollection, setDdSelectedHitCollection] = useState(null);
-  const [ddSelectedBaseHits, setDdSelectedBaseHits] = useState(null);
-  const [ddSelectedPrimaryHit, setDdSelectedPrimaryHit] = useState(null);
+  const [selectedScreen, setSelectedScreen] = useState(null);
+  const [selectedHitCollection, setSelectedHitCollection] = useState(null);
+  const [selectedBaseHits, setSelectedBaseHits] = useState(null);
+  const [selectedPrimaryHit, setSelectedPrimaryHit] = useState(null);
 
   const rootStore = useContext(RootStoreContext);
   const {
@@ -24,131 +24,179 @@ const FHaNewHitPicker = ({ baseHitData, setBaseHitData }) => {
   const {
     fetchHitCollectionsOfScreen,
     isFetchingHitCollection,
-    isHitCollectionRegistryCacheValid,
     hitCollectionOfScreen,
-    getHitCollection,
   } = rootStore.hitCollectionStore;
 
   useEffect(() => {
     if (!isScreenListCacheValid) {
-      fetchScreens();
+      fetchScreensSafe();
     }
-  }, [isScreenListCacheValid, fetchScreens]);
+  }, [isScreenListCacheValid]);
 
-  let btn = (
-    <div className="w-full text-center p-2 m-2">
-      <Button
-        icon="pi pi-plus"
-        className="p-button-rounded p-button-secondary"
-      />
+  // Local function to safely fetch screens
+  const fetchScreensSafe = async () => {
+    try {
+      await fetchScreens();
+    } catch (error) {
+      console.error("Error fetching screens:", error);
+    }
+  };
+
+  // Event handler for selecting a screen
+  const handleScreenSelect = useCallback((screen) => {
+    setSelectedScreen(screen);
+    fetchHitCollectionsSafe(screen.id);
+  }, []);
+
+  // Local function to safely fetch hit collections
+  const fetchHitCollectionsSafe = async (screenId) => {
+    try {
+      await fetchHitCollectionsOfScreen(screenId);
+    } catch (error) {
+      console.error("Error fetching hit collections:", error);
+    }
+  };
+
+  // Event handler for selecting a hit collection
+  const handleHitCollectionSelect = (hitCollection) => {
+    setSelectedHitCollection(hitCollection);
+  };
+
+  // Event handler for selecting base hits
+  const handleBaseHitsSelect = (baseHits) => {
+    setSelectedBaseHits(baseHits);
+  };
+
+  // Event handler for selecting the primary hit
+  const handlePrimaryHitSelect = (primaryHit) => {
+    setSelectedPrimaryHit(primaryHit);
+  };
+
+  // Helper function to generate hit item template
+  const renderHitItemTemplate = (hit) => (
+    <div className="flex flex gap-1 border-1 border-50">
+      <div className="flex flex-column border-1 border-50 p-2">
+        <div>Name: {hit?.molecule?.name}</div>
+        <div>Cluster: {hit?.clusterGroup}</div>
+        <div>Library: {hit?.library}</div>
+        <div>MIC: {hit?.mic}</div>
+        <div>IC50: {hit?.iC50}</div>
+      </div>
+      <div
+        className="flex align-items-center justify-content-center"
+        style={{ width: "200px", height: "200px" }}
+      >
+        <SmilesView smiles={hit?.requestedSMILES} width={200} height={200} />
+      </div>
     </div>
   );
 
-  let onScreenSelect = (screen) => {
-    setDdSelectedScreen(screen);
-    fetchHitCollectionsOfScreen(screen.id);
-  };
+  // Helper function to sort hits by clusterGroup and molecule name
+  const sortHits = (hits) => {
+    return hits?.slice()?.sort((a, b) => {
+      const clusterA = a.clusterGroup ?? Number.MAX_SAFE_INTEGER;
+      const clusterB = b.clusterGroup ?? Number.MAX_SAFE_INTEGER;
+      const clusterCompare = clusterA - clusterB;
 
-  let onHitCollectionSelect = (hitCollection) => {
-    setDdSelectedHitCollection(hitCollection);
-  };
+      if (clusterCompare === 0) {
+        const nameA = a.molecule?.name || "";
+        const nameB = b.molecule?.name || "";
+        return nameA.localeCompare(nameB);
+      }
 
-  let onBaseHitsSelect = (baseHits) => {
-    setDdSelectedBaseHits(baseHits);
-  };
-
-  let ddPrimaryItemTemplate = (hit) => {
-    return (
-      <div className="flex flex gap-1 border-1 border-50">
-        <div className="flex flex-column border-1 border-50">
-          <div className="flex  p-2">Name: {hit?.molecule?.name}</div>
-          <div className="flex  p-2">Cluster: {hit?.clusterGroup}</div>
-          <div className="flex  p-2">Library: {hit?.library}</div>
-          <div className="flex p-2">MIC: {hit?.mic}</div>
-          <div className="flex  p-2">IC50: {hit?.iC50}</div>
-        </div>
-        <div
-          className="flex align-items-center justify-content-center"
-          style={{ width: "200px", height: "200px" }}
-        >
-          <SmilesView smiles={hit?.requestedSMILES} width={200} height={200} />
-        </div>
-      </div>
-    );
-  };
-
-  let onSubmitClicked = () => {
-    let selectedAssociatedHits = {};
-    ddSelectedBaseHits.forEach((hit) => {
-      selectedAssociatedHits[hit.molecule.id] = hit.id;
+      return clusterCompare;
     });
-    let data = {
-      hitId: ddSelectedPrimaryHit.id,
-      compoundId: ddSelectedPrimaryHit.molecule.id,
-      associatedHitIds: selectedAssociatedHits,
-      hitCollectionId: ddSelectedHitCollection.id,
-      screenId: ddSelectedScreen.id,
-      compoundSMILES: ddSelectedPrimaryHit.molecule.smiles,
+  };
+
+  // Submit handler to generate and set the base hit data
+  const handleSubmit = () => {
+    if (!selectedPrimaryHit || !selectedScreen || !selectedHitCollection) {
+      console.error("Submission failed: Missing required selections");
+      return;
+    }
+
+    const associatedHits = selectedBaseHits.reduce((acc, hit) => {
+      acc[hit.molecule.id] = hit.id;
+      return acc;
+    }, {});
+
+    const submissionData = {
+      hitId: selectedPrimaryHit.id,
+      compoundId: selectedPrimaryHit.molecule.id,
+      associatedHitIds: associatedHits,
+      hitCollectionId: selectedHitCollection.id,
+      screenId: selectedScreen.id,
+      compoundSMILES: selectedPrimaryHit.molecule.smiles,
     };
-    setBaseHitData(data);
-    console.log(data);
+
+    try {
+      setBaseHitData(submissionData);
+    } catch (error) {
+      console.error("Error setting base hit data:", error);
+    }
   };
 
   return (
     <div className="flex flex-column w-full">
       <LoadingBlockUI blocked={isFetchingScreens || isFetchingHitCollection}>
         <div className="flex gap-2">
+          {/* Screen Selection Dropdown */}
           <div className="flex w-full">
             <Dropdown
-              value={ddSelectedScreen}
-              onChange={(e) => onScreenSelect(e.value)}
+              value={selectedScreen}
+              onChange={(e) => handleScreenSelect(e.value)}
               options={screenList}
               optionLabel="name"
-              placeholder="Select a Screen"
-              className="w-full "
+              placeholder="Step 1 | Select a Screen"
+              className="w-full"
               filter
-            />
-          </div>
-          <div className="flex w-full">
-            <Dropdown
-              value={ddSelectedHitCollection}
-              onChange={(e) => onHitCollectionSelect(e.value)}
-              options={hitCollectionOfScreen(ddSelectedScreen?.id)}
-              optionLabel="name"
-              placeholder="Select Hit Collection"
-              className="w-full "
-              filter
-            />
-          </div>
-          <div className="flex w-full">
-            <MultiSelect
-              value={ddSelectedBaseHits}
-              onChange={(e) => onBaseHitsSelect(e.value)}
-              options={ddSelectedHitCollection?.hits}
-              optionLabel={(hit) => hit?.molecule?.name}
-              placeholder="Pick Hits"
-              className="w-full "
-              itemTemplate={ddPrimaryItemTemplate}
             />
           </div>
 
+          {/* Hit Collection Dropdown */}
           <div className="flex w-full">
             <Dropdown
-              value={ddSelectedPrimaryHit}
-              onChange={(e) => setDdSelectedPrimaryHit(e.value)}
-              options={ddSelectedBaseHits}
-              optionLabel={(hit) => hit?.molecule?.name}
-              placeholder="Select Primary Molecule"
-              className="w-full "
-              itemTemplate={ddPrimaryItemTemplate}
+              value={selectedHitCollection}
+              onChange={(e) => handleHitCollectionSelect(e.value)}
+              options={hitCollectionOfScreen(selectedScreen?.id)}
+              optionLabel="name"
+              placeholder="Step 2 | Select Hit Collection"
+              className="w-full"
+              filter
             />
           </div>
+
+          {/* Base Hits MultiSelect */}
+          <MultiSelect
+            value={selectedBaseHits}
+            onChange={(e) => handleBaseHitsSelect(e.value)}
+            options={sortHits(selectedHitCollection?.hits)}
+            optionLabel={(hit) => hit?.molecule?.name || "Unnamed Molecule"}
+            placeholder="Step 3 | Select hits for assessment"
+            className="w-full"
+            itemTemplate={renderHitItemTemplate}
+          />
+
+          {/* Primary Hit Dropdown */}
+          <div className="flex w-full">
+            <Dropdown
+              value={selectedPrimaryHit}
+              onChange={(e) => handlePrimaryHitSelect(e.value)}
+              options={selectedBaseHits}
+              optionLabel={(hit) => hit?.molecule?.name}
+              placeholder="Step 4 |Select Primary Molecule"
+              className="w-full"
+              itemTemplate={renderHitItemTemplate}
+            />
+          </div>
+
+          {/* Submit Button */}
           <div className="flex w-full">
             <Button
-              label="Select Molecules"
+              label="Step 5 | Confirm"
               icon="pi pi-check"
-              className="p-button-secondary"
-              onClick={onSubmitClicked}
+              className="p-button-primary p-button-text border-1 border-50"
+              onClick={handleSubmit}
             />
           </div>
         </div>

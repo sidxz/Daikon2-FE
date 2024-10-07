@@ -6,37 +6,46 @@ import React from "react";
 const MLMViewGeneralInfo = ({ selectedMolecule }) => {
   let generalInfoData = [
     {
-      name: "Molecule Name",
+      name: "Name",
       value: selectedMolecule.name,
     },
     {
-      name: "Molecule ID",
-      value: selectedMolecule.id,
+      name: "Synonyms",
+      value: selectedMolecule.synonyms,
     },
+
     {
-      name: "Molecule Weight",
+      name: "Molecule Mass (g/mol)",
       value: selectedMolecule.molecularWeight,
     },
     {
-      name: "Total Polar Surface Area",
+      name: "cLog P",
+      value: selectedMolecule.cLogP,
+    },
+    {
+      name: "H-bond donors",
+      value: selectedMolecule.lipinskiHBD,
+    },
+    {
+      name: "H-bond acceptors",
+      value: selectedMolecule.lipinskiHBA,
+    },
+    {
+      name: "Lipinski Rule of 5",
+      value: selectedMolecule.rO5Compliant ? "Complaint" : "Not Complaint",
+    },
+    {
+      name: "TPSA (Å²)",
       value: selectedMolecule.tpsa,
-    },
-    {
-      name: "SMILES",
-      value: selectedMolecule.smiles,
-    },
-    {
-      name: "SMILES Canonical",
-      value: selectedMolecule.smilesCanonical,
     },
   ];
 
   return (
-    <div className="flex pt-2">
-      <Fieldset className="m-0 flex-grow-1" legend="General Information">
+    <div className="flex pt-2 w-full">
+      <Fieldset className="m-0 flex-grow-1 w-full" legend="General Information">
         <DataTable value={generalInfoData} className="HideDataTableHeader">
-          <Column field="name"></Column>
-          <Column style={{ wordBreak: "break-all" }} field="value"></Column>
+          <Column className="font-bold" field="name"></Column>
+          <Column field="value"></Column>
         </DataTable>
       </Fieldset>
     </div>

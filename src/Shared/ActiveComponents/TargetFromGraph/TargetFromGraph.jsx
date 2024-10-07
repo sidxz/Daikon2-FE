@@ -7,17 +7,34 @@ const TargetFromGraph = ({ elementId }) => {
   const [targetType, setTargetType] = useState(null);
   const [targetId, setTargetId] = useState(null);
 
-  //console.log("elementId", elementId);
   useEffect(() => {
-    // Fetch target data from graph using elementId
-    GraphAPI.findTarget(elementId).then((res) => {
-      setTargetName(res.name);
-      setTargetType(res.targetType);
-      setTargetId(res.targetId);
-    });
-  }, [elementId]);
+    const cachedData = sessionStorage.getItem(`targetData-${elementId}`);
 
-  //console.log("targetName", targetName);
+    if (cachedData) {
+      // Use cached data
+      const { name, targetType, targetId } = JSON.parse(cachedData);
+      setTargetName(name);
+      setTargetType(targetType);
+      setTargetId(targetId);
+    } else {
+      // Fetch target data from the API if not cached
+      GraphAPI.findTarget(elementId).then((res) => {
+        setTargetName(res.name);
+        setTargetType(res.targetType);
+        setTargetId(res.targetId);
+
+        // Cache the fetched data
+        sessionStorage.setItem(
+          `targetData-${elementId}`,
+          JSON.stringify({
+            name: res.name,
+            targetType: res.targetType,
+            targetId: res.targetId,
+          })
+        );
+      });
+    }
+  }, [elementId]);
 
   if (targetId && !targetName)
     return (

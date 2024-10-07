@@ -24,15 +24,15 @@ let Loading = ({ message }) => {
                     className="inline-block pl-6"
                     style={{ lineHeight: "1em" }}
                   >
-                    <h1 className="Text">Loading...</h1>
-                    <h3 className="Text">Please Wait.</h3>
+                    <h1 className="Text">D A I K O N</h1>
+                    <h3 className="Text">Loading...</h3>
                   </div>
                 </div>
                 <div className="flex"></div>
               </div>
               <div className="flex flex-column">
                 <div className="block">
-                  <ProgressBar mode="indeterminate" />
+                  <ProgressBar mode="indeterminate" style={{ height: "6px" }} />
                 </div>
                 <div className="flex -my-2 justify-content-end">
                   <h4 className="bg-yellow-500 pl-3 pr-3 Text">

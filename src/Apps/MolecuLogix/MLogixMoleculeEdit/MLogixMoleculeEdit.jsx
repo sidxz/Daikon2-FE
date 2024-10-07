@@ -99,8 +99,8 @@ const MLogixMoleculeEdit = () => {
               </div>
               <div className="flex w-full">
                 <SecHeading
-                  icon="icon icon-conceptual icon-structures-3d"
-                  heading={selectedMolecule.name}
+                  icon="icon icon-common icon-math"
+                  heading={"Molecule - " + selectedMolecule.name}
                   color={appColors.sectionHeadingBg.screen}
                 />
               </div>
@@ -140,6 +140,26 @@ const MLogixMoleculeEdit = () => {
                           })}
                         />
                         {getErrorMessage("name")}
+                      </div>
+
+                      <div className="field">
+                        <label
+                          htmlFor="synonyms"
+                          className={classNames({
+                            "p-error": isInvalid("synonyms"),
+                          })}
+                        >
+                          Synonyms
+                        </label>
+                        <InputText
+                          id="synonyms"
+                          value={formik.values.synonyms}
+                          onChange={formik.handleChange}
+                          className={classNames({
+                            "p-invalid": isInvalid("synonyms"),
+                          })}
+                        />
+                        {getErrorMessage("synonyms")}
                       </div>
                     </Fieldset>
                   </div>
