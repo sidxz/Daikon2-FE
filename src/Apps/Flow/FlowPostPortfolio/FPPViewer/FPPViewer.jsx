@@ -5,6 +5,7 @@ import { Navigate, Route, Routes } from "react-router";
 import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../../../../Library/Loading/Loading";
 import NotFound from "../../../../Library/NotFound/NotFound";
+import PageInfoPanel from "../../../../Library/PageInfoPanel/PageInfoPanel";
 import { RootStoreContext } from "../../../../RootStore";
 import { AppRoleResolver } from "../../../../Shared/VariableResolvers/AppRoleResolver";
 import { PostPortfolioAdminRoleName } from "../constants/roles";
@@ -47,8 +48,18 @@ const FPPViewer = () => {
     return (
       <div className="flex w-full">
         <div className="flex gap-2 w-full">
-          <div className="flex">
-            <Menu model={Helper.sidePanelItems(navigate)} />
+          <div className="flex flex-column border-1 border-50 p-1 border-round-md gap-2">
+            <div className="flex">
+              <Menu model={Helper.sidePanelItems(navigate)} />
+            </div>
+            <div className="flex">
+              <PageInfoPanel
+                dateCreated={selectedProject?.dateCreated}
+                createdById={selectedProject?.createdById}
+                dateUpdated={selectedProject?.pageLastUpdatedDate}
+                updatedById={selectedProject?.pageLastUpdatedUser}
+              />
+            </div>
           </div>
           <div className="flex w-full">
             <Routes>
