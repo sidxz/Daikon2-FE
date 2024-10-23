@@ -12,6 +12,7 @@ import { RootStoreContext } from "../../../../../../RootStore";
 import { TextRowEditor } from "../../../../../../Shared/TableRowEditors/TextRowEditor";
 import { AppRoleResolver } from "../../../../../../Shared/VariableResolvers/AppRoleResolver";
 import { ScreenAdminRoleName } from "../../../constants/roles";
+import { getUniqueMoleculeNames } from "../../../shared/SharedHelper";
 import Vote from "../../../shared/Vote/Vote";
 import FSTbVHAddHit from "./FSTbVHitsHelper/FSTbVHAddHit";
 import { FSTbVHDataTableHeader } from "./FSTbVHitsHelper/FSTbVHDataTableHeader";
@@ -196,9 +197,7 @@ const FSTbVHits = ({ id }) => {
               />
 
               <Column
-                field={(rowData) =>
-                  rowData?.molecule?.name || rowData?.requestedMoleculeName
-                }
+                field={(rowData) => getUniqueMoleculeNames(rowData)}
                 header="Molecule Name"
               />
               <Column

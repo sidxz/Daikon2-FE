@@ -11,6 +11,7 @@ import { RootStoreContext } from "../../../../../../RootStore";
 import { TextRowEditor } from "../../../../../../Shared/TableRowEditors/TextRowEditor";
 import { AppRoleResolver } from "../../../../../../Shared/VariableResolvers/AppRoleResolver";
 import { ScreenAdminRoleName } from "../../../constants/roles";
+import { getUniqueMoleculeNames } from "../../../shared/SharedHelper";
 import Vote from "../../../shared/Vote/Vote";
 import FSPhVHAddHit from "./FSPhVHitsHelper/FSPhVHAddHit";
 import { FSPhVHDataTableHeader } from "./FSPhVHitsHelper/FSPhVHDataTableHeader";
@@ -183,9 +184,7 @@ const FSPhVHits = ({ id }) => {
               />
 
               <Column
-                field={(rowData) =>
-                  rowData?.molecule?.name || rowData?.requestedMoleculeName
-                }
+                field={(rowData) => getUniqueMoleculeNames(rowData)}
                 header="Molecule Name"
               />
               <Column
