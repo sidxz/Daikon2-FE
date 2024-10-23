@@ -20,7 +20,7 @@ const FlowDashEventUpdates = () => {
     <div className="flex w-full surface-50 border-round m-0 p-0 gap-2">
       <Card
         className="w-full"
-        title={cardTitle("icon icon-common icon-clock", "Recent Activity")}
+        title={cardTitle("icon icon-common icon-clock", "Activity Feed")}
       >
         <MostRecentEvents />
       </Card>
