@@ -4,6 +4,7 @@ import { Menu } from "primereact/menu";
 import React, { useContext, useEffect } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import Loading from "../../../Library/Loading/Loading";
+import PageInfoPanel from "../../../Library/PageInfoPanel/PageInfoPanel";
 import SecHeading from "../../../Library/SecHeading/SecHeading";
 import { RootStoreContext } from "../../../RootStore";
 import { appColors } from "../../../constants/colors";
@@ -39,8 +40,18 @@ const MLogixMoleculeView = () => {
     return (
       <div className="flex flex-column min-w-full fadein animation-duration-500">
         <div className="flex gap-2">
-          <div className="flex">
-            <Menu model={Helper.sidePanelItems(navigate, selectedMolecule)} />
+          <div className="flex flex-column border-1 border-50 p-1 border-round-md gap-2">
+            <div className="flex">
+              <Menu model={Helper.sidePanelItems(navigate, selectedMolecule)} />
+            </div>
+            <div className="flex">
+              <PageInfoPanel
+                dateCreated={selectedMolecule?.dateCreated}
+                createdById={selectedMolecule?.createdById}
+                dateUpdated={selectedMolecule?.pageLastUpdatedDate}
+                updatedById={selectedMolecule?.pageLastUpdatedUser}
+              />
+            </div>
           </div>
           <div className="flex flex-column w-full">
             <div className="flex">

@@ -3,6 +3,7 @@ import { createContext } from "react";
 import AdminRoleManagementStore from "./Apps/Admin/AdminRoleManagement/Stores/AdminRoleManagementStore";
 import AdminUserManagementStore from "./Apps/Admin/AdminUserManagement/Stores/AdminUserManagementStore";
 import CommentStore from "./Apps/Comments/Stores/CommentStore";
+import EventHistoryStore from "./Apps/Events/Stores/EventHistoryStore";
 import GeneCrispriStrainStore from "./Apps/Flow/FlowGene/Stores/GeneCrispriStrainStore";
 import GeneEssentialityStore from "./Apps/Flow/FlowGene/Stores/GeneEssentialityStore";
 import GeneHypomorphStore from "./Apps/Flow/FlowGene/Stores/GeneHypomorphStore";
@@ -76,6 +77,8 @@ export class RootStore {
   moleculeAssociationStore;
 
   commentStore;
+
+  eventHistoryStore;
   constructor() {
     /* Auth */
     this.authStore = new AuthStore(this);
@@ -131,6 +134,9 @@ export class RootStore {
 
     /* Comments */
     this.commentStore = new CommentStore(this);
+
+    /* Event History */
+    this.eventHistoryStore = new EventHistoryStore(this);
   }
 }
 

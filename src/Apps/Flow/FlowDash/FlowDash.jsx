@@ -4,6 +4,7 @@ import React from "react";
 import MostRecentComments from "../../Comments/MostRecentComments/MostRecentComments";
 import "./FlowDash.css";
 import FlowDashCards from "./FlowDashCards/FlowDashCards";
+import FlowDashEventUpdates from "./FlowDashEventUpdates/FlowDashEventUpdates";
 import FlowDashMLogixSearch from "./FlowDashMLogixSearch/FlowDashMLogixSearch";
 import FlowDashWhatsNew from "./FlowDashWhatsNew/FlowDashWhatsNew";
 const FlowDash = () => {
@@ -13,25 +14,10 @@ const FlowDash = () => {
         className="flex justify-content-center p-0 gap-2"
         style={{ margin: "0px", marginBottom: "-10px" }}
       >
-        <div
-          className="flex p-0 m-0"
-          style={{
-            color: "#3c83bd",
-          }}
-        >
+        <div className="flex p-0 m-0 text-cyan-700 text-2xl">
           <i className={icon} />
         </div>
-        <div className="flex p-0 m-0">
-          <h5
-            style={{
-              color: "#3c83bd",
-              margin: "0px",
-              padding: "0px",
-            }}
-          >
-            {title}
-          </h5>
-        </div>
+        <div className="flex p-0 m-0 text-cyan-700 text-2xl">{title}</div>
       </div>
     );
   };
@@ -47,7 +33,7 @@ const FlowDash = () => {
       </div>
 
       <div className="flex w-full gap-2 mt-4">
-        <div className="flex flex-column w-full w-8 gap-2 p-1">
+        <div className="flex flex-column w-full w-7 gap-2 p-1">
           <div className="flex flex-column">
             <Card
               title={generateCardTitle(
@@ -73,7 +59,7 @@ const FlowDash = () => {
           </div>
         </div>
 
-        <div className="flex flex-column p-1 w-4">
+        <div className="flex flex-column p-1 w-5 gap-2">
           <Card
             title={generateCardTitle(
               "icon icon-common icon-newspaper",
@@ -81,7 +67,14 @@ const FlowDash = () => {
             )}
             className="w-full min-h-full"
           >
-            <FlowDashWhatsNew />
+            <div className="flex flex-column gap-2">
+              <div className="flex">
+                <FlowDashEventUpdates />
+              </div>
+              <div className="flex">
+                <FlowDashWhatsNew />
+              </div>
+            </div>
           </Card>
         </div>
       </div>

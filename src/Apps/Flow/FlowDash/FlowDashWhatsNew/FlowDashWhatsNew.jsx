@@ -4,15 +4,18 @@ import React from "react";
 
 const FlowDashWhatsNew = () => {
   let cardTitle = (text) => (
-    <div className="flex justify-content-center m-0 p-0">
-      <div className="m-0 p-0">{text}</div>
+    <div
+      className="flex justify-content-center m-0 p-0"
+      style={{ margin: "0px", marginBottom: "-10px" }}
+    >
+      <div className="m-0 p-0 text-cyan-700 text-2xl">{text}</div>
     </div>
   );
 
   return (
     <div className="flex flex-column surface-50 border-round m-0 p-0 gap-2">
       <div className="flex">
-        <Card title={cardTitle("DAIKON 2.0")}>
+        <Card title={cardTitle("DAIKON 2.0")} className="w-full">
           <p className="justify-content-center text-base">
             We're excited to unveil some new additions to DAIKON 2.0 :
           </p>
@@ -34,8 +37,8 @@ const FlowDashWhatsNew = () => {
           </div>
         </Card>
       </div>
-      <div className="flex">
-        <Card title={cardTitle("Publications")}>
+      <div className="flex w-full">
+        <Card title={cardTitle("Publications")} className="w-full">
           <div className="flex flex-column align-items-center gap-2 justify-content-center">
             <div className="flex">
               <Button
