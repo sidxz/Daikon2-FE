@@ -7,7 +7,6 @@ import { Dialog } from "primereact/dialog";
 import { Sidebar } from "primereact/sidebar";
 import React, { useContext, useEffect, useState } from "react";
 import Loading from "../../../../../../Library/Loading/Loading";
-import LoadingBlockUI from "../../../../../../Library/LoadingBlockUI/LoadingBlockUI";
 import { RootStoreContext } from "../../../../../../RootStore";
 import { TextRowEditor } from "../../../../../../Shared/TableRowEditors/TextRowEditor";
 import { AppRoleResolver } from "../../../../../../Shared/VariableResolvers/AppRoleResolver";
@@ -116,111 +115,110 @@ const FSPhVHits = ({ id }) => {
       <>
         <div className="flex flex-column w-full">
           <div className="flex w-full">
-            <LoadingBlockUI
-              blocked={
+            <DataTable
+              loading={
                 isDeletingHit ||
                 isAddingHit ||
                 isUpdatingHit ||
                 isBatchInsertingHits
               }
-              containerClassName="w-full"
+              className="p-datatable-gridlines w-full"
+              size="small"
+              //ref={dt}
+              editMode="row"
+              onRowEditComplete={(e) => updateHit(e.newData)}
+              dataKey="id"
+              value={selectedHitCollection?.hits}
+              paginator
+              scrollable
+              rows={100}
+              header={
+                <FSPhVHDataTableHeader
+                  showAddHitSideBar={() => setDisplayAddHitSideBar(true)}
+                  selectedHitCollection={selectedHitCollection}
+                  selectedScreen={selectedScreen}
+                  showFileUploadDialog={() => setShowFileUploadDialog(true)}
+                  selectionEnabled={selectionEnabled}
+                  setSelectionEnabled={setSelectionEnabled}
+                  selectedHits={selectedHits}
+                  setSelectedHits={setSelectedHits}
+                  isVotesHidden={isVotesHidden}
+                  setIsVotesHidden={setIsVotesHidden}
+                  isOneClickVotingEnabled={isOneClickVotingEnabled}
+                  setIsOneClickVotingEnabled={setIsOneClickVotingEnabled}
+                  showPromoteSideBar={() => setIsPromoteSideBarVisible(true)}
+                />
+              }
+              //globalFilter={globalFilter}
+              emptyMessage="No hits found."
+              resizableColumns
+              columnResizeMode="fit"
+              showGridlines
+              selection={selectedHits}
+              onSelectionChange={(e) => setSelectedHits(e.value)}
             >
-              <DataTable
-                className="p-datatable-gridlines w-full"
-                size="small"
-                //ref={dt}
-                editMode="row"
-                onRowEditComplete={(e) => updateHit(e.newData)}
-                dataKey="id"
-                value={selectedHitCollection?.hits}
-                paginator
-                scrollable
-                rows={100}
-                header={
-                  <FSPhVHDataTableHeader
-                    showAddHitSideBar={() => setDisplayAddHitSideBar(true)}
-                    selectedHitCollection={selectedHitCollection}
-                    selectedScreen={selectedScreen}
-                    showFileUploadDialog={() => setShowFileUploadDialog(true)}
-                    selectionEnabled={selectionEnabled}
-                    setSelectionEnabled={setSelectionEnabled}
-                    selectedHits={selectedHits}
-                    setSelectedHits={setSelectedHits}
-                    isVotesHidden={isVotesHidden}
-                    setIsVotesHidden={setIsVotesHidden}
-                    isOneClickVotingEnabled={isOneClickVotingEnabled}
-                    setIsOneClickVotingEnabled={setIsOneClickVotingEnabled}
-                    showPromoteSideBar={() => setIsPromoteSideBarVisible(true)}
-                  />
+              {selectionEnabled && (
+                <Column
+                  selectionMode="multiple"
+                  headerStyle={{ width: "3em" }}
+                  className="fadein"
+                ></Column>
+              )}
+              <Column
+                field={(rowData) => rowData?.molecule?.smilesCanonical}
+                header="Structure"
+                body={StructureBodyTemplate}
+              />
+
+              <Column
+                field={"library"}
+                header="Library"
+                editor={(options) => TextRowEditor(options)}
+                sortable
+              />
+              <Column
+                field={"librarySource"}
+                header="Source"
+                editor={(options) => TextRowEditor(options)}
+              />
+
+              <Column
+                field={(rowData) =>
+                  rowData?.molecule?.name || rowData?.requestedMoleculeName
                 }
-                //globalFilter={globalFilter}
-                emptyMessage="No hits found."
-                resizableColumns
-                columnResizeMode="fit"
-                showGridlines
-                selection={selectedHits}
-                onSelectionChange={(e) => setSelectedHits(e.value)}
-              >
-                {selectionEnabled && (
-                  <Column
-                    selectionMode="multiple"
-                    headerStyle={{ width: "3em" }}
-                    className="fadein"
-                  ></Column>
-                )}
-                <Column
-                  field={(rowData) => rowData?.molecule?.smilesCanonical}
-                  header="Structure"
-                  body={StructureBodyTemplate}
-                />
+                header="Molecule Name"
+              />
+              <Column
+                field={"iC50"}
+                header="IC50 (&micro;M) "
+                editor={(options) => TextRowEditor(options)}
+                sortable
+              />
+              <Column
+                field={"mic"}
+                header="MIC (&micro;M)"
+                editor={(options) => TextRowEditor(options)}
+                sortable
+              />
 
-                <Column
-                  field={"library"}
-                  header="Library"
-                  editor={(options) => TextRowEditor(options)}
-                  sortable
-                />
-                <Column
-                  field={"librarySource"}
-                  header="Source"
-                  editor={(options) => TextRowEditor(options)}
-                />
+              <Column
+                field="voteScore"
+                header="Vote"
+                body={votingBodyTemplate}
+                sortable
+              />
 
-                <Column
-                  field={(rowData) => rowData?.molecule?.name}
-                  header="Compound Name"
-                />
-                <Column
-                  field={"iC50"}
-                  header="IC50 (&micro;M) "
-                  editor={(options) => TextRowEditor(options)}
-                  sortable
-                />
-                <Column
-                  field={"mic"}
-                  header="MIC (&micro;M)"
-                  editor={(options) => TextRowEditor(options)}
-                  sortable
-                />
-
-                <Column
-                  field="voteScore"
-                  header="Vote"
-                  body={votingBodyTemplate}
-                  sortable
-                />
-
-                <Column
-                  rowEditor
-                  header="Edit"
-                  // headerStyle={{ width: "10%", minWidth: "8rem" }}
-                  bodyStyle={{ textAlign: "center" }}
-                />
-                {isUserInAnyOfRoles([ScreenAdminRoleName]) && (
-                  <Column body={deleteBodyTemplate} header="Delete" />
-                )}
-              </DataTable>
-            </LoadingBlockUI>
+              <Column
+                rowEditor
+                header="Edit"
+                // headerStyle={{ width: "10%", minWidth: "8rem" }}
+                bodyStyle={{ textAlign: "center" }}
+              />
+              {isUserInAnyOfRoles([ScreenAdminRoleName]) && (
+                <Column body={deleteBodyTemplate} header="Delete" />
+              )}
+            </DataTable>
+            \{" "}
           </div>
         </div>
         <Sidebar

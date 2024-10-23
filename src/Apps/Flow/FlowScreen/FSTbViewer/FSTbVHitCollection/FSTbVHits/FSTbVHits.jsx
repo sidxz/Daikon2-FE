@@ -8,7 +8,6 @@ import { Sidebar } from "primereact/sidebar";
 import React, { useContext, useEffect, useState } from "react";
 import JSMEditor from "../../../../../../Library/JSME/JSMEditor";
 import Loading from "../../../../../../Library/Loading/Loading";
-import LoadingBlockUI from "../../../../../../Library/LoadingBlockUI/LoadingBlockUI";
 import { RootStoreContext } from "../../../../../../RootStore";
 import { TextRowEditor } from "../../../../../../Shared/TableRowEditors/TextRowEditor";
 import { AppRoleResolver } from "../../../../../../Shared/VariableResolvers/AppRoleResolver";
@@ -197,8 +196,10 @@ const FSTbVHits = ({ id }) => {
               />
 
               <Column
-                field={(rowData) => rowData?.molecule?.name}
-                header="Compound Name"
+                field={(rowData) =>
+                  rowData?.molecule?.name || rowData?.requestedMoleculeName
+                }
+                header="Molecule Name"
               />
               <Column
                 field={"iC50"}

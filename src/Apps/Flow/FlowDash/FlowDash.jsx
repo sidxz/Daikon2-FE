@@ -49,7 +49,7 @@ const FlowDash = () => {
           </div>
           <div className="flex flex-column">
             <Card
-              title={generateCardTitle("ri-discuss-line", "Recent Discussions")}
+              title={generateCardTitle("ri-discuss-line", "Latest Discussions")}
               className="w-full min-h-full"
             >
               <div className="flex w-full pt-1">
@@ -60,22 +60,22 @@ const FlowDash = () => {
         </div>
 
         <div className="flex flex-column p-1 w-5 gap-2">
-          <Card
+          {/* <Card
             title={generateCardTitle(
               "icon icon-common icon-newspaper",
               "What's New?"
             )}
             className="w-full min-h-full"
-          >
-            <div className="flex flex-column gap-2">
-              <div className="flex">
-                <FlowDashEventUpdates />
-              </div>
-              <div className="flex">
-                <FlowDashWhatsNew />
-              </div>
+          > */}
+          <div className="flex flex-column gap-2">
+            <div className="flex">
+              <FlowDashEventUpdates />
             </div>
-          </Card>
+            <div className="flex">
+              <FlowDashWhatsNew />
+            </div>
+          </div>
+          {/* </Card> */}
         </div>
       </div>
     </div>
