@@ -9,6 +9,7 @@ import FSDOOngoingScreens from "./FSDOOngoingScreens/FSDOOngoingScreens";
 import FSDOPlannedScreens from "./FSDOPlannedScreens/FSDOPlannedScreens";
 import FSDORecentlyCompleted from "./FSDORecentlyCompleted/FSDORecentlyCompleted";
 import FSDOVotingReady from "./FSDOVotingReady/FSDOVotingReady";
+import FSDOverviewFilters from "./FSDOverviewFilters";
 
 const FSDOverview = () => {
   // root store context
@@ -19,6 +20,7 @@ const FSDOverview = () => {
     isFetchingScreens,
     screenListTargetBased,
     screenListPhenotypic,
+    getFilteredListTargetBased,
   } = rootStore.screenStore;
   useEffect(() => {
     if (!isScreenListCacheValid) {
@@ -50,6 +52,9 @@ const FSDOverview = () => {
 
   return (
     <div className="flex flex-column w-full">
+      <div className="flex w-full">
+        <FSDOverviewFilters />
+      </div>
       <div className="flex w-full surface-0">
         <div
           className="flex w-1 p-4 align-items-center bg-white"
@@ -137,7 +142,7 @@ const FSDOverview = () => {
 
         <div className="flex w-full border-1 border-50 justify-content-center">
           <FSDOPlannedScreens
-            screens={screenListTargetBased
+            screens={getFilteredListTargetBased
               .filter(
                 (item) =>
                   item.status === "Planned" ||
@@ -148,21 +153,21 @@ const FSDOverview = () => {
         </div>
         <div className="flex w-full border-1 border-50 justify-content-center">
           <FSDOOngoingScreens
-            screens={screenListTargetBased
+            screens={getFilteredListTargetBased
               .filter((item) => item.status === "Ongoing") // Filter by Ongoing status
               .sort(sortByDate)}
           />
         </div>
         <div className="flex w-full border-1 border-50 justify-content-center">
           <FSDOVotingReady
-            screens={screenListTargetBased
+            screens={getFilteredListTargetBased
               .filter((item) => item.status === "Voting Ready") // Filter by Ongoing status
               .sort(sortByDate)}
           />
         </div>
         <div className="flex w-full border-1 border-50 justify-content-center">
           <FSDORecentlyCompleted
-            screens={screenListTargetBased
+            screens={getFilteredListTargetBased
               .filter((item) => item.status === "Completed")
               .filter((item) => {
                 const latestStatusDate = new Date(item.latestStatusChangeDate);
@@ -175,7 +180,6 @@ const FSDOverview = () => {
           />
         </div>
       </div>
-
       <div className="flex w-full pt-4">
         <div
           className="flex max-w-1 p-4 align-items-center justify-content-center bg-blue-400 text-white"
