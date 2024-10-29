@@ -21,7 +21,9 @@ const FSDOverviewFilters = ({ dashDisplay, setDashDisplay }) => {
   // Load filters from URL params or localStorage on component mount
   useEffect(() => {
     if (!isInitialized) {
-      const localFilters = JSON.parse(localStorage.getItem("filterCriteria"));
+      const localFilters = JSON.parse(
+        localStorage.getItem("screenDashFilterCriteria")
+      );
       const initialFilters = {
         targets: searchParams.get("targets")
           ? searchParams.get("targets").split(",")
@@ -67,7 +69,10 @@ const FSDOverviewFilters = ({ dashDisplay, setDashDisplay }) => {
           .join(",");
       }
       setSearchParams(params, { replace: true });
-      localStorage.setItem("filterCriteria", JSON.stringify(filterCriteria));
+      localStorage.setItem(
+        "screenDashFilterCriteria",
+        JSON.stringify(filterCriteria)
+      );
     }
   }, [filterCriteria, isInitialized, setSearchParams]);
 
