@@ -75,8 +75,11 @@ const FSDOverviewFilters = () => {
         onChange={(e) => setFilterCriteria({ targets: e.value })}
         options={filterOptions.targets}
         placeholder="Target"
-        maxSelectedLabels={3}
-        className="border-0"
+        //maxSelectedLabels={5}
+        showClear
+        filter
+        display="chip"
+        className="border-0 w-full"
       />
       <MultiSelect
         value={filterCriteria.primaryOrgAliases}
@@ -84,7 +87,10 @@ const FSDOverviewFilters = () => {
         options={filterOptions.primaryOrgAliases}
         placeholder="Organization"
         maxSelectedLabels={3}
-        className="border-0"
+        showClear
+        filter
+        display="chip"
+        className="border-0 w-full"
       />
       <MultiSelect
         value={filterCriteria.methods}
@@ -92,7 +98,10 @@ const FSDOverviewFilters = () => {
         options={filterOptions.methods}
         placeholder="Method"
         maxSelectedLabels={3}
-        className="border-0"
+        showClear
+        filter
+        display="chip"
+        className="border-0 w-full"
       />
     </React.Fragment>
   );

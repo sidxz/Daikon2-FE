@@ -21,6 +21,7 @@ const FSDOverview = () => {
     screenListTargetBased,
     screenListPhenotypic,
     getFilteredListTargetBased,
+    getFilteredListPhenotypic,
   } = rootStore.screenStore;
   useEffect(() => {
     if (!isScreenListCacheValid) {
@@ -194,7 +195,7 @@ const FSDOverview = () => {
 
         <div className="flex w-full border-1 border-50 justify-content-center">
           <FSDOPlannedScreens
-            screens={screenListPhenotypic
+            screens={getFilteredListPhenotypic
               .filter(
                 (item) =>
                   item.status === "Planned" ||
@@ -205,21 +206,21 @@ const FSDOverview = () => {
         </div>
         <div className="flex w-full border-1 border-50 justify-content-center">
           <FSDOOngoingScreens
-            screens={screenListPhenotypic
+            screens={getFilteredListPhenotypic
               .filter((item) => item.status === "Ongoing") // Filter by Ongoing status
               .sort(sortByDate)}
           />
         </div>
         <div className="flex w-full border-1 border-50 justify-content-center">
           <FSDOVotingReady
-            screens={screenListPhenotypic
+            screens={getFilteredListPhenotypic
               .filter((item) => item.status === "Voting Ready") // Filter by Ongoing status
               .sort(sortByDate)}
           />
         </div>
         <div className="flex w-full border-1 border-50 justify-content-center">
           <FSDORecentlyCompleted
-            screens={screenListPhenotypic
+            screens={getFilteredListPhenotypic
               .filter((item) => item.status === "Completed")
               .filter((item) => item.status === "Completed")
               .filter((item) => {

@@ -45,6 +45,7 @@ export default class ScreenStore {
       setFilterCriteria: action,
 
       getFilteredListTargetBased: computed,
+      getFilteredListPhenotypic: computed,
     });
   }
 
@@ -345,6 +346,28 @@ export default class ScreenStore {
         matchesMethods &&
         matchesDateRange
       );
+    });
+  }
+
+  get getFilteredListPhenotypic() {
+    const { primaryOrgAliases, methods, dateRange } = this.filterCriteria;
+
+    return Array.from(this.screenListPhenotypic).filter((screen) => {
+      // Filter by primaryOrgAliases
+      const matchesPrimaryOrgAliases =
+        !primaryOrgAliases.length ||
+        primaryOrgAliases.includes(screen.primaryOrgAlias);
+      // Filter by methods
+      const matchesMethods = !methods.length || methods.includes(screen.method);
+      // Filter by date range
+      const matchesDateRange =
+        (!dateRange[0] ||
+          new Date(screen.dateCreated) >= new Date(dateRange[0])) &&
+        (!dateRange[1] ||
+          new Date(screen.dateCreated) <= new Date(dateRange[1]));
+
+      // Return true if all criteria match
+      return matchesPrimaryOrgAliases && matchesMethods && matchesDateRange;
     });
   }
 }
