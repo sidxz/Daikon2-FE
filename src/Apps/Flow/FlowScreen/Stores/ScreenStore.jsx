@@ -159,6 +159,7 @@ export default class ScreenStore {
         // Add screen to screen list
         screen.id = res.id;
         screen.screenRuns = [];
+        screen.latestStatusChangeDate = Date.now();
 
         // FLatten the associated targets, separate by comma
         if (screen.associatedTargets) {
