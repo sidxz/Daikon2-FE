@@ -6,7 +6,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { MdGridView } from "react-icons/md";
 import { useSearchParams } from "react-router-dom";
 import { RootStoreContext } from "../../../../../RootStore";
-import "./FSDOverviewFilters.css";
+import { GlobalValuesResolver } from "../../../../../Shared/VariableResolvers/GlobalValuesResolver";
 
 const FSDOverviewFilters = ({ dashDisplay, setDashDisplay }) => {
   const rootStore = useContext(RootStoreContext);
@@ -17,6 +17,7 @@ const FSDOverviewFilters = ({ dashDisplay, setDashDisplay }) => {
   const filterOptions = getFilterAttributes();
   const [dates, setDates] = useState(filterCriteria.dateRange || [null, null]);
   const [isInitialized, setIsInitialized] = useState(false);
+  const { getScreeningGlobals } = GlobalValuesResolver();
 
   // Load filters from URL params or localStorage on component mount
   useEffect(() => {
@@ -108,7 +109,9 @@ const FSDOverviewFilters = ({ dashDisplay, setDashDisplay }) => {
       <MultiSelect
         value={filterCriteria.methods}
         onChange={(e) => setFilterCriteria({ methods: e.value })}
-        options={filterOptions.methods}
+        optionLabel="name"
+        answer="value"
+        options={getScreeningGlobals().screeningMethods}
         placeholder="Method"
         maxSelectedLabels={3}
         showClear
