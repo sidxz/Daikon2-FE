@@ -16,35 +16,35 @@ const FSDOverviewFilters = ({ dashDisplay, setDashDisplay }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const filterOptions = getFilterAttributes();
   const [dates, setDates] = useState(filterCriteria.dateRange || [null, null]);
-  const [isInitialized, setIsInitialized] = useState(false); // Track initialization
+  const [isInitialized, setIsInitialized] = useState(false);
 
-  // Initialize filters from URL params on component mount
+  // Load filters from URL params or localStorage on component mount
   useEffect(() => {
     if (!isInitialized) {
+      const localFilters = JSON.parse(localStorage.getItem("filterCriteria"));
       const initialFilters = {
         targets: searchParams.get("targets")
           ? searchParams.get("targets").split(",")
-          : [],
+          : localFilters?.targets || [],
         primaryOrgAliases: searchParams.get("primaryOrgAliases")
           ? searchParams.get("primaryOrgAliases").split(",")
-          : [],
+          : localFilters?.primaryOrgAliases || [],
         methods: searchParams.get("methods")
           ? searchParams.get("methods").split(",")
-          : [],
+          : localFilters?.methods || [],
         dateRange: searchParams.get("dateRange")
           ? searchParams
               .get("dateRange")
               .split(",")
               .map((date) => new Date(date))
-          : [null, null],
+          : localFilters?.dateRange || [null, null],
       };
-      console.log("Initializing filters from URL params:", initialFilters);
       setFilterCriteria(initialFilters);
-      setIsInitialized(true); // Mark as initialized
+      setIsInitialized(true);
     }
   }, [isInitialized, searchParams, setFilterCriteria]);
 
-  // Update URL params when filter criteria change, but only after initialization
+  // Save filter criteria to URL params and localStorage when they change
   useEffect(() => {
     if (isInitialized) {
       const params = {};
@@ -66,14 +66,13 @@ const FSDOverviewFilters = ({ dashDisplay, setDashDisplay }) => {
           .map((date) => date.toISOString())
           .join(",");
       }
-      setSearchParams(params, { replace: true }); // Use replace to avoid adding to history
+      setSearchParams(params, { replace: true });
+      localStorage.setItem("filterCriteria", JSON.stringify(filterCriteria));
     }
   }, [filterCriteria, isInitialized, setSearchParams]);
 
   const viewOptions = [
-    {
-      value: "All",
-    },
+    { value: "All" },
     { value: "Target Based" },
     { value: "Phenotypic" },
   ];
@@ -85,7 +84,6 @@ const FSDOverviewFilters = ({ dashDisplay, setDashDisplay }) => {
         onChange={(e) => setFilterCriteria({ targets: e.value })}
         options={filterOptions.targets}
         placeholder="Target"
-        //maxSelectedLabels={5}
         showClear
         filter
         display="chip"
@@ -121,20 +119,14 @@ const FSDOverviewFilters = ({ dashDisplay, setDashDisplay }) => {
         options={viewOptions}
         optionValue="value"
         optionLabel="value"
-        valueTemplate={(option) => {
-          return <MdGridView />;
-        }}
+        valueTemplate={(option) => <MdGridView />}
       />
     </div>
   );
 
   return (
     <div className="div border-0 w-full m-0 p-0 ">
-      <Toolbar
-        end={content1}
-        //center={content1}
-        className="m-0 p-0 border-0"
-      />
+      <Toolbar end={content1} className="m-0 p-0 border-0" />
     </div>
   );
 };
