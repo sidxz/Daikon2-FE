@@ -1,6 +1,7 @@
 import { useFormik } from "formik";
 import { observer } from "mobx-react-lite";
 import { Button } from "primereact/button";
+import { Calendar } from "primereact/calendar";
 import { Dropdown } from "primereact/dropdown";
 import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
@@ -25,6 +26,8 @@ const FSDAddScreenPhenotypic = ({ closeSideBar }) => {
       notes: "",
       screenType: "phenotypic",
       status: "Planned",
+      expectedStartDate: new Date(),
+      expectedCompleteDate: new Date(Date.now() + 120 * 24 * 60 * 60 * 1000), // End date 120 days from start
     },
 
     validate: (values) => {
@@ -181,6 +184,42 @@ const FSDAddScreenPhenotypic = ({ closeSideBar }) => {
               className={classNames({
                 "p-invalid": isInvalid("notes"),
               })}
+            />
+          </div>
+
+          <div className="field">
+            <label
+              htmlFor="expectedStartDate"
+              className={classNames({
+                "p-error": isInvalid("expectedStartDate"),
+              })}
+            >
+              Expected Start Date
+            </label>
+            <Calendar
+              id="expectedStartDate"
+              view="month"
+              dateFormat="MM / yy"
+              value={formik.values.expectedStartDate}
+              onChange={formik.handleChange}
+            />
+          </div>
+
+          <div className="field">
+            <label
+              htmlFor="expectedCompleteDate"
+              className={classNames({
+                "p-error": isInvalid("expectedCompleteDate"),
+              })}
+            >
+              Expected Completion Date
+            </label>
+            <Calendar
+              id="expectedCompleteDate"
+              view="month"
+              dateFormat="MM / yy"
+              value={formik.values.expectedCompleteDate}
+              onChange={formik.handleChange}
             />
           </div>
 
