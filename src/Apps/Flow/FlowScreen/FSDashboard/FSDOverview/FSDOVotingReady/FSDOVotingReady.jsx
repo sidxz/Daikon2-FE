@@ -1,10 +1,10 @@
 import React from "react";
+import { FaClock } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
+import FDate from "../../../../../../Library/FDate/FDate";
 import { AppOrgResolver } from "../../../../../../Shared/VariableResolvers/AppOrgResolver";
 import { FormatScreeningMethod } from "../../../shared/Formatters";
-import FDate from "../../../../../../Library/FDate/FDate";
 import { getClockIconData } from "../FSDOHelper";
-import { FaClock } from "react-icons/fa6";
 
 const FSDOVotingReady = ({ screens }) => {
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ const FSDOVotingReady = ({ screens }) => {
   let screensComponent = screens.map((screen) => {
     return (
       <div
-        className="flex flex-wrap flex-column bg-orange-50 shadow-1 hover:shadow-3 w-15rem"
+        className="flex flex-wrap border-round-md flex-column bg-orange-50 shadow-1 hover:shadow-3 w-15rem"
         key={screen.id}
       >
         <div className="flex align-items-end justify-content-end">

@@ -93,7 +93,7 @@ const FSDOverviewFilters = ({ dashDisplay, setDashDisplay }) => {
         showClear
         filter
         display="chip"
-        className="border-0 w-full"
+        className="border-0 w-full surface-50"
       />
       <MultiSelect
         value={filterCriteria.primaryOrgAliases}
@@ -104,7 +104,7 @@ const FSDOverviewFilters = ({ dashDisplay, setDashDisplay }) => {
         showClear
         filter
         display="chip"
-        className="border-0 w-full"
+        className="border-0 w-full surface-50"
       />
       <MultiSelect
         value={filterCriteria.methods}
@@ -117,11 +117,11 @@ const FSDOverviewFilters = ({ dashDisplay, setDashDisplay }) => {
         showClear
         filter
         display="chip"
-        className="border-0 w-full"
+        className="border-0 w-full surface-50"
       />
       <Dropdown
         icon="pi pi-check"
-        className="border-0 p-0 m-0"
+        className="border-0 p-0 m-0 surface-50"
         value={dashDisplay}
         onChange={(e) => setDashDisplay(e.value)}
         options={viewOptions}
