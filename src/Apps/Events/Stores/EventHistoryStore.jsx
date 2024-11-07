@@ -48,16 +48,18 @@ export default class EventHistoryStore {
       this.lastFetchedTime &&
       currentTime - this.lastFetchedTime < this.cacheDuration
     ) {
+      this.isFetchingRecentEvents = false;
       return; // Cache is valid, no need to refetch
     }
     try {
-      const events = await EventHistoryAPI.getMostRecent();
+      const events = await EventHistoryAPI.getMostRecent(inValidateCache);
       console.log("events", events);
       runInAction(() => {
         events.forEach((ev) => {
           this.eventRegistry.set(ev.id, ev);
         });
         this.isEventRegistryCacheValid = true;
+        this.lastFetchedTime = currentTime;
       });
     } catch (error) {
       console.error("Error fetching most recent events:", error);
