@@ -31,7 +31,7 @@ const MostRecentEvents = forwardRef((props, ref) => {
       </div>
     );
 
-  console.log("mostRecentEvents", mostRecentEvents);
+  // console.log("mostRecentEvents", mostRecentEvents);
   return (
     <div className="flex w-full">
       <DataTable

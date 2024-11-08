@@ -53,7 +53,7 @@ export default class EventHistoryStore {
     }
     try {
       const events = await EventHistoryAPI.getMostRecent(inValidateCache);
-      console.log("events", events);
+
       runInAction(() => {
         events.forEach((ev) => {
           this.eventRegistry.set(ev.id, ev);
