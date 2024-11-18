@@ -6,6 +6,7 @@ import { Editor } from "primereact/editor";
 import { InputTextarea } from "primereact/inputtextarea";
 import { Sidebar } from "primereact/sidebar";
 import "quill-mention";
+import "quill-mention/autoregister";
 import "quill-mention/dist/quill.mention.min.css";
 import React, { useContext, useState } from "react";
 import { RootStoreContext } from "../../../RootStore";
