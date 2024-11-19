@@ -43,10 +43,9 @@ const PortfolioCompoundEvolutionAdd = ({ project, closeSideBar }) => {
       cEvoToAdd.stage = project.stage;
       //console.log(cEvoToAdd);
       //return;
-      addProjectCEvo(cEvoToAdd).then(() => {
-        closeSideBar();
-        formik.resetForm();
-      });
+      addProjectCEvo(cEvoToAdd);
+      closeSideBar();
+      formik.resetForm();
     },
   });
 

@@ -44,10 +44,9 @@ const HaCompoundEvolutionEdit = ({ existingCEvo, closeSideBar }) => {
         formik.resetForm();
         return;
       }
-      updateHaCEvo(updatedCEvo).then(() => {
-        closeSideBar();
-        formik.resetForm();
-      });
+      updateHaCEvo(updatedCEvo);
+      closeSideBar();
+      formik.resetForm();
     },
   });
 

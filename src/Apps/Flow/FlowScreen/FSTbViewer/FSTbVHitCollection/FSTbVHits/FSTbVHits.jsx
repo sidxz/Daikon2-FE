@@ -8,11 +8,11 @@ import { Sidebar } from "primereact/sidebar";
 import React, { useContext, useEffect, useState } from "react";
 import JSMEditor from "../../../../../../Library/JSME/JSMEditor";
 import Loading from "../../../../../../Library/Loading/Loading";
-import LoadingBlockUI from "../../../../../../Library/LoadingBlockUI/LoadingBlockUI";
 import { RootStoreContext } from "../../../../../../RootStore";
 import { TextRowEditor } from "../../../../../../Shared/TableRowEditors/TextRowEditor";
 import { AppRoleResolver } from "../../../../../../Shared/VariableResolvers/AppRoleResolver";
 import { ScreenAdminRoleName } from "../../../constants/roles";
+import { getUniqueMoleculeNames } from "../../../shared/SharedHelper";
 import Vote from "../../../shared/Vote/Vote";
 import FSTbVHAddHit from "./FSTbVHitsHelper/FSTbVHAddHit";
 import { FSTbVHDataTableHeader } from "./FSTbVHitsHelper/FSTbVHDataTableHeader";
@@ -197,8 +197,8 @@ const FSTbVHits = ({ id }) => {
               />
 
               <Column
-                field={(rowData) => rowData?.molecule?.name}
-                header="Compound Name"
+                field={(rowData) => getUniqueMoleculeNames(rowData)}
+                header="Molecule Name"
               />
               <Column
                 field={"iC50"}

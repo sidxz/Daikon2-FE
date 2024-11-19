@@ -10,6 +10,7 @@ import {
 } from "react-router-dom";
 import Loading from "../../../../Library/Loading/Loading";
 import NotFound from "../../../../Library/NotFound/NotFound";
+import PageInfoPanel from "../../../../Library/PageInfoPanel/PageInfoPanel";
 import { RootStoreContext } from "../../../../RootStore";
 import { AppRoleResolver } from "../../../../Shared/VariableResolvers/AppRoleResolver";
 import { ScreenAdminRoleName } from "../constants/roles";
@@ -32,7 +33,8 @@ const FSPhViewer = () => {
     isScreenRegistryCacheValid,
   } = rootStore.screenStore;
 
-  const { fetchHitCollectionsOfScreen } = rootStore.hitCollectionStore;
+  const { fetchHitCollectionsOfScreen, selectedHitCollection } =
+    rootStore.hitCollectionStore;
 
   const { isUserInAnyOfRoles } = AppRoleResolver();
 
@@ -59,11 +61,42 @@ const FSPhViewer = () => {
   let renderAdminModules = isUserInAnyOfRoles([ScreenAdminRoleName]);
 
   if (selectedScreen && selectedScreen?.id === params?.id) {
+    let panelInfoToRender = () => {
+      let url = window.location.href;
+      let isHits = url.includes("hits");
+      if (isHits) {
+        return (
+          <PageInfoPanel
+            dateCreated={selectedHitCollection?.dateCreated}
+            createdById={selectedHitCollection?.createdById}
+            dateUpdated={selectedHitCollection?.pageLastUpdatedDate}
+            updatedById={selectedHitCollection?.pageLastUpdatedUser}
+            heading="Hit Collection Info"
+          />
+        );
+      } else {
+        return (
+          <PageInfoPanel
+            dateCreated={selectedScreen?.dateCreated}
+            createdById={selectedScreen?.createdById}
+            dateUpdated={selectedScreen?.pageLastUpdatedDate}
+            updatedById={selectedScreen?.pageLastUpdatedUser}
+            heading="Screen Info"
+          />
+        );
+      }
+    };
+
     return (
       <div className="flex w-full">
         <div className="flex gap-2 w-full">
-          <div className="flex">
-            <Menu model={Helper.sidePanelItems(navigate, renderAdminModules)} />
+          <div className="flex flex-column border-1 border-50 p-1 border-round-md gap-2">
+            <div className="flex">
+              <Menu
+                model={Helper.sidePanelItems(navigate, renderAdminModules)}
+              />
+            </div>
+            <div className="flex">{panelInfoToRender()}</div>
           </div>
           <div className="flex w-full">
             <Routes>

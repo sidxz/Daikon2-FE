@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FcNeutralTrading, FcPlanner } from "react-icons/fc";
 import { GiVote } from "react-icons/gi";
 import { WiMoonFull } from "react-icons/wi";
@@ -9,6 +9,7 @@ import FSDOOngoingScreens from "./FSDOOngoingScreens/FSDOOngoingScreens";
 import FSDOPlannedScreens from "./FSDOPlannedScreens/FSDOPlannedScreens";
 import FSDORecentlyCompleted from "./FSDORecentlyCompleted/FSDORecentlyCompleted";
 import FSDOVotingReady from "./FSDOVotingReady/FSDOVotingReady";
+import FSDOverviewFilters from "./FSDOverviewFilters";
 
 const FSDOverview = () => {
   // root store context
@@ -19,7 +20,12 @@ const FSDOverview = () => {
     isFetchingScreens,
     screenListTargetBased,
     screenListPhenotypic,
+    getFilteredListTargetBased,
+    getFilteredListPhenotypic,
   } = rootStore.screenStore;
+
+  const [dashDisplay, setDashDisplay] = useState("All");
+  console.log("dashDisplay", dashDisplay);
   useEffect(() => {
     if (!isScreenListCacheValid) {
       fetchScreens();
@@ -50,6 +56,12 @@ const FSDOverview = () => {
 
   return (
     <div className="flex flex-column w-full">
+      <div className="flex w-full">
+        <FSDOverviewFilters
+          setDashDisplay={setDashDisplay}
+          dashDisplay={dashDisplay}
+        />
+      </div>
       <div className="flex w-full surface-0">
         <div
           className="flex w-1 p-4 align-items-center bg-white"
@@ -123,112 +135,119 @@ const FSDOverview = () => {
           </div>
         </div>
       </div>
-      <div className="flex w-full">
-        <div
-          className="flex max-w-1 p-4 align-items-center justify-content-center bg-teal-400 text-white"
-          style={{
-            textOrientation: "sideways-right",
-            writingMode: "vertical-rl",
-            transform: "rotate(180deg)",
-          }}
-        >
-          TARGET BASED
-        </div>
+      {(dashDisplay === "All" || dashDisplay === "Target Based") && (
+        <div className="flex w-full">
+          <div
+            className="flex max-w-1 p-4 align-items-center justify-content-center bg-teal-400 text-white"
+            style={{
+              textOrientation: "sideways-right",
+              writingMode: "vertical-rl",
+              transform: "rotate(180deg)",
+            }}
+          >
+            TARGET BASED
+          </div>
 
-        <div className="flex w-full border-1 border-50 justify-content-center">
-          <FSDOPlannedScreens
-            screens={screenListTargetBased
-              .filter(
-                (item) =>
-                  item.status === "Planned" ||
-                  item.status == "Assay Development"
-              ) // Filter by Ongoing status
-              .sort(sortByDate)}
-          />
+          <div className="flex w-full border-1 border-50 justify-content-center">
+            <FSDOPlannedScreens
+              screens={getFilteredListTargetBased
+                .filter(
+                  (item) =>
+                    item.status === "Planned" ||
+                    item.status == "Assay Development"
+                ) // Filter by Ongoing status
+                .sort(sortByDate)}
+            />
+          </div>
+          <div className="flex w-full border-1 border-50 justify-content-center">
+            <FSDOOngoingScreens
+              screens={getFilteredListTargetBased
+                .filter((item) => item.status === "Ongoing") // Filter by Ongoing status
+                .sort(sortByDate)}
+            />
+          </div>
+          <div className="flex w-full border-1 border-50 justify-content-center">
+            <FSDOVotingReady
+              screens={getFilteredListTargetBased
+                .filter((item) => item.status === "Voting Ready") // Filter by Ongoing status
+                .sort(sortByDate)}
+            />
+          </div>
+          <div className="flex w-full border-1 border-50 justify-content-center">
+            <FSDORecentlyCompleted
+              screens={getFilteredListTargetBased
+                .filter((item) => item.status === "Completed")
+                .filter((item) => {
+                  const latestStatusDate = new Date(
+                    item.latestStatusChangeDate
+                  );
+                  return (
+                    latestStatusDate >= sixMonthsAgo &&
+                    latestStatusDate <= currentDate
+                  );
+                })
+                .sort(sortByDate)}
+            />
+          </div>
         </div>
-        <div className="flex w-full border-1 border-50 justify-content-center">
-          <FSDOOngoingScreens
-            screens={screenListTargetBased
-              .filter((item) => item.status === "Ongoing") // Filter by Ongoing status
-              .sort(sortByDate)}
-          />
-        </div>
-        <div className="flex w-full border-1 border-50 justify-content-center">
-          <FSDOVotingReady
-            screens={screenListTargetBased
-              .filter((item) => item.status === "Voting Ready") // Filter by Ongoing status
-              .sort(sortByDate)}
-          />
-        </div>
-        <div className="flex w-full border-1 border-50 justify-content-center">
-          <FSDORecentlyCompleted
-            screens={screenListTargetBased
-              .filter((item) => item.status === "Completed")
-              .filter((item) => {
-                const latestStatusDate = new Date(item.latestStatusChangeDate);
-                return (
-                  latestStatusDate >= sixMonthsAgo &&
-                  latestStatusDate <= currentDate
-                );
-              })
-              .sort(sortByDate)}
-          />
-        </div>
-      </div>
+      )}
+      {(dashDisplay === "All" || dashDisplay === "Phenotypic") && (
+        <div className="flex w-full pt-4">
+          <div
+            className="flex max-w-1 p-4 align-items-center justify-content-center bg-blue-400 text-white"
+            style={{
+              textOrientation: "sideways-right",
+              writingMode: "vertical-rl",
+              transform: "rotate(180deg)",
+            }}
+          >
+            PHENOTYPIC
+          </div>
 
-      <div className="flex w-full pt-4">
-        <div
-          className="flex max-w-1 p-4 align-items-center justify-content-center bg-blue-400 text-white"
-          style={{
-            textOrientation: "sideways-right",
-            writingMode: "vertical-rl",
-            transform: "rotate(180deg)",
-          }}
-        >
-          PHENOTYPIC
+          <div className="flex w-full border-1 border-50 justify-content-center">
+            <FSDOPlannedScreens
+              screens={getFilteredListPhenotypic
+                .filter(
+                  (item) =>
+                    item.status === "Planned" ||
+                    item.status == "Assay Development"
+                ) // Filter by Ongoing status
+                .sort(sortByDate)}
+            />
+          </div>
+          <div className="flex w-full border-1 border-50 justify-content-center">
+            <FSDOOngoingScreens
+              screens={getFilteredListPhenotypic
+                .filter((item) => item.status === "Ongoing") // Filter by Ongoing status
+                .sort(sortByDate)}
+            />
+          </div>
+          <div className="flex w-full border-1 border-50 justify-content-center">
+            <FSDOVotingReady
+              screens={getFilteredListPhenotypic
+                .filter((item) => item.status === "Voting Ready") // Filter by Ongoing status
+                .sort(sortByDate)}
+            />
+          </div>
+          <div className="flex w-full border-1 border-50 justify-content-center">
+            <FSDORecentlyCompleted
+              screens={getFilteredListPhenotypic
+                .filter((item) => item.status === "Completed")
+                .filter((item) => item.status === "Completed")
+                .filter((item) => {
+                  const latestStatusDate = new Date(
+                    item.latestStatusChangeDate
+                  );
+                  return (
+                    latestStatusDate >= sixMonthsAgo &&
+                    latestStatusDate <= currentDate
+                  );
+                })
+                .sort(sortByDate)}
+            />
+          </div>
         </div>
-
-        <div className="flex w-full border-1 border-50 justify-content-center">
-          <FSDOPlannedScreens
-            screens={screenListPhenotypic
-              .filter(
-                (item) =>
-                  item.status === "Planned" ||
-                  item.status == "Assay Development"
-              ) // Filter by Ongoing status
-              .sort(sortByDate)}
-          />
-        </div>
-        <div className="flex w-full border-1 border-50 justify-content-center">
-          <FSDOOngoingScreens
-            screens={screenListPhenotypic
-              .filter((item) => item.status === "Ongoing") // Filter by Ongoing status
-              .sort(sortByDate)}
-          />
-        </div>
-        <div className="flex w-full border-1 border-50 justify-content-center">
-          <FSDOVotingReady
-            screens={screenListPhenotypic
-              .filter((item) => item.status === "Voting Ready") // Filter by Ongoing status
-              .sort(sortByDate)}
-          />
-        </div>
-        <div className="flex w-full border-1 border-50 justify-content-center">
-          <FSDORecentlyCompleted
-            screens={screenListPhenotypic
-              .filter((item) => item.status === "Completed")
-              .filter((item) => item.status === "Completed")
-              .filter((item) => {
-                const latestStatusDate = new Date(item.latestStatusChangeDate);
-                return (
-                  latestStatusDate >= sixMonthsAgo &&
-                  latestStatusDate <= currentDate
-                );
-              })
-              .sort(sortByDate)}
-          />
-        </div>
-      </div>
+      )}
     </div>
   );
 };

@@ -1,4 +1,5 @@
 import { observer } from "mobx-react-lite";
+import { BlockUI } from "primereact/blockui";
 import { BreadCrumb } from "primereact/breadcrumb";
 import { Button } from "primereact/button";
 import { Divider } from "primereact/divider";
@@ -231,6 +232,7 @@ const FTVPromotionQ = () => {
               label="Save Changes to Questionnaire"
               className="p-button-text p-button-md m-0 p-0"
               onClick={() => submitTargetPromotionFormValueForm()}
+              loading={isUpdatingTQ}
             />
           </div>
         </div>
@@ -311,12 +313,14 @@ const FTVPromotionQ = () => {
           />
         </div>
         <div className="flex w-full">{header}</div>
-        <div className="flex w-full flex-column p-2 m-2">
-          {userAnsweredQuestionsGrouped_Render}
-        </div>
-        <div className="flex w-full flex-column p-2 m-2">
-          {adminQuestionsGrouped_Render}
-        </div>
+        <BlockUI blocked={isUpdatingTQ}>
+          <div className="flex w-full flex-column p-2 m-2">
+            {userAnsweredQuestionsGrouped_Render}
+          </div>
+          <div className="flex w-full flex-column p-2 m-2">
+            {adminQuestionsGrouped_Render}
+          </div>
+        </BlockUI>
       </div>
     );
   }

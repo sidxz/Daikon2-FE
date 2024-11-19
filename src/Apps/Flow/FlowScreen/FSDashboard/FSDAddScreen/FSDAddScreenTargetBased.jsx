@@ -1,6 +1,7 @@
 import { useFormik } from "formik";
 import { observer } from "mobx-react-lite";
 import { Button } from "primereact/button";
+import { Calendar } from "primereact/calendar";
 import { Dropdown } from "primereact/dropdown";
 import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
@@ -13,9 +14,9 @@ import InputOrg from "../../../../../Shared/InputEditors/InputOrg";
 import { AppOrgResolver } from "../../../../../Shared/VariableResolvers/AppOrgResolver";
 import { GlobalValuesResolver } from "../../../../../Shared/VariableResolvers/GlobalValuesResolver";
 import InputAssociatedTarget from "../../shared/InputAssociatedTarget";
+
 const FSDAddScreenTargetBased = ({ closeSideBar }) => {
   const rootStore = useContext(RootStoreContext);
-
   const {
     addScreen,
     isAddingScreen,
@@ -29,17 +30,13 @@ const FSDAddScreenTargetBased = ({ closeSideBar }) => {
     isFetchingTargets,
     isTargetListCacheValid,
   } = rootStore.targetStore;
-
   const { getScreeningGlobals } = GlobalValuesResolver();
   const { getOrgNameById } = AppOrgResolver();
 
+  // Ensure cache validity for screens and targets on component mount
   useEffect(() => {
-    if (!isTargetListCacheValid) {
-      fetchTargets();
-    }
-    if (!isScreenListCacheValid) {
-      fetchScreens();
-    }
+    if (!isTargetListCacheValid) fetchTargets();
+    if (!isScreenListCacheValid) fetchScreens();
   }, [
     fetchTargets,
     isTargetListCacheValid,
@@ -58,35 +55,29 @@ const FSDAddScreenTargetBased = ({ closeSideBar }) => {
       method: "",
       screenType: "target-based",
       status: "Planned",
+      expectedStartDate: new Date(),
+      expectedCompleteDate: new Date(Date.now() + 120 * 24 * 60 * 60 * 1000), // End date 120 days from start
     },
-
     validate: (values) => {
       const errors = {};
       if (!values.method) errors.method = "Method is required.";
       if (!values.targetToAssociate)
-        errors.targetToAssociate =
-          "Please select a target. If your intent is to add a phenotypic screen, ensure to choose the 'phenotypic screen' type.";
+        errors.targetToAssociate = "Please select a target.";
       if (!values.name) errors.name = "Name is required.";
       if (!values.primaryOrgId)
         errors.primaryOrgId = "Organization is required.";
-      // Additional validations can be added here
       return errors;
     },
-
     onSubmit: (newScreen) => {
       newScreen.primaryOrgName = getOrgNameById(newScreen.primaryOrgId);
-      if (newScreen.targetToAssociate !== "") {
+      if (newScreen.targetToAssociate) {
         const targetName = targetListRegistry.get(
           newScreen.targetToAssociate
-        ).name;
+        )?.name;
         newScreen.associatedTargets = {
           [newScreen.targetToAssociate]: targetName,
         };
       }
-
-      // console.log(newScreen);
-      // return;
-
       addScreen(newScreen).then(() => {
         closeSideBar();
         formik.resetForm();
@@ -95,41 +86,32 @@ const FSDAddScreenTargetBased = ({ closeSideBar }) => {
   });
 
   // Helper functions for form validation and error messages
-  const isInvalid = (field) => formik.touched[field] && formik.errors[field];
-  const getErrorMessage = (field) =>
-    isInvalid(field) && (
+  const isFieldInvalid = (field) =>
+    formik.touched[field] && formik.errors[field];
+  const renderErrorMessage = (field) =>
+    isFieldInvalid(field) && (
       <small className="p-error">{formik.errors[field]}</small>
     );
 
-  let suggestedName = () => {
-    // first check the no of existing screens of the selected target
+  // Generate suggested name based on existing target screenings
+  const generateSuggestedName = () => {
     const targetId = formik.values.targetToAssociate;
     const targetScreens = rootStore.screenStore.screenList.filter(
       (screen) => screen.associatedTargets && screen.associatedTargets[targetId]
     );
-    const targetName = targetListRegistry.get(targetId)?.name;
-    const suggestedName = `${targetName ? targetName : ""}-${
-      targetScreens.length + 1
-    }`;
-    return suggestedName;
+    const targetName = targetListRegistry.get(targetId)?.name || "";
+    return `${targetName}-${targetScreens.length + 1}`;
   };
 
   useEffect(() => {
-    // This effect runs when formik.values.targetToAssociate changes
     if (formik.values.targetToAssociate) {
-      // Call the suggestedName function to get the suggested name
-      const suggested = suggestedName();
-
-      // Update the formik values with the suggested name
-      formik.setFieldValue("name", suggested, false); // The third parameter is "shouldValidate", you can set it as needed
+      formik.setFieldValue("name", generateSuggestedName(), false);
     }
-  }, [formik.values.targetToAssociate, formik.setFieldValue]); // Add formik.setFieldValue to the dependency array
+  }, [formik.values.targetToAssociate, formik.setFieldValue]);
 
-  if (isFetchingTargets || isFetchingScreen) {
-    return <div>Please wait...</div>;
-  }
+  if (isFetchingTargets || isFetchingScreen) return <div>Please wait...</div>;
 
-  // The set of available options for the status of a screen
+  // Status options with icons
   const statusOptions = [
     { name: "Planned", icon: <FcPlanner /> },
     { name: "Assay Development", icon: <FcDataSheet /> },
@@ -138,194 +120,183 @@ const FSDAddScreenTargetBased = ({ closeSideBar }) => {
     { name: "Completed", icon: <FcOk /> },
   ];
 
-  // Template for rendering a selected status option
-  const statusOptionTemplate = (option) => {
-    if (option) {
-      return (
-        <div className="flex align-items-center align-self-center gap-2">
-          <div className="flex flex-column">{option.icon}</div>
-          <div className="flex flex-column">{option.name}</div>
-        </div>
-      );
-    }
-  };
-
-  const statusValueTemplate = (option) => {
-    if (option === null) {
-      return (
-        <div className="flex align-items-center align-self-center gap-2">
-          <div className="flex flex-column">
-            <FcExpired />
-          </div>
-          <div className="flex flex-column">Status Not Set</div>
-        </div>
-      );
-    }
-    if (option) {
-      return (
-        <div className="flex align-items-center align-self-center gap-2">
-          <div className="flex flex-column">{option.icon}</div>
-          <div className="flex flex-column">{option.name}</div>
-        </div>
-      );
-    }
-  };
+  const renderOptionTemplate = (option) => (
+    <div className="flex align-items-center gap-2">
+      <div>{option?.icon}</div>
+      <div>{option?.name || "Status Not Set"}</div>
+    </div>
+  );
 
   return (
-    <>
-      <div className="card w-full">
-        <form onSubmit={formik.handleSubmit} className="p-fluid">
-          <div className="field">
-            <label
-              htmlFor="targetToAssociate"
-              className={classNames({
-                "p-error": isInvalid("targetToAssociate"),
-              })}
-            >
-              Associated Target
-            </label>
-
-            <InputAssociatedTarget
-              value={formik.values.targetToAssociate}
-              onChange={formik.handleChange("targetToAssociate")}
-              className={classNames({
-                "p-invalid": isInvalid("targetToAssociate"),
-              })}
-            />
-            {getErrorMessage("targetToAssociate")}
-          </div>
-
-          <div className="field">
-            <label
-              htmlFor="name"
-              className={classNames({
-                "p-error": isInvalid("name"),
-              })}
-            >
-              Name *
-              {formik.values.targetToAssociate && (
-                <p className="text-xs text-gray-500">
-                  A name suggestion has been generated following the established
-                  naming conventions for screenings.
-                </p>
-              )}
-            </label>
-            <InputText
-              id="name"
-              value={formik.values.name}
-              onChange={formik.handleChange}
-              className={classNames({
-                "p-invalid": isInvalid("name"),
-              })}
-            />
-          </div>
-
-          <div className="field">
-            <label
-              htmlFor="primaryOrgId"
-              className={classNames({
-                "p-error": isInvalid("primaryOrgId"),
-              })}
-            >
-              Screening Organization
-            </label>
-
-            <InputOrg
-              value={formik.values.primaryOrgId}
-              onChange={formik.handleChange("primaryOrgId")}
-              className={classNames({
-                "p-invalid": isInvalid("primaryOrgId"),
-              })}
-            />
-            {getErrorMessage("primaryOrgId")}
-          </div>
-
-          <div className="field">
-            <label
-              htmlFor="method"
-              className={classNames({
-                "p-error": isInvalid("method"),
-              })}
-            >
-              Method
-            </label>
-            <Dropdown
-              id="method"
-              optionLabel="name"
-              answer="value"
-              options={getScreeningGlobals().screeningMethods}
-              value={formik.values.method}
-              placeholder="Select a method"
-              onChange={formik.handleChange}
-              filter
-              showClear
-              filterBy="name"
-              className={classNames({
-                "p-invalid": isInvalid("method"),
-              })}
-            />
-
-            {getErrorMessage("method")}
-          </div>
-
-          <div className="field">
-            <label
-              htmlFor="status"
-              className={classNames({
-                "p-error": isInvalid("status"),
-              })}
-            >
-              Status
-            </label>
-            <Dropdown
-              id="status"
-              answer="name"
-              optionLabel="name"
-              optionValue="name"
-              options={statusOptions}
-              itemTemplate={statusOptionTemplate}
-              valueTemplate={statusValueTemplate}
-              value={formik.values.status}
-              placeholder="Select a status"
-              onChange={formik.handleChange}
-              className={classNames({
-                "p-invalid": isInvalid("status"),
-              })}
-            />
-
-            {getErrorMessage("status")}
-          </div>
-
-          <div className="field">
-            <label
-              htmlFor="notes"
-              className={classNames({
-                "p-error": isInvalid("notes"),
-              })}
-            >
-              Notes
-            </label>
-            <InputTextarea
-              id="notes"
-              answer="notes"
-              value={formik.values.notes}
-              onChange={formik.handleChange}
-              className={classNames({
-                "p-invalid": isInvalid("notes"),
-              })}
-            />
-          </div>
-
-          <Button
-            icon="icon icon-common icon-database-submit"
-            type="submit"
-            label="Add Screen"
-            className="p-mt-2"
-            loading={isAddingScreen}
+    <div className="card w-full">
+      <form onSubmit={formik.handleSubmit} className="p-fluid">
+        <div className="field">
+          <label
+            htmlFor="targetToAssociate"
+            className={classNames({
+              "p-error": isFieldInvalid("targetToAssociate"),
+            })}
+          >
+            Associated Target
+          </label>
+          <InputAssociatedTarget
+            value={formik.values.targetToAssociate}
+            onChange={formik.handleChange("targetToAssociate")}
+            className={classNames({
+              "p-invalid": isFieldInvalid("targetToAssociate"),
+            })}
           />
-        </form>
-      </div>
-    </>
+          {renderErrorMessage("targetToAssociate")}
+        </div>
+
+        <div className="field">
+          <label
+            htmlFor="name"
+            className={classNames({ "p-error": isFieldInvalid("name") })}
+          >
+            Name *
+          </label>
+          {formik.values.targetToAssociate && (
+            <p className="text-xs text-gray-500">
+              A suggested name has been generated based on naming conventions.
+            </p>
+          )}
+          <InputText
+            id="name"
+            value={formik.values.name}
+            onChange={formik.handleChange}
+            className={classNames({ "p-invalid": isFieldInvalid("name") })}
+          />
+        </div>
+
+        <div className="field">
+          <label
+            htmlFor="primaryOrgId"
+            className={classNames({
+              "p-error": isFieldInvalid("primaryOrgId"),
+            })}
+          >
+            Screening Organization
+          </label>
+          <InputOrg
+            value={formik.values.primaryOrgId}
+            onChange={formik.handleChange("primaryOrgId")}
+            className={classNames({
+              "p-invalid": isFieldInvalid("primaryOrgId"),
+            })}
+          />
+          {renderErrorMessage("primaryOrgId")}
+        </div>
+
+        <div className="field">
+          <label
+            htmlFor="method"
+            className={classNames({ "p-error": isFieldInvalid("method") })}
+          >
+            Method
+          </label>
+          <Dropdown
+            id="method"
+            optionLabel="name"
+            answer="value"
+            options={getScreeningGlobals().screeningMethods}
+            value={formik.values.method}
+            placeholder="Select a method"
+            onChange={formik.handleChange}
+            filter
+            showClear
+            filterBy="name"
+            className={classNames({
+              "p-invalid": isFieldInvalid("method"),
+            })}
+          />
+
+          {renderErrorMessage("method")}
+        </div>
+
+        <div className="field">
+          <label
+            htmlFor="status"
+            className={classNames({ "p-error": isFieldInvalid("status") })}
+          >
+            Status
+          </label>
+          <Dropdown
+            id="status"
+            answer="name"
+            optionLabel="name"
+            optionValue="name"
+            options={statusOptions}
+            itemTemplate={renderOptionTemplate}
+            valueTemplate={renderOptionTemplate}
+            value={formik.values.status}
+            placeholder="Select a status"
+            onChange={formik.handleChange}
+            className={classNames({ "p-invalid": isFieldInvalid("status") })}
+          />
+          {renderErrorMessage("status")}
+        </div>
+
+        <div className="field">
+          <label
+            htmlFor="notes"
+            className={classNames({ "p-error": isFieldInvalid("notes") })}
+          >
+            Notes
+          </label>
+          <InputTextarea
+            id="notes"
+            value={formik.values.notes}
+            onChange={formik.handleChange}
+            className={classNames({ "p-invalid": isFieldInvalid("notes") })}
+          />
+        </div>
+
+        <div className="field">
+          <label
+            htmlFor="expectedStartDate"
+            className={classNames({
+              "p-error": isFieldInvalid("expectedStartDate"),
+            })}
+          >
+            Expected Start Date
+          </label>
+          <Calendar
+            id="expectedStartDate"
+            view="month"
+            dateFormat="MM / yy"
+            value={formik.values.expectedStartDate}
+            onChange={formik.handleChange}
+          />
+        </div>
+
+        <div className="field">
+          <label
+            htmlFor="expectedCompleteDate"
+            className={classNames({
+              "p-error": isFieldInvalid("expectedCompleteDate"),
+            })}
+          >
+            Expected Completion Date
+          </label>
+          <Calendar
+            id="expectedCompleteDate"
+            view="month"
+            dateFormat="MM / yy"
+            value={formik.values.expectedCompleteDate}
+            onChange={formik.handleChange}
+          />
+        </div>
+
+        <Button
+          type="submit"
+          label="Add Screen"
+          icon="pi pi-save"
+          className="p-mt-2"
+          loading={isAddingScreen}
+        />
+      </form>
+    </div>
   );
 };
 

@@ -39,6 +39,13 @@ export default class ScreenStore {
 
       updateTargetAssociation: action,
       renameScreen: action,
+
+      getFilterAttributes: action,
+      filterCriteria: observable,
+      setFilterCriteria: action,
+
+      getFilteredListTargetBased: computed,
+      getFilteredListPhenotypic: computed,
     });
   }
 
@@ -55,6 +62,13 @@ export default class ScreenStore {
   isUpdatingScreen = false;
   isAddingScreen = false;
   isDeletingScreen = false;
+
+  filterCriteria = {
+    targets: [],
+    primaryOrgAliases: [],
+    methods: [],
+    dateRange: [null, null],
+  };
 
   // Actions
 
@@ -145,6 +159,7 @@ export default class ScreenStore {
         // Add screen to screen list
         screen.id = res.id;
         screen.screenRuns = [];
+        screen.latestStatusChangeDate = Date.now();
 
         // FLatten the associated targets, separate by comma
         if (screen.associatedTargets) {
@@ -254,4 +269,106 @@ export default class ScreenStore {
       });
     }
   };
+
+  getFilterAttributes = () => {
+    return {
+      primaryOrgAliases: Array.from(
+        new Set(
+          Array.from(this.screenListRegistry.values())
+            .map((screen) => screen.primaryOrgAlias)
+            .filter((alias) => alias && alias.trim() !== "")
+        )
+      ).sort(),
+
+      methods: Array.from(
+        new Set(
+          Array.from(this.screenListRegistry.values())
+            .map((screen) => screen.method)
+            .filter((method) => method && method.trim() !== "")
+        )
+      ).sort(),
+
+      targets: Array.from(
+        new Set(
+          Array.from(this.screenListRegistry.values())
+            .flatMap(
+              (screen) => screen.associatedTargetsFlattened?.split(", ") || []
+            )
+            .filter((target) => target && target.trim() !== "")
+        )
+      ).sort(),
+    };
+  };
+
+  setFilterCriteria = (criteria) => {
+    console.log("Default filter criteria:", this.filterCriteria);
+    runInAction(() => {
+      console.log("Setting filter criteria:", criteria);
+      this.filterCriteria = {
+        ...this.filterCriteria,
+        ...criteria,
+      };
+    });
+  };
+
+  get getFilteredListTargetBased() {
+    const { targets, primaryOrgAliases, methods, dateRange } =
+      this.filterCriteria;
+
+    return Array.from(this.screenListTargetBased).filter((screen) => {
+      // Filter by targets
+      const matchesTargets =
+        !targets.length ||
+        targets.some((target) =>
+          screen.associatedTargetsFlattened
+            ?.toLowerCase()
+            .includes(target.toLowerCase())
+        );
+
+      // Filter by primaryOrgAliases
+      const matchesPrimaryOrgAliases =
+        !primaryOrgAliases.length ||
+        primaryOrgAliases.includes(screen.primaryOrgAlias);
+
+      // Filter by methods
+      const matchesMethods = !methods.length || methods.includes(screen.method);
+
+      // Filter by date range
+      const matchesDateRange =
+        (!dateRange[0] ||
+          new Date(screen.dateCreated) >= new Date(dateRange[0])) &&
+        (!dateRange[1] ||
+          new Date(screen.dateCreated) <= new Date(dateRange[1]));
+
+      // Return true if all criteria match
+      return (
+        matchesTargets &&
+        matchesPrimaryOrgAliases &&
+        matchesMethods &&
+        matchesDateRange
+      );
+    });
+  }
+
+  get getFilteredListPhenotypic() {
+    const { primaryOrgAliases, methods, dateRange } = this.filterCriteria;
+
+    return Array.from(this.screenListPhenotypic).filter((screen) => {
+      // Filter by primaryOrgAliases
+      const matchesPrimaryOrgAliases =
+        !primaryOrgAliases.length ||
+        primaryOrgAliases.includes(screen.primaryOrgAlias);
+      // Filter by methods
+      const matchesMethods = !methods.length || methods.includes(screen.method);
+      // Filter by date range
+      const matchesDateRange =
+        (!dateRange[0] ||
+          new Date(screen.dateCreated) >= new Date(dateRange[0])) &&
+        (!dateRange[1] ||
+          new Date(screen.dateCreated) <= new Date(dateRange[1]));
+
+      // Return true if all criteria match
+      return matchesPrimaryOrgAliases && matchesMethods && matchesDateRange;
+    });
+  }
 }

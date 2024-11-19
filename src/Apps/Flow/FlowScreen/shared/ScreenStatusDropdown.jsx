@@ -106,6 +106,7 @@ const ScreenStatusDropdown = ({ readOnlyStatus, readOnly = false }) => {
     <div className="flex">
       <BlockUI blocked={isUpdatingScreen}>
         <Dropdown
+          className="surface-50 p-0 m-1"
           value={selectedScreen.status}
           options={statusOptions}
           optionLabel="name"

@@ -41,10 +41,9 @@ const HaCompoundEvolutionAdd = ({ hitAssessmentId, closeSideBar }) => {
       cEvoToAdd.hitAssessmentId = hitAssessmentId;
       console.log(cEvoToAdd);
       //return;
-      addHaCEvo(cEvoToAdd).then(() => {
-        closeSideBar();
-        formik.resetForm();
-      });
+      addHaCEvo(cEvoToAdd);
+      closeSideBar();
+      formik.resetForm();
     },
   });
 
