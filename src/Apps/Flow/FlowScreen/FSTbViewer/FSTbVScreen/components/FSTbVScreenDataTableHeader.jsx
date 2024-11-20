@@ -6,6 +6,7 @@ import ScreenStatusDropdown from "../../../shared/ScreenStatusDropdown";
 import { DtFieldsToScreenExcelColumnMapping } from "./FSTbScreenRunConstants";
 import { ExportScreenRunsToExcel } from "./FSTbScreenRunExport";
 import FSTbV_ScreenRunExcelImport from "./FSTbScreenRunImportExcel";
+import { ExportTemplateExcel } from "./FSTbScreenRunExportTemplate";
 
 const FSTbVScreenDataTableHeader = ({
   selectedScreen,
@@ -31,6 +32,20 @@ const FSTbVScreenDataTableHeader = ({
             label="Add Library Screen"
             className="p-button-text p-button-md"
             onClick={() => setDisplayAddScreenSeqSideBar(true)}
+          />
+        </div>
+        <div className="flex flex-grow min-w-max">
+          <Button
+            type="button"
+            icon="pi pi-plus"
+            label="Download Template"
+            className="p-button-text p-button-md"
+            onClick={() =>
+              ExportTemplateExcel(
+                selectedScreen,
+                DtFieldsToScreenExcelColumnMapping
+              )
+            }
           />
         </div>
         <div className="flex flex-grow min-w-max">
