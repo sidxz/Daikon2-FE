@@ -21,7 +21,7 @@ export const ExportTemplateExcel = (selectedScreen, headerMapper = {}) => {
   ]; // No data, just headers for the template
 
   // Construct a default file name
-  const fileName = "ScreenRuns_Template";
+  const fileName = "Phenotypic_ScreenRuns_Template";
 
   // Call the exportToExcel function with the constructed parameters
   return exportToExcel({

@@ -3,6 +3,7 @@ import { ToggleButton } from "primereact/togglebutton";
 import React from "react";
 import { ExportHitsToExcel } from "./FSPhVHExcelExport";
 import FSPhVHExcelImport from "./FSPhVHExcelImport";
+import { ExportTemplateExcel } from "./FSPhVHExportTemplate";
 import { DtFieldsToExcelColumnMapping } from "./FSPhVHitsConstants";
 
 export const FSPhVHDataTableHeader = ({
@@ -92,6 +93,21 @@ export const FSPhVHDataTableHeader = ({
               label="Add Hit"
               className="p-button-text p-button-md"
               onClick={() => showAddHitSideBar()}
+            />
+          </div>
+          <div className="flex flex-grow min-w-max">
+            <Button
+              type="button"
+              icon="icon icon-common icon-download"
+              label="Download Template"
+              className="p-button-text p-button-md"
+              onClick={() =>
+                ExportTemplateExcel(
+                  selectedHitCollection,
+                  selectedScreen,
+                  DtFieldsToExcelColumnMapping
+                )
+              }
             />
           </div>
           <div className="flex flex-grow min-w-max">
