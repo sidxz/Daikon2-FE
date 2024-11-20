@@ -37,7 +37,7 @@ const FSPhVScreenDataTableHeader = ({
         <div className="flex flex-grow min-w-max">
           <Button
             type="button"
-            icon="icon icon-common icon-arrow-circle-down"
+            icon="icon icon-common icon-download"
             label="Download Template"
             className="p-button-text p-button-md"
             onClick={() =>

@@ -5,8 +5,8 @@ import ScreenExpectedDates from "../../../shared/ScreenExpectedDates";
 import ScreenStatusDropdown from "../../../shared/ScreenStatusDropdown";
 import { DtFieldsToScreenExcelColumnMapping } from "./FSTbScreenRunConstants";
 import { ExportScreenRunsToExcel } from "./FSTbScreenRunExport";
-import FSTbV_ScreenRunExcelImport from "./FSTbScreenRunImportExcel";
 import { ExportTemplateExcel } from "./FSTbScreenRunExportTemplate";
+import FSTbV_ScreenRunExcelImport from "./FSTbScreenRunImportExcel";
 
 const FSTbVScreenDataTableHeader = ({
   selectedScreen,
@@ -37,7 +37,7 @@ const FSTbVScreenDataTableHeader = ({
         <div className="flex flex-grow min-w-max">
           <Button
             type="button"
-            icon="pi pi-plus"
+            icon="icon icon-common icon-download"
             label="Download Template"
             className="p-button-text p-button-md"
             onClick={() =>
