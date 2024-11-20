@@ -5,6 +5,7 @@ import ScreenExpectedDates from "../../../shared/ScreenExpectedDates";
 import ScreenStatusDropdown from "../../../shared/ScreenStatusDropdown";
 import { DtFieldsToScreenExcelColumnMapping } from "./FSPhScreenRunConstants";
 import { ExportScreenRunsToExcel } from "./FSPhScreenRunExport";
+import { ExportTemplateExcel } from "./FSPhScreenRunExportTemplate";
 import FSPhV_ScreenRunExcelImport from "./FSPhScreenRunImportExcel";
 
 const FSPhVScreenDataTableHeader = ({
@@ -31,6 +32,20 @@ const FSPhVScreenDataTableHeader = ({
             label="Add Library Screen"
             className="p-button-text p-button-md"
             onClick={() => setDisplayAddScreenSeqSideBar(true)}
+          />
+        </div>
+        <div className="flex flex-grow min-w-max">
+          <Button
+            type="button"
+            icon="icon icon-common icon-arrow-circle-down"
+            label="Download Template"
+            className="p-button-text p-button-md"
+            onClick={() =>
+              ExportTemplateExcel(
+                selectedScreen,
+                DtFieldsToScreenExcelColumnMapping
+              )
+            }
           />
         </div>
         <div className="flex flex-grow min-w-max">
