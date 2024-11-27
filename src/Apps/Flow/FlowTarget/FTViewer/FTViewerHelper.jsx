@@ -1,6 +1,7 @@
+import { AiTwotoneSafetyCertificate } from "react-icons/ai";
+import { FaDochub } from "react-icons/fa";
 import { AppRoleResolver } from "../../../../Shared/VariableResolvers/AppRoleResolver";
 import { TargetAdminRoleName } from "../constants/roles";
-import { AiTwotoneSafetyCertificate } from "react-icons/ai";
 
 export const sidePanelItems = (navigate) => {
   const { isUserInAnyOfRoles } = AppRoleResolver();
@@ -36,6 +37,13 @@ export const sidePanelItems = (navigate) => {
         icon: "icon icon-common icon-info",
         command: () => {
           navigate(`promotion-questionnaire/`);
+        },
+      },
+      {
+        label: "Documents",
+        icon: <FaDochub className="mr-2" />,
+        command: () => {
+          navigate("docs/");
         },
       },
       {
