@@ -8,6 +8,7 @@ const PDTStructures = ({ moleculesView }) => {
       <div className="flex flex-column w-full p-2">
         <div className="flex w-full p-0 justify-content-center">
           <SmilesView
+            compoundId={molecule.id}
             smiles={molecule.smilesCanonical}
             width={200}
             height={200}
