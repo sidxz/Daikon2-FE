@@ -111,7 +111,7 @@ const FTViewer = () => {
               <Route path="settings/" element={<FTVSettings />} />
             )}
             <Route
-              path="docs/"
+              path="docs/*"
               element={<FTVDocs selectedTarget={selectedTarget} />}
             />
             <Route

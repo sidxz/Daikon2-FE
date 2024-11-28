@@ -6,6 +6,7 @@ import Loading from "../../../../Library/Loading/Loading";
 import PageInfoPanel from "../../../../Library/PageInfoPanel/PageInfoPanel";
 import { RootStoreContext } from "../../../../RootStore";
 import FGVComments from "./FGVComments/FGVComments";
+import FGVDocs from "./FGVDocs/FGVDocs";
 import FGVPrivate from "./FGVPrivate/FGVPrivate";
 import FGVPublic from "./FGVPublic/FGVPublic";
 import * as Helper from "./FGViewerHelper";
@@ -53,6 +54,10 @@ const FGViewer = () => {
               <Route
                 path="private/*"
                 element={<FGVPrivate selectedGene={selectedGene} />}
+              />
+              <Route
+                path="docs/*"
+                element={<FGVDocs selectedGene={selectedGene} />}
               />
               <Route
                 path="discussion/*"

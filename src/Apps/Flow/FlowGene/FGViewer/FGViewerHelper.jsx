@@ -1,3 +1,5 @@
+import { FaDochub } from "react-icons/fa";
+
 export const sidePanelItems = (navigate) => {
   return [
     {
@@ -18,7 +20,13 @@ export const sidePanelItems = (navigate) => {
             navigate(`private/`);
           },
         },
-
+        {
+          label: "Documents",
+          icon: <FaDochub className="mr-2" />,
+          command: () => {
+            navigate("docs/");
+          },
+        },
         {
           label: "Discussion",
           icon: "ri-discuss-line",
