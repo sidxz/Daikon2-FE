@@ -36,7 +36,7 @@ const FSTbDocs = ({ selectedScreen }) => {
     associatedTargetValues,
     selectedScreen.name,
   ]);
-  console.log("selectedScreen", selectedScreen);
+  // console.log("selectedScreen", selectedScreen);
 
   const breadCrumbItems = [
     {
