@@ -5,6 +5,7 @@ import React from "react";
 import { MolecuLogixIcon } from "../../../../../../MolecuLogix/Icons/MolecuLogixIcon";
 import { ExportHitsToExcel } from "./FSTbVHExcelExport";
 import FSTbVHExcelImport from "./FSTbVHExcelImport";
+import { ExportTemplateExcel } from "./FSTbVHExportTemplate";
 import { DtFieldsToExcelColumnMapping } from "./FSTbVHitsConstants";
 
 export const FSTbVHDataTableHeader = ({
@@ -120,6 +121,21 @@ export const FSTbVHDataTableHeader = ({
               label="Add Hit"
               className="p-button-text p-button-md"
               onClick={() => showAddHitSideBar()}
+            />
+          </div>
+          <div className="flex flex-grow min-w-max">
+            <Button
+              type="button"
+              icon="icon icon-common icon-download"
+              label="Download Template"
+              className="p-button-text p-button-md"
+              onClick={() =>
+                ExportTemplateExcel(
+                  selectedHitCollection,
+                  selectedScreen,
+                  DtFieldsToExcelColumnMapping
+                )
+              }
             />
           </div>
           <div className="flex flex-grow min-w-max">

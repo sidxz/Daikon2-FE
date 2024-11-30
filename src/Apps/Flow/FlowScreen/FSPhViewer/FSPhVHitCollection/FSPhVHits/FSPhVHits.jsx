@@ -217,7 +217,6 @@ const FSPhVHits = ({ id }) => {
                 <Column body={deleteBodyTemplate} header="Delete" />
               )}
             </DataTable>
-            \{" "}
           </div>
         </div>
         <Sidebar
