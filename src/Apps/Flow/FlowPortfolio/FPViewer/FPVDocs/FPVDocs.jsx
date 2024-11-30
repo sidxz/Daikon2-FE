@@ -5,31 +5,29 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { appColors } from "../../../../../constants/colors";
 import SecHeading from "../../../../../Library/SecHeading/SecHeading";
 import ParsedDocsByTags from "../../../../DocuStore/ParsedDocsByTags/ParsedDocsByTags";
-import { HAIcon } from "../../../icons/HAIcon";
+import { PortfolioIcon } from "../../../icons/PortfolioIcon";
 
-const FHaVDocs = ({ selectedHa }) => {
+const FPVDocs = ({ selectedProject }) => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // Set initial tags based on selected target
+  // Set initial tags based on selected project
   useEffect(() => {
     if (!searchParams.has("tags")) {
       // Only set the tags if none are present in the URL
-      setSearchParams({ tags: selectedHa.name });
+      setSearchParams({ tags: selectedProject.name });
     }
-  }, [searchParams, setSearchParams, selectedHa.name]);
+  }, [searchParams, setSearchParams, selectedProject.name]);
 
   const breadCrumbItems = [
     {
-      label: "HAs",
-      command: () => {
-        navigate("/wf/ha/");
-      },
+      label: "Portfolio",
+      command: () => navigate("/wf/portfolio/"),
     },
     {
-      label: selectedHa.name,
+      label: selectedProject.name,
       command: () => {
-        navigate(`/wf/ha/viewer/${selectedHa.id}`);
+        navigate(`/wf/portfolio/viewer/${selectedProject.id}`);
       },
     },
     { label: "Docs" },
@@ -42,11 +40,11 @@ const FHaVDocs = ({ selectedHa }) => {
       </div>
       <div className="flex w-full">
         <SecHeading
-          svgIcon={<HAIcon size={"25em"} />}
-          heading={"Hit Assessment - " + selectedHa.name}
-          color={appColors.sectionHeadingBg.ha}
+          svgIcon={<PortfolioIcon size={"25em"} />}
+          heading={"Portfolio - " + selectedProject.name}
           displayHorizon={true}
-          entryPoint={selectedHa?.id}
+          color={appColors.sectionHeadingBg.project}
+          entryPoint={selectedProject?.id}
         />
       </div>
       <div className="flex w-full pt-1">
@@ -57,4 +55,4 @@ const FHaVDocs = ({ selectedHa }) => {
   );
 };
 
-export default observer(FHaVDocs);
+export default observer(FPVDocs);
