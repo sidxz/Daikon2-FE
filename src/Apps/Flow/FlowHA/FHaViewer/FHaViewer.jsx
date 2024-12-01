@@ -10,6 +10,7 @@ import { RootStoreContext } from "../../../../RootStore";
 import { AppRoleResolver } from "../../../../Shared/VariableResolvers/AppRoleResolver";
 import { HaAdminRoleName } from "../constants/roles";
 import FHaVComments from "./FHaVComments/FHaVComments";
+import FHaVDocs from "./FHaVDocs/FHaVDocs";
 import FHaVInformation from "./FHaVInformation/FHaVInformation";
 import FHaVSettings from "./FHaVSettings/FHaVSettings";
 import * as Helper from "./FHaViewerHelper";
@@ -60,6 +61,10 @@ const FHaViewer = () => {
             <Routes>
               <Route index element={<Navigate replace to="information/" />} />
               <Route path="information/*" element={<FHaVInformation />} />
+              <Route
+                path="docs/*"
+                element={<FHaVDocs selectedHa={selectedHa} />}
+              />
               <Route
                 path="discussion/*"
                 element={<FHaVComments selectedHa={selectedHa} />}

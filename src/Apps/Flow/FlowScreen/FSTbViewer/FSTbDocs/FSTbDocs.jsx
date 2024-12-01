@@ -2,46 +2,59 @@ import { observer } from "mobx-react-lite";
 import { BreadCrumb } from "primereact/breadcrumb";
 import React, { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { appColors } from "../../../../../constants/colors";
 import SecHeading from "../../../../../Library/SecHeading/SecHeading";
+import { appColors } from "../../../../../constants/colors";
 import ParsedDocsByTags from "../../../../DocuStore/ParsedDocsByTags/ParsedDocsByTags";
-import { GeneIcon } from "../../../icons/GeneIcon";
+import { ScreenIcon } from "../../../icons/ScreenIcon";
 
-const FGVDocs = ({ selectedGene }) => {
+const FSTbDocs = ({ selectedScreen }) => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
+  const associatedTargetValues = selectedScreen.associatedTargets
+    ? Object.values(selectedScreen.associatedTargets)
+    : [];
 
-  // Set initial tags based on selected gene
+  // Set initial tags based on selected screen
   useEffect(() => {
     const currentTags = searchParams.get("tags") || ""; // Get current tags as a string
     const currentTagsArray = currentTags ? currentTags.split(",") : []; // Convert to array
-    const newTagsArray = [selectedGene.accessionNumber, selectedGene.name]; // Merge uniquely
+    const newTagsArray = [
+      ...new Set([
+        ...currentTagsArray,
+        ...associatedTargetValues,
+        selectedScreen.name,
+      ]),
+    ]; // Merge uniquely
     const newTagsString = newTagsArray.join(","); // Convert back to string
 
     if (!currentTags) {
-      console.log("newTagsString", newTagsString);
       setSearchParams({ tags: newTagsString });
     }
   }, [
     searchParams.toString(),
     setSearchParams,
-    selectedGene.accessionNumber,
-    selectedGene.name,
+    associatedTargetValues,
+    selectedScreen.name,
   ]);
-
-  console.log("selectedGene", selectedGene);
+  // console.log("selectedScreen", selectedScreen);
 
   const breadCrumbItems = [
     {
-      label: "Genes",
+      label: "Screens",
       command: () => {
-        navigate("/wf/gene/");
+        navigate("/wf/screen/dash/");
       },
     },
     {
-      label: selectedGene.accessionNumber,
+      label: "Target Based",
       command: () => {
-        navigate(`/wf/gene/${selectedGene.id}`);
+        navigate("/wf/screen/dash/target-based/");
+      },
+    },
+    {
+      label: selectedScreen.name,
+      command: () => {
+        navigate(`/wf/screen/viewer/tb/${selectedScreen.id}`);
       },
     },
     { label: "Docs" },
@@ -54,13 +67,11 @@ const FGVDocs = ({ selectedGene }) => {
       </div>
       <div className="flex w-full">
         <SecHeading
-          svgIcon={<GeneIcon size={"25em"} />}
-          heading={selectedGene.accessionNumber}
-          accessionNumber={selectedGene.accessionNumber}
+          svgIcon={<ScreenIcon size={"25em"} />}
+          heading={"Screen - " + selectedScreen.name}
+          color={appColors.sectionHeadingBg.screen}
           displayHorizon={true}
-          color={appColors.sectionHeadingBg.gene}
-          breadCrumbItems={breadCrumbItems}
-          entryPoint={selectedGene?.id}
+          entryPoint={selectedScreen?.id}
         />
       </div>
       <div className="flex w-full pt-1">
@@ -71,4 +82,4 @@ const FGVDocs = ({ selectedGene }) => {
   );
 };
 
-export default observer(FGVDocs);
+export default observer(FSTbDocs);
