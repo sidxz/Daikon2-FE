@@ -12,21 +12,21 @@ export const sidePanelItems = (navigate, selectedMolecule) => {
         {
           label: "Molecule",
           icon: "icon icon-common icon-math",
-          command: () => {},
+          command: () => {
+            navigate(`/moleculogix/molecule/${selectedMolecule.id}`);
+          },
         },
         {
           label: "Documents",
           icon: <FaDochub className="mr-2" />,
           command: () => {
-            navigate("docs/");
+            navigate(`/moleculogix/molecule/${selectedMolecule.id}/docs/`);
           },
         },
         {
           label: "Discussion",
           icon: "ri-discuss-line",
-          command: () => {
-            navigate("discussion/");
-          },
+          command: () => {},
         },
       ],
     },
