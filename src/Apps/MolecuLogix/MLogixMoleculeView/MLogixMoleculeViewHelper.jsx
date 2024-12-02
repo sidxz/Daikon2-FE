@@ -8,7 +8,22 @@ export const sidePanelItems = (navigate, selectedMolecule) => {
   let items = [
     {
       label: "Sections",
-      items: [],
+      items: [
+        {
+          label: "Documents",
+          icon: <FaDochub className="mr-2" />,
+          command: () => {
+            navigate("docs/");
+          },
+        },
+        {
+          label: "Discussion",
+          icon: "ri-discuss-line",
+          command: () => {
+            navigate("discussion/");
+          },
+        },
+      ],
     },
   ];
 
@@ -25,20 +40,7 @@ export const sidePanelItems = (navigate, selectedMolecule) => {
             );
           },
         },
-        {
-          label: "Documents",
-          icon: <FaDochub className="mr-2" />,
-          command: () => {
-            navigate("docs/");
-          },
-        },
-        {
-          label: "Discussion",
-          icon: "ri-discuss-line",
-          command: () => {
-            navigate("discussion/");
-          },
-        },
+
         {
           label: "Edit Molecule",
           icon: "icon icon-common icon-edit",

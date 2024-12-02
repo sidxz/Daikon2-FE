@@ -12,18 +12,6 @@ export const sidePanelItems = (navigate, selectedMolecule) => {
         },
       ],
     },
-    {
-      label: "Actions",
-      items: [
-        {
-          label: "Edit Molecule",
-          icon: "icon icon-common icon-edit",
-          command: () => {
-            navigate(`/moleculogix/molecule/${selectedMolecule.id}/edit`);
-          },
-        },
-      ],
-    },
   ];
 };
 
