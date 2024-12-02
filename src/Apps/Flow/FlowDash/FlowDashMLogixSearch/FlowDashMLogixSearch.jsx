@@ -38,10 +38,10 @@ const FlowDashMLogixSearch = () => {
 
   return (
     <>
-      <div className="flex w-full flex-column gap-1 p-3">
+      <div className="flex w-full flex-column gap-1 pl-1 pr-1">
         {/* Search Input and Buttons */}
-        <div className="flex w-full align-items-center gap-3">
-          <div className="flex-grow-1">
+        <div className="flex flex-column w-full align-items-center gap-3">
+          <div className="flex-grow-1 w-full">
             <InputText
               className="w-full text-lg"
               placeholder="Enter search query: SMILES or Name"
@@ -49,29 +49,40 @@ const FlowDashMLogixSearch = () => {
               onChange={(e) => setSearchValue(e.target.value)}
             />
           </div>
-          <div className="flex">
-            <Button
-              text
-              type="p-button"
-              icon={<MolecuLogixIcon size={28} />}
-              label="Structure Editor"
-              onClick={() => setShowStructureEditor(true)}
-            />
-          </div>
-          <div>
-            <Button
-              className="p-button"
-              label="Search"
-              size="medium"
-              disabled={searchValue === ""}
-              onClick={handleSearch} // Trigger the handleSearch function on click
-            />
+          <div className="flex w-full justify-content-end align-items-center gap-1 mb-1">
+            <div className="flex ">
+              <Button
+                text
+                type="p-button"
+                icon={<MolecuLogixIcon size={35} />}
+                label="Structure Editor"
+                onClick={() => setShowStructureEditor(true)}
+              />
+            </div>
+            <div>
+              <Button
+                className="p-button"
+                label="Search"
+                size="medium"
+                disabled={searchValue === ""}
+                onClick={handleSearch} // Trigger the handleSearch function on click
+              />
+            </div>
+            <div className="flex align-items-center gap-1">
+              <label className="text-color-secondary text-sm">Limit</label>
+              <InputText
+                className="text-sm w-3rem p-1"
+                keyfilter="int"
+                value={searchLimit}
+                onChange={(e) => setSearchLimit(Number(e.target.value))}
+              />
+            </div>
           </div>
         </div>
 
         {/* Radio Buttons for Search Type */}
         <div className="flex w-full border-1 border-50 border-round-md p-3 align-items-center">
-          <div className="flex-grow-1 flex gap-4">
+          <div className="flex-grow-1 flex-column flex gap-4">
             <div className="flex align-items-center">
               <RadioButton
                 inputId="substructure"
@@ -120,17 +131,6 @@ const FlowDashMLogixSearch = () => {
                 By Name
               </label>
             </div>
-          </div>
-          <div className="flex align-items-center gap-2">
-            <label className="text-color-secondary text-sm">
-              Limit Results
-            </label>
-            <InputText
-              className="text-sm w-4rem p-1"
-              keyfilter="int"
-              value={searchLimit}
-              onChange={(e) => setSearchLimit(Number(e.target.value))}
-            />
           </div>
         </div>
       </div>

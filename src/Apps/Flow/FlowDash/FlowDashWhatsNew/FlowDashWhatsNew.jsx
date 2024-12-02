@@ -1,5 +1,3 @@
-import { Button } from "primereact/button";
-import { Card } from "primereact/card";
 import React from "react";
 
 const FlowDashWhatsNew = () => {
@@ -13,13 +11,13 @@ const FlowDashWhatsNew = () => {
   );
 
   return (
-    <div className="flex flex-column surface-50 border-round m-0 p-0 gap-2">
-      <div className="flex">
-        <Card title={cardTitle("DAIKON 2.0")} className="w-full">
-          <p className="justify-content-center text-base">
+    <div className="flex flex-column gap-2">
+      <div className="flex justify-content-left mt-0">
+        <div>
+          <p className="justify-content-left text-base m-3">
             We're excited to unveil some new additions to DAIKON 2.0 :
           </p>
-          <div className="m-0 p-0 text-base">
+          <div className="text-base m-2">
             <ul>
               <li>
                 📊 Introducing MolecuLogix - a comprehensive solution for
@@ -35,30 +33,7 @@ const FlowDashWhatsNew = () => {
               <li>📈 Landing pages for every stage of the pipeline</li>
             </ul>
           </div>
-        </Card>
-      </div>
-      <div className="flex w-full">
-        <Card title={cardTitle("Publications")} className="w-full">
-          <div className="flex flex-column align-items-center gap-2 justify-content-center">
-            <div className="flex">
-              <Button
-                label=" DAIKON Paper"
-                className="p-button-info p-button-sm"
-                onClick={() =>
-                  window.open(
-                    "https://pubs.acs.org/doi/10.1021/acsptsci.3c00034"
-                  )
-                }
-              />
-            </div>
-            <div className="flex text-base justify-content-center">
-              <p>
-                We kindly request all users to <b>cite our work</b> when
-                referencing our app. Thank you for your support!
-              </p>
-            </div>
-          </div>
-        </Card>
+        </div>
       </div>
     </div>
   );

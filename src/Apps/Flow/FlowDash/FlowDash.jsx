@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { Card } from "primereact/card";
+import { Button } from "primereact/button";
 import React from "react";
 import MostRecentComments from "../../Comments/MostRecentComments/MostRecentComments";
 import "./FlowDash.css";
@@ -23,59 +23,86 @@ const FlowDash = () => {
   };
   return (
     <div className="FlowDash bg-bluegray-50 flex flex-column align-items-center w-full">
-      <div className="flex">
-        <p className="HeaderText text-xl font-medium">
-          Data Acquisition, Integration and Knowledge Capture Application
-        </p>
-      </div>
-      <div className="flex">
-        <FlowDashCards />
+      <div className="flex flex-column align-items-center w-full border-round-md border-black-alpha-30">
+        <div className="flex">
+          <p className="HeaderText text-xl font-medium">
+            Data Acquisition, Integration and Knowledge Capture Application
+          </p>
+        </div>
+        <div className="flex mb-3">
+          <FlowDashCards />
+        </div>
       </div>
 
-      <div className="flex w-full gap-2 mt-4">
-        <div className="flex flex-column w-full w-7 gap-2 p-1">
+      <div className="flex w-full gap-4 p-2">
+        <div className="flex surface-0 shadow-1 hover:shadow-3 border-round-lg flex-column w-4 gap-1 p-1 mb-2">
           <div className="flex flex-column">
-            <Card
-              title={generateCardTitle(
-                "icon icon-common icon-math",
-                "Molecule Search"
-              )}
-              className="w-full min-h-full"
-            >
-              <div className="flex w-full pt-1">
-                <FlowDashMLogixSearch />
-              </div>
-            </Card>
-          </div>
-          <div className="flex flex-column">
-            <Card
+            <p className="text-2xl mt-2 ml-3 font-bold text-gray-700 text-left">
+              Latest Discussions
+            </p>
+            {/* <Card
               title={generateCardTitle("ri-discuss-line", "Latest Discussions")}
               className="w-full min-h-full"
-            >
-              <div className="flex w-full pt-1">
-                <MostRecentComments />
-              </div>
-            </Card>
+            > */}
+            <div className="flex w-full pt-1">
+              <MostRecentComments />
+            </div>
+            {/* </Card> */}
           </div>
         </div>
 
-        <div className="flex flex-column p-1 w-5 gap-2">
-          {/* <Card
-            title={generateCardTitle(
-              "icon icon-common icon-newspaper",
-              "What's New?"
-            )}
-            className="w-full min-h-full"
-          > */}
-          <div className="flex flex-column gap-2">
-            <div className="flex">
-              <FlowDashEventUpdates />
+        <div className="flex surface-0 shadow-1 hover:shadow-3 border-round-lg w-full w-7 gap-2">
+          <div className="flex">
+            <FlowDashEventUpdates />
+          </div>
+        </div>
+
+        <div className="flex bg-bluegray-50 flex-column w-3 gap-4">
+          <div className="flex flex-column surface-0 shadow-1 hover:shadow-3 border-round-lg">
+            <p className="text-2xl mt-2 ml-3 font-bold text-gray-700 text-left ">
+              MolecuLogix
+            </p>
+
+            <div className="flex w-full">
+              <FlowDashMLogixSearch />
             </div>
-            <div className="flex">
+          </div>
+
+          <div className="flex flex-column surface-0 shadow-1 hover:shadow-3 border-round-lg">
+            <p className="text-2xl mt-2 ml-3 font-bold text-gray-700 text-left ">
+              What's New
+            </p>
+            <p className="text-xl ml-3 font-bold text-gray-700 text-left ">
+              DAIKON 2.0
+            </p>
+            <div className="flex w-full">
               <FlowDashWhatsNew />
             </div>
           </div>
-          {/* </Card> */}
+
+          <div className="flex flex-column surface-0 shadow-1 hover:shadow-3 border-round-lg">
+            <p className="text-2xl mt-1 ml-3 font-bold text-gray-700 text-left">
+              Publications
+            </p>
+            <p className="mt-1 ml-3 ">
+              We kindly request all users to <b>cite our work</b> when
+              referencing our app. Thank you for your support!
+            </p>
+            <div className="flex flex-column align-items-center justify-content-center m-2">
+              <div className="flex text-base justify-content-center justify-content-left"></div>
+              <div className="flex mb-3">
+                <Button
+                  label=" DAIKON Paper"
+                  className="p-button-info p-button-sm"
+                  onClick={() =>
+                    window.open(
+                      "https://pubs.acs.org/doi/10.1021/acsptsci.3c00034"
+                    )
+                  }
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

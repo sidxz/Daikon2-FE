@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { Card } from "primereact/card";
+import { Button } from "primereact/button";
 import React, { useRef } from "react";
 import MostRecentEvents from "../../../Events/MostRecentEvents/MostRecentEvents";
 
@@ -35,13 +35,34 @@ const FlowDashEventUpdates = () => {
   );
 
   return (
-    <div className="flex w-full surface-50 border-round m-0 p-0 gap-2">
-      <Card
+    <div className="flex flex-column w-full m-0 p-0 gap-2">
+      <div className="flex flex-column w-full">
+        <div className="flex ">
+          <div className="flex justify-content-start w-full">
+            <div className="flex">
+              <p className="flex text-2xl mt-0 mb-1 mt-2 ml-3 font-bold text-gray-700 text-left">
+                Activity Feed
+              </p>
+            </div>
+          </div>
+          <div className="flex w-full justify-content-end align-items-end mb-1 mr-2 mt-2 border-round-md">
+            <div className="flex">
+              <Button label="Filter" icon="pi pi-filter-fill" />
+            </div>
+          </div>
+        </div>
+
+        <div className="p-3 border-round-md border-black-alpha-30">
+          <MostRecentEvents ref={mostRecentEventsRef} />
+        </div>
+      </div>
+      {/* <Card
         className="w-full"
         title={cardTitle("icon icon-common icon-clock", "Activity Feed")}
       >
+        
         <MostRecentEvents ref={mostRecentEventsRef} />
-      </Card>
+      </Card> */}
     </div>
   );
 };
