@@ -1,5 +1,5 @@
-import { FaDochub } from "react-icons/fa";
 import { AppRoleResolver } from "../../../../Shared/VariableResolvers/AppRoleResolver";
+import { AIDocumentIcon } from "../../icons/AIDocumentIcon";
 import { PostPortfolioAdminRoleName } from "../constants/roles";
 
 export const sidePanelItems = (navigate) => {
@@ -17,7 +17,7 @@ export const sidePanelItems = (navigate) => {
       },
       {
         label: "Documents",
-        icon: <FaDochub className="mr-2" />,
+        icon: <AIDocumentIcon className="mr-2" />,
         command: () => {
           navigate("docs/");
         },
