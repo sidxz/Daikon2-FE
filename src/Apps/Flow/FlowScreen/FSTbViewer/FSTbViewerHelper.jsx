@@ -1,4 +1,4 @@
-import { FaDochub } from "react-icons/fa";
+import { AIDocumentIcon } from "../../icons/AIDocumentIcon";
 import { HitCollectionIcon } from "../../icons/HitCollectionIcon";
 import { ScreenIcon } from "../../icons/ScreenIcon";
 
@@ -49,7 +49,7 @@ export const sidePanelItems = (
         },
         {
           label: "Documents",
-          icon: <FaDochub className="mr-2" />,
+          icon: <AIDocumentIcon className="mr-2" />,
           command: () => {
             navigate("docs/");
           },
