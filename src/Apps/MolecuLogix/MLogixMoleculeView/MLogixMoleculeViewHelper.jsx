@@ -1,5 +1,5 @@
-import { FaDochub } from "react-icons/fa";
 import { AppRoleResolver } from "../../../Shared/VariableResolvers/AppRoleResolver";
+import { AIDocumentIcon } from "../../Flow/icons/AIDocumentIcon";
 import { MLogixAdminRoleName } from "../constants/roles";
 
 export const sidePanelItems = (navigate, selectedMolecule) => {
@@ -16,7 +16,7 @@ export const sidePanelItems = (navigate, selectedMolecule) => {
         },
         {
           label: "Documents",
-          icon: <FaDochub className="mr-2" />,
+          icon: <AIDocumentIcon className="mr-2" />,
           command: () => {
             navigate("docs/");
           },
