@@ -8,7 +8,9 @@ import { InputIcon } from "primereact/inputicon";
 import { InputText } from "primereact/inputtext";
 import React, { useState } from "react";
 import { FcDownload } from "react-icons/fc";
+import FDate from "../../../Library/FDate/FDate";
 import TableRowBodyDVar from "../../../Shared/DVariable/TableRowBodyDVar";
+import PDTPreview from "./components/PDTPreview";
 import PDTStructures from "./components/PDTStructures";
 const ParsedDocTable = ({ docs }) => {
   const [filters, setFilters] = useState({
@@ -59,7 +61,7 @@ const ParsedDocTable = ({ docs }) => {
           {/* File name with text wrapping */}
           <div className="flex align-items-center m-0">
             <p
-              className="no-underline font-medium text-wrap w-10rem"
+              className="no-underline font-semibold	text-wrap capitalize"
               style={{ wordBreak: "break-all" }}
             >
               {(
@@ -84,13 +86,13 @@ const ParsedDocTable = ({ docs }) => {
       </div>
     );
   };
-
+  console.log(docs);
   return (
-    <div className="flex w-full w-full">
+    <div className="flex w-full w-full select-text">
       <DataTable
         header={header}
         value={docs}
-        className="flex flex-column w-full"
+        className="flex flex-column w-full select-text"
         dataKey="id"
         showGridlines
         removableSort
@@ -120,16 +122,18 @@ const ParsedDocTable = ({ docs }) => {
           //editor={(options) => TextAreaRowEditorDVar(options)}
         />
         <Column
-          field="title"
-          header="Title"
-          body={(rowData) => <TableRowBodyDVar dVar={rowData?.title} />}
+          field="publicationDate.value"
+          header="Date"
+          body={(rowData) => (
+            <FDate timestamp={rowData?.publicationDate?.value} />
+          )}
           //editor={(options) => TextAreaRowEditorDVar(options)}
         />
         <Column
           field="shortSummary"
+          className="select-text"
           header="Preview"
-          className="text-justify	line-height-3"
-          body={(rowData) => <TableRowBodyDVar dVar={rowData?.shortSummary} />}
+          body={(rowData) => <PDTPreview rowData={rowData} />}
           //editor={(options) => TextAreaRowEditorDVar(options)}
         />
         <Column

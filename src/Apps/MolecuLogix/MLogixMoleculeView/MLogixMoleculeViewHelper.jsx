@@ -1,3 +1,4 @@
+import { FaDochub } from "react-icons/fa";
 import { AppRoleResolver } from "../../../Shared/VariableResolvers/AppRoleResolver";
 import { MLogixAdminRoleName } from "../constants/roles";
 
@@ -22,6 +23,20 @@ export const sidePanelItems = (navigate, selectedMolecule) => {
             navigate(
               `/moleculogix/search?smiles=${selectedMolecule.smilesCanonical}&searchType=similarity`
             );
+          },
+        },
+        {
+          label: "Documents",
+          icon: <FaDochub className="mr-2" />,
+          command: () => {
+            navigate("docs/");
+          },
+        },
+        {
+          label: "Discussion",
+          icon: "ri-discuss-line",
+          command: () => {
+            navigate("discussion/");
           },
         },
         {
