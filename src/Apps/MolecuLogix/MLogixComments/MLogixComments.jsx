@@ -9,10 +9,11 @@ import SecHeading from "../../../Library/SecHeading/SecHeading";
 import { RootStoreContext } from "../../../RootStore";
 import { appColors } from "../../../constants/colors";
 
-import ParsedDocsByTags from "../../DocuStore/ParsedDocsByTags/ParsedDocsByTags";
-import * as Helper from "./MLogixDocsHelper";
+import AddComment from "../../Comments/AddComment/AddComment";
+import CommentsByTags from "../../Comments/CommentsByTags/CommentsByTags";
+import * as Helper from "./MLogixCommentsHelper";
 
-const MLogixDocs = () => {
+const MLogixComments = () => {
   const params = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -23,13 +24,6 @@ const MLogixDocs = () => {
   useEffect(() => {
     if (selectedMolecule === undefined || selectedMolecule?.id !== params?.id) {
       fetchMolecule(params.id);
-    }
-
-    if (selectedMolecule) {
-      if (!searchParams.has("tags")) {
-        // Only set the tags if none are present in the URL
-        setSearchParams({ tags: selectedMolecule.name });
-      }
     }
   }, [
     searchParams,
@@ -78,8 +72,13 @@ const MLogixDocs = () => {
             </div>
 
             <div className="flex w-full pt-1">
-              {/* ParsedDocsByTags automatically reads tags from the URL */}
-              <ParsedDocsByTags />
+              <AddComment
+                resourceId={selectedMolecule.id}
+                tags={[selectedMolecule.name]}
+              />
+            </div>
+            <div className="flex w-full pt-1">
+              <CommentsByTags tags={[selectedMolecule.name]} />
             </div>
           </div>
         </div>
@@ -87,7 +86,7 @@ const MLogixDocs = () => {
     );
   }
 
-  return <div>MLogixDocs</div>;
+  return <div>MLogixComments</div>;
 };
 
-export default observer(MLogixDocs);
+export default observer(MLogixComments);
