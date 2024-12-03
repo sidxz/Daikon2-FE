@@ -38,7 +38,7 @@ const MostRecentEvents = forwardRef((props, ref) => {
         value={mostRecentEvents}
         className="HideDataTableHeader w-full"
         paginator
-        rows={10}
+        rows={15}
       >
         <Column
           className="narrow-column p-0 m-0"

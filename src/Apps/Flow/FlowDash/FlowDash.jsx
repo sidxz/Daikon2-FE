@@ -34,7 +34,7 @@ const FlowDash = () => {
         </div>
       </div>
 
-      <div className="flex w-full gap-4 p-2">
+      <div className="flex w-full gap-3 p-2">
         <div className="flex surface-0 shadow-1 hover:shadow-3 border-round-lg flex-column w-4 gap-1 p-1 mb-2">
           <div className="flex flex-column">
             <p className="text-2xl mt-2 ml-3 font-bold text-gray-700 text-left">
@@ -69,12 +69,9 @@ const FlowDash = () => {
           </div>
 
           <div className="flex flex-column surface-0 shadow-1 hover:shadow-3 border-round-lg">
-            <p className="text-2xl mt-2 ml-3 font-bold text-gray-700 text-left ">
+            <div className="flex text-2xl mt-2 ml-3 font-bold text-gray-700 text-left">
               What's New
-            </p>
-            <p className="text-xl ml-3 font-bold text-gray-700 text-left ">
-              DAIKON 2.0
-            </p>
+            </div>
             <div className="flex w-full">
               <FlowDashWhatsNew />
             </div>
