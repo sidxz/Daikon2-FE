@@ -7,9 +7,7 @@ import { IconField } from "primereact/iconfield";
 import { InputIcon } from "primereact/inputicon";
 import { InputText } from "primereact/inputtext";
 import React, { useState } from "react";
-import { FcDownload } from "react-icons/fc";
 import FDate from "../../../Library/FDate/FDate";
-import TableRowBodyDVar from "../../../Shared/DVariable/TableRowBodyDVar";
 import PDTPreview from "./components/PDTPreview";
 import PDTStructures from "./components/PDTStructures";
 const ParsedDocTable = ({ docs }) => {
@@ -30,7 +28,7 @@ const ParsedDocTable = ({ docs }) => {
 
   const renderHeader = () => {
     return (
-      <div className="flex border-0 justify-content-center flex-wrap">
+      <div className="flex border-0 justify-content-end flex-wrap">
         <div className="flex border-0 align-items-center">
           <IconField iconPosition="left">
             <InputIcon className="pi pi-search" />
@@ -38,7 +36,7 @@ const ParsedDocTable = ({ docs }) => {
               value={globalFilterValue}
               onChange={onGlobalFilterChange}
               placeholder="Keyword Search"
-              size={90}
+              size={35}
             />
           </IconField>
         </div>
@@ -48,41 +46,44 @@ const ParsedDocTable = ({ docs }) => {
 
   const header = renderHeader();
 
-  const nameBodyTemplate = (rowData) => {
+  const tagBodyTemplate = (rowData) => {
     const tags = rowData?.tags.map((tag) => (
-      <div key={tag} className="flex p-1 border-1 border-50">
+      <div
+        key={tag}
+        className="flex p-1 border-1 border-50 text-sm text-color-secondary"
+      >
         {tag}
       </div>
     ));
+    return <div className="flex gap-2 flex-wrap">{tags}</div>;
+  };
 
+  const nameBodyTemplate = (rowData) => {
     return (
       <div className="flex flex-column">
         <div className="flex flex-column align-items-center justify-content-between">
           {/* File name with text wrapping */}
           <div className="flex align-items-center m-0">
-            <p
-              className="no-underline font-semibold	text-wrap capitalize"
-              style={{ wordBreak: "break-all" }}
-            >
+            <p className="no-underline font-semibold	text-wrap capitalize">
               {(
                 rowData?.name?.split(".").slice(0, -1).join(".") ||
                 rowData?.name
               ).replace(/_/g, " ")}
             </p>
           </div>
-          <div className="flex align-items-center">
+          {/* <div className="flex align-items-center border-1 border-round-xl border-blue-300"> */}
+          <div className="flex align-items-start border-0 w-full">
             {/* Download button */}
             <Button
-              icon={<FcDownload className="m-1" />}
-              label="Download"
-              className="p-button-rounded p-button-text p-button-plain"
+              icon="pi pi-download"
+              aria-label="Download"
+              rounded
+              severity="info"
               onClick={() => window.open(rowData?.externalPath, "_blank")}
               cursor="pointer"
             />
           </div>
         </div>
-        {/* Tags */}
-        <div className="flex flex-wrap gap-1 text-sm pt-2">{tags}</div>
       </div>
     );
   };
@@ -109,18 +110,17 @@ const ParsedDocTable = ({ docs }) => {
         //header={tableHeader}
       >
         <Column
+          header="#"
+          body={(data, options) => options.rowIndex + 1}
+        ></Column>
+        <Column
           field="name"
           header="File Name"
           body={nameBodyTemplate}
           className="text-wrap"
           //editor={(options) => TextAreaRowEditorDVar(options)}
         />
-        <Column
-          field="authors"
-          header="Authors"
-          body={(rowData) => <TableRowBodyDVar dVar={rowData?.authors} />}
-          //editor={(options) => TextAreaRowEditorDVar(options)}
-        />
+
         <Column
           field="publicationDate.value"
           header="Date"
@@ -132,7 +132,7 @@ const ParsedDocTable = ({ docs }) => {
         <Column
           field="shortSummary"
           className="select-text"
-          header="Preview"
+          header="Summary Preview"
           body={(rowData) => <PDTPreview rowData={rowData} />}
           //editor={(options) => TextAreaRowEditorDVar(options)}
         />
@@ -141,6 +141,12 @@ const ParsedDocTable = ({ docs }) => {
           body={(rowData) => (
             <PDTStructures moleculesView={rowData?.moleculeView} />
           )}
+          //editor={(options) => TextAreaRowEditorDVar(options)}
+        />
+        <Column
+          className="select-text"
+          header="Document Tags"
+          body={tagBodyTemplate}
           //editor={(options) => TextAreaRowEditorDVar(options)}
         />
       </DataTable>
