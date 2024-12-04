@@ -57,7 +57,7 @@ const FlowDash = () => {
           </div>
         </div>
 
-        <div className="flex bg-bluegray-50 flex-column w-3 gap-4">
+        <div className="flex bg-bluegray-50 flex-column w-3 gap-3">
           <div className="flex flex-column surface-0 shadow-1 hover:shadow-3 border-round-lg">
             <p className="text-2xl mt-2 ml-3 font-bold text-gray-700 text-left ">
               MolecuLogix

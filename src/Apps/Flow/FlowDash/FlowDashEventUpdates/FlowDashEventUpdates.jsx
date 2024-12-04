@@ -45,9 +45,12 @@ const FlowDashEventUpdates = () => {
               </p>
             </div>
           </div>
-          <div className="flex w-full justify-content-end align-items-end mb-1 mr-2 mt-2 border-round-md">
+          <div className="flex w-full justify-content-end align-items-end mb-1 mr-2 mt-2 gap-2 border-round-md">
             <div className="flex">
-              <Button label="Filter" icon="pi pi-filter-fill" />
+              <Button icon="pi pi-filter-fill" />
+            </div>
+            <div className="flex">
+              <Button icon="pi pi-file-export" />
             </div>
           </div>
         </div>
@@ -56,13 +59,6 @@ const FlowDashEventUpdates = () => {
           <MostRecentEvents ref={mostRecentEventsRef} />
         </div>
       </div>
-      {/* <Card
-        className="w-full"
-        title={cardTitle("icon icon-common icon-clock", "Activity Feed")}
-      >
-        
-        <MostRecentEvents ref={mostRecentEventsRef} />
-      </Card> */}
     </div>
   );
 };

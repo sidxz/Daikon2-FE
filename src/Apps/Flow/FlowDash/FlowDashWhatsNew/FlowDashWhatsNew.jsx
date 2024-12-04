@@ -1,3 +1,4 @@
+import { Divider } from "primereact/divider";
 import React from "react";
 
 const FlowDashWhatsNew = () => {
@@ -11,10 +12,11 @@ const FlowDashWhatsNew = () => {
           <span className="icon-summary" aria-label="summary-icon">
             📝
           </span>
-          <strong> DAIKON AI Phase 1- </strong> Generated short summaries with
-          key details for presentations, including target structures and
-          convenient download links.
+          <strong> DAIKON AI Phase 1- </strong> Explore generated short
+          summaries of TBDA documents, presentations, including target
+          structures and convenient download links.
         </div>
+        <Divider />
         <div className="feature">
           <span className="icon-activity" aria-label="activity-icon">
             🔔
@@ -23,6 +25,7 @@ const FlowDashWhatsNew = () => {
           with real-time updates on all changes and actions happening within the
           app.
         </div>
+        <Divider />
         <div className="feature">
           <span className="icon-database" aria-label="database-icon">
             🔬

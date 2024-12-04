@@ -7,6 +7,8 @@ import { NavLink } from "react-router-dom";
 import FDate from "../../../Library/FDate/FDate";
 import RichTextDisplay from "../../../Library/RichTextEdit/RichTextDisplay/RichTextDisplay";
 import { RootStoreContext } from "../../../RootStore";
+import styles from "./MostRecentEvents.module.css";
+import { EventMapper } from "./MostRecentEventsHelper";
 
 const MostRecentEvents = forwardRef((props, ref) => {
   const rootStore = useContext(RootStoreContext);
@@ -31,7 +33,7 @@ const MostRecentEvents = forwardRef((props, ref) => {
       </div>
     );
 
-  // console.log("mostRecentEvents", mostRecentEvents);
+  console.log("mostRecentEvents", mostRecentEvents);
   return (
     <div className="flex w-full">
       <DataTable
@@ -50,6 +52,16 @@ const MostRecentEvents = forwardRef((props, ref) => {
           )}
         ></Column>
         <Column
+          className="narrow-column p-2 m-0 w-8rem"
+          field="eventType"
+          body={(rowData) => (
+            <div className="flex w-full align-items-left justify-content-left text-color-secondary text-xs surface-50 border-round-md p-1">
+              {EventMapper[rowData.eventType]}
+            </div>
+          )}
+        ></Column>
+        <Column
+          className={styles.mre}
           field="eventMessage"
           body={(rowData) => (
             <NavLink
