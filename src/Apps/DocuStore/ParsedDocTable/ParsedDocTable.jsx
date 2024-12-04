@@ -108,6 +108,8 @@ const ParsedDocTable = ({ docs }) => {
         //resizableColumns
         //columnResizeMode="fit"
         //header={tableHeader}
+        sortField="publicationDate.value"
+        sortOrder={-1}
       >
         <Column
           header="#"
@@ -127,6 +129,7 @@ const ParsedDocTable = ({ docs }) => {
           body={(rowData) => (
             <FDate timestamp={rowData?.publicationDate?.value} />
           )}
+          sortable
           //editor={(options) => TextAreaRowEditorDVar(options)}
         />
         <Column
