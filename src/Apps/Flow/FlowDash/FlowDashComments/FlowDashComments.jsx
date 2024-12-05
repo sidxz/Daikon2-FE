@@ -134,25 +134,15 @@ const FlowDashComments = ({ id }) => {
             {cleanupAndParse(comment?.description)}
           </div>
           <div className="flex w-full align-items-center">
-            <div className="flex w-full align-items-center gap-3">
-              <div className="flex">
+            <div className="flex w-full align-items-center gap-1">
+              <div className="flex w-full">
                 <AuthorTag userId={comment?.createdById} />
               </div>
               <div className="flex text-sm text-gray-500 font-normal">
                 <FDate timestamp={comment?.dateCreated} color="#8191a6" />
               </div>
-              <div className="flex align-items-center gap-1">
-                <Button
-                  icon="pi pi-ellipsis-h"
-                  className="p-button p-0 m-0 ml-1 mr-2"
-                  outlined
-                  severity="secondary"
-                  onClick={(event) => commentMenu.current.toggle(event)}
-                  aria-controls="popup_menu_left"
-                  aria-haspopup
-                />
-              </div>
-              <div className="flex w-full align-items-center gap-2">
+
+              <div className="flex w-full align-items-center justify-content-end gap-2">
                 <Inplace>
                   <InplaceDisplay>
                     <div className="flex gap-1 align-items-center">
@@ -169,9 +159,20 @@ const FlowDashComments = ({ id }) => {
                   </InplaceContent>
                 </Inplace>
               </div>
+              <div className="flex align-items-center gap-1">
+                <Button
+                  icon="pi pi-ellipsis-h"
+                  className="p-button p-0 m-0 ml-1 mr-2"
+                  outlined
+                  severity="secondary"
+                  onClick={(event) => commentMenu.current.toggle(event)}
+                  aria-controls="popup_menu_left"
+                  aria-haspopup
+                />
+              </div>
             </div>
           </div>
-          <div className="flexfac">{/* */}</div>
+
           <div></div>
         </Panel>
       </div>
