@@ -1,9 +1,9 @@
 import { observer } from "mobx-react-lite";
 import { Button } from "primereact/button";
 import React from "react";
-import MostRecentComments from "../../Comments/MostRecentComments/MostRecentComments";
 import "./FlowDash.css";
 import FlowDashCards from "./FlowDashCards/FlowDashCards";
+import FlowDashMostRecentComments from "./FlowDashComments/FlowDashMostRecentComments";
 import FlowDashEventUpdates from "./FlowDashEventUpdates/FlowDashEventUpdates";
 import FlowDashMLogixSearch from "./FlowDashMLogixSearch/FlowDashMLogixSearch";
 import FlowDashWhatsNew from "./FlowDashWhatsNew/FlowDashWhatsNew";
@@ -23,7 +23,7 @@ const FlowDash = () => {
   };
   return (
     <div className="flex flex-column align-items-center w-full">
-      <div className="FlowDash bg-bluegray-50 hover:shadow-2 flex flex-column align-items-center w-full border-round-xl">
+      <div className="FlowDash bg-bluegray-50 flex flex-column align-items-center w-full border-round-xl">
         <div className="flex flex-column align-items-center w-full border-round-md border-black-alpha-30">
           <div className="flex">
             <p className="HeaderText text-xl font-medium">
@@ -36,8 +36,8 @@ const FlowDash = () => {
         </div>
       </div>
 
-      <div className="flex bg-bluegray-50 mt-2 w-full hover:shadow-3 gap-3 p-3 border-round-xl">
-        <div className="flex surface-0 shadow-1 hover:shadow-2 border-round-lg flex-column w-4 gap-1 p-1 mb-2">
+      <div className="flex bg-bluegray-50 mt-2 w-full hover:shadow-1 gap-3 p-3 border-round-xl">
+        <div className="flex surface-0 border-round-lg flex-column w-4 gap-1 p-1 mb-2">
           <div className="flex flex-column">
             <p className="text-2xl mt-2 ml-3 font-bold text-gray-700 text-left">
               Latest Discussions
@@ -47,20 +47,20 @@ const FlowDash = () => {
               className="w-full min-h-full"
             > */}
             <div className="flex w-full pt-1">
-              <MostRecentComments />
+              <FlowDashMostRecentComments />
             </div>
             {/* </Card> */}
           </div>
         </div>
 
-        <div className="flex surface-0 shadow-1 hover:shadow-3 border-round-lg w-full w-7 gap-2">
+        <div className="flex surface-0 hover:shadow-1 border-round-lg w-full w-7 gap-2">
           <div className="flex">
             <FlowDashEventUpdates />
           </div>
         </div>
 
         <div className="flex bg-bluegray-50 flex-column w-3 gap-3">
-          <div className="flex flex-column surface-0 shadow-1 hover:shadow-3 border-round-lg">
+          <div className="flex flex-column surface-0 hover:shadow-1 border-round-lg">
             <p className="text-2xl mt-2 ml-3 font-bold text-gray-700 text-left ">
               MolecuLogix
             </p>
@@ -70,7 +70,7 @@ const FlowDash = () => {
             </div>
           </div>
 
-          <div className="flex flex-column surface-0 shadow-1 hover:shadow-3 border-round-lg">
+          <div className="flex flex-column surface-0  hover:shadow-1 border-round-lg">
             <div className="flex text-2xl mt-2 ml-3 font-bold text-gray-700 text-left">
               What's New
             </div>
@@ -79,7 +79,7 @@ const FlowDash = () => {
             </div>
           </div>
 
-          <div className="flex flex-column surface-0 shadow-1 hover:shadow-3 border-round-lg">
+          <div className="flex flex-column surface-0 hover:shadow-1 border-round-lg">
             <p className="text-2xl mt-1 ml-3 font-bold text-gray-700 text-left">
               Publications
             </p>
