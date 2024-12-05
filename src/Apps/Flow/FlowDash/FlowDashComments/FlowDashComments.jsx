@@ -1,11 +1,12 @@
 import { observer } from "mobx-react-lite";
 import { Button } from "primereact/button";
 import { confirmDialog } from "primereact/confirmdialog";
+import { Inplace, InplaceContent, InplaceDisplay } from "primereact/inplace";
 import { Menu } from "primereact/menu";
+import { Panel } from "primereact/panel";
 import { Sidebar } from "primereact/sidebar";
 import { Skeleton } from "primereact/skeleton";
 import React, { useContext, useRef, useState } from "react";
-import { FcComments } from "react-icons/fc";
 import FDate from "../../../../Library/FDate/FDate";
 import { RootStoreContext } from "../../../../RootStore";
 import AuthorTag from "../../../../Shared/TagGenerators/AuthorTag/AuthorTag";
@@ -102,55 +103,77 @@ const FlowDashComments = ({ id }) => {
   );
 
   let commentRender = (
-    <div className="flex flex-column w-full border-1 border-50 p-2 border-round-md text-color">
-      <div className="flex w-full border-round-md m-2 align-items-center gap-2">
-        <div className="flex">
-          <FcComments />
-        </div>
-        <div className="flex flex-grow-1 text-md text-wrap font-semibold">
-          {comment?.topic}
-        </div>
-
-        <div className="flex justify-content-end">
-          <Menu
-            model={commentMenuItems}
-            popup
-            ref={commentMenu}
-            id={"menu_comment_" + comment?.id}
-          />
-          <Button
-            icon="pi pi-ellipsis-h"
-            className="p-button p-0 m-0 mr-2"
-            outlined
-            severity="secondary"
-            onClick={(event) => commentMenu.current.toggle(event)}
-            aria-controls="popup_menu_left"
-            aria-haspopup
-          />
-        </div>
-      </div>
-      <div className="flex w-full pl-4 align-items-center border-round-md">
-        <div className="flex">
-          <CommentTags tags={comment?.tags} />{" "}
-        </div>
-      </div>
-      <div className="flex w-full  pl-2 align-items-center border-round-md">
-        <div className="flex w-full gap-2 align-items-center">
-          <div className="flex">
-            <AuthorTag userId={comment?.createdById} />
+    <div className="flex flex-column w-full text-color">
+      <div className="flex w-full flex-column">
+        <Panel
+          header={comment?.topic}
+          style={{
+            borderColor: "#f1f3f5",
+            borderRadius: "0.5rem",
+            border: "1px solid #f1f3f5",
+          }}
+          toggleable
+        >
+          <div className="flex w-full align-items-center">
+            <div className="flex justify-content-end">
+              <Menu
+                model={commentMenuItems}
+                popup
+                ref={commentMenu}
+                id={"menu_comment_" + comment?.id}
+              />
+            </div>
           </div>
-          <div className="flex text-sm text-gray-500 font-normal">
-            <FDate timestamp={comment?.dateCreated} color="#8191a6" />
+          <div className="flex w-full pl-1 align-items-center gap-1">
+            <div className="flex">
+              <CommentTags tags={comment?.tags} />{" "}
+            </div>
           </div>
-        </div>
-      </div>
 
-      <div className="flex w-full"></div>
-      <div className="flex flex-column w-full pl-4 line-height-3">
-        {cleanupAndParse(comment?.description)}
-      </div>
-      <div className="flex w-full pl-6">
-        <Replies comment={comment} setComment={setComment} />
+          <div className="flex w-full pl-1">
+            {cleanupAndParse(comment?.description)}
+          </div>
+          <div className="flex w-full align-items-center">
+            <div className="flex w-full align-items-center gap-3">
+              <div className="flex">
+                <AuthorTag userId={comment?.createdById} />
+              </div>
+              <div className="flex text-sm text-gray-500 font-normal">
+                <FDate timestamp={comment?.dateCreated} color="#8191a6" />
+              </div>
+              <div className="flex align-items-center gap-1">
+                <Button
+                  icon="pi pi-ellipsis-h"
+                  className="p-button p-0 m-0 ml-1 mr-2"
+                  outlined
+                  severity="secondary"
+                  onClick={(event) => commentMenu.current.toggle(event)}
+                  aria-controls="popup_menu_left"
+                  aria-haspopup
+                />
+              </div>
+              <div className="flex w-full align-items-center gap-2">
+                <Inplace>
+                  <InplaceDisplay>
+                    <div className="flex gap-1 align-items-center">
+                      <div className="flex">
+                        <span className="pi pi-comment"></span>
+                      </div>
+                      <div className="flex">{comment.replies.length}</div>
+                    </div>
+                  </InplaceDisplay>
+                  <InplaceContent>
+                    <div className="flex w-full pl-6">
+                      <Replies comment={comment} setComment={setComment} />
+                    </div>
+                  </InplaceContent>
+                </Inplace>
+              </div>
+            </div>
+          </div>
+          <div className="flexfac">{/* */}</div>
+          <div></div>
+        </Panel>
       </div>
     </div>
   );
