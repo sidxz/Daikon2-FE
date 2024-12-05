@@ -107,7 +107,7 @@ const Comment = ({ id }) => {
         <div className="flex">
           <FcComments />
         </div>
-        <div className="flex flex-grow-1 text-xl font-semibold">
+        <div className="flex flex-grow-1 text-lg text-wrap font-semibold">
           {comment?.topic}
         </div>
 

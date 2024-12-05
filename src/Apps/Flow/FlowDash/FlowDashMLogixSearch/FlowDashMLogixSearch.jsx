@@ -40,7 +40,7 @@ const FlowDashMLogixSearch = () => {
     <>
       <div className="flex w-full flex-column gap-1 pl-1 pr-1">
         {/* Search Input and Buttons */}
-        <div className="flex flex-column w-full align-items-center gap-3">
+        <div className="flex flex-column w-full align-items-center gap-3 pl-1 pr-1">
           <div className="flex-grow-1 w-full">
             <InputText
               className="w-full text-lg"
@@ -49,7 +49,7 @@ const FlowDashMLogixSearch = () => {
               onChange={(e) => setSearchValue(e.target.value)}
             />
           </div>
-          <div className="flex w-full justify-content-end align-items-center gap-1 mb-1">
+          <div className="flex w-full justify-content-end align-items-center gap-4 mb-1">
             <div className="flex ">
               <Button
                 text
@@ -68,10 +68,10 @@ const FlowDashMLogixSearch = () => {
                 onClick={handleSearch} // Trigger the handleSearch function on click
               />
             </div>
-            <div className="flex align-items-center gap-1">
-              <label className="text-color-secondary text-sm">Limit</label>
+            <div className="flex align-items-center gap-2 pr-1">
+              <label className="text-color-secondary text-sm">Limit </label>
               <InputText
-                className="text-sm w-3rem p-1"
+                className="text-sm w-4rem p-1"
                 keyfilter="int"
                 value={searchLimit}
                 onChange={(e) => setSearchLimit(Number(e.target.value))}
@@ -81,7 +81,7 @@ const FlowDashMLogixSearch = () => {
         </div>
 
         {/* Radio Buttons for Search Type */}
-        <div className="flex w-full border-1 border-50 border-round-md p-3 align-items-center">
+        <div className="flex w-full border-1 border-50 border-round-md p-3 mb-1 align-items-center">
           <div className="flex-grow-1 flex-column flex gap-4">
             <div className="flex align-items-center">
               <RadioButton
