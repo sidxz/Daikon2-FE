@@ -50,9 +50,7 @@ const FlowDash = () => {
         </div>
 
         <div className="flex shadow-1 hover:shadow-2 border-round-lg w-full w-7 gap-2">
-          <div className="flex">
-            <FlowDashEventUpdates />
-          </div>
+          <FlowDashEventUpdates />
         </div>
 
         <div className="flex flex-column w-3 gap-2">
