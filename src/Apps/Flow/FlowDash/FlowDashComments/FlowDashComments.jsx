@@ -9,8 +9,8 @@ import { Skeleton } from "primereact/skeleton";
 import React, { useContext, useRef, useState } from "react";
 import FDate from "../../../../Library/FDate/FDate";
 import { RootStoreContext } from "../../../../RootStore";
-import AuthorTag from "../../../../Shared/TagGenerators/AuthorTag/AuthorTag";
 import CommentTags from "../../../../Shared/TagGenerators/CommentTags/CommentTags";
+import { AppUserResolver } from "../../../../Shared/VariableResolvers/AppUserResolver";
 import EditCommentSidebar from "../../../Comments/Comment/components/EditCommentSidebar";
 import Replies from "../../../Comments/Replies/Replies";
 import { cleanupAndParse } from "../../../Comments/Shared/HtmlSanitization";
@@ -38,6 +38,7 @@ const FlowDashComments = ({ id }) => {
 
   const commentMenu = useRef(null);
   const [displayEditSideBar, setDisplayEditSideBar] = useState(false);
+  const { getIdFromUserFullName, getUserFullNameById } = AppUserResolver();
 
   const handleDelete = async () => {
     try {
@@ -102,11 +103,27 @@ const FlowDashComments = ({ id }) => {
     </div>
   );
 
+  let commentPanelHeader = (
+    <div className="flex flex-column w-full align-items-start gap-1">
+      <div className="flex gap-2 text-xs text-bluegray-500 font-normal">
+        <div className="flex">{getUserFullNameById(comment?.createdById)}</div>
+        <div className="flex">
+          <FDate timestamp={comment?.dateCreated} color="#8191a6" />
+        </div>
+      </div>
+
+      <div className="flex ">{comment?.topic}</div>
+      <div className="flex">
+        <CommentTags tags={comment?.tags} />{" "}
+      </div>
+    </div>
+  );
+
   let commentRender = (
     <div className="flex flex-column w-full text-color">
       <div className="flex w-full flex-column">
         <Panel
-          header={comment?.topic}
+          header={commentPanelHeader}
           style={{
             borderColor: "#f1f3f5",
             borderRadius: "0.5rem",
@@ -124,24 +141,13 @@ const FlowDashComments = ({ id }) => {
               />
             </div>
           </div>
-          <div className="flex w-full pl-1 align-items-center gap-1">
-            <div className="flex">
-              <CommentTags tags={comment?.tags} />{" "}
-            </div>
-          </div>
+          <div className="flex w-full pl-1 align-items-center gap-1"></div>
 
           <div className="flex w-full pl-1">
             {cleanupAndParse(comment?.description)}
           </div>
           <div className="flex w-full align-items-center">
             <div className="flex w-full align-items-center gap-3">
-              <div className="flex w-full">
-                <AuthorTag userId={comment?.createdById} />
-              </div>
-              <div className="flex text-sm text-gray-500 font-normal">
-                <FDate timestamp={comment?.dateCreated} color="#8191a6" />
-              </div>
-
               <div className="flex align-items-center">
                 <Inplace>
                   <InplaceDisplay>
