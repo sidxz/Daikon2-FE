@@ -134,7 +134,7 @@ const FlowDashComments = ({ id }) => {
             {cleanupAndParse(comment?.description)}
           </div>
           <div className="flex w-full align-items-center">
-            <div className="flex w-full align-items-center gap-1">
+            <div className="flex w-full align-items-center gap-3">
               <div className="flex w-full">
                 <AuthorTag userId={comment?.createdById} />
               </div>
@@ -142,7 +142,7 @@ const FlowDashComments = ({ id }) => {
                 <FDate timestamp={comment?.dateCreated} color="#8191a6" />
               </div>
 
-              <div className="flex w-full align-items-center justify-content-end gap-2">
+              <div className="flex align-items-center">
                 <Inplace>
                   <InplaceDisplay>
                     <div className="flex gap-1 align-items-center">
@@ -159,6 +159,7 @@ const FlowDashComments = ({ id }) => {
                   </InplaceContent>
                 </Inplace>
               </div>
+
               <div className="flex align-items-center gap-1">
                 <Button
                   icon="pi pi-ellipsis-h"

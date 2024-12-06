@@ -37,7 +37,7 @@ const FlowDash = () => {
       </div>
 
       <div className="flex bg-bluegray-50 mt-2 w-full hover:shadow-1 gap-3 p-3 border-round-xl">
-        <div className="flex surface-0 border-round-lg flex-column w-4 gap-1 p-1 mb-2">
+        <div className="flex surface-0 border-round-lg flex-column w-3 gap-1 p-1 mb-2">
           <div className="flex flex-column">
             <p className="text-2xl mt-2 ml-3 font-bold text-gray-700 text-left">
               Latest Discussions
@@ -91,8 +91,8 @@ const FlowDash = () => {
               <div className="flex text-base justify-content-center justify-content-left"></div>
               <div className="flex mb-3">
                 <Button
-                  label=" DAIKON Paper"
-                  className="p-button-info p-button-sm"
+                  label="DAIKON Paper"
+                  className="p-button-info p-button-md"
                   onClick={() =>
                     window.open(
                       "https://pubs.acs.org/doi/10.1021/acsptsci.3c00034"
