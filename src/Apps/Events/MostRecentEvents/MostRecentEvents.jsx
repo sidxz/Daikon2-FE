@@ -41,6 +41,9 @@ const MostRecentEvents = forwardRef((props, ref) => {
         className="HideDataTableHeader w-full"
         paginator
         rows={15}
+        globalFilterFields={["eventType", "eventMessage"]}
+        filterDisplay="row"
+        filters={props.filters}
       >
         <Column
           className="narrow-column p-0 m-0"

@@ -36,8 +36,8 @@ const FlowDash = () => {
         </div>
       </div>
 
-      <div className="flex mt-2 w-full hover:shadow-1 gap-2 border-round-xl">
-        <div className="flex border-round-lg shadow-1 hover:shadow-1  flex-column w-3 gap-1 p-2 mb-2">
+      <div className="flex mt-2 w-full gap-2 border-round-xl">
+        <div className="flex border-round-lg shadow-1 flex-column w-3 gap-1 p-2 mb-2">
           <div className="flex flex-column">
             <p className="text-2xl mt-1 ml-3 font-bold text-gray-700 text-left">
               Latest Discussions
@@ -49,12 +49,12 @@ const FlowDash = () => {
           </div>
         </div>
 
-        <div className="flex shadow-1 hover:shadow-2 border-round-lg w-full w-7 gap-2">
+        <div className="flex shadow-1 border-round-lg w-full w-7 gap-2">
           <FlowDashEventUpdates />
         </div>
 
         <div className="flex flex-column w-3 gap-2">
-          <div className="flex bg-bluegray-50 flex-column hover:shadow-1 border-round-lg">
+          <div className="flex bg-bluegray-50 flex-column border-round-lg">
             <p className="text-2xl mt-2 ml-3 font-bold text-gray-700 text-left ">
               MolecuLogix
             </p>
@@ -64,7 +64,7 @@ const FlowDash = () => {
             </div>
           </div>
 
-          <div className="flex flex-column shadow-1 hover:shadow-1 border-round-lg">
+          <div className="flex flex-column shadow-1 border-round-lg">
             <div className="flex text-2xl mt-2 ml-3 font-bold text-gray-700 text-left">
               What's New
             </div>

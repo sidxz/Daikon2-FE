@@ -12,8 +12,8 @@ import { RootStoreContext } from "../../../../RootStore";
 import CommentTags from "../../../../Shared/TagGenerators/CommentTags/CommentTags";
 import { AppUserResolver } from "../../../../Shared/VariableResolvers/AppUserResolver";
 import EditCommentSidebar from "../../../Comments/Comment/components/EditCommentSidebar";
-import Replies from "../../../Comments/Replies/Replies";
 import { cleanupAndParse } from "../../../Comments/Shared/HtmlSanitization";
+import FlowDashReplies from "./FlowDashReplies";
 
 const FlowDashComments = ({ id }) => {
   const rootStore = useContext(RootStoreContext);
@@ -104,17 +104,29 @@ const FlowDashComments = ({ id }) => {
   );
 
   let commentPanelHeader = (
-    <div className="flex flex-column w-full align-items-start gap-1">
+    <div className="flex flex-column w-full align-items-start gap-3">
       <div className="flex gap-2 text-xs text-bluegray-500 font-normal">
         <div className="flex">{getUserFullNameById(comment?.createdById)}</div>
         <div className="flex">
           <FDate timestamp={comment?.dateCreated} color="#8191a6" />
         </div>
       </div>
-
-      <div className="flex ">{comment?.topic}</div>
-      <div className="flex">
-        <CommentTags tags={comment?.tags} />{" "}
+      <div className="flex">{comment?.topic}</div>
+      <div className="flex gap-1">
+        <div className="flex">
+          <CommentTags tags={comment?.tags} />{" "}
+        </div>
+        <div className="flex align-items-center gap-1">
+          <Button
+            icon="pi pi-ellipsis-h"
+            className="p-button-sm p-0 m-0 ml-1 mr-2"
+            outlined
+            severity="secondary"
+            onClick={(event) => commentMenu.current.toggle(event)}
+            aria-controls="popup_menu_left"
+            aria-haspopup
+          />
+        </div>
       </div>
     </div>
   );
@@ -123,6 +135,7 @@ const FlowDashComments = ({ id }) => {
     <div className="flex flex-column w-full text-color">
       <div className="flex w-full flex-column">
         <Panel
+          collapsed={true}
           header={commentPanelHeader}
           style={{
             borderColor: "#f1f3f5",
@@ -141,46 +154,38 @@ const FlowDashComments = ({ id }) => {
               />
             </div>
           </div>
-          <div className="flex w-full pl-1 align-items-center gap-1"></div>
 
-          <div className="flex w-full pl-1">
+          <div className="flex w-full pl-1 m-0">
             {cleanupAndParse(comment?.description)}
           </div>
           <div className="flex w-full align-items-center">
-            <div className="flex w-full align-items-center gap-3">
-              <div className="flex align-items-center">
-                <Inplace>
-                  <InplaceDisplay>
-                    <div className="flex gap-1 align-items-center">
-                      <div className="flex">
-                        <span className="pi pi-comment"></span>
-                      </div>
-                      <div className="flex">{comment.replies.length}</div>
+            <div className="flex mt-2 align-items-center">
+              <Inplace
+                pt={{
+                  closeButton: { className: "p-button-sm border-1" },
+                }}
+              >
+                <InplaceDisplay>
+                  <div className="flex gap-1 align-items-center">
+                    <div className="flex w-full align-items-center">
+                      <span className="pi pi-comment"></span>
                     </div>
-                  </InplaceDisplay>
-                  <InplaceContent>
-                    <div className="flex w-full pl-6">
-                      <Replies comment={comment} setComment={setComment} />
+                    <div className="flex w-full align-items-center">
+                      {comment.replies.length}
                     </div>
-                  </InplaceContent>
-                </Inplace>
-              </div>
-
-              <div className="flex align-items-center gap-1">
-                <Button
-                  icon="pi pi-ellipsis-h"
-                  className="p-button p-0 m-0 ml-1 mr-2"
-                  outlined
-                  severity="secondary"
-                  onClick={(event) => commentMenu.current.toggle(event)}
-                  aria-controls="popup_menu_left"
-                  aria-haspopup
-                />
-              </div>
+                  </div>
+                </InplaceDisplay>
+                <InplaceContent>
+                  <div className="flex w-full">
+                    <FlowDashReplies
+                      comment={comment}
+                      setComment={setComment}
+                    />
+                  </div>
+                </InplaceContent>
+              </Inplace>
             </div>
           </div>
-
-          <div></div>
         </Panel>
       </div>
     </div>
