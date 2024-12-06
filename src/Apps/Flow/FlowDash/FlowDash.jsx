@@ -26,7 +26,7 @@ const FlowDash = () => {
       <div className="FlowDash bg-bluegray-50 flex flex-column align-items-center w-full border-round-xl">
         <div className="flex flex-column align-items-center w-full border-round-md border-black-alpha-30">
           <div className="flex">
-            <p className="HeaderText text-xl font-medium">
+            <p className="HeaderText text-2xl font-medium">
               Data Acquisition, Integration and Knowledge Capture Application
             </p>
           </div>
@@ -36,31 +36,27 @@ const FlowDash = () => {
         </div>
       </div>
 
-      <div className="flex bg-bluegray-50 mt-2 w-full hover:shadow-1 gap-3 p-3 border-round-xl">
-        <div className="flex surface-0 border-round-lg flex-column w-3 gap-1 p-1 mb-2">
+      <div className="flex mt-2 w-full hover:shadow-1 gap-2 border-round-xl">
+        <div className="flex border-round-lg shadow-1 hover:shadow-1  flex-column w-3 gap-1 p-2 mb-2">
           <div className="flex flex-column">
-            <p className="text-2xl mt-2 ml-3 font-bold text-gray-700 text-left">
+            <p className="text-2xl mt-1 ml-3 font-bold text-gray-700 text-left">
               Latest Discussions
             </p>
-            {/* <Card
-              title={generateCardTitle("ri-discuss-line", "Latest Discussions")}
-              className="w-full min-h-full"
-            > */}
-            <div className="flex w-full pt-1">
+            <div className="flex w-full hover:shadow-1 ">
               <FlowDashMostRecentComments />
             </div>
             {/* </Card> */}
           </div>
         </div>
 
-        <div className="flex surface-0 hover:shadow-1 border-round-lg w-full w-7 gap-2">
+        <div className="flex shadow-1 hover:shadow-2 border-round-lg w-full w-7 gap-2">
           <div className="flex">
             <FlowDashEventUpdates />
           </div>
         </div>
 
-        <div className="flex bg-bluegray-50 flex-column w-3 gap-3">
-          <div className="flex flex-column surface-0 hover:shadow-1 border-round-lg">
+        <div className="flex flex-column w-3 gap-2">
+          <div className="flex bg-bluegray-50 flex-column hover:shadow-1 border-round-lg">
             <p className="text-2xl mt-2 ml-3 font-bold text-gray-700 text-left ">
               MolecuLogix
             </p>
@@ -70,7 +66,7 @@ const FlowDash = () => {
             </div>
           </div>
 
-          <div className="flex flex-column surface-0  hover:shadow-1 border-round-lg">
+          <div className="flex flex-column shadow-1 hover:shadow-1 border-round-lg">
             <div className="flex text-2xl mt-2 ml-3 font-bold text-gray-700 text-left">
               What's New
             </div>
@@ -79,7 +75,7 @@ const FlowDash = () => {
             </div>
           </div>
 
-          <div className="flex flex-column surface-0 hover:shadow-1 border-round-lg">
+          <div className="flex flex-column shadow-1 hover:shadow-1 border-round-lg">
             <p className="text-2xl mt-1 ml-3 font-bold text-gray-700 text-left">
               Publications
             </p>

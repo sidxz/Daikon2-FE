@@ -81,7 +81,7 @@ const FlowDashMLogixSearch = () => {
         </div>
 
         {/* Radio Buttons for Search Type */}
-        <div className="flex w-full border-1 border-50 border-round-md p-3 mb-1 align-items-center">
+        <div className="flex w-full surface-0  border-1 border-50 border-round-md p-3 mb-1 align-items-center">
           <div className="flex-grow-1 flex-column flex gap-4">
             <div className="flex align-items-center">
               <RadioButton
