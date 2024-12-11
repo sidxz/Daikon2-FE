@@ -1,20 +1,21 @@
 import { observer } from "mobx-react-lite";
 import { Button } from "primereact/button";
 import { confirmDialog } from "primereact/confirmdialog";
+import { Inplace, InplaceContent, InplaceDisplay } from "primereact/inplace";
 import { Menu } from "primereact/menu";
+import { Panel } from "primereact/panel";
 import { Sidebar } from "primereact/sidebar";
 import { Skeleton } from "primereact/skeleton";
 import React, { useContext, useRef, useState } from "react";
-import { FcComments } from "react-icons/fc";
-import FDate from "../../../Library/FDate/FDate";
-import { RootStoreContext } from "../../../RootStore";
-import AuthorTag from "../../../Shared/TagGenerators/AuthorTag/AuthorTag";
-import CommentTags from "../../../Shared/TagGenerators/CommentTags/CommentTags";
-import Replies from "../Replies/Replies";
-import { cleanupAndParse } from "../Shared/HtmlSanitization";
-import EditCommentSidebar from "./components/EditCommentSidebar";
+import FDate from "../../../../Library/FDate/FDate";
+import { RootStoreContext } from "../../../../RootStore";
+import CommentTags from "../../../../Shared/TagGenerators/CommentTags/CommentTags";
+import { AppUserResolver } from "../../../../Shared/VariableResolvers/AppUserResolver";
+import EditCommentSidebar from "../../../Comments/Comment/components/EditCommentSidebar";
+import { cleanupAndParse } from "../../../Comments/Shared/HtmlSanitization";
+import FlowDashReplies from "./FlowDashReplies";
 
-const Comment = ({ id }) => {
+const FlowDashComments = ({ id }) => {
   const rootStore = useContext(RootStoreContext);
   const {
     fetchComment,
@@ -37,6 +38,7 @@ const Comment = ({ id }) => {
 
   const commentMenu = useRef(null);
   const [displayEditSideBar, setDisplayEditSideBar] = useState(false);
+  const { getIdFromUserFullName, getUserFullNameById } = AppUserResolver();
 
   const handleDelete = async () => {
     try {
@@ -101,30 +103,23 @@ const Comment = ({ id }) => {
     </div>
   );
 
-  let commentRender = (
-    <div className="flex flex-column w-full border-1 border-50 p-2 border-round-md text-color">
-      <div className="flex w-full border-round-md m-2 align-items-center gap-2">
+  let commentPanelHeader = (
+    <div className="flex flex-column w-full align-items-start gap-3">
+      <div className="flex gap-2 text-xs text-bluegray-500 font-normal">
+        <div className="flex">{getUserFullNameById(comment?.createdById)}</div>
         <div className="flex">
-          <FcComments />
+          <FDate timestamp={comment?.dateCreated} color="#8191a6" />
         </div>
-        <div className="flex flex-grow-1 text-lg text-wrap font-semibold">
-          {comment?.topic}
-        </div>
-
+      </div>
+      <div className="flex">{comment?.topic}</div>
+      <div className="flex gap-1">
         <div className="flex">
           <CommentTags tags={comment?.tags} />{" "}
         </div>
-
-        <div className="flex justify-content-end">
-          <Menu
-            model={commentMenuItems}
-            popup
-            ref={commentMenu}
-            id={"menu_comment_" + comment?.id}
-          />
+        <div className="flex align-items-center gap-1">
           <Button
             icon="pi pi-ellipsis-h"
-            className="p-button p-0 m-0 mr-2"
+            className="p-button-sm p-0 m-0 ml-1 mr-2"
             outlined
             severity="secondary"
             onClick={(event) => commentMenu.current.toggle(event)}
@@ -133,23 +128,65 @@ const Comment = ({ id }) => {
           />
         </div>
       </div>
-      <div className="flex w-full align-items-center border-round-md">
-        <div className="flex w-full gap-2 align-items-center">
-          <div className="flex">
-            <AuthorTag userId={comment?.createdById} />
-          </div>
-          <div className="flex text-sm text-gray-500 font-normal">
-            <FDate timestamp={comment?.dateCreated} color="#8191a6" />
-          </div>
-        </div>
-      </div>
+    </div>
+  );
 
-      <div className="flex w-full"></div>
-      <div className="flex flex-column w-full pl-4 line-height-3">
-        {cleanupAndParse(comment?.description)}
-      </div>
-      <div className="flex w-full pl-6">
-        <Replies comment={comment} setComment={setComment} />
+  let commentRender = (
+    <div className="flex flex-column w-full text-color">
+      <div className="flex w-full flex-column">
+        <Panel
+          collapsed={true}
+          header={commentPanelHeader}
+          style={{
+            borderColor: "#f1f3f5",
+            borderRadius: "0.5rem",
+            border: "1px solid #f1f3f5",
+          }}
+          toggleable
+        >
+          <div className="flex w-full align-items-center">
+            <div className="flex justify-content-end">
+              <Menu
+                model={commentMenuItems}
+                popup
+                ref={commentMenu}
+                id={"menu_comment_" + comment?.id}
+              />
+            </div>
+          </div>
+
+          <div className="flex w-full pl-1 m-0">
+            {cleanupAndParse(comment?.description)}
+          </div>
+          <div className="flex w-full align-items-center">
+            <div className="flex mt-2 align-items-center">
+              <Inplace
+                pt={{
+                  closeButton: { className: "p-button-sm border-1" },
+                }}
+              >
+                <InplaceDisplay>
+                  <div className="flex gap-1 align-items-center">
+                    <div className="flex w-full align-items-center">
+                      <span className="pi pi-comment"></span>
+                    </div>
+                    <div className="flex w-full align-items-center">
+                      {comment.replies.length}
+                    </div>
+                  </div>
+                </InplaceDisplay>
+                <InplaceContent>
+                  <div className="flex w-full">
+                    <FlowDashReplies
+                      comment={comment}
+                      setComment={setComment}
+                    />
+                  </div>
+                </InplaceContent>
+              </Inplace>
+            </div>
+          </div>
+        </Panel>
       </div>
     </div>
   );
@@ -181,4 +218,4 @@ const Comment = ({ id }) => {
   );
 };
 
-export default observer(Comment);
+export default observer(FlowDashComments);
