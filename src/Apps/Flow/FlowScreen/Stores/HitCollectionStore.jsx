@@ -56,7 +56,7 @@ export default class HitCollectionStore {
   };
 
   fetchHitCollectionsOfScreen = async (screenId, inValidateCache = false) => {
-    console.log("fetchHitCollectionsOfScreen", screenId, inValidateCache);
+    //console.log("fetchHitCollectionsOfScreen", screenId, inValidateCache);
     if (inValidateCache) {
       this.hitCollectionRegistryCache.set(screenId, false);
     }
@@ -75,6 +75,7 @@ export default class HitCollectionStore {
       var hitCollections = await HitCollectionAPI.listByScreen(screenId);
       runInAction(() => {
         hitCollections.forEach((hitCollection) => {
+          console.log("hitCollection", hitCollection);
           this.hitCollectionRegistry.set(hitCollection.id, hitCollection);
         });
         this.hitCollectionRegistryCache.set(screenId, true);
