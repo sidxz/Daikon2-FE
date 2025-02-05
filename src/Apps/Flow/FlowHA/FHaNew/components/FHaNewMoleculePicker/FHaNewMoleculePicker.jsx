@@ -115,8 +115,10 @@ const FHaNewMoleculePicker = ({ setBaseHitData, stepperRef }) => {
       compoundId: selectedMolecule.id,
       associatedHitIds: associatedHits,
       hitCollectionId: selectedHitCollection?.id,
-
+      hitCollectionName: selectedHitCollection.name,
       compoundSMILES: selectedMolecule.smiles,
+      associatedHits: selectedBaseHits,
+      primaryCompound: primaryHit?.molecule,
     };
 
     try {

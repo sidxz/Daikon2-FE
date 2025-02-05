@@ -19,9 +19,12 @@ import { Divider } from "primereact/divider";
 import { Dropdown } from "primereact/dropdown";
 import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
+import { Panel } from "primereact/panel";
 import { classNames } from "primereact/utils";
+import SmilesView from "../../../../Library/SmilesView/SmilesView";
 import InputMultiOrg from "../../../../Shared/InputEditors/InputMultiOrg";
 import InputOrg from "../../../../Shared/InputEditors/InputOrg";
+import { AppOrgResolver } from "../../../../Shared/VariableResolvers/AppOrgResolver";
 import StepperNavButtons from "../../../../UILib/StepperTools/NavButtons/StepperNavButtons";
 import { statusOptions } from "../constants/statusOptions";
 import FHaNewHitPicker from "./components/FHaNewHitPicker/FHaNewHitPicker";
@@ -37,6 +40,8 @@ const FHANew = () => {
       return null;
     }
   };
+
+  const { getOrgNameById } = AppOrgResolver();
 
   const [screenSectionData, setScreenSectionData] = useState({
     selectedScreen: null,
@@ -406,22 +411,25 @@ const FHANew = () => {
     if (formik.values.description)
       summary.push({ name: "Description", value: formik.values.description });
     if (formik.values.primaryOrgId)
-      summary.push({ name: "Primary Org", value: formik.values.primaryOrgId });
+      summary.push({
+        name: "Primary Org",
+        value: getOrgNameById(formik.values.primaryOrgId),
+      });
+    // associated orgs
+    if (formik.values.participatingOrgs.length > 0) {
+      summary.push({
+        name: "Participating Orgs",
+        value: formik.values.participatingOrgs
+          .map((orgId) => getOrgNameById(orgId))
+          .join(", "),
+      });
+    }
 
     // Add hit or molecule selection
     if (baseHitData) {
       summary.push({
         name: "Hit Collection",
-        value: baseHitData.hitCollectionId || "N/A",
-      });
-      summary.push({
-        name: "Primary Hit",
-        value: baseHitData.compoundSMILES || "N/A",
-      });
-
-      summary.push({
-        name: "Associated Hits",
-        value: "",
+        value: baseHitData.hitCollectionName || "N/A",
       });
     }
 
@@ -448,20 +456,51 @@ const FHANew = () => {
   };
 
   const summary = (
-    <div className="flex flex-column w-full p-2 border-1 border-50 border-round-md">
-      <div className="flex text-xl">Summary</div>
+    <div className="flex flex-column w-full p-2 border-1 border-50 border-round-md gap-2">
+      <div className="flex text-xl font-bold">
+        Review the details of your project
+      </div>
       <div className="flex">
         <Divider />
       </div>
-      <div className="flex">
-        <DataTable
-          value={generateSummaryData()}
-          className="flex flex-grow w-full HideDataTableHeader"
-        >
-          <Column field="name"></Column>
-          <Column field="value"></Column>
-        </DataTable>
+      <div className="flex gap-2">
+        {baseHitData?.compoundSMILES && (
+          <div className="flex">
+            <Panel
+              header={baseHitData.primaryCompound?.name || "Primary Compound"}
+            >
+              <SmilesView smiles={baseHitData?.compoundSMILES} />
+            </Panel>
+          </div>
+        )}
+        <div className="flex flex-grow w-full border-1 border-50 border-round-md">
+          <DataTable
+            value={generateSummaryData()}
+            className="flex flex-grow-1 w-full HideDataTableHeader"
+          >
+            <Column field="name"></Column>
+            <Column field="value"></Column>
+          </DataTable>
+        </div>
       </div>
+      {baseHitData?.associatedHits?.length > 0 && (
+        <div className="flex">
+          <Panel header={"Associated Compounds"}>
+            <div className="flex gap-1">
+              {baseHitData?.associatedHits?.map((hit) => (
+                <div className="flex flex-column border-1 border-50 border-round-md">
+                  <div className="flex p-2">
+                    {hit.molecule?.name || "Unnamed Molecule"}
+                  </div>
+                  <div className="flex text-md">
+                    <SmilesView smiles={hit.molecule?.smilesCanonical} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Panel>
+        </div>
+      )}
     </div>
   );
 

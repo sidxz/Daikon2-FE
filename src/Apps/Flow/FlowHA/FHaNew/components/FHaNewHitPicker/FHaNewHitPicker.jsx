@@ -154,6 +154,9 @@ const FHaNewHitPicker = ({
       hitCollectionId: selectedHitCollection.id,
       screenId: selectedScreen.id,
       compoundSMILES: selectedPrimaryHit.molecule.smiles,
+      hitCollectionName: selectedHitCollection.name,
+      associatedHits: selectedBaseHits,
+      primaryCompound: selectedPrimaryHit?.molecule,
     };
 
     try {
