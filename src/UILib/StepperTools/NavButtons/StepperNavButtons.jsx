@@ -15,6 +15,8 @@ const StepperNavButtons = ({
   nextLabel = "Next",
   backLabel = "Back",
   submitLabel = "Submit",
+
+  submitLoading = false,
 }) => {
   if (stepperRef.current === null) {
     console.error("StepperNavButtons: stepperRef.current is null");
@@ -58,6 +60,7 @@ const StepperNavButtons = ({
             submitFunc?.();
           }}
           disabled={submitDisabled}
+          loading={submitLoading}
         />
       )}
     </div>

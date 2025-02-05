@@ -21,6 +21,7 @@ import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
 import { Panel } from "primereact/panel";
 import { classNames } from "primereact/utils";
+import { toast } from "react-toastify";
 import SmilesView from "../../../../Library/SmilesView/SmilesView";
 import InputMultiOrg from "../../../../Shared/InputEditors/InputMultiOrg";
 import InputOrg from "../../../../Shared/InputEditors/InputOrg";
@@ -508,8 +509,12 @@ const FHANew = () => {
     let data = { ...formik.values };
 
     if (data.name.trim() === "") {
-      console.log("Name is required");
+      toast.error("Name is required.");
       return; // Prevent further execution if the name is empty
+    }
+    if (data.primaryOrgId === "") {
+      toast.error("Primary Organization is required.");
+      return; // Prevent further execution if the primary org is empty
     }
 
     // Merge baseHitData only if it's present
@@ -567,6 +572,8 @@ const FHANew = () => {
                 showNext={false}
                 showSubmit={true}
                 submitFunc={onSubmit}
+                submitLabel="Create Hit Assessment"
+                submitLoading={isAddingHa}
               />
             </div>
           </StepperPanel>
