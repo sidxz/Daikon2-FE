@@ -2,6 +2,9 @@ import { observer } from "mobx-react-lite";
 import { Dropdown } from "primereact/dropdown";
 import { MultiSelect } from "primereact/multiselect";
 import { ToggleButton } from "primereact/togglebutton";
+import { MdBrowseGallery } from "react-icons/md";
+import { Tooltip } from "primereact/tooltip";
+import { MdLockClock } from "react-icons/md";
 import { Toolbar } from "primereact/toolbar";
 import React, { useContext, useEffect, useState } from "react";
 import { MdGridView } from "react-icons/md";
@@ -127,6 +130,7 @@ const FSDOverviewFilters = ({ dashDisplay, setDashDisplay }) => {
         display="chip"
         className="border-0 w-full surface-50"
       />
+
       <Dropdown
         icon="pi pi-check"
         className="border-0 p-0 m-0 surface-50"
@@ -137,13 +141,23 @@ const FSDOverviewFilters = ({ dashDisplay, setDashDisplay }) => {
         optionLabel="value"
         valueTemplate={(option) => <MdGridView />}
       />
-      <ToggleButton
-        className="border-0 p-0 m-0 surface-50"
-        onLabel="Hidden"
-        offLabel="All"
-        checked={filterCriteria.hideOldScreens}
-        onChange={(e) => setFilterCriteria({ hideOldScreens: e.value })}
-      />
+
+
+        
+
+        <ToggleButton
+          className="border-0 p-0 m-0 surface-50"
+          
+          onLabel=""
+          offLabel=""
+          onIcon={
+            <MdLockClock color="red" size={18} />
+          }
+          offIcon={<MdBrowseGallery color="red"  size={18} />}
+          checked={filterCriteria.hideOldScreens}
+          onChange={(e) => setFilterCriteria({ hideOldScreens: e.value })}
+        />
+     
     </div>
   );
 
