@@ -54,6 +54,13 @@ const FSDOverview = () => {
   const sixMonthsAgo = new Date();
   sixMonthsAgo.setMonth(currentDate.getMonth() - 6);
 
+  console.log(
+    "getFilteredListTargetBased",
+    getFilteredListTargetBased
+      .filter((item) => item.status === "Ongoing") // Filter by Ongoing status
+      .sort(sortByDate)
+  );
+
   return (
     <div className="flex flex-column w-full">
       <div className="flex w-full">

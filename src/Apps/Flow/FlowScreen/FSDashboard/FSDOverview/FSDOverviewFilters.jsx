@@ -1,6 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { Dropdown } from "primereact/dropdown";
 import { MultiSelect } from "primereact/multiselect";
+import { ToggleButton } from "primereact/togglebutton";
 import { Toolbar } from "primereact/toolbar";
 import React, { useContext, useEffect, useState } from "react";
 import { MdGridView } from "react-icons/md";
@@ -41,6 +42,11 @@ const FSDOverviewFilters = ({ dashDisplay, setDashDisplay }) => {
               .split(",")
               .map((date) => new Date(date))
           : localFilters?.dateRange || [null, null],
+
+        hideOldScreens:
+          searchParams.get("hideOldScreens") !== null
+            ? searchParams.get("hideOldScreens") === "true"
+            : localFilters?.hideOldScreens ?? true, // Default: true
       };
       setFilterCriteria(initialFilters);
       setIsInitialized(true);
@@ -69,6 +75,8 @@ const FSDOverviewFilters = ({ dashDisplay, setDashDisplay }) => {
           .map((date) => date.toISOString())
           .join(",");
       }
+      params.hideOldScreens = filterCriteria.hideOldScreens.toString();
+
       setSearchParams(params, { replace: true });
       localStorage.setItem(
         "screenDashFilterCriteria",
@@ -128,6 +136,13 @@ const FSDOverviewFilters = ({ dashDisplay, setDashDisplay }) => {
         optionValue="value"
         optionLabel="value"
         valueTemplate={(option) => <MdGridView />}
+      />
+      <ToggleButton
+        className="border-0 p-0 m-0 surface-50"
+        onLabel="Hidden"
+        offLabel="All"
+        checked={filterCriteria.hideOldScreens}
+        onChange={(e) => setFilterCriteria({ hideOldScreens: e.value })}
       />
     </div>
   );
