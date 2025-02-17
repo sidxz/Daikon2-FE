@@ -11,9 +11,10 @@ import { AppRoleResolver } from "../../../../Shared/VariableResolvers/AppRoleRes
 import { HaAdminRoleName } from "../constants/roles";
 import FHaVComments from "./FHaVComments/FHaVComments";
 import FHaVDocs from "./FHaVDocs/FHaVDocs";
-import FHaVInformation from "./FHaVInformation/FHaVInformation";
-import FHaVSettings from "./FHaVSettings/FHaVSettings";
 import * as Helper from "./FHaViewerHelper";
+import FHaVInformation from "./FHaVInformation/FHaVInformation";
+import FHaVRelations from "./FHaVRelations/FHaVRelations";
+import FHaVSettings from "./FHaVSettings/FHaVSettings";
 
 const FHaViewer = () => {
   const params = useParams();
@@ -71,6 +72,9 @@ const FHaViewer = () => {
               />
               {isUserInAnyOfRoles([HaAdminRoleName]) && (
                 <Route path="settings/*" element={<FHaVSettings />} />
+              )}
+              {isUserInAnyOfRoles([HaAdminRoleName]) && (
+                <Route path="relations/*" element={<FHaVRelations />} />
               )}
               <Route path="*" element={<NotFound />} />
             </Routes>

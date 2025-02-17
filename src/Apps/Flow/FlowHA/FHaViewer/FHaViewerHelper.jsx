@@ -43,6 +43,13 @@ export const sidePanelItems = (navigate) => {
             navigate("settings/");
           },
         },
+        {
+          label: "Associations",
+          icon: "pi pi-cog",
+          command: () => {
+            navigate("relations/");
+          },
+        },
       ],
     });
   }
