@@ -21,6 +21,7 @@ const FTDTargetMap = () => {
     isFetchingTargetRelations,
     targetListWithRelations,
     isTargetRelationsCacheValid,
+    getFilteredTargets,
   } = rootStore.targetStore;
 
   const navigate = useNavigate();
