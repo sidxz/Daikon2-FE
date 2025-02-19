@@ -25,12 +25,12 @@ const FHaDPCard = ({ hitAssessments }) => {
     );
 
   return (
-    <div className="flex flex-wrap gap-3 justify-content-start p-3">
+    <div className="flex flex-wrap gap-3 justify-content-start p-1">
       {hitAssessments.map((ha) => (
         <div
           key={ha.id}
-          className="flex flex-column shadow-1 hover:shadow-3 border-round-md surface-card p-2"
-          style={{ width: "400px" }} // Dynamic sizing
+          className="flex flex-column shadow-1 hover:shadow-3 border-round-md surface-card"
+          style={{ width: "300px" }} // Dynamic sizing
         >
           {/* Clickable Section */}
           <div
@@ -38,7 +38,7 @@ const FHaDPCard = ({ hitAssessments }) => {
             onClick={() => navigate(`/wf/ha/viewer/${ha.id}/information`)}
           >
             {/* Header */}
-            <div className="surface-200	 text-center border-round-top-md p-2">
+            <div className="surface-200	text-center border-round-top-md p-2">
               <span className="text-lg text-600 font-bold">{ha.name}</span>
             </div>
 

@@ -20,14 +20,17 @@ const FHaDMenuBar = () => {
     {
       label: "Overview",
       command: () => navigate("overview/"),
+      icon: "pi pi-fw pi-home",
     },
     {
       label: "Paused",
       command: () => navigate("paused/"),
+      icon: "pi pi-fw pi-pause",
     },
     {
       label: "All HA Projects",
       command: () => navigate("all-projects/"),
+      icon: "pi pi-fw pi-list",
     },
   ];
 
