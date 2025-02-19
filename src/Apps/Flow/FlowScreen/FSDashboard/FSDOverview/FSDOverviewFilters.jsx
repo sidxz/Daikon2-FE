@@ -46,7 +46,7 @@ const FSDOverviewFilters = ({ dashDisplay, setDashDisplay }) => {
         hideOldScreens:
           searchParams.get("hideOldScreens") !== null
             ? searchParams.get("hideOldScreens") === "true"
-            : localFilters?.hideOldScreens ?? true, // Default: true
+            : localFilters?.hideOldScreens ?? true, //
       };
       setFilterCriteria(initialFilters);
       setIsInitialized(true);
@@ -138,22 +138,35 @@ const FSDOverviewFilters = ({ dashDisplay, setDashDisplay }) => {
         optionLabel="value"
         valueTemplate={(option) => <MdGridView />}
       />
+    </div>
+  );
 
+  const beginContent = (
+    <div className="flex border-0 border-50 border-round-md">
       <ToggleButton
         className="border-0 p-0 m-0 surface-50"
-        onLabel=""
-        offLabel=""
-        onIcon={<MdLockClock color="red" size={18} />}
-        offIcon={<MdBrowseGallery color="red" size={18} />}
+        onLabel="Inactive Screens Hidden"
+        offLabel="All Screens"
+        onIcon={<MdLockClock className="mr-2" color="red" size={18} />}
+        offIcon={<MdBrowseGallery className="mr-2" color="red" size={18} />}
         checked={filterCriteria.hideOldScreens}
         onChange={(e) => setFilterCriteria({ hideOldScreens: e.value })}
+        tooltip="Screens that have not been updated in the past six months are automatically hidden."
+        pt={{
+          root: { style: { border: "0px" } },
+          input: { style: { paddingRight: "0px" } },
+        }}
       />
     </div>
   );
 
   return (
     <div className="div border-0 w-full m-0 p-0 ">
-      <Toolbar end={content1} className="m-0 p-0 border-0" />
+      <Toolbar
+        start={beginContent}
+        end={content1}
+        className="m-0 p-0 border-0"
+      />
     </div>
   );
 };

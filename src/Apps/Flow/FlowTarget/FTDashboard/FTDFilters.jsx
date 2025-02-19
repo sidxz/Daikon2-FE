@@ -72,11 +72,12 @@ const FTDFilters = () => {
           filterCriteria.priority.includes(1)
         }
         onChange={handleToggleChange}
-        onLabel="Top 25 Targets"
+        onLabel="Priority Targets"
         offLabel="All Targets"
         onIcon="pi pi-star-fill"
         offIcon="pi pi-bullseye"
         className="border-0 w-full surface-50 p-button-sm"
+        size="small"
       />
     </div>
   );
