@@ -6,6 +6,7 @@ import { HAIcon } from "../../icons/HAIcon";
 import FHaDAllProjects from "./FHaDAllProjects/FHaDAllProjects";
 import FHaDMenuBar from "./FHaDMenuBar/FHaDMenuBar";
 import FHaDOverview from "./FHaDOverview/FHaDOverview";
+import FHaDPaused from "./FHaDPaused/FHaDPaused";
 
 const FHaDashboard = () => {
   const navigate = useNavigate();
@@ -35,6 +36,7 @@ const FHaDashboard = () => {
           <Route index element={<Navigate to="overview/" />} />
           <Route path="overview/*" element={<FHaDOverview />} />
           <Route path="all-projects/*" element={<FHaDAllProjects />} />
+          <Route path="paused/*" element={<FHaDPaused />} />
         </Routes>
       </div>
     </div>
