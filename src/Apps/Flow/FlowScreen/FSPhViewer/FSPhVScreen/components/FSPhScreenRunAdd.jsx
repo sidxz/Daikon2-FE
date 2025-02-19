@@ -59,7 +59,7 @@ const FSPhScreenRunAdd = ({ screenId, closeSideBar }) => {
             htmlFor="library"
             className={classNames({ "p-error": isInvalid("library") })}
           >
-            Library
+            Library *
           </label>
           <InputText
             id="library"
@@ -77,7 +77,7 @@ const FSPhScreenRunAdd = ({ screenId, closeSideBar }) => {
             htmlFor="librarySize"
             className={classNames({ "p-error": isInvalid("librarySize") })}
           >
-            Library Size
+            Library Size *
           </label>
           <InputText
             id="librarySize"
@@ -95,7 +95,7 @@ const FSPhScreenRunAdd = ({ screenId, closeSideBar }) => {
             htmlFor="protocol"
             className={classNames({ "p-error": isInvalid("protocol") })}
           >
-            Protocol
+            Protocol *
           </label>
           <InputTextarea
             id="protocol"
@@ -133,7 +133,7 @@ const FSPhScreenRunAdd = ({ screenId, closeSideBar }) => {
             htmlFor="scientist"
             className={classNames({ "p-error": isInvalid("scientist") })}
           >
-            Scientist
+            Scientist *
           </label>
           <InputScientist
             id="scientist"
@@ -153,7 +153,7 @@ const FSPhScreenRunAdd = ({ screenId, closeSideBar }) => {
               "p-error": isInvalid("startDate"),
             })}
           >
-            Start Date
+            Start Date *
           </label>
           <Calendar
             id="startDate"
