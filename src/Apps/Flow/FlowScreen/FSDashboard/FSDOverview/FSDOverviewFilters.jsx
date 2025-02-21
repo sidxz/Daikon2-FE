@@ -145,13 +145,13 @@ const FSDOverviewFilters = ({ dashDisplay, setDashDisplay }) => {
     <div className="flex border-0 border-50 border-round-md">
       <ToggleButton
         className="border-0 p-0 m-0 surface-50"
-        onLabel="Inactive Screens Hidden"
+        onLabel="Hiding Paused Screens"
         offLabel="All Screens"
         onIcon={<MdLockClock className="mr-2" color="red" size={18} />}
         offIcon={<MdBrowseGallery className="mr-2" color="red" size={18} />}
         checked={filterCriteria.hideOldScreens}
         onChange={(e) => setFilterCriteria({ hideOldScreens: e.value })}
-        tooltip="Screens that have not been updated in the past six months are automatically hidden."
+        tooltip="Screens that haven’t been updated in the past six months will be hidden automatically. Click to toggle and view all screens."
         pt={{
           root: { style: { border: "0px" } },
           input: { style: { paddingRight: "0px" } },

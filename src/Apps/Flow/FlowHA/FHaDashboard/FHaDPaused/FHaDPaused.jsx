@@ -25,7 +25,7 @@ const FHaDPaused = () => {
       <div className="flex w-full ">
         <div className="flex w-full flex-column text-sm ">
           <div className="flex w-full pr-3 ">
-            <div className="flex w-full  pt-1  bg-white">
+            <div className="flex w-full pt-1 bg-white justify-content-center">
               <FHaDPCard
                 hitAssessments={haList.filter(
                   (item) => item.status === "Paused"

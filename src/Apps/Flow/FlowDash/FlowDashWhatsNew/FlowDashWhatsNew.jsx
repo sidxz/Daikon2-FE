@@ -8,15 +8,6 @@ const FlowDashWhatsNew = () => {
         <p>We're excited to unveil some new additions to DAIKON 2.4 :</p>
       </div>
       <div className="flex flex-column">
-        <div className="feature">
-          <span className="icon-summary" aria-label="summary-icon">
-            📝
-          </span>
-          <strong> DAIKON AI Phase 1</strong>
-          <br></br>Explore generated short summaries of TBDA documents,
-          presentations, including target structures and convenient download
-          links.
-        </div>
         <Divider />
         <div className="feature">
           <span className="icon-activity" aria-label="activity-icon">
