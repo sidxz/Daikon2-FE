@@ -8,6 +8,7 @@ import { SelectButton } from "primereact/selectbutton";
 import { Stepper } from "primereact/stepper";
 import { StepperPanel } from "primereact/stepperpanel";
 import StepperNavButtons from "../../../../../../UILib/StepperTools/NavButtons/StepperNavButtons";
+import { Tag } from "primereact/tag";
 
 const FHaNewHitPicker = ({
   screenSectionData,
@@ -88,14 +89,36 @@ const FHaNewHitPicker = ({
     }));
   };
 
+  const RelationsBodyTemplate = (hit) => {
+    // check if relations count is more than 0
+    if (hit?.relations?.length > 1) {
+      const hitAssessment = hit.relations.find(
+        (relation) => relation.nodeType === "HitAssessment"
+      );
+
+      return (
+        <div className="flex gap-1">
+          <div className="flex">
+            {hitAssessment && (
+              <Tag value="HA" icon="pi pi-check" severity="success"></Tag>
+            )}
+          </div>
+        </div>
+      );
+    } else {
+      return <></>;
+    }
+  };
+
   const renderHitItemTemplate = (hit) => (
     <div className="flex flex-column bg-surface border-round p-2 border-0 w-full">
       <div className="flex border-0 border-50">
         <SmilesView smiles={hit?.requestedSMILES} width={200} height={200} />
       </div>
       <div className="flex flex-column gap-1 w-full border-0 align-items-center justify-content-center	align-content-center">
-        <div className="flex align-items-center justify-content-center	align-content-center">
-          Name: {hit?.molecule?.name}
+        <div className="flex align-items-center justify-content-center	align-content-center gap-2">
+          <div className="flex">Name: {hit?.molecule?.name}</div>
+          <div className="flex">{RelationsBodyTemplate(hit)} </div>
         </div>
         <div className="flex font-bold align-items-center justify-content-center	align-content-center">
           Cluster: {hit?.clusterGroup}
