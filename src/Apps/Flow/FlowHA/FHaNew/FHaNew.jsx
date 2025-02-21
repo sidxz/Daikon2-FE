@@ -341,12 +341,10 @@ const FHANew = () => {
             >
               <div className="flex-grow-1 flex align-items-center justify-content-center">
                 <div className="text-base text-center">
-                  <p className="text-xl font-semibold">
-                    Unknown/Undisclosed Compound
-                  </p>
-                  If the compound is unknown you can skip selecting a compound.
-                  However, as a best practice, linking helps Daikon maintain a
-                  hyperlinked and queryable workflow.
+                  <p className="text-xl font-semibold">Undisclosed Compound</p>
+                  If the compound is undisclosed, you can skip selecting one.
+                  However, if the compound is a result of a screen, please add
+                  the undisclosed compound in the screen section first.
                 </div>
               </div>
             </Button>

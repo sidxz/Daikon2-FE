@@ -45,7 +45,7 @@ export const sidePanelItems = (navigate) => {
         },
         {
           label: "Associations",
-          icon: "pi pi-cog",
+          icon: "pi pi-sitemap",
           command: () => {
             navigate("relations/");
           },

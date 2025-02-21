@@ -16,16 +16,28 @@ import { appColors } from "../../../../../constants/colors";
 import { HAIcon } from "../../../icons/HAIcon";
 import FHaVAssociatedHits from "../FHaVInformation/components/FHaVAssociatedHits";
 import * as Helper from "./FHaVRelationsHelper";
-
+import FHaNewHitPicker from "../../FHaNew/components/FHaNewHitPicker/FHaNewHitPicker";
+import FHaNewMoleculePicker from "../../FHaNew/components/FHaNewMoleculePicker/FHaNewMoleculePicker";
+import { Divider } from "primereact/divider";
+import { Panel } from "primereact/panel";
+import { DataTable } from "primereact/datatable";
+import { Column } from "primereact/column";
+import { se } from "../../../../../../node_modules/date-fns/locale/se";
+import _ from "lodash";
 const FHaVRelations = () => {
   const navigate = useNavigate();
   const rootStore = useContext(RootStoreContext);
 
   const stepperRef = useRef(null);
-  const [selectedAssocMethod, setSelectedAssocMethod] = useState(null);
 
-  const { fetchHa, selectedHa, isFetchingHa, isHaRegistryCacheValid } =
-    rootStore.haStore;
+  const {
+    fetchHa,
+    selectedHa,
+    isFetchingHa,
+    isHaRegistryCacheValid,
+    updateHa,
+    isUpdatingHa,
+  } = rootStore.haStore;
   const params = useParams();
   const {
     fetchMolecule,
@@ -33,6 +45,17 @@ const FHaVRelations = () => {
     moleculeRegistry,
     selectedMolecule,
   } = rootStore.moleculeStore;
+
+  const [screenSectionData, setScreenSectionData] = useState({
+    selectedScreen: null,
+    selectedHitCollection: null,
+    selectedBaseHits: null,
+    selectedPrimaryHit: null,
+  });
+
+  const [baseHitData, setBaseHitData] = useState(null);
+  const [newSelectedMolecule, setNewSelectedMolecule] = useState(null);
+  const [selectedAssocMethod, setSelectedAssocMethod] = useState(null);
 
   useEffect(() => {
     if (
@@ -135,6 +158,138 @@ const FHaVRelations = () => {
     </div>
   );
 
+  const startWithScreenPanel = (
+    <div className="flex w-full gap-2">
+      <FHaNewHitPicker
+        screenSectionData={screenSectionData}
+        setScreenSectionData={setScreenSectionData}
+        baseHitData={baseHitData}
+        setBaseHitData={setBaseHitData}
+        stepperRef={stepperRef}
+      />
+    </div>
+  );
+
+  const startWithCompoundPanel = (
+    <div className="flex w-full gap-2">
+      <FHaNewMoleculePicker
+        selectedMolecule={newSelectedMolecule}
+        setSelectedMolecule={setNewSelectedMolecule}
+        baseHitData={baseHitData}
+        setBaseHitData={setBaseHitData}
+        stepperRef={stepperRef}
+      />
+    </div>
+  );
+
+  const startWithBlankTemplate = (
+    <div className="flex flex-column w-full gap-4 justify-content-center align-content-center">
+      <div className="flex text-2xl bg-red-700 p-2 border-1 border-50 border-round-md text-white">
+        Compound Selection Skipped. What does this mean?
+      </div>
+      <div className="flex text-lg p-2 surface-ground	border-1 border-50 border-round-md">
+        You have chosen to skip compound selection. This means you will proceed
+        without linking a specific compound or a screen/hit list to your Hit
+        Assessment. While this is valid, we recommend linking a compound
+        whenever possible to keep your workflow interactive and easy to search
+        within Daikon. If this Hit Assessment is based on a screen that has not
+        been created yet, please create the screen first. If the compound is
+        undisclosed or unknown, and the screen is also not known, you may
+        proceed with creating the Hit Assessment without linking a compound.
+      </div>
+      <StepperNavButtons
+        stepperRef={stepperRef}
+        nextLabel="Acknowledge & Continue"
+      />
+    </div>
+  );
+
+  const generateSummaryData = () => {
+    let summary = [];
+
+    if (newSelectedMolecule) {
+      summary.push({
+        name: "Molecule Name",
+        value: newSelectedMolecule.name || "N/A",
+      });
+      summary.push({
+        name: "Molecule SMILES",
+        value: newSelectedMolecule.smilesCanonical || "N/A",
+      });
+    }
+
+    return summary;
+  };
+
+  const summary = (
+    <div className="flex flex-column w-full p-2 border-1 border-50 border-round-md gap-2">
+      <div className="flex text-xl font-bold">
+        Review the details of your project
+      </div>
+      <div className="flex">
+        <Divider />
+      </div>
+      <div className="flex gap-2">
+        {baseHitData?.compoundSMILES && (
+          <div className="flex">
+            <Panel
+              header={baseHitData.primaryCompound?.name || "Primary Compound"}
+            >
+              <SmilesView smiles={baseHitData?.compoundSMILES} />
+            </Panel>
+          </div>
+        )}
+        <div className="flex flex-grow w-full border-1 border-50 border-round-md">
+          {baseHitData?.associatedHits?.length > 0 && (
+            <div className="flex">
+              <Panel header={"Associated Compounds"}>
+                <div className="flex gap-1">
+                  {baseHitData?.associatedHits?.map((hit) => (
+                    <div className="flex flex-column border-1 border-50 border-round-md">
+                      <div className="flex p-2">
+                        {hit.molecule?.name || "Unnamed Molecule"}
+                      </div>
+                      <div className="flex text-md">
+                        <SmilesView smiles={hit.molecule?.smilesCanonical} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </Panel>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+
+  const onSubmit = () => {
+    console.log("Submitting...");
+
+    let data = { ...selectedHa };
+    // Merge baseHitData only if it's present
+    if (
+      selectedAssocMethod === "screen" ||
+      selectedAssocMethod === "compound"
+    ) {
+      data = { ...data, ...baseHitData };
+    }
+    if (selectedAssocMethod === "startWithBlankTemplate") {
+      data = _.omit(data, [
+        "compoundId",
+        "compoundSMILES",
+        "associatedHits",
+        "hitCollectionId",
+        "hitId",
+        "associatedHits",
+        "associatedHitIds",
+      ]);
+    }
+
+    console.log("FHANew -> data", data);
+    updateHa(data);
+  };
+
   return (
     <div className="flex flex-column min-w-full fadein animation-duration-500">
       <div className="flex w-full">
@@ -190,22 +345,22 @@ const FHaVRelations = () => {
             </StepperPanel>
             <StepperPanel header="Association">
               <div className="flex flex-column w-full gap-2">
-                {/* {selectedAssocMethod === "screen" && startWithScreenPanel}
-              {selectedAssocMethod === "compound" && startWithCompoundPanel}
-              {selectedAssocMethod === "startWithBlankTemplate" &&
-                startWithBlankTemplate} */}
+                {selectedAssocMethod === "screen" && startWithScreenPanel}
+                {selectedAssocMethod === "compound" && startWithCompoundPanel}
+                {selectedAssocMethod === "startWithBlankTemplate" &&
+                  startWithBlankTemplate}
               </div>
             </StepperPanel>
             <StepperPanel header="Summary">
               <div className="flex flex-column w-full gap-2">
-                {/* {summary} */}
+                {summary}
                 <StepperNavButtons
                   stepperRef={stepperRef}
                   showNext={false}
                   showSubmit={true}
-                  //submitFunc={onSubmit}
+                  submitFunc={onSubmit}
                   submitLabel="Update Hit Assessment"
-                  //submitLoading={isAddingHa}
+                  submitLoading={isUpdatingHa}
                 />
               </div>
             </StepperPanel>
