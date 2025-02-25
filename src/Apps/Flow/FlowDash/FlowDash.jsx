@@ -7,7 +7,6 @@ import FlowDashMostRecentComments from "./FlowDashComments/FlowDashMostRecentCom
 import FlowDashEventUpdates from "./FlowDashEventUpdates/FlowDashEventUpdates";
 import FlowDashMLogixSearch from "./FlowDashMLogixSearch/FlowDashMLogixSearch";
 import FlowDashWhatsNew from "./FlowDashWhatsNew/FlowDashWhatsNew";
-import { Divider } from "primereact/divider";
 const FlowDash = () => {
   let generateCardTitle = (icon, title) => {
     return (
@@ -76,8 +75,8 @@ const FlowDash = () => {
         <div className="flex shadow-1 border-round-lg w-full w-7 gap-2">
           <FlowDashEventUpdates />
         </div>
-        
-        <div className="flex flex-column w-3 gap-1 p-2 mb-2">
+
+        <div className="flex flex-column w-3 gap-1 p-0 mb-2">
           <div className="flex flex-column border-round-lg pb-3 p-1 shadow-1">
             <div className="flex flex-column pb-3 ">
               <p className="text-2xl mt-1 ml-3 font-bold text-gray-700 text-left">
@@ -88,18 +87,16 @@ const FlowDash = () => {
               </div>
               {/* </Card> */}
             </div>
-
-            
           </div>
           <div className="flex mt-2 bg-bluegray-50 flex-column border-round-lg shadow-1">
-              <p className="text-2xl mt-2 ml-3 font-bold text-gray-700 text-left ">
-                MolecuLogix
-              </p>
+            <p className="text-2xl mt-2 ml-3 font-bold text-gray-700 text-left ">
+              MolecuLogix
+            </p>
 
-              <div className="flex w-full">
-                <FlowDashMLogixSearch />
-              </div>
+            <div className="flex w-full">
+              <FlowDashMLogixSearch />
             </div>
+          </div>
         </div>
       </div>
     </div>
