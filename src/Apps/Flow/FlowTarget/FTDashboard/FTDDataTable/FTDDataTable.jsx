@@ -14,6 +14,7 @@ const FTDDataTable = ({ targets }) => {
     isFetchingTargets,
     fetchTargets,
     isTargetListCacheValid,
+    getFilteredTargets,
   } = rootStore.targetStore;
 
   useEffect(() => {
@@ -33,7 +34,7 @@ const FTDDataTable = ({ targets }) => {
           <DataTable
             paginator
             rows={15}
-            value={targetList}
+            value={getFilteredTargets}
             // header={header}
             className="w-full"
             //globalFilter={globalFilter}

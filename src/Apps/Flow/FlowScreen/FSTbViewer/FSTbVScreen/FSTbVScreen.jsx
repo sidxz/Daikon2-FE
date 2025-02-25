@@ -207,12 +207,12 @@ const FSTbVScreen = () => {
                 />
                 <Column
                   field="primaryHitCount"
-                  header="Initial Hit Count"
+                  header="# Initial Hit"
                   editor={(options) => TextRowEditor(options)}
                 />
                 <Column
                   field="confirmedHitCount"
-                  header="Validated Hit Count"
+                  header="# Confirmed Active Hit"
                   editor={(options) => TextRowEditor(options)}
                 />
                 <Column

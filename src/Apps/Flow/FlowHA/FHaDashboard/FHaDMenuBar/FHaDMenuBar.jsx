@@ -12,17 +12,25 @@ const FHaDMenuBar = () => {
 
   useEffect(() => {
     if (location.pathname.includes("/overview/")) setActiveIndex(0);
-    else if (location.pathname.includes("/all-projects/")) setActiveIndex(1);
+    else if (location.pathname.includes("/paused/")) setActiveIndex(1);
+    else if (location.pathname.includes("/all-projects/")) setActiveIndex(2);
   }, [location, setActiveIndex]);
 
   const items = [
     {
       label: "Overview",
       command: () => navigate("overview/"),
+      icon: "pi pi-fw pi-home",
+    },
+    {
+      label: "Paused",
+      command: () => navigate("paused/"),
+      icon: "pi pi-fw pi-pause",
     },
     {
       label: "All HA Projects",
       command: () => navigate("all-projects/"),
+      icon: "pi pi-fw pi-list",
     },
   ];
 

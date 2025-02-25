@@ -10,9 +10,11 @@ import { RootStoreContext } from "../../../../RootStore";
 import { AppRoleResolver } from "../../../../Shared/VariableResolvers/AppRoleResolver";
 import { HaAdminRoleName } from "../constants/roles";
 import FHaVComments from "./FHaVComments/FHaVComments";
-import FHaVInformation from "./FHaVInformation/FHaVInformation";
-import FHaVSettings from "./FHaVSettings/FHaVSettings";
+import FHaVDocs from "./FHaVDocs/FHaVDocs";
 import * as Helper from "./FHaViewerHelper";
+import FHaVInformation from "./FHaVInformation/FHaVInformation";
+import FHaVRelations from "./FHaVRelations/FHaVRelations";
+import FHaVSettings from "./FHaVSettings/FHaVSettings";
 
 const FHaViewer = () => {
   const params = useParams();
@@ -61,11 +63,18 @@ const FHaViewer = () => {
               <Route index element={<Navigate replace to="information/" />} />
               <Route path="information/*" element={<FHaVInformation />} />
               <Route
+                path="docs/*"
+                element={<FHaVDocs selectedHa={selectedHa} />}
+              />
+              <Route
                 path="discussion/*"
                 element={<FHaVComments selectedHa={selectedHa} />}
               />
               {isUserInAnyOfRoles([HaAdminRoleName]) && (
                 <Route path="settings/*" element={<FHaVSettings />} />
+              )}
+              {isUserInAnyOfRoles([HaAdminRoleName]) && (
+                <Route path="relations/*" element={<FHaVRelations />} />
               )}
               <Route path="*" element={<NotFound />} />
             </Routes>

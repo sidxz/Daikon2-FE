@@ -1,6 +1,7 @@
-import { Avatar } from "primereact/avatar";
 import { Tag } from "primereact/tag";
 import React from "react";
+
+import { Avatar } from "primereact/avatar";
 import { AppUserResolver } from "../../VariableResolvers/AppUserResolver";
 
 const AuthorTag = ({ userId, size = "normal" }) => {
@@ -27,7 +28,7 @@ const AuthorTag = ({ userId, size = "normal" }) => {
         background: "#ffffff",
       }}
     >
-      <div className="flex align-items-center gap-2 pl-2 m-0">
+      <div className="flex align-items-center gap-2 m-0">
         <div className="flex text-bluegray-500 font-normal">
           {/* <FaUser /> */}
           <Avatar label={authorInitials} size={size} />

@@ -45,6 +45,11 @@ export default class TargetStore {
       targetRelationsRegistry: observable,
 
       targetListWithRelations: computed,
+
+      getFilterAttributes: action,
+      filterCriteria: observable,
+      setFilterCriteria: action,
+      getFilteredTargets: computed,
     });
   }
 
@@ -65,6 +70,10 @@ export default class TargetStore {
   isFetchingTargetRelations = false;
   isTargetRelationsCacheValid = false;
   targetRelationsRegistry = new Map();
+
+  filterCriteria = {
+    priority: [0, 1, 2, 3, 4],
+  };
 
   // Actions
 
@@ -304,12 +313,51 @@ export default class TargetStore {
   };
 
   get targetListWithRelations() {
-    return this.targetList.map((target) => {
+    return this.getFilteredTargets.map((target) => {
       const highestRelationship = this.targetRelationsRegistry.get(target.id);
       return {
         ...target,
         highestRelationship: highestRelationship,
       };
+    });
+  }
+
+  getFilterAttributes = () => {
+    console.log("!!!!Default filter criteria:", this.filterCriteria);
+
+    return {
+      priority: Array.from(
+        new Set(
+          Array.from(this.targetListRegistry.values()).map(
+            (target) => target.priority
+          )
+        )
+      ).sort(),
+    };
+  };
+
+  setFilterCriteria = (criteria) => {
+    console.log("Default filter criteria:", this.filterCriteria);
+    runInAction(() => {
+      console.log("Setting filter criteria:", criteria);
+      this.filterCriteria = {
+        ...this.filterCriteria,
+        ...criteria,
+      };
+    });
+  };
+
+  get getFilteredTargets() {
+    const { priority } = this.filterCriteria;
+
+    return Array.from(this.targetList).filter((target) => {
+      // Filter by targets
+      const matchPriority =
+        !priority?.length || priority.includes(target.priority);
+
+      // Return true if all criteria match
+
+      return matchPriority;
     });
   }
 }

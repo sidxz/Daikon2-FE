@@ -1,10 +1,8 @@
 import React from "react";
-import { FaClock } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import FDate from "../../../../../../Library/FDate/FDate";
 import { AppOrgResolver } from "../../../../../../Shared/VariableResolvers/AppOrgResolver";
 import { FormatScreeningMethod } from "../../../shared/Formatters";
-import { getClockIconData } from "../FSDOHelper";
 
 const FSDORecentlyCompleted = ({ screens }) => {
   const navigate = useNavigate();
@@ -41,22 +39,7 @@ const FSDORecentlyCompleted = ({ screens }) => {
               }
             />
           </div>
-          <div className="tooltip-container justify-content-center bg-white">
-            {(() => {
-              const dateToCheck = screen?.isModified
-                ? screen?.latestStatusChangeDate
-                : screen?.dateCreated;
-              const { color: iconColor, tooltipText } =
-                getClockIconData(dateToCheck);
-
-              return iconColor ? (
-                <>
-                  <FaClock style={{ color: iconColor }} />
-                  <span className="tooltip-text">{tooltipText}</span>
-                </>
-              ) : null;
-            })()}
-          </div>
+          <div className="tooltip-container justify-content-center bg-white"></div>
         </div>
         <div
           className="flex justify-content-center cursor-pointer w-full text-green-600 text-lg p-2"

@@ -10,6 +10,7 @@ import { RootStoreContext } from "../../../../RootStore";
 import { AppRoleResolver } from "../../../../Shared/VariableResolvers/AppRoleResolver";
 import { PostPortfolioAdminRoleName } from "../constants/roles";
 import FPPVComments from "./FPPVComments/FPPVComments";
+import FPPVDocs from "./FPPVDocs/FPPVDocs";
 import FPPVInformation from "./FPPVInformation/FPPVInformation";
 import FPPVSettings from "./FPPVSettings/FPPVSettings";
 import * as Helper from "./FPPViewerHelper";
@@ -65,6 +66,10 @@ const FPPViewer = () => {
             <Routes>
               <Route index element={<Navigate replace to="information/" />} />
               <Route path="information/*" element={<FPPVInformation />} />
+              <Route
+                path="docs/*"
+                element={<FPPVDocs selectedProject={selectedProject} />}
+              />
               <Route
                 path="discussion/*"
                 element={<FPPVComments selectedProject={selectedProject} />}

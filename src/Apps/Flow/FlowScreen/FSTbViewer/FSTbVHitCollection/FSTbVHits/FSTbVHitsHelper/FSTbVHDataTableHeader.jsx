@@ -5,6 +5,7 @@ import React from "react";
 import { MolecuLogixIcon } from "../../../../../../MolecuLogix/Icons/MolecuLogixIcon";
 import { ExportHitsToExcel } from "./FSTbVHExcelExport";
 import FSTbVHExcelImport from "./FSTbVHExcelImport";
+import { ExportTemplateExcel } from "./FSTbVHExportTemplate";
 import { DtFieldsToExcelColumnMapping } from "./FSTbVHitsConstants";
 
 export const FSTbVHDataTableHeader = ({
@@ -53,42 +54,6 @@ export const FSTbVHDataTableHeader = ({
             </div>
           </div>
 
-          {!selectionEnabled && (
-            <div className="flex flex-grow min-w-max w-full">
-              <Button
-                type="button"
-                icon="pi pi-check-square"
-                label="Select Hits for HA"
-                className="fadein p-button-text p-button-md w-15rem"
-                onClick={() => setSelectionEnabled(true)}
-              />
-            </div>
-          )}
-          {selectionEnabled && (
-            <div className="flex flex-grow min-w-max w-full">
-              <Button
-                type="button"
-                icon="pi pi-times-circle"
-                label="Clear Selection"
-                className="fadein p-button-text p-button-md  w-15rem"
-                onClick={() => {
-                  setSelectionEnabled(false);
-                  setSelectedHits([]);
-                }}
-              />
-            </div>
-          )}
-          {selectionEnabled && selectedHits?.length > 0 && (
-            <div className="flex flex-grow min-w-max w-full fadeinleft">
-              <Button
-                type="button"
-                icon="icon icon-common icon-arrow-alt-circle-right"
-                label="Promote to HA"
-                className=" p-button-text p-button-md w-15rem"
-                onClick={() => showPromoteSideBar()}
-              />
-            </div>
-          )}
           <div className="flex flex-grow min-w-max">
             <ToggleButton
               className="p-button-text p-button-md w-10rem"
@@ -120,6 +85,21 @@ export const FSTbVHDataTableHeader = ({
               label="Add Hit"
               className="p-button-text p-button-md"
               onClick={() => showAddHitSideBar()}
+            />
+          </div>
+          <div className="flex flex-grow min-w-max">
+            <Button
+              type="button"
+              icon="icon icon-common icon-download"
+              label="Download Template"
+              className="p-button-text p-button-md"
+              onClick={() =>
+                ExportTemplateExcel(
+                  selectedHitCollection,
+                  selectedScreen,
+                  DtFieldsToExcelColumnMapping
+                )
+              }
             />
           </div>
           <div className="flex flex-grow min-w-max">

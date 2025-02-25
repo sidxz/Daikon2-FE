@@ -1,9 +1,10 @@
 import { observer } from "mobx-react-lite";
 import { Dropdown } from "primereact/dropdown";
 import { MultiSelect } from "primereact/multiselect";
+import { ToggleButton } from "primereact/togglebutton";
 import { Toolbar } from "primereact/toolbar";
 import React, { useContext, useEffect, useState } from "react";
-import { MdGridView } from "react-icons/md";
+import { MdBrowseGallery, MdGridView, MdLockClock } from "react-icons/md";
 import { useSearchParams } from "react-router-dom";
 import { RootStoreContext } from "../../../../../RootStore";
 import { GlobalValuesResolver } from "../../../../../Shared/VariableResolvers/GlobalValuesResolver";
@@ -41,6 +42,11 @@ const FSDOverviewFilters = ({ dashDisplay, setDashDisplay }) => {
               .split(",")
               .map((date) => new Date(date))
           : localFilters?.dateRange || [null, null],
+
+        hideOldScreens:
+          searchParams.get("hideOldScreens") !== null
+            ? searchParams.get("hideOldScreens") === "true"
+            : localFilters?.hideOldScreens ?? true, //
       };
       setFilterCriteria(initialFilters);
       setIsInitialized(true);
@@ -69,6 +75,8 @@ const FSDOverviewFilters = ({ dashDisplay, setDashDisplay }) => {
           .map((date) => date.toISOString())
           .join(",");
       }
+      params.hideOldScreens = filterCriteria.hideOldScreens.toString();
+
       setSearchParams(params, { replace: true });
       localStorage.setItem(
         "screenDashFilterCriteria",
@@ -119,6 +127,7 @@ const FSDOverviewFilters = ({ dashDisplay, setDashDisplay }) => {
         display="chip"
         className="border-0 w-full surface-50"
       />
+
       <Dropdown
         icon="pi pi-check"
         className="border-0 p-0 m-0 surface-50"
@@ -132,9 +141,32 @@ const FSDOverviewFilters = ({ dashDisplay, setDashDisplay }) => {
     </div>
   );
 
+  const beginContent = (
+    <div className="flex border-0 border-50 border-round-md">
+      <ToggleButton
+        className="border-0 p-0 m-0 surface-50"
+        onLabel="Hiding Paused Screens"
+        offLabel="All Screens"
+        onIcon={<MdLockClock className="mr-2" color="red" size={18} />}
+        offIcon={<MdBrowseGallery className="mr-2" color="red" size={18} />}
+        checked={filterCriteria.hideOldScreens}
+        onChange={(e) => setFilterCriteria({ hideOldScreens: e.value })}
+        tooltip="Screens that haven’t been updated in the past six months will be hidden automatically. Click to toggle and view all screens."
+        pt={{
+          root: { style: { border: "0px" } },
+          input: { style: { paddingRight: "0px" } },
+        }}
+      />
+    </div>
+  );
+
   return (
     <div className="div border-0 w-full m-0 p-0 ">
-      <Toolbar end={content1} className="m-0 p-0 border-0" />
+      <Toolbar
+        start={beginContent}
+        end={content1}
+        className="m-0 p-0 border-0"
+      />
     </div>
   );
 };

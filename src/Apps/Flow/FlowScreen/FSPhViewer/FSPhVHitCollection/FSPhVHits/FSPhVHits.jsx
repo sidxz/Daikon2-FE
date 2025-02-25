@@ -6,6 +6,7 @@ import { DataTable } from "primereact/datatable";
 import { Dialog } from "primereact/dialog";
 import { Sidebar } from "primereact/sidebar";
 import React, { useContext, useEffect, useState } from "react";
+import JSMEditor from "../../../../../../Library/JSME/JSMEditor";
 import Loading from "../../../../../../Library/Loading/Loading";
 import { RootStoreContext } from "../../../../../../RootStore";
 import { TextRowEditor } from "../../../../../../Shared/TableRowEditors/TextRowEditor";
@@ -57,6 +58,8 @@ const FSPhVHits = ({ id }) => {
   const [isVotesHidden, setIsVotesHidden] = useState(true);
   const [isOneClickVotingEnabled, setIsOneClickVotingEnabled] = useState(false);
   const [isPromoteSideBarVisible, setIsPromoteSideBarVisible] = useState(false);
+  const [subStructureHighlight, setSubStructureHighlight] = useState("");
+  const [showStructureEditor, setShowStructureEditor] = useState(false);
 
   if (isFetchingHitCollection) {
     return <Loading message={"Fetching Hit Collection..."} />;
@@ -148,6 +151,9 @@ const FSPhVHits = ({ id }) => {
                   isOneClickVotingEnabled={isOneClickVotingEnabled}
                   setIsOneClickVotingEnabled={setIsOneClickVotingEnabled}
                   showPromoteSideBar={() => setIsPromoteSideBarVisible(true)}
+                  subStructureHighlight={subStructureHighlight}
+                  setSubStructureHighlight={setSubStructureHighlight}
+                  setShowStructureEditor={setShowStructureEditor}
                 />
               }
               //globalFilter={globalFilter}
@@ -168,7 +174,9 @@ const FSPhVHits = ({ id }) => {
               <Column
                 field={(rowData) => rowData?.molecule?.smilesCanonical}
                 header="Structure"
-                body={StructureBodyTemplate}
+                body={(rowData) =>
+                  StructureBodyTemplate(rowData, subStructureHighlight)
+                }
               />
 
               <Column
@@ -217,9 +225,34 @@ const FSPhVHits = ({ id }) => {
                 <Column body={deleteBodyTemplate} header="Delete" />
               )}
             </DataTable>
-            \{" "}
           </div>
         </div>
+        {/* substructure highlight editor */}
+        <Dialog
+          visible={showStructureEditor}
+          closable={false}
+          modal={false}
+          showHeader={false}
+          onHide={() => setShowStructureEditor(false)}
+          style={{
+            width: "52rem",
+            height: "44rem",
+            overflow: "hidden !important",
+          }}
+          pt={{
+            content: { style: { overflow: "hidden" } },
+          }}
+        >
+          <div className="flex pt-5" style={{ overflow: "hidden" }}>
+            <JSMEditor
+              initialSmiles={subStructureHighlight}
+              onSave={(s) => {
+                setShowStructureEditor(false);
+                setSubStructureHighlight(s);
+              }}
+            />
+          </div>
+        </Dialog>
         <Sidebar
           visible={displayAddHitSideBar}
           position="right"

@@ -18,25 +18,8 @@ const SmilesView = ({
 
   let canId = smiles + Date.now() + Math.floor(Math.random() * 100);
   const navigate = useNavigate();
+  let contextMenuItems = [];
 
-  const contextMenuItems = [
-    {
-      label: "Find similar",
-      icon: "icon icon-common icon-search",
-      command: () => {
-        navigate(`/moleculogix/search?smiles=${smiles}&searchType=similarity`);
-      },
-    },
-    {
-      label: "Find substructure",
-      icon: <VscSearchFuzzy className="mr-2" />,
-      command: () => {
-        navigate(
-          `/moleculogix/search?smiles=${smiles}&searchType=substructure`
-        );
-      },
-    },
-  ];
   if (compoundId) {
     contextMenuItems.push({
       label: "View molecule",
@@ -46,6 +29,22 @@ const SmilesView = ({
       },
     });
   }
+
+  contextMenuItems.push({
+    label: "Find similar",
+    icon: "icon icon-common icon-search",
+    command: () => {
+      navigate(`/moleculogix/search?smiles=${smiles}&searchType=similarity`);
+    },
+  });
+  contextMenuItems.push({
+    label: "Find substructure",
+    icon: <VscSearchFuzzy className="mr-2" />,
+    command: () => {
+      navigate(`/moleculogix/search?smiles=${smiles}&searchType=substructure`);
+    },
+  });
+
   contextMenuItems.push({
     label: "Copy SMILES",
     icon: "pi pi-copy",

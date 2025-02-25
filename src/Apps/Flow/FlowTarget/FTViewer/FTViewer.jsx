@@ -17,6 +17,7 @@ import { TargetAdminRoleName } from "../constants/roles";
 import FTImpactValues from "./FTImpactValues/FTImpactValues";
 import FTVComments from "./FTVComments/FTVComments";
 import FTVCompass from "./FTVCompass/FTVCompass";
+import FTVDocs from "./FTVDocs/FTVDocs";
 import * as Helper from "./FTViewerHelper";
 import FTVPromotionQ from "./FTVPromotionQ/FTVPromotionQ";
 import FTVSafetyAssessment from "./FTVSafetyAssessment/FTVSafetyAssessment";
@@ -109,6 +110,10 @@ const FTViewer = () => {
             {isUserInAnyOfRoles([TargetAdminRoleName]) && (
               <Route path="settings/" element={<FTVSettings />} />
             )}
+            <Route
+              path="docs/*"
+              element={<FTVDocs selectedTarget={selectedTarget} />}
+            />
             <Route
               path="discussion/"
               element={<FTVComments selectedTarget={selectedTarget} />}

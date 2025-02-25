@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import FDate from "../../../../../../Library/FDate/FDate";
 import { AppOrgResolver } from "../../../../../../Shared/VariableResolvers/AppOrgResolver";
 import { FormatScreeningMethod } from "../../../shared/Formatters";
-import { getClockIconData } from "../FSDOHelper";
+import { getClockIconData, getRelevantDate } from "../FSDOHelper";
 
 const FSDOVotingReady = ({ screens }) => {
   const navigate = useNavigate();
@@ -45,9 +45,7 @@ const FSDOVotingReady = ({ screens }) => {
 
           <div className="tooltip-container justify-content-center bg-white">
             {(() => {
-              const dateToCheck = screen?.isModified
-                ? screen?.latestStatusChangeDate
-                : screen?.dateCreated;
+              const dateToCheck = getRelevantDate(screen);
               const { color: iconColor, tooltipText } =
                 getClockIconData(dateToCheck);
 

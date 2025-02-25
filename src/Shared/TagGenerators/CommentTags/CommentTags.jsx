@@ -1,6 +1,5 @@
 import { Tag } from "primereact/tag";
 import React from "react";
-import { IoPricetag } from "react-icons/io5";
 
 const CommentTags = ({ tags }) => {
   if (!tags) {
@@ -13,15 +12,15 @@ const CommentTags = ({ tags }) => {
         key={tag}
         style={{
           background:
-            "linear-gradient(-225deg, #336633 0%, #558855 48%, #77aa77 100%)",
+            "linear-gradient(-225deg, #678bad 20%, #7eb8b1 48%, #7389ad 100%)",
         }}
       >
         <div className="flex align-items-center gap-2">
-          <div className="flex">
+          {/* <div className="flex">
             <IoPricetag />
-          </div>
+          </div> */}
           <div className="flex">
-            <span className="text-sm">{tag}</span>
+            <span className="text-xs">{tag}</span>
           </div>
         </div>
       </Tag>

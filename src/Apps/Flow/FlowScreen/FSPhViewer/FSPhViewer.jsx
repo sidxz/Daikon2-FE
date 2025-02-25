@@ -15,6 +15,7 @@ import { RootStoreContext } from "../../../../RootStore";
 import { AppRoleResolver } from "../../../../Shared/VariableResolvers/AppRoleResolver";
 import { ScreenAdminRoleName } from "../constants/roles";
 import FSPhComments from "./FSPhComments/FSPhComments";
+import FSPhDocs from "./FSPhDocs/FSPhDocs";
 import FSPhVHitCollection from "./FSPhVHitCollection/FSPhVHitCollection";
 import FSPhVHitCollectionSelection from "./FSPhVHitCollection/FSPhVHitCollectionSelection";
 import FSPhVScreen from "./FSPhVScreen/FSPhVScreen";
@@ -124,6 +125,10 @@ const FSPhViewer = () => {
                   element={<FSPhVSettings selectedScreen={selectedScreen} />}
                 />
               )}
+              <Route
+                path="docs/*"
+                element={<FSPhDocs selectedScreen={selectedScreen} />}
+              />
 
               <Route
                 path="discussion/"

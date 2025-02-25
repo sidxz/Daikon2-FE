@@ -1,4 +1,5 @@
 import { AppRoleResolver } from "../../../../Shared/VariableResolvers/AppRoleResolver";
+import { AIDocumentIcon } from "../../icons/AIDocumentIcon";
 import { PortfolioAdminRoleName } from "../constants/roles";
 
 export const sidePanelItems = (navigate) => {
@@ -12,6 +13,13 @@ export const sidePanelItems = (navigate) => {
         icon: "icon icon-common icon-circle-notch",
         command: () => {
           navigate("information/");
+        },
+      },
+      {
+        label: "Documents",
+        icon: <AIDocumentIcon className="mr-2" />,
+        command: () => {
+          navigate("docs/");
         },
       },
       {

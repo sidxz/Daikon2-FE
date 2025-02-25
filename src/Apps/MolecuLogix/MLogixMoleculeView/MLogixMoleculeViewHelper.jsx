@@ -1,4 +1,5 @@
 import { AppRoleResolver } from "../../../Shared/VariableResolvers/AppRoleResolver";
+import { AIDocumentIcon } from "../../Flow/icons/AIDocumentIcon";
 import { MLogixAdminRoleName } from "../constants/roles";
 
 export const sidePanelItems = (navigate, selectedMolecule) => {
@@ -7,7 +8,27 @@ export const sidePanelItems = (navigate, selectedMolecule) => {
   let items = [
     {
       label: "Sections",
-      items: [],
+      items: [
+        {
+          label: "Molecule",
+          icon: "icon icon-common icon-math",
+          command: () => {},
+        },
+        {
+          label: "Documents",
+          icon: <AIDocumentIcon className="mr-2" />,
+          command: () => {
+            navigate("docs/");
+          },
+        },
+        {
+          label: "Discussion",
+          icon: "ri-discuss-line",
+          command: () => {
+            navigate("discussion/");
+          },
+        },
+      ],
     },
   ];
 
@@ -24,6 +45,7 @@ export const sidePanelItems = (navigate, selectedMolecule) => {
             );
           },
         },
+
         {
           label: "Edit Molecule",
           icon: "icon icon-common icon-edit",

@@ -15,6 +15,7 @@ import { RootStoreContext } from "../../../../RootStore";
 import { AppRoleResolver } from "../../../../Shared/VariableResolvers/AppRoleResolver";
 import { ScreenAdminRoleName } from "../constants/roles";
 import FSTbComments from "./FSTbComments/FSTbComments";
+import FSTbDocs from "./FSTbDocs/FSTbDocs";
 import FSTbVHitCollection from "./FSTbVHitCollection/FSTbVHitCollection";
 import FSTbVHitCollectionSelection from "./FSTbVHitCollection/FSTbVHitCollectionSelection";
 import FSTbVScreen from "./FSTbVScreen/FSTbVScreen";
@@ -159,6 +160,10 @@ const FSTbViewer = () => {
                   element={<FSTbVSettings selectedScreen={selectedScreen} />}
                 />
               )}
+              <Route
+                path="docs/*"
+                element={<FSTbDocs selectedScreen={selectedScreen} />}
+              />
               <Route
                 path="discussion/"
                 element={<FSTbComments selectedScreen={selectedScreen} />}

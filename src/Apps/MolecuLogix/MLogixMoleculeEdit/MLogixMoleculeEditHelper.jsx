@@ -5,21 +5,9 @@ export const sidePanelItems = (navigate, selectedMolecule) => {
       items: [
         {
           label: "View Molecule",
-          icon: "icon icon-conceptual icon-structures-3d",
+          icon: "icon icon-common icon-math",
           command: () => {
             navigate(`/moleculogix/molecule/${selectedMolecule.id}`);
-          },
-        },
-      ],
-    },
-    {
-      label: "Actions",
-      items: [
-        {
-          label: "Edit Molecule",
-          icon: "icon icon-common icon-edit",
-          command: () => {
-            navigate(`/moleculogix/molecule/${selectedMolecule.id}/edit`);
           },
         },
       ],

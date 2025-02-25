@@ -1,6 +1,8 @@
 import React from "react";
 import { Route, Routes } from "react-router";
 import { Navigate } from "react-router-dom";
+import MLogixComments from "./MLogixComments/MLogixComments";
+import MLogixDocs from "./MLogixDocs/MLogixDocs";
 import MLogixDraw from "./MLogixDraw/MLogixDraw";
 import MLogixMenuBar from "./MLogixMenuBar/MLogixMenuBar";
 import MLogixMoleculeEdit from "./MLogixMoleculeEdit/MLogixMoleculeEdit";
@@ -17,6 +19,8 @@ const MolecuLogix = () => {
         <Routes>
           <Route index element={<Navigate to="search/" />} />
           <Route path="molecule/:id/edit" element={<MLogixMoleculeEdit />} />
+          <Route path="molecule/:id/docs" element={<MLogixDocs />} />
+          <Route path="molecule/:id/discussion" element={<MLogixComments />} />
           <Route path="molecule/:id" element={<MLogixMoleculeView />} />
           <Route path="search/" element={<MLogixSearch />} />
           <Route path="draw/*" element={<MLogixDraw />} />

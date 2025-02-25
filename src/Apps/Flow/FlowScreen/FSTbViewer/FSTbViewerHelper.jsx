@@ -1,3 +1,4 @@
+import { AIDocumentIcon } from "../../icons/AIDocumentIcon";
 import { HitCollectionIcon } from "../../icons/HitCollectionIcon";
 import { ScreenIcon } from "../../icons/ScreenIcon";
 
@@ -44,6 +45,13 @@ export const sidePanelItems = (
           icon: <HitCollectionIcon size={"18em"} grayscale={1} />,
           command: () => {
             navigate("hits/");
+          },
+        },
+        {
+          label: "Documents",
+          icon: <AIDocumentIcon className="mr-2" />,
+          command: () => {
+            navigate("docs/");
           },
         },
 

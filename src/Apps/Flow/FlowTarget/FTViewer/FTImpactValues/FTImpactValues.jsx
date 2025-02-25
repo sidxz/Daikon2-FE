@@ -77,6 +77,7 @@ const FTImpactValues = () => {
               structureScore: selectedTarget?.structureScore,
               vulnerabilityRank: selectedTarget?.vulnerabilityRank,
               vulnerabilityRatio: selectedTarget?.vulnerabilityRatio,
+              priority: selectedTarget?.priority,
             }}
             validate={formikValidate}
             onSubmit={onFormikSubmit}
@@ -311,10 +312,18 @@ const FTImpactValues = () => {
                     </div>
 
                     <div className="field">
-                      <label
-                        htmlFor="vulnerabilityRatio"
-                        className="text-white-alpha-10"
-                      >
+                      <label htmlFor="priority">Priority</label>
+                      <InputText
+                        id="priority"
+                        value={values.priority}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                      />
+                      {errors.priority && touched.priority && errors.priority}
+                    </div>
+
+                    <div className="field">
+                      <label htmlFor="priority" className="text-white-alpha-10">
                         -
                       </label>
                       <Button
