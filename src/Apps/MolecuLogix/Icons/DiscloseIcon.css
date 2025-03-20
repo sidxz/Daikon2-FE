@@ -1,0 +1,7 @@
+.DiscloseIcon .svg-icon {
+  background-size: contain; /* This ensures that the SVG covers the div area without being stretched or distorted */
+  background-repeat: no-repeat;
+  background-position: center; /* This centers the SVG in the div */
+  width: 24px; /* Adjust based on your requirements */
+  height: 24px; /* Adjust based on your requirements */
+}

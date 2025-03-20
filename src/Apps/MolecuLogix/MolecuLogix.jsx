@@ -1,6 +1,7 @@
 import React from "react";
 import { Route, Routes } from "react-router";
 import { Navigate } from "react-router-dom";
+import MDisclose from "./MDisclose/MDisclose";
 import MLogixComments from "./MLogixComments/MLogixComments";
 import MLogixDocs from "./MLogixDocs/MLogixDocs";
 import MLogixDraw from "./MLogixDraw/MLogixDraw";
@@ -24,6 +25,7 @@ const MolecuLogix = () => {
           <Route path="molecule/:id" element={<MLogixMoleculeView />} />
           <Route path="search/" element={<MLogixSearch />} />
           <Route path="draw/*" element={<MLogixDraw />} />
+          <Route path="disclose/*" element={<MDisclose />} />
         </Routes>
       </div>
     </div>

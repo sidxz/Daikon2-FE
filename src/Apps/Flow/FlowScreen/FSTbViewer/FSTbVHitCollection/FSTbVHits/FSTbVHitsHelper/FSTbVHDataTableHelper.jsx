@@ -52,18 +52,19 @@ export const StructureBodyTemplate = (rowData, subStructureHighlight) => {
     <>
       <div
         className="flex flex-column"
-        style={{ width: "250px", height: "260px" }}
+        style={{ width: "250px", height: "290px" }}
       >
         <div className="flex justify-content-start">
           {RelationsBodyTemplate(rowData)}
         </div>
         <div className="flex w-full h-full">
           <SmilesView
+            compound={rowData?.molecule}
             smiles={rowData?.molecule?.smilesCanonical}
             subStructure={subStructureHighlight}
             compoundId={rowData?.molecule?.id}
             width={250}
-            height={250}
+            height={270}
           />
         </div>
       </div>
