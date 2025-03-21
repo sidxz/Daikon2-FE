@@ -4,6 +4,9 @@ import { Stepper } from "primereact/stepper";
 import { StepperPanel } from "primereact/stepperpanel";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { appColors } from "../../../constants/colors";
+import SecHeading from "../../../Library/SecHeading/SecHeading";
+import { DiscloseIcon } from "../Icons/DiscloseIcon";
 import MDInput from "./components/MDInput";
 import MDPreview from "./components/MDPreview";
 import MDResult from "./components/MDResult";
@@ -26,6 +29,10 @@ const MDisclose = () => {
     }
     return [{ name: "Click to Edit", SMILES: "Click to Edit", CDDId: "" }];
   });
+
+  const [previewResults, setPreviewResults] = useState([]);
+  const [discloseValidated, setDiscloseValidated] = useState([]);
+  const [results, setResults] = useState([]);
 
   /**
    * Keeps URL in sync with `inputs` state.
@@ -57,6 +64,18 @@ const MDisclose = () => {
   }, []);
 
   /**
+   * Validate and filter the preview results, valid if isValid is true and populate discloseValidated
+   *
+   */
+  useEffect(() => {
+    const filteredResults = previewResults.filter(
+      (result) => result.isValid === true
+    );
+    setDiscloseValidated(filteredResults);
+    console.log("Filtered Results:", filteredResults);
+  }, [previewResults]);
+
+  /**
    * Moves to the next step after filtering inputs.
    */
   const moveToPreview = () => {
@@ -67,65 +86,91 @@ const MDisclose = () => {
   };
 
   return (
-    <div className="flex justify-content-center w-full">
-      <Stepper ref={stepperRef} style={{ flexBasis: "100rem" }}>
-        {/* Step 1: Input */}
-        <StepperPanel header="Input">
-          <div className="flex flex-column h-12rem">
-            <div className="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
-              <MDInput inputs={inputs} setInputs={setInputs} />
+    <div className="flex flex-column w-full gap-2">
+      <div className="flex w-full">
+        <SecHeading
+          svgIcon={<DiscloseIcon size={"25em"} />}
+          heading={"Disclose Compounds"}
+          displayHorizon={false}
+          color={appColors.molecuLogix.disclose}
+        />
+      </div>
+      <div className="flex justify-content-center w-full">
+        <Stepper ref={stepperRef} className="w-full pl-3 pr-3" linear={true}>
+          {/* Step 1: Input */}
+          <StepperPanel header="Input">
+            <div className="flex flex-column">
+              <div className="flex justify-content-center align-items-center">
+                <MDInput
+                  inputs={inputs}
+                  setInputs={setInputs}
+                  moveToPreview={moveToPreview}
+                />
+              </div>
+              <div className="flex justify-content-end pt-4">
+                <Button
+                  label="Next"
+                  icon="pi pi-arrow-right"
+                  iconPos="right"
+                  onClick={moveToPreview}
+                />
+              </div>
             </div>
-          </div>
-          <div className="flex pt-4 justify-content-end">
-            <Button
-              label="Next"
-              icon="pi pi-arrow-right"
-              iconPos="right"
-              onClick={moveToPreview}
-            />
-          </div>
-        </StepperPanel>
+          </StepperPanel>
 
-        {/* Step 2: Preview */}
-        <StepperPanel header="Preview">
-          <div className="flex flex-column h-12rem">
-            <div className="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
-              <MDPreview inputs={inputs} setInputs={setInputs} />
+          {/* Step 2: Preview */}
+          <StepperPanel header="Preview">
+            <div className="flex flex-column">
+              <div className="flex justify-content-center align-items-center">
+                {" "}
+                <MDPreview
+                  inputs={inputs}
+                  setInputs={setInputs}
+                  previewResults={previewResults}
+                  setPreviewResults={setPreviewResults}
+                />
+              </div>
             </div>
-          </div>
-          <div className="flex pt-4 justify-content-between">
-            <Button
-              label="Back"
-              severity="secondary"
-              icon="pi pi-arrow-left"
-              onClick={() => stepperRef.current?.prevCallback()}
-            />
-            <Button
-              label="Next"
-              icon="pi pi-arrow-right"
-              iconPos="right"
-              onClick={() => stepperRef.current?.nextCallback()}
-            />
-          </div>
-        </StepperPanel>
+            <div className="flex pt-4 justify-content-between">
+              <Button
+                label="Back"
+                severity="secondary"
+                icon="pi pi-arrow-left"
+                onClick={() => stepperRef.current?.prevCallback()}
+              />
+              <Button
+                label="Agree & Disclose"
+                icon="pi pi-arrow-right"
+                iconPos="right"
+                disabled={discloseValidated.length === 0}
+                onClick={() => stepperRef.current?.nextCallback()}
+              />
+            </div>
+          </StepperPanel>
 
-        {/* Step 3: Result */}
-        <StepperPanel header="Result">
-          <div className="flex flex-column h-12rem">
-            <div className="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
-              <MDResult />
+          {/* Step 3: Result */}
+          <StepperPanel header="Result">
+            <div className="flex flex-column">
+              <div className="flex justify-content-center align-items-center">
+                {" "}
+                <MDResult
+                  discloseValidated={discloseValidated}
+                  results={results}
+                  setResults={setResults}
+                />
+              </div>
             </div>
-          </div>
-          <div className="flex pt-4 justify-content-start">
-            <Button
-              label="Back"
-              severity="secondary"
-              icon="pi pi-arrow-left"
-              onClick={() => stepperRef.current?.prevCallback()}
-            />
-          </div>
-        </StepperPanel>
-      </Stepper>
+            <div className="flex pt-4 justify-content-start">
+              {/* <Button
+                label="Back"
+                severity="secondary"
+                icon="pi pi-arrow-left"
+                onClick={() => stepperRef.current?.prevCallback()}
+              /> */}
+            </div>
+          </StepperPanel>
+        </Stepper>
+      </div>
     </div>
   );
 };

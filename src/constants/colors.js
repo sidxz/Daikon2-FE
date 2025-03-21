@@ -30,6 +30,7 @@ export const appColors = {
 
   molecuLogix: {
     heading: "#2c3e50",
+    disclose: "#3b5068",
   },
 
   admin: {

@@ -6,7 +6,7 @@ import { FileUpload } from "primereact/fileupload";
 import { InputText } from "primereact/inputtext";
 import React from "react";
 import ImportFromExcel from "../../../../Shared/Excel/ImportFromExcel";
-const MDInput = ({ inputs, setInputs }) => {
+const MDInput = ({ inputs, setInputs, moveToPreview }) => {
   const columns = [
     { field: "name", header: "Name" },
     { field: "SMILES", header: "SMILES" },
@@ -61,7 +61,7 @@ const MDInput = ({ inputs, setInputs }) => {
     <div className="table-header flex flex-row w-full">
       <div className="flex justify-content-start gap-1">
         <div className="flex flex-grow min-w-max w-full">
-          <div className="flex border-1 border-50"></div>
+          <div className="flex border-0 border-50"></div>
         </div>
       </div>
       <div className="flex justify-content-end gap-2 w-full">
@@ -112,27 +112,44 @@ const MDInput = ({ inputs, setInputs }) => {
   };
 
   return (
-    <div className="flex w-full p-fluid">
-      <DataTable
-        value={inputs}
-        editMode="cell"
-        tableStyle={{ minWidth: "100rem" }}
-        header={dataTableHeader}
-      >
-        {columns.map(({ field, header }) => {
-          return (
-            <Column
-              key={field}
-              field={field}
-              header={header}
-              style={{ width: "25%" }}
-              //body={field === "price" && priceBodyTemplate}
-              editor={(options) => textEditor(options)}
-              onCellEditComplete={onCellEditComplete}
-            />
-          );
-        })}
-      </DataTable>
+    <div className="flex flex-column justify-content-center align-items-center w-11 gap-2">
+      <div className="flex flex-column w-full gap-1">
+        <div className="flex w-full">
+          <p className="text-2xl p-0 m-0">Disclosure Data</p>
+        </div>
+        <div className="flex w-full">
+          <p className="text-md p-0 m-0">
+            Please enter the compound’s Name and its corresponding SMILES
+            string. The Name must already be registered in DAIKON’s Moleculogix
+            database. Use this form to disclose the chemical structure of
+            molecules that are already known to DAIKON but currently have
+            'undisclosed' structures. If you need to add a brand-new molecule,
+            please register it first in Moleculogix.
+          </p>
+        </div>
+      </div>
+      <div className="flex w-full border-1 border-50 border-round surface-ground">
+        <DataTable
+          className="w-full"
+          value={inputs}
+          editMode="cell"
+          //tableStyle={{ minWidth: "100rem" }}
+          header={dataTableHeader}
+        >
+          {columns.map(({ field, header }) => {
+            return (
+              <Column
+                key={field}
+                field={field}
+                header={header}
+                //body={field === "price" && priceBodyTemplate}
+                editor={(options) => textEditor(options)}
+                onCellEditComplete={onCellEditComplete}
+              />
+            );
+          })}
+        </DataTable>
+      </div>
     </div>
   );
 };
