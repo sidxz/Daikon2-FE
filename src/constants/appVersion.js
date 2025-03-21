@@ -1,5 +1,5 @@
 export const appVersion = {
-  release: "v2.5.0",
+  release: "v2.6.0",
   stream: "Enterprise",
   channel: "Valparaíso",
 };
