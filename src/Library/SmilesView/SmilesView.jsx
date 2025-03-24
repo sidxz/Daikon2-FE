@@ -7,6 +7,7 @@ import { FcPrivacy } from "react-icons/fc";
 import { VscSearchFuzzy } from "react-icons/vsc";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { DiscloseIcon } from "../../Apps/MolecuLogix/Icons/DiscloseIcon";
 import MoleculeStructure from "../RDKit/MoleculeStructure/MoleculeStructure";
 const SmilesView = ({
   compound,
@@ -15,9 +16,11 @@ const SmilesView = ({
   compoundId,
   width = 200,
   height = 200,
+  requestedCompoundName = "",
 }) => {
   const svgElementRef = useRef(null);
   const cm = useRef(null);
+  const cmUndisclosed = useRef(null);
 
   let canId = smiles + Date.now() + Math.floor(Math.random() * 100);
   const navigate = useNavigate();
@@ -57,6 +60,18 @@ const SmilesView = ({
     },
   });
 
+  let undisclosedContextMenuItems = [
+    {
+      label: "Disclose Molecule",
+      icon: <DiscloseIcon className="mr-2" width="12px" height="12px" />,
+      command: () => {
+        navigate(
+          `/moleculogix/disclose/pre?inputName=${requestedCompoundName}&inputId=${compoundId}`
+        );
+      },
+    },
+  ];
+
   let generatePainsFlag = () => {
     if (compound?.pains) {
       if (compound?.pains?.rdKitPains) {
@@ -88,14 +103,20 @@ const SmilesView = ({
   ) {
     return (
       <div
-        className="flex justify-content-center"
-        style={{ width: width, height: height }}
+        onContextMenu={(e) => cmUndisclosed.current.show(e)}
+        className="flex flex-column min-w-max justify-content-center align-items-center border-0"
       >
-        <div className="flex flex-row align-items-center justify-content-center gap-2">
-          <div className="flex">
-            <FcPrivacy />
+        <ContextMenu model={undisclosedContextMenuItems} ref={cmUndisclosed} />
+        <div
+          className="flex justify-content-center"
+          style={{ width: width, height: height }}
+        >
+          <div className="flex flex-row align-items-center justify-content-center gap-2">
+            <div className="flex">
+              <FcPrivacy />
+            </div>
+            <div className="flex align-items-center">UNDISCLOSED</div>
           </div>
-          <div className="flex align-items-center">UNDISCLOSED</div>
         </div>
       </div>
     );

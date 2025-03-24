@@ -63,6 +63,7 @@ export const StructureBodyTemplate = (rowData, subStructureHighlight) => {
             smiles={rowData?.molecule?.smilesCanonical}
             subStructure={subStructureHighlight}
             compoundId={rowData?.molecule?.id}
+            requestedCompoundName={rowData?.requestedMoleculeName}
             width={250}
             height={270}
           />
