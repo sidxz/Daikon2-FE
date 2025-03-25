@@ -32,7 +32,7 @@ export const sidePanelItems = (navigate, selectedMolecule) => {
     },
   ];
 
-  if (isUserInAnyOfRoles([MLogixAdminRoleName])) {
+  if (isUserInAnyOfRoles([MLogixAdminRoleName]) && selectedMolecule?.smiles) {
     items.push({
       label: "Actions",
       items: [
@@ -55,7 +55,7 @@ export const sidePanelItems = (navigate, selectedMolecule) => {
         },
       ],
     });
-  } else {
+  } else if (selectedMolecule?.smiles) {
     items.push({
       label: "Actions",
       items: [
@@ -70,6 +70,7 @@ export const sidePanelItems = (navigate, selectedMolecule) => {
         },
       ],
     });
+  } else {
   }
 
   return items;

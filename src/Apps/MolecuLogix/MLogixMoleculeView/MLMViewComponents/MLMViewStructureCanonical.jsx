@@ -10,6 +10,8 @@ const MLMViewStructureCanonical = ({ selectedMolecule, subStructure }) => {
           compound={selectedMolecule}
           smiles={selectedMolecule?.smilesCanonical}
           subStructure={subStructure}
+          compoundId={selectedMolecule?.id}
+          requestedCompoundName={selectedMolecule?.name}
           width={400}
           height={400}
         />

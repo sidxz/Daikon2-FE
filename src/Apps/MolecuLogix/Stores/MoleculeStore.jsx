@@ -134,8 +134,7 @@ export default class MoleculeStore {
 
     // reject if molecule smiles is not set
     if (!molecule.SMILES) {
-      toast.error("Molecule smiles is required");
-      throw new Error("Molecule smiles is required");
+      toast.warning("Registering undisclosed molecule");
     }
 
     this.isRegisteringMolecule = true;

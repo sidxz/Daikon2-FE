@@ -63,10 +63,14 @@ const SmilesView = ({
   let undisclosedContextMenuItems = [
     {
       label: "Disclose Molecule",
-      icon: <DiscloseIcon className="mr-2" width="12px" height="12px" />,
+      icon: (
+        <div className="flex mr-2">
+          <DiscloseIcon size="18" />
+        </div>
+      ),
       command: () => {
         navigate(
-          `/moleculogix/disclose/pre?inputName=${requestedCompoundName}&inputId=${compoundId}`
+          `/moleculogix/disclose/?inputName=${requestedCompoundName}&inputId=${compoundId}`
         );
       },
     },
