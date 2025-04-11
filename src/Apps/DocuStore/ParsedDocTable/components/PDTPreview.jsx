@@ -7,7 +7,12 @@ import { Button } from "primereact/button";
 import { InputTextarea } from "primereact/inputtextarea";
 
 const PDTPreview = ({ rowData }) => {
+  const [showCommentBox, setShowCommentBox] = useState(false);
+  const [showIssueBox, setShowIssueBox] = useState(false);
   const [value, setValue] = useState(null);
+
+  const [comment, setComment] = useState("");
+  const [issue, setIssue] = useState("");
   return (
     <div className="flex flex-column gap-1">
       <div className="flex align-content-center">
@@ -35,7 +40,7 @@ const PDTPreview = ({ rowData }) => {
       )}
       <div className="flex m-1 p-2 mt-4">
         <div className="flex flex-column text-xs">
-        <span className="text-gray-600 pb-2">Relevance</span>
+          <span className="text-gray-600 pb-2">Relevance</span>
           <Rating
             value={value}
             onChange={(e) => setValue(e.value)}
@@ -50,19 +55,19 @@ const PDTPreview = ({ rowData }) => {
             cancel={false}
           />
         </div>
-        <div className="flex ml-5 p-2">
+        <div className="flex flex-column p-3">
           <Button
-            label="Comments"
             icon="pi pi-comment"
-            className="text-s"
+            label="4"
+            className="p-button-text p-button-sm"
             text
           />
         </div>
-        <div className="flex ml-3 p-2">
+        <div className="flex flex-column p-3">
           <Button
-            label="Issues"
+            label="2"
             icon="pi pi-exclamation-triangle"
-            className="text-s"
+            className="p-button-text p-button-sm"
             text
           />
         </div>
