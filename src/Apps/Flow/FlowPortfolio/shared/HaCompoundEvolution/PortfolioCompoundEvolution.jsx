@@ -150,6 +150,7 @@ const PortfolioCompoundEvolution = () => {
                   style={{ width: "300px", height: "300px" }}
                 >
                   <SmilesView
+                    compound={evo?.molecule}
                     smiles={evo?.molecule?.smilesCanonical}
                     compoundId={evo?.molecule?.id}
                     width={300}
