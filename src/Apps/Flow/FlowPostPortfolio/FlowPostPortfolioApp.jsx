@@ -1,6 +1,5 @@
 import React from "react";
-import { Route, Routes } from "react-router";
-import { Navigate } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import FPPDashboard from "./FPPDashboard/FPPDashboard";
 import FPPViewer from "./FPPViewer/FPPViewer";
 const FlowPostPortfolioApp = () => {

@@ -1,7 +1,6 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
-import { Route, Routes } from "react-router";
-import { Navigate } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import FHaDashboard from "./FHaDashboard/FHaDashboard";
 import FHaNew from "./FHaNew/FHaNew";
 import FHaViewer from "./FHaViewer/FHaViewer";

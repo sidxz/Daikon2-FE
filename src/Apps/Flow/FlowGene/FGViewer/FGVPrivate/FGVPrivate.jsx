@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import { BreadCrumb } from "primereact/breadcrumb";
 import { Fieldset } from "primereact/fieldset";
 import React from "react";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import SecHeading from "../../../../../Library/SecHeading/SecHeading";
 import { appColors } from "../../../../../constants/colors";
 import { GeneIcon } from "../../../icons/GeneIcon";

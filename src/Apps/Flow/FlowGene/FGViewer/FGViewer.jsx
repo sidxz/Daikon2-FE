@@ -1,7 +1,13 @@
 import { observer } from "mobx-react-lite";
 import { Menu } from "primereact/menu";
 import React, { useContext, useEffect } from "react";
-import { Navigate, Route, Routes, useNavigate, useParams } from "react-router";
+import {
+  Navigate,
+  Route,
+  Routes,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import Loading from "../../../../Library/Loading/Loading";
 import PageInfoPanel from "../../../../Library/PageInfoPanel/PageInfoPanel";
 import { RootStoreContext } from "../../../../RootStore";

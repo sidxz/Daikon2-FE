@@ -1,7 +1,6 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
-import { Route, Routes } from "react-router";
-import { Navigate } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import FSDashboard from "./FSDashboard/FSDashboard";
 import FSPhViewer from "./FSPhViewer/FSPhViewer";
 import FSTbViewer from "./FSTbViewer/FSTbViewer";

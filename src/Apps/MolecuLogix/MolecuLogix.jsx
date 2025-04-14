@@ -1,6 +1,5 @@
 import React from "react";
-import { Route, Routes } from "react-router";
-import { Navigate } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import MDisclose from "./MDisclose/MDisclose";
 import MPreDisclose from "./MDisclose/middleware/MPreDisclose";
 import MLogixComments from "./MLogixComments/MLogixComments";
