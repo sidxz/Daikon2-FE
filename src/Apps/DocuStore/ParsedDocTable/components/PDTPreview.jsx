@@ -9,7 +9,8 @@ import { Divider } from "primereact/divider";
 import { Dialog } from "primereact/dialog";
 
 const PDTPreview = ({ rowData }) => {
-  const [value, setValue] = useState(null);
+  const [relevanceValue, setRelevanceValue] = useState(null);
+  const [accuracyValue, setAccuracyValue] = useState(null);
   const [visible, setVisible] = useState(false);
 
   return (
@@ -41,16 +42,16 @@ const PDTPreview = ({ rowData }) => {
         <div className="flex flex-column text-xs">
           <span className="text-gray-600 pb-2">Relevance</span>
           <Rating
-            value={value}
-            onChange={(e) => setValue(e.value)}
+            value={relevanceValue}
+            onChange={(e) => setRelevanceValue(e.value)}
             cancel={false}
           />
         </div>
         <div className="flex flex-column text-xs ml-5">
           <span className="text-gray-600 pb-2">Accuracy</span>
           <Rating
-            value={value}
-            onChange={(e) => setValue(e.value)}
+            value={accuracyValue}
+            onChange={(e) => setAccuracyValue(e.value)}
             cancel={false}
           />
         </div>
@@ -72,16 +73,25 @@ const PDTPreview = ({ rowData }) => {
               setVisible(false);
             }}
           >
-            <p className="m-0">
+            <div>
               <div className="flex text-justify	line-height-3 select-text">
                 {DVariableResolver(rowData?.shortSummary)?.replace(/\*/g, " ")}
               </div>
               {rowData?.shortSummary?.value?.length > 0 && (
                 <div className="flex border-0">
                   <MLTags entity={rowData?.shortSummary} />
+                  <div className="flex flex-column mt-3">
+                    <span className="text-gray-600 pb-2">Comment</span>
+                    <InputTextarea
+                      rows={5}
+                      cols={30}
+                      autoResize
+                      placeholder="Enter your comment"
+                    />
+                  </div>
                 </div>
-              )}{" "}
-            </p>
+              )}
+            </div>
           </Dialog>
         </div>
         <div className="flex flex-column ml-3 mt-3 p-0">
@@ -117,7 +127,6 @@ const PDTPreview = ({ rowData }) => {
 
         <div className="flex flex-column ml-3 mt-3 p-0">
           <Button
-            
             label="+ New Comment"
             className="p-button-text p-button-sm"
             text
@@ -148,7 +157,6 @@ const PDTPreview = ({ rowData }) => {
 
         <div className="flex flex-column ml-3 mt-3 p-0">
           <Button
-            
             label="+ New Issue"
             className="p-button-text p-button-sm"
             text
