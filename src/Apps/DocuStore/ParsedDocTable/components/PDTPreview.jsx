@@ -1,18 +1,11 @@
 import { observer } from "mobx-react-lite";
-import React, { useState } from "react";
+import { Divider } from "primereact/divider";
+import React from "react";
 import { DVariableResolver } from "../../../../Shared/DVariable/DVariableResolver";
 import MLTags from "../../../../Shared/TagGenerators/MLTags/MLTags";
-import { Rating } from "primereact/rating";
-import { Button } from "primereact/button";
-import { InputTextarea } from "primereact/inputtextarea";
-import { Divider } from "primereact/divider";
-import { Dialog } from "primereact/dialog";
+import PDTFeedback from "../ParsedDocFeedback/PDTFeedback";
 
 const PDTPreview = ({ rowData }) => {
-  const [relevanceValue, setRelevanceValue] = useState(null);
-  const [accuracyValue, setAccuracyValue] = useState(null);
-  const [visible, setVisible] = useState(false);
-
   return (
     <div className="flex flex-column gap-1">
       <div className="flex align-content-center">
@@ -39,151 +32,7 @@ const PDTPreview = ({ rowData }) => {
         </div>
       )}
       <div className="flex m-1 p-1 mt-4 mb-0">
-        <div className="flex flex-column text-xs">
-          <span className="text-gray-600 pb-2">Relevance</span>
-          <Rating
-            value={relevanceValue}
-            onChange={(e) => setRelevanceValue(e.value)}
-            cancel={false}
-          />
-        </div>
-        <div className="flex flex-column text-xs ml-5">
-          <span className="text-gray-600 pb-2">Accuracy</span>
-          <Rating
-            value={accuracyValue}
-            onChange={(e) => setAccuracyValue(e.value)}
-            cancel={false}
-          />
-        </div>
-        <div className="flex flex-column ml-3 mt-3 p-0">
-          <Button
-            icon="pi pi-comment"
-            label="4"
-            className="p-button-text p-button-sm"
-            text
-            onClick={() => setVisible(true)}
-          />
-          <Dialog
-            header="Summary Preview"
-            visible={visible}
-            maximizable
-            style={{ width: "50vw" }}
-            onHide={() => {
-              if (!visible) return;
-              setVisible(false);
-            }}
-          >
-            <div>
-              <div className="flex text-justify	line-height-3 select-text">
-                {DVariableResolver(rowData?.shortSummary)?.replace(/\*/g, " ")}
-              </div>
-              {rowData?.shortSummary?.value?.length > 0 && (
-                <div className="flex border-0">
-                  <MLTags entity={rowData?.shortSummary} />
-                  <div className="flex flex-column mt-3">
-                    <span className="text-gray-600 pb-2">Comment</span>
-                    <InputTextarea
-                      rows={5}
-                      cols={30}
-                      autoResize
-                      placeholder="Enter your comment"
-                    />
-                  </div>
-                </div>
-              )}
-            </div>
-          </Dialog>
-        </div>
-        <div className="flex flex-column ml-3 mt-3 p-0">
-          <Button
-            label="2"
-            icon="pi pi-exclamation-triangle"
-            className="p-button-text p-button-sm"
-            text
-            onClick={() => setVisible(true)}
-          />
-          <Dialog
-            header="Summary Preview"
-            visible={visible}
-            maximizable
-            style={{ width: "50vw" }}
-            onHide={() => {
-              if (!visible) return;
-              setVisible(false);
-            }}
-          >
-            <p className="m-0">
-              <div className="flex text-justify	line-height-3 select-text">
-                {DVariableResolver(rowData?.shortSummary)?.replace(/\*/g, " ")}
-              </div>
-              {rowData?.shortSummary?.value?.length > 0 && (
-                <div className="flex border-0">
-                  <MLTags entity={rowData?.shortSummary} />
-                </div>
-              )}{" "}
-            </p>
-          </Dialog>
-        </div>
-
-        <div className="flex flex-column ml-3 mt-3 p-0">
-          <Button
-            label="+ New Comment"
-            className="p-button-text p-button-sm"
-            text
-            onClick={() => setVisible(true)}
-          />
-          <Dialog
-            header="Summary Preview"
-            visible={visible}
-            maximizable
-            style={{ width: "50vw" }}
-            onHide={() => {
-              if (!visible) return;
-              setVisible(false);
-            }}
-          >
-            <p className="m-0">
-              <div className="flex text-justify	line-height-3 select-text">
-                {DVariableResolver(rowData?.shortSummary)?.replace(/\*/g, " ")}
-              </div>
-              {rowData?.shortSummary?.value?.length > 0 && (
-                <div className="flex border-0">
-                  <MLTags entity={rowData?.shortSummary} />
-                </div>
-              )}{" "}
-            </p>
-          </Dialog>
-        </div>
-
-        <div className="flex flex-column ml-3 mt-3 p-0">
-          <Button
-            label="+ New Issue"
-            className="p-button-text p-button-sm"
-            text
-            onClick={() => setVisible(true)}
-          />
-          <Dialog
-            header="Summary Preview"
-            visible={visible}
-            maximizable
-            style={{ width: "50vw" }}
-            onHide={() => {
-              if (!visible) return;
-              setVisible(false);
-            }}
-          >
-            <p className="m-0">
-              <div className="flex text-justify	line-height-3 select-text">
-                {DVariableResolver(rowData?.shortSummary)?.replace(/\*/g, " ")}
-              </div>
-              {rowData?.shortSummary?.value?.length > 0 && (
-                <div className="flex border-0">
-                  <MLTags entity={rowData?.shortSummary} />
-                </div>
-              )}{" "}
-            </p>
-          </Dialog>
-        </div>
+        <PDTFeedback rowData={rowData} />
       </div>
       <Divider className="mt-0" />
     </div>
