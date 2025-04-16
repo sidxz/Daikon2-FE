@@ -36,7 +36,7 @@ const PDTFeedback = ({ rowData }) => {
           <div className="flex flex-column pt-2">
             <Button
               icon="pi pi-comment"
-              label="Feedback (4)"
+              label="Feedback (0)"
               className="p-button-text p-button-sm"
               text
               onClick={() => setCommentDialogVisible(true)}
@@ -44,7 +44,7 @@ const PDTFeedback = ({ rowData }) => {
           </div>
           <div className="flex flex-column pt-2">
             <Button
-              label="Issue (2)"
+              label="Issue (4)"
               icon="pi pi-exclamation-triangle"
               className="p-button-text p-button-sm"
               text
