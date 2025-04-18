@@ -17,6 +17,7 @@ export const ExportTemplateExcel = (
       iC50: "",
       mic: "",
       clusterGroup: "",
+      notes: "",
     },
   ]; // No data, just headers for the template
 

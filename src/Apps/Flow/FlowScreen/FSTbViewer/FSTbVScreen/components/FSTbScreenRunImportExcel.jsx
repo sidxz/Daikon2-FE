@@ -25,6 +25,7 @@ const FSTbV_ScreenRunExcelImport = ({ selectedScreen }) => {
     endDate: screenRun?.endDate,
     primaryHitCount: screenRun?.primaryHitCount,
     confirmedHitCount: screenRun?.confirmedHitCount,
+    notes: screenRun?.notes,
   }));
 
   return (

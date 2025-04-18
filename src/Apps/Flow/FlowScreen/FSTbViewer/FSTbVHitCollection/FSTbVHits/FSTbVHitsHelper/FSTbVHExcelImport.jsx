@@ -24,6 +24,7 @@ const FSTbVHExcelImport = ({
     iC50: hit.iC50 ?? "",
     mic: hit.mic ?? "",
     clusterGroup: hit.clusterGroup ?? "",
+    notes: hit.notes ?? "",
   }));
 
   return (

@@ -23,9 +23,9 @@ const FSTbVHAddHit = ({ hitCollectionId, closeSideBar }) => {
       mic: "",
       iC50: "",
       clusterGroup: "",
-      notes: "",
       moleculeName: "",
       requestedSMILES: "",
+      notes: "",
     },
 
     validate: (values) => {
@@ -192,8 +192,25 @@ const FSTbVHAddHit = ({ hitCollectionId, closeSideBar }) => {
               />
             </div>
           </div>
-
           {getErrorMessage("requestedSMILES")}
+        </div>
+
+        <div className="field">
+          <label
+            htmlFor="notes"
+            className={classNames({ "p-error": isInvalid("notes") })}
+          >
+            Notes
+          </label>
+          <InputText
+            id="notes"
+            value={formik.values.notes}
+            onChange={formik.handleChange}
+            className={classNames({
+              "p-invalid": isInvalid("notes"),
+            })}
+          />
+          {getErrorMessage("notes")}
         </div>
 
         <div className="flex justify-content-end">

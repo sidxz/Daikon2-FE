@@ -7,4 +7,5 @@ export const DtFieldsToExcelColumnMapping =
     moleculeName: "Molecule Name",
     iC50: "IC50",
     mic: "MIC",
+    notes: "Notes",
   };

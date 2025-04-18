@@ -27,6 +27,7 @@ export const ExportHitsToExcel = (
     moleculeName: hit.molecule?.name ?? "",
     iC50: hit.iC50 ?? "",
     mic: hit.mic ?? "",
+    notes: hit.notes ?? "",
   }));
 
   // Construct the file name using template literals

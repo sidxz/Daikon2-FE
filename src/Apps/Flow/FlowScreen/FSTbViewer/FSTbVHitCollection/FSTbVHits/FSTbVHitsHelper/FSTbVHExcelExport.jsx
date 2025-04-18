@@ -28,6 +28,7 @@ export const ExportHitsToExcel = (
     iC50: hit.iC50 ?? "",
     mic: hit.mic ?? "",
     clusterGroup: hit.clusterGroup ?? "",
+    notes: hit.notes ?? "",
   }));
 
   // Construct the file name using template literals

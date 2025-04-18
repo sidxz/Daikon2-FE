@@ -24,6 +24,7 @@ const FSPhVHAddHit = ({ hitCollectionId, closeSideBar }) => {
       iC50: "",
       moleculeName: "",
       requestedSMILES: "",
+      notes: "",
     },
 
     validate: (values) => {
@@ -174,6 +175,24 @@ const FSPhVHAddHit = ({ hitCollectionId, closeSideBar }) => {
           </div>
 
           {getErrorMessage("requestedSMILES")}
+        </div>
+
+        <div className="field">
+          <label
+            htmlFor="notes"
+            className={classNames({ "p-error": isInvalid("notes") })}
+          >
+            Notes
+          </label>
+          <InputText
+            id="notes"
+            value={formik.values.notes}
+            onChange={formik.handleChange}
+            className={classNames({
+              "p-invalid": isInvalid("notes"),
+            })}
+          />
+          {getErrorMessage("notes")}
         </div>
 
         <div className="flex justify-content-end">

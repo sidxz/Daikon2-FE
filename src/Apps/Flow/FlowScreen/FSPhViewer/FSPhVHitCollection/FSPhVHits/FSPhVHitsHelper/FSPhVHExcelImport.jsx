@@ -22,6 +22,7 @@ const FSPhVHExcelImport = ({
     moleculeName: hit.molecule?.name ?? "",
     iC50: hit.iC50 ?? "",
     mic: hit.mic ?? "",
+    notes: hit.notes ?? "",
   }));
 
   return (

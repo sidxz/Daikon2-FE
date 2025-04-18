@@ -207,6 +207,12 @@ const FSPhVHits = ({ id }) => {
                 editor={(options) => TextRowEditor(options)}
                 sortable
               />
+              <Column
+                field={"notes"}
+                header="Notes"
+                editor={(options) => TextRowEditor(options)}
+                
+              />
 
               <Column
                 field="voteScore"

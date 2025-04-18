@@ -10,4 +10,5 @@ export const DtFieldsToScreenExcelColumnMapping =
     endDate: "End Date",
     primaryHitCount: "Initial Hit Count",
     confirmedHitCount: "Confirmed Active Hit Count",
+    notes: "Notes",
   };

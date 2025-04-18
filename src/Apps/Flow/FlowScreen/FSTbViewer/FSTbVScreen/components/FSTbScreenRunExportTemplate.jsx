@@ -15,6 +15,7 @@ export const ExportTemplateExcel = (selectedScreen, headerMapper = {}) => {
       endDate: "",
       primaryHitCount: "",
       confirmedHitCount: "",
+      notes: "",
     },
   ]; // No data, just headers for the template
 

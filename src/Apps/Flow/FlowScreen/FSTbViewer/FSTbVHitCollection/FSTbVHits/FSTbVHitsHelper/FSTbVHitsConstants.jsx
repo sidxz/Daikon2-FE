@@ -8,4 +8,5 @@ export const DtFieldsToExcelColumnMapping =
     iC50: "IC50",
     mic: "MIC",
     clusterGroup: "Cluster Group",
+    notes: "Notes",
   };

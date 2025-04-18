@@ -224,6 +224,11 @@ const FSTbVHits = ({ id }) => {
                 body={votingBodyTemplate}
                 sortable
               />
+              <Column
+                field="notes"
+                header="Notes"
+                editor={(options) => TextRowEditor(options)}
+              />
 
               <Column
                 rowEditor
