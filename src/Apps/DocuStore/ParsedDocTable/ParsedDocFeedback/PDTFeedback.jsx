@@ -33,22 +33,24 @@ const PDTFeedback = ({ rowData }) => {
               cancel={false}
             />
           </div>
+          
           <div className="flex flex-column pt-2">
             <Button
-              icon="pi pi-comment"
-              label="Feedback (0)"
-              className="p-button-text p-button-sm"
-              text
-              onClick={() => setCommentDialogVisible(true)}
-            />
-          </div>
-          <div className="flex flex-column pt-2">
-            <Button
-              label="Issue (4)"
+              label="Revisions (0)"
               icon="pi pi-exclamation-triangle"
               className="p-button-text p-button-sm"
               text
-              onClick={() => setIssueDialogVisible(true)}
+              onClick={() => setIssueDialogVisible(false)}
+            />
+          </div>
+
+          <div className="flex flex-column pt-2">
+            <Button
+              label="Comments (0)"
+              icon="pi pi-comment"
+              className="p-button-text p-button-sm"
+              text
+              onClick={() => setIssueDialogVisible(false)}
             />
           </div>
         </div>
@@ -58,38 +60,7 @@ const PDTFeedback = ({ rowData }) => {
         </div>
       </div>
 
-      {/* Comment Dialog          */}
-      <Dialog
-        header="Feedback"
-        visible={commentDialogVisible}
-        maximizable
-        style={{ width: "50vw" }}
-        onHide={() => {
-          setCommentDialogVisible(false);
-        }}
-      ></Dialog>
-
-      {/* Issue Dialog */}
-      <Dialog
-        header="Summary Preview"
-        visible={issueDialogVisible}
-        maximizable
-        style={{ width: "50vw" }}
-        onHide={() => {
-          setIssueDialogVisible(false);
-        }}
-      >
-        <p className="m-0">
-          <div className="flex text-justify	line-height-3 select-text">
-            {DVariableResolver(rowData?.shortSummary)?.replace(/\*/g, " ")}
-          </div>
-          {rowData?.shortSummary?.value?.length > 0 && (
-            <div className="flex border-0">
-              <MLTags entity={rowData?.shortSummary} />
-            </div>
-          )}{" "}
-        </p>
-      </Dialog>
+      
     </>
   );
 };

@@ -98,7 +98,7 @@ const PDTFIssueAdd = () => {
       >
         <InplaceDisplay className="m-0 p-0">
           <div className="flex align-items-center w-full mb-3 fadein animation-duration-500">
-            <InputText className="w-full m-0" placeholder="Add an issue..." />
+            <InputText className="w-full m-0" placeholder="Add a revision..." />
           </div>
         </InplaceDisplay>
         <InplaceContent className="p-0 m-2 fadein ">
