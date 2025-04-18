@@ -6,24 +6,24 @@ import PDTFIssueAdd from "./PDTFIssueAdd";
 
 const PDTFIssues = () => {
   let issues = [
-    {
-      id: 1,
-      createdById: 2,
-      body: "<p>Gratitude contented direction of the attention. Offending inquietude me is at no existence behaving. Wicket to address it valley lively. Tiled me and way the head, just moment had no himself.</p>",
-      dateCreated: new Date(),
-    },
-    {
-      id: 2,
-      createdById: 3,
-      body: "<p>Imprudence attachment him his for sympathize. Large above be to means. Dashwood on considered speaking me opinion. Mention Mr manners opinion if garrets enabled.</p>",
-      dateCreated: new Date(),
-    },
-    {
-      id: 3,
-      createdById: 4,
-      body: "<p>Inquietude comparison contrasted remarkably increasing. Waiting surprise nothing it he subject. Had judgment out opinions property the supplied. Supposing so be resolving breakfast am or perfectly.</p>",
-      dateCreated: new Date(),
-    },
+    // {
+    //   id: 1,
+    //   createdById: 2,
+    //   body: "<p>Gratitude contented direction of the attention. Offending inquietude me is at no existence behaving. Wicket to address it valley lively. Tiled me and way the head, just moment had no himself.</p>",
+    //   dateCreated: new Date(),
+    // },
+    // {
+    //   id: 2,
+    //   createdById: 3,
+    //   body: "<p>Imprudence attachment him his for sympathize. Large above be to means. Dashwood on considered speaking me opinion. Mention Mr manners opinion if garrets enabled.</p>",
+    //   dateCreated: new Date(),
+    // },
+    // {
+    //   id: 3,
+    //   createdById: 4,
+    //   body: "<p>Inquietude comparison contrasted remarkably increasing. Waiting surprise nothing it he subject. Had judgment out opinions property the supplied. Supposing so be resolving breakfast am or perfectly.</p>",
+    //   dateCreated: new Date(),
+    // },
     {
       id: 4,
       createdById: 5,
@@ -43,7 +43,7 @@ const PDTFIssues = () => {
           <i className="pi pi-exclamation-triangle mr-2"></i>
         </div>
         <div className="flex font-bold capitalize text-lg pt-2 pl-2 text-orange-600">
-          Issues
+          Revisions
         </div>
       </div>
       <div className="flex flex-column">
