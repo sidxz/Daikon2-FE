@@ -30,10 +30,14 @@ export default class HitStore {
   // Actions
   addHit = async (hit, silent = false) => {
     this.isAddingHit = true;
+    // Ensure Molecule Name is set
+    if (!hit.moleculeName?.trim()) {
+      throw new Error("Hit must have a non-empty moleculeName.");
+    }
 
     // Ensure hit.hitCollectionId is set ,error out if not
     if (!hit.hitCollectionId?.trim()) {
-      throw new Error("hitCollectionId is required and cannot be empty.");
+      throw new Error("Hit must have a non-empty hitCollectionId.");
     }
 
     // if clusterGroup is empty, set it to 0
@@ -42,6 +46,7 @@ export default class HitStore {
     }
 
     try {
+      console.log("addHit", hit);
       var res = await HitAPI.create(hit);
       runInAction(() => {
         // Add hit to hit list
@@ -68,6 +73,12 @@ export default class HitStore {
     }
   };
 
+  /*
+   * Updates an existing Hit
+   * @param {Object} hit - The hit object to be updated
+   * @param {Boolean} silent - Whether to suppress success notifications
+   */
+
   updateHit = async (hit, silent = false) => {
     this.isUpdatingHit = true;
 
@@ -78,7 +89,7 @@ export default class HitStore {
 
     // Ensure hit.hitId is not null, undefined, or empty
     if (!hit.id?.trim()) {
-      throw new Error("hitId is required and cannot be empty.");
+      throw new Error("Hit must have a non-empty id.");
     }
     hit.hitId = hit.id;
 
@@ -86,7 +97,7 @@ export default class HitStore {
     if (!hit?.clusterGroup) {
       hit.clusterGroup = 0;
     }
-    console.log("updateHit", hit);
+    console.log("Updating Hit:", hit);
 
     try {
       await HitAPI.update(hit);
@@ -146,40 +157,102 @@ export default class HitStore {
     }
   };
 
-  /**
-   * Batch insert a hits
-   * Adds new if ExternalCompoundId is null, updates if ExternalCompoundId is not null.
-   * @param {object} editedHitRows - The details of the hit rows to edit.
+  /*
+   * Batch Insert/Update Hits
+   * Inserts new hits where needed, updates modified hits
+   * @param {Array} editedHitRows - The array of edited hits
    */
-  batchInsertHits = async (editedHitRows) => {
+
+  batchInsertHits = async (hitRows) => {
     this.isBatchInsertingHits = true;
-    const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
     try {
-      for (const editedHitRow of editedHitRows) {
+      let newHits = [];
+      let updatedHits = [];
+      for (const hitRow of hitRows) {
+        // Reject rows if they dont have a moleculeName
+        if (!hitRow.moleculeName?.trim()) {
+          throw new Error("Molecule Name is required for all hits.");
+        }
         // Fix ids and map smiles to requestedSMILES
-        editedHitRow.hitCollectionId =
+        hitRow.hitCollectionId =
           this.rootStore.hitCollectionStore.selectedHitCollection.id;
-        editedHitRow.requestedSMILES = editedHitRow.smiles;
+        hitRow.requestedSMILES = hitRow.smiles;
 
-        // Wait for the delay before proceeding
-        await delay(100);
-        //console.log("Sending editedHitRow ---->>>>>", editedHitRow);
-        // Perform the operation based on the status
-        if (editedHitRow.status === "New") {
-          await this.addHit(editedHitRow, true);
-        } else if (editedHitRow.status === "Modified") {
-          await this.updateHit(editedHitRow, true);
+        // If clusterGroup is empty, set it to 0
+        if (!hitRow?.clusterGroup) {
+          hitRow.clusterGroup = 0;
+        }
+
+        if (hitRow.status === "New") {
+          newHits.push(hitRow);
+        } else if (hitRow.status === "Modified") {
+          hitRow.hitId = hitRow.id;
+          updatedHits.push(hitRow);
         }
       }
-      toast.success(
-        "The batch insertion/update was successful. Compound names will be fetched upon syncing the page.",
-        {
-          autoClose: false,
-        }
-      );
+
+      if (newHits.length > 0) {
+        let newHitsRes = await HitAPI.createBatch(
+          this.rootStore.hitCollectionStore.selectedHitCollection.id,
+          newHits
+        );
+        runInAction(() => {
+          // Add new hits to hit list
+          for (const newHit of newHitsRes) {
+            newHit.usersVote = newHit.usersVote || "NA";
+            newHit.voters = newHit.voters || {};
+            const hitCollection =
+              this.rootStore.hitCollectionStore.hitCollectionRegistry.get(
+                newHit.hitCollectionId
+              );
+            hitCollection.hits.push(newHit);
+            this.rootStore.hitCollectionStore.selectedHitCollection =
+              hitCollection;
+          }
+        });
+      }
+
+      if (updatedHits.length > 0) {
+        let updateHitsRes = await HitAPI.updateBatch(
+          this.rootStore.hitCollectionStore.selectedHitCollection.id,
+          updatedHits
+        );
+        runInAction(() => {
+          // update in hitCollection registry list
+          const hitCollection =
+            this.rootStore.hitCollectionStore.hitCollectionRegistry.get(
+              this.rootStore.hitCollectionStore.selectedHitCollection.id
+            );
+          for (const updatedHit of updateHitsRes) {
+            const hitIndex = hitCollection.hits.findIndex(
+              (e) => e.id === updatedHit.id
+            );
+            if (hitIndex !== -1) {
+              hitCollection.hits[hitIndex] = {
+                ...hitCollection.hits[hitIndex],
+                clusterGroup: updatedHit?.clusterGroup,
+                iC50: updatedHit?.iC50,
+                iC50Unit: updatedHit?.iC50Unit,
+                library: updatedHit?.library,
+                librarySource: updatedHit?.librarySource,
+                method: updatedHit?.method,
+                mic: updatedHit?.mic,
+                micCondition: updatedHit?.micCondition,
+                micUnit: updatedHit?.micUnit,
+                notes: updatedHit?.notes,
+              };
+            }
+          }
+        });
+      }
+
+      runInAction(() => {
+        toast.success("Hits batch inserted successfully");
+      });
     } catch (error) {
-      console.error(error);
+      console.error("Error during batch insert/update:", error);
+      toast.error(`${error?.message} Batch operation failed. `);
     } finally {
       runInAction(() => {
         this.isBatchInsertingHits = false;
