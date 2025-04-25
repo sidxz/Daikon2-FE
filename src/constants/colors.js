@@ -33,6 +33,8 @@ export const appColors = {
     disclose: "#3b5068",
   },
 
+  loadingBar: "#29b6f6",
+
   admin: {
     userManagement: {
       users: "#3D4780",

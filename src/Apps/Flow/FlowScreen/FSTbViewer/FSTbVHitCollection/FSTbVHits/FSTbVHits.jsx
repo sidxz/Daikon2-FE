@@ -4,8 +4,10 @@ import { Column } from "primereact/column";
 import { confirmDialog } from "primereact/confirmdialog";
 import { DataTable } from "primereact/datatable";
 import { Dialog } from "primereact/dialog";
+import { ProgressBar } from "primereact/progressbar";
 import { Sidebar } from "primereact/sidebar";
 import React, { useContext, useEffect, useState } from "react";
+import { appColors } from "../../../../../../constants/colors";
 import JSMEditor from "../../../../../../Library/JSME/JSMEditor";
 import Loading from "../../../../../../Library/Loading/Loading";
 import { RootStoreContext } from "../../../../../../RootStore";
@@ -19,7 +21,6 @@ import { FSTbVHDataTableHeader } from "./FSTbVHitsHelper/FSTbVHDataTableHeader";
 import { StructureBodyTemplate } from "./FSTbVHitsHelper/FSTbVHDataTableHelper";
 import FSTbVHExcelImport from "./FSTbVHitsHelper/FSTbVHExcelImport";
 import FSTbVHPromote from "./FSTbVHitsHelper/FSTbVHPromote";
-
 const FSTbVHits = ({ id }) => {
   const rootStore = useContext(RootStoreContext);
 
@@ -121,6 +122,18 @@ const FSTbVHits = ({ id }) => {
     return (
       <>
         <div className="flex flex-column w-full">
+          {isDeletingHit ||
+            isAddingHit ||
+            isUpdatingHit ||
+            (isBatchInsertingHits && (
+              <div className="flex w-full p-1">
+                <ProgressBar
+                  mode="indeterminate"
+                  color={appColors.loadingBar}
+                  style={{ height: "4px", width: "100%" }}
+                ></ProgressBar>
+              </div>
+            ))}
           <div className="flex w-full">
             <DataTable
               loading={
