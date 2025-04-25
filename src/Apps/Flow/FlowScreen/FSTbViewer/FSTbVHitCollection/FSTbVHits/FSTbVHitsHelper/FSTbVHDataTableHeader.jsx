@@ -1,12 +1,15 @@
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { ToggleButton } from "primereact/togglebutton";
-import React from "react";
+import React, { useRef, useState } from "react";
 import { MolecuLogixIcon } from "../../../../../../MolecuLogix/Icons/MolecuLogixIcon";
 import { ExportHitsToExcel } from "./FSTbVHExcelExport";
 import FSTbVHExcelImport from "./FSTbVHExcelImport";
 import { ExportTemplateExcel } from "./FSTbVHExportTemplate";
 import { DtFieldsToExcelColumnMapping } from "./FSTbVHitsConstants";
+import { OverlayPanel } from "primereact/overlaypanel";
+import { MultiSelect } from "primereact/multiselect";
+import { Checkbox } from "primereact/checkbox";
 
 export const FSTbVHDataTableHeader = ({
   showAddHitSideBar,
@@ -26,6 +29,35 @@ export const FSTbVHDataTableHeader = ({
   setShowStructureEditor,
 }) => {
   if (selectedHitCollection === undefined) return <p>Loading...</p>;
+
+  const op = useRef(null);
+
+  const categories = [
+    { name: "EC50", key: "ec50" },
+    { name: "EC90", key: "ec90" },
+    { name: "% Inhibition", key: "percentInhibition" },
+    { name: "Cluster Group", key: "clusterGroup" },
+    { name: "IC50", key: "ic50" },
+    { name: "MIC", key: "mic" },
+    { name: "Notes", key: "notes" },
+  ];
+
+  const [selectedCategories, setSelectedCategories] = useState([
+    categories[4],
+    categories[5],
+  ]); // IC50, MIC by default
+
+  const onCategoryChange = (e) => {
+    let _selectedCategories = [...selectedCategories];
+    if (e.checked) {
+      _selectedCategories.push(e.value);
+    } else {
+      _selectedCategories = _selectedCategories.filter(
+        (category) => category.key !== e.value.key
+      );
+    }
+    setSelectedCategories(_selectedCategories);
+  };
 
   if (selectedHitCollection) {
     return (
@@ -78,6 +110,39 @@ export const FSTbVHDataTableHeader = ({
           </div>
         </div>
         <div className="flex justify-content-end w-full">
+          <Button
+            type="button"
+            icon="pi pi-cog"
+            label="Customize Hits Table"
+            onClick={(e) => op.current.toggle(e)}
+          />
+
+          <OverlayPanel
+            ref={op}
+            showCloseIcon
+            closeOnEscape
+            dismissable={false}
+          >
+            <div className="flex flex-column gap-3 w-15rem">
+              {categories.map((category) => (
+                <div key={category.key} className="flex align-items-center">
+                  <Checkbox
+                    inputId={category.key}
+                    name="category"
+                    value={category}
+                    onChange={onCategoryChange}
+                    checked={selectedCategories.some(
+                      (item) => item.key === category.key
+                    )}
+                  />
+                  <label htmlFor={category.key} className="ml-2">
+                    {category.name}
+                  </label>
+                </div>
+              ))}
+            </div>
+          </OverlayPanel>
+
           <div className="flex flex-grow min-w-max">
             <Button
               type="button"
@@ -87,6 +152,7 @@ export const FSTbVHDataTableHeader = ({
               onClick={() => showAddHitSideBar()}
             />
           </div>
+
           <div className="flex flex-grow min-w-max">
             <Button
               type="button"
