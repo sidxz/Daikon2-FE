@@ -1,9 +1,14 @@
 import { FileUpload } from "primereact/fileupload";
 import React, { useContext, useState } from "react";
 import DataPreviewDialog from "../../../../../../../Library/DataPreviewDialog/DataPreviewDialog";
+import SmilesView from "../../../../../../../Library/SmilesView/SmilesView";
 import { RootStoreContext } from "../../../../../../../RootStore";
 import ImportFromExcel from "../../../../../../../Shared/Excel/ImportFromExcel";
-import { DtFieldsToExcelColumnMapping } from "./FSTbVHitsConstants";
+import { GroupMolecules } from "../../../../shared/DataImportHelper";
+import {
+  DtFieldsGroupedColumnMapping,
+  DtFieldsToExcelColumnMapping,
+} from "./FSTbVHitsConstants";
 
 const FSTbVHExcelImport = ({
   selectedHitCollection = { hits: [], name: "", hitCollectionType: "" },
@@ -26,6 +31,24 @@ const FSTbVHExcelImport = ({
     clusterGroup: hit.clusterGroup ?? "",
     notes: hit.notes ?? "",
   }));
+
+  const doseResponsesFlattener = (arr) =>
+    arr.map((dp) => `${dp.concentration}/${dp.response}`).join("; ");
+
+  const structureBodyTemplate = (rowData) => {
+    return (
+      <>
+        <div
+          className="flex flex-column"
+          style={{ width: "250px", height: "290px" }}
+        >
+          <div className="flex w-full h-full">
+            <SmilesView smiles={rowData?.smiles} width={250} height={270} />
+          </div>
+        </div>
+      </>
+    );
+  };
 
   return (
     <>
@@ -64,14 +87,19 @@ const FSTbVHExcelImport = ({
             row = { ...existingData.find((hit) => hit.id === row.id), ...row };
             // console.log("row", row);
           });
-          setDataForPreview(jsonData);
+          console.log("jsonData", jsonData);
+
+          let jsonDataGrouped = GroupMolecules(jsonData);
+          console.log("jsonDataGrouped", jsonDataGrouped);
+
+          setDataForPreview(jsonDataGrouped);
           setShowDataPreviewDialog(true);
           //hideFileUploadDialog();
         }}
         auto
       />
       <DataPreviewDialog
-        headerMap={DtFieldsToExcelColumnMapping}
+        headerMap={DtFieldsGroupedColumnMapping}
         existingData={existingData}
         comparatorKey="id"
         data={dataForPreview}
@@ -81,7 +109,15 @@ const FSTbVHExcelImport = ({
           setDataForPreview(null);
         }}
         onSave={batchInsertHits}
+        //onSave={(data) => console.log("data", data)}
         isSaving={isBatchInsertingHits}
+        fieldFlatteners={{
+          doseResponses: doseResponsesFlattener,
+        }}
+        customBodyTemplates={{
+          smiles: (rowData) => structureBodyTemplate(rowData),
+          // You can add more templates per field easily
+        }}
       />
     </>
   );

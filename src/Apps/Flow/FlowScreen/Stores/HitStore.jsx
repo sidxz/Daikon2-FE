@@ -164,6 +164,7 @@ export default class HitStore {
    */
 
   batchInsertHits = async (hitRows) => {
+    console.log("Batch Insert Hits", hitRows);
     this.isBatchInsertingHits = true;
 
     try {
