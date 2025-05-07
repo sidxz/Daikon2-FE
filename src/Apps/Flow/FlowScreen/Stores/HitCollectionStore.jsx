@@ -1,6 +1,7 @@
 import { action, makeObservable, observable, runInAction } from "mobx";
 import { toast } from "react-toastify";
 import HitCollectionAPI from "../api/HitCollectionAPI";
+import { TbHitsTableType } from "../FSTbViewer/FSTbVHitCollection/FSTbVHits/FSTbVHitsHelper/FSTbVHitsConstants";
 
 export default class HitCollectionStore {
   rootStore;
@@ -100,6 +101,17 @@ export default class HitCollectionStore {
                 hit.moleculeId
               ) || [];
           });
+          let screenType =
+            this.rootStore.screenStore.selectedScreen.screenType || null;
+          console.log("screenType", screenType);
+          if (screenType === "target-based") {
+            // fetch table customization for target based screens
+            console.log("Fetching table customization for target-based screen");
+            this.rootStore.tableCustomizationStore.getCustomization(
+              TbHitsTableType,
+              hitCollection.id
+            );
+          }
 
           this.hitCollectionRegistry.set(hitCollection.id, hitCollection);
         });

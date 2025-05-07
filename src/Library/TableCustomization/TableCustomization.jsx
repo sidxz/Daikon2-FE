@@ -76,7 +76,7 @@ const TableCustomization = ({
       visible={visible}
       onHide={() => onHide()}
       header={headerLabel}
-      style={{ width: "50vw" }}
+      style={{ width: "70vw" }}
     >
       {isFetchingTableCustomization ? (
         <div
@@ -96,12 +96,12 @@ const TableCustomization = ({
             <Divider />
           </div>
           <div
-            className="flex flex-wrap flex-column"
+            className="flex flex-wrap flex-column gap-1"
             style={{ maxHeight: "200px" }}
           >
             {columnCheckBoxes}
           </div>
-          <div className="flex justify-content-end mt-3 gap-2">
+          <div className="flex justify-content-end mt-5 gap-2">
             <Button
               type="button"
               label="Restore Default"

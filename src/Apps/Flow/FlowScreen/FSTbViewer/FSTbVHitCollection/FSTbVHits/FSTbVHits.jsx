@@ -443,7 +443,6 @@ const FSTbVHits = ({ id }) => {
               }
               //globalFilter={globalFilter}
               emptyMessage="No hits found."
-              resizableColumns
               columnResizeMode="fit"
               showGridlines
               selection={selectedHits}
