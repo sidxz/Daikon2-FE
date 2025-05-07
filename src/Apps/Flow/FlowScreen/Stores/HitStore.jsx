@@ -221,29 +221,47 @@ export default class HitStore {
         );
         runInAction(() => {
           // update in hitCollection registry list
-          const hitCollection =
-            this.rootStore.hitCollectionStore.hitCollectionRegistry.get(
-              this.rootStore.hitCollectionStore.selectedHitCollection.id
-            );
-          for (const updatedHit of updateHitsRes) {
+
+          for (const res of updateHitsRes) {
+            const hitCollection =
+              this.rootStore.hitCollectionStore.hitCollectionRegistry.get(
+                res.hitCollectionId
+              );
+
             const hitIndex = hitCollection.hits.findIndex(
-              (e) => e.id === updatedHit.id
+              (e) => e.id === res.id
             );
-            if (hitIndex !== -1) {
-              hitCollection.hits[hitIndex] = {
-                ...hitCollection.hits[hitIndex],
-                clusterGroup: updatedHit?.clusterGroup,
-                iC50: updatedHit?.iC50,
-                iC50Unit: updatedHit?.iC50Unit,
-                library: updatedHit?.library,
-                librarySource: updatedHit?.librarySource,
-                method: updatedHit?.method,
-                mic: updatedHit?.mic,
-                micCondition: updatedHit?.micCondition,
-                micUnit: updatedHit?.micUnit,
-                notes: updatedHit?.notes,
-              };
-            }
+            //console.log("hitIndex", hitIndex);
+            const existingHit = hitCollection.hits[hitIndex];
+            //console.log("existingHit", existingHit);
+            let updatedHit = { ...existingHit, ...res };
+            //console.log("updatedHit", updatedHit);
+
+            // properties to preserve of existing hit, these properties are unchanged and are missing from the response
+            // from the server
+            const propertiesToPreserve = [
+              "lastModifiedById",
+              "molecule",
+              "moleculeId",
+              "moleculeRegistrationId",
+              "negative",
+              "neutral",
+              "positive",
+              "requestedMoleculeName",
+              "requestedSMILES",
+              "voteScore",
+              "usersVote",
+              "voters",
+            ];
+            propertiesToPreserve.forEach((property) => {
+              if (existingHit[property] !== undefined) {
+                updatedHit[property] = existingHit[property];
+              }
+            });
+
+            hitCollection.hits[hitIndex] = updatedHit;
+            this.rootStore.hitCollectionStore.selectedHitCollection =
+              hitCollection;
           }
         });
       }

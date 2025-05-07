@@ -50,7 +50,7 @@ const FSTbViewer = () => {
       selectedScreen?.id !== params?.id ||
       !isScreenRegistryCacheValid
     ) {
-      console.log("FSTbViewer -> useEffect -> fetchScreen FETCHING", params.id);
+      //console.log("FSTbViewer -> useEffect -> fetchScreen FETCHING", params.id);
       fetchScreens();
       fetchScreen(params.id);
     }

@@ -39,9 +39,9 @@ export default class MoleculeAssociationStore {
     moleculeIds,
     invalidateCache = false
   ) => {
-    console.log(
-      `Fetching associations for ${moleculeIds.length} molecule(s). Invalidate cache: ${invalidateCache}`
-    );
+    // console.log(
+    //   `Fetching associations for ${moleculeIds.length} molecule(s). Invalidate cache: ${invalidateCache}`
+    // );
 
     if (!Array.isArray(moleculeIds) || moleculeIds.length === 0) {
       console.warn("No molecule IDs provided for association lookup.");
@@ -72,20 +72,20 @@ export default class MoleculeAssociationStore {
       const response = await GraphMolAPI.findMoleculeRelationsBatch(idsToFetch);
 
       runInAction(() => {
-        console.log("Raw API Response:", response);
+        //console.log("Raw API Response:", response);
         // Ensure we are correctly extracting "relations" from the response
         const relationsData = response.relations || {};
 
         Object.entries(relationsData).forEach(([moleculeId, relations]) => {
-          console.log(
-            `Storing relations for moleculeId: ${moleculeId}`,
-            relations
-          );
+          // console.log(
+          //   `Storing relations for moleculeId: ${moleculeId}`,
+          //   relations
+          // );
           this.associationsRegistry.set(moleculeId, relations);
           this.cacheValidity.set(moleculeId, true); // Mark cache as valid
         });
 
-        console.log("Updated associationsRegistry:", this.associationsRegistry);
+        //console.log("Updated associationsRegistry:", this.associationsRegistry);
       });
     } catch (error) {
       console.error("Failed to fetch associations for molecules:", error);

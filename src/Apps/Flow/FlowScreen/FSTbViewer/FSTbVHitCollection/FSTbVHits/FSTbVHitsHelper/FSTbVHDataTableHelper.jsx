@@ -73,6 +73,37 @@ export const StructureBodyTemplate = (rowData, subStructureHighlight) => {
   );
 };
 
+export const DoseResponseBodyTemplate = (rowData) => {
+  return (
+    <>
+      {rowData?.doseResponses?.map((row, index) => {
+        return (
+          <div
+            key={index}
+            className="flex flex-column gap-1 border-bottom-1 border-50 mt-1"
+          >
+            <div className="flex gap-3">
+              <div className="flex gap-1">
+                <span className="font-bold">{row?.concentration}</span>
+                <span>{row?.concentrationUnit}</span>
+              </div>
+              <div className="flex gap-1">
+                <span className="font-bold">{row?.response}</span>
+                <span>{row?.responseUnit}</span>
+              </div>
+            </div>
+            <div className="flex">
+              <div className="flex gap-1">
+                <span className="text-sm">Type: {row?.responseType}</span>
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </>
+  );
+};
+
 export const LibraryBodyTemplate = (rowData) => {
   return (
     <>

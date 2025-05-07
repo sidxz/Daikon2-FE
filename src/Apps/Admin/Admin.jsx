@@ -3,6 +3,7 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import AdminMenuBar from "./AdminMenuBar/AdminMenuBar";
 import AdminRoleManagement from "./AdminRoleManagement/AdminRoleManagement";
+import AdminTableManagement from "./AdminTableManagement/AdminTableManagement";
 import AdminUserManagement from "./AdminUserManagement/AdminUserManagement";
 const Admin = () => {
   return (
@@ -15,6 +16,7 @@ const Admin = () => {
           <Route index element={<AdminUserManagement />} />
           <Route path="user-management/*" element={<AdminUserManagement />} />
           <Route path="role-management/*" element={<AdminRoleManagement />} />
+          <Route path="table-management/*" element={<AdminTableManagement />} />
         </Routes>
       </div>
     </div>

@@ -89,26 +89,37 @@ const DataPreviewDialog = ({
         status = "New";
         className = "new-row";
       } else {
-        for (let key of Object.keys(flattened)) {
+        for (let key of Object.keys(flattened).filter(
+          (k) => k !== "_originalRow"
+        )) {
+          const originalValue = flattened[key];
+          let existingValue = existingRow[key];
+
+          // Apply the same flattening to existing value if needed
+          if (fieldFlatteners[key] && Array.isArray(existingValue)) {
+            existingValue = fieldFlatteners[key](existingValue);
+          }
+
           if (
-            (flattened[key] === null ||
-              flattened[key] === undefined ||
-              flattened[key] === "") &&
-            (existingRow[key] === null ||
-              existingRow[key] === undefined ||
-              existingRow[key] === "")
+            (originalValue === null ||
+              originalValue === undefined ||
+              originalValue === "") &&
+            (existingValue === null ||
+              existingValue === undefined ||
+              existingValue === "")
           ) {
-            flattened[key] = existingRow[key];
             continue;
           }
 
-          if (String(flattened[key]) !== String(existingRow[key])) {
+          if (String(originalValue) !== String(existingValue)) {
+            console.log(
+              `Field ${key} changed from ${String(existingValue)} to ${String(
+                originalValue
+              )}`
+            );
             status = "Modified";
             break;
           }
-        }
-        if (!status) {
-          status = "Unchanged";
         }
       }
 
@@ -158,7 +169,7 @@ const DataPreviewDialog = ({
             style={{ height: "100%", width: "100%" }}
             className={cellClassName(rowData, field)}
           >
-            {customBodyTemplates[field](rowData)};
+            {customBodyTemplates[field](rowData)}
           </div>
         );
       }
@@ -174,6 +185,20 @@ const DataPreviewDialog = ({
       );
     };
   };
+
+  const filteredHeaderMap = useMemo(() => {
+    if (!headerMap || dataWithStatus.length === 0) return {};
+
+    return Object.entries(headerMap).reduce((acc, [key, label]) => {
+      const hasValidValue = dataWithStatus.some(
+        (row) => row[key] !== null && row[key] !== undefined && row[key] !== ""
+      );
+      if (hasValidValue) {
+        acc[key] = label;
+      }
+      return acc;
+    }, {});
+  }, [headerMap, dataWithStatus]);
 
   return (
     <Dialog
@@ -205,11 +230,11 @@ const DataPreviewDialog = ({
               header="Status"
               body={bodyTemplate("status")}
             />
-            {headerMap &&
-              Object.keys(headerMap).map((headerKey) => (
+            {filteredHeaderMap &&
+              Object.keys(filteredHeaderMap).map((headerKey) => (
                 <Column
                   field={headerKey}
-                  header={headerMap[headerKey]}
+                  header={filteredHeaderMap[headerKey]}
                   key={headerKey}
                   body={bodyTemplate(headerKey)}
                 />

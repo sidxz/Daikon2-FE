@@ -18,8 +18,12 @@ import { getUniqueMoleculeNames } from "../../../shared/SharedHelper";
 import Vote from "../../../shared/Vote/Vote";
 import FSTbVHAddHit from "./FSTbVHitsHelper/FSTbVHAddHit";
 import { FSTbVHDataTableHeader } from "./FSTbVHitsHelper/FSTbVHDataTableHeader";
-import { StructureBodyTemplate } from "./FSTbVHitsHelper/FSTbVHDataTableHelper";
+import {
+  DoseResponseBodyTemplate,
+  StructureBodyTemplate,
+} from "./FSTbVHitsHelper/FSTbVHDataTableHelper";
 import FSTbVHExcelImport from "./FSTbVHitsHelper/FSTbVHExcelImport";
+import { TbHitsTableType } from "./FSTbVHitsHelper/FSTbVHitsConstants";
 import FSTbVHPromote from "./FSTbVHitsHelper/FSTbVHPromote";
 const FSTbVHits = ({ id }) => {
   const rootStore = useContext(RootStoreContext);
@@ -43,6 +47,19 @@ const FSTbVHits = ({ id }) => {
 
   const { isUserInAnyOfRoles } = AppRoleResolver();
 
+  const {
+    getCustomization,
+    selectedTableCustomization,
+    isFetchingTableCustomization,
+    setCustomizationUser,
+    setCustomizationGlobal,
+    removeUserCustomization,
+    isSavingUser,
+    isSavingGlobal,
+  } = rootStore.tableCustomizationStore;
+
+  const [selectedCategories, setSelectedCategories] = useState([]);
+
   useEffect(() => {
     if (
       !isAddingHitCollection &&
@@ -51,6 +68,17 @@ const FSTbVHits = ({ id }) => {
       getHitCollection(id);
     }
   }, [id, getHitCollection]);
+
+  useEffect(() => {
+    if (
+      selectedHitCollection !== undefined &&
+      (!selectedTableCustomization ||
+        selectedTableCustomization?.tableInstanceId !==
+          selectedHitCollection?.id)
+    ) {
+      getCustomization(TbHitsTableType, selectedHitCollection?.id);
+    }
+  }, [selectedTableCustomization, getCustomization]);
 
   const [displayAddHitSideBar, setDisplayAddHitSideBar] = useState(false);
   const [showFileUploadDialog, setShowFileUploadDialog] = useState(false);
@@ -61,10 +89,15 @@ const FSTbVHits = ({ id }) => {
   const [isPromoteSideBarVisible, setIsPromoteSideBarVisible] = useState(false);
   const [subStructureHighlight, setSubStructureHighlight] = useState("");
   const [showStructureEditor, setShowStructureEditor] = useState(false);
+  const [editMode, setEditMode] = useState(false);
 
-  if (isFetchingHitCollection) {
+  if (isFetchingHitCollection || isFetchingTableCustomization) {
     return <Loading message={"Fetching Hit Collection..."} />;
   }
+
+  const toggleEditMode = () => {
+    setEditMode(!editMode);
+  };
 
   console.log("FSTbVHits: selectedHitCollection", selectedHitCollection);
 
@@ -118,7 +151,239 @@ const FSTbVHits = ({ id }) => {
     );
   };
 
-  if (selectedHitCollection !== undefined && !isFetchingHitCollection) {
+  const allColumnDefs = [
+    {
+      key: "structure",
+      header: "Structure",
+      body: (rowData) => StructureBodyTemplate(rowData, subStructureHighlight),
+      sortable: false,
+    },
+    {
+      key: "library",
+      header: "Library",
+      editor: TextRowEditor,
+      sortable: true,
+    },
+    {
+      key: "librarySource",
+      header: "Source",
+      editor: TextRowEditor,
+      sortable: false,
+    },
+    {
+      key: "moleculeName",
+      header: "Molecule Name",
+      body: getUniqueMoleculeNames,
+      sortable: false,
+    },
+
+    {
+      key: "eC50",
+      header: "EC50",
+      editor: TextRowEditor,
+      sortable: true,
+    },
+    {
+      key: "eC50Unit",
+      header: "EC50 Unit",
+      editor: TextRowEditor,
+      sortable: true,
+    },
+
+    {
+      key: "gI50",
+      header: "GI50",
+      editor: TextRowEditor,
+      sortable: true,
+    },
+    {
+      key: "gI50Unit",
+      header: "GI50 Unit",
+      editor: TextRowEditor,
+      sortable: true,
+    },
+
+    {
+      key: "iC50",
+      header: "IC50",
+      editor: TextRowEditor,
+      sortable: true,
+    },
+    {
+      key: "iC50Unit",
+      header: "IC50 Unit",
+      editor: TextRowEditor,
+      sortable: true,
+    },
+
+    {
+      key: "kd",
+      header: "Kd",
+      editor: TextRowEditor,
+      sortable: true,
+    },
+    {
+      key: "kdUnit",
+      header: "Kd Unit",
+      editor: TextRowEditor,
+      sortable: true,
+    },
+
+    {
+      key: "ki",
+      header: "Ki",
+      editor: TextRowEditor,
+      sortable: true,
+    },
+    {
+      key: "kiUnit",
+      header: "Ki Unit",
+      editor: TextRowEditor,
+      sortable: true,
+    },
+
+    {
+      key: "lD50",
+      header: "LD50",
+      editor: TextRowEditor,
+      sortable: true,
+    },
+    {
+      key: "lD50Unit",
+      header: "LD50 Unit",
+      editor: TextRowEditor,
+      sortable: true,
+    },
+
+    {
+      key: "miC90",
+      header: "MIC90",
+      editor: TextRowEditor,
+      sortable: true,
+    },
+    {
+      key: "miC90Unit",
+      header: "MIC90 Unit",
+      editor: TextRowEditor,
+      sortable: true,
+    },
+    {
+      key: "miC90Condition",
+      header: "MIC90 Condition",
+      editor: TextRowEditor,
+      sortable: true,
+    },
+
+    {
+      key: "mic",
+      header: "MIC",
+      editor: TextRowEditor,
+      sortable: true,
+    },
+    {
+      key: "micUnit",
+      header: "MIC Unit",
+      editor: TextRowEditor,
+      sortable: true,
+    },
+    {
+      key: "micCondition",
+      header: "MIC Condition",
+      editor: TextRowEditor,
+      sortable: true,
+    },
+
+    {
+      key: "tgi",
+      header: "TGI",
+      editor: TextRowEditor,
+      sortable: true,
+    },
+    {
+      key: "tgiUnit",
+      header: "TGI Unit",
+      editor: TextRowEditor,
+      sortable: true,
+    },
+
+    {
+      key: "pctInhibition",
+      header: "%Inh",
+      editor: TextRowEditor,
+      sortable: true,
+    },
+    {
+      key: "pctInhibitionConcentration",
+      header: "%Inh Conc",
+      editor: TextRowEditor,
+      sortable: true,
+    },
+    {
+      key: "pctInhibitionConcentrationUnit",
+      header: "%Inh Conc Unit",
+      editor: TextRowEditor,
+      sortable: true,
+    },
+
+    {
+      key: "clusterGroup",
+      header: "Cluster",
+      editor: TextRowEditor,
+      sortable: true,
+    },
+    {
+      key: "assayType",
+      header: "Assay Type",
+      editor: TextRowEditor,
+      sortable: true,
+    },
+    {
+      key: "voteScore",
+      header: "Vote",
+      body: votingBodyTemplate,
+      sortable: true,
+    },
+    {
+      key: "notes",
+      header: "Notes",
+      editor: TextRowEditor,
+      sortable: false,
+    },
+    {
+      key: "doseResponses",
+      header: "Dose Response",
+
+      sortable: false,
+      body: (rowData) => DoseResponseBodyTemplate(rowData),
+    },
+  ];
+
+  if (
+    selectedHitCollection !== undefined &&
+    !isFetchingHitCollection &&
+    selectedTableCustomization
+  ) {
+    let viewableColumns = allColumnDefs.map((col) => {
+      // Show all columns if selectedTableCustomization.columns is undefined or empty
+      if (
+        !selectedTableCustomization?.columns ||
+        selectedTableCustomization.columns.length === 0 ||
+        selectedTableCustomization.columns.includes(col.header)
+      ) {
+        return (
+          <Column
+            key={col.key}
+            field={typeof col.body === "function" ? undefined : col.key}
+            header={col.header}
+            body={col.body}
+            editor={col.editor ? (options) => col.editor(options) : undefined}
+            sortable={col.sortable}
+          />
+        );
+      }
+      return null;
+    });
+
     return (
       <>
         <div className="flex flex-column w-full">
@@ -154,6 +419,7 @@ const FSTbVHits = ({ id }) => {
               rows={100}
               sortField="clusterGroup"
               sortOrder={1}
+              resizableColumns
               header={
                 <FSTbVHDataTableHeader
                   showAddHitSideBar={() => setDisplayAddHitSideBar(true)}
@@ -172,6 +438,7 @@ const FSTbVHits = ({ id }) => {
                   subStructureHighlight={subStructureHighlight}
                   setSubStructureHighlight={setSubStructureHighlight}
                   setShowStructureEditor={setShowStructureEditor}
+                  toggleEditMode={toggleEditMode}
                 />
               }
               //globalFilter={globalFilter}
@@ -189,67 +456,17 @@ const FSTbVHits = ({ id }) => {
                   className="fadein"
                 ></Column>
               )}
-              <Column
-                field={(rowData) => rowData?.molecule?.smilesCanonical}
-                header="Structure"
-                body={(rowData) =>
-                  StructureBodyTemplate(rowData, subStructureHighlight)
-                }
-              />
 
-              <Column
-                field={"library"}
-                header="Library"
-                editor={(options) => TextRowEditor(options)}
-                sortable
-              />
-              <Column
-                field={"librarySource"}
-                header="Source"
-                editor={(options) => TextRowEditor(options)}
-              />
-
-              <Column
-                field={(rowData) => getUniqueMoleculeNames(rowData)}
-                header="Molecule Name"
-              />
-              <Column
-                field={"iC50"}
-                header="IC50 (&micro;M) "
-                editor={(options) => TextRowEditor(options)}
-                sortable
-              />
-              <Column
-                field={"mic"}
-                header="MIC (&micro;M)"
-                editor={(options) => TextRowEditor(options)}
-                sortable
-              />
-              <Column
-                field={"clusterGroup"}
-                header="Cluster"
-                editor={(options) => TextRowEditor(options)}
-                sortable
-              />
-              <Column
-                field="voteScore"
-                header="Vote"
-                body={votingBodyTemplate}
-                sortable
-              />
-              <Column
-                field="notes"
-                header="Notes"
-                editor={(options) => TextRowEditor(options)}
-              />
-
-              <Column
-                rowEditor
-                header="Edit"
-                // headerStyle={{ width: "10%", minWidth: "8rem" }}
-                bodyStyle={{ textAlign: "center" }}
-              />
-              {isUserInAnyOfRoles([ScreenAdminRoleName]) && (
+              {viewableColumns}
+              {editMode && (
+                <Column
+                  rowEditor
+                  header="Edit"
+                  // headerStyle={{ width: "10%", minWidth: "8rem" }}
+                  bodyStyle={{ textAlign: "center" }}
+                />
+              )}
+              {isUserInAnyOfRoles([ScreenAdminRoleName]) && editMode && (
                 <Column body={deleteBodyTemplate} header="Delete" />
               )}
             </DataTable>

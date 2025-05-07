@@ -79,7 +79,7 @@ export default class HitCollectionStore {
         ),
       ];
 
-      console.log("moleculeIds", moleculeIds);
+      //console.debug("moleculeIds", moleculeIds);
 
       // Step 3: Fetch molecule associations using MoleculeAssociationStore
       await this.rootStore.moleculeAssociationStore.fetchAssociationsForMolecules(
@@ -87,10 +87,10 @@ export default class HitCollectionStore {
       );
 
       runInAction(() => {
-        console.log(
-          "Molecule Associations Registry:",
-          this.rootStore.moleculeAssociationStore.associationsRegistry
-        );
+        // console.log(
+        //   "Molecule Associations Registry:",
+        //   this.rootStore.moleculeAssociationStore.associationsRegistry
+        // );
         hitCollections.forEach((hitCollection) => {
           console.log("hitCollection", hitCollection);
           hitCollection.hits.forEach((hit) => {
