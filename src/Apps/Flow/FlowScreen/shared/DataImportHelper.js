@@ -1,6 +1,10 @@
 export function GroupMolecules(data) {
   const grouped = data.reduce((acc, item) => {
-    const key = item.moleculeName;
+    const key =
+      item.assayType != null && item.assayType !== ""
+        ? `${item.moleculeName}__${item.assayType}`
+        : item.moleculeName;
+    //const key = item.moleculeName;
 
     if (!acc[key]) {
       acc[key] = {

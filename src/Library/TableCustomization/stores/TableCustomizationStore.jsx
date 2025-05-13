@@ -1,4 +1,5 @@
 import { action, makeObservable, observable, runInAction } from "mobx";
+import { toast } from "react-toastify";
 import TableCustomizationAPI from "../api/TableCustomizationAPI";
 
 export default class TableCustomizationStore {
@@ -160,6 +161,7 @@ export default class TableCustomizationStore {
         this.selectedTableCustomization = res;
         this.isCustomizationRegistryCacheValid = false; // Invalidate cache
         this.isSavingUser = false;
+        toast.success("Customization saved successfully");
       });
     } catch (error) {
       runInAction(() => {
@@ -181,6 +183,7 @@ export default class TableCustomizationStore {
         this.selectedTableCustomization = res;
         this.isCustomizationRegistryCacheValid = false; // Invalidate cache
         this.isSavingGlobal = false;
+        toast.success("Customization saved for all users.");
       });
     } catch (error) {
       runInAction(() => {
@@ -193,13 +196,18 @@ export default class TableCustomizationStore {
   removeUserCustomization = async (customization) => {
     this.isSavingUser = true;
     try {
-      await TableCustomizationAPI.removeUserCustomization(customization);
+      console.log("customization", customization);
+      var res = await TableCustomizationAPI.removeUserCustomization(
+        customization
+      );
       runInAction(() => {
         // Remove the customization from the registry
+        console.log("res", res);
         const { tableInstanceId } = customization;
         this.tableRegistry.delete(tableInstanceId);
         this.isCustomizationRegistryCacheValid = false; // Invalidate cache
         this.isSavingUser = false;
+        toast.success("Restored to default successfully");
       });
     } catch (error) {
       runInAction(() => {

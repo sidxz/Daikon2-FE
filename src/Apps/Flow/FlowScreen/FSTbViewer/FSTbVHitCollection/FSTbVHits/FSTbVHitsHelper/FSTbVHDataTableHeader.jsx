@@ -1,8 +1,12 @@
 import { Button } from "primereact/button";
+import { Dialog } from "primereact/dialog";
+import { Divider } from "primereact/divider";
+import { InputNumber } from "primereact/inputnumber";
 import { InputText } from "primereact/inputtext";
 import { Menubar } from "primereact/menubar";
 import { ToggleButton } from "primereact/togglebutton";
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import TableCustomization from "../../../../../../../Library/TableCustomization/TableCustomization";
 import { MolecuLogixIcon } from "../../../../../../MolecuLogix/Icons/MolecuLogixIcon";
 import { ExportHitsToExcel } from "./FSTbVHExcelExport";
@@ -31,11 +35,86 @@ export const FSTbVHDataTableHeader = ({
   setSubStructureHighlight,
   setShowStructureEditor,
   toggleEditMode,
+  clusterHits,
 }) => {
   const [showImportDialog, setShowImportDialog] = useState(false);
   const [showTableCustomization, setShowTableCustomization] = useState(false);
+  const [clusterCutOff, setClusterCutOff] = useState(0.85);
+  const [showClusterDialog, setShowClusterDialog] = useState(false);
+  if (selectedHitCollection === undefined) {
+    console.log("selectedHitCollection is undefined");
+  }
 
-  if (selectedHitCollection === undefined) return <p>Loading...</p>;
+  /* Clustering Template */
+  const acceptClustering = () => {
+    console.log("Clustering accepted with cut-off:", clusterCutOff);
+    clusterHits(selectedHitCollection?.id, clusterCutOff);
+  };
+
+  const rejectClustering = () => {
+    console.log("Clustering rejected");
+  };
+
+  const clusterDialogTemplate = () => (
+    <div className="flex flex-column align-items-left w-full gap-3">
+      <div className="flex-auto">
+        <span>
+          Please confirm to continue. This will group or regroup the existing
+          hits into clusters.
+        </span>
+      </div>
+
+      <div className="flex-auto">
+        <label htmlFor="locale-user" className="font-bold block mb-2">
+          Cluster Similarity Cutoff
+        </label>
+        <InputNumber
+          value={clusterCutOff}
+          onValueChange={(e) => setClusterCutOff(e.value)}
+          min={0.1}
+          max={1.0}
+        />
+      </div>
+      <div className="flex-auto">
+        <Button
+          label="Cancel"
+          icon="pi pi-times"
+          className="p-button-text"
+          onClick={() => {
+            rejectClustering();
+            setShowClusterDialog(false);
+          }}
+        />
+        <Button
+          label="Cluster"
+          icon="pi pi-check"
+          className="p-button-text"
+          onClick={() => {
+            acceptClustering();
+            setShowClusterDialog(false);
+          }}
+        />
+      </div>
+      <div className="flex-auto">
+        <Divider />
+      </div>
+      <div className="flex-auto">
+        The current method for structural clustering uses the{" "}
+        <Link
+          to={"https://pubs.acs.org/doi/full/10.1021/ci9803381"}
+          target="_blank"
+        >
+          Butina
+        </Link>{" "}
+        algorithm.
+        <br />
+        Tanimoto similarity index is used to measure similarity, ranging from 0
+        (no similarity) to 1 (high similarity).
+      </div>
+    </div>
+  );
+
+  /* End Clustering Template */
 
   const items = [
     {
@@ -118,6 +197,7 @@ export const FSTbVHDataTableHeader = ({
         {
           label: "Cluster",
           icon: "pi pi-bolt",
+          command: () => setShowClusterDialog(true),
         },
       ],
     },
@@ -195,6 +275,16 @@ export const FSTbVHDataTableHeader = ({
           allColumns={AllTbColumns}
           headerLabel={"Customize View for " + selectedHitCollection?.name}
         />
+        <Dialog
+          header="Confirm Clustering"
+          visible={showClusterDialog}
+          onHide={() => {
+            if (!showClusterDialog) return;
+            setShowClusterDialog(false);
+          }}
+        >
+          {clusterDialogTemplate()}
+        </Dialog>
       </div>
     );
   }

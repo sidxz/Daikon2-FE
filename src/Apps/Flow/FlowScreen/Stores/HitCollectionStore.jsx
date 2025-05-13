@@ -56,7 +56,11 @@ export default class HitCollectionStore {
     return this.hitCollectionRegistryCache.get(screenId);
   };
 
-  fetchHitCollectionsOfScreen = async (screenId, inValidateCache = false) => {
+  fetchHitCollectionsOfScreen = async (
+    screenId,
+    inValidateCache = false,
+    preFetchCustomization = false
+  ) => {
     //console.log("fetchHitCollectionsOfScreen", screenId, inValidateCache);
     if (inValidateCache) {
       this.hitCollectionRegistryCache.set(screenId, false);
@@ -104,7 +108,7 @@ export default class HitCollectionStore {
           let screenType =
             this.rootStore.screenStore.selectedScreen.screenType || null;
           console.log("screenType", screenType);
-          if (screenType === "target-based") {
+          if (preFetchCustomization && screenType === "target-based") {
             // fetch table customization for target based screens
             console.log("Fetching table customization for target-based screen");
             this.rootStore.tableCustomizationStore.getCustomization(

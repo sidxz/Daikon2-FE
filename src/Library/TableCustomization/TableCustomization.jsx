@@ -104,12 +104,6 @@ const TableCustomization = ({
           <div className="flex justify-content-end mt-5 gap-2">
             <Button
               type="button"
-              label="Restore Default"
-              className="p-button p-component p-button-outlined"
-              onClick={() => onHide()}
-            />
-            <Button
-              type="button"
               label="Set as Default for Everyone"
               className="p-button p-component p-button-outlined"
               loading={isSavingGlobal}

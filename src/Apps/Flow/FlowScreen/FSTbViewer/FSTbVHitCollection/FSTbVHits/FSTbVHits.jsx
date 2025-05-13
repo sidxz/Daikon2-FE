@@ -25,7 +25,9 @@ import {
 import FSTbVHExcelImport from "./FSTbVHitsHelper/FSTbVHExcelImport";
 import { TbHitsTableType } from "./FSTbVHitsHelper/FSTbVHitsConstants";
 import FSTbVHPromote from "./FSTbVHitsHelper/FSTbVHPromote";
+
 const FSTbVHits = ({ id }) => {
+  console.log("!***! COMPONENT : FSTbVHits with id: ", id);
   const rootStore = useContext(RootStoreContext);
 
   const {
@@ -42,6 +44,8 @@ const FSTbVHits = ({ id }) => {
     isAddingHit,
     isUpdatingHit,
     isBatchInsertingHits,
+    clusterHits,
+    isClusteringHits,
   } = rootStore.hitStore;
   const { user } = rootStore.authStore;
 
@@ -58,27 +62,33 @@ const FSTbVHits = ({ id }) => {
     isSavingGlobal,
   } = rootStore.tableCustomizationStore;
 
-  const [selectedCategories, setSelectedCategories] = useState([]);
+  const selectedHitCollectionId = selectedHitCollection?.id ?? null;
+  const selectedTableCustomizationId =
+    selectedTableCustomization?.tableInstanceId ?? null;
 
   useEffect(() => {
     if (
       !isAddingHitCollection &&
-      (selectedHitCollection === undefined || selectedHitCollection?.id !== id)
+      (selectedHitCollectionId === null || selectedHitCollectionId !== id)
     ) {
+      console.log("useEffect : FSTbVHits: getHitCollection", id);
       getHitCollection(id);
     }
-  }, [id, getHitCollection]);
+  }, [id, selectedHitCollectionId, isAddingHitCollection, getHitCollection]);
 
   useEffect(() => {
     if (
-      selectedHitCollection !== undefined &&
-      (!selectedTableCustomization ||
-        selectedTableCustomization?.tableInstanceId !==
-          selectedHitCollection?.id)
+      selectedHitCollectionId !== null &&
+      (selectedTableCustomizationId === null ||
+        selectedTableCustomizationId !== selectedHitCollectionId)
     ) {
-      getCustomization(TbHitsTableType, selectedHitCollection?.id);
+      console.log(
+        "useEffect : FSTbVHits: getCustomization",
+        selectedHitCollectionId
+      );
+      getCustomization(TbHitsTableType, selectedHitCollectionId);
     }
-  }, [selectedTableCustomization, getCustomization]);
+  }, [selectedHitCollectionId, selectedTableCustomizationId, getCustomization]);
 
   const [displayAddHitSideBar, setDisplayAddHitSideBar] = useState(false);
   const [showFileUploadDialog, setShowFileUploadDialog] = useState(false);
@@ -91,7 +101,12 @@ const FSTbVHits = ({ id }) => {
   const [showStructureEditor, setShowStructureEditor] = useState(false);
   const [editMode, setEditMode] = useState(false);
 
-  if (isFetchingHitCollection || isFetchingTableCustomization) {
+  if (
+    isFetchingHitCollection ||
+    isFetchingTableCustomization ||
+    selectedHitCollectionId === null ||
+    selectedTableCustomizationId === null
+  ) {
     return <Loading message={"Fetching Hit Collection..."} />;
   }
 
@@ -174,7 +189,7 @@ const FSTbVHits = ({ id }) => {
       key: "moleculeName",
       header: "Molecule Name",
       body: getUniqueMoleculeNames,
-      sortable: false,
+      sortable: true,
     },
 
     {
@@ -359,10 +374,14 @@ const FSTbVHits = ({ id }) => {
   ];
 
   if (
-    selectedHitCollection !== undefined &&
-    !isFetchingHitCollection &&
-    selectedTableCustomization
+    selectedHitCollectionId !== null &&
+    selectedHitCollectionId === id &&
+    selectedTableCustomizationId !== null &&
+    selectedTableCustomizationId === selectedHitCollectionId &&
+    !isFetchingTableCustomization &&
+    !isFetchingHitCollection
   ) {
+    console.log("Generating Table Rendering");
     let viewableColumns = allColumnDefs.map((col) => {
       // Show all columns if selectedTableCustomization.columns is undefined or empty
       if (
@@ -387,22 +406,24 @@ const FSTbVHits = ({ id }) => {
     return (
       <>
         <div className="flex flex-column w-full">
-          {isDeletingHit ||
+          {(isDeletingHit ||
+            isClusteringHits ||
             isAddingHit ||
             isUpdatingHit ||
-            (isBatchInsertingHits && (
-              <div className="flex w-full p-1">
-                <ProgressBar
-                  mode="indeterminate"
-                  color={appColors.loadingBar}
-                  style={{ height: "4px", width: "100%" }}
-                ></ProgressBar>
-              </div>
-            ))}
+            isBatchInsertingHits) && (
+            <div className="flex w-full p-1">
+              <ProgressBar
+                mode="indeterminate"
+                color={appColors.loadingBar}
+                style={{ height: "4px", width: "100%" }}
+              ></ProgressBar>
+            </div>
+          )}
           <div className="flex w-full">
             <DataTable
               loading={
                 isDeletingHit ||
+                isClusteringHits ||
                 isAddingHit ||
                 isUpdatingHit ||
                 isBatchInsertingHits
@@ -420,6 +441,8 @@ const FSTbVHits = ({ id }) => {
               sortField="clusterGroup"
               sortOrder={1}
               resizableColumns
+              //groupRowsBy="requestedMoleculeName"
+              //rowGroupMode="rowspan"
               header={
                 <FSTbVHDataTableHeader
                   showAddHitSideBar={() => setDisplayAddHitSideBar(true)}
@@ -439,6 +462,7 @@ const FSTbVHits = ({ id }) => {
                   setSubStructureHighlight={setSubStructureHighlight}
                   setShowStructureEditor={setShowStructureEditor}
                   toggleEditMode={toggleEditMode}
+                  clusterHits={clusterHits}
                 />
               }
               //globalFilter={globalFilter}

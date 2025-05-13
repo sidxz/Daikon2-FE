@@ -64,7 +64,7 @@ const FSTbViewer = () => {
 
   useEffect(() => {
     if (selectedScreen && selectedScreen?.id === params?.id) {
-      fetchHitCollectionsOfScreen(selectedScreen.id);
+      fetchHitCollectionsOfScreen(selectedScreen.id, false, false);
     }
   }, [selectedScreen, params.id, fetchHitCollectionsOfScreen]);
 

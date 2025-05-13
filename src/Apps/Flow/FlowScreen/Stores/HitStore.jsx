@@ -18,6 +18,9 @@ export default class HitStore {
       deleteHit: action,
       isBatchInsertingHits: observable,
       batchInsertHits: action,
+
+      clusterHits: action,
+      isClusteringHits: observable,
     });
   }
 
@@ -26,6 +29,7 @@ export default class HitStore {
   isAddingHit = false;
   isDeletingHit = false;
   isBatchInsertingHits = false;
+  isClusteringHits = false;
 
   // Actions
   addHit = async (hit, silent = false) => {
@@ -275,6 +279,51 @@ export default class HitStore {
     } finally {
       runInAction(() => {
         this.isBatchInsertingHits = false;
+      });
+    }
+  };
+
+  clusterHits = async (hitCollectionId, clusterCutOff = 0.7) => {
+    console.log("Clustering Hits");
+    if (!hitCollectionId) {
+      hitCollectionId =
+        this.rootStore.hitCollectionStore.selectedHitCollection.id;
+    }
+    console.log("hitCollectionId", hitCollectionId);
+
+    this.isClusteringHits = true;
+    try {
+      let clusteredHits = await HitAPI.clusterHits(
+        hitCollectionId,
+        clusterCutOff
+      );
+      runInAction(() => {
+        console.log("clusteredHits", clusteredHits);
+        // update in hitCollection registry list
+        for (const res of clusteredHits) {
+          const hitCollection =
+            this.rootStore.hitCollectionStore.hitCollectionRegistry.get(
+              res.hitCollectionId
+            );
+
+          const hitIndex = hitCollection.hits.findIndex((e) => e.id === res.id);
+          const existingHit = hitCollection.hits[hitIndex];
+          let updatedHit = { ...existingHit };
+          updatedHit.clusterGroup = res.clusterGroup;
+          hitCollection.hits[hitIndex] = updatedHit;
+          this.rootStore.hitCollectionStore.selectedHitCollection =
+            hitCollection;
+          //console.log("hitIndex", hitIndex);
+        }
+
+        toast.success("Hits clustered successfully");
+      });
+    } catch (error) {
+      console.error("Error clustering hits:", error);
+      toast.error("Error clustering hits");
+    } finally {
+      runInAction(() => {
+        this.isClusteringHits = false;
       });
     }
   };

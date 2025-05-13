@@ -20,6 +20,11 @@ const HitAPI = {
     axiosWithAuth.delete(`/v2/hit-collection/${hitCollectionId}/hit/batch`, {
       data: { hitIds },
     }),
+  clusterHits: (hitCollectionId, clusterCutOff) =>
+    axiosWithAuth.put(
+      `/v2/hit-collection/${hitCollectionId}/cluster?CutOff=${clusterCutOff}`,
+      {}
+    ),
 };
 
 export default HitAPI;
