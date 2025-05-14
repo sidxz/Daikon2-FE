@@ -10,20 +10,33 @@ const MDInput = ({ inputs, setInputs, moveToPreview }) => {
   const columns = [
     { field: "name", header: "Name" },
     { field: "SMILES", header: "SMILES" },
-    { field: "CDDId", header: "CDD Id (Optional)" },
+    { field: "disclosureScientist", header: "Scientist" },
+    { field: "disclosureReason", header: "Reason" },
+    { field: "disclosureStage", header: "Stage" },
+    { field: "disclosureNotes", header: "Notes" },
+    { field: "literatureReferences", header: "Literature" },
   ];
 
   const addBlankInput = () => {
     setInputs([
       ...inputs,
-      { name: "Click to Edit", SMILES: "Click to Edit", CDDId: "" },
+      { name: "Click to Edit", SMILES: "Click to Edit" },
+      { disclosureScientist: "Click to Edit" },
+      { disclosureReason: "Click to Edit" },
+      { disclosureStage: "Click to Edit" },
+      { disclosureNotes: "Click to Edit" },
+      { literatureReferences: "Click to Edit" },
     ]);
   };
 
   const DtFieldsToExcelColumnMapping = {
     name: "Name",
     SMILES: "SMILES",
-    CDDId: "CDD Id (Optional)",
+    disclosureScientist: "Scientist",
+    disclosureReason: "Reason",
+    disclosureStage: "Stage",
+    disclosureNotes: "Notes",
+    literatureReferences: "Literature",
   };
 
   let onUpload = async (e) => {
@@ -40,7 +53,11 @@ const MDInput = ({ inputs, setInputs, moveToPreview }) => {
     jsonData.forEach((row) => {
       row.name = row.name ?? "Click to Edit";
       row.SMILES = row.SMILES ?? "Click to Edit";
-      row.CDDId = row.CDDId ?? "";
+      row.disclosureScientist = row.disclosureScientist ?? "Click to Edit";
+      row.disclosureReason = row.disclosureReason ?? "Click to Edit";
+      row.disclosureStage = row.disclosureStage ?? "Click to Edit";
+      row.disclosureNotes = row.disclosureNotes ?? "Click to Edit";
+      row.literatureReferences = row.literatureReferences ?? "Click to Edit";
     });
     setInputs(jsonData);
     //hideFileUploadDialog();

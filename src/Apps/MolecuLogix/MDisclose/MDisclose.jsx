@@ -24,10 +24,24 @@ const MDisclose = () => {
       return inputNameParam.map((name) => ({
         name: name.trim(),
         SMILES: "Click to Edit",
-        CDDId: "",
+        disclosureScientist: "Click to Edit",
+        disclosureReason: "Click to Edit",
+        disclosureStage: "Click to Edit",
+        disclosureNotes: "Click to Edit",
+        literatureReferences: "Click to Edit",
       }));
     }
-    return [{ name: "Click to Edit", SMILES: "Click to Edit", CDDId: "" }];
+    return [
+      {
+        name: "Click to Edit",
+        SMILES: "Click to Edit",
+        disclosureScientist: "Click to Edit",
+        disclosureReason: "Click to Edit",
+        disclosureStage: "Click to Edit",
+        disclosureNotes: "Click to Edit",
+        literatureReferences: "Click to Edit",
+      },
+    ];
   });
 
   const [previewResults, setPreviewResults] = useState([]);
@@ -55,7 +69,12 @@ const MDisclose = () => {
           input.name.trim() !== "" &&
           input.SMILES.trim() !== "" &&
           input.name !== "Click to Edit" &&
-          input.SMILES !== "Click to Edit"
+          input.SMILES !== "Click to Edit" &&
+          input.disclosureScientist !== "Click to Edit" &&
+          input.disclosureReason !== "Click to Edit" &&
+          input.disclosureStage !== "Click to Edit" &&
+          input.disclosureNotes !== "Click to Edit" &&
+          input.literatureReferences !== "Click to Edit"
       );
 
       console.log("Filtered inputs:", filteredInputs); // ✅ Log after state updates

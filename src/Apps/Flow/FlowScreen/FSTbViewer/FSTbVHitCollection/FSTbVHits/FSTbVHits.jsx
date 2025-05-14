@@ -6,7 +6,7 @@ import { DataTable } from "primereact/datatable";
 import { Dialog } from "primereact/dialog";
 import { ProgressBar } from "primereact/progressbar";
 import { Sidebar } from "primereact/sidebar";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { appColors } from "../../../../../../constants/colors";
 import JSMEditor from "../../../../../../Library/JSME/JSMEditor";
 import Loading from "../../../../../../Library/Loading/Loading";
@@ -65,6 +65,31 @@ const FSTbVHits = ({ id }) => {
   const selectedHitCollectionId = selectedHitCollection?.id ?? null;
   const selectedTableCustomizationId =
     selectedTableCustomization?.tableInstanceId ?? null;
+  const [filterNotVoted, setFilterNotVoted] = useState(false);
+
+  /* Set the scroll height of the table dynamically */
+  const tableRef = useRef(null);
+  const [scrollHeight, setScrollHeight] = useState("70vh");
+
+  const updateScrollHeight = () => {
+    if (tableRef.current) {
+      const rect = tableRef.current.getBoundingClientRect();
+      const offsetTop = rect.top;
+      const windowHeight = window.innerHeight;
+      const calculatedHeight = windowHeight - offsetTop - 20; // 20px bottom padding
+      console.log(calculatedHeight);
+      setScrollHeight(`${calculatedHeight}px`);
+    }
+  };
+  useEffect(() => {
+    updateScrollHeight(); // on mount
+    window.addEventListener("resize", updateScrollHeight); // on resize
+
+    return () => {
+      window.removeEventListener("resize", updateScrollHeight);
+    };
+  }, []);
+  /* End of scroll height update */
 
   useEffect(() => {
     if (
@@ -73,6 +98,7 @@ const FSTbVHits = ({ id }) => {
     ) {
       console.log("useEffect : FSTbVHits: getHitCollection", id);
       getHitCollection(id);
+      updateScrollHeight();
     }
   }, [id, selectedHitCollectionId, isAddingHitCollection, getHitCollection]);
 
@@ -87,6 +113,7 @@ const FSTbVHits = ({ id }) => {
         selectedHitCollectionId
       );
       getCustomization(TbHitsTableType, selectedHitCollectionId);
+      updateScrollHeight();
     }
   }, [selectedHitCollectionId, selectedTableCustomizationId, getCustomization]);
 
@@ -419,7 +446,7 @@ const FSTbVHits = ({ id }) => {
               ></ProgressBar>
             </div>
           )}
-          <div className="flex w-full">
+          <div className="flex w-full" ref={tableRef}>
             <DataTable
               loading={
                 isDeletingHit ||
@@ -434,10 +461,17 @@ const FSTbVHits = ({ id }) => {
               editMode="row"
               onRowEditComplete={(e) => updateHit(e.newData)}
               dataKey="id"
-              value={selectedHitCollection?.hits}
+              value={
+                filterNotVoted
+                  ? selectedHitCollection?.hits.filter(
+                      (hit) => Object.keys(hit.voters).length == 0
+                    )
+                  : selectedHitCollection?.hits
+              }
               paginator
               scrollable
               rows={100}
+              scrollHeight={scrollHeight}
               sortField="clusterGroup"
               sortOrder={1}
               resizableColumns
@@ -463,6 +497,8 @@ const FSTbVHits = ({ id }) => {
                   setShowStructureEditor={setShowStructureEditor}
                   toggleEditMode={toggleEditMode}
                   clusterHits={clusterHits}
+                  filterNotVoted={filterNotVoted}
+                  setFilterNotVoted={setFilterNotVoted}
                 />
               }
               //globalFilter={globalFilter}

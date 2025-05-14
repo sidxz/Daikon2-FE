@@ -36,6 +36,8 @@ export const FSTbVHDataTableHeader = ({
   setShowStructureEditor,
   toggleEditMode,
   clusterHits,
+  filterNotVoted,
+  setFilterNotVoted,
 }) => {
   const [showImportDialog, setShowImportDialog] = useState(false);
   const [showTableCustomization, setShowTableCustomization] = useState(false);
@@ -165,7 +167,8 @@ export const FSTbVHDataTableHeader = ({
         {
           template: () => (
             <ToggleButton
-              className="p-button-text w-full"
+              className="p-button-text w-full border-0 m-1"
+              text
               checked={isVotesHidden}
               onChange={(e) => setIsVotesHidden(e.value)}
               onLabel="Votes Visible"
@@ -178,7 +181,8 @@ export const FSTbVHDataTableHeader = ({
         {
           template: () => (
             <ToggleButton
-              className="p-button-text w-full"
+              className="p-button-text w-full border-0 m-1"
+              text
               checked={isOneClickVotingEnabled}
               onChange={(e) => setIsOneClickVotingEnabled(e.value)}
               onLabel="One Click Voting Enabled"
@@ -187,6 +191,11 @@ export const FSTbVHDataTableHeader = ({
               offIcon="pi pi-times"
             />
           ),
+        },
+        {
+          label: filterNotVoted ? "Show All" : "Filter Not Voted",
+          icon: filterNotVoted ? "pi pi-check-square" : "pi pi-filter-slash",
+          command: () => setFilterNotVoted(!filterNotVoted),
         },
       ],
     },

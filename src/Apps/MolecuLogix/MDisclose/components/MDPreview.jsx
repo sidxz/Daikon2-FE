@@ -17,7 +17,13 @@ const MDPreview = ({
     MolDbAPI.discloseMoleculePreview(inputs)
       .then((res) => {
         console.log("Preview Results:", res);
-        setPreviewResults(res);
+        // enrich the preview results with the input data
+        const enrichedResults = res.map((result, index) => ({
+          ...result,
+          ...inputs[index],
+        }));
+        // set the preview results
+        setPreviewResults(enrichedResults);
         setLoading(false);
       })
       .catch((error) => {
@@ -60,6 +66,8 @@ const MDPreview = ({
       </>
     );
   };
+
+  console.log("Preview Results:", previewResults);
 
   return (
     <div className="flex flex-column justify-content-center align-items-center w-11 gap-2">
