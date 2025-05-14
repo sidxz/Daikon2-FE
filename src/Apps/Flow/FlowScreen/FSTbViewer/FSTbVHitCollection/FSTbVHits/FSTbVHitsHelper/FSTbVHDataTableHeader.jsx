@@ -6,6 +6,7 @@ import { InputText } from "primereact/inputtext";
 import { Menubar } from "primereact/menubar";
 import { ToggleButton } from "primereact/togglebutton";
 import React, { useState } from "react";
+import { FcEmptyFilter } from "react-icons/fc";
 import { Link } from "react-router-dom";
 import TableCustomization from "../../../../../../../Library/TableCustomization/TableCustomization";
 import { MolecuLogixIcon } from "../../../../../../MolecuLogix/Icons/MolecuLogixIcon";
@@ -250,15 +251,14 @@ export const FSTbVHDataTableHeader = ({
     </div>
   );
 
-  const end = (
-    <div className="flex flex-column">
-      {/* <Button
-        type="button"
-        className="p-button-text p-button-md"
-        icon="pi pi-cog"
-        label="Customize Table"
-        onClick={(e) => op.current.toggle(e)}
-      /> */}
+  const end = filterNotVoted && (
+    <div className="flex fadein animation-duration-1000 shadow-0 p-2 align-items-center">
+      <div className="flex p-1">
+        <FcEmptyFilter />
+      </div>
+      <div className="flex text-sm text-green-800	">
+        Showing Filtered Results
+      </div>
     </div>
   );
 
