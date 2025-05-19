@@ -1,6 +1,11 @@
 export const DtFieldsToExcelColumnMapping =
   // Map Data fields to column names of excel sheet
   {
+    moleculeName: "Molecule Name",
+    smiles: "SMILES",
+    library: "Library",
+    librarySource: "Source",
+
     assayType: "Assay Type",
     clusterGroup: "Cluster Group",
     eC50: "EC50",
@@ -16,8 +21,6 @@ export const DtFieldsToExcelColumnMapping =
     lD50: "LD50",
     lD50Unit: "LD50 Unit",
 
-    library: "Library",
-    librarySource: "Source",
     miC90: "MIC90",
     miC90Unit: "MIC90 Unit",
     miC90Condition: "MIC90 Condition",
@@ -30,8 +33,6 @@ export const DtFieldsToExcelColumnMapping =
     pctInhibitionConcentration: "%Inh Conc",
     pctInhibitionConcentrationUnit: "%Inh Conc Unit",
 
-    moleculeName: "Molecule Name",
-    smiles: "SMILES",
     notes: "Notes",
 
     response: "Response",
@@ -42,6 +43,9 @@ export const DtFieldsToExcelColumnMapping =
     responseType: "Response Type",
     timePoint: "Time Point",
     comment: "Comment",
+    positive: "Positive Votes",
+    negative: "Negative Votes",
+    neutral: "Neutral Votes",
   };
 
 export const DtFieldsGroupedColumnMapping =
