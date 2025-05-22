@@ -6,7 +6,7 @@ import { DataTable } from "primereact/datatable";
 import { Dialog } from "primereact/dialog";
 import { ProgressBar } from "primereact/progressbar";
 import { Sidebar } from "primereact/sidebar";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { appColors } from "../../../../../../constants/colors";
 import JSMEditor from "../../../../../../Library/JSME/JSMEditor";
 import Loading from "../../../../../../Library/Loading/Loading";
@@ -475,6 +475,8 @@ const FSTbVHits = ({ id }) => {
               sortField="clusterGroup"
               sortOrder={1}
               resizableColumns
+              columnResizeMode="fit"
+              showGridlines
               //groupRowsBy="requestedMoleculeName"
               //rowGroupMode="rowspan"
               header={
@@ -503,8 +505,6 @@ const FSTbVHits = ({ id }) => {
               }
               //globalFilter={globalFilter}
               emptyMessage="No hits found."
-              columnResizeMode="fit"
-              showGridlines
               selection={selectedHits}
               onSelectionChange={(e) => setSelectedHits(e.value)}
             >

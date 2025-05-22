@@ -1,10 +1,13 @@
 import { observer } from "mobx-react-lite";
 import { Divider } from "primereact/divider";
 import { TabPanel, TabView } from "primereact/tabview";
-import React from "react";
 import { appColors } from "../../../constants/colors";
 import SecHeading from "../../../Library/SecHeading/SecHeading";
 import TableCustomizationDefaults from "../../../Library/TableCustomization/TableCustomizationDefaults";
+import {
+  AllPhColumns,
+  PhHitsTableType,
+} from "../../Flow/FlowScreen/FSPhViewer/FSPhVHitCollection/FSPhVHits/FSPhVHitsHelper/FSPhVHitsConstants";
 import {
   AllTbColumns,
   TbHitsTableType,
@@ -32,6 +35,20 @@ const AdminTableManagement = () => {
             <TableCustomizationDefaults
               tableType={TbHitsTableType}
               allColumns={AllTbColumns}
+            />
+          </div>
+        </TabPanel>
+        <TabPanel header="Phenotypic Hits Table">
+          <div className="flex w-full font-bold text-xl">
+            Customize defaults for Phenotypic Hits Table
+          </div>
+          <div className="flex w-full">
+            <Divider />
+          </div>
+          <div className="flex w-full">
+            <TableCustomizationDefaults
+              tableType={PhHitsTableType}
+              allColumns={AllPhColumns}
             />
           </div>
         </TabPanel>

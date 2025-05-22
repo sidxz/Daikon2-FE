@@ -47,6 +47,7 @@ export default class TableCustomizationStore {
   // Actions
 
   getTableDefaults = async (tableType) => {
+    console.log("getTableDefaults", tableType);
     this.isFetchingTableDefaults = true;
     // Return from cache if valid
     if (this.isCustomizationRegistryCacheValid) {
@@ -56,6 +57,7 @@ export default class TableCustomizationStore {
           this.isFetchingTableDefaults = false;
           this.selectedTableDefaults = defaults;
         });
+        console.log("defaults from cache", defaults);
         return defaults;
       }
     }
@@ -67,6 +69,7 @@ export default class TableCustomizationStore {
         this.isCustomizationRegistryCacheValid = true;
         this.isFetchingTableDefaults = false;
       });
+      console.log("defaults from API", defaults);
       return defaults;
     } catch (error) {
       runInAction(() => {
