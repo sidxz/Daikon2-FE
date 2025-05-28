@@ -1,6 +1,10 @@
 import { FileUpload } from "primereact/fileupload";
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import DataPreviewDialog from "../../../../../../Library/DataPreviewDialog/DataPreviewDialog";
+import {
+  FDateFormatted,
+  FDateISOString,
+} from "../../../../../../Library/FDate/FDateFormatted";
 import { RootStoreContext } from "../../../../../../RootStore";
 import ImportFromExcel from "../../../../../../Shared/Excel/ImportFromExcel";
 import { DtFieldsToScreenExcelColumnMapping } from "./FSPhScreenRunConstants";
@@ -63,6 +67,16 @@ const FSPhV_ScreenRunExcelImport = ({ selectedScreen }) => {
             // row.hitCollectionId = selectedHitCollection.id;
             // output is in field 'smiles' in excel (template), but to create a hit, we need 'requestedSMILES'
             // row.requestedSMILES = row.smiles;
+
+            if (row.startDate) {
+              row.startDate = FDateISOString(row.startDate);
+            }
+
+            if (row.endDate) {
+              row.endDate = FDateISOString(row.endDate);
+            }
+
+            console.log(row);
           });
           setDataForPreview(jsonData);
           setShowDataPreviewDialog(true);
@@ -82,6 +96,11 @@ const FSPhV_ScreenRunExcelImport = ({ selectedScreen }) => {
         }}
         onSave={batchInsertScreenRuns}
         isSaving={isBatchInsertingScreenRuns}
+        customBodyTemplates={{
+          startDate: (rowData) => FDateFormatted(rowData.startDate),
+          endDate: (rowData) => FDateFormatted(rowData.endDate),
+          // You can add more templates per field easily
+        }}
       />
     </>
   );
