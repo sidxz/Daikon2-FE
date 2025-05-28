@@ -3,6 +3,8 @@ import { createContext } from "react";
 import AdminRoleManagementStore from "./Apps/Admin/AdminRoleManagement/Stores/AdminRoleManagementStore";
 import AdminUserManagementStore from "./Apps/Admin/AdminUserManagement/Stores/AdminUserManagementStore";
 import CommentStore from "./Apps/Comments/Stores/CommentStore";
+import ParsedDocStore from "./Apps/DocuStore/Stores/ParsedDocStore";
+import EventHistoryStore from "./Apps/Events/Stores/EventHistoryStore";
 import GeneCrispriStrainStore from "./Apps/Flow/FlowGene/Stores/GeneCrispriStrainStore";
 import GeneEssentialityStore from "./Apps/Flow/FlowGene/Stores/GeneEssentialityStore";
 import GeneHypomorphStore from "./Apps/Flow/FlowGene/Stores/GeneHypomorphStore";
@@ -30,6 +32,7 @@ import MoleculeStore from "./Apps/MolecuLogix/Stores/MoleculeStore";
 import QnaireStore from "./Apps/Questionnaire/Stores/QnaireStore";
 import AuthStore from "./Auth/AuthStore";
 import HorizonStore from "./Library/Horizon/HorizonStore";
+import TableCustomizationStore from "./Library/TableCustomization/stores/TableCustomizationStore";
 
 configure({ enforceActions: "always" });
 
@@ -76,6 +79,11 @@ export class RootStore {
   moleculeAssociationStore;
 
   commentStore;
+
+  eventHistoryStore;
+  parsedDocStore;
+
+  tableCustomizationStore;
   constructor() {
     /* Auth */
     this.authStore = new AuthStore(this);
@@ -131,6 +139,15 @@ export class RootStore {
 
     /* Comments */
     this.commentStore = new CommentStore(this);
+
+    /* Event History */
+    this.eventHistoryStore = new EventHistoryStore(this);
+
+    /* Parsed Doc */
+    this.parsedDocStore = new ParsedDocStore(this);
+
+    /* Table Customization */
+    this.tableCustomizationStore = new TableCustomizationStore(this);
   }
 }
 

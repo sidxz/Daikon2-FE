@@ -1,6 +1,7 @@
 import { action, makeObservable, observable, runInAction } from "mobx";
 import { toast } from "react-toastify";
 import HitCollectionAPI from "../api/HitCollectionAPI";
+import { TbHitsTableType } from "../FSTbViewer/FSTbVHitCollection/FSTbVHits/FSTbVHitsHelper/FSTbVHitsConstants";
 
 export default class HitCollectionStore {
   rootStore;
@@ -55,8 +56,12 @@ export default class HitCollectionStore {
     return this.hitCollectionRegistryCache.get(screenId);
   };
 
-  fetchHitCollectionsOfScreen = async (screenId, inValidateCache = false) => {
-    console.log("fetchHitCollectionsOfScreen", screenId, inValidateCache);
+  fetchHitCollectionsOfScreen = async (
+    screenId,
+    inValidateCache = false,
+    preFetchCustomization = false
+  ) => {
+    //console.log("fetchHitCollectionsOfScreen", screenId, inValidateCache);
     if (inValidateCache) {
       this.hitCollectionRegistryCache.set(screenId, false);
     }
@@ -73,8 +78,45 @@ export default class HitCollectionStore {
 
     try {
       var hitCollections = await HitCollectionAPI.listByScreen(screenId);
+      const moleculeIds = [
+        ...new Set(
+          hitCollections.flatMap((hc) => hc.hits.map((hit) => hit.moleculeId))
+        ),
+      ];
+
+      //console.debug("moleculeIds", moleculeIds);
+
+      // Step 3: Fetch molecule associations using MoleculeAssociationStore
+      await this.rootStore.moleculeAssociationStore.fetchAssociationsForMolecules(
+        moleculeIds
+      );
+
       runInAction(() => {
+        // console.log(
+        //   "Molecule Associations Registry:",
+        //   this.rootStore.moleculeAssociationStore.associationsRegistry
+        // );
         hitCollections.forEach((hitCollection) => {
+          console.log("hitCollection", hitCollection);
+          hitCollection.hits.forEach((hit) => {
+            // Step 4: Attach relations from MoleculeAssociationStore
+            hit.relations =
+              this.rootStore.moleculeAssociationStore.associationsRegistry.get(
+                hit.moleculeId
+              ) || [];
+          });
+          let screenType =
+            this.rootStore.screenStore.selectedScreen.screenType || null;
+          console.log("screenType", screenType);
+          if (preFetchCustomization && screenType === "target-based") {
+            // fetch table customization for target based screens
+            console.log("Fetching table customization for target-based screen");
+            this.rootStore.tableCustomizationStore.getCustomization(
+              TbHitsTableType,
+              hitCollection.id
+            );
+          }
+
           this.hitCollectionRegistry.set(hitCollection.id, hitCollection);
         });
         this.hitCollectionRegistryCache.set(screenId, true);

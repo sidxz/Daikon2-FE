@@ -9,7 +9,7 @@ const RichTextDisplay = ({ data }) => {
   }
   let sanitizeHtml = (text) =>
     DOMPurify.sanitize(text, {
-      ALLOWED_TAGS: ["strong", "p", "em", "u", "s", "a", "ul", "li"],
+      ALLOWED_TAGS: ["strong", "p", "em", "u", "s", "a", "ul", "li", "b"],
     });
 
   let cleanupAndParse = (text) => {

@@ -49,10 +49,13 @@ const PortfolioCompoundEvolutionEdit = ({ existingCEvo, closeSideBar }) => {
         formik.resetForm();
         return;
       }
-      updateProjectCEvo(updatedCEvo).then(() => {
-        closeSideBar();
-        formik.resetForm();
-      });
+      updateProjectCEvo(updatedCEvo);
+      closeSideBar();
+      formik.resetForm();
+      // updateProjectCEvo(updatedCEvo).then(() => {
+      //   closeSideBar();
+      //   formik.resetForm();
+      // });
     },
   });
 

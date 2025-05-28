@@ -151,6 +151,17 @@ const SearchBar = ({}) => {
       limit: searchLimit,
     };
 
+    conditions.forEach((condition) => {
+      if (condition.property) {
+        if (condition.min) {
+          params[`${condition.property}Min`] = condition.min;
+        }
+        if (condition.max) {
+          params[`${condition.property}Max`] = condition.max;
+        }
+      }
+    });
+
     const queryString = new URLSearchParams(params).toString();
 
     MolDbAPI.findByName(queryString)

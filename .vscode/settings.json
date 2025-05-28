@@ -22,11 +22,13 @@
     "inputtext",
     "inputtextarea",
     "Logix",
+    "maximizable",
     "Microsoftexcel",
     "mlogix",
     "Molecu",
     "moleculogix",
     "OIDC",
+    "PDTF",
     "Phen",
     "Pheno",
     "primereact",
@@ -42,6 +44,7 @@
     "TPQAPI",
     "tptq",
     "Uniprot",
-    "validatorjs"
+    "validatorjs",
+    "Valparaíso"
   ]
 }

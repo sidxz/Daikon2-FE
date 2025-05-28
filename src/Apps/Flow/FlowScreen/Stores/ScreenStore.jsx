@@ -7,6 +7,7 @@ import {
 } from "mobx";
 import { toast } from "react-toastify";
 import ScreenAPI from "../api/ScreenAPI";
+import { getRelevantDate } from "../FSDashboard/FSDOverview/FSDOHelper";
 
 export default class ScreenStore {
   rootStore;
@@ -39,6 +40,13 @@ export default class ScreenStore {
 
       updateTargetAssociation: action,
       renameScreen: action,
+
+      getFilterAttributes: action,
+      filterCriteria: observable,
+      setFilterCriteria: action,
+
+      getFilteredListTargetBased: computed,
+      getFilteredListPhenotypic: computed,
     });
   }
 
@@ -55,6 +63,14 @@ export default class ScreenStore {
   isUpdatingScreen = false;
   isAddingScreen = false;
   isDeletingScreen = false;
+
+  filterCriteria = {
+    targets: [],
+    primaryOrgAliases: [],
+    methods: [],
+    dateRange: [null, null],
+    hideOldScreens: true,
+  };
 
   // Actions
 
@@ -145,6 +161,7 @@ export default class ScreenStore {
         // Add screen to screen list
         screen.id = res.id;
         screen.screenRuns = [];
+        screen.latestStatusChangeDate = Date.now();
 
         // FLatten the associated targets, separate by comma
         if (screen.associatedTargets) {
@@ -254,4 +271,132 @@ export default class ScreenStore {
       });
     }
   };
+
+  getFilterAttributes = () => {
+    return {
+      primaryOrgAliases: Array.from(
+        new Set(
+          Array.from(this.screenListRegistry.values())
+            .map((screen) => screen.primaryOrgAlias)
+            .filter((alias) => alias && alias.trim() !== "")
+        )
+      ).sort(),
+
+      methods: Array.from(
+        new Set(
+          Array.from(this.screenListRegistry.values())
+            .map((screen) => screen.method)
+            .filter((method) => method && method.trim() !== "")
+        )
+      ).sort(),
+
+      targets: Array.from(
+        new Set(
+          Array.from(this.screenListRegistry.values())
+            .flatMap(
+              (screen) => screen.associatedTargetsFlattened?.split(", ") || []
+            )
+            .filter((target) => target && target.trim() !== "")
+        )
+      ).sort(),
+    };
+  };
+
+  setFilterCriteria = (criteria) => {
+    console.log("Default filter criteria:", this.filterCriteria);
+    runInAction(() => {
+      console.log("Setting filter criteria:", criteria);
+      this.filterCriteria = {
+        ...this.filterCriteria,
+        ...criteria,
+      };
+    });
+  };
+
+  get getFilteredListTargetBased() {
+    const { targets, primaryOrgAliases, methods, dateRange, hideOldScreens } =
+      this.filterCriteria;
+
+    return Array.from(this.screenListTargetBased).filter((screen) => {
+      // Filter by targets
+
+      const screenDateRaw = getRelevantDate(screen);
+      const screenDate = screenDateRaw ? new Date(screenDateRaw) : null;
+
+      const sixMonthsAgo = new Date();
+      sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+
+      const matchesTargets =
+        !targets.length ||
+        targets.some((target) =>
+          screen.associatedTargetsFlattened
+            ?.toLowerCase()
+            .includes(target.toLowerCase())
+        );
+
+      // Filter by primaryOrgAliases
+      const matchesPrimaryOrgAliases =
+        !primaryOrgAliases.length ||
+        primaryOrgAliases.includes(screen.primaryOrgAlias);
+
+      // Filter by methods
+      const matchesMethods = !methods.length || methods.includes(screen.method);
+
+      // Filter by date range
+      const matchesDateRange =
+        (!dateRange[0] ||
+          new Date(screen.dateCreated) >= new Date(dateRange[0])) &&
+        (!dateRange[1] ||
+          new Date(screen.dateCreated) <= new Date(dateRange[1]));
+
+      const matchesHideOldScreens =
+        !hideOldScreens || screenDate >= sixMonthsAgo;
+      // Return true if all criteria match
+
+      return (
+        matchesTargets &&
+        matchesPrimaryOrgAliases &&
+        matchesMethods &&
+        matchesDateRange &&
+        matchesHideOldScreens
+      );
+    });
+  }
+
+  get getFilteredListPhenotypic() {
+    const { primaryOrgAliases, methods, dateRange, hideOldScreens } =
+      this.filterCriteria;
+
+    return Array.from(this.screenListPhenotypic).filter((screen) => {
+      const screenDateRaw = getRelevantDate(screen);
+      const screenDate = screenDateRaw ? new Date(screenDateRaw) : null;
+
+      const sixMonthsAgo = new Date();
+      sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+
+      // Filter by primaryOrgAliases
+      const matchesPrimaryOrgAliases =
+        !primaryOrgAliases.length ||
+        primaryOrgAliases.includes(screen.primaryOrgAlias);
+      // Filter by methods
+      const matchesMethods = !methods.length || methods.includes(screen.method);
+      // Filter by date range
+      const matchesDateRange =
+        (!dateRange[0] ||
+          new Date(screen.dateCreated) >= new Date(dateRange[0])) &&
+        (!dateRange[1] ||
+          new Date(screen.dateCreated) <= new Date(dateRange[1]));
+
+      // Return true if all criteria match
+      const matchesHideOldScreens =
+        !hideOldScreens || screenDate >= sixMonthsAgo;
+
+      return (
+        matchesPrimaryOrgAliases &&
+        matchesMethods &&
+        matchesDateRange &&
+        matchesHideOldScreens
+      );
+    });
+  }
 }

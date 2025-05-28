@@ -16,8 +16,9 @@ const DataPreviewDialog = ({
   onSave,
   isSaving = false,
   comparatorKey = "id",
+  fieldFlatteners = {}, // <-- NEW: pass in dynamic flattening behavior
+  customBodyTemplates = {}, // <-- NEW
 }) => {
-  // Dialog footer with a close button
   const dialogFooter = (
     <div className="flex justify-content-end w-full">
       <div className="flex">
@@ -38,7 +39,16 @@ const DataPreviewDialog = ({
           className="p-mt-2"
           loading={isSaving}
           onClick={() => {
-            onSave(dataWithStatus.filter((d) => d.status !== "Unchanged"));
+            const rowsToSave = dataWithStatus
+              .filter((d) => d.status !== "Unchanged")
+              .map((d) => {
+                // Merge the original row and attach the status field
+                const row = d._originalRow ? { ...d._originalRow } : { ...d };
+                row.status = d.status; // Add the computed status
+                return row;
+              });
+
+            onSave(rowsToSave);
             onHide();
           }}
         />
@@ -47,73 +57,82 @@ const DataPreviewDialog = ({
   );
 
   const dataWithStatus = useMemo(() => {
-    // Ensure existingData is defined and is an array
     if (!existingData || !Array.isArray(existingData)) {
       existingData = [];
     }
 
-    // Ensure data is defined and is an array
     if (!data || !Array.isArray(data)) {
       data = [];
     }
 
-    return data.map((rowData) => {
-      // Find the existing row with the same ID
-      let existingRow = existingData.find(
-        (d) => d[comparatorKey] === rowData[comparatorKey]
+    return data.map((originalRow) => {
+      const flattened = { ...originalRow };
+
+      // Dynamically flatten any fields using provided flatteners
+      Object.entries(fieldFlatteners).forEach(([field, flattenFn]) => {
+        if (field in originalRow && Array.isArray(originalRow[field])) {
+          flattened[field] = flattenFn(originalRow[field]);
+        }
+      });
+
+      // Keep original version
+      flattened._originalRow = originalRow;
+
+      const existingRow = existingData.find(
+        (d) => d[comparatorKey] === originalRow[comparatorKey]
       );
+
       let status = "";
       let className = "";
 
       if (!existingRow) {
-        // New row
         status = "New";
         className = "new-row";
       } else {
-        // Check if any values are different
-        for (let key of Object.keys(rowData)) {
-          // console log for debug
+        for (let key of Object.keys(flattened).filter(
+          (k) => k !== "_originalRow"
+        )) {
+          const originalValue = flattened[key];
+          let existingValue = existingRow[key];
 
-          // check if both are null or undefined, then skip
-          if (
-            (rowData[key] === null ||
-              rowData[key] === undefined ||
-              rowData[key] === "") &&
-            (existingRow[key] === null ||
-              existingRow[key] === undefined ||
-              existingRow[key] === "")
-          ) {
-            //console.log("both are null or undefined, skipping");
-            rowData[key] = existingRow[key];
-            continue; // skip
+          // Apply the same flattening to existing value if needed
+          if (fieldFlatteners[key] && Array.isArray(existingValue)) {
+            existingValue = fieldFlatteners[key](existingValue);
           }
 
-          if (String(rowData[key]) !== String(existingRow[key])) {
-            //Existing cell with changed data
-            // console.log("key: " + key);
-            // console.log("rowData[key]: " + rowData[key]);
-            // console.log("existingRow[key]: " + existingRow[key]);
+          if (
+            (originalValue === null ||
+              originalValue === undefined ||
+              originalValue === "") &&
+            (existingValue === null ||
+              existingValue === undefined ||
+              existingValue === "")
+          ) {
+            continue;
+          }
+
+          if (String(originalValue) !== String(existingValue)) {
+            console.log(
+              `Field ${key} changed from ${String(existingValue)} to ${String(
+                originalValue
+              )}`
+            );
             status = "Modified";
             break;
           }
         }
-        if (!status) {
-          // Existing row with no changes
-          status = "Unchanged";
-        }
       }
 
-      return { ...rowData, status, className };
+      return { ...flattened, status, className };
     });
-  }, [data, existingData]);
+  }, [data, existingData, fieldFlatteners]);
 
   const rowClassName = (rowData) => {
     return rowData.className ? { [rowData.className]: true } : {};
   };
 
   const cellClassName = (rowData, field) => {
-    // Find the existing row with the same ID
-    let existingRow = existingData.find(
+    const existingRow = existingData.find(
       (d) => d[comparatorKey] === rowData[comparatorKey]
     );
 
@@ -122,16 +141,40 @@ const DataPreviewDialog = ({
       String(rowData[field]) !== String(existingRow[field]) &&
       rowData.status === "Modified"
     ) {
-      // Existing cell with changed data
       return "flex w-full p-1 m-0 changed-cell border-1 border-yellow-700";
     }
 
-    // Existing cell with no changes or new row
     return "";
   };
 
+  // const bodyTemplate = (field) => {
+  //   return (rowData) => {
+  //     return (
+  //       <div
+  //         style={{ height: "100%", width: "100%" }}
+  //         className={cellClassName(rowData, field)}
+  //       >
+  //         {rowData[field]}
+  //       </div>
+  //     );
+  //   };
+  // };
+
   const bodyTemplate = (field) => {
     return (rowData) => {
+      // Use custom body template if available
+      if (customBodyTemplates[field]) {
+        return (
+          <div
+            style={{ height: "100%", width: "100%" }}
+            className={cellClassName(rowData, field)}
+          >
+            {customBodyTemplates[field](rowData)}
+          </div>
+        );
+      }
+
+      // Otherwise, use default rendering
       return (
         <div
           style={{ height: "100%", width: "100%" }}
@@ -142,6 +185,20 @@ const DataPreviewDialog = ({
       );
     };
   };
+
+  const filteredHeaderMap = useMemo(() => {
+    if (!headerMap || dataWithStatus.length === 0) return {};
+
+    return Object.entries(headerMap).reduce((acc, [key, label]) => {
+      const hasValidValue = dataWithStatus.some(
+        (row) => row[key] !== null && row[key] !== undefined && row[key] !== ""
+      );
+      if (hasValidValue) {
+        acc[key] = label;
+      }
+      return acc;
+    }, {});
+  }, [headerMap, dataWithStatus]);
 
   return (
     <Dialog
@@ -172,15 +229,15 @@ const DataPreviewDialog = ({
               field="status"
               header="Status"
               body={bodyTemplate("status")}
-            ></Column>
-            {headerMap &&
-              Object.keys(headerMap).map((headerKey) => (
+            />
+            {filteredHeaderMap &&
+              Object.keys(filteredHeaderMap).map((headerKey) => (
                 <Column
                   field={headerKey}
-                  header={headerMap[headerKey]}
+                  header={filteredHeaderMap[headerKey]}
                   key={headerKey}
                   body={bodyTemplate(headerKey)}
-                ></Column>
+                />
               ))}
           </DataTable>
         </div>

@@ -32,6 +32,11 @@ const AdminMenuBar = () => {
       icon: "pi pi-fw pi-users",
       command: () => navigate("role-management/roles/"),
     },
+    {
+      label: "Table Management",
+      icon: "pi pi-table",
+      command: () => navigate("table-management/"),
+    },
   ];
   return (
     <div className="AdminMenuBar flex justify-content-center flex-wrap">

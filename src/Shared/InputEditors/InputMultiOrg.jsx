@@ -23,6 +23,8 @@ const InputMultiOrg = (props) => {
     }));
   }
 
+  orgDropDownOptions.sort((a, b) => a.name.localeCompare(b.name));
+
   return (
     <MultiSelect
       {...props}

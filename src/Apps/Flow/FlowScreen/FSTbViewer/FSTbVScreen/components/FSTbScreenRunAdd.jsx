@@ -60,7 +60,7 @@ const FSTbScreenRunAdd = ({ screenId, closeSideBar }) => {
             htmlFor="library"
             className={classNames({ "p-error": isInvalid("library") })}
           >
-            Library
+            Library *
           </label>
           <InputText
             id="library"
@@ -78,7 +78,7 @@ const FSTbScreenRunAdd = ({ screenId, closeSideBar }) => {
             htmlFor="protocol"
             className={classNames({ "p-error": isInvalid("protocol") })}
           >
-            Protocol
+            Protocol *
           </label>
           <InputTextarea
             id="protocol"
@@ -134,7 +134,7 @@ const FSTbScreenRunAdd = ({ screenId, closeSideBar }) => {
             htmlFor="scientist"
             className={classNames({ "p-error": isInvalid("scientist") })}
           >
-            Scientist
+            Scientist *
           </label>
           <InputScientist
             id="scientist"
@@ -154,7 +154,7 @@ const FSTbScreenRunAdd = ({ screenId, closeSideBar }) => {
               "p-error": isInvalid("startDate"),
             })}
           >
-            Start Date
+            Start Date *
           </label>
           <Calendar
             id="startDate"
@@ -236,6 +236,24 @@ const FSTbScreenRunAdd = ({ screenId, closeSideBar }) => {
             })}
           />
           {getErrorMessage("confirmedHitCount")}
+        </div>
+
+        <div className="field">
+          <label
+            htmlFor="notes"
+            className={classNames({ "p-error": isInvalid("notes") })}
+          >
+            Notes
+          </label>
+          <InputText
+            id="notes"
+            value={formik.values.notes}
+            onChange={formik.handleChange}
+            className={classNames({
+              "p-invalid": isInvalid("notes"),
+            })}
+          />
+          {getErrorMessage("notes")}
         </div>
 
         <div className="flex justify-content-end">

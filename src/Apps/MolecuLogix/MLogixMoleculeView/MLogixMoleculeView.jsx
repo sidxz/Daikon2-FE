@@ -1,15 +1,18 @@
 import { observer } from "mobx-react-lite";
 import { BreadCrumb } from "primereact/breadcrumb";
 import { Menu } from "primereact/menu";
-import React, { useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import Loading from "../../../Library/Loading/Loading";
+import PageInfoPanel from "../../../Library/PageInfoPanel/PageInfoPanel";
 import SecHeading from "../../../Library/SecHeading/SecHeading";
 import { RootStoreContext } from "../../../RootStore";
 import { appColors } from "../../../constants/colors";
+import MLMViewDisclosureInformation from "./MLMViewComponents/MLMViewDisclosureInformation";
 import MLMViewGeneralInfo from "./MLMViewComponents/MLMViewGeneralInfo";
 import MLMViewIdentifiers from "./MLMViewComponents/MLMViewIdentifiers/MLMViewIdentifiers";
 import MLMViewOtherInfo from "./MLMViewComponents/MLMViewOtherInfo";
+import MLMViewPAINS from "./MLMViewComponents/MLMViewPAINS";
 import MLMViewRelations from "./MLMViewComponents/MLMViewRelations/MLMViewRelations";
 import MLMViewStructureCanonical from "./MLMViewComponents/MLMViewStructureCanonical";
 import * as Helper from "./MLogixMoleculeViewHelper";
@@ -39,8 +42,18 @@ const MLogixMoleculeView = () => {
     return (
       <div className="flex flex-column min-w-full fadein animation-duration-500">
         <div className="flex gap-2">
-          <div className="flex">
-            <Menu model={Helper.sidePanelItems(navigate, selectedMolecule)} />
+          <div className="flex flex-column border-1 border-50 p-1 border-round-md gap-2">
+            <div className="flex">
+              <Menu model={Helper.sidePanelItems(navigate, selectedMolecule)} />
+            </div>
+            <div className="flex">
+              <PageInfoPanel
+                dateCreated={selectedMolecule?.dateCreated}
+                createdById={selectedMolecule?.createdById}
+                dateUpdated={selectedMolecule?.pageLastUpdatedDate}
+                updatedById={selectedMolecule?.pageLastUpdatedUser}
+              />
+            </div>
           </div>
           <div className="flex flex-column w-full">
             <div className="flex">
@@ -74,10 +87,23 @@ const MLogixMoleculeView = () => {
               </div>
             </div>
             <div className="flex gap-2">
-              <MLMViewOtherInfo selectedMolecule={selectedMolecule} />
+              <div className="flex gap-2">
+                <MLMViewOtherInfo selectedMolecule={selectedMolecule} />
+              </div>
             </div>
             <div className="flex gap-2">
               <MLMViewRelations selectedMolecule={selectedMolecule} />
+            </div>
+
+            <div className="flex gap-2">
+              <div className="flex gap-2">
+                <MLMViewDisclosureInformation
+                  selectedMolecule={selectedMolecule}
+                />
+              </div>
+              <div className="flex gap-2">
+                <MLMViewPAINS selectedMolecule={selectedMolecule} />
+              </div>
             </div>
           </div>
         </div>

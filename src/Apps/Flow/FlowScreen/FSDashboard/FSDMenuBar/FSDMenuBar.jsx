@@ -19,14 +19,17 @@ const FSDMenuBar = () => {
     {
       label: "Overview",
       command: () => navigate("overview/"),
+      icon: "pi pi-fw pi-home",
     },
     {
       label: "Target Based",
       command: () => navigate("target-based/"),
+      icon: "pi pi-fw pi-list",
     },
     {
       label: "Phenotypic",
       command: () => navigate("phenotypic/"),
+      icon: "pi pi-fw pi-list",
     },
   ];
   return (

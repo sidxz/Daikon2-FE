@@ -151,6 +151,13 @@ const FHaVInformation = () => {
         <VisTimeline items={timelineItems} options={options} groups={groups} />
       </div>
       <div className="flex w-full">
+        <Fieldset className="m-0 flex-grow-1" legend="Description">
+          <div className="flex m-1 p-1 text-color-secondary	">
+            {selectedHa.description}
+          </div>
+        </Fieldset>
+      </div>
+      <div className="flex w-full">
         <Fieldset
           className="m-0 flex-grow-1"
           legend="Organization & Collaboration"
@@ -158,6 +165,7 @@ const FHaVInformation = () => {
           <FHaVInfoOrgs ha={selectedHa} />
         </Fieldset>
       </div>
+
       <div className="flex w-full">
         <Fieldset className="m-0 flex-grow-1" legend="Compound Evolution">
           <HaCompoundEvolution events={selectedHa?.haCompoundEvolution} />

@@ -1,10 +1,10 @@
 import React from "react";
+import { FaClock } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
+import FDate from "../../../../../../Library/FDate/FDate";
 import { AppOrgResolver } from "../../../../../../Shared/VariableResolvers/AppOrgResolver";
 import { FormatScreeningMethod } from "../../../shared/Formatters";
-import FDate from "../../../../../../Library/FDate/FDate";
-import { FaClock } from "react-icons/fa6";
-import { getClockIconData } from "../FSDOHelper";
+import { getClockIconData, getRelevantDate } from "../FSDOHelper";
 import "./FSDOOS.css";
 
 const FSDOOngoingScreens = ({ screens }) => {
@@ -21,7 +21,7 @@ const FSDOOngoingScreens = ({ screens }) => {
   let screensComponent = screens.map((screen) => {
     return (
       <div
-        className="flex flex-column bg-cyan-50 justify-content-center shadow-1 hover:shadow-3 w-15rem"
+        className="flex flex-column border-round-md  bg-cyan-50 justify-content-center shadow-1 hover:shadow-3 w-15rem"
         key={screen.id}
       >
         <div className="flex align-items-end justify-content-end">
@@ -47,9 +47,7 @@ const FSDOOngoingScreens = ({ screens }) => {
 
           <div className="tooltip-container justify-content-center bg-white">
             {(() => {
-              const dateToCheck = screen?.isModified
-                ? screen?.latestStatusChangeDate
-                : screen?.dateCreated;
+              const dateToCheck = getRelevantDate(screen);
               const { color: iconColor, tooltipText } =
                 getClockIconData(dateToCheck);
 

@@ -6,10 +6,12 @@ import {
   FcOk,
   FcWorkflow,
 } from "react-icons/fc";
+import { PiPauseDuotone } from "react-icons/pi";
 
 export const statusOptions = [
   { name: "Ready for HA", value: "ReadyForHA", icon: <FcAlarmClock /> },
   { name: "Active", value: "Active", icon: <FcWorkflow /> },
+  { name: "Paused", value: "Paused", icon: <PiPauseDuotone /> },
   {
     name: "Incorrect m/z",
     value: "IncorrectMz",

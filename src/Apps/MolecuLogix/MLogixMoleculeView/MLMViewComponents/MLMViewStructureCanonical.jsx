@@ -7,8 +7,11 @@ const MLMViewStructureCanonical = ({ selectedMolecule, subStructure }) => {
     <div className="flex pt-2">
       <Fieldset className="m-0 flex-grow-1" legend="Structure">
         <SmilesView
+          compound={selectedMolecule}
           smiles={selectedMolecule?.smilesCanonical}
           subStructure={subStructure}
+          compoundId={selectedMolecule?.id}
+          requestedCompoundName={selectedMolecule?.name}
           width={400}
           height={400}
         />

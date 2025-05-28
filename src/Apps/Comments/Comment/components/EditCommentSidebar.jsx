@@ -5,6 +5,7 @@ import { Chips } from "primereact/chips";
 import { Editor } from "primereact/editor";
 import { InputTextarea } from "primereact/inputtextarea";
 import "quill-mention";
+import "quill-mention/autoregister";
 import "quill-mention/dist/quill.mention.min.css";
 import React, { useContext } from "react";
 import { RootStoreContext } from "../../../../RootStore";

@@ -1,42 +1,31 @@
+import { observer } from "mobx-react-lite";
 import { ContextMenu } from "primereact/contextmenu";
+import { Tag } from "primereact/tag";
+import { Tooltip } from "primereact/tooltip";
 import React, { useRef } from "react";
 import { FcPrivacy } from "react-icons/fc";
 import { VscSearchFuzzy } from "react-icons/vsc";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { DiscloseIcon } from "../../Apps/MolecuLogix/Icons/DiscloseIcon";
 import MoleculeStructure from "../RDKit/MoleculeStructure/MoleculeStructure";
-
 const SmilesView = ({
+  compound,
   smiles,
   subStructure,
   compoundId,
   width = 200,
   height = 200,
+  requestedCompoundName = "",
 }) => {
   const svgElementRef = useRef(null);
   const cm = useRef(null);
+  const cmUndisclosed = useRef(null);
 
   let canId = smiles + Date.now() + Math.floor(Math.random() * 100);
   const navigate = useNavigate();
+  let contextMenuItems = [];
 
-  const contextMenuItems = [
-    {
-      label: "Find similar",
-      icon: "icon icon-common icon-search",
-      command: () => {
-        navigate(`/moleculogix/search?smiles=${smiles}&searchType=similarity`);
-      },
-    },
-    {
-      label: "Find substructure",
-      icon: <VscSearchFuzzy className="mr-2" />,
-      command: () => {
-        navigate(
-          `/moleculogix/search?smiles=${smiles}&searchType=substructure`
-        );
-      },
-    },
-  ];
   if (compoundId) {
     contextMenuItems.push({
       label: "View molecule",
@@ -46,6 +35,22 @@ const SmilesView = ({
       },
     });
   }
+
+  contextMenuItems.push({
+    label: "Find similar",
+    icon: "icon icon-common icon-search",
+    command: () => {
+      navigate(`/moleculogix/search?smiles=${smiles}&searchType=similarity`);
+    },
+  });
+  contextMenuItems.push({
+    label: "Find substructure",
+    icon: <VscSearchFuzzy className="mr-2" />,
+    command: () => {
+      navigate(`/moleculogix/search?smiles=${smiles}&searchType=substructure`);
+    },
+  });
+
   contextMenuItems.push({
     label: "Copy SMILES",
     icon: "pi pi-copy",
@@ -54,6 +59,43 @@ const SmilesView = ({
       toast.success("Copied " + smiles + " to clipboard");
     },
   });
+
+  let undisclosedContextMenuItems = [
+    {
+      label: "Disclose Molecule",
+      icon: (
+        <div className="flex mr-2">
+          <DiscloseIcon size="18" />
+        </div>
+      ),
+      command: () => {
+        navigate(
+          `/moleculogix/disclose/?inputName=${requestedCompoundName}&inputId=${compoundId}`
+        );
+      },
+    },
+  ];
+
+  let generatePainsFlag = () => {
+    if (compound?.pains) {
+      if (compound?.pains?.rdKitPains) {
+        return (
+          <div className="flex">
+            <Tooltip target=".rdk_pains" />
+            <Tag
+              className="rdk_pains"
+              severity="warning"
+              value="RDK_PAINS"
+              icon="pi pi-exclamation-triangle"
+              data-pr-tooltip="This compound has been identified as a possible PAINS 
+                (Pan-Assay Interference Compound) by RDKit. While this may be a false positive, 
+                we recommend reviewing it carefully before proceeding."
+            ></Tag>
+          </div>
+        );
+      }
+    }
+  };
 
   if (
     smiles === "c1ccccc1" ||
@@ -65,14 +107,20 @@ const SmilesView = ({
   ) {
     return (
       <div
-        className="flex justify-content-center"
-        style={{ width: width, height: height }}
+        onContextMenu={(e) => cmUndisclosed.current.show(e)}
+        className="flex flex-column min-w-max justify-content-center align-items-center border-0"
       >
-        <div className="flex flex-row align-items-center justify-content-center gap-2">
-          <div className="flex">
-            <FcPrivacy />
+        <ContextMenu model={undisclosedContextMenuItems} ref={cmUndisclosed} />
+        <div
+          className="flex justify-content-center"
+          style={{ width: width, height: height }}
+        >
+          <div className="flex flex-row align-items-center justify-content-center gap-2">
+            <div className="flex">
+              <FcPrivacy />
+            </div>
+            <div className="flex align-items-center">UNDISCLOSED</div>
           </div>
-          <div className="flex align-items-center">UNDISCLOSED</div>
         </div>
       </div>
     );
@@ -81,19 +129,24 @@ const SmilesView = ({
   return (
     <div
       onContextMenu={(e) => cm.current.show(e)}
-      className="flex min-w-max justify-content-center align-items-center border-0"
+      className="flex flex-column min-w-max justify-content-center align-items-center border-0"
     >
       <ContextMenu model={contextMenuItems} ref={cm} />
-      <MoleculeStructure
-        id={canId}
-        className={canId}
-        structure={smiles}
-        subStructure={subStructure}
-        width={width}
-        height={width}
-        onContextMenu={(e) => cm.current.show(e)}
-      />
-      {/* <svg
+      <div className="flex justify-content-start w-full pt-1">
+        {generatePainsFlag()}
+      </div>
+
+      <div className="flex">
+        <MoleculeStructure
+          id={canId}
+          className={canId}
+          structure={smiles}
+          subStructure={subStructure}
+          width={width}
+          height={width}
+          onContextMenu={(e) => cm.current.show(e)}
+        />
+        {/* <svg
         id={canId}
         ref={svgElementRef}
         data-smiles={smiles}
@@ -106,8 +159,9 @@ const SmilesView = ({
           marginBottom: 0,
         }}
       /> */}
+      </div>
     </div>
   );
 };
 
-export default SmilesView;
+export default observer(SmilesView);

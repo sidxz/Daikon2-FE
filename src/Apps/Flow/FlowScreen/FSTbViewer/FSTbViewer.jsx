@@ -10,10 +10,12 @@ import {
 } from "react-router-dom";
 import Loading from "../../../../Library/Loading/Loading";
 import NotFound from "../../../../Library/NotFound/NotFound";
+import PageInfoPanel from "../../../../Library/PageInfoPanel/PageInfoPanel";
 import { RootStoreContext } from "../../../../RootStore";
 import { AppRoleResolver } from "../../../../Shared/VariableResolvers/AppRoleResolver";
 import { ScreenAdminRoleName } from "../constants/roles";
 import FSTbComments from "./FSTbComments/FSTbComments";
+import FSTbDocs from "./FSTbDocs/FSTbDocs";
 import FSTbVHitCollection from "./FSTbVHitCollection/FSTbVHitCollection";
 import FSTbVHitCollectionSelection from "./FSTbVHitCollection/FSTbVHitCollectionSelection";
 import FSTbVScreen from "./FSTbVScreen/FSTbVScreen";
@@ -22,7 +24,6 @@ import * as Helper from "./FSTbViewerHelper";
 const FSTbViewer = () => {
   const params = useParams();
   const navigate = useNavigate();
-
   const rootStore = useContext(RootStoreContext);
   const {
     fetchScreen,
@@ -32,7 +33,8 @@ const FSTbViewer = () => {
     isScreenRegistryCacheValid,
   } = rootStore.screenStore;
 
-  const { fetchHitCollectionsOfScreen } = rootStore.hitCollectionStore;
+  const { fetchHitCollectionsOfScreen, selectedHitCollection } =
+    rootStore.hitCollectionStore;
 
   const { isUserInAnyOfRoles } = AppRoleResolver();
 
@@ -48,7 +50,7 @@ const FSTbViewer = () => {
       selectedScreen?.id !== params?.id ||
       !isScreenRegistryCacheValid
     ) {
-      console.log("FSTbViewer -> useEffect -> fetchScreen FETCHING", params.id);
+      //console.log("FSTbViewer -> useEffect -> fetchScreen FETCHING", params.id);
       fetchScreens();
       fetchScreen(params.id);
     }
@@ -62,7 +64,7 @@ const FSTbViewer = () => {
 
   useEffect(() => {
     if (selectedScreen && selectedScreen?.id === params?.id) {
-      fetchHitCollectionsOfScreen(selectedScreen.id);
+      fetchHitCollectionsOfScreen(selectedScreen.id, false, false);
     }
   }, [selectedScreen, params.id, fetchHitCollectionsOfScreen]);
 
@@ -91,18 +93,48 @@ const FSTbViewer = () => {
       return relatedScreens;
     };
 
+    let panelInfoToRender = () => {
+      let url = window.location.href;
+      let isHits = url.includes("hits");
+      if (isHits) {
+        return (
+          <PageInfoPanel
+            dateCreated={selectedHitCollection?.dateCreated}
+            createdById={selectedHitCollection?.createdById}
+            dateUpdated={selectedHitCollection?.pageLastUpdatedDate}
+            updatedById={selectedHitCollection?.pageLastUpdatedUser}
+            heading="Hit Collection Info"
+          />
+        );
+      } else {
+        return (
+          <PageInfoPanel
+            dateCreated={selectedScreen?.dateCreated}
+            createdById={selectedScreen?.createdById}
+            dateUpdated={selectedScreen?.pageLastUpdatedDate}
+            updatedById={selectedScreen?.pageLastUpdatedUser}
+            heading="Screen Info"
+          />
+        );
+      }
+    };
+
     return (
       <div className="flex w-full">
         <div className="flex gap-2 w-full">
-          <div className="flex">
-            <Menu
-              model={Helper.sidePanelItems(
-                navigate,
-                getRelatedScreens,
-                renderAdminModules
-              )}
-            />
+          <div className="flex flex-column border-1 border-50 p-1 border-round-md gap-2">
+            <div className="flex">
+              <Menu
+                model={Helper.sidePanelItems(
+                  navigate,
+                  getRelatedScreens,
+                  renderAdminModules
+                )}
+              />
+            </div>
+            <div className="flex">{panelInfoToRender()}</div>
           </div>
+
           <div className="flex w-full">
             <Routes>
               <Route index element={<Navigate replace to="screens/" />} />
@@ -128,6 +160,10 @@ const FSTbViewer = () => {
                   element={<FSTbVSettings selectedScreen={selectedScreen} />}
                 />
               )}
+              <Route
+                path="docs/*"
+                element={<FSTbDocs selectedScreen={selectedScreen} />}
+              />
               <Route
                 path="discussion/"
                 element={<FSTbComments selectedScreen={selectedScreen} />}

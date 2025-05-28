@@ -14,6 +14,7 @@ import {
 } from "../constants/roles";
 import FTDAddTarget from "./FTDAddTarget";
 import FTDDataTable from "./FTDDataTable/FTDDataTable";
+import FTDFilters from "./FTDFilters";
 import FTDTargetMap from "./FTDTargetMap/FTDTargetMap";
 const FTDashboard = () => {
   const rootStore = useContext(RootStoreContext);
@@ -39,7 +40,7 @@ const FTDashboard = () => {
     return <Loading message={"Fetching Targets..."} />;
   }
 
-  //console.log("FTDashboard -> targetList", targetList);
+  console.log("FTDashboard -> targetList", targetList);
 
   const addSideBarHeader = (
     <div className="flex align-items-center gap-2">
@@ -80,6 +81,9 @@ const FTDashboard = () => {
           displayHorizon={false}
           customButtons={headingButtons}
         />
+      </div>
+      <div className="flex w-full">
+        <FTDFilters />
       </div>
       <div className="flex max-w-full p-1">
         <div className="flex" style={{ width: "600px" }}>
