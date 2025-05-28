@@ -5,6 +5,7 @@ import { OIDCConfig } from "../../config/authConfig";
 
 class AppUserManager {
   constructor() {
+    console.log("OIDCConfig", OIDCConfig);
     this.userManager = new UserManager({
       ...OIDCConfig,
       userStore: new WebStorageStateStore({ store: window.localStorage }),

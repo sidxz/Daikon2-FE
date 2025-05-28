@@ -5,7 +5,7 @@ services:
 
 variables:
   DOCKER_DRIVER: overlay2
-  IMAGE_TAG: "$CI_REGISTRY_IMAGE/daikon-fe-lab:$CI_COMMIT_REF_NAME"
+  IMAGE_TAG: "$CI_REGISTRY/sid/daikon-fe:$CI_COMMIT_REF_NAME"
 
 before_script:
   - docker info
@@ -32,6 +32,14 @@ build:
         automaticSilentRenew: true,
         silent_redirect_uri: window.location.origin + \"/auth/silent_redirect\",
       };" > src/config/authConfig.jsx
+    - |
+      echo "export const AxiosConfig = {
+        baseURL: \"${BASE_URL}\",
+        headers: {
+          \"Content-Type\": \"application/json\",
+          \"Accept\": \"application/json\",
+        },
+      };" > src/config/axiosConfig.jsx
     # Build the Docker image
     - docker build -t $IMAGE_TAG .
   only:
@@ -40,6 +48,8 @@ build:
 push:
   stage: push
   script:
+    - docker info
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
     - docker push $IMAGE_TAG
   only:
     - lab-main
