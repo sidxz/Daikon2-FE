@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import { Button } from "primereact/button";
 import { Stepper } from "primereact/stepper";
 import { StepperPanel } from "primereact/stepperpanel";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { appColors } from "../../../constants/colors";
 import SecHeading from "../../../Library/SecHeading/SecHeading";
@@ -64,21 +64,25 @@ const MDisclose = () => {
    */
   const removeEmptyFields = useCallback(() => {
     setInputs((prevInputs) => {
-      const filteredInputs = prevInputs.filter(
-        (input) =>
-          input.name.trim() !== "" &&
-          input.SMILES.trim() !== "" &&
-          input.name !== "Click to Edit" &&
-          input.SMILES !== "Click to Edit" &&
-          input.disclosureScientist !== "Click to Edit" &&
-          input.disclosureReason !== "Click to Edit" &&
-          input.disclosureStage !== "Click to Edit" &&
-          input.disclosureNotes !== "Click to Edit" &&
-          input.literatureReferences !== "Click to Edit"
-      );
+      console.log("Previous inputs:", prevInputs); // ✅ Log before state updates
 
-      console.log("Filtered inputs:", filteredInputs); // ✅ Log after state updates
-      return filteredInputs;
+      const cleanedInputs = prevInputs
+        .map((input) => {
+          // Replace "Click to Edit" with empty strings
+          const cleanedInput = { ...input };
+          Object.keys(cleanedInput).forEach((key) => {
+            if (cleanedInput[key] === "Click to Edit") {
+              cleanedInput[key] = "";
+            }
+          });
+          return cleanedInput;
+        })
+        .filter(
+          (input) => input.name.trim() !== "" && input.SMILES.trim() !== ""
+        );
+
+      console.log("Filtered inputs:", cleanedInputs); // ✅ Log after cleanup
+      return cleanedInputs;
     });
   }, []);
 

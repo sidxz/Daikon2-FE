@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { BreadCrumb } from "primereact/breadcrumb";
 import { Menu } from "primereact/menu";
-import React, { useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import Loading from "../../../Library/Loading/Loading";
 import PageInfoPanel from "../../../Library/PageInfoPanel/PageInfoPanel";
@@ -94,14 +94,15 @@ const MLogixMoleculeView = () => {
             <div className="flex gap-2">
               <MLMViewRelations selectedMolecule={selectedMolecule} />
             </div>
-            <div className="flex gap-2">
-              <MLMViewPAINS selectedMolecule={selectedMolecule} />
-            </div>
+
             <div className="flex gap-2">
               <div className="flex gap-2">
                 <MLMViewDisclosureInformation
                   selectedMolecule={selectedMolecule}
                 />
+              </div>
+              <div className="flex gap-2">
+                <MLMViewPAINS selectedMolecule={selectedMolecule} />
               </div>
             </div>
           </div>

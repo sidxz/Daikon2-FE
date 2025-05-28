@@ -1,9 +1,12 @@
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { Fieldset } from "primereact/fieldset";
-import React from "react";
+import { FDateFormatted } from "../../../../Library/FDate/FDateFormatted";
+import { AppUserResolver } from "../../../../Shared/VariableResolvers/AppUserResolver";
 
 const MLMViewDisclosureInformation = ({ selectedMolecule }) => {
+  const { getIdFromUserFullName, getUserFullNameById } = AppUserResolver();
+
   let generalInfoData = [
     {
       name: "Disclosure Scientist",
@@ -33,11 +36,12 @@ const MLMViewDisclosureInformation = ({ selectedMolecule }) => {
     },
     {
       name: "Disclosed Date",
-      value: selectedMolecule.structureDisclosedDate,
+      value: FDateFormatted(selectedMolecule.structureDisclosedDate),
     },
+
     {
-      name: "DisclosedByUserId",
-      value: selectedMolecule.structureDisclosedByUserId,
+      name: "Registered By",
+      value: getUserFullNameById(selectedMolecule?.structureDisclosedByUserId),
     },
   ];
 
