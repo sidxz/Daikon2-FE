@@ -50,7 +50,7 @@ const FSTbViewer = () => {
       selectedScreen?.id !== params?.id ||
       !isScreenRegistryCacheValid
     ) {
-      console.log("FSTbViewer -> useEffect -> fetchScreen FETCHING", params.id);
+      //console.log("FSTbViewer -> useEffect -> fetchScreen FETCHING", params.id);
       fetchScreens();
       fetchScreen(params.id);
     }
@@ -64,7 +64,7 @@ const FSTbViewer = () => {
 
   useEffect(() => {
     if (selectedScreen && selectedScreen?.id === params?.id) {
-      fetchHitCollectionsOfScreen(selectedScreen.id);
+      fetchHitCollectionsOfScreen(selectedScreen.id, false, false);
     }
   }, [selectedScreen, params.id, fetchHitCollectionsOfScreen]);
 

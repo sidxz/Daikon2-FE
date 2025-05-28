@@ -16,6 +16,7 @@ export const ExportTemplateExcel = (
       moleculeName: "",
       iC50: "",
       mic: "",
+      notes: "",
     },
   ]; // No data, just headers for the template
 

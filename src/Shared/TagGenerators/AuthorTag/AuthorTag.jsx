@@ -4,7 +4,7 @@ import React from "react";
 import { Avatar } from "primereact/avatar";
 import { AppUserResolver } from "../../VariableResolvers/AppUserResolver";
 
-const AuthorTag = ({ userId, size = "normal" }) => {
+const AuthorTag = ({ userId, size = "normal", displayInitials = true }) => {
   const { getIdFromUserFullName, getUserFullNameById } = AppUserResolver();
   let textClass = "text-bluegray-500 font-normal";
 
@@ -29,12 +29,13 @@ const AuthorTag = ({ userId, size = "normal" }) => {
       }}
     >
       <div className="flex align-items-center gap-2 m-0">
-        <div className="flex text-bluegray-500 font-normal">
-          {/* <FaUser /> */}
-          <Avatar label={authorInitials} size={size} />
-        </div>
+        {displayInitials && (
+          <div className="flex text-bluegray-500 font-normal">
+            {/* <FaUser /> */}
+            <Avatar label={authorInitials} size={size} />
+          </div>
+        )}
         <div className="flex">
-          {" "}
           <span className={textClass}>{author}</span>
         </div>
       </div>

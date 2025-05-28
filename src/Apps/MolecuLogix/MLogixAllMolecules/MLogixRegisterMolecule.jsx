@@ -26,7 +26,7 @@ const MLogixRegisterMolecule = ({ closeSideBar }) => {
     validate: (values) => {
       const errors = {};
       if (!values.name) errors.name = "Name is required.";
-      if (!values.SMILES) errors.SMILES = "SMILES is required.";
+      //if (!values.SMILES) errors.SMILES = "SMILES is required.";
       // Additional validations can be added here
       return errors;
     },
@@ -77,7 +77,7 @@ const MLogixRegisterMolecule = ({ closeSideBar }) => {
                 "p-error": isInvalid("SMILES"),
               })}
             >
-              SMILES *
+              SMILES
             </label>
             <div className="flex">
               <div className="flex w-full">

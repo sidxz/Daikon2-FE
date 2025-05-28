@@ -1,5 +1,38 @@
+import { toJS } from "mobx";
 import { toast } from "react-toastify";
 import exportToExcel from "../../../../../../../Shared/Excel/ExportToExcel";
+
+export function UngroupMolecules(groupedData) {
+  const ungrouped = [];
+
+  groupedData.forEach((group) => {
+    const { doseResponses = [], ...sharedFields } = group;
+
+    if (doseResponses.length === 0) {
+      ungrouped.push({
+        ...sharedFields,
+        // Fill with blank/default dose response fields
+        concentration: "",
+        concentrationUnit: "",
+        response: "",
+        responseUnit: "",
+        responseType: "",
+        isControl: "",
+        timePoint: "",
+        comment: "",
+      });
+    } else {
+      doseResponses.forEach((dose) => {
+        ungrouped.push({
+          ...sharedFields,
+          ...dose, // This works if `dose` already contains the correct keys
+        });
+      });
+    }
+  });
+
+  return ungrouped;
+}
 
 export const ExportHitsToExcel = (
   selectedHitCollection = { hits: [], name: "", hitCollectionType: "" },
@@ -19,15 +52,25 @@ export const ExportHitsToExcel = (
   }
 
   // Map and flatten the hit objects for Excel export
-  const jsonData = selectedHitCollection.hits.map((hit) => ({
+
+  const groupedHits = toJS(selectedHitCollection.hits);
+  console.log("groupedHits", groupedHits);
+  const ungroupedHits = UngroupMolecules(groupedHits);
+  console.log("ungroupedHits", ungroupedHits);
+
+  ungroupedHits.map((hit) => {
+    // Ensure each hit has a unique ID
+    console.log("hit", hit);
+  });
+
+  const jsonData = ungroupedHits.map((hit) => ({
+    ...hit,
     id: hit.id,
     smiles: hit.molecule?.smiles ?? "",
-    library: hit.library ?? "",
-    librarySource: hit.librarySource ?? "",
     moleculeName: hit.molecule?.name ?? "",
-    iC50: hit.iC50 ?? "",
-    mic: hit.mic ?? "",
   }));
+
+  console.log("jsonData", jsonData);
 
   // Construct the file name using template literals
   const fileName = `${selectedScreen?.name ?? "Screen"}-${

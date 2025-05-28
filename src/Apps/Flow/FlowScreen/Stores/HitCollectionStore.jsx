@@ -1,6 +1,7 @@
 import { action, makeObservable, observable, runInAction } from "mobx";
 import { toast } from "react-toastify";
 import HitCollectionAPI from "../api/HitCollectionAPI";
+import { TbHitsTableType } from "../FSTbViewer/FSTbVHitCollection/FSTbVHits/FSTbVHitsHelper/FSTbVHitsConstants";
 
 export default class HitCollectionStore {
   rootStore;
@@ -55,7 +56,11 @@ export default class HitCollectionStore {
     return this.hitCollectionRegistryCache.get(screenId);
   };
 
-  fetchHitCollectionsOfScreen = async (screenId, inValidateCache = false) => {
+  fetchHitCollectionsOfScreen = async (
+    screenId,
+    inValidateCache = false,
+    preFetchCustomization = false
+  ) => {
     //console.log("fetchHitCollectionsOfScreen", screenId, inValidateCache);
     if (inValidateCache) {
       this.hitCollectionRegistryCache.set(screenId, false);
@@ -79,7 +84,7 @@ export default class HitCollectionStore {
         ),
       ];
 
-      console.log("moleculeIds", moleculeIds);
+      //console.debug("moleculeIds", moleculeIds);
 
       // Step 3: Fetch molecule associations using MoleculeAssociationStore
       await this.rootStore.moleculeAssociationStore.fetchAssociationsForMolecules(
@@ -87,10 +92,10 @@ export default class HitCollectionStore {
       );
 
       runInAction(() => {
-        console.log(
-          "Molecule Associations Registry:",
-          this.rootStore.moleculeAssociationStore.associationsRegistry
-        );
+        // console.log(
+        //   "Molecule Associations Registry:",
+        //   this.rootStore.moleculeAssociationStore.associationsRegistry
+        // );
         hitCollections.forEach((hitCollection) => {
           console.log("hitCollection", hitCollection);
           hitCollection.hits.forEach((hit) => {
@@ -100,6 +105,17 @@ export default class HitCollectionStore {
                 hit.moleculeId
               ) || [];
           });
+          let screenType =
+            this.rootStore.screenStore.selectedScreen.screenType || null;
+          console.log("screenType", screenType);
+          if (preFetchCustomization && screenType === "target-based") {
+            // fetch table customization for target based screens
+            console.log("Fetching table customization for target-based screen");
+            this.rootStore.tableCustomizationStore.getCustomization(
+              TbHitsTableType,
+              hitCollection.id
+            );
+          }
 
           this.hitCollectionRegistry.set(hitCollection.id, hitCollection);
         });

@@ -56,6 +56,7 @@ const FSTbVHPromote = ({
           <div className="flex  p-2">Library: {hit?.library}</div>
           <div className="flex p-2">MIC: {hit?.mic}</div>
           <div className="flex  p-2">IC50: {hit?.iC50}</div>
+          <div className="flex  p-2">Notes: {hit?.notes}</div>
         </div>
         <div
           className="flex align-items-center justify-content-center"

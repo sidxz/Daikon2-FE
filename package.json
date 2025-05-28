@@ -41,6 +41,7 @@
     "react-router-dom": "^6.23.0",
     "react-toastify": "^10.0.5",
     "remixicon": "^4.3.0",
+    "string-similarity": "^4.0.4",
     "vis-data": "^7.1.9",
     "vis-timeline": "^7.7.3",
     "vite-plugin-wasm": "^3.3.0",

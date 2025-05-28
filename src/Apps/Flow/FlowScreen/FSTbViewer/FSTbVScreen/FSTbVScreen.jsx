@@ -216,6 +216,12 @@ const FSTbVScreen = () => {
                   editor={(options) => TextRowEditor(options)}
                 />
                 <Column
+                  field="notes"
+                  header="Notes"
+                  editor={(options) => TextRowEditor(options)}
+                />
+
+                <Column
                   rowEditor
                   headerStyle={{ minWidth: "4rem" }}
                   bodyStyle={{ textAlign: "center" }}

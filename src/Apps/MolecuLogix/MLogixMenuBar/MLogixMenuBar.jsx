@@ -6,6 +6,7 @@ import "./MLogixMenuBar.css";
 
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { DiscloseIcon } from "../Icons/DiscloseIcon";
 import { MolecuLogixIcon } from "../Icons/MolecuLogixIcon";
 const MLogixMenuBar = () => {
   const navigate = useNavigate();
@@ -15,11 +16,7 @@ const MLogixMenuBar = () => {
   useEffect(() => {
     if (location.pathname.includes("/moleculogix/search")) {
       setActiveIndex(2);
-      // } else if (location.pathname.includes("/moleculogix/all/")) {
-      //   setActiveIndex(3);
-      // } else if (location.pathname.includes("/moleculogix/draw/")) {
-      //   setActiveIndex(4);
-    } else if (location.pathname.includes("/moleculogix/dash/")) {
+    } else if (location.pathname.includes("/disclose")) {
       setActiveIndex(3);
     } else if (location.pathname.includes("/moleculogix")) {
       setActiveIndex(1); // Assuming index 1 corresponds to "MolecuLogix", adjusted from 0
@@ -45,6 +42,11 @@ const MLogixMenuBar = () => {
       label: "Search",
       icon: "icon icon-common icon-search",
       command: () => navigate("search/"),
+    },
+    {
+      label: "Disclose",
+      icon: <DiscloseIcon />,
+      command: () => navigate("disclose/"),
     },
     // {
     //   label: "All Molecules",

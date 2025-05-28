@@ -7,6 +7,7 @@ const MLMViewStructure = ({ selectedMolecule }) => {
     <div className="flex pt-2">
       <Fieldset className="m-0 flex-grow-1" legend="Structure SMILES">
         <SmilesView
+          compound={selectedMolecule}
           smiles={selectedMolecule?.smiles}
           width={400}
           height={400}

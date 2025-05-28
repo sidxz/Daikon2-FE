@@ -32,6 +32,7 @@ import MoleculeStore from "./Apps/MolecuLogix/Stores/MoleculeStore";
 import QnaireStore from "./Apps/Questionnaire/Stores/QnaireStore";
 import AuthStore from "./Auth/AuthStore";
 import HorizonStore from "./Library/Horizon/HorizonStore";
+import TableCustomizationStore from "./Library/TableCustomization/stores/TableCustomizationStore";
 
 configure({ enforceActions: "always" });
 
@@ -81,6 +82,8 @@ export class RootStore {
 
   eventHistoryStore;
   parsedDocStore;
+
+  tableCustomizationStore;
   constructor() {
     /* Auth */
     this.authStore = new AuthStore(this);
@@ -142,6 +145,9 @@ export class RootStore {
 
     /* Parsed Doc */
     this.parsedDocStore = new ParsedDocStore(this);
+
+    /* Table Customization */
+    this.tableCustomizationStore = new TableCustomizationStore(this);
   }
 }
 

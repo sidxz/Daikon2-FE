@@ -52,21 +52,54 @@ export const StructureBodyTemplate = (rowData, subStructureHighlight) => {
     <>
       <div
         className="flex flex-column"
-        style={{ width: "250px", height: "260px" }}
+        style={{ width: "250px", height: "290px" }}
       >
         <div className="flex justify-content-start">
           {RelationsBodyTemplate(rowData)}
         </div>
         <div className="flex w-full h-full">
           <SmilesView
+            compound={rowData?.molecule}
             smiles={rowData?.molecule?.smilesCanonical}
             subStructure={subStructureHighlight}
             compoundId={rowData?.molecule?.id}
+            requestedCompoundName={rowData?.requestedMoleculeName}
             width={250}
-            height={250}
+            height={270}
           />
         </div>
       </div>
+    </>
+  );
+};
+
+export const DoseResponseBodyTemplate = (rowData) => {
+  return (
+    <>
+      {rowData?.doseResponses?.map((row, index) => {
+        return (
+          <div
+            key={index}
+            className="flex flex-column gap-1 border-bottom-1 border-50 mt-1"
+          >
+            <div className="flex gap-3">
+              <div className="flex gap-1">
+                <span className="font-bold">{row?.concentration}</span>
+                <span>{row?.concentrationUnit}</span>
+              </div>
+              <div className="flex gap-1">
+                <span className="font-bold">{row?.response}</span>
+                <span>{row?.responseUnit}</span>
+              </div>
+            </div>
+            <div className="flex">
+              <div className="flex gap-1">
+                <span className="text-sm">Type: {row?.responseType}</span>
+              </div>
+            </div>
+          </div>
+        );
+      })}
     </>
   );
 };

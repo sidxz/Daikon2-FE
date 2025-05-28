@@ -29,6 +29,15 @@ const MolDbAPI = {
 
   findByName: (queryString) =>
     axiosWithAuth.get(`/v2/molecule/by-name?${queryString}`),
+
+  discloseMoleculePreview: (molecules) =>
+    axiosWithAuth.post("/v2/molecule/disclose-molecule-preview", {
+      queries: molecules,
+    }),
+  discloseMolecules: (molecules) =>
+    axiosWithAuth.put("/v2/molecule/disclose-batch", {
+      molecules: molecules,
+    }),
 };
 
 export default MolDbAPI;

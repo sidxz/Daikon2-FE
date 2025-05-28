@@ -1,7 +1,9 @@
 import { observer } from "mobx-react-lite";
+import { Divider } from "primereact/divider";
 import React from "react";
 import { DVariableResolver } from "../../../../Shared/DVariable/DVariableResolver";
 import MLTags from "../../../../Shared/TagGenerators/MLTags/MLTags";
+import PDTFeedback from "../ParsedDocFeedback/PDTFeedback";
 
 const PDTPreview = ({ rowData }) => {
   return (
@@ -29,6 +31,10 @@ const PDTPreview = ({ rowData }) => {
           <MLTags entity={rowData?.shortSummary} />
         </div>
       )}
+      <div className="flex m-1 p-1 mt-4 mb-0">
+        <PDTFeedback rowData={rowData} />
+      </div>
+      <Divider className="mt-0" />
     </div>
   );
 };
