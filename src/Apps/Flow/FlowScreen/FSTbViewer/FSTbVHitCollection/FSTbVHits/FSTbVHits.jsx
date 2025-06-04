@@ -381,6 +381,7 @@ const FSTbVHits = ({ id }) => {
     },
     {
       key: "voteScore",
+      field: "voteScore",
       header: "Vote",
       body: votingBodyTemplate,
       sortable: true,
@@ -410,6 +411,9 @@ const FSTbVHits = ({ id }) => {
   ) {
     console.log("Generating Table Rendering");
     let viewableColumns = allColumnDefs.map((col) => {
+      console.log("key: ", col.key);
+      console.log("header: ", col.header);
+      console.log("field: ", col.field ? col.field : col.key);
       // Show all columns if selectedTableCustomization.columns is undefined or empty
       if (
         !selectedTableCustomization?.columns ||
@@ -419,7 +423,7 @@ const FSTbVHits = ({ id }) => {
         return (
           <Column
             key={col.key}
-            field={typeof col.body === "function" ? undefined : col.key}
+            field={col.field ? col.field : col.key}
             header={col.header}
             body={col.body}
             editor={col.editor ? (options) => col.editor(options) : undefined}

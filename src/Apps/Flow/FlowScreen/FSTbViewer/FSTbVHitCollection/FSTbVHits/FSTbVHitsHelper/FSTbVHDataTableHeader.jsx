@@ -5,9 +5,10 @@ import { InputNumber } from "primereact/inputnumber";
 import { InputText } from "primereact/inputtext";
 import { Menubar } from "primereact/menubar";
 import { ToggleButton } from "primereact/togglebutton";
-import React, { useState } from "react";
+import { useState } from "react";
 import { FcEmptyFilter } from "react-icons/fc";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import TableCustomization from "../../../../../../../Library/TableCustomization/TableCustomization";
 import { MolecuLogixIcon } from "../../../../../../MolecuLogix/Icons/MolecuLogixIcon";
 import { ExportHitsToExcel } from "./FSTbVHExcelExport";
@@ -56,6 +57,17 @@ export const FSTbVHDataTableHeader = ({
 
   const rejectClustering = () => {
     console.log("Clustering rejected");
+  };
+
+  const toggleOneClickVoting = (e) => {
+    console.log("Toggling One Click Voting");
+    console.log(e.value);
+    toast.info(`One Click Voting is now ${e.value ? "Enabled" : "Disabled"}.`);
+    setIsOneClickVotingEnabled(!isOneClickVotingEnabled);
+    console.log(
+      "One Click Voting toggled to:",
+      isOneClickVotingEnabled ? "Disabled" : "Enabled"
+    );
   };
 
   const clusterDialogTemplate = () => (
@@ -185,7 +197,7 @@ export const FSTbVHDataTableHeader = ({
               className="p-button-text w-full border-0 m-1"
               text
               checked={isOneClickVotingEnabled}
-              onChange={(e) => setIsOneClickVotingEnabled(e.value)}
+              onChange={(e) => toggleOneClickVoting(e)}
               onLabel="One Click Voting Enabled"
               onIcon="icon icon-common icon-hand-pointer"
               offLabel="One Click Voting Disabled"
