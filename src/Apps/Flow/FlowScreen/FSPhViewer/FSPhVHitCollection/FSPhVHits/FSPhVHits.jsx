@@ -421,7 +421,7 @@ const FSPhVHits = ({ id }) => {
         return (
           <Column
             key={col.key}
-            field={typeof col.field === undefined ? col.key : col.field}
+            field={col.field ? col.field : col.key}
             header={col.header}
             body={col.body}
             editor={col.editor ? (options) => col.editor(options) : undefined}
