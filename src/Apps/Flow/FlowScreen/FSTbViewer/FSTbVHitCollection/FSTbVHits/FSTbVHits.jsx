@@ -411,6 +411,9 @@ const FSTbVHits = ({ id }) => {
   ) {
     console.log("Generating Table Rendering");
     let viewableColumns = allColumnDefs.map((col) => {
+      console.log("key: ", col.key);
+      console.log("header: ", col.header);
+      console.log("field: ", col.field ? col.field : col.key);
       // Show all columns if selectedTableCustomization.columns is undefined or empty
       if (
         !selectedTableCustomization?.columns ||
@@ -420,7 +423,7 @@ const FSTbVHits = ({ id }) => {
         return (
           <Column
             key={col.key}
-            field={typeof col.field === undefined ? col.key : col.field}
+            field={col.field ? col.field : col.key}
             header={col.header}
             body={col.body}
             editor={col.editor ? (options) => col.editor(options) : undefined}
