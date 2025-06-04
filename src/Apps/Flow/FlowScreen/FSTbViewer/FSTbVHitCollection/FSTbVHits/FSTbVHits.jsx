@@ -381,6 +381,7 @@ const FSTbVHits = ({ id }) => {
     },
     {
       key: "voteScore",
+      field: "voteScore",
       header: "Vote",
       body: votingBodyTemplate,
       sortable: true,
@@ -419,7 +420,7 @@ const FSTbVHits = ({ id }) => {
         return (
           <Column
             key={col.key}
-            field={typeof col.body === "function" ? undefined : col.key}
+            field={typeof col.field === undefined ? col.key : col.field}
             header={col.header}
             body={col.body}
             editor={col.editor ? (options) => col.editor(options) : undefined}
