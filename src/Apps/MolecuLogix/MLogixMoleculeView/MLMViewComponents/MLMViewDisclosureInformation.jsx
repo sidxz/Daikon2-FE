@@ -2,15 +2,33 @@ import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { Fieldset } from "primereact/fieldset";
 import { FDateFormatted } from "../../../../Library/FDate/FDateFormatted";
+import { AppOrgResolver } from "../../../../Shared/VariableResolvers/AppOrgResolver";
 import { AppUserResolver } from "../../../../Shared/VariableResolvers/AppUserResolver";
 
 const MLMViewDisclosureInformation = ({ selectedMolecule }) => {
   const { getIdFromUserFullName, getUserFullNameById } = AppUserResolver();
+  const { getOrgAliasById } = AppOrgResolver();
 
   let generalInfoData = [
     {
-      name: "Disclosure Scientist",
+      name: "Scientist",
       value: selectedMolecule.disclosureScientist,
+    },
+    {
+      name: "Organization",
+      value: getOrgAliasById(selectedMolecule?.disclosureOrgId),
+    },
+    {
+      name: "Disclosed Date",
+      value: FDateFormatted(selectedMolecule.structureDisclosedDate),
+    },
+    {
+      name: "Stage",
+      value: selectedMolecule.disclosureStage,
+    },
+    {
+      name: "Reason",
+      value: selectedMolecule.disclosureReason,
     },
     {
       name: "Notes",
@@ -22,21 +40,8 @@ const MLMViewDisclosureInformation = ({ selectedMolecule }) => {
     },
 
     {
-      name: "Reason",
-      value: selectedMolecule.disclosureReason,
-    },
-
-    {
-      name: "Stage",
-      value: selectedMolecule.disclosureStage,
-    },
-    {
       name: "Type",
       value: selectedMolecule.disclosureType,
-    },
-    {
-      name: "Disclosed Date",
-      value: FDateFormatted(selectedMolecule.structureDisclosedDate),
     },
 
     {

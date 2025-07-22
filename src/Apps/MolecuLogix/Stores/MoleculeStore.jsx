@@ -33,6 +33,10 @@ export default class MoleculeStore {
 
       findSimilarMolecules: action,
       isFindingSimilarMolecules: observable,
+
+      getRecentDisclosures: action,
+      isFetchingRecentDisclosures: observable,
+      recentDisclosures: observable,
     });
   }
 
@@ -45,6 +49,9 @@ export default class MoleculeStore {
   isRegisteringMolecule = false;
   isUpdatingMolecule = false;
   isFindingSimilarMolecules = false;
+  isFetchingRecentDisclosures = false;
+
+  recentDisclosures = new Map();
 
   // Actions
 
@@ -205,6 +212,26 @@ export default class MoleculeStore {
     } finally {
       runInAction(() => {
         this.isFindingSimilarMolecules = false;
+      });
+    }
+  };
+
+  getRecentDisclosures = async (params) => {
+    this.isFetchingRecentDisclosures = true;
+    try {
+      let res = await MolDbAPI.getRecentDisclosures(params);
+      runInAction(() => {
+        res.tableElements.forEach((disclosure) => {
+          this.recentDisclosures.set(disclosure.id, disclosure);
+        });
+        // Process the response as needed
+        this.isFetchingRecentDisclosures = false;
+      });
+    } catch (error) {
+      console.error("Error fetching recent disclosures:", error);
+    } finally {
+      runInAction(() => {
+        this.isFetchingRecentDisclosures = false;
       });
     }
   };

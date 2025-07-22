@@ -1,9 +1,9 @@
-import React from "react";
 import { Route, Routes } from "react-router";
 import { Navigate } from "react-router-dom";
 import MDisclose from "./MDisclose/MDisclose";
 import MPreDisclose from "./MDisclose/middleware/MPreDisclose";
 import MLogixComments from "./MLogixComments/MLogixComments";
+import MLogixDisclosureReport from "./MLogixDisclosureReport/MLogixDisclosureReport";
 import MLogixDocs from "./MLogixDocs/MLogixDocs";
 import MLogixDraw from "./MLogixDraw/MLogixDraw";
 import MLogixMenuBar from "./MLogixMenuBar/MLogixMenuBar";
@@ -28,6 +28,10 @@ const MolecuLogix = () => {
           <Route path="draw/*" element={<MLogixDraw />} />
           <Route path="disclose/pre/*" element={<MPreDisclose />} />
           <Route path="disclose/*" element={<MDisclose />} />
+          <Route
+            path="disclosure-report/*"
+            element={<MLogixDisclosureReport />}
+          />
         </Routes>
       </div>
     </div>
