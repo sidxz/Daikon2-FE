@@ -37,6 +37,10 @@ const FieldDiffTimeline = ({ history, field }) => {
     const currentValue = current[field] || "";
     const prevValue = i > 0 ? history[i - 1][field] || "" : null;
 
+    // Skip unchanged versions
+    if (prevValue !== null && prevValue === currentValue) {
+      continue;
+    }
     const htmlDiff =
       prevValue !== null
         ? getHighlightedDiff(prevValue, currentValue) // changes appear in the new version

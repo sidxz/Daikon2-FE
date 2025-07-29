@@ -6,7 +6,7 @@ import { DataTable } from "primereact/datatable";
 import { IconField } from "primereact/iconfield";
 import { InputIcon } from "primereact/inputicon";
 import { InputText } from "primereact/inputtext";
-import React, { useState } from "react";
+import { useState } from "react";
 import FDate from "../../../Library/FDate/FDate";
 import PDTPreview from "./components/PDTPreview";
 import PDTStructures from "./components/PDTStructures";
@@ -87,7 +87,7 @@ const ParsedDocTable = ({ docs }) => {
       </div>
     );
   };
-  console.log(docs);
+
   return (
     <div className="flex w-full w-full select-text">
       <DataTable

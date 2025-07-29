@@ -5,6 +5,7 @@ import { InputTextarea } from "primereact/inputtextarea";
 import { Rating } from "primereact/rating";
 import { useContext, useState } from "react";
 import { RootStoreContext } from "../../../../../RootStore";
+import { countMeaningfulRevisions } from "../../../../../Shared/VersionTracker/CountMeaningfulRevisions";
 import PDTRevisions from "./PDTRevisions";
 
 const PDTFooter = ({ rowData }) => {
@@ -28,7 +29,11 @@ const PDTFooter = ({ rowData }) => {
     return <div className="flex justify-content-center">Loading...</div>;
   }
 
-  const revisionsCount = docRevisionRegistry.get(rowData.id)?.length || 0;
+  const revisionsCount =
+    countMeaningfulRevisions(
+      docRevisionRegistry.get(rowData.id),
+      "ShortSummary"
+    ) || 0;
   const revisions = docRevisionRegistry.get(rowData.id) || [];
 
   return (

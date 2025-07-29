@@ -2,16 +2,26 @@ import { DVariableResolver } from "../DVariable/DVariableResolver";
 import { decodeDotNetMongoGuid } from "./DecodeMongoDotNetGUID";
 
 /**
- * Organizes tracked variables from event history.
- * @param {Array<Object>} eventHistory - The event history array.
- * @param {Array<string>} trackedFields - List of field names to extract from EventData.
- * @returns {Array<Object>} - List of events with tracked fields resolved.
+ * Extracts and resolves tracked fields from a given event history.
+ *
+ * @param {Array<Object>|string} rawEventHistory - Either an array of event objects or a JSON stringified version of it.
+ * @param {Array<string>} trackedFields - List of field names to extract and resolve from EventData.
+ * @returns {Array<Object>} - Array of processed event objects with resolved tracked fields.
+ *
+ * @throws {TypeError} If trackedFields is not a valid array of strings.
  */
 export const ExtractTrackedFieldsFromHistory = (
   rawEventHistory,
   trackedFields
 ) => {
-  console.log(rawEventHistory);
+  /* Validate input for trackedFields */
+  if (
+    !Array.isArray(trackedFields) ||
+    !trackedFields.every((field) => typeof field === "string")
+  ) {
+    throw new TypeError("Expected 'trackedFields' to be an array of strings.");
+  }
+
   let eventHistory;
 
   try {
@@ -20,37 +30,37 @@ export const ExtractTrackedFieldsFromHistory = (
         ? JSON.parse(rawEventHistory)
         : rawEventHistory;
   } catch (error) {
-    console.error(
-      "Invalid JSON input to extractTrackedFieldsFromHistory:",
-      error
-    );
+    console.error("Failed to parse rawEventHistory JSON:", error);
     return [];
   }
 
   if (!Array.isArray(eventHistory)) {
-    console.error("Expected an array of event objects.");
+    console.error("Invalid input: 'eventHistory' must be an array.");
     return [];
   }
 
   return eventHistory.map((event) => {
-    const result = {
-      EventType: event.EventType,
-      TimeStamp: new Date(
-        parseInt(event.TimeStamp?.$date?.$numberLong || 0)
-      ).toISOString(),
+    const timestampRaw = event?.TimeStamp?.$date?.$numberLong;
+    const timeStamp = new Date(Number(timestampRaw || 0)).toISOString();
+
+    const resolvedEvent = {
+      EventType: event?.EventType ?? "Unknown",
+      TimeStamp: timeStamp,
     };
 
-    const data = event.EventData || {};
+    const data = event?.EventData ?? {};
 
-    trackedFields.forEach((field) => {
+    for (const field of trackedFields) {
       const fieldValue = data[field];
-      if (fieldValue?.$binary?.subType === "03") {
-        result[field] = decodeDotNetMongoGuid(fieldValue.$binary);
-      } else {
-        result[field] = DVariableResolver(fieldValue);
-      }
-    });
 
-    return result;
+      // Check for .NET MongoDB GUID binary subtype
+      if (fieldValue?.$binary?.subType === "03") {
+        resolvedEvent[field] = decodeDotNetMongoGuid(fieldValue.$binary);
+      } else {
+        resolvedEvent[field] = DVariableResolver(fieldValue);
+      }
+    }
+
+    return resolvedEvent;
   });
 };

@@ -1,12 +1,16 @@
 import { stringify } from "uuid";
 
 /**
- * Decodes a .NET GUID stored in MongoDB's Binary format (subtype 03).
- * MongoDB uses little-endian layout for .NET GUIDs.
- * @param {Object} binaryField - e.g., { base64: "...", subType: "03" }
- * @returns {string|null}
+ * Decodes a .NET GUID stored in MongoDB's Binary format (subtype "03").
+ * MongoDB stores .NET GUIDs in little-endian byte order for the first 3 sections.
+ *
+ * @param {Object} binaryField - Object with .base64 and .subType (should be "03").
+ * @returns {string|null} - Decoded GUID string or null if invalid.
+ *
+ * @throws {TypeError} If input is invalid or malformed.
  */
 export function decodeDotNetMongoGuid(binaryField) {
+  /* Validate input structure and types */
   if (
     !binaryField ||
     typeof binaryField !== "object" ||
@@ -17,42 +21,35 @@ export function decodeDotNetMongoGuid(binaryField) {
   }
 
   try {
-    const binary = atob(binaryField.base64);
-    if (binary.length !== 16) {
-      console.warn("Invalid GUID length:", binary.length);
+    const decoded = atob(binaryField.base64);
+    if (decoded.length !== 16) {
+      console.warn(
+        `Invalid GUID binary length: expected 16, got ${decoded.length}`
+      );
       return null;
     }
 
-    const raw = new Uint8Array(16);
-    for (let i = 0; i < 16; i++) {
-      raw[i] = binary.charCodeAt(i);
-    }
+    /* Convert base64 string to Uint8Array */
+    const rawBytes = Uint8Array.from(decoded, (char) => char.charCodeAt(0));
 
-    // Swap byte order for .NET GUID (first 4 + 2 + 2 bytes need to be reversed)
+    /* Reorder bytes from little-endian to standard GUID format */
     const reordered = new Uint8Array(16);
 
-    // Swap bytes: [0-3] reversed
-    reordered[0] = raw[3];
-    reordered[1] = raw[2];
-    reordered[2] = raw[1];
-    reordered[3] = raw[0];
+    // First 4 bytes [0-3] reversed
+    reordered.set([rawBytes[3], rawBytes[2], rawBytes[1], rawBytes[0]], 0);
 
-    // Swap bytes: [4-5] reversed
-    reordered[4] = raw[5];
-    reordered[5] = raw[4];
+    // Next 2 bytes [4-5] reversed
+    reordered.set([rawBytes[5], rawBytes[4]], 4);
 
-    // Swap bytes: [6-7] reversed
-    reordered[6] = raw[7];
-    reordered[7] = raw[6];
+    // Next 2 bytes [6-7] reversed
+    reordered.set([rawBytes[7], rawBytes[6]], 6);
 
-    // Leave [8-15] as-is
-    for (let i = 8; i < 16; i++) {
-      reordered[i] = raw[i];
-    }
+    // Remaining bytes [8-15] unchanged
+    reordered.set(rawBytes.subarray(8, 16), 8);
 
     return stringify(reordered);
-  } catch (err) {
-    console.error("Failed to decode .NET MongoDB GUID:", err);
+  } catch (error) {
+    console.error("Failed to decode .NET MongoDB GUID:", error);
     return null;
   }
 }
