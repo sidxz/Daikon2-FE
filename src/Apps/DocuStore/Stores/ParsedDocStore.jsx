@@ -5,6 +5,7 @@ import {
   observable,
   runInAction,
 } from "mobx";
+import { ExtractTrackedFieldsFromHistory } from "../../../Shared/VersionTracker/ExtractTrackedFieldsFromHistory";
 import ParsedDocApi from "../api/ParsedDocApi";
 
 export default class ParsedDocStore {
@@ -14,8 +15,11 @@ export default class ParsedDocStore {
     this.rootStore = rootStore;
     makeObservable(this, {
       fetchDocsByTags: action,
+      editDoc: action,
+      isEditingDoc: observable,
       isFetchingDocs: observable,
       docRegistry: observable,
+      docRevisionRegistry: observable,
       docListByTags: computed,
       tagIndex: observable,
     });
@@ -23,8 +27,11 @@ export default class ParsedDocStore {
 
   // Observables
   isFetchingDocs = false;
+  isEditingDoc = false;
   docRegistry = new Map(); // Stores documents indexed by their IDs
   tagIndex = new Map(); // Maps tags to lists of document IDs for fast lookup
+  docRevisionRegistry = new Map(); // Maps document IDs to their revision history
+  isFetchingDocRevisions = false;
 
   /**
    * Fetch documents by tags
@@ -41,10 +48,27 @@ export default class ParsedDocStore {
     this.isFetchingDocs = true;
     try {
       const docs = await ParsedDocApi.listByTags(tags);
+      const histories = await Promise.all(
+        docs.map((doc) => ParsedDocApi.getRevisionHistory(doc.id))
+      );
+      const trackedFields = [
+        "Title",
+        "Authors",
+        "ShortSummary",
+        "Notes",
+        "CreatedById",
+        "LastModifiedById",
+      ];
       runInAction(() => {
         // Update registry and tag index
-        docs.forEach((doc) => {
+        docs.forEach((doc, index) => {
           this.docRegistry.set(doc.id, doc);
+          let formattedDocHistory = ExtractTrackedFieldsFromHistory(
+            histories[index],
+            trackedFields
+          );
+          this.docRevisionRegistry.set(doc.id, formattedDocHistory);
+
           doc.tags.forEach((tag) => {
             if (!this.tagIndex.has(tag)) {
               this.tagIndex.set(tag, []);
@@ -66,6 +90,7 @@ export default class ParsedDocStore {
     } finally {
       runInAction(() => {
         this.isFetchingDocs = false;
+        console.log("Documents History  :", this.docRevisionRegistry);
       });
     }
   };
@@ -82,4 +107,27 @@ export default class ParsedDocStore {
       return docIds.map((id) => this.docRegistry.get(id)).filter(Boolean);
     };
   }
+
+  editDoc = async (docId, data) => {
+    // check if docId is set
+    if (!docId) {
+      console.error("Document ID is not set");
+      return;
+    }
+    data.id = docId; // Ensure the data object has the correct ID
+    this.isEditingDoc = true;
+    try {
+      const response = await ParsedDocApi.editDoc(data);
+      runInAction(() => {
+        // Update the document in the registry
+        this.docRegistry.set(docId, response.data);
+      });
+    } catch (error) {
+      console.error("Error editing document:", error);
+    } finally {
+      runInAction(() => {
+        this.isEditingDoc = false;
+      });
+    }
+  };
 }

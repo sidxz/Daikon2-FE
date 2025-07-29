@@ -17,6 +17,18 @@ const ParsedDocApi = {
         qs.stringify(params, { arrayFormat: "repeat" }),
     });
   },
+
+  editDoc: (data) => {
+    return axiosWithAuth.put(`/v2/docu-store/parsed-docs/`, data);
+  },
+
+  getRevisionHistory: (docId) => {
+    return axiosWithAuth.get(`/v2/event-history/aggregate-history`, {
+      params: {
+        AggregateId: docId,
+      },
+    });
+  },
 };
 
 export default ParsedDocApi;
