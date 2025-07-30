@@ -14,8 +14,6 @@ import CommentsByTags from "../../../../Comments/CommentsByTags/CommentsByTags";
 import PDTRevisions from "./PDTRevisions";
 
 const PDTFooter = ({ rowData }) => {
-  console.log("PDTFooter rowData:", rowData);
-
   const rootStore = useContext(RootStoreContext);
   const {
     fetchDocsByTags,
