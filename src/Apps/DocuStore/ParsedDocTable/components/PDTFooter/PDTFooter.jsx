@@ -1,14 +1,18 @@
 import { observer } from "mobx-react-lite";
 import { Button } from "primereact/button";
+import { ConfirmDialog } from "primereact/confirmdialog";
 import { Dialog } from "primereact/dialog";
 import { InputTextarea } from "primereact/inputtextarea";
 import { Rating } from "primereact/rating";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { RootStoreContext } from "../../../../../RootStore";
+import { DVariableResolver } from "../../../../../Shared/DVariable/DVariableResolver";
 import { countMeaningfulRevisions } from "../../../../../Shared/VersionTracker/CountMeaningfulRevisions";
 import PDTRevisions from "./PDTRevisions";
 
 const PDTFooter = ({ rowData }) => {
+  console.log("PDTFooter rowData:", rowData);
+
   const rootStore = useContext(RootStoreContext);
   const {
     fetchDocsByTags,
@@ -18,12 +22,23 @@ const PDTFooter = ({ rowData }) => {
     editDoc,
     isEditingDoc,
   } = rootStore.parsedDocStore;
+  const { user } = rootStore.authStore;
 
-  const [relevanceValue, setRelevanceValue] = useState(null);
   const [revisionDialogVisible, setRevisionDialogVisible] = useState(false);
   const [EditDialogVisible, setEditDialogVisible] = useState(false);
   const [commentDialogVisible, setCommentDialogVisible] = useState(false);
   const [mutatedDoc, setMutatedDoc] = useState(rowData);
+  const [pendingRating, setPendingRating] = useState(null);
+
+  useEffect(() => {
+    // let updatedData = { ...rowData };
+    // updatedData.shortSummary = rowData.shortSummary || { value: "" };
+    // updatedData.averageRating = rowData.averageRating || 0;
+    // updatedData.ratings = rowData.ratings || [];
+    setMutatedDoc(rowData);
+  }, [rowData]);
+
+  console.log("PDTFooter mutatedDoc:", mutatedDoc);
 
   if (isFetchingDocs) {
     return <div className="flex justify-content-center">Loading...</div>;
@@ -36,6 +51,37 @@ const PDTFooter = ({ rowData }) => {
     ) || 0;
   const revisions = docRevisionRegistry.get(rowData.id) || [];
 
+  const handleRatingChange = async (newValue) => {
+    const newRating = {
+      score: newValue,
+      userId: user.id,
+    };
+
+    let updatedRatings = [];
+    if (Array.isArray(mutatedDoc.ratings)) {
+      const existingIndex = mutatedDoc.ratings.findIndex(
+        (r) => r.userId === user.id
+      );
+
+      if (existingIndex >= 0) {
+        updatedRatings = [...mutatedDoc.ratings];
+        updatedRatings[existingIndex] = newRating;
+      } else {
+        updatedRatings = [...mutatedDoc.ratings, newRating];
+      }
+    } else {
+      updatedRatings = [newRating];
+    }
+
+    const updatedDoc = {
+      ...mutatedDoc,
+      ratings: updatedRatings,
+    };
+
+    await editDoc(rowData.id, updatedDoc);
+    setMutatedDoc(updatedDoc); // backend will return updated averageRating if needed
+  };
+
   return (
     <>
       <div className="flex flex-column gap-1 w-full">
@@ -43,15 +89,15 @@ const PDTFooter = ({ rowData }) => {
           <div className="flex flex-column gap-2 align-items-center">
             <div className="flex flex-column">
               <Rating
-                value={relevanceValue}
-                onChange={(e) => setRelevanceValue(e.value)}
+                value={mutatedDoc.averageRating || 0}
+                onChange={(e) => handleRatingChange(e.value)}
                 cancel={false}
                 stars={5}
                 className="w-full"
               />
             </div>
             <div className="flex flex-column text-xs">
-              <span className="text-gray-600">AI Summary Rating</span>
+              <span className="text-gray-600">AI Avg Summary Rating</span>
             </div>
           </div>
 
@@ -102,9 +148,17 @@ const PDTFooter = ({ rowData }) => {
               icon="pi pi-check"
               className="p-button-sm"
               onClick={() => {
+                // If there are no changes, just close the dialog
+                if (
+                  mutatedDoc.shortSummary.value === rowData.shortSummary.value
+                ) {
+                  setEditDialogVisible(false);
+                  return;
+                }
+
                 editDoc(rowData.id, {
                   ...mutatedDoc,
-                  shortSummary: { value: mutatedDoc.shortSummary.value },
+                  shortSummary: mutatedDoc.shortSummary,
                 });
                 setEditDialogVisible(false);
               }}
@@ -119,17 +173,21 @@ const PDTFooter = ({ rowData }) => {
               autoResize
               className="w-full"
               type="text"
-              value={mutatedDoc?.shortSummary?.value || ""}
+              value={DVariableResolver(mutatedDoc?.shortSummary)}
               onChange={(e) =>
                 setMutatedDoc({
                   ...mutatedDoc,
-                  shortSummary: { value: e.target.value },
+                  shortSummary: {
+                    ...mutatedDoc.shortSummary,
+                    value: e.target.value,
+                  },
                 })
               }
             />
           </div>
         </div>
       </Dialog>
+      <ConfirmDialog />
     </>
   );
 };

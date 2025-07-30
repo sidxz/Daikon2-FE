@@ -2,14 +2,14 @@ import { observer } from "mobx-react-lite";
 import { Chip } from "primereact/chip";
 import { InputText } from "primereact/inputtext";
 import { Skeleton } from "primereact/skeleton";
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { RootStoreContext } from "../../../RootStore";
 import ParsedDocTable from "../ParsedDocTable/ParsedDocTable";
 
 const ParsedDocsByTags = () => {
   const rootStore = useContext(RootStoreContext);
-  const { fetchDocsByTags, isFetchingDocs, docListByTags } =
+  const { fetchDocsByTags, isFetchingDocs, docListByTags, isEditingDoc } =
     rootStore.parsedDocStore;
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -85,7 +85,7 @@ const ParsedDocsByTags = () => {
       </div>
 
       <div className="flex w-full flex-grow fadein animation-duration-1000">
-        {isFetchingDocs ? (
+        {isFetchingDocs || isEditingDoc ? (
           <Skeleton width="100%" height="40rem"></Skeleton>
         ) : (
           <ParsedDocTable docs={docs} />

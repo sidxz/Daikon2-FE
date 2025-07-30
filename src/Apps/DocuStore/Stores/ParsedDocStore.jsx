@@ -5,6 +5,7 @@ import {
   observable,
   runInAction,
 } from "mobx";
+import { toast } from "react-toastify";
 import { ExtractTrackedFieldsFromHistory } from "../../../Shared/VersionTracker/ExtractTrackedFieldsFromHistory";
 import ParsedDocApi from "../api/ParsedDocApi";
 
@@ -90,7 +91,6 @@ export default class ParsedDocStore {
     } finally {
       runInAction(() => {
         this.isFetchingDocs = false;
-        console.log("Documents History  :", this.docRevisionRegistry);
       });
     }
   };
@@ -109,21 +109,40 @@ export default class ParsedDocStore {
   }
 
   editDoc = async (docId, data) => {
-    // check if docId is set
+    console.log("Editing document:", docId, data);
     if (!docId) {
       console.error("Document ID is not set");
       return;
     }
-    data.id = docId; // Ensure the data object has the correct ID
+    data.id = docId;
     this.isEditingDoc = true;
+
     try {
-      const response = await ParsedDocApi.editDoc(data);
+      await ParsedDocApi.editDoc(data); // Only perform the update
+
+      // Refetch the updated document and its revision history
+      const updatedDoc = await ParsedDocApi.getById(docId);
+      const history = await ParsedDocApi.getRevisionHistory(docId);
+      const trackedFields = [
+        "Title",
+        "Authors",
+        "ShortSummary",
+        "Notes",
+        "CreatedById",
+        "LastModifiedById",
+      ];
+      const formattedDocHistory = ExtractTrackedFieldsFromHistory(
+        history,
+        trackedFields
+      );
+
       runInAction(() => {
-        // Update the document in the registry
-        this.docRegistry.set(docId, response.data);
+        this.docRegistry.set(docId, updatedDoc);
+        this.docRevisionRegistry.set(docId, formattedDocHistory);
+        toast.success("Document updated successfully");
       });
     } catch (error) {
-      console.error("Error editing document:", error);
+      console.error("Error editing or refetching document:", error);
     } finally {
       runInAction(() => {
         this.isEditingDoc = false;
