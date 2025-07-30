@@ -4,10 +4,13 @@ import { ConfirmDialog } from "primereact/confirmdialog";
 import { Dialog } from "primereact/dialog";
 import { InputTextarea } from "primereact/inputtextarea";
 import { Rating } from "primereact/rating";
-import { useContext, useEffect, useState } from "react";
+import { Sidebar } from "primereact/sidebar";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { RootStoreContext } from "../../../../../RootStore";
 import { DVariableResolver } from "../../../../../Shared/DVariable/DVariableResolver";
 import { countMeaningfulRevisions } from "../../../../../Shared/VersionTracker/CountMeaningfulRevisions";
+import AddComment from "../../../../Comments/AddComment/AddComment";
+import CommentsByTags from "../../../../Comments/CommentsByTags/CommentsByTags";
 import PDTRevisions from "./PDTRevisions";
 
 const PDTFooter = ({ rowData }) => {
@@ -24,11 +27,22 @@ const PDTFooter = ({ rowData }) => {
   } = rootStore.parsedDocStore;
   const { user } = rootStore.authStore;
 
+  const {
+    fetchCommentsByTags,
+    isFetchingComments,
+    commentListByTagsAny,
+    commentListByTags,
+    isCommentRegistryCacheValid,
+    commentRegistry,
+    currentCommentTagsHash,
+  } = rootStore.commentStore;
+
   const [revisionDialogVisible, setRevisionDialogVisible] = useState(false);
   const [EditDialogVisible, setEditDialogVisible] = useState(false);
   const [commentDialogVisible, setCommentDialogVisible] = useState(false);
   const [mutatedDoc, setMutatedDoc] = useState(rowData);
   const [pendingRating, setPendingRating] = useState(null);
+  const [isCommentsCounted, setIsCommentsCounted] = useState(false);
 
   useEffect(() => {
     // let updatedData = { ...rowData };
@@ -38,7 +52,18 @@ const PDTFooter = ({ rowData }) => {
     setMutatedDoc(rowData);
   }, [rowData]);
 
-  console.log("PDTFooter mutatedDoc:", mutatedDoc);
+  const commentTags = useMemo(() => {
+    return [...rowData.tags, rowData.name];
+  }, [rowData.tags, rowData.name]);
+
+  useEffect(() => {
+    if (!isCommentsCounted && !isFetchingComments) {
+      setIsCommentsCounted(true);
+      fetchCommentsByTags(commentTags);
+    }
+  }, [fetchCommentsByTags, commentTags, isCommentsCounted]);
+
+  //console.log("PDTFooter mutatedDoc:", mutatedDoc);
 
   if (isFetchingDocs) {
     return <div className="flex justify-content-center">Loading...</div>;
@@ -48,8 +73,12 @@ const PDTFooter = ({ rowData }) => {
     countMeaningfulRevisions(
       docRevisionRegistry.get(rowData.id),
       "ShortSummary"
-    ) || 0;
+    ) - 1 || 0;
   const revisions = docRevisionRegistry.get(rowData.id) || [];
+
+  const reviewsCount = Array.isArray(commentListByTags(commentTags))
+    ? commentListByTags(commentTags).length
+    : 0;
 
   const handleRatingChange = async (newValue) => {
     const newRating = {
@@ -107,17 +136,24 @@ const PDTFooter = ({ rowData }) => {
               icon="pi pi-exclamation-triangle"
               className="p-button-text p-button-sm"
               text
-              onClick={() => setRevisionDialogVisible(!revisionDialogVisible)}
+              onClick={() => {
+                setRevisionDialogVisible(!revisionDialogVisible);
+                setCommentDialogVisible(false);
+              }}
             />
           </div>
 
           <div className="flex flex-column pt-2">
             <Button
-              label="Comments (0)"
+              label={`Comments (${reviewsCount})`}
               icon="pi pi-comment"
               className="p-button-text p-button-sm"
               text
-              onClick={() => setRevisionDialogVisible(true)}
+              onClick={() => {
+                setCommentDialogVisible(!commentDialogVisible);
+                setRevisionDialogVisible(false);
+              }}
+              loading={isFetchingComments}
             />
           </div>
           <div className="flex flex-column pt-2">
@@ -188,6 +224,20 @@ const PDTFooter = ({ rowData }) => {
         </div>
       </Dialog>
       <ConfirmDialog />
+      <Sidebar
+        visible={commentDialogVisible}
+        position="right"
+        onHide={() => setCommentDialogVisible(false)}
+        className="p-sidebar-lg"
+        header={<div className="flex text-lg font-bold">Comments</div>}
+      >
+        <div className="flex w-full pt-1">
+          <AddComment resourceId={rowData.id} tags={commentTags} />
+        </div>
+        <div className="flex w-full pt-1">
+          <CommentsByTags tags={commentTags} any={false} />
+        </div>
+      </Sidebar>
     </>
   );
 };

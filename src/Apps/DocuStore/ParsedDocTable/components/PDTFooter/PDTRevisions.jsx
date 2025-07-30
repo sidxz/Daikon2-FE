@@ -2,7 +2,7 @@ import FieldDiffTimeline from "../../../../../Library/RevisionTable/FieldDiffTim
 
 const PDTRevisions = ({ revisions }) => {
   return (
-    <div>
+    <div className="flex flex-column w-full bg-gray-50">
       <FieldDiffTimeline history={revisions} field="ShortSummary" />
     </div>
   );
