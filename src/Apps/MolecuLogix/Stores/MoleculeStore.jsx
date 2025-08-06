@@ -219,8 +219,20 @@ export default class MoleculeStore {
   getRecentDisclosures = async (params) => {
     this.isFetchingRecentDisclosures = true;
     try {
+      // convert dateFrom and dateTo to ISO if they are not null
+      if (params?.startDate) {
+        params.startDate = params.startDate.toISOString();
+      }
+      if (params?.endDate) {
+        params.endDate = params.endDate.toISOString();
+      }
+      console.log("Fetching recent disclosures with params:", params);
+
       let res = await MolDbAPI.getRecentDisclosures(params);
       runInAction(() => {
+        console.log("Recent disclosures response:", res);
+        // empty the existing recentDisclosures map
+        this.recentDisclosures.clear();
         res.tableElements.forEach((disclosure) => {
           this.recentDisclosures.set(disclosure.id, disclosure);
         });

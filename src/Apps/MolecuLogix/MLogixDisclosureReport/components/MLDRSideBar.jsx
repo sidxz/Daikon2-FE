@@ -5,10 +5,10 @@ import { Tree } from "primereact/tree";
 import { AppOrgResolver } from "../../../../Shared/VariableResolvers/AppOrgResolver";
 
 const MLDRSideBar = ({
-  dateFrom,
-  dateTo,
-  setDateFrom,
-  setDateTo,
+  startDate,
+  endDate,
+  setStartDate,
+  setEndDate,
   data,
   orgSelectionKeys,
   setOrgSelectionKeys,
@@ -58,10 +58,17 @@ const MLDRSideBar = ({
         <label htmlFor="birth_date">Date Range</label>
         <Calendar
           className="w-full"
-          value={[dateFrom, dateTo]}
+          value={[startDate, endDate]}
           onChange={(e) => {
-            setDateFrom(e.value[0]);
-            setDateTo(e.value[1]);
+            const range = e.value;
+            if (!range) {
+              setStartDate(null);
+              setEndDate(null);
+            } else {
+              const [start, end] = range;
+              setStartDate(start || null);
+              setEndDate(end || null);
+            }
           }}
           selectionMode="range"
           readOnlyInput
@@ -72,7 +79,7 @@ const MLDRSideBar = ({
         <Button
           label="Update Report"
           severity="success"
-          onClick={() => getRecentDisclosures({ dateFrom, dateTo })}
+          onClick={() => getRecentDisclosures({ startDate, endDate })}
         />
       </div>
       <div className="flex justify-content-center mb-2">

@@ -1,5 +1,6 @@
 import { observer } from "mobx-react-lite";
 import { useContext, useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { appColors } from "../../../constants/colors";
 import Loading from "../../../Library/Loading/Loading";
 import SecHeading from "../../../Library/SecHeading/SecHeading";
@@ -16,27 +17,43 @@ const MLogixDisclosureReport = () => {
     recentDisclosures,
   } = rootStore.moleculeStore;
 
-  const today = new Date();
-  const dateFromDefault = new Date(today);
-  dateFromDefault.setDate(today.getDate() - 30);
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const [dateFrom, setDateFrom] = useState(dateFromDefault);
-  const [dateTo, setDateTo] = useState(today);
+  const queryParams = new URLSearchParams(location.search);
+  const urlStartDate = queryParams.get("startDate");
+  const urlEndDate = queryParams.get("endDate");
+
+  const today = new Date();
+  const defaultStart = new Date(today);
+  defaultStart.setDate(today.getDate() - 30);
+
+  const [startDate, setStartDate] = useState(
+    urlStartDate ? new Date(urlStartDate) : defaultStart
+  );
+  const [endDate, setEndDate] = useState(
+    urlEndDate ? new Date(urlEndDate) : today
+  );
+
   const [orgSelectionKeys, setOrgSelectionKeys] = useState({});
 
-  // Fetch data when date changes
+  // Sync URL when dates change
   useEffect(() => {
-    getRecentDisclosures({ dateFrom, dateTo });
-  }, [getRecentDisclosures, dateFrom, dateTo]);
+    const params = new URLSearchParams();
+    params.set("startDate", startDate?.toISOString());
+    params.set("endDate", endDate?.toISOString());
+    navigate({ search: params.toString() }, { replace: true });
+
+    // Fetch fresh data from the server (no cache assumption)
+    //getRecentDisclosures({ startDate, endDate });
+  }, [startDate, endDate, navigate, getRecentDisclosures]);
 
   const allDisclosures = Array.from(recentDisclosures?.values?.() || []);
 
-  // Extract selected org IDs
   const selectedOrgIds = Object.entries(orgSelectionKeys)
     .filter(([_, val]) => val.checked)
     .map(([key]) => key);
 
-  // Filter disclosures
   const filteredDisclosures =
     selectedOrgIds.length > 0
       ? allDisclosures.filter((item) =>
@@ -61,14 +78,16 @@ const MLogixDisclosureReport = () => {
       <div className="flex w-full border-0 gap-2">
         <div className="flex w-2 border-0 m-2">
           <MLDRSideBar
-            dateFrom={dateFrom}
-            dateTo={dateTo}
-            setDateFrom={setDateFrom}
-            setDateTo={setDateTo}
+            startDate={startDate}
+            endDate={endDate}
+            setStartDate={setStartDate}
+            setEndDate={setEndDate}
             data={allDisclosures}
             orgSelectionKeys={orgSelectionKeys}
             setOrgSelectionKeys={setOrgSelectionKeys}
-            getRecentDisclosures={getRecentDisclosures}
+            getRecentDisclosures={() =>
+              getRecentDisclosures({ startDate, endDate })
+            }
           />
         </div>
         <div className="flex w-10 border-0 m-2">

@@ -12,7 +12,7 @@ const MDRTable = ({ data, isFetchingRecentDisclosures }) => {
   const { getIdFromUserFullName, getUserFullNameById } = AppUserResolver();
   const { getOrgAliasById } = AppOrgResolver();
 
-  console.log("MDRTable data: ", data);
+  //console.log("MDRTable data: ", data);
   return (
     <DataTable
       className="min-w-full"
