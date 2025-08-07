@@ -2,7 +2,8 @@ import { observer } from "mobx-react-lite";
 import { Button } from "primereact/button";
 import { confirmDialog } from "primereact/confirmdialog";
 import { Sidebar } from "primereact/sidebar";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
+import { RootStoreContext } from "../../../../../RootStore";
 import AddComment from "../../../../Comments/AddComment/AddComment";
 import CommentsByTags from "../../../../Comments/CommentsByTags/CommentsByTags";
 import VotingButtonPanel from "./VoteComponents/VotingButtonPanel";
@@ -25,22 +26,51 @@ const Vote = ({
   isVotesHidden = true,
   isOneClickVotingEnabled = false,
 }) => {
+  const [isCommentsPrefetched, setIsCommentsPrefetched] = useState(false);
+  const rootStore = useContext(RootStoreContext);
+  const { fetchCommentsByTags, isFetchingComments, commentListByTags } =
+    rootStore.commentStore;
+
+  const commentTags = useMemo(() => {
+    let tags = ["Vote", screen?.name, hitCollection?.name, hit?.molecule?.name];
+    if (!hit?.molecule?.name) tags.push(hit.id);
+    return tags.filter(Boolean); // remove undefined/null/empty
+  }, [screen?.name, hitCollection?.name, hit?.molecule?.name, hit?.id]);
+
+  useEffect(() => {
+    if (!isCommentsPrefetched && !isFetchingComments) {
+      setIsCommentsPrefetched(true);
+      fetchCommentsByTags(commentTags);
+    }
+  }, [
+    isCommentsPrefetched,
+    isFetchingComments,
+    commentTags,
+    fetchCommentsByTags,
+  ]);
+
+  const commentCount = useMemo(() => {
+    const list = commentListByTags(commentTags);
+    return Array.isArray(list) ? list.length : 0;
+  }, [commentListByTags, commentTags]);
+
   const [isDiscussionSideBarVisible, setIsDiscussionSideBarVisible] =
     useState(false);
-  if (hit) {
-    var commentTags = [
-      "Vote",
-      screen?.name,
-      hitCollection?.name,
-      hit?.molecule?.name,
-    ];
-    if (hit?.molecule?.name === undefined) {
-      commentTags.push(hit.id);
-    }
 
-    commentTags = commentTags.filter(
-      (tag) => tag !== undefined && tag !== null && tag !== ""
-    );
+  if (hit) {
+    // var commentTags = [
+    //   "Vote",
+    //   screen?.name,
+    //   hitCollection?.name,
+    //   hit?.molecule?.name,
+    // ];
+    // if (hit?.molecule?.name === undefined) {
+    //   commentTags.push(hit.id);
+    // }
+
+    // commentTags = commentTags.filter(
+    //   (tag) => tag !== undefined && tag !== null && tag !== ""
+    // );
     const PanelUserAlreadyVoted = () => {
       return (
         <div className="w-min">
@@ -128,7 +158,8 @@ const Vote = ({
           <div className="flex justify-content-center">{generateOptions()}</div>
           <div className="flex justify-content-center">
             <Button
-              label="Comments"
+              loading={isFetchingComments}
+              label={`Comments (${commentCount})`}
               icon="pi pi-comments"
               onClick={() => setIsDiscussionSideBarVisible(true)}
               className="p-button-sm p-button-plain p-button-text"

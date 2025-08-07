@@ -1,10 +1,8 @@
 import { observer } from "mobx-react-lite";
 import { Divider } from "primereact/divider";
-import React from "react";
 import { DVariableResolver } from "../../../../Shared/DVariable/DVariableResolver";
 import MLTags from "../../../../Shared/TagGenerators/MLTags/MLTags";
-import PDTFeedback from "../ParsedDocFeedback/PDTFeedback";
-
+import PDTFooter from "./PDTFooter/PDTFooter";
 const PDTPreview = ({ rowData }) => {
   return (
     <div className="flex flex-column gap-1">
@@ -32,7 +30,7 @@ const PDTPreview = ({ rowData }) => {
         </div>
       )}
       <div className="flex m-1 p-1 mt-4 mb-0">
-        <PDTFeedback rowData={rowData} />
+        <PDTFooter rowData={rowData} />
       </div>
       <Divider className="mt-0" />
     </div>

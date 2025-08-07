@@ -38,6 +38,11 @@ const MolDbAPI = {
     axiosWithAuth.put("/v2/molecule/disclose-batch", {
       molecules: molecules,
     }),
+
+  getRecentDisclosures: (params) =>
+    axiosWithAuth.get("/v2/aggregators/disclosure/generate-dashboard", {
+      params: params,
+    }),
 };
 
 export default MolDbAPI;

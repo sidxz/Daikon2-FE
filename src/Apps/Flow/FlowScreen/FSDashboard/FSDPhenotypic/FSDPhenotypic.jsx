@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
-import React, { useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import Loading from "../../../../../Library/Loading/Loading";
 import { RootStoreContext } from "../../../../../RootStore";
@@ -39,7 +39,7 @@ const FSDPhenotypic = () => {
           className="w-full"
           value={screenListPhenotypic}
           paginator
-          rows={10}
+          rows={30}
           filterDisplay="row"
         >
           <Column

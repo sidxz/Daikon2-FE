@@ -1,5 +1,5 @@
 import { TabMenu } from "primereact/tabmenu";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import "./MLogixMenuBar.css";
@@ -16,6 +16,8 @@ const MLogixMenuBar = () => {
   useEffect(() => {
     if (location.pathname.includes("/moleculogix/search")) {
       setActiveIndex(2);
+    } else if (location.pathname.includes("/disclosure-report")) {
+      setActiveIndex(4);
     } else if (location.pathname.includes("/disclose")) {
       setActiveIndex(3);
     } else if (location.pathname.includes("/moleculogix")) {
@@ -48,6 +50,11 @@ const MLogixMenuBar = () => {
       icon: <DiscloseIcon />,
       command: () => navigate("disclose/"),
     },
+    {
+      label: "Disclosure Report",
+      icon: <DiscloseIcon />,
+      command: () => navigate("disclosure-report/"),
+    },
     // {
     //   label: "All Molecules",
     //   icon: "icon icon-common icon-search",
@@ -67,7 +74,9 @@ const MLogixMenuBar = () => {
         <TabMenu
           model={items}
           activeIndex={activeIndex}
-          onTabChange={(e) => setActiveIndex(e.index)}
+          onTabChange={(e) => {
+            setActiveIndex(e.index);
+          }}
         />
       </div>
     </div>

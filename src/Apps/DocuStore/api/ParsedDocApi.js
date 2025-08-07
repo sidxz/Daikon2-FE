@@ -17,6 +17,28 @@ const ParsedDocApi = {
         qs.stringify(params, { arrayFormat: "repeat" }),
     });
   },
+
+  getById: (docId, withMeta = true) => {
+    return axiosWithAuth.get(`/v2/docu-store/parsed-docs/by-id/${docId}`, {
+      params: { withMeta },
+      paramsSerializer: (params) =>
+        qs.stringify(params, { arrayFormat: "repeat" }),
+    });
+  },
+
+  editDoc: (data) => {
+    console.log("Editing document:", data);
+    return axiosWithAuth.put(`/v2/docu-store/parsed-docs/`, data);
+  },
+
+  getRevisionHistory: (docId, withMeta = true) => {
+    return axiosWithAuth.get(`/v2/event-history/aggregate-history`, {
+      params: {
+        AggregateId: docId,
+        withMeta: withMeta,
+      },
+    });
+  },
 };
 
 export default ParsedDocApi;

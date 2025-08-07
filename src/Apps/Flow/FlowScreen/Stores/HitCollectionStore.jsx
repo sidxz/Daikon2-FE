@@ -76,6 +76,9 @@ export default class HitCollectionStore {
 
     this.isFetchingHitCollection = true;
 
+    // Ensure the screen is loaded before proceeding
+    await this.rootStore.screenStore.fetchScreen(screenId);
+
     try {
       var hitCollections = await HitCollectionAPI.listByScreen(screenId);
       const moleculeIds = [
@@ -105,6 +108,10 @@ export default class HitCollectionStore {
                 hit.moleculeId
               ) || [];
           });
+          console.log(
+            "selectedScreen",
+            this.rootStore.screenStore.selectedScreen
+          );
           let screenType =
             this.rootStore.screenStore.selectedScreen.screenType || null;
           console.log("screenType", screenType);
