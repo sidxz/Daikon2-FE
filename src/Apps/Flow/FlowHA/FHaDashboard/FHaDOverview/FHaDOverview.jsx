@@ -98,9 +98,14 @@ const FHaDOverview = () => {
               <FHaDOInActiveHA
                 hitAssessments={haList.filter(
                   (item) =>
-                    item.status === "IncorrectMz" ||
-                    item.status === "KnownLiability" ||
-                    item.status === "CompleteFailed"
+                    (item.status === "IncorrectMz" ||
+                      item.status === "KnownLiability" ||
+                      item.status === "CompleteFailed") &&
+                    item.statusLastModifiedDate &&
+                    new Date(item.statusLastModifiedDate) >
+                      new Date(
+                        new Date().setFullYear(new Date().getFullYear() - 1)
+                      )
                 )}
               />
             </div>
