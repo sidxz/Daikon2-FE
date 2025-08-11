@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import "./MLogixMenuBar.css";
 
 import { useEffect } from "react";
+import { FcHeatMap } from "react-icons/fc";
 import { useLocation } from "react-router-dom";
 import { DiscloseIcon } from "../Icons/DiscloseIcon";
 import { MolecuLogixIcon } from "../Icons/MolecuLogixIcon";
@@ -52,7 +53,7 @@ const MLogixMenuBar = () => {
     },
     {
       label: "Disclosure Report",
-      icon: <DiscloseIcon />,
+      icon: <FcHeatMap className="m-1" style={{ fontSize: "2rem" }} />,
       command: () => navigate("disclosure-report/"),
     },
     // {
