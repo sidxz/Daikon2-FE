@@ -1,11 +1,11 @@
 import { observer } from "mobx-react-lite";
 import { useContext, useEffect, useState } from "react";
+import { FcHeatMap } from "react-icons/fc";
 import { useLocation, useNavigate } from "react-router-dom";
 import { appColors } from "../../../constants/colors";
 import Loading from "../../../Library/Loading/Loading";
 import SecHeading from "../../../Library/SecHeading/SecHeading";
 import { RootStoreContext } from "../../../RootStore";
-import { DiscloseIcon } from "../Icons/DiscloseIcon";
 import MDRTable from "./components/MDRTable";
 import MLDRSideBar from "./components/MLDRSideBar";
 
@@ -69,7 +69,7 @@ const MLogixDisclosureReport = () => {
     <div className="flex flex-column w-full gap-2">
       <div className="flex w-full">
         <SecHeading
-          svgIcon={<DiscloseIcon size={"25em"} />}
+          svgIcon={<FcHeatMap />}
           heading={"Disclosure Report"}
           displayHorizon={false}
           color={appColors.molecuLogix.disclose}

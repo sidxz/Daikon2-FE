@@ -8,6 +8,7 @@ import { ProgressBar } from "primereact/progressbar";
 import { Sidebar } from "primereact/sidebar";
 import { useContext, useEffect, useRef, useState } from "react";
 import { appColors } from "../../../../../../constants/colors";
+import { STRINGS } from "../../../../../../Customizations/strings";
 import JSMEditor from "../../../../../../Library/JSME/JSMEditor";
 import Loading from "../../../../../../Library/Loading/Loading";
 import { RootStoreContext } from "../../../../../../RootStore";
@@ -147,9 +148,11 @@ const FSPhVHits = ({ id }) => {
   };
 
   const addHitSideBarHeader = (
-    <div className="flex align-items-center gap-2">
-      <i className="icon icon-common icon-plus-circle"></i>
-      <span className="font-bold">Add Hit</span>
+    <div className="flex flex-column">
+      <div className="flex text-xl gap-2 align-items-center">
+        <i className="icon icon-common icon-plus-circle"></i> Add Hit
+      </div>
+      <div className="flex text-sm">{STRINGS.DISCLOSURE_NOTICE}</div>
     </div>
   );
 

@@ -6,6 +6,7 @@ import FDate from "../../../../Library/FDate/FDate";
 import { DVariableResolver } from "../../../../Shared/DVariable/DVariableResolver";
 import { AppOrgResolver } from "../../../../Shared/VariableResolvers/AppOrgResolver";
 import { AppUserResolver } from "../../../../Shared/VariableResolvers/AppUserResolver";
+import { downloadExcel, formatMDRRowsForExport } from "./csvFormatHelper";
 import { templates } from "./templates";
 
 const MDRTable = ({ data, isFetchingRecentDisclosures }) => {
@@ -13,6 +14,14 @@ const MDRTable = ({ data, isFetchingRecentDisclosures }) => {
   const { getOrgAliasById } = AppOrgResolver();
 
   //console.log("MDRTable data: ", data);
+
+  const exportFormatted = () => {
+    const formatted = formatMDRRowsForExport(data, {
+      DVariableResolver,
+      getOrgAliasById,
+    });
+    downloadExcel(formatted, "MDR_Table.xlsx");
+  };
   return (
     <DataTable
       className="min-w-full"

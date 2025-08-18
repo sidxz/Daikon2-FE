@@ -5,7 +5,8 @@ import { confirmPopup } from "primereact/confirmpopup";
 import { Divider } from "primereact/divider";
 import { Sidebar } from "primereact/sidebar";
 import { Tag } from "primereact/tag";
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { STRINGS } from "../../../../../Customizations/strings";
 import FDate from "../../../../../Library/FDate/FDate";
 import PleaseWait from "../../../../../Library/PleaseWait/PleaseWait";
 import SmilesView from "../../../../../Library/SmilesView/SmilesView";
@@ -36,9 +37,12 @@ const HaCompoundEvolution = ({ haId, showMenuBar = true }) => {
   }
 
   const addCEvoSideBarHeader = (
-    <div className="flex align-items-center gap-2">
-      <i className="icon icon-common icon-plus-circle"></i>
-      <span className="font-bold">Add Compound Evolution</span>
+    <div className="flex flex-column">
+      <div className="flex text-xl gap-2 align-items-center">
+        <i className="icon icon-common icon-plus-circle"></i> Add Compound
+        Evolution
+      </div>
+      <div className="flex text-sm">{STRINGS.DISCLOSURE_NOTICE}</div>
     </div>
   );
 
@@ -260,7 +264,7 @@ const HaCompoundEvolution = ({ haId, showMenuBar = true }) => {
         visible={displayAddCEvoSideBar}
         position="right"
         onHide={() => setDisplayAddCEvoSideBar(false)}
-        className="p-sidebar-sm"
+        className="p-sidebar-md"
         header={addCEvoSideBarHeader}
       >
         <HaCompoundEvolutionAdd
@@ -273,7 +277,7 @@ const HaCompoundEvolution = ({ haId, showMenuBar = true }) => {
         visible={displayEditCEvoSideBar}
         position="right"
         onHide={() => setDisplayEditCEvoSideBar(false)}
-        className="p-sidebar-sm"
+        className="p-sidebar-md"
         header={editCEvoSideBarHeader}
       >
         <HaCompoundEvolutionEdit

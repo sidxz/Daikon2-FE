@@ -2,7 +2,9 @@ import { observer } from "mobx-react-lite";
 import { Button } from "primereact/button";
 import { Calendar } from "primereact/calendar";
 import { Tree } from "primereact/tree";
+import { DVariableResolver } from "../../../../Shared/DVariable/DVariableResolver";
 import { AppOrgResolver } from "../../../../Shared/VariableResolvers/AppOrgResolver";
+import { downloadExcel, formatMDRRowsForExport } from "./csvFormatHelper";
 
 const MLDRSideBar = ({
   startDate,
@@ -15,6 +17,19 @@ const MLDRSideBar = ({
   getRecentDisclosures,
 }) => {
   const { getOrgAliasById } = AppOrgResolver();
+
+  const exportFormatted = () => {
+    const formatted = formatMDRRowsForExport(data, {
+      DVariableResolver,
+      getOrgAliasById,
+    });
+    const start = startDate
+      ? new Date(startDate).toISOString().slice(0, 10)
+      : "start";
+    const end = endDate ? new Date(endDate).toISOString().slice(0, 10) : "end";
+    const fileName = `Disclosure Data ${start} to ${end}.xlsx`;
+    downloadExcel(formatted, fileName);
+  };
 
   // Count disclosures per org
   const orgCounts = data.reduce((acc, item) => {
@@ -78,8 +93,16 @@ const MLDRSideBar = ({
       <div className="flex flex-column w-full">
         <Button
           label="Update Report"
+          icon="pi pi-refresh"
           severity="success"
           onClick={() => getRecentDisclosures({ startDate, endDate })}
+        />
+      </div>
+      <div className="flex flex-column w-full">
+        <Button
+          label="Download"
+          icon="pi pi-download"
+          onClick={exportFormatted}
         />
       </div>
       <div className="flex justify-content-center mb-2">
