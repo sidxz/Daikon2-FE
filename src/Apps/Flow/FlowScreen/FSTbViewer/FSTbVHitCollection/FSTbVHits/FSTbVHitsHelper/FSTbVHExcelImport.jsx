@@ -1,6 +1,7 @@
 import { Dialog } from "primereact/dialog";
 import { FileUpload } from "primereact/fileupload";
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
+import { STRINGS } from "../../../../../../../Customizations/strings";
 import DataPreviewDialog from "../../../../../../../Library/DataPreviewDialog/DataPreviewDialog";
 import SmilesView from "../../../../../../../Library/SmilesView/SmilesView";
 import { RootStoreContext } from "../../../../../../../RootStore";
@@ -72,9 +73,16 @@ const FSTbVHExcelImport = ({
       );
     };
 
+    const headerTemplate = (
+      <div className="flex flex-column">
+        <div className="flex">Import Hits from Excel</div>
+        <div className="flex text-sm">{STRINGS.DISCLOSURE_NOTICE}</div>
+      </div>
+    );
+
     return (
       <Dialog
-        header="Import Hits from Excel"
+        header={headerTemplate}
         visible={visible}
         style={{ width: "50vw" }}
         onHide={onHide}

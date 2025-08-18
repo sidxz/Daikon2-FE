@@ -3,8 +3,9 @@ import { BreadCrumb } from "primereact/breadcrumb";
 import { Fieldset } from "primereact/fieldset";
 import { Menu } from "primereact/menu";
 import { Sidebar } from "primereact/sidebar";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { STRINGS } from "../../../Customizations/strings";
 import SecHeading from "../../../Library/SecHeading/SecHeading";
 import { appColors } from "../../../constants/colors";
 import { MolecuLogixIcon } from "../Icons/MolecuLogixIcon";
@@ -17,8 +18,12 @@ const MLogixSearch = () => {
   const [displayAddSideBar, setDisplayAddSideBar] = useState(false);
 
   const addSideBarHeader = (
-    <div className="flex w-full justify-between items-center">
-      <h2 className="text-lg font-semibold">Register Molecule</h2>
+    <div className="flex flex-column w-full justify-between items-center">
+      <div className="flex align-items-center gap-2">
+        <i className="icon icon-common icon-plus-circle"></i>
+        <h2 className="text-lg font-semibold">Register Molecule</h2>
+      </div>
+      <div className="flex text-sm">{STRINGS.DISCLOSURE_NOTICE}</div>
     </div>
   );
 
