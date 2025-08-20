@@ -165,7 +165,11 @@ const Vote = ({
           <div className="flex justify-content-center">
             <Button
               loading={isFetchingComments}
-              label={`Comments (${commentCount})`}
+              label={
+                shouldPrefetchComments
+                  ? `Comments (${commentCount})`
+                  : "Comments"
+              }
               icon="pi pi-comments"
               onClick={() => setIsDiscussionSideBarVisible(true)}
               className="p-button-sm p-button-plain p-button-text"
