@@ -25,6 +25,7 @@ const Vote = ({
   isVotingAllowed = true,
   isVotesHidden = true,
   isOneClickVotingEnabled = false,
+  shouldPrefetchComments = false,
 }) => {
   const [isCommentsPrefetched, setIsCommentsPrefetched] = useState(false);
   const rootStore = useContext(RootStoreContext);
@@ -38,11 +39,16 @@ const Vote = ({
   }, [screen?.name, hitCollection?.name, hit?.molecule?.name, hit?.id]);
 
   useEffect(() => {
-    if (!isCommentsPrefetched && !isFetchingComments) {
+    if (
+      shouldPrefetchComments &&
+      !isCommentsPrefetched &&
+      !isFetchingComments
+    ) {
       setIsCommentsPrefetched(true);
       fetchCommentsByTags(commentTags);
     }
   }, [
+    shouldPrefetchComments,
     isCommentsPrefetched,
     isFetchingComments,
     commentTags,
@@ -159,7 +165,11 @@ const Vote = ({
           <div className="flex justify-content-center">
             <Button
               loading={isFetchingComments}
-              label={`Comments (${commentCount})`}
+              label={
+                shouldPrefetchComments
+                  ? `Comments (${commentCount})`
+                  : "Comments"
+              }
               icon="pi pi-comments"
               onClick={() => setIsDiscussionSideBarVisible(true)}
               className="p-button-sm p-button-plain p-button-text"
