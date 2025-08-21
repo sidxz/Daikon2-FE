@@ -12,7 +12,7 @@ const FlowDashWhatsNew = () => {
           <span className="icon-database" aria-label="database-icon">
             🔔
           </span>
-          <strong>Document Summarization module</strong>
+          <strong> Document Summarization module</strong>
           <br></br>
           Documents from SharePoint are now organized by module (e.g., Target,
           Screen, HA, etc.) and can be accessed under each module’s dedicated
