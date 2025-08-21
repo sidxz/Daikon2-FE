@@ -51,7 +51,7 @@ const PDTFooter = ({ rowData }) => {
   }, [rowData]);
 
   const commentTags = useMemo(() => {
-    return [...rowData.tags, rowData.name];
+    return [rowData.name];
   }, [rowData.tags, rowData.name]);
 
   useEffect(() => {
