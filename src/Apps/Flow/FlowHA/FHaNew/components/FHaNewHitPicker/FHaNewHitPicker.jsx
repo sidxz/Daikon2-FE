@@ -1,14 +1,23 @@
 import { observer } from "mobx-react-lite";
 import { Dropdown } from "primereact/dropdown";
-import React, { useCallback, useContext, useEffect, useRef } from "react";
+import { InputText } from "primereact/inputtext";
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useDeferredValue,
+} from "react";
 import SmilesView from "../../../../../../Library/SmilesView/SmilesView";
 import { RootStoreContext } from "../../../../../../RootStore";
 
 import { SelectButton } from "primereact/selectbutton";
 import { Stepper } from "primereact/stepper";
 import { StepperPanel } from "primereact/stepperpanel";
-import StepperNavButtons from "../../../../../../UILib/StepperTools/NavButtons/StepperNavButtons";
 import { Tag } from "primereact/tag";
+import StepperNavButtons from "../../../../../../UILib/StepperTools/NavButtons/StepperNavButtons";
 
 const FHaNewHitPicker = ({
   screenSectionData,
@@ -32,20 +41,37 @@ const FHaNewHitPicker = ({
     hitCollectionOfScreen,
   } = rootStore.hitCollectionStore;
 
+  // -------------------------------------------------------------
+  // Safe wrappers (function declarations are hoisted)
+  // -------------------------------------------------------------
+  async function fetchScreensSafe() {
+    try {
+      await fetchScreens();
+    } catch (error) {
+      console.error("Error fetching screens:", error);
+    }
+  }
+
+  async function fetchHitCollectionsSafe(screenId) {
+    try {
+      await fetchHitCollectionsOfScreen(screenId);
+    } catch (error) {
+      console.error("Error fetching hit collections:", error);
+    }
+  }
+
+  // -------------------------------------------------------------
+  // Effects
+  // -------------------------------------------------------------
   useEffect(() => {
     if (!isScreenListCacheValid) {
       fetchScreensSafe();
     }
   }, [isScreenListCacheValid]);
 
-  const fetchScreensSafe = async () => {
-    try {
-      await fetchScreens();
-    } catch (error) {
-      console.error("Error fetching screens:", error);
-    }
-  };
-
+  // -------------------------------------------------------------
+  // Select handlers
+  // -------------------------------------------------------------
   const handleScreenSelect = useCallback((screen) => {
     setScreenSectionData((prev) => ({
       ...prev,
@@ -56,14 +82,6 @@ const FHaNewHitPicker = ({
     }));
     fetchHitCollectionsSafe(screen.id);
   }, []);
-
-  const fetchHitCollectionsSafe = async (screenId) => {
-    try {
-      await fetchHitCollectionsOfScreen(screenId);
-    } catch (error) {
-      console.error("Error fetching hit collections:", error);
-    }
-  };
 
   const handleHitCollectionSelect = (hitCollection) => {
     setScreenSectionData((prev) => ({
@@ -89,8 +107,10 @@ const FHaNewHitPicker = ({
     }));
   };
 
+  // -------------------------------------------------------------
+  // Rendering helpers
+  // -------------------------------------------------------------
   const RelationsBodyTemplate = (hit) => {
-    // check if relations count is more than 0
     if (hit?.relations?.length > 1) {
       const hitAssessment = hit.relations.find(
         (relation) => relation.nodeType === "HitAssessment"
@@ -152,6 +172,53 @@ const FHaNewHitPicker = ({
     });
   };
 
+  // Case-insensitive name filter builder
+  const filterByName = (query) => {
+    const q = (query || "").trim().toLowerCase();
+    if (!q) return () => true;
+    return (hit) => (hit?.molecule?.name || "").toLowerCase().includes(q);
+  };
+
+  // -------------------------------------------------------------
+  // Search state for SelectButtons
+  // -------------------------------------------------------------
+  const [hitsQuery, setHitsQuery] = useState("");
+  const [primaryQuery, setPrimaryQuery] = useState("");
+
+  const deferredHitsQuery = useDeferredValue(hitsQuery);
+  const deferredPrimaryQuery = useDeferredValue(primaryQuery);
+
+  // Reset searches when upstream choices change
+  useEffect(() => {
+    setHitsQuery("");
+  }, [screenSectionData.selectedHitCollection?.id]);
+
+  useEffect(() => {
+    setPrimaryQuery("");
+  }, [screenSectionData.selectedBaseHits?.length]);
+
+  // Compute filtered option lists
+  const sortedAllHits = useMemo(
+    () => sortHits(screenSectionData.selectedHitCollection?.hits) || [],
+    [screenSectionData.selectedHitCollection]
+  );
+
+  const filteredHitsForSelect = useMemo(
+    () => sortedAllHits.filter(filterByName(deferredHitsQuery)),
+    [sortedAllHits, deferredHitsQuery]
+  );
+
+  const filteredPrimaryHits = useMemo(
+    () =>
+      (screenSectionData.selectedBaseHits || []).filter(
+        filterByName(deferredPrimaryQuery)
+      ),
+    [screenSectionData.selectedBaseHits, deferredPrimaryQuery]
+  );
+
+  // -------------------------------------------------------------
+  // Submit
+  // -------------------------------------------------------------
   const handleSubmit = () => {
     const {
       selectedPrimaryHit,
@@ -191,6 +258,9 @@ const FHaNewHitPicker = ({
     }
   };
 
+  // -------------------------------------------------------------
+  // Render
+  // -------------------------------------------------------------
   return (
     <div className="flex w-full">
       <div className="flex w-full gap-2 justify-content-center border-0">
@@ -207,6 +277,7 @@ const FHaNewHitPicker = ({
                   placeholder="Step 1 | Select a Screen"
                   className="w-full"
                   filter
+                  virtualScrollerOptions={{ itemSize: 43 }}
                   loading={isFetchingScreens}
                 />
                 <StepperNavButtons
@@ -216,6 +287,7 @@ const FHaNewHitPicker = ({
                 />
               </div>
             </StepperPanel>
+
             <StepperPanel header="Hit Collection">
               <div className="flex flex-column gap-3">
                 <div className="flex text-lg">
@@ -243,50 +315,83 @@ const FHaNewHitPicker = ({
                 />
               </div>
             </StepperPanel>
+
             <StepperPanel header="Hits">
               <div className="flex flex-column gap-3">
                 <div className="flex text-lg">
                   Select all the hits (both primary and related) needed for the
-                  Hit Assessment project.{" "}
+                  Hit Assessment project.
                 </div>
                 <div className="flex text-md">
                   Keep in mind that this will create single HA project.
                 </div>
+
+                {/* Search bar for the hits SelectButton */}
+                <div className="flex w-full">
+                  <span className="p-input-icon-left w-full">
+                    <i className="pi pi-search" />
+                    <InputText
+                      className="w-full"
+                      value={hitsQuery}
+                      onChange={(e) => setHitsQuery(e.target.value)}
+                      placeholder="Search hits by molecule name..."
+                      aria-label="Search hits by molecule name"
+                    />
+                  </span>
+                </div>
+
                 <SelectButton
                   multiple
                   value={screenSectionData.selectedBaseHits}
                   onChange={(e) => handleBaseHitsSelect(e.value)}
-                  options={sortHits(
-                    screenSectionData.selectedHitCollection?.hits
-                  )}
+                  options={filteredHitsForSelect}
+                  // Keep function form since you're already using it
                   optionLabel={(hit) =>
                     hit?.molecule?.name || "Unnamed Molecule"
                   }
                   className="w-full"
                   itemTemplate={renderHitItemTemplate}
                 />
+
                 <StepperNavButtons
                   stepperRef={screenStepperRef}
                   nextDisabled={!screenSectionData.selectedBaseHits}
                 />
               </div>
             </StepperPanel>
+
             <StepperPanel header="Primary Hit">
               <div className="flex flex-column gap-3">
-                <div className="flex text-lg">Select the primary hit. </div>
+                <div className="flex text-lg">Select the primary hit.</div>
                 <div className="flex text-md">
                   This hit will represent the group, while any additional
                   selected hits will appear as related hits in the Hit
                   Assessment Project.
                 </div>
+
+                {/* Search bar for the primary hit SelectButton */}
+                <div className="flex w-full">
+                  <span className="p-input-icon-left w-full">
+                    <i className="pi pi-search" />
+                    <InputText
+                      className="w-full"
+                      value={primaryQuery}
+                      onChange={(e) => setPrimaryQuery(e.target.value)}
+                      placeholder="Search within selected hits..."
+                      aria-label="Search within selected hits"
+                    />
+                  </span>
+                </div>
+
                 <SelectButton
                   value={screenSectionData.selectedPrimaryHit}
                   onChange={(e) => handlePrimaryHitSelect(e.value)}
-                  options={screenSectionData.selectedBaseHits}
+                  options={filteredPrimaryHits}
                   optionLabel={(hit) => hit?.molecule?.name}
                   className="w-full"
                   itemTemplate={renderHitItemTemplate}
                 />
+
                 <StepperNavButtons
                   stepperRef={screenStepperRef}
                   nextDisabled={!screenSectionData.selectedPrimaryHit}
