@@ -35,6 +35,9 @@ export default class TargetPQStore {
       isApprovingTQ: observable,
 
       TQUnapproved: computed,
+
+      rejectAndDeleteTQ: action,
+      isDeletingTQ: observable,
     });
   }
 
@@ -48,6 +51,8 @@ export default class TargetPQStore {
   isFetchingTQ = false;
   isUpdatingTQ = false;
   isApprovingTQ = false;
+
+  isDeletingTQ = false;
 
   // Actions
   fetchTQUnverified = async (inValidateCache = false) => {
@@ -198,6 +203,25 @@ export default class TargetPQStore {
     } finally {
       runInAction(() => {
         this.isApprovingTQ = false;
+      });
+    }
+  };
+
+  rejectAndDeleteTQ = async (tpqId) => {
+    this.isDeletingTQ = true;
+
+    try {
+      await TPQAPI.reject(tpqId);
+      runInAction(() => {
+        this.TQRegistry.delete(tpqId);
+        this.selectedTQ = null;
+      });
+      toast.success("The Target Promotion has been rejected.");
+    } catch (error) {
+      console.error("Error rejecting Target Questionnaire:", error);
+    } finally {
+      runInAction(() => {
+        this.isDeletingTQ = false;
       });
     }
   };

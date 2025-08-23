@@ -15,6 +15,7 @@ const TPQAPI = {
       `/v2/target/tpq/${approveDTO.tPQId}/approve/`,
       approveDTO
     ),
+  reject: (id) => axiosWithAuth.delete(`/v2/target/tpq/${id}`),
 };
 
 export default TPQAPI;
