@@ -61,6 +61,11 @@ export default class HitCollectionStore {
     inValidateCache = false,
     preFetchCustomization = false
   ) => {
+    // short circuit multiple requests
+    if (this.isFetchingHitCollection) {
+      return;
+    }
+
     //console.log("fetchHitCollectionsOfScreen", screenId, inValidateCache);
     if (inValidateCache) {
       this.hitCollectionRegistryCache.set(screenId, false);

@@ -78,7 +78,7 @@ export default class ScreenStore {
     if (inValidateCache) {
       this.isScreenListCacheValid = false;
     }
-    if (this.isScreenListCacheValid) {
+    if (this.isScreenListCacheValid || this.isFetchingScreens) {
       return;
     }
     this.isFetchingScreens = true;
@@ -123,6 +123,11 @@ export default class ScreenStore {
   }
 
   fetchScreen = async (screenId, inValidateCache = false) => {
+    // short circuit multiple requests
+    if (this.isFetchingScreen) {
+      return;
+    }
+
     if (inValidateCache) {
       this.isScreenRegistryCacheValid = false;
     }

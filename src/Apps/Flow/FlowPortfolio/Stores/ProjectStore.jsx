@@ -78,7 +78,7 @@ export default class ProjectStore {
     if (inValidateCache) {
       this.isProjectListCacheValid = false;
     }
-    if (this.isProjectListCacheValid) {
+    if (this.isProjectListCacheValid || this.isFetchingProjects) {
       return;
     }
     this.isFetchingProjects = true;
@@ -140,6 +140,11 @@ export default class ProjectStore {
     //console.log("fetchProject -> projectId", projectId);
     if (inValidateCache) {
       this.isProjectRegistryCacheValid = false;
+    }
+
+    // short circuit multiple requests
+    if (this.isFetchingProject) {
+      return;
     }
 
     this.isFetchingProject = true;
