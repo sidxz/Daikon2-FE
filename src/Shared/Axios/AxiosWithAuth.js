@@ -3,6 +3,33 @@ import { toast } from "react-toastify";
 import AppUserManager from "../../Auth/components/AppUserManager";
 import { AxiosConfig } from "../../config/axiosConfig";
 
+/** ------------------------------------------------------------------
+ * Toast control: deduplicate by message + throttle (2 seconds)
+ * ------------------------------------------------------------------ */
+const activeToasts = new Set(); // track messages currently displayed
+const lastToastTimeByMessage = new Map(); // track last shown time per message
+const TOAST_INTERVAL_MS = 2000; // 2 seconds
+
+function showThrottledUniqueErrorToast(message) {
+  const now = Date.now();
+  const last = lastToastTimeByMessage.get(message) || 0;
+
+  // If the same message is already on screen, skip
+  if (activeToasts.has(message)) return;
+
+  // If shown within the last 2s, skip
+  if (now - last < TOAST_INTERVAL_MS) return;
+
+  const id = toast.error(message, {
+    onClose: () => {
+      activeToasts.delete(message);
+    },
+  });
+
+  activeToasts.add(message);
+  lastToastTimeByMessage.set(message, now);
+}
+
 class AxiosWithAuth {
   constructor() {
     this.init();
@@ -73,42 +100,45 @@ class AxiosWithAuth {
 
       const status = error.response.status;
       switch (status) {
-        case 400:
+        case 400: {
           errorMessage = "Bad Request";
-          toast.error(errorMessage + " " + error?.response?.data?.message);
+          const composed =
+            errorMessage + " " + (error?.response?.data?.message || "");
+          showThrottledUniqueErrorToast(composed.trim());
           break;
+        }
         case 401:
           errorMessage = "Unauthorized. Please login again.";
           // do sso login
           // TEST: under observation of behavior
           AppUserManager.signinSilent();
-          toast.error(errorMessage);
+          showThrottledUniqueErrorToast(errorMessage);
           break;
         case 403:
           errorMessage =
             "Forbidden. You do not have permission to perform this action.";
-          toast.error(errorMessage);
+          showThrottledUniqueErrorToast(errorMessage);
           break;
         case 404:
           errorMessage = "The requested resource was not found";
-          toast.error(errorMessage);
+          showThrottledUniqueErrorToast(errorMessage);
           break;
         case 409:
           errorMessage =
             "A conflict occurred, suggesting that there may be a request for a resource that already exists. Please ensure that the resource you are attempting to create or modify is not already present.";
-          toast.error(errorMessage);
+          showThrottledUniqueErrorToast(errorMessage);
           break;
         case 500:
           errorMessage = "Internal Server Error";
-          toast.error(errorMessage);
+          showThrottledUniqueErrorToast(errorMessage);
           break;
         case 503:
           errorMessage = "Service Unavailable";
-          toast.error(errorMessage);
+          showThrottledUniqueErrorToast(errorMessage);
           break;
         default:
           errorMessage = `An error occurred with your request. Status code: ${status}`;
-          toast.error(errorMessage);
+          showThrottledUniqueErrorToast(errorMessage);
       }
     } else if (error.request) {
       console.log("Error Request:", error.message);
@@ -120,12 +150,12 @@ class AxiosWithAuth {
       console.error("No response received:", error.request);
       errorMessage =
         "The request was made but no response was received. Please check your network connection.";
-      toast.error(errorMessage);
+      showThrottledUniqueErrorToast(errorMessage);
     } else {
       console.error("Error:", error.message);
       errorMessage =
         error.message || "An error occurred while setting up the request.";
-      toast.error(errorMessage);
+      showThrottledUniqueErrorToast(errorMessage);
     }
 
     console.error("Error Config:", error.config);
