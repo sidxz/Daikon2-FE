@@ -51,7 +51,7 @@ function buildGetKey(config) {
 
 class AxiosWithAuth {
   constructor() {
-    this.enableGetThrottle = false; // <--- NEW FLAG (set false to disable GET throttling)
+    this.enableGetThrottle = true; // <--- NEW FLAG (set false to disable GET throttling)
     this.init();
   }
 

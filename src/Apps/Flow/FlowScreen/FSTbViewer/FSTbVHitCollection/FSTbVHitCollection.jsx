@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import { BreadCrumb } from "primereact/breadcrumb";
 import { Dropdown } from "primereact/dropdown";
 import { Sidebar } from "primereact/sidebar";
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../../../../../Library/Loading/Loading";
 import SecHeading from "../../../../../Library/SecHeading/SecHeading";
@@ -57,8 +57,8 @@ const FSTbVHitCollection = ({ selectedScreen }) => {
   }, [
     isHitCollectionRegistryCacheValid,
     fetchHitCollectionsOfScreen,
-    selectedScreen,
-    selectedHitCollection,
+    selectedScreen?.id,
+    selectedHitCollection?.id,
     setSelectedHitCollectionDropdown,
   ]);
 

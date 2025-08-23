@@ -5,7 +5,7 @@ import { Dropdown } from "primereact/dropdown";
 import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
 import { classNames } from "primereact/utils";
-import React, { useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { RootStoreContext } from "../../../../../RootStore";
 import { hitCollectionTypeOptions } from "../../shared/FSValues";
@@ -30,7 +30,7 @@ const FSTbVAddHitCollection = ({ selectedScreen, closeSidebar }) => {
   }, [
     fetchHitCollectionsOfScreen,
     isHitCollectionRegistryCacheValid,
-    selectedScreen.id,
+    selectedScreen?.id,
   ]);
 
   const formik = useFormik({
