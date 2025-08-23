@@ -14,13 +14,10 @@ function showThrottledUniqueErrorToast(message) {
   const now = Date.now();
   const last = lastToastTimeByMessage.get(message) || 0;
 
-  // If the same message is already on screen, skip
-  if (activeToasts.has(message)) return;
+  if (activeToasts.has(message)) return; // Already on screen
+  if (now - last < TOAST_INTERVAL_MS) return; // Too soon since last
 
-  // If shown within the last 2s, skip
-  if (now - last < TOAST_INTERVAL_MS) return;
-
-  const id = toast.error(message, {
+  toast.error(message, {
     onClose: () => {
       activeToasts.delete(message);
     },
@@ -30,8 +27,31 @@ function showThrottledUniqueErrorToast(message) {
   lastToastTimeByMessage.set(message, now);
 }
 
+/** ------------------------------------------------------------------
+ * GET request throttling (same request >2 times in 2s → block)
+ * ------------------------------------------------------------------ */
+const GET_DUP_WINDOW_MS = 2000;
+const GET_DUP_MAX_REQUESTS = 2;
+const getRequestTimestamps = new Map();
+
+function stableStringify(obj) {
+  if (!obj || typeof obj !== "object") return JSON.stringify(obj);
+  const allKeys = [];
+  JSON.stringify(obj, (key, value) => (allKeys.push(key), value));
+  allKeys.sort();
+  return JSON.stringify(obj, allKeys);
+}
+
+function buildGetKey(config) {
+  const base = config.baseURL || "";
+  const url = config.url || "";
+  const paramsStr = stableStringify(config.params || {});
+  return `${base}|${url}|${paramsStr}`;
+}
+
 class AxiosWithAuth {
   constructor() {
+    this.enableGetThrottle = false; // <--- NEW FLAG (set false to disable GET throttling)
     this.init();
   }
 
@@ -41,29 +61,14 @@ class AxiosWithAuth {
     this.axiosWithAuth = axios.create({
       ...AxiosConfig,
     });
-
-    // let shd = await this.shouldRefreshToken();
-    // console.log("AxiosWithAuth -> init -> shd", shd);
-    // if (shd) {
-    //   console.log("AxiosWithAuth -> init -> Refreshing Token");
-    //   await AppUserManager.refreshToken();
-    //   this.accessToken = await AppUserManager.getAccessToken();
-    // }
-
     this.setInterceptors();
   }
 
   async shouldRefreshToken() {
-    // Check if the access token is expired or about to expire
-    const tokenExpiryThreshold = 60 * 1000; // 1 minute
+    const tokenExpiryThreshold = 60 * 1000;
     const tokenExpirySeconds = await AppUserManager.getTokenExpiry();
     const tokenExpiryMilliseconds = tokenExpirySeconds * 1000;
-
     const currentTimeMilliseconds = Date.now();
-    // console.log(
-    //   "AxiosWithAuth -> Token will expire in Minutes : ",
-    //   (tokenExpiryMilliseconds - currentTimeMilliseconds) / (1000 * 60)
-    // );
     return (
       tokenExpirySeconds &&
       tokenExpiryMilliseconds - currentTimeMilliseconds < tokenExpiryThreshold
@@ -74,12 +79,31 @@ class AxiosWithAuth {
     this.axiosWithAuth.interceptors.request.use(
       (config) => {
         if (this.accessToken) {
-          // console.log(
-          //   "AxiosWithAuth -> setInterceptors -> this.accessToken",
-          //   this.accessToken
-          // );
           config.headers.Authorization = `Bearer ${this.accessToken}`;
         }
+
+        // Throttle identical GET requests (if enabled)
+        if (
+          this.enableGetThrottle &&
+          (config.method || "get").toLowerCase() === "get"
+        ) {
+          const key = buildGetKey(config);
+          const now = Date.now();
+          const arr = getRequestTimestamps.get(key) || [];
+          const recent = arr.filter((t) => now - t <= GET_DUP_WINDOW_MS);
+
+          if (recent.length >= GET_DUP_MAX_REQUESTS) {
+            const msg = `Blocked duplicate GET within ${GET_DUP_WINDOW_MS}ms: ${key}`;
+            const err = new axios.Cancel(msg);
+            err.__blockedDuplicate = true;
+            console.error(msg);
+            return Promise.reject(err);
+          }
+
+          recent.push(now);
+          getRequestTimestamps.set(key, recent);
+        }
+
         return config;
       },
       (error) => Promise.reject(error)
@@ -92,6 +116,10 @@ class AxiosWithAuth {
   }
 
   handleError(error) {
+    if (axios.isCancel(error) || error?.__blockedDuplicate) {
+      return Promise.reject(error);
+    }
+
     let errorMessage = "An unexpected error occurred";
     if (error.response) {
       console.error("Data:", error.response.data);
@@ -109,8 +137,6 @@ class AxiosWithAuth {
         }
         case 401:
           errorMessage = "Unauthorized. Please login again.";
-          // do sso login
-          // TEST: under observation of behavior
           AppUserManager.signinSilent();
           showThrottledUniqueErrorToast(errorMessage);
           break;
@@ -168,8 +194,6 @@ class AxiosWithAuth {
 
   get = async (url, config = {}) => {
     await this.init();
-    // const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-    // await delay(3000);
     return this.axiosWithAuth.get(url, config).then(this.formatResponse);
   };
 
