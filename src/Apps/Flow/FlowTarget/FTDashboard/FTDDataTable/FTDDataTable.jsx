@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import { BlockUI } from "primereact/blockui";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
-import React, { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { RootStoreContext } from "../../../../../RootStore";
 import "./FTDDataTable.css";
@@ -17,11 +17,11 @@ const FTDDataTable = ({ targets }) => {
     getFilteredTargets,
   } = rootStore.targetStore;
 
-  useEffect(() => {
-    if (!isTargetListCacheValid) {
-      fetchTargets();
-    }
-  }, [fetchTargets, isTargetListCacheValid]);
+  // useEffect(() => {
+  //   if (!isTargetListCacheValid) {
+  //     fetchTargets();
+  //   }
+  // }, [fetchTargets, isTargetListCacheValid]);
 
   let nameBodyTemplate = (rowData) => {
     return <NavLink to={"viewer/" + rowData.id}>{rowData.name}</NavLink>;
