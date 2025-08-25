@@ -1,40 +1,64 @@
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { Divider } from "primereact/divider";
+import { ProgressBar } from "primereact/progressbar";
 import { Tag } from "primereact/tag";
 import { useMemo } from "react";
 import SecHeading from "../SecHeading/SecHeading";
 
 /**
- * BulkDataPreviewDialog
+ * BulkDataImportProgress
  *
  * Props:
  * - visible: boolean
  * - onHide: () => void
- * - onProceed: (rowsToSave) => void        // gets rows with status !== "Unchanged"
- * - isProcessing?: boolean                 // disable buttons while server busy
- * - data: any[]                            // incoming rows
- * - existingData: any[]                    // existing rows to compare
- * - headerMap: Record<field, label>        // column name map for display
- * - comparatorKey?: string                 // defaults to "id"
- * - requiredFields?: string[]              // e.g., ["moleculeName", "smiles"]
- * - structureFields?: string[]             // e.g., ["smiles", "molblock"]
- * - fieldFlatteners?: Record<field, (arr:any[])=>string>  // optional, like your other dialog
+ * - onProceed: (rowsToSave) => void               // call hitStore.bulkInsertHits(...)
+ * - onCancel: () => void                          // call hitStore.cancelBulkUpload()
+ * - isUploading?: boolean                         // hitStore.isBulkUploadingHits
+ * - bulkProgress?: {                              // hitStore.bulkProgress
+ *      total: number,
+ *      done: number,
+ *      percent: number,
+ *      failedCount: number,
+ *      currentBatch: number,
+ *      totalBatches: number,
+ *      isCancelled?: boolean,
+ *      lastError?: string | null
+ *   }
+ * - data: any[]
+ * - existingData: any[]
+ * - headerMap: Record<string,string>
+ * - comparatorKey?: string
+ * - requiredFields?: string[]
+ * - structureFields?: string[]
+ * - fieldFlatteners?: Record<string,(arr:any[])=>string>
  */
 const BulkDataImportProgress = ({
   visible,
   onHide,
   onProceed,
-  isProcessing = false,
+  onCancel,
+  isUploading = false,
+  bulkProgress = {
+    total: 0,
+    done: 0,
+    percent: 0,
+    failedCount: 0,
+    currentBatch: 0,
+    totalBatches: 0,
+    isCancelled: false,
+    lastError: null,
+  },
   data = [],
   existingData = [],
   headerMap = {},
   comparatorKey = "id",
+  comparatorFn = null,
   requiredFields = [],
   structureFields = [],
   fieldFlatteners = {},
 }) => {
-  // Build dataWithStatus (New / Modified / Unchanged) without rendering a table.
+  // Build status-map for rows
   const dataWithStatus = useMemo(() => {
     const rows = Array.isArray(data) ? data : [];
     const existing = Array.isArray(existingData) ? existingData : [];
@@ -42,47 +66,57 @@ const BulkDataImportProgress = ({
     return rows.map((originalRow) => {
       const flattened = { ...originalRow };
 
-      // optional flatten of array fields (to stable strings)
       Object.entries(fieldFlatteners).forEach(([field, fn]) => {
         if (field in originalRow && Array.isArray(originalRow[field])) {
           flattened[field] = fn(originalRow[field]);
         }
       });
 
-      const existingRow = existing.find(
-        (d) => d?.[comparatorKey] === originalRow?.[comparatorKey]
-      );
+      let existingRow = [];
 
-      let status = "";
-      if (!existingRow) {
-        status = "New";
+      if (comparatorFn) {
+        existingRow = existing.find(
+          (d) =>
+            // keep the original comparator for backwards compatibility
+            d?.[comparatorKey] === originalRow?.[comparatorKey] ||
+            // NEW: match on moleculeName/requestedMoleculeName vs name/synonyms
+            comparatorFn(originalRow, d)
+        );
       } else {
-        // compare flattened vs existing (also flatten existing if needed)
-        const keys = Object.keys(flattened);
-        const isEmpty = (v) => v === null || v === undefined || v === "";
-        let modified = false;
-
-        for (const key of keys) {
-          if (key === "_originalRow") continue;
-          const a = flattened[key];
-          let b = existingRow[key];
-          if (fieldFlatteners[key] && Array.isArray(b)) {
-            b = fieldFlatteners[key](b);
-          }
-          if (isEmpty(a) && isEmpty(b)) continue;
-          if (String(a) !== String(b)) {
-            modified = true;
-            break;
-          }
-        }
-        status = modified ? "Modified" : "Unchanged";
+        existingRow = existing.find(
+          (d) => d?.[comparatorKey] === originalRow?.[comparatorKey]
+        );
       }
 
-      return { ...flattened, _originalRow: originalRow, status };
+      if (!existingRow)
+        return { ...flattened, _originalRow: originalRow, status: "New" };
+
+      const keys = Object.keys(flattened);
+      const isEmpty = (v) => v === null || v === undefined || v === "";
+      let modified = false;
+
+      for (const key of keys) {
+        if (key === "_originalRow") continue;
+        const a = flattened[key];
+        let b = existingRow[key];
+        if (fieldFlatteners[key] && Array.isArray(b))
+          b = fieldFlatteners[key](b);
+        if (isEmpty(a) && isEmpty(b)) continue;
+        if (String(a) !== String(b)) {
+          modified = true;
+          break;
+        }
+      }
+
+      return {
+        ...flattened,
+        _originalRow: originalRow,
+        status: modified ? "Modified" : "Unchanged",
+      };
     });
   }, [data, existingData, comparatorKey, fieldFlatteners]);
 
-  // Compute dashboard stats
+  // Dashboard stats
   const stats = useMemo(() => {
     const rows = dataWithStatus;
     const total = rows.length;
@@ -146,22 +180,33 @@ const BulkDataImportProgress = ({
 
   const footer = (
     <div className="flex justify-content-end w-full gap-2">
-      <Button
-        icon="pi pi-times"
-        label="Cancel"
-        className="p-button-text"
-        disabled={isProcessing}
-        onClick={onHide}
-      />
-      <Button
-        icon="pi pi-upload"
-        label="Proceed to Bulk Upload"
-        loading={isProcessing}
-        onClick={() => onProceed(stats.rowsToSave)}
-        disabled={isProcessing || stats.total === 0}
-      />
+      {isUploading ? (
+        <Button
+          icon="pi pi-stop"
+          label="Stop after this batch"
+          className="p-button-danger p-button-outlined"
+          onClick={onCancel}
+        />
+      ) : (
+        <>
+          <Button
+            icon="pi pi-times"
+            label="Close"
+            className="p-button-text"
+            onClick={onHide}
+          />
+          <Button
+            icon="pi pi-upload"
+            label="Proceed to Bulk Upload"
+            onClick={() => onProceed(stats.rowsToSave)}
+            disabled={stats.total === 0}
+          />
+        </>
+      )}
     </div>
   );
+
+  const showProgress = isUploading || (bulkProgress?.percent ?? 0) > 0;
 
   return (
     <Dialog
@@ -181,6 +226,7 @@ const BulkDataImportProgress = ({
           />
         </div>
 
+        {/* Stats */}
         <div className="grid">
           <div className="col-12 md:col-3">
             <StatCard
@@ -231,6 +277,7 @@ const BulkDataImportProgress = ({
 
         <Divider />
 
+        {/* Column list */}
         <div className="flex flex-column gap-2">
           <div className="text-600 text-sm">Columns to Upload</div>
           <div className="flex flex-wrap gap-2">
@@ -244,6 +291,7 @@ const BulkDataImportProgress = ({
           </div>
         </div>
 
+        {/* Required-field health */}
         {requiredFields?.length ? (
           <>
             <Divider />
@@ -261,6 +309,36 @@ const BulkDataImportProgress = ({
             )}
           </>
         ) : null}
+
+        {/* Progress hook-up */}
+        {showProgress && (
+          <>
+            <Divider />
+            <div className="flex flex-column gap-2">
+              <div className="text-600 text-sm">Upload Progress</div>
+              <ProgressBar value={bulkProgress.percent || 0} />
+              <div className="text-sm">
+                {bulkProgress.done}/{bulkProgress.total} items • Batch{" "}
+                {Math.min(
+                  bulkProgress.currentBatch || 0,
+                  bulkProgress.totalBatches || 0
+                )}{" "}
+                of {bulkProgress.totalBatches || 0}
+                {bulkProgress.failedCount
+                  ? ` • Failed: ${bulkProgress.failedCount}`
+                  : ""}
+                {bulkProgress.isCancelled
+                  ? " • Stopping after this batch…"
+                  : ""}
+              </div>
+              {bulkProgress.lastError ? (
+                <div className="text-xs text-red-600">
+                  Last error: {String(bulkProgress.lastError)}
+                </div>
+              ) : null}
+            </div>
+          </>
+        )}
       </div>
     </Dialog>
   );

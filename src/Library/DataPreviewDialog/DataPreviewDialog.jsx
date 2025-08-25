@@ -4,7 +4,7 @@ import { Button } from "primereact/button";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { Dialog } from "primereact/dialog";
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import SecHeading from "../SecHeading/SecHeading";
 
 const DataPreviewDialog = ({
@@ -16,6 +16,7 @@ const DataPreviewDialog = ({
   onSave,
   isSaving = false,
   comparatorKey = "id",
+  comparatorFn = null,
   fieldFlatteners = {}, // <-- NEW: pass in dynamic flattening behavior
   customBodyTemplates = {}, // <-- NEW
 }) => {
@@ -78,9 +79,25 @@ const DataPreviewDialog = ({
       // Keep original version
       flattened._originalRow = originalRow;
 
-      const existingRow = existingData.find(
-        (d) => d[comparatorKey] === originalRow[comparatorKey]
-      );
+      // const existingRow = existingData.find(
+      //   (d) => d[comparatorKey] === originalRow[comparatorKey]
+      // );
+      let existingRow = [];
+
+      // check if comparatorFn is not null
+      if (comparatorFn) {
+        existingRow = existingData.find(
+          (d) =>
+            // keep old comparator for backward-compat
+            d[comparatorKey] === originalRow[comparatorKey] ||
+            // new: compare by molecule name vs synonyms/name
+            comparatorFn(originalRow, d)
+        );
+      } else {
+        existingRow = existingData.find(
+          (d) => d[comparatorKey] === originalRow[comparatorKey]
+        );
+      }
 
       let status = "";
       let className = "";

@@ -7,6 +7,7 @@ import SmilesView from "../../../../../../../Library/SmilesView/SmilesView";
 import { RootStoreContext } from "../../../../../../../RootStore";
 import ImportFromExcel from "../../../../../../../Shared/Excel/ImportFromExcel";
 import { GroupMolecules } from "../../../../shared/DataImportHelper";
+import { isSameMoleculeName } from "../../../../shared/SharedHelper";
 import { DoseResponseBodyTemplate } from "./FSTbVHDataTableHelper";
 import {
   DoseResponsesFlattener,
@@ -117,12 +118,15 @@ const FSTbVHExcelImport = ({
             // This is to clear the file list in the FileUpload component
             e.options.clear();
             // console.log("jsonData", jsonData);
+            console.log("Existing Data", existingData);
             jsonData.forEach((row) => {
               // row.hitCollectionId = selectedHitCollection.id;
               // output is in field 'smiles' in excel (template), but to create a hit, we need 'requestedSMILES'
               // row.requestedSMILES = row.smiles;
               row = {
-                ...existingData.find((hit) => hit.id === row.id),
+                ...existingData.find(
+                  (hit) => hit.moleculeName === row.moleculeName
+                ),
                 ...row,
               };
               // console.log("row", row);
@@ -142,6 +146,7 @@ const FSTbVHExcelImport = ({
           headerMap={DtFieldsGroupedColumnMapping}
           existingData={existingData}
           comparatorKey="id"
+          comparatorFn={isSameMoleculeName}
           data={dataForPreview}
           visible={showDataPreviewDialog}
           onHide={() => {

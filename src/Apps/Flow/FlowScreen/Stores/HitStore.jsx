@@ -359,7 +359,7 @@ export default class HitStore {
     }
 
     const selectedHCId =
-      this.rootStore.hitCollectionStore.selectedHitCollection?.id;
+      this.rootStore.hitCollectionStore.selectedHitCollection.id;
     if (!selectedHCId) {
       toast.error("No Hit Collection selected.");
       return;

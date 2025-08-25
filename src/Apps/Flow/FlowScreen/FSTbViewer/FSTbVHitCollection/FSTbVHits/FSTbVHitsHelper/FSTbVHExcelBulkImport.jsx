@@ -1,3 +1,4 @@
+import { observer } from "mobx-react-lite";
 import { Dialog } from "primereact/dialog";
 import { FileUpload } from "primereact/fileupload";
 import { useContext, useState } from "react";
@@ -7,6 +8,7 @@ import SmilesView from "../../../../../../../Library/SmilesView/SmilesView";
 import { RootStoreContext } from "../../../../../../../RootStore";
 import ImportFromExcel from "../../../../../../../Shared/Excel/ImportFromExcel";
 import { GroupMolecules } from "../../../../shared/DataImportHelper";
+import { isSameMoleculeName } from "../../../../shared/SharedHelper";
 import { DoseResponseBodyTemplate } from "./FSTbVHDataTableHelper";
 import {
   DoseResponsesFlattener,
@@ -19,12 +21,17 @@ const FSTbVHExcelBulkImport = ({
   visible,
   onHide,
 }) => {
+  const [dataForPreview, setDataForPreview] = useState([]);
+  const [showDataPreviewDialog, setShowDataPreviewDialog] = useState(false);
+
   if (visible) {
     const rootStore = useContext(RootStoreContext);
-    const { batchInsertHits, isBatchInsertingHits } = rootStore.hitStore;
-
-    const [dataForPreview, setDataForPreview] = useState([]);
-    const [showDataPreviewDialog, setShowDataPreviewDialog] = useState(false);
+    const {
+      bulkInsertHits,
+      isBulkUploadingHits,
+      bulkProgress,
+      cancelBulkUpload,
+    } = rootStore.hitStore;
 
     // Map and flatten the hit objects for Excel Import
     const existingData = selectedHitCollection.hits.map((hit) => ({
@@ -142,6 +149,7 @@ const FSTbVHExcelBulkImport = ({
           headerMap={DtFieldsGroupedColumnMapping}
           existingData={existingData}
           comparatorKey="id"
+          comparatorFn={isSameMoleculeName}
           structureFields={["smiles"]}
           requiredFields={["moleculeName"]}
           data={dataForPreview}
@@ -150,13 +158,15 @@ const FSTbVHExcelBulkImport = ({
             setShowDataPreviewDialog(false);
             setDataForPreview(null);
           }}
-          onSave={(data) => {
-            console.log("data", data);
-            batchInsertHits(data);
-            onHide();
+          onProceed={(rowsToSave) => {
+            // keep the dialog open to show live progress
+            //console.log(rowsToSave);
+            bulkInsertHits(rowsToSave, { batchSize: 100 });
           }}
+          onCancel={() => cancelBulkUpload()}
           //onSave={(data) => console.log("data", data)}
-          isSaving={isBatchInsertingHits}
+          isUploading={isBulkUploadingHits}
+          bulkProgress={bulkProgress}
           fieldFlatteners={{
             doseResponses: DoseResponsesFlattener,
           }}
@@ -172,4 +182,4 @@ const FSTbVHExcelBulkImport = ({
   }
 };
 
-export default FSTbVHExcelBulkImport;
+export default observer(FSTbVHExcelBulkImport);
