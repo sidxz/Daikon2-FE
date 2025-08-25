@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import TableCustomization from "../../../../../../../Library/TableCustomization/TableCustomization";
 import { MolecuLogixIcon } from "../../../../../../MolecuLogix/Icons/MolecuLogixIcon";
+import FSTbVHExcelBulkImport from "./FSTbVHExcelBulkImport";
 import { ExportHitsToExcel } from "./FSTbVHExcelExport";
 import FSTbVHExcelImport from "./FSTbVHExcelImport";
 import { ExportTemplateExcel } from "./FSTbVHExportTemplate";
@@ -45,6 +46,7 @@ export const FSTbVHDataTableHeader = ({
   const [showTableCustomization, setShowTableCustomization] = useState(false);
   const [clusterCutOff, setClusterCutOff] = useState(0.85);
   const [showClusterDialog, setShowClusterDialog] = useState(false);
+  const [showBulkUploadDialog, setShowBulkUploadDialog] = useState(false);
   if (selectedHitCollection === undefined) {
     console.log("selectedHitCollection is undefined");
   }
@@ -145,6 +147,11 @@ export const FSTbVHDataTableHeader = ({
           label: "Import Excel",
           icon: "pi pi-file-import",
           command: () => setShowImportDialog(true),
+        },
+        {
+          label: "Bulk Upload",
+          icon: "pi pi-upload",
+          command: () => setShowBulkUploadDialog(true),
         },
         {
           label: "Export To Excel",
@@ -288,6 +295,12 @@ export const FSTbVHDataTableHeader = ({
           visible={showImportDialog}
           onHide={() => setShowImportDialog(false)}
         />
+        <FSTbVHExcelBulkImport
+          selectedHitCollection={selectedHitCollection}
+          visible={showBulkUploadDialog}
+          onHide={() => setShowBulkUploadDialog(false)}
+        />
+
         <TableCustomization
           visible={showTableCustomization}
           onHide={() => setShowTableCustomization(false)}
