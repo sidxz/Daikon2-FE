@@ -12,23 +12,15 @@ import SecHeading from "../SecHeading/SecHeading";
  * Props:
  * - visible: boolean
  * - onHide: () => void
- * - onProceed: (rowsToSave) => void               // call hitStore.bulkInsertHits(...)
- * - onCancel: () => void                          // call hitStore.cancelBulkUpload()
- * - isUploading?: boolean                         // hitStore.isBulkUploadingHits
- * - bulkProgress?: {                              // hitStore.bulkProgress
- *      total: number,
- *      done: number,
- *      percent: number,
- *      failedCount: number,
- *      currentBatch: number,
- *      totalBatches: number,
- *      isCancelled?: boolean,
- *      lastError?: string | null
- *   }
+ * - onProceed: (rowsToSave) => void
+ * - onCancel: () => void
+ * - isUploading?: boolean
+ * - bulkProgress?: { total, done, percent, failedCount, currentBatch, totalBatches, isCancelled?, lastError? }
  * - data: any[]
  * - existingData: any[]
  * - headerMap: Record<string,string>
  * - comparatorKey?: string
+ * - comparatorFn?: (incomingRow, existingRow) => boolean
  * - requiredFields?: string[]
  * - structureFields?: string[]
  * - fieldFlatteners?: Record<string,(arr:any[])=>string>
@@ -58,6 +50,8 @@ const BulkDataImportProgress = ({
   structureFields = [],
   fieldFlatteners = {},
 }) => {
+  const isEmpty = (v) => v === null || v === undefined || v === "";
+
   // Build status-map for rows
   const dataWithStatus = useMemo(() => {
     const rows = Array.isArray(data) ? data : [];
@@ -66,20 +60,19 @@ const BulkDataImportProgress = ({
     return rows.map((originalRow) => {
       const flattened = { ...originalRow };
 
+      // Apply flatteners to incoming arrays (so we compare like-for-like)
       Object.entries(fieldFlatteners).forEach(([field, fn]) => {
         if (field in originalRow && Array.isArray(originalRow[field])) {
           flattened[field] = fn(originalRow[field]);
         }
       });
 
-      let existingRow = [];
-
+      // Find existing row: prefer key match, or custom comparatorFn fallback
+      let existingRow = null;
       if (comparatorFn) {
         existingRow = existing.find(
           (d) =>
-            // keep the original comparator for backwards compatibility
             d?.[comparatorKey] === originalRow?.[comparatorKey] ||
-            // NEW: match on moleculeName/requestedMoleculeName vs name/synonyms
             comparatorFn(originalRow, d)
         );
       } else {
@@ -88,19 +81,33 @@ const BulkDataImportProgress = ({
         );
       }
 
+      // If matched but uploaded row is missing comparatorKey, copy it
+      // (Only copy when the source truly had it blank)
+      if (existingRow && isEmpty(flattened[comparatorKey])) {
+        flattened[comparatorKey] = existingRow[comparatorKey];
+      }
+
       if (!existingRow)
         return { ...flattened, _originalRow: originalRow, status: "New" };
 
       const keys = Object.keys(flattened);
-      const isEmpty = (v) => v === null || v === undefined || v === "";
       let modified = false;
 
       for (const key of keys) {
         if (key === "_originalRow") continue;
+
+        // Skip comparing the comparator field if it was missing in the upload
+        if (key === comparatorKey && isEmpty(originalRow[comparatorKey])) {
+          continue;
+        }
+
         const a = flattened[key];
         let b = existingRow[key];
-        if (fieldFlatteners[key] && Array.isArray(b))
+
+        if (fieldFlatteners[key] && Array.isArray(b)) {
           b = fieldFlatteners[key](b);
+        }
+
         if (isEmpty(a) && isEmpty(b)) continue;
         if (String(a) !== String(b)) {
           modified = true;
@@ -114,7 +121,7 @@ const BulkDataImportProgress = ({
         status: modified ? "Modified" : "Unchanged",
       };
     });
-  }, [data, existingData, comparatorKey, fieldFlatteners]);
+  }, [data, existingData, comparatorKey, comparatorFn, fieldFlatteners]);
 
   // Dashboard stats
   const stats = useMemo(() => {
@@ -128,8 +135,6 @@ const BulkDataImportProgress = ({
       },
       { New: 0, Modified: 0, Unchanged: 0 }
     );
-
-    const isEmpty = (v) => v === null || v === undefined || v === "";
 
     const invalidRows = rows.filter((r) =>
       requiredFields.some((f) => isEmpty(r[f]))
@@ -152,6 +157,11 @@ const BulkDataImportProgress = ({
       .filter((r) => r.status !== "Unchanged")
       .map((r) => {
         const base = r._originalRow ? { ...r._originalRow } : { ...r };
+        // Note: if id was blank originally but matched, we copied it above only in the flattened.
+        // If you want that id persisted into the outgoing row for saving, also copy it here:
+        if (isEmpty(base[comparatorKey]) && !isEmpty(r[comparatorKey])) {
+          base[comparatorKey] = r[comparatorKey];
+        }
         base.status = r.status;
         return base;
       });
@@ -166,7 +176,13 @@ const BulkDataImportProgress = ({
       availableCols,
       rowsToSave,
     };
-  }, [dataWithStatus, headerMap, requiredFields, structureFields]);
+  }, [
+    dataWithStatus,
+    headerMap,
+    requiredFields,
+    structureFields,
+    comparatorKey,
+  ]);
 
   const StatCard = ({ title, value, icon }) => (
     <div className="p-3 border-1 border-200 border-round surface-card w-full">

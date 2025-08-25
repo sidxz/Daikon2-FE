@@ -16,9 +16,9 @@ const DataPreviewDialog = ({
   onSave,
   isSaving = false,
   comparatorKey = "id",
-  comparatorFn = null,
-  fieldFlatteners = {}, // <-- NEW: pass in dynamic flattening behavior
-  customBodyTemplates = {}, // <-- NEW
+  comparatorFn = null, // optional: (row, existingRow) => boolean
+  fieldFlatteners = {}, // optional: { fieldName: (arr) => string }
+  customBodyTemplates = {}, // optional: { fieldName: (row) => ReactNode }
 }) => {
   const dialogFooter = (
     <div className="flex justify-content-end w-full">
@@ -43,9 +43,8 @@ const DataPreviewDialog = ({
             const rowsToSave = dataWithStatus
               .filter((d) => d.status !== "Unchanged")
               .map((d) => {
-                // Merge the original row and attach the status field
                 const row = d._originalRow ? { ...d._originalRow } : { ...d };
-                row.status = d.status; // Add the computed status
+                row.status = d.status;
                 return row;
               });
 
@@ -58,47 +57,46 @@ const DataPreviewDialog = ({
   );
 
   const dataWithStatus = useMemo(() => {
-    if (!existingData || !Array.isArray(existingData)) {
-      existingData = [];
-    }
+    const safeExisting = Array.isArray(existingData) ? existingData : [];
+    const safeData = Array.isArray(data) ? data : [];
 
-    if (!data || !Array.isArray(data)) {
-      data = [];
-    }
+    const isEmpty = (v) => v === null || v === undefined || v === "";
 
-    return data.map((originalRow) => {
+    return safeData.map((originalRow) => {
       const flattened = { ...originalRow };
 
-      // Dynamically flatten any fields using provided flatteners
+      // Apply flatteners to incoming arrays (so we compare like-for-like)
       Object.entries(fieldFlatteners).forEach(([field, flattenFn]) => {
         if (field in originalRow && Array.isArray(originalRow[field])) {
           flattened[field] = flattenFn(originalRow[field]);
         }
       });
 
-      // Keep original version
+      // Keep original version for later save
       flattened._originalRow = originalRow;
 
-      // const existingRow = existingData.find(
-      //   (d) => d[comparatorKey] === originalRow[comparatorKey]
-      // );
-      let existingRow = [];
-
-      // check if comparatorFn is not null
+      // Find existing row: prefer key match, or custom comparatorFn fallback
+      let existingRow = null;
       if (comparatorFn) {
-        existingRow = existingData.find(
+        existingRow = safeExisting.find(
           (d) =>
-            // keep old comparator for backward-compat
-            d[comparatorKey] === originalRow[comparatorKey] ||
-            // new: compare by molecule name vs synonyms/name
+            d?.[comparatorKey] === originalRow?.[comparatorKey] ||
             comparatorFn(originalRow, d)
         );
       } else {
-        existingRow = existingData.find(
-          (d) => d[comparatorKey] === originalRow[comparatorKey]
+        existingRow = safeExisting.find(
+          (d) => d?.[comparatorKey] === originalRow?.[comparatorKey]
         );
       }
 
+      // If matched but uploaded row is missing comparatorKey, copy it
+      // (Only copy if the source truly had it blank)
+      if (existingRow && isEmpty(flattened[comparatorKey])) {
+        //console.log("Copying comparatorKey from existing row:", existingRow);
+        flattened[comparatorKey] = existingRow[comparatorKey];
+      }
+
+      // Status computation
       let status = "";
       let className = "";
 
@@ -106,80 +104,72 @@ const DataPreviewDialog = ({
         status = "New";
         className = "new-row";
       } else {
-        for (let key of Object.keys(flattened).filter(
-          (k) => k !== "_originalRow"
-        )) {
-          const originalValue = flattened[key];
-          let existingValue = existingRow[key];
+        // Compare fields; skip comparatorKey if the *incoming* was originally empty
+        for (const key of Object.keys(flattened)) {
+          if (key === "_originalRow") continue;
 
-          // Apply the same flattening to existing value if needed
-          if (fieldFlatteners[key] && Array.isArray(existingValue)) {
-            existingValue = fieldFlatteners[key](existingValue);
-          }
-
-          if (
-            (originalValue === null ||
-              originalValue === undefined ||
-              originalValue === "") &&
-            (existingValue === null ||
-              existingValue === undefined ||
-              existingValue === "")
-          ) {
+          // Skip comparator field if it was missing on the uploaded row
+          if (key === comparatorKey && isEmpty(originalRow[comparatorKey])) {
             continue;
           }
 
-          if (String(originalValue) !== String(existingValue)) {
-            console.log(
-              `Field ${key} changed from ${String(existingValue)} to ${String(
-                originalValue
-              )}`
-            );
+          const a = flattened[key];
+          let b = existingRow[key];
+
+          // Apply the same flatteners to existing arrays if needed
+          if (fieldFlatteners[key] && Array.isArray(b)) {
+            b = fieldFlatteners[key](b);
+          }
+
+          if (isEmpty(a) && isEmpty(b)) continue;
+
+          if (String(a) !== String(b)) {
+            console.debug(`Field "${key}" changed:`, { a, b });
             status = "Modified";
             break;
           }
         }
+
+        if (!status) status = "Unchanged";
       }
 
       return { ...flattened, status, className };
     });
-  }, [data, existingData, fieldFlatteners]);
+  }, [data, existingData, comparatorKey, comparatorFn, fieldFlatteners]);
 
   const rowClassName = (rowData) => {
     return rowData.className ? { [rowData.className]: true } : {};
   };
 
   const cellClassName = (rowData, field) => {
-    const existingRow = existingData.find(
-      (d) => d[comparatorKey] === rowData[comparatorKey]
-    );
+    const isEmpty = (v) => v === null || v === undefined || v === "";
 
-    if (
-      existingRow &&
-      String(rowData[field]) !== String(existingRow[field]) &&
-      rowData.status === "Modified"
-    ) {
+    // Find the same existing row for cell-level comparison/highlight
+    const existingRow = Array.isArray(existingData)
+      ? existingData.find(
+          (d) =>
+            d?.[comparatorKey] === rowData?.[comparatorKey] ||
+            (comparatorFn ? comparatorFn(rowData, d) : false)
+        )
+      : null;
+
+    if (!existingRow) return "";
+
+    // Skip highlighting changes on comparator field when it was missing in upload
+    if (field === comparatorKey && isEmpty(rowData[comparatorKey])) return "";
+
+    const a = rowData[field];
+    const b = existingRow[field];
+
+    if (rowData.status === "Modified" && String(a) !== String(b)) {
       return "flex w-full p-1 m-0 changed-cell border-1 border-yellow-700";
     }
 
     return "";
   };
 
-  // const bodyTemplate = (field) => {
-  //   return (rowData) => {
-  //     return (
-  //       <div
-  //         style={{ height: "100%", width: "100%" }}
-  //         className={cellClassName(rowData, field)}
-  //       >
-  //         {rowData[field]}
-  //       </div>
-  //     );
-  //   };
-  // };
-
   const bodyTemplate = (field) => {
     return (rowData) => {
-      // Use custom body template if available
       if (customBodyTemplates[field]) {
         return (
           <div
@@ -191,7 +181,6 @@ const DataPreviewDialog = ({
         );
       }
 
-      // Otherwise, use default rendering
       return (
         <div
           style={{ height: "100%", width: "100%" }}
