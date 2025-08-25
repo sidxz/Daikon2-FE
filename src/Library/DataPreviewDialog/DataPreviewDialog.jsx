@@ -7,6 +7,16 @@ import { Dialog } from "primereact/dialog";
 import { useMemo } from "react";
 import SecHeading from "../SecHeading/SecHeading";
 
+const StatCard = ({ title, value, icon }) => (
+  <div className="p-3 border-1 border-200 border-round surface-card w-full">
+    <div className="flex align-items-center justify-content-between mb-2">
+      <span className="text-600 text-sm">{title}</span>
+      {icon ? <i className={`pi ${icon}`} /> : null}
+    </div>
+    <div className="text-2xl font-semibold">{value}</div>
+  </div>
+);
+
 const DataPreviewDialog = ({
   headerMap,
   data,
@@ -65,17 +75,14 @@ const DataPreviewDialog = ({
     return safeData.map((originalRow) => {
       const flattened = { ...originalRow };
 
-      // Apply flatteners to incoming arrays (so we compare like-for-like)
       Object.entries(fieldFlatteners).forEach(([field, flattenFn]) => {
         if (field in originalRow && Array.isArray(originalRow[field])) {
           flattened[field] = flattenFn(originalRow[field]);
         }
       });
 
-      // Keep original version for later save
       flattened._originalRow = originalRow;
 
-      // Find existing row: prefer key match, or custom comparatorFn fallback
       let existingRow = null;
       if (comparatorFn) {
         existingRow = safeExisting.find(
@@ -89,14 +96,10 @@ const DataPreviewDialog = ({
         );
       }
 
-      // If matched but uploaded row is missing comparatorKey, copy it
-      // (Only copy if the source truly had it blank)
       if (existingRow && isEmpty(flattened[comparatorKey])) {
-        //console.log("Copying comparatorKey from existing row:", existingRow);
         flattened[comparatorKey] = existingRow[comparatorKey];
       }
 
-      // Status computation
       let status = "";
       let className = "";
 
@@ -104,11 +107,8 @@ const DataPreviewDialog = ({
         status = "New";
         className = "new-row";
       } else {
-        // Compare fields; skip comparatorKey if the *incoming* was originally empty
         for (const key of Object.keys(flattened)) {
           if (key === "_originalRow") continue;
-
-          // Skip comparator field if it was missing on the uploaded row
           if (key === comparatorKey && isEmpty(originalRow[comparatorKey])) {
             continue;
           }
@@ -116,15 +116,18 @@ const DataPreviewDialog = ({
           const a = flattened[key];
           let b = existingRow[key];
 
-          // Apply the same flatteners to existing arrays if needed
           if (fieldFlatteners[key] && Array.isArray(b)) {
             b = fieldFlatteners[key](b);
           }
 
-          if (isEmpty(a) && isEmpty(b)) continue;
+          if (
+            (a === null || a === undefined || a === "") &&
+            (b === null || b === undefined || b === "")
+          ) {
+            continue;
+          }
 
           if (String(a) !== String(b)) {
-            console.debug(`Field "${key}" changed:`, { a, b });
             status = "Modified";
             break;
           }
@@ -137,6 +140,25 @@ const DataPreviewDialog = ({
     });
   }, [data, existingData, comparatorKey, comparatorFn, fieldFlatteners]);
 
+  // ✅ simple stats for the top bar
+  const stats = useMemo(() => {
+    const rows = Array.isArray(dataWithStatus) ? dataWithStatus : [];
+    const total = rows.length;
+    const counts = rows.reduce(
+      (acc, r) => {
+        acc[r.status] = (acc[r.status] || 0) + 1;
+        return acc;
+      },
+      { New: 0, Modified: 0, Unchanged: 0 }
+    );
+    return {
+      total,
+      newCount: counts.New || 0,
+      modifiedCount: counts.Modified || 0,
+      unchangedCount: counts.Unchanged || 0,
+    };
+  }, [dataWithStatus]);
+
   const rowClassName = (rowData) => {
     return rowData.className ? { [rowData.className]: true } : {};
   };
@@ -144,7 +166,6 @@ const DataPreviewDialog = ({
   const cellClassName = (rowData, field) => {
     const isEmpty = (v) => v === null || v === undefined || v === "";
 
-    // Find the same existing row for cell-level comparison/highlight
     const existingRow = Array.isArray(existingData)
       ? existingData.find(
           (d) =>
@@ -154,8 +175,6 @@ const DataPreviewDialog = ({
       : null;
 
     if (!existingRow) return "";
-
-    // Skip highlighting changes on comparator field when it was missing in upload
     if (field === comparatorKey && isEmpty(rowData[comparatorKey])) return "";
 
     const a = rowData[field];
@@ -199,9 +218,7 @@ const DataPreviewDialog = ({
       const hasValidValue = dataWithStatus.some(
         (row) => row[key] !== null && row[key] !== undefined && row[key] !== ""
       );
-      if (hasValidValue) {
-        acc[key] = label;
-      }
+      if (hasValidValue) acc[key] = label;
       return acc;
     }, {});
   }, [headerMap, dataWithStatus]);
@@ -215,7 +232,31 @@ const DataPreviewDialog = ({
       maximizable
       className="w-11"
     >
-      <div className="flex flex-column">
+      <div className="flex flex-column gap-3">
+        {/* Top stats bar */}
+        <div className="grid">
+          <div className="col-12 md:col-3">
+            <StatCard title="Total" value={stats.total} icon="pi pi-database" />
+          </div>
+          <div className="col-6 md:col-3">
+            <StatCard title="New" value={stats.newCount} icon="pi pi-plus" />
+          </div>
+          <div className="col-6 md:col-3">
+            <StatCard
+              title="Modified"
+              value={stats.modifiedCount}
+              icon="pi pi-pencil"
+            />
+          </div>
+          <div className="col-6 md:col-3">
+            <StatCard
+              title="Unchanged"
+              value={stats.unchangedCount}
+              icon="pi pi-equals"
+            />
+          </div>
+        </div>
+
         <div className="flex">
           <SecHeading
             icon="icon icon-common icon-exchange-alt"
@@ -223,6 +264,7 @@ const DataPreviewDialog = ({
             color="#8D99AE"
           />
         </div>
+
         <div className="flex">
           <DataTable
             value={dataWithStatus}

@@ -237,7 +237,7 @@ const BulkDataImportProgress = ({
         <div className="flex">
           <SecHeading
             icon="icon icon-common icon-chart-bar"
-            heading="Pre-Upload Dashboard"
+            heading="Batch Upload Dashboard"
             color="#8D99AE"
           />
         </div>
