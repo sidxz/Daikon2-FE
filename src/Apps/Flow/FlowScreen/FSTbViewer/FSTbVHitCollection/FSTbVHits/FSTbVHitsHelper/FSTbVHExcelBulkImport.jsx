@@ -27,7 +27,6 @@ const FSTbVHExcelBulkImport = ({
 }) => {
   const rootStore = useContext(RootStoreContext);
   const { user } = rootStore.authStore;
-  console.log("user", user);
 
   const [dataForPreview, setDataForPreview] = useState([]);
   const [showDataPreviewDialog, setShowDataPreviewDialog] = useState(false);
