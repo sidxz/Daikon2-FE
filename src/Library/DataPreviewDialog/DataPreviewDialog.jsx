@@ -274,6 +274,10 @@ const DataPreviewDialog = ({
             loading={isSaving}
           >
             <Column
+              header="#"
+              body={(data, options) => options.rowIndex + 1}
+            ></Column>
+            <Column
               field="status"
               header="Status"
               body={bodyTemplate("status")}
