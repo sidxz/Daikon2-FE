@@ -95,7 +95,7 @@ const MDInput = ({ inputs, setInputs, moveToPreview }) => {
             mode="basic"
             name="excelFile"
             accept=".xls,.xlsx,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-            maxFileSize={1000000}
+            maxFileSize={10000000}
             //url="/api/upload"
             customUpload={true}
             uploadHandler={onUpload}

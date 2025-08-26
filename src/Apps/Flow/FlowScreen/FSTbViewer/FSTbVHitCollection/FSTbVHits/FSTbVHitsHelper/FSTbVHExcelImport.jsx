@@ -92,7 +92,7 @@ const FSTbVHExcelImport = ({
         <FileUpload
           name="excelFile"
           accept=".xls,.xlsx,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-          maxFileSize={1000000}
+          maxFileSize={10000000}
           mode="advanced"
           chooseLabel="Browse and Select File"
           chooseOptions={{
