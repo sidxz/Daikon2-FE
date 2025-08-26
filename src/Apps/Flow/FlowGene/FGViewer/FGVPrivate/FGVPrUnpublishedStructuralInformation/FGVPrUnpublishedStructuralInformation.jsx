@@ -5,7 +5,7 @@ import { Column } from "primereact/column";
 import { confirmDialog } from "primereact/confirmdialog";
 import { DataTable } from "primereact/datatable";
 import { Sidebar } from "primereact/sidebar";
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import EmbeddedHelp from "../../../../../../Library/EmbeddedHelp/EmbeddedHelp";
 import { RootStoreContext } from "../../../../../../RootStore";
 import TableRowBodyDVar from "../../../../../../Shared/DVariable/TableRowBodyDVar";
@@ -104,6 +104,10 @@ const FGVPrUnpublishedStructuralInformation = ({ selectedGene }) => {
             updateUnpublishedStructuralInformation(e.newData)
           }
         >
+          <Column
+            header="#"
+            body={(data, options) => options.rowIndex + 1}
+          ></Column>
           <Column
             field="organization"
             header="Organization"
