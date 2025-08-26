@@ -69,6 +69,8 @@ const FSPhVHits = ({ id }) => {
   const tableRef = useRef(null);
   const [scrollHeight, setScrollHeight] = useState("70vh");
 
+  const [filterUndisclosed, setFilterUndisclosed] = useState(true);
+
   const updateScrollHeight = () => {
     if (tableRef.current) {
       const rect = tableRef.current.getBoundingClientRect();
@@ -505,6 +507,8 @@ const FSPhVHits = ({ id }) => {
                   clusterHits={clusterHits}
                   filterNotVoted={filterNotVoted}
                   setFilterNotVoted={setFilterNotVoted}
+                  filterUndisclosed={filterUndisclosed}
+                  setFilterUndisclosed={setFilterUndisclosed}
                 />
               }
               //globalFilter={globalFilter}

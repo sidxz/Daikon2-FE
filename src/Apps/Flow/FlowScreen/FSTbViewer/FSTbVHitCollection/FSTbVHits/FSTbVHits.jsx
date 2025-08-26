@@ -71,6 +71,7 @@ const FSTbVHits = ({ id }) => {
   /* Set the scroll height of the table dynamically */
   const tableRef = useRef(null);
   const [scrollHeight, setScrollHeight] = useState("70vh");
+  const [filterUndisclosed, setFilterUndisclosed] = useState(true);
 
   const updateScrollHeight = () => {
     if (tableRef.current) {
@@ -466,11 +467,14 @@ const FSTbVHits = ({ id }) => {
               onRowEditComplete={(e) => updateHit(e.newData)}
               dataKey="id"
               value={
-                filterNotVoted
-                  ? selectedHitCollection?.hits.filter(
-                      (hit) => Object.keys(hit.voters).length == 0
-                    )
-                  : selectedHitCollection?.hits
+                (selectedHitCollection?.hits || [])
+                  .filter(
+                    (hit) =>
+                      !filterNotVoted || Object.keys(hit.voters).length === 0
+                  )
+                  .filter(
+                    (hit) => filterUndisclosed || hit.isStructureDisclosed
+                  ) // assumes structure field
               }
               paginator
               scrollable
@@ -505,6 +509,8 @@ const FSTbVHits = ({ id }) => {
                   clusterHits={clusterHits}
                   filterNotVoted={filterNotVoted}
                   setFilterNotVoted={setFilterNotVoted}
+                  filterUndisclosed={filterUndisclosed}
+                  setFilterUndisclosed={setFilterUndisclosed}
                 />
               }
               //globalFilter={globalFilter}

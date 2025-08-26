@@ -41,6 +41,8 @@ export const FSTbVHDataTableHeader = ({
   clusterHits,
   filterNotVoted,
   setFilterNotVoted,
+  filterUndisclosed,
+  setFilterUndisclosed,
 }) => {
   const [showImportDialog, setShowImportDialog] = useState(false);
   const [showTableCustomization, setShowTableCustomization] = useState(false);
@@ -176,6 +178,27 @@ export const FSTbVHDataTableHeader = ({
       ],
     },
     {
+      label: "View",
+      icon: "pi pi-eye",
+      items: [
+        // filterUndisclosed toggle button
+        {
+          label: filterUndisclosed
+            ? "Filter Undisclosed"
+            : "Show All Molecules",
+          icon: filterUndisclosed
+            ? "pi pi-filter-slash "
+            : "pi pi-check-square",
+          command: () => setFilterUndisclosed(!filterUndisclosed),
+        },
+        {
+          label: filterNotVoted ? "Show All" : "Filter Not Voted",
+          icon: filterNotVoted ? "pi pi-check-square" : "pi pi-filter-slash",
+          command: () => setFilterNotVoted(!filterNotVoted),
+        },
+      ],
+    },
+    {
       label: "Edit",
       icon: "pi pi-file-edit",
       command: () => toggleEditMode(),
@@ -211,11 +234,6 @@ export const FSTbVHDataTableHeader = ({
               offIcon="pi pi-times"
             />
           ),
-        },
-        {
-          label: filterNotVoted ? "Show All" : "Filter Not Voted",
-          icon: filterNotVoted ? "pi pi-check-square" : "pi pi-filter-slash",
-          command: () => setFilterNotVoted(!filterNotVoted),
         },
       ],
     },
@@ -270,7 +288,7 @@ export const FSTbVHDataTableHeader = ({
     </div>
   );
 
-  const end = filterNotVoted && (
+  const end = (filterNotVoted || filterUndisclosed) && (
     <div className="flex fadein animation-duration-1000 shadow-0 p-2 align-items-center">
       <div className="flex p-1">
         <FcEmptyFilter />
