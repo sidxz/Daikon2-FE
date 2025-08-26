@@ -396,7 +396,7 @@ const FSPhVHits = ({ id }) => {
       key: "notes",
       header: "Notes",
       editor: TextRowEditor,
-      sortable: false,
+      sortable: true,
     },
     {
       key: "doseResponses",
@@ -520,6 +520,10 @@ const FSPhVHits = ({ id }) => {
               selection={selectedHits}
               onSelectionChange={(e) => setSelectedHits(e.value)}
             >
+              <Column
+                header="#"
+                body={(data, options) => options.rowIndex + 1}
+              ></Column>
               {selectionEnabled && (
                 <Column
                   selectionMode="multiple"
