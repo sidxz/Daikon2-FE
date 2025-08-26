@@ -1,6 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { Menu } from "primereact/menu";
-import React, { useContext, useEffect } from "react";
+import { Message } from "primereact/message";
+import { useContext, useEffect } from "react";
 import {
   Navigate,
   Route,
@@ -54,7 +55,7 @@ const FTViewer = () => {
   }
 
   if (selectedTarget) {
-    // console.log("FTViewer -> selectedTarget", selectedTarget);
+    console.log("FTViewer -> selectedTarget", selectedTarget);
 
     let panelInfoToRender = () => {
       let url = window.location.href;
@@ -91,35 +92,46 @@ const FTViewer = () => {
           </div>
           <div className="flex">{panelInfoToRender()}</div>
         </div>
-        <div className="flex w-full">
-          <Routes>
-            <Route index element={<Navigate replace to="compass/" />} />
-            <Route path="scorecard/" element={<FTVScorecard />} />
-            <Route path="compass/" element={<FTVCompass />} />
-            <Route
-              path="safety-assessment/"
-              element={<FTVSafetyAssessment />}
-            />
-            <Route
-              path="promotion-questionnaire/"
-              element={<FTVPromotionQ />}
-            />
-            {isUserInAnyOfRoles([TargetAdminRoleName]) && (
-              <Route path="impact/" element={<FTImpactValues />} />
-            )}
-            {isUserInAnyOfRoles([TargetAdminRoleName]) && (
-              <Route path="settings/" element={<FTVSettings />} />
-            )}
-            <Route
-              path="docs/*"
-              element={<FTVDocs selectedTarget={selectedTarget} />}
-            />
-            <Route
-              path="discussion/"
-              element={<FTVComments selectedTarget={selectedTarget} />}
-            />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+        <div className="flex flex-column w-full">
+          {selectedTarget?.isDraft && (
+            <div className="flex w-full">
+              <Message
+                className="w-full"
+                severity="warn"
+                text="Caution: This target is in draft mode and might not be approved."
+              />
+            </div>
+          )}
+          <div className="flex w-full">
+            <Routes>
+              <Route index element={<Navigate replace to="compass/" />} />
+              <Route path="scorecard/" element={<FTVScorecard />} />
+              <Route path="compass/" element={<FTVCompass />} />
+              <Route
+                path="safety-assessment/"
+                element={<FTVSafetyAssessment />}
+              />
+              <Route
+                path="promotion-questionnaire/"
+                element={<FTVPromotionQ />}
+              />
+              {isUserInAnyOfRoles([TargetAdminRoleName]) && (
+                <Route path="impact/" element={<FTImpactValues />} />
+              )}
+              {isUserInAnyOfRoles([TargetAdminRoleName]) && (
+                <Route path="settings/" element={<FTVSettings />} />
+              )}
+              <Route
+                path="docs/*"
+                element={<FTVDocs selectedTarget={selectedTarget} />}
+              />
+              <Route
+                path="discussion/"
+                element={<FTVComments selectedTarget={selectedTarget} />}
+              />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </div>
         </div>
       </div>
     );

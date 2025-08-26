@@ -37,7 +37,7 @@ export function GroupMolecules(data) {
         pctInhibition: "",
         pctInhibitionConcentration: "",
         pctInhibitionConcentrationUnit: "",
-        clusterGroup: "",
+        clusterGroup: 0,
         notes: "",
         doseResponses: [],
       };

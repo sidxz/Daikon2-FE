@@ -45,7 +45,7 @@ export default class GeneStore {
     if (inValidateCache) {
       this.isGeneListCacheValid = false;
     }
-    if (this.isGeneListCacheValid) {
+    if (this.isGeneListCacheValid || this.isFetchingGenes) {
       return;
     }
     this.isFetchingGenes = true;
@@ -74,6 +74,10 @@ export default class GeneStore {
   fetchGene = async (geneId, inValidateCache = false) => {
     if (inValidateCache) {
       this.isGeneRegistryCacheValid = false;
+    }
+    // short circuit multiple requests
+    if (this.isFetchingGene) {
+      return;
     }
 
     this.isFetchingGene = true;

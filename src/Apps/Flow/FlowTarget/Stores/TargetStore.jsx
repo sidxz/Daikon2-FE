@@ -81,7 +81,7 @@ export default class TargetStore {
     if (inValidateCache) {
       this.isTargetListCacheValid = false;
     }
-    if (this.isTargetListCacheValid) {
+    if (this.isTargetListCacheValid || this.isFetchingTargets) {
       return;
     }
     this.isFetchingTargets = true;
@@ -107,6 +107,10 @@ export default class TargetStore {
   }
 
   fetchTarget = async (targetId, inValidateCache = false) => {
+    // short circuit multiple requests
+    if (this.isFetchingTarget) {
+      return;
+    }
     if (inValidateCache) {
       this.isTargetRegistryCacheValid = false;
     }
@@ -288,7 +292,7 @@ export default class TargetStore {
     if (inValidateCache) {
       this.isTargetRelationsCacheValid = false;
     }
-    if (this.isTargetRelationsCacheValid) {
+    if (this.isTargetRelationsCacheValid || this.isFetchingTargetRelations) {
       return;
     }
     this.isFetchingTargetRelations = true;

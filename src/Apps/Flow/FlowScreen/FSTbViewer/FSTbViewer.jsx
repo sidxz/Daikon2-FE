@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import { Menu } from "primereact/menu";
-import React, { useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import {
   Navigate,
   Route,
@@ -55,9 +55,9 @@ const FSTbViewer = () => {
       fetchScreen(params.id);
     }
   }, [
-    params.id,
+    params?.id,
     fetchScreen,
-    selectedScreen,
+    selectedScreen?.id,
     isScreenRegistryCacheValid,
     fetchScreens,
   ]);
@@ -66,7 +66,7 @@ const FSTbViewer = () => {
     if (selectedScreen && selectedScreen?.id === params?.id) {
       fetchHitCollectionsOfScreen(selectedScreen.id, false, false);
     }
-  }, [selectedScreen, params.id, fetchHitCollectionsOfScreen]);
+  }, [selectedScreen?.id, params?.id, fetchHitCollectionsOfScreen]);
 
   if (isFetchingScreen) {
     return <Loading message={"Fetching Screen..."} />;

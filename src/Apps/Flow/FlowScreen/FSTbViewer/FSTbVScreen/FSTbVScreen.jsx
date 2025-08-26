@@ -7,7 +7,7 @@ import { Column } from "primereact/column";
 import { confirmDialog } from "primereact/confirmdialog";
 import { DataTable } from "primereact/datatable";
 import { Sidebar } from "primereact/sidebar";
-import React, { useCallback, useContext, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Loading from "../../../../../Library/Loading/Loading";
@@ -159,6 +159,10 @@ const FSTbVScreen = () => {
                 }
               >
                 {/* Columns */}
+                <Column
+                  header="#"
+                  body={(data, options) => options.rowIndex + 1}
+                ></Column>
                 <Column
                   field="library"
                   header="Library"

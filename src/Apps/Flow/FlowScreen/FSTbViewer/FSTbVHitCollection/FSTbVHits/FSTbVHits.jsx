@@ -71,6 +71,7 @@ const FSTbVHits = ({ id }) => {
   /* Set the scroll height of the table dynamically */
   const tableRef = useRef(null);
   const [scrollHeight, setScrollHeight] = useState("70vh");
+  const [filterDisclosed, setFilterDisclosed] = useState(false);
 
   const updateScrollHeight = () => {
     if (tableRef.current) {
@@ -393,7 +394,7 @@ const FSTbVHits = ({ id }) => {
       key: "notes",
       header: "Notes",
       editor: TextRowEditor,
-      sortable: false,
+      sortable: true,
     },
     {
       key: "doseResponses",
@@ -465,13 +466,17 @@ const FSTbVHits = ({ id }) => {
               editMode="row"
               onRowEditComplete={(e) => updateHit(e.newData)}
               dataKey="id"
-              value={
-                filterNotVoted
-                  ? selectedHitCollection?.hits.filter(
-                      (hit) => Object.keys(hit.voters).length == 0
-                    )
-                  : selectedHitCollection?.hits
-              }
+              value={(selectedHitCollection?.hits || [])
+                .filter(
+                  (hit) =>
+                    !filterNotVoted || Object.keys(hit.voters).length === 0
+                )
+                .filter((hit) =>
+                  filterDisclosed
+                    ? hit.isStructureDisclosed === true ||
+                      hit?.molecule?.smiles != null
+                    : true
+                )}
               paginator
               scrollable
               rows={100}
@@ -505,6 +510,8 @@ const FSTbVHits = ({ id }) => {
                   clusterHits={clusterHits}
                   filterNotVoted={filterNotVoted}
                   setFilterNotVoted={setFilterNotVoted}
+                  filterDisclosed={filterDisclosed}
+                  setFilterDisclosed={setFilterDisclosed}
                 />
               }
               //globalFilter={globalFilter}
@@ -512,6 +519,10 @@ const FSTbVHits = ({ id }) => {
               selection={selectedHits}
               onSelectionChange={(e) => setSelectedHits(e.value)}
             >
+              <Column
+                header="#"
+                body={(data, options) => options.rowIndex + 1}
+              ></Column>
               {selectionEnabled && (
                 <Column
                   selectionMode="multiple"

@@ -2,6 +2,13 @@ import { action, makeObservable, observable, runInAction } from "mobx";
 import { toast } from "react-toastify";
 import HitAPI from "../api/HitAPI";
 
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const chunk = (arr, size) => {
+  const out = [];
+  for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size));
+  return out;
+};
+
 export default class HitStore {
   rootStore;
 
@@ -21,6 +28,11 @@ export default class HitStore {
 
       clusterHits: action,
       isClusteringHits: observable,
+
+      isBulkUploadingHits: observable,
+      bulkProgress: observable,
+      bulkInsertHits: action,
+      cancelBulkUpload: action,
     });
   }
 
@@ -30,6 +42,18 @@ export default class HitStore {
   isDeletingHit = false;
   isBatchInsertingHits = false;
   isClusteringHits = false;
+
+  isBulkUploadingHits = false;
+  bulkProgress = {
+    total: 0,
+    done: 0,
+    percent: 0,
+    failedCount: 0,
+    currentBatch: 0,
+    totalBatches: 0,
+    lastError: null,
+    isCancelled: false,
+  };
 
   // Actions
   addHit = async (hit, silent = false) => {
@@ -326,5 +350,181 @@ export default class HitStore {
         this.isClusteringHits = false;
       });
     }
+  };
+
+  bulkInsertHits = async (hitRows, { batchSize = 100, delayMs = 100 } = {}) => {
+    if (this.isBulkUploadingHits) {
+      toast.info("A bulk upload is already running.");
+      return;
+    }
+
+    const selectedHCId =
+      this.rootStore.hitCollectionStore.selectedHitCollection.id;
+    if (!selectedHCId) {
+      toast.error("No Hit Collection selected.");
+      return;
+    }
+
+    const newHits = [];
+    const updatedHits = [];
+
+    // Validate & normalize once
+    try {
+      for (const row of hitRows) {
+        if (!row.moleculeName?.trim()) {
+          throw new Error("Molecule Name is required for all hits.");
+        }
+        row.hitCollectionId = selectedHCId;
+        row.requestedSMILES = row.smiles;
+        if (!row?.clusterGroup) row.clusterGroup = 0;
+
+        if (row.status === "New") {
+          newHits.push(row);
+        } else if (row.status === "Modified") {
+          row.hitId = row.id;
+          updatedHits.push(row);
+        }
+      }
+    } catch (e) {
+      toast.error(e?.message || "Validation failed.");
+      return;
+    }
+
+    const newChunks = chunk(newHits, batchSize);
+    const updChunks = chunk(updatedHits, batchSize);
+    const totalBatches = newChunks.length + updChunks.length;
+
+    runInAction(() => {
+      this.isBulkUploadingHits = true;
+      this.bulkProgress = {
+        total: hitRows.length,
+        done: 0,
+        percent: 0,
+        failedCount: 0,
+        currentBatch: 0,
+        totalBatches,
+        lastError: null,
+        isCancelled: false,
+      };
+    });
+
+    const updateProgress = (addedCount) => {
+      this.bulkProgress.done += addedCount;
+      this.bulkProgress.percent = Math.round(
+        (this.bulkProgress.done / this.bulkProgress.total) * 100
+      );
+    };
+
+    const processOneChunk = async (kind, rows) => {
+      if (!rows.length) return;
+      if (this.bulkProgress.isCancelled) return;
+
+      try {
+        if (kind === "new") {
+          const res = await HitAPI.createBatch(selectedHCId, rows);
+          runInAction(() => {
+            for (const newHit of res) {
+              newHit.usersVote = newHit.usersVote || "NA";
+              newHit.voters = newHit.voters || {};
+              const hc =
+                this.rootStore.hitCollectionStore.hitCollectionRegistry.get(
+                  newHit.hitCollectionId
+                );
+              hc.hits.push(newHit);
+              this.rootStore.hitCollectionStore.selectedHitCollection = hc;
+            }
+            updateProgress(rows.length);
+          });
+        } else {
+          const res = await HitAPI.updateBatch(selectedHCId, rows);
+          runInAction(() => {
+            for (const r of res) {
+              const hc =
+                this.rootStore.hitCollectionStore.hitCollectionRegistry.get(
+                  r.hitCollectionId
+                );
+              const idx = hc.hits.findIndex((e) => e.id === r.id);
+              const existing = hc.hits[idx];
+              let merged = { ...existing, ...r };
+              const preserve = [
+                "lastModifiedById",
+                "molecule",
+                "moleculeId",
+                "moleculeRegistrationId",
+                "negative",
+                "neutral",
+                "positive",
+                "requestedMoleculeName",
+                "requestedSMILES",
+                "voteScore",
+                "usersVote",
+                "voters",
+              ];
+              preserve.forEach((p) => {
+                if (existing?.[p] !== undefined) merged[p] = existing[p];
+              });
+              hc.hits[idx] = merged;
+              this.rootStore.hitCollectionStore.selectedHitCollection = hc;
+            }
+            updateProgress(rows.length);
+          });
+        }
+      } catch (err) {
+        // count the whole batch as failed and continue
+        runInAction(() => {
+          this.bulkProgress.failedCount += rows.length;
+          this.bulkProgress.lastError = err?.message || String(err);
+        });
+      } finally {
+        runInAction(() => {
+          this.bulkProgress.currentBatch = Math.min(
+            this.bulkProgress.currentBatch + 1,
+            this.bulkProgress.totalBatches
+          );
+        });
+        if (delayMs > 0) await sleep(delayMs);
+      }
+    };
+
+    try {
+      // NEW batches
+      for (const b of newChunks) {
+        if (this.bulkProgress.isCancelled) break; // stop before next batch
+        await processOneChunk("new", b);
+      }
+      // MODIFIED batches
+      for (const b of updChunks) {
+        if (this.bulkProgress.isCancelled) break; // stop before next batch
+        await processOneChunk("modified", b);
+      }
+
+      runInAction(() => {
+        if (!this.bulkProgress.isCancelled) {
+          const msg =
+            this.bulkProgress.failedCount > 0
+              ? `Bulk upload finished with ${this.bulkProgress.failedCount} failed item(s).`
+              : "Bulk upload finished successfully.";
+          toast.success(msg);
+        } else {
+          toast.info("Bulk upload stopped.");
+        }
+      });
+    } catch (e) {
+      runInAction(() => {
+        this.bulkProgress.lastError = e?.message || String(e);
+      });
+      toast.error(`Bulk upload failed: ${this.bulkProgress.lastError}`);
+    } finally {
+      runInAction(() => {
+        this.isBulkUploadingHits = false;
+      });
+    }
+  };
+
+  cancelBulkUpload = () => {
+    if (!this.isBulkUploadingHits) return;
+    runInAction(() => {
+      this.bulkProgress.isCancelled = true;
+    });
   };
 }

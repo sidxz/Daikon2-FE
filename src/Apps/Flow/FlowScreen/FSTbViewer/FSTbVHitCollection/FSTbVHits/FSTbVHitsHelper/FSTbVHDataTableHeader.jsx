@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import TableCustomization from "../../../../../../../Library/TableCustomization/TableCustomization";
 import { MolecuLogixIcon } from "../../../../../../MolecuLogix/Icons/MolecuLogixIcon";
+import FSTbVHExcelBulkImport from "./FSTbVHExcelBulkImport";
 import { ExportHitsToExcel } from "./FSTbVHExcelExport";
 import FSTbVHExcelImport from "./FSTbVHExcelImport";
 import { ExportTemplateExcel } from "./FSTbVHExportTemplate";
@@ -40,11 +41,14 @@ export const FSTbVHDataTableHeader = ({
   clusterHits,
   filterNotVoted,
   setFilterNotVoted,
+  filterDisclosed,
+  setFilterDisclosed,
 }) => {
   const [showImportDialog, setShowImportDialog] = useState(false);
   const [showTableCustomization, setShowTableCustomization] = useState(false);
   const [clusterCutOff, setClusterCutOff] = useState(0.85);
   const [showClusterDialog, setShowClusterDialog] = useState(false);
+  const [showBulkUploadDialog, setShowBulkUploadDialog] = useState(false);
   if (selectedHitCollection === undefined) {
     console.log("selectedHitCollection is undefined");
   }
@@ -147,6 +151,11 @@ export const FSTbVHDataTableHeader = ({
           command: () => setShowImportDialog(true),
         },
         {
+          label: "Bulk Upload",
+          icon: "pi pi-upload",
+          command: () => setShowBulkUploadDialog(true),
+        },
+        {
           label: "Export To Excel",
           icon: "pi pi-file-export",
           command: () =>
@@ -165,6 +174,25 @@ export const FSTbVHDataTableHeader = ({
               selectedScreen,
               DtFieldsToExcelColumnMapping
             ),
+        },
+      ],
+    },
+    {
+      label: "View",
+      icon: "pi pi-eye",
+      items: [
+        // filterDisclosed toggle button
+        {
+          label: filterDisclosed
+            ? "Disclosed Only (Active)"
+            : "Disclosed Only (Inactive)",
+          icon: filterDisclosed ? "pi pi-check-square" : "pi pi-filter-slash",
+          command: () => setFilterDisclosed(!filterDisclosed),
+        },
+        {
+          label: filterNotVoted ? "Show All" : "Filter Not Voted",
+          icon: filterNotVoted ? "pi pi-check-square" : "pi pi-filter-slash",
+          command: () => setFilterNotVoted(!filterNotVoted),
         },
       ],
     },
@@ -204,11 +232,6 @@ export const FSTbVHDataTableHeader = ({
               offIcon="pi pi-times"
             />
           ),
-        },
-        {
-          label: filterNotVoted ? "Show All" : "Filter Not Voted",
-          icon: filterNotVoted ? "pi pi-check-square" : "pi pi-filter-slash",
-          command: () => setFilterNotVoted(!filterNotVoted),
         },
       ],
     },
@@ -263,7 +286,7 @@ export const FSTbVHDataTableHeader = ({
     </div>
   );
 
-  const end = filterNotVoted && (
+  const end = (filterNotVoted || filterDisclosed) && (
     <div className="flex fadein animation-duration-1000 shadow-0 p-2 align-items-center">
       <div className="flex p-1">
         <FcEmptyFilter />
@@ -288,6 +311,12 @@ export const FSTbVHDataTableHeader = ({
           visible={showImportDialog}
           onHide={() => setShowImportDialog(false)}
         />
+        <FSTbVHExcelBulkImport
+          selectedHitCollection={selectedHitCollection}
+          visible={showBulkUploadDialog}
+          onHide={() => setShowBulkUploadDialog(false)}
+        />
+
         <TableCustomization
           visible={showTableCustomization}
           onHide={() => setShowTableCustomization(false)}

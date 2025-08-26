@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import { Sidebar } from "primereact/sidebar";
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Loading from "../../../../Library/Loading/Loading";
 import SecHeading from "../../../../Library/SecHeading/SecHeading";
@@ -31,16 +31,16 @@ const FTDashboard = () => {
   const { isUserInAnyOfRoles } = AppRoleResolver();
 
   useEffect(() => {
-    if (!isTargetListCacheValid) {
+    if (!isTargetListCacheValid && !isFetchingTargets) {
       fetchTargets();
     }
-  }, [fetchTargets, isTargetListCacheValid]);
+  }, [fetchTargets, isTargetListCacheValid, isFetchingTargets]);
 
   if (isFetchingTargets) {
     return <Loading message={"Fetching Targets..."} />;
   }
 
-  console.log("FTDashboard -> targetList", targetList);
+  console.debug("FTDashboard -> targetList", targetList);
 
   const addSideBarHeader = (
     <div className="flex align-items-center gap-2">

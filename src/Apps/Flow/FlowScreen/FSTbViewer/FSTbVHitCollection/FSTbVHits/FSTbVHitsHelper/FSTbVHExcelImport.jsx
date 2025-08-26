@@ -7,6 +7,7 @@ import SmilesView from "../../../../../../../Library/SmilesView/SmilesView";
 import { RootStoreContext } from "../../../../../../../RootStore";
 import ImportFromExcel from "../../../../../../../Shared/Excel/ImportFromExcel";
 import { GroupMolecules } from "../../../../shared/DataImportHelper";
+import { isSameMoleculeName } from "../../../../shared/SharedHelper";
 import { DoseResponseBodyTemplate } from "./FSTbVHDataTableHelper";
 import {
   DoseResponsesFlattener,
@@ -91,7 +92,7 @@ const FSTbVHExcelImport = ({
         <FileUpload
           name="excelFile"
           accept=".xls,.xlsx,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-          maxFileSize={1000000}
+          maxFileSize={10000000}
           mode="advanced"
           chooseLabel="Browse and Select File"
           chooseOptions={{
@@ -117,14 +118,22 @@ const FSTbVHExcelImport = ({
             // This is to clear the file list in the FileUpload component
             e.options.clear();
             // console.log("jsonData", jsonData);
+            console.log("Existing Data", existingData);
             jsonData.forEach((row) => {
+              //console.log("Processing", row);
+              // if clusterGroup is null or not set, set it to 0
+              if (!row["clusterGroup"]) {
+                row["clusterGroup"] = 0;
+              }
               // row.hitCollectionId = selectedHitCollection.id;
               // output is in field 'smiles' in excel (template), but to create a hit, we need 'requestedSMILES'
               // row.requestedSMILES = row.smiles;
-              row = {
-                ...existingData.find((hit) => hit.id === row.id),
-                ...row,
-              };
+              // row = {
+              //   ...existingData.find(
+              //     (hit) => hit.moleculeName === row.moleculeName
+              //   ),
+              //   ...row,
+              // };
               // console.log("row", row);
             });
             console.log("jsonData", jsonData);
@@ -142,6 +151,7 @@ const FSTbVHExcelImport = ({
           headerMap={DtFieldsGroupedColumnMapping}
           existingData={existingData}
           comparatorKey="id"
+          comparatorFn={isSameMoleculeName}
           data={dataForPreview}
           visible={showDataPreviewDialog}
           onHide={() => {
