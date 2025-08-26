@@ -40,8 +40,8 @@ export const FSPhVHDataTableHeader = ({
   clusterHits,
   filterNotVoted,
   setFilterNotVoted,
-  filterUndisclosed,
-  setFilterUndisclosed,
+  filterDisclosed,
+  setFilterDisclosed,
 }) => {
   const [showImportDialog, setShowImportDialog] = useState(false);
   const [showTableCustomization, setShowTableCustomization] = useState(false);
@@ -139,6 +139,11 @@ export const FSPhVHDataTableHeader = ({
           command: () => setShowImportDialog(true),
         },
         {
+          label: "Bulk Upload",
+          icon: "pi pi-upload",
+          command: () => setShowBulkUploadDialog(true),
+        },
+        {
           label: "Export To Excel",
           icon: "pi pi-file-export",
           command: () =>
@@ -164,15 +169,13 @@ export const FSPhVHDataTableHeader = ({
       label: "View",
       icon: "pi pi-eye",
       items: [
-        // filterUndisclosed toggle button
+        // filterDisclosed toggle button
         {
-          label: filterUndisclosed
-            ? "Filter Undisclosed"
-            : "Show All Molecules",
-          icon: filterUndisclosed
-            ? "pi pi-filter-slash "
-            : "pi pi-check-square",
-          command: () => setFilterUndisclosed(!filterUndisclosed),
+          label: filterDisclosed
+            ? "Disclosed Only (Active)"
+            : "Disclosed Only (Inactive)",
+          icon: filterDisclosed ? "pi pi-check-square" : "pi pi-filter-slash",
+          command: () => setFilterDisclosed(!filterDisclosed),
         },
         {
           label: filterNotVoted ? "Show All" : "Filter Not Voted",
@@ -271,7 +274,7 @@ export const FSPhVHDataTableHeader = ({
     </div>
   );
 
-  const end = (filterNotVoted || filterUndisclosed) && (
+  const end = (filterNotVoted || filterDisclosed) && (
     <div className="flex fadein animation-duration-1000 shadow-0 p-2 align-items-center">
       <div className="flex p-1">
         <FcEmptyFilter />

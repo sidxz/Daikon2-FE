@@ -69,7 +69,7 @@ const FSPhVHits = ({ id }) => {
   const tableRef = useRef(null);
   const [scrollHeight, setScrollHeight] = useState("70vh");
 
-  const [filterUndisclosed, setFilterUndisclosed] = useState(true);
+  const [filterDisclosed, setFilterDisclosed] = useState(false);
 
   const updateScrollHeight = () => {
     if (tableRef.current) {
@@ -469,13 +469,17 @@ const FSPhVHits = ({ id }) => {
               editMode="row"
               onRowEditComplete={(e) => updateHit(e.newData)}
               dataKey="id"
-              value={
-                filterNotVoted
-                  ? selectedHitCollection?.hits.filter(
-                      (hit) => Object.keys(hit.voters).length == 0
-                    )
-                  : selectedHitCollection?.hits
-              }
+              value={(selectedHitCollection?.hits || [])
+                .filter(
+                  (hit) =>
+                    !filterNotVoted || Object.keys(hit.voters).length === 0
+                )
+                .filter((hit) =>
+                  filterDisclosed
+                    ? hit.isStructureDisclosed === true ||
+                      hit?.molecule?.smiles != null
+                    : true
+                )}
               paginator
               scrollable
               rows={100}
@@ -507,8 +511,8 @@ const FSPhVHits = ({ id }) => {
                   clusterHits={clusterHits}
                   filterNotVoted={filterNotVoted}
                   setFilterNotVoted={setFilterNotVoted}
-                  filterUndisclosed={filterUndisclosed}
-                  setFilterUndisclosed={setFilterUndisclosed}
+                  filterDisclosed={filterDisclosed}
+                  setFilterDisclosed={setFilterDisclosed}
                 />
               }
               //globalFilter={globalFilter}
