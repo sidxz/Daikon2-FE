@@ -223,7 +223,7 @@ const MLogixMoleculeEdit = () => {
                             },
                             { label: "Hit to Lead (H2L)", value: "H2L" },
                             { label: "Lead Optimization (LO)", value: "LO" },
-                            { label: "Screening Pass (SP)", value: "SP" },
+                            { label: "Selection Phase (SP)", value: "SP" },
                             {
                               label: "Investigational New Drug (IND)",
                               value: "IND",

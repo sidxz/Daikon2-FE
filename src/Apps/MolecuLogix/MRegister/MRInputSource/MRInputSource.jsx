@@ -5,6 +5,7 @@ import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
 import { useContext, useState } from "react";
 
+import { Dropdown } from "primereact/dropdown";
 import SmilesView from "../../../../Library/SmilesView/SmilesView";
 import { RootStoreContext } from "../../../../RootStore";
 import ImportFromExcel from "../../../../Shared/Excel/ImportFromExcel";
@@ -13,7 +14,7 @@ import InputScientist from "../../../../Shared/InputEditors/InputScientist";
 import { AppOrgResolver } from "../../../../Shared/VariableResolvers/AppOrgResolver";
 import { DtFieldsToExcelColumnMapping } from "../MRConstants";
 
-const MRInputSource = () => {
+const MRInputSource = ({ onDataReady }) => {
   const [dataProcessed, setDataProcessed] = useState([]);
   const rootStore = useContext(RootStoreContext);
   const { user } = rootStore.authStore;
@@ -64,6 +65,32 @@ const MRInputSource = () => {
     />
   );
 
+  const stageEditor = (options) => (
+    <Dropdown
+      options={[
+        { label: "Screening", value: "Screening" },
+        {
+          label: "Hit Assessment (HA)",
+          value: "HA",
+        },
+        { label: "Hit to Lead (H2L)", value: "H2L" },
+        { label: "Lead Optimization (LO)", value: "LO" },
+        { label: "Selection Phase (SP)", value: "SP" },
+        {
+          label: "Investigational New Drug (IND)",
+          value: "IND",
+        },
+        { label: "Phase 1 (P1)", value: "P1" },
+      ]}
+      optionLabel="label"
+      optionValue="value"
+      placeholder="Select Stage"
+      id={`stage-editor-${options?.rowIndex ?? 0}`}
+      value={options.value}
+      onChange={(e) => options.editorCallback(e.value)}
+    />
+  );
+
   // ---------- Non-editing cell bodies ----------
   const structureBody = (rowData) => (
     <div className="flex flex-column" style={{ width: 250, height: 290 }}>
@@ -82,6 +109,7 @@ const MRInputSource = () => {
       if (idx === -1) return prev;
       const next = [...prev];
       next[idx] = newData; // persist the whole updated row
+      onDataReady?.(next);
       return next;
     });
   };
@@ -127,6 +155,7 @@ const MRInputSource = () => {
     const withIds = cleaned.map((row) => ({ __rid: ++rid, ...row }));
 
     setDataProcessed(withIds);
+    onDataReady?.(withIds);
   };
 
   return (
@@ -214,7 +243,11 @@ const MRInputSource = () => {
             editor={orgEditor}
           />
           {/* Editable: Disclosure Stage */}
-          <Column field="stage" header="Disclosure Stage" editor={textEditor} />
+          <Column
+            field="disclosureStage"
+            header="Disclosure Stage"
+            editor={stageEditor}
+          />
 
           {/* Editable: Disclosure Reason */}
           <Column
@@ -225,14 +258,14 @@ const MRInputSource = () => {
 
           {/* Editable: Notes */}
           <Column
-            field="notes"
+            field="disclosureNotes"
             header="Disclosure Notes"
             editor={textareaEditor}
           />
 
           {/* Editable: Literature References */}
           <Column
-            field="literature"
+            field="literatureReferences"
             header="Literature References"
             editor={textareaEditor}
           />

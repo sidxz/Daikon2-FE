@@ -34,6 +34,11 @@ const MolDbAPI = {
       molecules: molecules,
     }),
 
+  registerMoleculePreview: (molecules) =>
+    axiosWithAuth.post("/v2/molecule/register-molecule-preview", {
+      queries: molecules,
+    }),
+
   getRecentDisclosures: (params) =>
     axiosWithAuth.get("/v2/aggregators/disclosure/generate-dashboard", {
       params: params,
