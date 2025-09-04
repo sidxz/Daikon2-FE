@@ -10,6 +10,7 @@ import MLogixMenuBar from "./MLogixMenuBar/MLogixMenuBar";
 import MLogixMoleculeEdit from "./MLogixMoleculeEdit/MLogixMoleculeEdit";
 import MLogixMoleculeView from "./MLogixMoleculeView/MLogixMoleculeView";
 import MLogixSearch from "./MLogixSearch/MLogixSearch";
+import MRegister from "./MRegister/MRegister";
 
 const MolecuLogix = () => {
   return (
@@ -25,6 +26,7 @@ const MolecuLogix = () => {
           <Route path="molecule/:id/discussion" element={<MLogixComments />} />
           <Route path="molecule/:id" element={<MLogixMoleculeView />} />
           <Route path="search/" element={<MLogixSearch />} />
+          <Route path="register/" element={<MRegister />} />
           <Route path="draw/*" element={<MLogixDraw />} />
           <Route path="disclose/pre/*" element={<MPreDisclose />} />
           <Route path="disclose/*" element={<MDisclose />} />

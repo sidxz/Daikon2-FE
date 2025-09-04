@@ -18,11 +18,13 @@ const MLogixMenuBar = () => {
     if (location.pathname.includes("/moleculogix/search")) {
       setActiveIndex(2);
     } else if (location.pathname.includes("/disclosure-report")) {
-      setActiveIndex(4);
+      setActiveIndex(5);
     } else if (location.pathname.includes("/disclose")) {
+      setActiveIndex(4);
+    } else if (location.pathname.includes("/register")) {
       setActiveIndex(3);
     } else if (location.pathname.includes("/moleculogix")) {
-      setActiveIndex(1); // Assuming index 1 corresponds to "MolecuLogix", adjusted from 0
+      setActiveIndex(1);
     } else {
     }
   }, [location]);
@@ -45,6 +47,11 @@ const MLogixMenuBar = () => {
       label: "Search",
       icon: "icon icon-common icon-search",
       command: () => navigate("search/"),
+    },
+    {
+      label: "Register",
+      icon: "icon icon-common icon-plus-circle",
+      command: () => navigate("register/"),
     },
     {
       label: "Disclose",
