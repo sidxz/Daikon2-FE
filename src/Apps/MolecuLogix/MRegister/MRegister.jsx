@@ -1,3 +1,4 @@
+// MRegister.jsx
 import { observer } from "mobx-react-lite";
 import { Button } from "primereact/button";
 import { Stepper } from "primereact/stepper";
@@ -6,13 +7,14 @@ import { useMemo, useRef, useState } from "react";
 import { appColors } from "../../../constants/colors";
 import { STRINGS } from "../../../Customizations/strings";
 import SecHeading from "../../../Library/SecHeading/SecHeading";
+import MRImport from "./MRImport/MRImport"; // ⬅️ add this
 import MRInputSource from "./MRInputSource/MRInputSource";
 import MRPreview from "./MRPreview/MRPreview";
 
 const MRegister = () => {
   const stepperRef = useRef(null);
 
-  // Lifted state for preview
+  // Lifted state
   const [inputs, setInputs] = useState([]); // rows from MRInputSource
   const [previewResults, setPreviewResults] = useState([]);
 
@@ -48,6 +50,11 @@ const MRegister = () => {
         >
           {/* STEP 1: Input */}
           <StepperPanel header="Input Source">
+            <div className="flex flex-column">
+              <div className="border-2 border-dashed surface-border border-round surface-ground flex-row flex justify-content-center align-items-center font-medium">
+                <MRInputSource onDataReady={setInputs} />
+              </div>
+            </div>
             <div className="flex pb-1 justify-content-end">
               <Button
                 label="Next"
@@ -56,11 +63,6 @@ const MRegister = () => {
                 onClick={() => stepperRef.current.nextCallback()}
                 disabled={!canProceedToValidation}
               />
-            </div>
-            <div className="flex flex-column">
-              <div className="border-2 border-dashed surface-border border-round surface-ground flex-row flex justify-content-center align-items-center font-medium">
-                <MRInputSource onDataReady={setInputs} />
-              </div>
             </div>
           </StepperPanel>
 
@@ -99,12 +101,9 @@ const MRegister = () => {
 
           {/* STEP 3: Import */}
           <StepperPanel header="Import">
-            <div className="flex flex-column h-12rem">
-              <div className="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
-                {/* Replace with your actual import action; you'll likely pass only OK rows */}
-                Ready to import {okCount} valid {okCount === 1 ? "row" : "rows"}
-                .
-              </div>
+            <div className="border-2 border-dashed surface-border border-round surface-ground p-3">
+              {/* MRImport grabs the OK rows by name and maps back to full inputs */}
+              <MRImport inputs={inputs} previewResults={previewResults} />
             </div>
             <div className="flex pt-4 justify-content-start">
               <Button
@@ -113,7 +112,6 @@ const MRegister = () => {
                 icon="pi pi-arrow-left"
                 onClick={() => stepperRef.current.prevCallback()}
               />
-              {/* Add your "Import" primary action button here */}
             </div>
           </StepperPanel>
         </Stepper>

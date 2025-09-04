@@ -39,6 +39,9 @@ const MolDbAPI = {
       queries: molecules,
     }),
 
+  registerMoleculeBatch: (commands, options = {}) =>
+    axiosWithAuth.post("/v2/molecule/batch", commands, options),
+
   getRecentDisclosures: (params) =>
     axiosWithAuth.get("/v2/aggregators/disclosure/generate-dashboard", {
       params: params,

@@ -37,6 +37,7 @@ export default class MoleculeStore {
       getRecentDisclosures: action,
       isFetchingRecentDisclosures: observable,
       recentDisclosures: observable,
+      registerMoleculeBatch: action,
     });
   }
 
@@ -244,6 +245,40 @@ export default class MoleculeStore {
     } finally {
       runInAction(() => {
         this.isFetchingRecentDisclosures = false;
+      });
+    }
+  };
+
+  registerMoleculeBatch = async (commands, options = {}) => {
+    this.isRegisteringMolecule = true;
+    try {
+      const res = await MolDbAPI.registerMoleculeBatch(commands, options);
+
+      runInAction(() => {
+        // res is expected to be an array of RegisterMoleculeResponseDTO
+        (res || []).forEach((m) => {
+          // Be defensive: only format if numbers exist
+          if (m?.molecularWeight?.toFixed)
+            m.molecularWeight = m.molecularWeight.toFixed(2);
+          if (m?.tpsa?.toFixed) m.tpsa = m.tpsa.toFixed(2);
+          if (m?.id) this.moleculeRegistry.set(m.id, m);
+        });
+
+        const already = res.filter((r) => r.wasAlreadyRegistered).length;
+        const fresh = res.length - already;
+        if (fresh > 0) toast.success(`${fresh} molecule(s) registered`);
+        if (already > 0)
+          toast.warn(`${already} already registered (synonyms may be updated)`);
+      });
+
+      return res;
+    } catch (error) {
+      console.error("Error in registerMoleculeBatch:", error);
+      toast.error("Batch registration failed");
+      throw error;
+    } finally {
+      runInAction(() => {
+        this.isRegisteringMolecule = false;
       });
     }
   };
