@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import { BreadCrumb } from "primereact/breadcrumb";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import LoadingBlockUI from "../../../../../Library/LoadingBlockUI/LoadingBlockUI";
 import SecHeading from "../../../../../Library/SecHeading/SecHeading";
@@ -40,7 +40,7 @@ const FTImpactValues = () => {
 
   const onFormikSubmit = (data) => {
     const updatedTarget = { ...selectedTarget, ...data };
-    //console.log("updatedTarget", updatedTarget);
+    console.log("updatedTarget", updatedTarget);
     updateTarget(updatedTarget);
   };
 

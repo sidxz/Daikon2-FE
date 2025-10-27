@@ -8,6 +8,7 @@ import { ProgressBar } from "primereact/progressbar";
 import { Sidebar } from "primereact/sidebar";
 import { useContext, useEffect, useRef, useState } from "react";
 import { appColors } from "../../../../../../constants/colors";
+import { STRINGS } from "../../../../../../Customizations/strings";
 import JSMEditor from "../../../../../../Library/JSME/JSMEditor";
 import Loading from "../../../../../../Library/Loading/Loading";
 import { RootStoreContext } from "../../../../../../RootStore";
@@ -70,6 +71,7 @@ const FSTbVHits = ({ id }) => {
   /* Set the scroll height of the table dynamically */
   const tableRef = useRef(null);
   const [scrollHeight, setScrollHeight] = useState("70vh");
+  const [filterDisclosed, setFilterDisclosed] = useState(false);
 
   const updateScrollHeight = () => {
     if (tableRef.current) {
@@ -144,9 +146,11 @@ const FSTbVHits = ({ id }) => {
   console.log("FSTbVHits: selectedHitCollection", selectedHitCollection);
 
   const addHitSideBarHeader = (
-    <div className="flex align-items-center gap-2">
-      <i className="icon icon-common icon-plus-circle"></i>
-      <span className="font-bold">Add Hit</span>
+    <div className="flex flex-column">
+      <div className="flex text-xl gap-2 align-items-center">
+        <i className="icon icon-common icon-plus-circle"></i> Add Hit
+      </div>
+      <div className="flex text-sm">{STRINGS.DISCLOSURE_NOTICE}</div>
     </div>
   );
 
@@ -390,7 +394,7 @@ const FSTbVHits = ({ id }) => {
       key: "notes",
       header: "Notes",
       editor: TextRowEditor,
-      sortable: false,
+      sortable: true,
     },
     {
       key: "doseResponses",
@@ -411,9 +415,6 @@ const FSTbVHits = ({ id }) => {
   ) {
     console.log("Generating Table Rendering");
     let viewableColumns = allColumnDefs.map((col) => {
-      console.log("key: ", col.key);
-      console.log("header: ", col.header);
-      console.log("field: ", col.field ? col.field : col.key);
       // Show all columns if selectedTableCustomization.columns is undefined or empty
       if (
         !selectedTableCustomization?.columns ||
@@ -465,13 +466,17 @@ const FSTbVHits = ({ id }) => {
               editMode="row"
               onRowEditComplete={(e) => updateHit(e.newData)}
               dataKey="id"
-              value={
-                filterNotVoted
-                  ? selectedHitCollection?.hits.filter(
-                      (hit) => Object.keys(hit.voters).length == 0
-                    )
-                  : selectedHitCollection?.hits
-              }
+              value={(selectedHitCollection?.hits || [])
+                .filter(
+                  (hit) =>
+                    !filterNotVoted || Object.keys(hit.voters).length === 0
+                )
+                .filter((hit) =>
+                  filterDisclosed
+                    ? hit.isStructureDisclosed === true ||
+                      hit?.molecule?.smiles != null
+                    : true
+                )}
               paginator
               scrollable
               rows={100}
@@ -505,6 +510,8 @@ const FSTbVHits = ({ id }) => {
                   clusterHits={clusterHits}
                   filterNotVoted={filterNotVoted}
                   setFilterNotVoted={setFilterNotVoted}
+                  filterDisclosed={filterDisclosed}
+                  setFilterDisclosed={setFilterDisclosed}
                 />
               }
               //globalFilter={globalFilter}
@@ -512,6 +519,10 @@ const FSTbVHits = ({ id }) => {
               selection={selectedHits}
               onSelectionChange={(e) => setSelectedHits(e.value)}
             >
+              <Column
+                header="#"
+                body={(data, options) => options.rowIndex + 1}
+              ></Column>
               {selectionEnabled && (
                 <Column
                   selectionMode="multiple"

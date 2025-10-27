@@ -1,7 +1,8 @@
 import { BreadCrumb } from "primereact/breadcrumb";
 import { Fieldset } from "primereact/fieldset";
-import React, { useContext } from "react";
+import { useContext } from "react";
 import {
+  FcBusiness,
   FcHighPriority,
   FcMediumPriority,
   FcTreeStructure,
@@ -13,6 +14,7 @@ import { RootStoreContext } from "../../../../../RootStore";
 import { appColors } from "../../../../../constants/colors";
 import { TargetIcon } from "../../../icons/TargetIcon";
 import * as Helper from "./FTVSettingsHelper";
+import FTVGeneralSettings from "./components/FTVGeneralSettings";
 import FTVSettingsRename from "./components/FTVSettingsRename";
 import FTVSettingsUpdateGeneAssociation from "./components/FTVSettingsUpdateGeneAssociation";
 const FTVSettings = () => {
@@ -43,7 +45,7 @@ const FTVSettings = () => {
             entryPoint={selectedTarget?.id}
           />
         </div>
-        {/* <div className="flex w-full mt-2">
+        <div className="flex w-full mt-2">
           <Fieldset
             className="w-full"
             legend={
@@ -57,8 +59,10 @@ const FTVSettings = () => {
               The settings outlined here are part of the "Target" section and
               will not impact any other areas of the app.
             </p>
+
+            <FTVGeneralSettings />
           </Fieldset>
-        </div> */}
+        </div>
         <div className="flex w-full  mt-2">
           <Fieldset
             className="w-full"

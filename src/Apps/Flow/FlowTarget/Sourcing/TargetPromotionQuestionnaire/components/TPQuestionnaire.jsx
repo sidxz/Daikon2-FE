@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Loading from "../../../../../../Library/Loading/Loading";
@@ -44,7 +44,11 @@ const TPQuestionnaire = ({ selectedGenes, proteinName }) => {
     }
   }, [isCacheValid, fetchQuestions]);
 
-  if (isGeneListLoading || isFetchingQuestions) {
+  if (
+    isGeneListLoading ||
+    isFetchingQuestions ||
+    questionsRegistry.size === 0
+  ) {
     return <Loading message={"Fetching..."} />;
   }
 

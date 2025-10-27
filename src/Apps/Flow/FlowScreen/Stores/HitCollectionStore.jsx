@@ -61,6 +61,11 @@ export default class HitCollectionStore {
     inValidateCache = false,
     preFetchCustomization = false
   ) => {
+    // short circuit multiple requests
+    if (this.isFetchingHitCollection) {
+      return;
+    }
+
     //console.log("fetchHitCollectionsOfScreen", screenId, inValidateCache);
     if (inValidateCache) {
       this.hitCollectionRegistryCache.set(screenId, false);
@@ -75,6 +80,9 @@ export default class HitCollectionStore {
     screenId = screenId?.trim() || this.rootStore.screenStore.selectedScreen.id;
 
     this.isFetchingHitCollection = true;
+
+    // Ensure the screen is loaded before proceeding
+    await this.rootStore.screenStore.fetchScreen(screenId);
 
     try {
       var hitCollections = await HitCollectionAPI.listByScreen(screenId);
@@ -105,6 +113,10 @@ export default class HitCollectionStore {
                 hit.moleculeId
               ) || [];
           });
+          console.log(
+            "selectedScreen",
+            this.rootStore.screenStore.selectedScreen
+          );
           let screenType =
             this.rootStore.screenStore.selectedScreen.screenType || null;
           console.log("screenType", screenType);

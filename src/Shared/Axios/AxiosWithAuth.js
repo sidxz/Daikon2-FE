@@ -3,8 +3,55 @@ import { toast } from "react-toastify";
 import AppUserManager from "../../Auth/components/AppUserManager";
 import { AxiosConfig } from "../../config/axiosConfig";
 
+/** ------------------------------------------------------------------
+ * Toast control: deduplicate by message + throttle (2 seconds)
+ * ------------------------------------------------------------------ */
+const activeToasts = new Set(); // track messages currently displayed
+const lastToastTimeByMessage = new Map(); // track last shown time per message
+const TOAST_INTERVAL_MS = 2000; // 2 seconds
+
+function showThrottledUniqueErrorToast(message) {
+  const now = Date.now();
+  const last = lastToastTimeByMessage.get(message) || 0;
+
+  if (activeToasts.has(message)) return; // Already on screen
+  if (now - last < TOAST_INTERVAL_MS) return; // Too soon since last
+
+  toast.error(message, {
+    onClose: () => {
+      activeToasts.delete(message);
+    },
+  });
+
+  activeToasts.add(message);
+  lastToastTimeByMessage.set(message, now);
+}
+
+/** ------------------------------------------------------------------
+ * GET request throttling (same request >2 times in 2s → block)
+ * ------------------------------------------------------------------ */
+const GET_DUP_WINDOW_MS = 2000;
+const GET_DUP_MAX_REQUESTS = 2;
+const getRequestTimestamps = new Map();
+
+function stableStringify(obj) {
+  if (!obj || typeof obj !== "object") return JSON.stringify(obj);
+  const allKeys = [];
+  JSON.stringify(obj, (key, value) => (allKeys.push(key), value));
+  allKeys.sort();
+  return JSON.stringify(obj, allKeys);
+}
+
+function buildGetKey(config) {
+  const base = config.baseURL || "";
+  const url = config.url || "";
+  const paramsStr = stableStringify(config.params || {});
+  return `${base}|${url}|${paramsStr}`;
+}
+
 class AxiosWithAuth {
   constructor() {
+    this.enableGetThrottle = true; // <--- NEW FLAG (set false to disable GET throttling)
     this.init();
   }
 
@@ -14,29 +61,14 @@ class AxiosWithAuth {
     this.axiosWithAuth = axios.create({
       ...AxiosConfig,
     });
-
-    // let shd = await this.shouldRefreshToken();
-    // console.log("AxiosWithAuth -> init -> shd", shd);
-    // if (shd) {
-    //   console.log("AxiosWithAuth -> init -> Refreshing Token");
-    //   await AppUserManager.refreshToken();
-    //   this.accessToken = await AppUserManager.getAccessToken();
-    // }
-
     this.setInterceptors();
   }
 
   async shouldRefreshToken() {
-    // Check if the access token is expired or about to expire
-    const tokenExpiryThreshold = 60 * 1000; // 1 minute
+    const tokenExpiryThreshold = 60 * 1000;
     const tokenExpirySeconds = await AppUserManager.getTokenExpiry();
     const tokenExpiryMilliseconds = tokenExpirySeconds * 1000;
-
     const currentTimeMilliseconds = Date.now();
-    // console.log(
-    //   "AxiosWithAuth -> Token will expire in Minutes : ",
-    //   (tokenExpiryMilliseconds - currentTimeMilliseconds) / (1000 * 60)
-    // );
     return (
       tokenExpirySeconds &&
       tokenExpiryMilliseconds - currentTimeMilliseconds < tokenExpiryThreshold
@@ -47,12 +79,31 @@ class AxiosWithAuth {
     this.axiosWithAuth.interceptors.request.use(
       (config) => {
         if (this.accessToken) {
-          // console.log(
-          //   "AxiosWithAuth -> setInterceptors -> this.accessToken",
-          //   this.accessToken
-          // );
           config.headers.Authorization = `Bearer ${this.accessToken}`;
         }
+
+        // Throttle identical GET requests (if enabled)
+        if (
+          this.enableGetThrottle &&
+          (config.method || "get").toLowerCase() === "get"
+        ) {
+          const key = buildGetKey(config);
+          const now = Date.now();
+          const arr = getRequestTimestamps.get(key) || [];
+          const recent = arr.filter((t) => now - t <= GET_DUP_WINDOW_MS);
+
+          if (recent.length >= GET_DUP_MAX_REQUESTS) {
+            const msg = `Blocked duplicate GET within ${GET_DUP_WINDOW_MS}ms: ${key}`;
+            const err = new axios.Cancel(msg);
+            err.__blockedDuplicate = true;
+            console.error(msg);
+            return Promise.reject(err);
+          }
+
+          recent.push(now);
+          getRequestTimestamps.set(key, recent);
+        }
+
         return config;
       },
       (error) => Promise.reject(error)
@@ -65,6 +116,10 @@ class AxiosWithAuth {
   }
 
   handleError(error) {
+    if (axios.isCancel(error) || error?.__blockedDuplicate) {
+      return Promise.reject(error);
+    }
+
     let errorMessage = "An unexpected error occurred";
     if (error.response) {
       console.error("Data:", error.response.data);
@@ -73,42 +128,43 @@ class AxiosWithAuth {
 
       const status = error.response.status;
       switch (status) {
-        case 400:
+        case 400: {
           errorMessage = "Bad Request";
-          toast.error(errorMessage + " " + error?.response?.data?.message);
+          const composed =
+            errorMessage + " " + (error?.response?.data?.message || "");
+          showThrottledUniqueErrorToast(composed.trim());
           break;
+        }
         case 401:
           errorMessage = "Unauthorized. Please login again.";
-          // do sso login
-          // TEST: under observation of behavior
           AppUserManager.signinSilent();
-          toast.error(errorMessage);
+          showThrottledUniqueErrorToast(errorMessage);
           break;
         case 403:
           errorMessage =
             "Forbidden. You do not have permission to perform this action.";
-          toast.error(errorMessage);
+          showThrottledUniqueErrorToast(errorMessage);
           break;
         case 404:
           errorMessage = "The requested resource was not found";
-          toast.error(errorMessage);
+          showThrottledUniqueErrorToast(errorMessage);
           break;
         case 409:
           errorMessage =
             "A conflict occurred, suggesting that there may be a request for a resource that already exists. Please ensure that the resource you are attempting to create or modify is not already present.";
-          toast.error(errorMessage);
+          showThrottledUniqueErrorToast(errorMessage);
           break;
         case 500:
           errorMessage = "Internal Server Error";
-          toast.error(errorMessage);
+          showThrottledUniqueErrorToast(errorMessage);
           break;
         case 503:
           errorMessage = "Service Unavailable";
-          toast.error(errorMessage);
+          showThrottledUniqueErrorToast(errorMessage);
           break;
         default:
           errorMessage = `An error occurred with your request. Status code: ${status}`;
-          toast.error(errorMessage);
+          showThrottledUniqueErrorToast(errorMessage);
       }
     } else if (error.request) {
       console.log("Error Request:", error.message);
@@ -120,12 +176,12 @@ class AxiosWithAuth {
       console.error("No response received:", error.request);
       errorMessage =
         "The request was made but no response was received. Please check your network connection.";
-      toast.error(errorMessage);
+      showThrottledUniqueErrorToast(errorMessage);
     } else {
       console.error("Error:", error.message);
       errorMessage =
         error.message || "An error occurred while setting up the request.";
-      toast.error(errorMessage);
+      showThrottledUniqueErrorToast(errorMessage);
     }
 
     console.error("Error Config:", error.config);
@@ -138,8 +194,6 @@ class AxiosWithAuth {
 
   get = async (url, config = {}) => {
     await this.init();
-    // const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-    // await delay(3000);
     return this.axiosWithAuth.get(url, config).then(this.formatResponse);
   };
 

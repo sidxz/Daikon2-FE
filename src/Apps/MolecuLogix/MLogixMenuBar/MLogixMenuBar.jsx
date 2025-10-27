@@ -1,10 +1,11 @@
 import { TabMenu } from "primereact/tabmenu";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import "./MLogixMenuBar.css";
 
 import { useEffect } from "react";
+import { FcHeatMap } from "react-icons/fc";
 import { useLocation } from "react-router-dom";
 import { DiscloseIcon } from "../Icons/DiscloseIcon";
 import { MolecuLogixIcon } from "../Icons/MolecuLogixIcon";
@@ -16,10 +17,14 @@ const MLogixMenuBar = () => {
   useEffect(() => {
     if (location.pathname.includes("/moleculogix/search")) {
       setActiveIndex(2);
+    } else if (location.pathname.includes("/disclosure-report")) {
+      setActiveIndex(5);
     } else if (location.pathname.includes("/disclose")) {
+      setActiveIndex(4);
+    } else if (location.pathname.includes("/register")) {
       setActiveIndex(3);
     } else if (location.pathname.includes("/moleculogix")) {
-      setActiveIndex(1); // Assuming index 1 corresponds to "MolecuLogix", adjusted from 0
+      setActiveIndex(1);
     } else {
     }
   }, [location]);
@@ -44,9 +49,19 @@ const MLogixMenuBar = () => {
       command: () => navigate("search/"),
     },
     {
+      label: "Register",
+      icon: "icon icon-common icon-plus-circle",
+      command: () => navigate("register/"),
+    },
+    {
       label: "Disclose",
       icon: <DiscloseIcon />,
       command: () => navigate("disclose/"),
+    },
+    {
+      label: "Disclosure Report",
+      icon: <FcHeatMap className="m-1" style={{ fontSize: "2rem" }} />,
+      command: () => navigate("disclosure-report/"),
     },
     // {
     //   label: "All Molecules",
@@ -67,7 +82,9 @@ const MLogixMenuBar = () => {
         <TabMenu
           model={items}
           activeIndex={activeIndex}
-          onTabChange={(e) => setActiveIndex(e.index)}
+          onTabChange={(e) => {
+            setActiveIndex(e.index);
+          }}
         />
       </div>
     </div>

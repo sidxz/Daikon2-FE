@@ -2,8 +2,9 @@ import { observer } from "mobx-react-lite";
 import { DataView } from "primereact/dataview";
 
 import { Sidebar } from "primereact/sidebar";
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { STRINGS } from "../../../Customizations/strings";
 import Loading from "../../../Library/Loading/Loading";
 import SecHeading from "../../../Library/SecHeading/SecHeading";
 import { RootStoreContext } from "../../../RootStore";
@@ -34,7 +35,11 @@ const MLogixAllMolecules = () => {
 
   const addSideBarHeader = (
     <div className="flex w-full justify-between items-center">
-      <h2 className="text-lg font-semibold">Register Molecule</h2>
+      <div className="flex align-items-center gap-2">
+        <i className="icon icon-common icon-plus-circle"></i>
+        <h2 className="text-lg font-semibold">Register Molecule</h2>
+      </div>
+      <div className="flex text-sm">{STRINGS.DISCLOSURE_NOTICE}</div>
     </div>
   );
 

@@ -18,3 +18,30 @@ export const getUniqueMoleculeNames = (rowData) => {
     ? uniqueNames.join(", ")
     : rowData?.requestedMoleculeName || "";
 };
+
+/**
+ * Check if an imported row matches an existing molecule
+ * by comparing name, requestedName, or synonyms.
+ *
+ * @param {object} row - Row from Excel (imported hit).
+ * @param {object} existing - Existing hit object with molecule info.
+ * @returns {boolean} - True if row matches existing molecule.
+ */
+export function isSameMoleculeName(row, existing) {
+  if (!row || !existing?.molecule) return false;
+
+  const rowNames = [row.moleculeName?.trim()].filter(Boolean);
+
+  const existingNames = [
+    existing.molecule?.name?.trim(),
+    existing.requestedMoleculeName?.trim(),
+    ...(existing.molecule?.synonyms
+      ? existing.molecule.synonyms.split(",").map((s) => s.trim())
+      : []),
+  ].filter(Boolean);
+
+  // Case-insensitive comparison
+  return rowNames.some((rn) =>
+    existingNames.some((en) => rn?.toLowerCase() === en?.toLowerCase())
+  );
+}

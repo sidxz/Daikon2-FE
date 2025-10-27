@@ -1,12 +1,12 @@
 import { observer } from "mobx-react-lite";
 import { BlockUI } from "primereact/blockui";
 import { MultiSelect } from "primereact/multiselect";
-import React, { useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { RootStoreContext } from "../../../../RootStore";
 
 const InputAssociatedGenes = (props) => {
   const rootStore = useContext(RootStoreContext);
-  const { isGeneListCacheValid, isGeneListLoading, geneList, fetchGenes } =
+  const { isGeneListCacheValid, isFetchingGenes, geneList, fetchGenes } =
     rootStore.geneStore;
 
   useEffect(() => {
@@ -22,7 +22,7 @@ const InputAssociatedGenes = (props) => {
   }));
 
   return (
-    <BlockUI blocked={isGeneListLoading}>
+    <BlockUI blocked={isFetchingGenes}>
       <MultiSelect
         {...props}
         options={geneDropDownOptions}
@@ -35,7 +35,8 @@ const InputAssociatedGenes = (props) => {
         showClear
         filterBy="name"
         filterIcon="pi pi-search"
-        loading={isGeneListLoading}
+        loading={isFetchingGenes}
+        virtualScrollerOptions={{ itemSize: 43 }}
       />
     </BlockUI>
   );

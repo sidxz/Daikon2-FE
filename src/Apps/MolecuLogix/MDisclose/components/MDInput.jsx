@@ -4,7 +4,7 @@ import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { FileUpload } from "primereact/fileupload";
 import { InputText } from "primereact/inputtext";
-import React from "react";
+import { STRINGS } from "../../../../Customizations/strings";
 import ImportFromExcel from "../../../../Shared/Excel/ImportFromExcel";
 const MDInput = ({ inputs, setInputs, moveToPreview }) => {
   const columns = [
@@ -95,7 +95,7 @@ const MDInput = ({ inputs, setInputs, moveToPreview }) => {
             mode="basic"
             name="excelFile"
             accept=".xls,.xlsx,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-            maxFileSize={1000000}
+            maxFileSize={10000000}
             //url="/api/upload"
             customUpload={true}
             uploadHandler={onUpload}
@@ -144,6 +144,7 @@ const MDInput = ({ inputs, setInputs, moveToPreview }) => {
             please register it first in Moleculogix.
           </p>
         </div>
+        <div className="flex w-full font-bold">{STRINGS.DISCLOSURE_NOTICE}</div>
       </div>
       <div className="flex w-full border-1 border-50 border-round surface-ground">
         <DataTable

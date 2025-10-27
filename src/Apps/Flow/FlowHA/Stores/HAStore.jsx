@@ -63,7 +63,7 @@ export default class HAStore {
     if (inValidateCache) {
       this.isHaListCacheValid = false;
     }
-    if (this.isHaListCacheValid) {
+    if (this.isHaListCacheValid || this.isFetchingHAs) {
       return;
     }
     this.isFetchingHAs = true;
@@ -105,7 +105,13 @@ export default class HAStore {
       this.isHaRegistryCacheValid = false;
     }
 
+    // short circuit multiple requests
+    if (this.isFetchingHa) {
+      return;
+    }
+
     this.isFetchingHa = true;
+
     if (this.isHaRegistryCacheValid) {
       // find ha in registry and return if found
       const ha = this.haRegistry.get(haId);

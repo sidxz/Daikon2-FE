@@ -1,6 +1,6 @@
 import * as jsYaml from "js-yaml";
 import { FileUpload } from "primereact/fileupload";
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { RootStoreContext } from "../../../../RootStore";
 const QniareImport = () => {
   const rootStore = useContext(RootStoreContext);
@@ -15,7 +15,7 @@ const QniareImport = () => {
       <FileUpload
         name="yamlFile"
         accept=".yaml"
-        maxFileSize={1000000}
+        maxFileSize={10000000}
         mode="basic"
         chooseLabel="Import"
         chooseOptions={{

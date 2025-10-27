@@ -33,6 +33,11 @@ export default class MoleculeStore {
 
       findSimilarMolecules: action,
       isFindingSimilarMolecules: observable,
+
+      getRecentDisclosures: action,
+      isFetchingRecentDisclosures: observable,
+      recentDisclosures: observable,
+      registerMoleculeBatch: action,
     });
   }
 
@@ -45,6 +50,9 @@ export default class MoleculeStore {
   isRegisteringMolecule = false;
   isUpdatingMolecule = false;
   isFindingSimilarMolecules = false;
+  isFetchingRecentDisclosures = false;
+
+  recentDisclosures = new Map();
 
   // Actions
 
@@ -205,6 +213,72 @@ export default class MoleculeStore {
     } finally {
       runInAction(() => {
         this.isFindingSimilarMolecules = false;
+      });
+    }
+  };
+
+  getRecentDisclosures = async (params) => {
+    this.isFetchingRecentDisclosures = true;
+    try {
+      // convert dateFrom and dateTo to ISO if they are not null
+      if (params?.startDate) {
+        params.startDate = params.startDate.toISOString();
+      }
+      if (params?.endDate) {
+        params.endDate = params.endDate.toISOString();
+      }
+      console.log("Fetching recent disclosures with params:", params);
+
+      let res = await MolDbAPI.getRecentDisclosures(params);
+      runInAction(() => {
+        console.log("Recent disclosures response:", res);
+        // empty the existing recentDisclosures map
+        this.recentDisclosures.clear();
+        res.tableElements.forEach((disclosure) => {
+          this.recentDisclosures.set(disclosure.id, disclosure);
+        });
+        // Process the response as needed
+        this.isFetchingRecentDisclosures = false;
+      });
+    } catch (error) {
+      console.error("Error fetching recent disclosures:", error);
+    } finally {
+      runInAction(() => {
+        this.isFetchingRecentDisclosures = false;
+      });
+    }
+  };
+
+  registerMoleculeBatch = async (commands, options = {}) => {
+    this.isRegisteringMolecule = true;
+    try {
+      const res = await MolDbAPI.registerMoleculeBatch(commands, options);
+
+      runInAction(() => {
+        // res is expected to be an array of RegisterMoleculeResponseDTO
+        (res || []).forEach((m) => {
+          // Be defensive: only format if numbers exist
+          if (m?.molecularWeight?.toFixed)
+            m.molecularWeight = m.molecularWeight.toFixed(2);
+          if (m?.tpsa?.toFixed) m.tpsa = m.tpsa.toFixed(2);
+          if (m?.id) this.moleculeRegistry.set(m.id, m);
+        });
+
+        const already = res.filter((r) => r.wasAlreadyRegistered).length;
+        const fresh = res.length - already;
+        if (fresh > 0) toast.success(`${fresh} molecule(s) registered`);
+        if (already > 0)
+          toast.warn(`${already} already registered (synonyms may be updated)`);
+      });
+
+      return res;
+    } catch (error) {
+      console.error("Error in registerMoleculeBatch:", error);
+      toast.error("Batch registration failed");
+      throw error;
+    } finally {
+      runInAction(() => {
+        this.isRegisteringMolecule = false;
       });
     }
   };

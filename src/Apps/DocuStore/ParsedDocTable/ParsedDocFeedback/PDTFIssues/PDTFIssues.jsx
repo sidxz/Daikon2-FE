@@ -1,6 +1,5 @@
 import { observer } from "mobx-react-lite";
 import { Divider } from "primereact/divider";
-import React from "react";
 import PDTFIssue from "./PDTFIssue";
 import PDTFIssueAdd from "./PDTFIssueAdd";
 
@@ -27,7 +26,7 @@ const PDTFIssues = () => {
     {
       id: 4,
       createdById: 5,
-      body: "<p>Repulsive questions contented him few extensive supported. Of remarkably thoroughly he appearance in. Supposing tolerably applauded or of be. Place voice no arises along to. Parlors waiting so against me no. Wishing calling is warrant settled was lucky.</p>",
+      body: "<p></p>",
       dateCreated: new Date(),
     },
   ];

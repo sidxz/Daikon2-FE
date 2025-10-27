@@ -7,7 +7,7 @@ import { Column } from "primereact/column";
 import { confirmDialog } from "primereact/confirmdialog";
 import { DataTable } from "primereact/datatable";
 import { Sidebar } from "primereact/sidebar";
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Loading from "../../../../../Library/Loading/Loading";
 import SecHeading from "../../../../../Library/SecHeading/SecHeading";
@@ -140,6 +140,10 @@ const FSPhVScreen = ({}) => {
                   />
                 }
               >
+                <Column
+                  header="#"
+                  body={(data, options) => options.rowIndex + 1}
+                ></Column>
                 <Column
                   field="library"
                   header="Library"

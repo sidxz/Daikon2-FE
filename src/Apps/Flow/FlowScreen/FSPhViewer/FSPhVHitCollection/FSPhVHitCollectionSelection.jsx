@@ -3,7 +3,7 @@ import { BreadCrumb } from "primereact/breadcrumb";
 import { Button } from "primereact/button";
 import { Card } from "primereact/card";
 import { Sidebar } from "primereact/sidebar";
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Loading from "../../../../../Library/Loading/Loading";
 import SecHeading from "../../../../../Library/SecHeading/SecHeading";
@@ -32,8 +32,8 @@ const FSPhVHitCollectionSelection = ({ selectedScreen }) => {
   }, [
     isHitCollectionRegistryCacheValid,
     fetchHitCollectionsOfScreen,
-    selectedScreen,
-    selectedHitCollection,
+    selectedScreen?.id,
+    selectedHitCollection?.id,
   ]);
 
   useEffect(() => {
@@ -50,7 +50,7 @@ const FSPhVHitCollectionSelection = ({ selectedScreen }) => {
   }, [
     isFetchingHitCollection,
     hitCollectionOfScreen,
-    selectedScreen,
+    selectedScreen?.id,
     navigate,
   ]);
 

@@ -109,7 +109,7 @@ const MDisclose = () => {
   };
 
   return (
-    <div className="flex flex-column w-full gap-2">
+    <div className="flex flex-column w-full gap-2 fadein animation-duration-1000">
       <div className="flex w-full">
         <SecHeading
           svgIcon={<DiscloseIcon size={"25em"} />}

@@ -1,4 +1,3 @@
-import qs from "qs";
 import AxiosWithAuth from "../../../Shared/Axios/AxiosWithAuth";
 
 const axiosWithAuth = new AxiosWithAuth();
@@ -6,11 +5,7 @@ const axiosWithAuth = new AxiosWithAuth();
 const MolDbAPI = {
   getMoleculeById: (id) => axiosWithAuth.get(`/v2/molecule/${id}`),
   getMoleculesByIds: (ids) =>
-    axiosWithAuth.get("/v2/molecule/by-ids", {
-      params: { IDs: ids },
-      paramsSerializer: (params) =>
-        qs.stringify(params, { arrayFormat: "repeat" }),
-    }),
+    axiosWithAuth.post("/v2/molecule/by-ids", { IDs: ids }),
 
   registerMolecule: (molecule) => axiosWithAuth.post("/v2/molecule/", molecule),
   updateMolecule: (molecule) =>
@@ -37,6 +32,19 @@ const MolDbAPI = {
   discloseMolecules: (molecules) =>
     axiosWithAuth.put("/v2/molecule/disclose-batch", {
       molecules: molecules,
+    }),
+
+  registerMoleculePreview: (molecules) =>
+    axiosWithAuth.post("/v2/molecule/register-molecule-preview", {
+      queries: molecules,
+    }),
+
+  registerMoleculeBatch: (commands, options = {}) =>
+    axiosWithAuth.post("/v2/molecule/batch", commands, options),
+
+  getRecentDisclosures: (params) =>
+    axiosWithAuth.get("/v2/aggregators/disclosure/generate-dashboard", {
+      params: params,
     }),
 };
 
