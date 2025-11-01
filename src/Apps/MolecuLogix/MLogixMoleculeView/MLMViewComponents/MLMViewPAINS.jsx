@@ -2,7 +2,6 @@ import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { Fieldset } from "primereact/fieldset";
 import { Tag } from "primereact/tag";
-import React from "react";
 
 const MLMViewPAINS = ({ selectedMolecule }) => {
   let painsFlags = [
