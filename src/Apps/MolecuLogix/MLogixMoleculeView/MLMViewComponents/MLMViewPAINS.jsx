@@ -27,7 +27,7 @@ const MLMViewPAINS = ({ selectedMolecule }) => {
 
   return (
     <div className="flex pt-2 w-full">
-      <Fieldset className="m-0 flex-grow-1 w-full" legend="PAINS">
+      <Fieldset className="m-0 flex-grow-1 w-full" legend="PAINS Filter">
         <div className="flex flex-column w-full gap-2">
           <div className="flex">
             <DataTable
