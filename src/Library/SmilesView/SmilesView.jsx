@@ -83,13 +83,13 @@ const SmilesView = ({
       if (compound?.pains?.rdKitPains) {
         return (
           <div className="flex">
-            <Tooltip target=".rdk_pains" />
+            <Tooltip target={".rdk_pains" + compound.id} />
             <Tag
               style={{
                 background: "#ffb74d",
               }}
               tooltipOptions={{ showDelay: 1000, hideDelay: 300 }}
-              className="rdk_pains"
+              className={"rdk_pains" + compound.id}
               icon="pi pi-exclamation-triangle"
               data-pr-tooltip="This compound has been identified as a possible PAINS 
                 (Pan-Assay Interference Compound) by RDKit. While this may be a false positive, 
