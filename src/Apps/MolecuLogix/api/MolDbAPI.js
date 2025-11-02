@@ -46,6 +46,9 @@ const MolDbAPI = {
     axiosWithAuth.get("/v2/aggregators/disclosure/generate-dashboard", {
       params: params,
     }),
+
+  explainNuisance: (nuisanceDto) =>
+    axiosWithAuth.post("/v2/molecule/explain-nuisance", nuisanceDto),
 };
 
 export default MolDbAPI;

@@ -2,12 +2,14 @@ import { observer } from "mobx-react-lite";
 import { ContextMenu } from "primereact/contextmenu";
 import { Tag } from "primereact/tag";
 import { Tooltip } from "primereact/tooltip";
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { FcPrivacy } from "react-icons/fc";
 import { VscSearchFuzzy } from "react-icons/vsc";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { AIDocumentIcon } from "../../Apps/Flow/icons/AIDocumentIcon";
 import { DiscloseIcon } from "../../Apps/MolecuLogix/Icons/DiscloseIcon";
+import { ML_GENERATED_TOOLTIP } from "../../constants/strings";
 import MoleculeStructure from "../RDKit/MoleculeStructure/MoleculeStructure";
 const SmilesView = ({
   compound,
@@ -81,20 +83,118 @@ const SmilesView = ({
       if (compound?.pains?.rdKitPains) {
         return (
           <div className="flex">
-            <Tooltip target=".rdk_pains" />
+            <Tooltip target={".rdk_pains" + compound.id} />
             <Tag
-              className="rdk_pains"
-              severity="warning"
-              value="RDK_PAINS"
+              style={{
+                background: "#ffb74d",
+              }}
+              tooltipOptions={{ showDelay: 1000, hideDelay: 300 }}
+              className={"rdk_pains" + compound.id}
               icon="pi pi-exclamation-triangle"
               data-pr-tooltip="This compound has been identified as a possible PAINS 
                 (Pan-Assay Interference Compound) by RDKit. While this may be a false positive, 
                 we recommend reviewing it carefully before proceeding."
-            ></Tag>
+            >
+              <div className="flex align-items-center">
+                <span className="text-xs text-color">PAINS</span>
+              </div>
+            </Tag>
           </div>
         );
       }
     }
+  };
+
+  const MLGeneratedTag = (labelClass, tagText, toolTipText) => (
+    <div className="flex">
+      <Tooltip target={`.${labelClass}`}>
+        {toolTipText} <br />
+        {ML_GENERATED_TOOLTIP}
+      </Tooltip>
+      <Tag
+        style={{
+          background:
+            "linear-gradient(135deg, #fff3e0 0%, #ffcc80 40%, #fb8c00 100%)",
+        }}
+        className={labelClass}
+        tooltipOptions={{ showDelay: 1000, hideDelay: 300 }}
+      >
+        <div className="flex align-items-center">
+          <AIDocumentIcon className="mr-2" />
+          <span className="text-xs text-color">{tagText}</span>
+        </div>
+      </Tag>
+    </div>
+  );
+
+  let generateNuisanceFlag = () => {
+    let tags = [];
+    if (compound?.predictions?.nuisanceRequestStatus === 0) {
+      tags.push(
+        <div className="flex">
+          <Tooltip target=".nuisance_flag" />
+          <Tag
+            style={{
+              background: "#CCCCCC",
+            }}
+            className="nuisance_flag"
+            value="AI/ML Predictions"
+            icon="pi pi-clock"
+            data-pr-tooltip="The AI model is still analyzing this compound. Please check back later for the results."
+          ></Tag>
+        </div>
+      );
+    }
+    if (
+      compound?.predictions?.nuisanceModelPredictions[0]?.labelReactive === 1
+    ) {
+      tags.push(
+        MLGeneratedTag(
+          "labelReactive",
+          "Nuisance - Reactive",
+          "The AI model has identified this compound as potentially reactive."
+        )
+      );
+    }
+
+    if (
+      compound?.predictions?.nuisanceModelPredictions[0]?.labelAggregator === 1
+    ) {
+      tags.push(
+        MLGeneratedTag(
+          "labelAggregator",
+          "Nuisance - Aggregator",
+          "The AI model has identified this compound as a potential aggregator."
+        )
+      );
+    }
+
+    if (
+      compound?.predictions?.nuisanceModelPredictions[0]?.labelPromiscuous === 1
+    ) {
+      tags.push(
+        MLGeneratedTag(
+          "labelPromiscuous",
+          "Nuisance - Promiscuous",
+          "The AI model has identified this compound as potentially promiscuous."
+        )
+      );
+    }
+
+    if (
+      compound?.predictions?.nuisanceModelPredictions[0]
+        ?.labelLuciferaseInhibitor === 1
+    ) {
+      tags.push(
+        MLGeneratedTag(
+          "labelLuciferaseInhibitor",
+          "Nuisance - LucF Inhibitor",
+          "The AI model has identified this compound as a potential luciferase inhibitor."
+        )
+      );
+    }
+
+    return <div className="flex gap-1 flex-wrap">{tags}</div>;
   };
 
   if (
@@ -132,8 +232,9 @@ const SmilesView = ({
       className="flex flex-column min-w-max justify-content-center align-items-center border-0"
     >
       <ContextMenu model={contextMenuItems} ref={cm} />
-      <div className="flex justify-content-start w-full pt-1">
+      <div className="flex justify-content-start w-full pt-1 gap-1">
         {generatePainsFlag()}
+        {generateNuisanceFlag()}
       </div>
 
       <div className="flex">

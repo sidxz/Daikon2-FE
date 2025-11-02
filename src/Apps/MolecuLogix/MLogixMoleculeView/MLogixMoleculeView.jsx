@@ -11,6 +11,7 @@ import { appColors } from "../../../constants/colors";
 import MLMViewDisclosureInformation from "./MLMViewComponents/MLMViewDisclosureInformation";
 import MLMViewGeneralInfo from "./MLMViewComponents/MLMViewGeneralInfo";
 import MLMViewIdentifiers from "./MLMViewComponents/MLMViewIdentifiers/MLMViewIdentifiers";
+import MLMViewNuisance from "./MLMViewComponents/MLMViewNuisance";
 import MLMViewOtherInfo from "./MLMViewComponents/MLMViewOtherInfo";
 import MLMViewPAINS from "./MLMViewComponents/MLMViewPAINS";
 import MLMViewRelations from "./MLMViewComponents/MLMViewRelations/MLMViewRelations";
@@ -101,8 +102,14 @@ const MLogixMoleculeView = () => {
                   selectedMolecule={selectedMolecule}
                 />
               </div>
-              <div className="flex gap-2">
-                <MLMViewPAINS selectedMolecule={selectedMolecule} />
+
+              <div className="flex flex-column gap-2">
+                <div className="flex gap-2">
+                  <MLMViewNuisance selectedMolecule={selectedMolecule} />
+                </div>
+                <div className="flex gap-2">
+                  <MLMViewPAINS selectedMolecule={selectedMolecule} />
+                </div>
               </div>
             </div>
           </div>
