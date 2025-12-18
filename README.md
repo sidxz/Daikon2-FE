@@ -1,6 +1,25 @@
-# Daikon
-DAIKON is an open-source web application designed to manage and visualize targets, screens, pre-projects, and projects within the drug discovery pipeline. It is an interface developed to facilitate collaboration among scientists at member organizations, and enables project, program, and portfolio managers to enter gene targets into the discovery pipeline and track the progress of screening efforts, hit sets and projects directed at those targets as they progress towards clinical candidate selection. It includes public and private data sharing capabilities, ensuring security and accessibility required for international multiparty collaboration.  It is a one stop solution that enables “start to finish” tracking of the discovery pipeline. It standardizes many aspects of the drug discovery pipeline, one of them being target selection criteria using predefined questionnaires and assigning them a bucket score.
+# OVERVIEW
+DAIKON is an AI-enabled drug discovery platform designed to manage, integrate, and accelerate TB drug discovery across distributed research organizations. It supports the full lifecycle from target ideation → screening → hit assessment → portfolio → post-portfolio, combining experimental data, chemical intelligence, structural biology, and AI-driven knowledge extraction into a single system of record. 
+Since its original conception as a target screening database, DAIKON has evolved into a AI research platform supporting 100K+ compounds, and multiple concurrent discovery programs.
 
+# VISION
+DAIKON will function as an AI-augmented scientific co-pilot, enabling researchers to:
+- Systematically evaluate and prioritize biological targets
+- Rapidly assess chemical quality, liability, and novelty
+- Integrate AI predictions directly into experimental decision-making
+- Preserve institutional knowledge across years of discovery
+
+
+# Target Users
+# Primary and Exclusive Users
+TBDA Consortium Members, including:
+- Medicinal chemists
+- Structural biologists
+- Screening and assay scientists
+- Computational chemists and AI scientists
+- Bioinformaticians
+- Program and portfolio leads
+These users operate across academia, pharma, biotech, and non-profit organizations within the TBDA consortium and collaborate on shared TB drug discovery programs.
 
 ## Configuration
 Configuration must be placed in
