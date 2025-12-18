@@ -23,28 +23,28 @@ DAIKON will function as an AI-augmented decision-support platform that assists s
 **What DAIKON does:**
 
 DAIKON provides an integrated platform that:
-•	Captures screening operations across labs and collaborators
-•	Manages hits, chemical series, and progression decisions
-•	Enforces compound disclosure workflows and ownership tracking
-•	Provides core cheminformatics capabilities, including structure storage, property calculation, and visualization
-•	Integrates AI-based nuisance detection to flag aggregators, reactive, luciferase inhibitors, and promiscuous molecules
-•	Acts as a knowledge repository through doc summarization, tagging and search
-•	Maintains project and portfolio lineage from target inception through horizon and timeline views
+-	Captures screening operations across labs and collaborators
+-	Manages hits, chemical series, and progression decisions
+-	Enforces compound disclosure workflows and ownership tracking
+-	Provides core cheminformatics capabilities, including structure storage, property calculation, and visualization
+-	Integrates AI-based nuisance detection to flag aggregators, reactive, luciferase inhibitors, and promiscuous molecules
+-	Acts as a knowledge repository through doc summarization, tagging and search
+-	Maintains project and portfolio lineage from target inception through horizon and timeline views
 These capabilities are linked longitudinally across time, around:
-•	targets
-•	compounds
-•	decisions
-•	outcomes
-This linkage preserves historical accuracy and enables continuity of scientific and portfolio context as discovery programs mature.<img width="468" height="68" alt="image" src="https://github.com/user-attachments/assets/a6ddcb6b-153d-4b99-9852-5d896620db86" />
+-	targets
+-	compounds
+-	decisions
+-	outcomes
+This linkage preserves historical accuracy and enables continuity of scientific and portfolio context as discovery programs mature
 
 **What DAIKON does NOT:**
 DAIKON explicitly does not aim to:
-•	Replace wet-lab execution systems (ELNs, LIMS, assay automation tools)
-•	Function as a standalone chemistry calculation engine or simulation platform
-•	Serve as a generic document management or collaboration tool
-•	Act as an autonomous AI discovery engine that replaces scientific judgment
-•	Optimize laboratory throughput, scheduling, or experiment execution
-•	Expand into late-stage clinical development or regulatory systems
+-	Replace wet-lab execution systems (ELNs, LIMS, assay automation tools)
+- Function as a standalone chemistry calculation engine or simulation platform
+-	Serve as a generic document management or collaboration tool
+-	Act as an autonomous AI discovery engine that replaces scientific judgment
+-	Optimize laboratory throughput, scheduling, or experiment execution
+-	Expand into late-stage clinical development or regulatory systems
 DAIKON is designed to support decision-making, not to execute experiments, replace domain expertise, or automate discovery end-to-end.
 
 # Target Users
