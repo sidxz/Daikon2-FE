@@ -73,7 +73,7 @@ TBDA consortium members:
 DAIKON is designed to augment expert workflows, preserve institutional knowledge, and reduce friction across organizational boundaries.
 
 # Core Product Capabilities
-**1. Discovery Data Capture and Organization**
+**1. Discovery Data Capture and Organization:**
 DAIKON acts as the system of record for discovery data, enabling structured capture and retrieval of:
 - Targets, genes, and biological context
 - Phenotypic and target-based screens
@@ -83,10 +83,10 @@ All data is organized around biologically meaningful entities rather than isolat
 
 **2. Dual-Mode Discovery Support**
 - Target-based workflows: target prioritization, biochemical screens, structure-guided hit assessment
--Phenotypic workflows: whole-cell screens, phenotypic hit triage, resistance and validation data
+- Phenotypic workflows: whole-cell screens, phenotypic hit triage, resistance and validation data
 The platform preserves traceability as programs transition between phenotypic discovery and validated targets, avoiding artificial silos.
 
-**3. Project, Screen, and Pipeline Management**
+**3. Project, Screen, and Pipeline Management:**
 DAIKON provides structured pipeline views that reflect real discovery stages:
 - Targets → Screens → Hit Assessment → Portfolio → Post-Portfolio
 - Dedicated landing pages per stage
@@ -94,14 +94,14 @@ DAIKON provides structured pipeline views that reflect real discovery stages:
 - Visual indicators for stalled or inactive screens
 These views enable teams to monitor progress, identify bottlenecks, and maintain shared situational awareness across organizations.
 
-**4. Collaboration and Activity Tracking**
+**4. Collaboration and Activity Tracking:**
 DAIKON includes built-in collaboration features:
 - Activity feeds showing recent updates and changes
 - Discussion threads linked to targets, screens, and projects
 - Contextual visibility into who changed what and when
 This ensures decisions and rationale remain visible and auditable across the consortium.
 
-**5. Chemical Intelligence via MolecuLogix**
+**5. Chemical Intelligence via MolecuLogix:**
 DAIKON integrates MolecuLogix as its chemical intelligence layer, enabling:
 - Storage and visualization of chemical structures
 - Substructure and similarity searches
@@ -110,21 +110,21 @@ DAIKON integrates MolecuLogix as its chemical intelligence layer, enabling:
 - Reverse lookup from molecule to biological context
 This provides medicinal chemists with direct chemical context inside discovery workflows.
 
-**6. AI-Enabled Compound Quality Assessment**
+**6. AI-Enabled Compound Quality Assessment:**
 DAIKON integrates AI models directly into compound workflows to:
 - Automatically flag nuisance compounds (aggregators, reactive compounds, luciferase inhibitors, promiscuous molecules)
 - Surface risk signals early in hit assessment
 - Support expert review rather than automate decisions
 AI outputs are transparent and designed to augment scientific judgment.
 
-**7. Knowledge Management and Retention**
+**7. Knowledge Management and Retention:**
 DAIKON functions as a long-term knowledge repository by:
 - Extracting and summarizing information from large document collections
 - Tagging and linking insights to targets, compounds, and projects
 - Preserving historical rationale behind prioritization and progression decisions
 This prevents loss of institutional memory across multi-year discovery programs.
 
-**8. Secure, Consortium-Scale Deployment**
+**8. Secure, Consortium-Scale Deployment:**
 DAIKON supports:
 - On-premise or cloud deployment
 - Enterprise authentication (e.g., Active Directory / SSO)
