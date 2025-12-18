@@ -11,8 +11,6 @@ This repository focuses on:
 - Consortium-specific workflows and governance
 - Configuration and implementation details
 
-Together, they represent the external and internal views of the same platform.
-
 # Vision
 DAIKON will function as an AI-augmented scientific co-pilot, enabling researchers to:
 - Systematically evaluate and prioritize biological targets
