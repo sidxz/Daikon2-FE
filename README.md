@@ -131,6 +131,13 @@ DAIKON supports:
 - Access control aligned with consortium governance
 This enables secure collaboration across academic, pharma, biotech, and non-profit partners.
 
+# Getting Started (Developers)
+This repository contains the frontend codebase for the DAIKON platform. It is intended for contributors and collaborators working on development,
+deployment, or evaluation of the system.
+
+Detailed product context, scope, and user intent are described above.
+The sections below focus on configuration and runtime setup.
+
 ## Configuration 
 Configuration must be placed in
 src/config.js
