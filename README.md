@@ -12,7 +12,8 @@ This repository focuses on:
 - Configuration and implementation details
 
 # Vision
-DAIKON will function as an AI-augmented scientific co-pilot, enabling researchers to:
+DAIKON will function as an AI-augmented decision-support platform that assists scientists and researchers by surfacing insights, risks, and historical context while preserving human judgment and guide them to:
+
 - Systematically evaluate and prioritize biological targets
 - Rapidly assess chemical quality, liability, and novelty
 - Integrate AI predictions directly into experimental decision-making
