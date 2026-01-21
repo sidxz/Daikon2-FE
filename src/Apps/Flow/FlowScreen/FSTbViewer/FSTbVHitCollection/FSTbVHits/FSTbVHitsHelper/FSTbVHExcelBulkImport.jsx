@@ -12,7 +12,7 @@ import ImportFromExcel from "../../../../../../../Shared/Excel/ImportFromExcel";
 import InputOrg from "../../../../../../../Shared/InputEditors/InputOrg";
 import InputScientist from "../../../../../../../Shared/InputEditors/InputScientist";
 import { GroupMolecules } from "../../../../shared/DataImportHelper";
-import { isSameMoleculeName } from "../../../../shared/SharedHelper";
+import { isSameMoleculeAndAssayType } from "../../../../shared/SharedHelper";
 import { DoseResponseBodyTemplate } from "./FSTbVHDataTableHelper";
 import {
   DoseResponsesFlattener,
@@ -179,6 +179,23 @@ const FSTbVHExcelBulkImport = ({
                     ...existingData.find((hit) => hit.id === row.id),
                     ...row,
                   };
+
+                  // if assayType is null or not set, set it to "Default"
+                  if (!row["assayType"]) {
+                    row["assayType"] = "";
+                  }
+
+                  // if id is missing, try to find it from existingData by moleculeName and assayType
+                  if (!row["id"] || row["id"] === "") {
+                    let existingHit = existingData.find(
+                      (hit) =>
+                        hit.moleculeName === row["moleculeName"] &&
+                        hit.assayType === row["assayType"]
+                    );
+                    if (existingHit) {
+                      row["id"] = existingHit["id"];
+                    }
+                  }
                   // console.log("row", row);
                 });
                 console.log("jsonData", jsonData);
@@ -196,7 +213,7 @@ const FSTbVHExcelBulkImport = ({
               headerMap={DtFieldsGroupedColumnMapping}
               existingData={existingData}
               comparatorKey="id"
-              comparatorFn={isSameMoleculeName}
+              comparatorFn={isSameMoleculeAndAssayType}
               structureFields={["smiles"]}
               requiredFields={["moleculeName"]}
               data={dataForPreview}

@@ -3,10 +3,11 @@ import { DataTable } from "primereact/datatable";
 import { Dialog } from "primereact/dialog";
 import { Dropdown } from "primereact/dropdown";
 import { FileUpload } from "primereact/fileupload";
-import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
 import { ProgressBar } from "primereact/progressbar";
 
+import { observer } from "mobx-react-lite";
+import { MeterGroup } from "primereact/metergroup";
 import { useContext, useMemo, useRef, useState } from "react";
 import SmilesView from "../../../../Library/SmilesView/SmilesView";
 import { RootStoreContext } from "../../../../RootStore";
@@ -14,16 +15,23 @@ import ImportFromExcel from "../../../../Shared/Excel/ImportFromExcel";
 import InputOrgAlias from "../../../../Shared/InputEditors/InputOrgAlias";
 import InputScientist from "../../../../Shared/InputEditors/InputScientist";
 import { AppOrgResolver } from "../../../../Shared/VariableResolvers/AppOrgResolver";
-import { DtFieldsToExcelColumnMapping } from "../MRConstants";
+import { DtFieldsToExcelColumnMapping } from "../MLogixRegistrationConstants";
+
+import {
+  enrichRowFactory,
+  normalize,
+  processInChunks,
+} from "../helpers/MLRStep1Helper";
 
 const CHUNK_SIZE = 1000; // tune: 500–2000 works well in browsers
 
-const MRInputSource = ({ onDataReady }) => {
+const MLRegistrationStep1 = ({ onDataReady }) => {
   const [dataProcessed, setDataProcessed] = useState([]);
   const [busy, setBusy] = useState(false);
   const [progress, setProgress] = useState(0); // 0–100
   const [progressMsg, setProgressMsg] = useState("");
   const [totalRows, setTotalRows] = useState(0);
+  const [initialRowsInExcel, setInitialRowsInExcel] = useState(0);
 
   const rootStore = useContext(RootStoreContext);
   const { user } = rootStore.authStore;
@@ -35,17 +43,7 @@ const MRInputSource = ({ onDataReady }) => {
   );
   const [metaDataOrgID] = useState(user?.appOrgId || "");
 
-  const normalize = (s) => (s ?? "").toString().trim();
-
   // ---------- Column Editors ----------
-  const textEditor = (options) => (
-    <InputText
-      className="w-full"
-      value={options.value ?? ""}
-      onChange={(e) => options.editorCallback(e.target.value)}
-    />
-  );
-
   const scientistEditor = (options) => (
     <InputScientist
       id={`scientist-editor-${options?.rowIndex ?? 0}`}
@@ -116,61 +114,15 @@ const MRInputSource = ({ onDataReady }) => {
     });
   };
 
-  // ---------- Chunk helpers ----------
-  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-
-  const enrichRow = (r) => {
-    const row = { ...r };
-    if (!normalize(row.disclosureScientist))
-      row.disclosureScientist = metaDataScientist;
-
-    if (normalize(row.disclosureOrg)) {
-      const res = fuzzyMatchOrgByName(row.disclosureOrg);
-      if (res?.id) row.orgId = res.id;
-    }
-    if (!normalize(row.orgId)) row.orgId = metaDataOrgID;
-
-    return row;
-  };
-
-  const processInChunks = async (rows) => {
-    setBusy(true);
-    setProgress(0);
-    setProgressMsg("Preparing data…");
-    setTotalRows(rows.length);
-
-    const cleaned = [];
-    const total = rows.length;
-
-    // filter first in one pass (fast)
-    const filtered = rows.filter((r) => normalize(r.name));
-
-    for (let i = 0; i < filtered.length; i += CHUNK_SIZE) {
-      const chunk = filtered.slice(i, i + CHUNK_SIZE);
-
-      // enrich chunk
-      const enriched = chunk.map(enrichRow);
-      cleaned.push(...enriched);
-
-      // let the browser paint (prevents freeze)
-      await sleep(0);
-
-      const pct = Math.round(((i + chunk.length) / total) * 100);
-      setProgress(pct);
-      setProgressMsg(
-        `Processed ${Math.min(i + chunk.length, total)} of ${total} rows`,
-      );
-    }
-
-    // assign __rid sequentially
-    let rid = 0;
-    const withIds = cleaned.map((row) => ({ __rid: ++rid, ...row }));
-
-    setProgressMsg("Finalizing…");
-    setDataProcessed(withIds);
-    onDataReady?.(withIds);
-    setBusy(false);
-  };
+  const enrichRow = useMemo(
+    () =>
+      enrichRowFactory({
+        metaDataScientist,
+        metaDataOrgID,
+        fuzzyMatchOrgByName,
+      }),
+    [metaDataScientist, metaDataOrgID, fuzzyMatchOrgByName],
+  );
 
   // ---------- File import & row prep ----------
   const handleUpload = async (e) => {
@@ -182,7 +134,6 @@ const MRInputSource = ({ onDataReady }) => {
     setProgressMsg("Reading Excel…");
 
     try {
-      // If your ImportFromExcel supports progress, pass a callback.
       const raw = await ImportFromExcel({
         file,
         headerMap: DtFieldsToExcelColumnMapping,
@@ -196,8 +147,20 @@ const MRInputSource = ({ onDataReady }) => {
       e.files = null;
       e.options?.clear?.();
 
-      // Now chunked enrich to avoid blocking
-      await processInChunks(raw);
+      setInitialRowsInExcel(raw.length);
+
+      await processInChunks({
+        rows: raw,
+        chunkSize: CHUNK_SIZE,
+        normalizeFn: normalize,
+        enrichRow,
+        setBusy,
+        setProgress,
+        setProgressMsg,
+        setTotalRows,
+        setDataProcessed,
+        onDataReady,
+      });
     } catch (err) {
       console.error(err);
       setBusy(false);
@@ -206,15 +169,66 @@ const MRInputSource = ({ onDataReady }) => {
 
   // ---------- DataTable perf knobs ----------
   const totalRecords = dataProcessed.length;
+  const rowsWithStructure = dataProcessed.filter((r) =>
+    normalize(r.smiles),
+  ).length;
+  const rowsWithoutStructure = totalRecords - rowsWithStructure;
   const rowsPerPage = 100; // UX sweet spot
-  const itemSize = 72; // row height for virtual scroller (tune if needed)
 
   const header = useMemo(
     () => (
-      <div className="flex justify-content-between align-items-center w-full">
-        <span className="text-xl text-color-secondary">
-          {totalRecords.toLocaleString()} rows loaded
-        </span>
+      <div className="w-full flex gap-3 bg-surface-50 border-round-lg">
+        {/* Initial Rows */}
+        <div className="flex align-items-center gap-2 px-3 py-2 border-round-md bg-white">
+          <i className="pi pi-file-excel text-green-600 text-xl" />
+          <div className="flex flex-column">
+            <span className="text-500 text-xs uppercase tracking-wide">
+              Rows in Excel
+            </span>
+            <span className="text-900 font-semibold text-lg">
+              {initialRowsInExcel}
+            </span>
+          </div>
+        </div>
+
+        {/* Total Records */}
+        <div className="flex align-items-center gap-2 px-3 py-2 border-round-md bg-white">
+          <i className="pi pi-database text-primary text-xl" />
+          <div className="flex flex-column">
+            <span className="text-500 text-xs uppercase tracking-wide">
+              Valid Rows
+            </span>
+            <span className="text-900 font-semibold text-lg">
+              {totalRecords}
+            </span>
+          </div>
+        </div>
+
+        {/* Meter Group */}
+        <div className="flex-grow min-w-20rem px-3 py-2 border-round-md bg-white">
+          <div className="flex align-items-center justify-content-between mb-2">
+            <span className="text-500 text-xs uppercase tracking-wide">
+              Structure Coverage
+            </span>
+            <i className="pi pi-chart-bar text-400" />
+          </div>
+
+          <MeterGroup
+            className="w-full"
+            values={[
+              {
+                label: "With Structure",
+                value: (rowsWithStructure / (totalRecords || 1)) * 100,
+                color: "var(--green-500)",
+              },
+              {
+                label: "Without Structure",
+                value: (rowsWithoutStructure / (totalRecords || 1)) * 100,
+                color: "var(--blue-500)",
+              },
+            ]}
+          />
+        </div>
       </div>
     ),
     [totalRecords],
@@ -222,7 +236,6 @@ const MRInputSource = ({ onDataReady }) => {
 
   return (
     <div className="flex flex-column w-full h-full">
-      {/* Progress dialog */}
       <Dialog
         header="Processing Excel"
         visible={busy}
@@ -245,14 +258,14 @@ const MRInputSource = ({ onDataReady }) => {
         <FileUpload
           name="excelFile"
           accept=".xls,.xlsx,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-          maxFileSize={50_000_000} // bump for big files if needed
+          maxFileSize={50_000_000}
           mode="basic"
-          chooseLabel="Browse and Select File"
+          chooseLabel="Select Excel File to Import"
           chooseOptions={{
             icon: "icon icon-common icon-plus-circle",
-            className: "p-button-text p-button-md",
+            className: "m-1 p-button p-button-primary",
           }}
-          className="p-button-text p-button-secondary"
+          className="p-button-text p-button-secondary align-self-end mr-1"
           customUpload
           uploadHandler={handleUpload}
           auto
@@ -273,7 +286,6 @@ const MRInputSource = ({ onDataReady }) => {
           paginator
           rows={rowsPerPage}
           rowsPerPageOptions={[50, 100, 250, 500]}
-          // virtualScrollerOptions={{ itemSize, autoSize: true }}
         >
           <Column header="#" body={(data, options) => options.rowIndex + 1} />
           <Column field="smiles" header="Structure" body={structureBody} />
@@ -325,4 +337,4 @@ const MRInputSource = ({ onDataReady }) => {
   );
 };
 
-export default MRInputSource;
+export default observer(MLRegistrationStep1);
