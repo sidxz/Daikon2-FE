@@ -67,7 +67,7 @@ const FSTbVScreen = () => {
         accept,
       });
     },
-    [deleteScreenRun]
+    [deleteScreenRun],
   );
 
   // If data is still loading, show a loading component
@@ -167,6 +167,7 @@ const FSTbVScreen = () => {
                   field="library"
                   header="Library"
                   editor={(options) => TextRowEditor(options)}
+                  filter
                 />
                 <Column
                   field="protocol"
@@ -175,25 +176,29 @@ const FSTbVScreen = () => {
                   }
                   header={Helper.ProtocolHeaderTemplate(
                     isProtocolExpanded,
-                    setIsProtocolExpanded
+                    setIsProtocolExpanded,
                   )}
                   editor={(options) => TextRowEditor(options)}
+                  filter
                 />
                 <Column
                   field="concentration"
                   header="Inhibitor C (µM)"
                   editor={(options) => TextRowEditor(options)}
+                  sortable
                 />
                 <Column
                   field="noOfCompoundsScreened"
                   header="No. of Compounds"
                   editor={(options) => TextRowEditor(options)}
+                  sortable
                 />
                 <Column
                   field="scientist"
                   header="Scientist"
                   editor={(options) => ScientistRowEditor(options)}
                   style={{ wordWrap: "break-word" }}
+                  filter
                 />
                 <Column
                   field="startDate"
@@ -213,16 +218,19 @@ const FSTbVScreen = () => {
                   field="primaryHitCount"
                   header="# Initial Hit"
                   editor={(options) => TextRowEditor(options)}
+                  sortable
                 />
                 <Column
                   field="confirmedHitCount"
                   header="# Confirmed Active Hit"
                   editor={(options) => TextRowEditor(options)}
+                  sortable
                 />
                 <Column
                   field="notes"
                   header="Notes"
                   editor={(options) => TextRowEditor(options)}
+                  filter
                 />
 
                 <Column

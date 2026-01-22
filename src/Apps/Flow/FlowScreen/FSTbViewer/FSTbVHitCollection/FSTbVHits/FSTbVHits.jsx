@@ -112,7 +112,7 @@ const FSTbVHits = ({ id }) => {
     ) {
       console.log(
         "useEffect : FSTbVHits: getCustomization",
-        selectedHitCollectionId
+        selectedHitCollectionId,
       );
       getCustomization(TbHitsTableType, selectedHitCollectionId);
       updateScrollHeight();
@@ -209,18 +209,21 @@ const FSTbVHits = ({ id }) => {
       header: "Library",
       editor: TextRowEditor,
       sortable: true,
+      filter: true,
     },
     {
       key: "librarySource",
       header: "Source",
       editor: TextRowEditor,
-      sortable: false,
+      sortable: true,
+      filter: true,
     },
     {
       key: "moleculeName",
       header: "Molecule Name",
       body: getUniqueMoleculeNames,
       sortable: true,
+      filter: true,
     },
 
     {
@@ -376,12 +379,14 @@ const FSTbVHits = ({ id }) => {
       header: "Cluster",
       editor: TextRowEditor,
       sortable: true,
+      filter: true,
     },
     {
       key: "assayType",
       header: "Assay Type",
       editor: TextRowEditor,
       sortable: true,
+      filter: true,
     },
     {
       key: "voteScore",
@@ -395,6 +400,7 @@ const FSTbVHits = ({ id }) => {
       header: "Notes",
       editor: TextRowEditor,
       sortable: true,
+      filter: true,
     },
     {
       key: "doseResponses",
@@ -429,6 +435,7 @@ const FSTbVHits = ({ id }) => {
             body={col.body}
             editor={col.editor ? (options) => col.editor(options) : undefined}
             sortable={col.sortable}
+            filter={col.filter}
           />
         );
       }
@@ -469,13 +476,13 @@ const FSTbVHits = ({ id }) => {
               value={(selectedHitCollection?.hits || [])
                 .filter(
                   (hit) =>
-                    !filterNotVoted || Object.keys(hit.voters).length === 0
+                    !filterNotVoted || Object.keys(hit.voters).length === 0,
                 )
                 .filter((hit) =>
                   filterDisclosed
                     ? hit.isStructureDisclosed === true ||
                       hit?.molecule?.smiles != null
-                    : true
+                    : true,
                 )}
               paginator
               scrollable
