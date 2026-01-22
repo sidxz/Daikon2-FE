@@ -7,31 +7,39 @@ import { InputTextarea } from "primereact/inputtextarea";
 import { ProgressBar } from "primereact/progressbar";
 
 import { observer } from "mobx-react-lite";
+import { Message } from "primereact/message";
 import { MeterGroup } from "primereact/metergroup";
-import { useContext, useMemo, useRef, useState } from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import SmilesView from "../../../../Library/SmilesView/SmilesView";
 import { RootStoreContext } from "../../../../RootStore";
 import ImportFromExcel from "../../../../Shared/Excel/ImportFromExcel";
 import InputOrgAlias from "../../../../Shared/InputEditors/InputOrgAlias";
 import InputScientist from "../../../../Shared/InputEditors/InputScientist";
+import SmilesJsmeRowEditor from "../../../../Shared/TableRowEditors/SmilesJsmeRowEditor";
 import { AppOrgResolver } from "../../../../Shared/VariableResolvers/AppOrgResolver";
-import { DtFieldsToExcelColumnMapping } from "../MLogixRegistrationConstants";
-
 import {
   enrichRowFactory,
   normalize,
   processInChunks,
 } from "../helpers/MLRStep1Helper";
+import { DtFieldsToExcelColumnMapping } from "../MLogixRegistrationConstants";
 
 const CHUNK_SIZE = 1000; // tune: 500–2000 works well in browsers
 
-const MLRegistrationStep1 = ({ onDataReady }) => {
+const MLRegistrationStep1 = ({
+  onDataReady,
+  initialRows = [],
+  autoApplyInitialRows = false,
+}) => {
   const [dataProcessed, setDataProcessed] = useState([]);
   const [busy, setBusy] = useState(false);
   const [progress, setProgress] = useState(0); // 0–100
   const [progressMsg, setProgressMsg] = useState("");
   const [totalRows, setTotalRows] = useState(0);
   const [initialRowsInExcel, setInitialRowsInExcel] = useState(0);
+
+  const [editingRows, setEditingRows] = useState({});
+  const autoEditSingleRowRef = useRef(false);
 
   const rootStore = useContext(RootStoreContext);
   const { user } = rootStore.authStore;
@@ -42,6 +50,77 @@ const MLRegistrationStep1 = ({ onDataReady }) => {
     `${user?.firstName || ""} ${user?.lastName || ""}`.trim(),
   );
   const [metaDataOrgID] = useState(user?.appOrgId || "");
+
+  const enrichRow = useMemo(
+    () =>
+      enrichRowFactory({
+        metaDataScientist,
+        metaDataOrgID,
+        fuzzyMatchOrgByName,
+      }),
+    [metaDataScientist, metaDataOrgID, fuzzyMatchOrgByName],
+  );
+
+  const seedKey = useMemo(
+    () => (initialRows?.length ? JSON.stringify(initialRows) : ""),
+    [initialRows],
+  );
+  console.log("seedKey", seedKey);
+  const seededRef = useRef(new Set());
+
+  const hasOpenEditors = useMemo(
+    () => Object.keys(editingRows || {}).length > 0,
+    [editingRows],
+  );
+
+  useEffect(() => {
+    if (!autoApplyInitialRows || !initialRows?.length) return;
+    if (seededRef.current.has(seedKey)) return;
+    console.log("Seeding initial rows into MLR Step 1", initialRows);
+
+    seededRef.current.add(seedKey);
+
+    console.log("auto-applying initial rows to MLR Step 1");
+    console.log("seedKey", seedKey);
+
+    // Only seed if dataProcessed is empty (so we don't overwrite user-imported data)
+    setDataProcessed((prev) => {
+      if (prev.length > 0) return prev;
+
+      const seeded = initialRows.map((r) => {
+        // IMPORTANT: normalize only strings, not the row object
+        const row = {
+          ...r,
+          name: (r?.name ?? "").trim(),
+          smiles: normalize(r?.smiles ?? ""), // normalize SMILES string
+        };
+
+        return enrichRow(row); // enrichRow should preserve existing fields via {...row, ...meta}
+      });
+
+      onDataReady?.(seeded);
+      return seeded;
+    });
+  }, [autoApplyInitialRows, initialRows, seedKey, enrichRow, onDataReady]);
+
+  // Auto open editor if there is only one row
+  useEffect(() => {
+    // Only auto-edit once
+    if (autoEditSingleRowRef.current) return;
+    console.log("Checking for auto-edit single row...");
+
+    if (dataProcessed.length === 1) {
+      console.log("Auto-editing single row...");
+      const row = dataProcessed[0];
+
+      if (row?.name) {
+        setEditingRows({ [row.name]: true });
+        autoEditSingleRowRef.current = true;
+      }
+    }
+  }, [dataProcessed]);
+
+  console.log("dataProcessed", dataProcessed);
 
   // ---------- Column Editors ----------
   const scientistEditor = (options) => (
@@ -92,6 +171,8 @@ const MLRegistrationStep1 = ({ onDataReady }) => {
     />
   );
 
+  const smilesEditor = (options) => <SmilesJsmeRowEditor options={options} />;
+
   // ---------- Non-editing cell bodies ----------
   const structureBody = (rowData) => (
     <div className="flex flex-column" style={{ width: 250, height: 290 }}>
@@ -104,25 +185,20 @@ const MLRegistrationStep1 = ({ onDataReady }) => {
   // ---------- Row edit commit ----------
   const onRowEditComplete = (e) => {
     const { newData } = e;
+
     setDataProcessed((prev) => {
-      const idx = prev.findIndex((r) => r.__rid === newData.__rid);
+      const key = (newData?.name ?? "").trim();
+      if (!key) return prev;
+
+      const idx = prev.findIndex((r) => (r?.name ?? "").trim() === key);
       if (idx === -1) return prev;
+
       const next = [...prev];
       next[idx] = newData;
       onDataReady?.(next);
       return next;
     });
   };
-
-  const enrichRow = useMemo(
-    () =>
-      enrichRowFactory({
-        metaDataScientist,
-        metaDataOrgID,
-        fuzzyMatchOrgByName,
-      }),
-    [metaDataScientist, metaDataOrgID, fuzzyMatchOrgByName],
-  );
 
   // ---------- File import & row prep ----------
   const handleUpload = async (e) => {
@@ -179,6 +255,7 @@ const MLRegistrationStep1 = ({ onDataReady }) => {
     () => (
       <div className="w-full flex gap-3 bg-surface-50 border-round-lg">
         {/* Initial Rows */}
+
         <div className="flex align-items-center gap-2 px-3 py-2 border-round-md bg-white">
           <i className="pi pi-file-excel text-green-600 text-xl" />
           <div className="flex flex-column">
@@ -254,32 +331,46 @@ const MLRegistrationStep1 = ({ onDataReady }) => {
         </div>
       </Dialog>
 
-      <div className="flex flex-column w-full h-full">
-        <FileUpload
-          name="excelFile"
-          accept=".xls,.xlsx,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-          maxFileSize={50_000_000}
-          mode="basic"
-          chooseLabel="Select Excel File to Import"
-          chooseOptions={{
-            icon: "icon icon-common icon-plus-circle",
-            className: "m-1 p-button p-button-primary",
-          }}
-          className="p-button-text p-button-secondary align-self-end mr-1"
-          customUpload
-          uploadHandler={handleUpload}
-          auto
-        />
+      <div className="flex flex w-full h-full bg-blue-50 justify-content-end">
+        <div className="flex w-auto">
+          {hasOpenEditors && (
+            <Message
+              severity="error"
+              text="You have unsaved changes in the table. Please save or discard them using the options in the row before proceeding."
+            />
+          )}
+        </div>
+        <div className="flex w-auto">
+          <FileUpload
+            name="excelFile"
+            accept=".xls,.xlsx,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            maxFileSize={50_000_000}
+            mode="basic"
+            chooseLabel="Select Excel File to Import"
+            chooseOptions={{
+              icon: "icon icon-common icon-plus-circle",
+              className: "m-1 p-button p-button-primary",
+            }}
+            className="p-button-text p-button-secondary align-self-end mr-1"
+            customUpload
+            uploadHandler={handleUpload}
+            auto
+          />
+        </div>
       </div>
 
       <div className="flex flex-column w-full h-full">
         <DataTable
           ref={tableRef}
           value={dataProcessed}
-          dataKey="__rid"
+          dataKey="name"
           className="w-full h-full"
           header={header}
           editMode="row"
+          editingRows={editingRows}
+          onRowEditChange={(e) => {
+            setEditingRows(e.data);
+          }}
           onRowEditComplete={onRowEditComplete}
           scrollable
           scrollHeight="70vh"
@@ -288,7 +379,12 @@ const MLRegistrationStep1 = ({ onDataReady }) => {
           rowsPerPageOptions={[50, 100, 250, 500]}
         >
           <Column header="#" body={(data, options) => options.rowIndex + 1} />
-          <Column field="smiles" header="Structure" body={structureBody} />
+          <Column
+            field="smiles"
+            header="Structure"
+            body={structureBody}
+            editor={smilesEditor}
+          />
           <Column
             field="name"
             header="Molecule Name"

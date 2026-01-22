@@ -4,14 +4,36 @@ import { Message } from "primereact/message";
 import { Stepper } from "primereact/stepper";
 import { StepperPanel } from "primereact/stepperpanel";
 import { useMemo, useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { appColors } from "../../../constants/colors";
 import { STRINGS } from "../../../Customizations/strings";
 import SecHeading from "../../../Library/SecHeading/SecHeading";
+import { parseSeedParam } from "../../../Library/URLTools/base64URL";
 import MLRegistrationsStep3 from "./components/MLRegistrationsStep3";
 import MLRegistrationStep1 from "./components/MLRegistrationStep1";
 import MLRegistrationStep2 from "./components/MLRegistrationStep2";
 
 const MLogixRegistration = () => {
+  const location = useLocation();
+
+  const initialRowsFromUrl = useMemo(() => {
+    const qs = new URLSearchParams(location.search);
+    const seed = qs.get("seed");
+    if (!seed) return [];
+
+    try {
+      const obj = parseSeedParam(seed);
+
+      // Support either a single row object or { rows: [...] }
+      if (Array.isArray(obj)) return obj;
+      if (Array.isArray(obj?.rows)) return obj.rows;
+      return [obj];
+    } catch (e) {
+      console.warn("Invalid seed param", e);
+      return [];
+    }
+  }, [location.search]);
+
   // Lifted state
   const [inputs, setInputs] = useState([]); // rows from MRInputSource
   const [previewResults, setPreviewResults] = useState([]);
@@ -46,7 +68,11 @@ const MLogixRegistration = () => {
           <StepperPanel header="Input Source">
             <div className="flex flex-column">
               <div className="border-2 border-dashed surface-border border-round surface-ground flex-row flex justify-content-center align-items-center font-medium">
-                <MLRegistrationStep1 onDataReady={setInputs} />
+                <MLRegistrationStep1
+                  onDataReady={setInputs}
+                  initialRows={initialRowsFromUrl}
+                  autoApplyInitialRows
+                />
               </div>
             </div>
             <div className="flex pt-2 justify-content-end">
