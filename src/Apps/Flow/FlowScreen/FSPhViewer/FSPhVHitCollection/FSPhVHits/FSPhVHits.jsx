@@ -19,7 +19,7 @@ import { DoseResponseBodyTemplate } from "../../../FSTbViewer/FSTbVHitCollection
 import { getUniqueMoleculeNames } from "../../../shared/SharedHelper";
 import Vote from "../../../shared/Vote/Vote";
 import FSPhVHAddHit from "./FSPhVHitsHelper/FSPhVHAddHit";
-import { FSPhVHDataTableHeader } from "./FSPhVHitsHelper/FSPhVHDataTableHeader";
+import FSPhVHDataTableHeader from "./FSPhVHitsHelper/FSPhVHDataTableHeader";
 import { StructureBodyTemplate } from "./FSPhVHitsHelper/FSPhVHDataTableHelper";
 import FSPhVHExcelImport from "./FSPhVHitsHelper/FSPhVHExcelImport";
 import { PhHitsTableType } from "./FSPhVHitsHelper/FSPhVHitsConstants";
@@ -498,6 +498,7 @@ const FSPhVHits = ({ id }) => {
               resizableColumns
               columnResizeMode="fit"
               showGridlines
+              reorderableColumns
               header={
                 <FSPhVHDataTableHeader
                   showAddHitSideBar={() => setDisplayAddHitSideBar(true)}

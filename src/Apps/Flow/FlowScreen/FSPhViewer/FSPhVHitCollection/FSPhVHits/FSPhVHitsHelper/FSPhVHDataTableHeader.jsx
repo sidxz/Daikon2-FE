@@ -1,3 +1,4 @@
+import { observer } from "mobx-react-lite";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { Divider } from "primereact/divider";
@@ -9,7 +10,11 @@ import { useState } from "react";
 import { FcEmptyFilter } from "react-icons/fc";
 import { Link } from "react-router-dom";
 import TableCustomization from "../../../../../../../Library/TableCustomization/TableCustomization";
+import { AppRoleResolver } from "../../../../../../../Shared/VariableResolvers/AppRoleResolver";
 import { MolecuLogixIcon } from "../../../../../../MolecuLogix/Icons/MolecuLogixIcon";
+import { ScreenAdminRoleName } from "../../../../constants/roles";
+import DeleteHitCollectionDialog from "../../../../shared/HitCollectionManagemnt/DeleteHitCollectionDialog/DeleteHitCollectionDialog";
+import RenameHitCollectionDialog from "../../../../shared/HitCollectionManagemnt/RenameHitCollectionDialog/RenameHitCollectionDialog";
 import FSPhVHExcelBulkImport from "./FSPhVHExcelBulkImport";
 import { ExportHitsToExcel } from "./FSPhVHExcelExport";
 import FSPhVHExcelImport from "./FSPhVHExcelImport";
@@ -20,7 +25,7 @@ import {
   PhHitsTableType,
 } from "./FSPhVHitsConstants";
 
-export const FSPhVHDataTableHeader = ({
+const FSPhVHDataTableHeader = ({
   showAddHitSideBar,
   selectedHitCollection,
   selectedScreen,
@@ -48,6 +53,11 @@ export const FSPhVHDataTableHeader = ({
   const [clusterCutOff, setClusterCutOff] = useState(0.85);
   const [showClusterDialog, setShowClusterDialog] = useState(false);
   const [showBulkUploadDialog, setShowBulkUploadDialog] = useState(false);
+  const [showDeleteHitCollectionDialog, setShowDeleteHitCollectionDialog] =
+    useState(false);
+  const [showRenameHitCollectionDialog, setShowRenameHitCollectionDialog] =
+    useState(false);
+  const { isUserInAnyOfRoles } = AppRoleResolver();
   if (selectedHitCollection === undefined) {
     console.log("selectedHitCollection is undefined");
   }
@@ -150,7 +160,7 @@ export const FSPhVHDataTableHeader = ({
             ExportHitsToExcel(
               selectedHitCollection,
               selectedScreen,
-              DtFieldsToExcelColumnMapping
+              DtFieldsToExcelColumnMapping,
             ),
         },
         {
@@ -160,7 +170,7 @@ export const FSPhVHDataTableHeader = ({
             ExportTemplateExcel(
               selectedHitCollection,
               selectedScreen,
-              DtFieldsToExcelColumnMapping
+              DtFieldsToExcelColumnMapping,
             ),
         },
       ],
@@ -247,6 +257,25 @@ export const FSPhVHDataTableHeader = ({
     },
   ];
 
+  if (isUserInAnyOfRoles([ScreenAdminRoleName])) {
+    items.push({
+      label: "Admin",
+      icon: "pi pi-cog",
+      items: [
+        {
+          label: "Rename Hit Collection",
+          icon: "pi pi-pencil",
+          command: () => setShowRenameHitCollectionDialog(true),
+        },
+        {
+          label: "Delete Hit Collection",
+          icon: "pi pi-trash",
+          command: () => setShowDeleteHitCollectionDialog(true),
+        },
+      ],
+    });
+  }
+
   const start = (
     <div className="flex flex-column">
       <div className="flex flex-grow min-w-max w-full">
@@ -322,9 +351,26 @@ export const FSPhVHDataTableHeader = ({
         >
           {clusterDialogTemplate()}
         </Dialog>
+
+        <DeleteHitCollectionDialog
+          visible={showDeleteHitCollectionDialog}
+          setVisible={setShowDeleteHitCollectionDialog}
+          hitCollectionId={selectedHitCollection?.id}
+          hitCollectionName={selectedHitCollection?.name}
+          navigateToAfterDelete={`/wf/screen/viewer/ph/${selectedScreen?.id}/hits`}
+        />
+
+        <RenameHitCollectionDialog
+          visible={showRenameHitCollectionDialog}
+          setVisible={setShowRenameHitCollectionDialog}
+          hitCollectionId={selectedHitCollection?.id}
+          hitCollectionName={selectedHitCollection?.name}
+        />
       </div>
     );
   }
 
   return <p>Loading ...</p>;
 };
+
+export default observer(FSPhVHDataTableHeader);

@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import { BreadCrumb } from "primereact/breadcrumb";
 import { Chip } from "primereact/chip";
 import { Fieldset } from "primereact/fieldset";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import {
   FcBusiness,
   FcHighPriority,
@@ -36,17 +36,6 @@ const FSTbVSettings = () => {
 
   const { fetchScreen, isFetchingScreen, selectedScreen } =
     rootStore.screenStore;
-
-  const {
-    updateScreenRun,
-    isUpdatingScreenRun,
-    isAddingScreenRun,
-    isDeletingScreenRun,
-    deleteScreenRun,
-  } = rootStore.screenRunStore;
-
-  const [displayAddScreenSeqSideBar, setDisplayAddScreenSeqSideBar] =
-    useState(false);
 
   // Loading state
   if (isFetchingScreen) {

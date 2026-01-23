@@ -143,6 +143,7 @@ const FSTbVScreen = () => {
               <DataTable
                 className="p-datatable-gridlines w-full"
                 size="small"
+                reorderableColumns
                 value={selectedScreen.screenRuns}
                 showGridlines
                 editMode="row"

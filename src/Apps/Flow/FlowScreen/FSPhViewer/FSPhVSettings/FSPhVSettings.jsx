@@ -1,7 +1,7 @@
 import { BreadCrumb } from "primereact/breadcrumb";
 import { Chip } from "primereact/chip";
 import { Fieldset } from "primereact/fieldset";
-import React, { useContext, useState } from "react";
+import { useContext } from "react";
 import {
   FcBusiness,
   FcHighPriority,
@@ -16,8 +16,14 @@ import { AppOrgResolver } from "../../../../../Shared/VariableResolvers/AppOrgRe
 import { appColors } from "../../../../../constants/colors";
 import * as Helper from "./FSPhVSettingsHelper";
 import FSPhVSettings_Basic from "./components/FSPhVSettings_Basic";
+import FSPhVSettings_Delete from "./components/FSPhVSettings_Delete";
 import FSPhVSettings_Rename from "./components/FSPhVSettings_Rename";
 import FSPhVSettings_UpdateTarget from "./components/FSPhVSettings_UpdateTarget";
+
+/*
+ * Component: FSPhVSettings
+ * Description: Screen settings manager UI including rename, delete, target updates, and general configuration.
+ */
 
 const FSPhVSettings = () => {
   const navigate = useNavigate();
@@ -27,118 +33,120 @@ const FSPhVSettings = () => {
   const { fetchScreen, isFetchingScreen, selectedScreen } =
     rootStore.screenStore;
 
-  const {
-    updateScreenRun,
-    isUpdatingScreenRun,
-    isAddingScreenRun,
-    isDeletingScreenRun,
-    deleteScreenRun,
-  } = rootStore.screenRunStore;
-
-  const [displayAddScreenSeqSideBar, setDisplayAddScreenSeqSideBar] =
-    useState(false);
-
   if (isFetchingScreen) {
     return <Loading message={"Fetching Screen..."} />;
   }
 
+  // Guard clause: If screen not found or not ready
+  if (!selectedScreen) {
+    return <div>Screen data not found or failed to load.</div>;
+  }
+
   if (selectedScreen && !isFetchingScreen) {
     return (
-      <>
-        <div className="flex flex-column w-full">
-          <div className="flex w-full">
-            <BreadCrumb
-              model={Helper.breadCrumbItems(selectedScreen, navigate)}
-            />
-          </div>
-          <div className="flex w-full">
-            <SecHeading
-              icon="icon icon-conceptual icon-structures-3d"
-              heading={"Screen - " + selectedScreen.name}
-              displayHorizon={true}
-              entryPoint={selectedScreen?.id}
-              color={appColors.sectionHeadingBg.screen}
-              customElements={[
-                <Chip
-                  label={getOrgNameById(selectedScreen?.primaryOrgId)}
-                  icon="ri-organization-chart"
-                  className="mr-3"
-                />,
-              ]}
-            />
-          </div>
-
-          <div className="flex w-full mt-2">
-            <Fieldset
-              className="w-full"
-              legend={
-                <>
-                  <FcBusiness className="mr-2" />
-                  Settings
-                </>
-              }
-            >
-              <p className="m-0 p-2">
-                The settings outlined here are part of the "Screen" section and
-                will not impact any other areas of the app.
-              </p>
-              <FSPhVSettings_Basic />
-            </Fieldset>
-          </div>
-          <div className="flex w-full  mt-2">
-            <Fieldset
-              className="w-full"
-              legend={
-                <>
-                  <FcTreeStructure className="mr-2" />
-                  Update Target Association
-                </>
-              }
-            >
-              <p className="m-0 p-2">
-                The settings below are designed to modify inter-section
-                relationships throughout the app. Updating these settings will
-                have broad implications, impacting overall functionality,
-                including features like the Horizon View, among others.
-              </p>
-              <FSPhVSettings_UpdateTarget />
-            </Fieldset>
-          </div>
-          <div className="flex w-full  mt-2">
-            <Fieldset
-              legend={
-                <>
-                  <FcMediumPriority className="mr-2" />
-                  Rename Screen
-                </>
-              }
-              className="w-full bg-orange-50	border-1 border-yellow-400	"
-            >
-              <p className="m-0 p-2">
-                Adjusting the settings below will alter the relationships
-                between different sections within the app. Making these changes
-                can have extensive effects on the app's functionality,
-                especially since some features may be organized or accessed by
-                their names.
-              </p>
-              <FSPhVSettings_Rename />
-            </Fieldset>
-          </div>
-          <div className="flex w-full mt-2 ">
-            <Fieldset
-              legend={
-                <>
-                  <FcHighPriority className="mr-2" />
-                  Delete
-                </>
-              }
-              className="w-full bg-red-50 border-1 border-red-400"
-            >
-              <p className="m-0">Screen deletion is currently unavailable.</p>
-            </Fieldset>
-          </div>
+      <div className="flex flex-column w-full">
+        {/* Breadcrumb navigation */}
+        <div className="flex w-full">
+          <BreadCrumb
+            model={Helper.breadCrumbItems(selectedScreen, navigate)}
+          />
         </div>
-      </>
+
+        {/* Section heading with chips */}
+        <div className="flex w-full">
+          <SecHeading
+            icon="icon icon-conceptual icon-structures-3d"
+            heading={"Screen - " + selectedScreen.name}
+            displayHorizon={true}
+            entryPoint={selectedScreen?.id}
+            color={appColors.sectionHeadingBg.screen}
+            customElements={[
+              <Chip
+                label={getOrgNameById(selectedScreen?.primaryOrgId)}
+                icon="ri-organization-chart"
+                className="mr-3"
+              />,
+            ]}
+          />
+        </div>
+
+        {/* BASIC SETTINGS */}
+        <div className="flex w-full mt-2 surface-ground">
+          <Fieldset
+            className="w-full surface-ground"
+            legend={
+              <>
+                <FcBusiness className="mr-2" />
+                Settings
+              </>
+            }
+          >
+            <p className="m-0 p-2">
+              The settings outlined here are part of the "Screen" section and
+              will not impact any other areas of the app.
+            </p>
+            <FSPhVSettings_Basic />
+          </Fieldset>
+        </div>
+
+        {/* UPDATE TARGET ASSOCIATIONS */}
+
+        <div className="flex w-full mt-2">
+          <Fieldset
+            className="w-full"
+            legend={
+              <>
+                <FcTreeStructure className="mr-2" />
+                Update Target Association
+              </>
+            }
+          >
+            <p className="m-0 p-2">
+              The settings below are designed to modify inter-section
+              relationships throughout the app. Updating these settings will
+              have broad implications, impacting overall functionality,
+              including features like the Horizon View, among others.
+            </p>
+            <FSPhVSettings_UpdateTarget />
+          </Fieldset>
+        </div>
+
+        {/* RENAME SCREEN */}
+        <div className="flex w-full  mt-2">
+          <Fieldset
+            className="w-full bg-orange-50 border-1 border-yellow-400"
+            legend={
+              <>
+                <FcMediumPriority className="mr-2" />
+                Rename Screen
+              </>
+            }
+          >
+            <p className="m-0 p-2">
+              Adjusting the settings below will alter the relationships between
+              different sections within the app. Making these changes can have
+              extensive effects on the app's functionality, especially since
+              some features may be organized or accessed by their names.
+            </p>
+            <FSPhVSettings_Rename />
+          </Fieldset>
+        </div>
+
+        {/* DELETE SCREEN */}
+        <div className="flex w-full mt-2">
+          <Fieldset
+            className="w-full bg-red-50 border-1 border-red-400"
+            legend={
+              <>
+                <FcHighPriority className="mr-2" />
+                Delete
+              </>
+            }
+          >
+            <FSPhVSettings_Delete />
+          </Fieldset>
+        </div>
+      </div>
     );
   }
   return <div>FSPhVSettings</div>;
