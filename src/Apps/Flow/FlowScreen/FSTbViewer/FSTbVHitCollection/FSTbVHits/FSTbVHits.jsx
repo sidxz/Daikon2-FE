@@ -495,6 +495,7 @@ const FSTbVHits = ({ id }) => {
               showGridlines
               //groupRowsBy="requestedMoleculeName"
               //rowGroupMode="rowspan"
+              reorderableColumns
               header={
                 <FSTbVHDataTableHeader
                   showAddHitSideBar={() => setDisplayAddHitSideBar(true)}

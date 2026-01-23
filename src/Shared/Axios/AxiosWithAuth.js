@@ -18,6 +18,7 @@ function showThrottledUniqueErrorToast(message) {
   if (now - last < TOAST_INTERVAL_MS) return; // Too soon since last
 
   toast.error(message, {
+    autoClose: 10000, // 10 seconds
     onClose: () => {
       activeToasts.delete(message);
     },
@@ -106,12 +107,12 @@ class AxiosWithAuth {
 
         return config;
       },
-      (error) => Promise.reject(error)
+      (error) => Promise.reject(error),
     );
 
     this.axiosWithAuth.interceptors.response.use(
       (response) => response,
-      (error) => this.handleError(error)
+      (error) => this.handleError(error),
     );
   }
 
@@ -123,6 +124,7 @@ class AxiosWithAuth {
     let errorMessage = "An unexpected error occurred";
     if (error.response) {
       console.error("Data:", error.response.data);
+      console.error("Status Text:", error?.response?.data?.Message);
       console.error("Status:", error.response.status);
       console.error("Headers:", error.response.headers);
 
@@ -131,7 +133,7 @@ class AxiosWithAuth {
         case 400: {
           errorMessage = "Bad Request";
           const composed =
-            errorMessage + " " + (error?.response?.data?.message || "");
+            errorMessage + " " + (error?.response?.data?.Message || "");
           showThrottledUniqueErrorToast(composed.trim());
           break;
         }
@@ -170,7 +172,7 @@ class AxiosWithAuth {
       console.log("Error Request:", error.message);
       if (error?.message?.includes("Network Error")) {
         console.error(
-          "********* Server connection Error: Unable to connect to the server *********"
+          "********* Server connection Error: Unable to connect to the server *********",
         );
       }
       console.error("No response received:", error.request);

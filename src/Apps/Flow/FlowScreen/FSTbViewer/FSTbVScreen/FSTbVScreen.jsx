@@ -127,7 +127,7 @@ const FSTbVScreen = () => {
             />
           </div>
           <div className="flex w-full border-1 border-50 border-round-md mb-1">
-            <div className="flex m-1 p-1 text-color-secondary	">
+            <div className="flex m-1 p-1 text-color-secondary	text-lg">
               Notes: {selectedScreen.notes}
             </div>
           </div>
