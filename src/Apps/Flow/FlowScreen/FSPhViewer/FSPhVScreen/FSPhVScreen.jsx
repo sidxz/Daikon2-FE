@@ -107,11 +107,11 @@ const FSPhVScreen = ({}) => {
             />
           </div>
 
-          <div className="flex w-full border-1 border-50 border-round-md mb-1">
-            <div className="flex m-1 p-1 text-color-secondary	">
+          {selectedScreen?.notes?.length > 0 && (
+            <div className="flex w-full border-1 border-50 border-round-md mb-1 m-1 p-1 text-color-secondary	text-lg">
               Notes: {selectedScreen.notes}
             </div>
-          </div>
+          )}
 
           <div className="flex w-full">
             <BlockUI

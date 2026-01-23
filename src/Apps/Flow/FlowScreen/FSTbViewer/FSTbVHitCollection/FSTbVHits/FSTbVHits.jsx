@@ -458,6 +458,12 @@ const FSTbVHits = ({ id }) => {
               ></ProgressBar>
             </div>
           )}
+          {selectedHitCollection?.notes?.length > 0 && (
+            <div className="flex m-1 p-1 text-color-secondary	text-lg">
+              Notes: {selectedHitCollection.notes}
+            </div>
+          )}
+
           <div className="flex w-full" ref={tableRef}>
             <DataTable
               loading={

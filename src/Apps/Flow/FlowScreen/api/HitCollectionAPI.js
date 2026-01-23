@@ -10,8 +10,8 @@ const HitCollectionAPI = {
   update: (hitCollection) =>
     axiosWithAuth.put(`/v2/hit-collection/${hitCollection.id}`, hitCollection),
   delete: (id) => axiosWithAuth.delete(`/v2/hit-collection/${id}`),
-  rename: (id, newName) =>
-    axiosWithAuth.put(`/v2/hit-collection/${id}/rename`, { name: newName }),
+  rename: (id, renameCommand) =>
+    axiosWithAuth.put(`/v2/hit-collection/${id}/rename`, renameCommand),
 };
 
 export default HitCollectionAPI;

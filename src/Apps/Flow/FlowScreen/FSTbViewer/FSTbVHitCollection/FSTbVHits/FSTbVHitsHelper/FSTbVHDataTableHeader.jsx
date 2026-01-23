@@ -15,6 +15,7 @@ import { AppRoleResolver } from "../../../../../../../Shared/VariableResolvers/A
 import { MolecuLogixIcon } from "../../../../../../MolecuLogix/Icons/MolecuLogixIcon";
 import { ScreenAdminRoleName } from "../../../../constants/roles";
 import DeleteHitCollectionDialog from "../../../../shared/HitCollectionManagemnt/DeleteHitCollectionDialog/DeleteHitCollectionDialog";
+import PropertiesHitCollectionDialog from "../../../../shared/HitCollectionManagemnt/PropertiesHitCollectionDialog/PropertiesHitCollectionDialog";
 import RenameHitCollectionDialog from "../../../../shared/HitCollectionManagemnt/RenameHitCollectionDialog/RenameHitCollectionDialog";
 import FSTbVHExcelBulkImport from "./FSTbVHExcelBulkImport";
 import { ExportHitsToExcel } from "./FSTbVHExcelExport";
@@ -58,6 +59,10 @@ const FSTbVHDataTableHeader = ({
     useState(false);
   const [showRenameHitCollectionDialog, setShowRenameHitCollectionDialog] =
     useState(false);
+  const [
+    showPropertiesHitCollectionDialog,
+    setShowPropertiesHitCollectionDialog,
+  ] = useState(false);
   const { isUserInAnyOfRoles } = AppRoleResolver();
   if (selectedHitCollection === undefined) {
     console.log("selectedHitCollection is undefined");
@@ -265,6 +270,11 @@ const FSTbVHDataTableHeader = ({
           icon: "pi pi-objects-column",
           command: () => setShowTableCustomization(true),
         },
+        {
+          label: "Properties",
+          icon: "pi pi-info-circle",
+          command: () => setShowPropertiesHitCollectionDialog(true),
+        },
       ],
     },
   ];
@@ -376,6 +386,13 @@ const FSTbVHDataTableHeader = ({
         <RenameHitCollectionDialog
           visible={showRenameHitCollectionDialog}
           setVisible={setShowRenameHitCollectionDialog}
+          hitCollectionId={selectedHitCollection?.id}
+          hitCollectionName={selectedHitCollection?.name}
+        />
+
+        <PropertiesHitCollectionDialog
+          visible={showPropertiesHitCollectionDialog}
+          setVisible={setShowPropertiesHitCollectionDialog}
           hitCollectionId={selectedHitCollection?.id}
           hitCollectionName={selectedHitCollection?.name}
         />

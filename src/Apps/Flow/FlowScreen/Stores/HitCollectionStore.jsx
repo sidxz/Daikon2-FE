@@ -217,7 +217,9 @@ export default class HitCollectionStore {
         // update the same in selected hit collection
         this.selectedHitCollection = hitCollection;
 
-        toast.success("Gene hitCollection updated successfully");
+        toast.success(
+          `Hit Collection ${hitCollection.name} updated successfully.`,
+        );
       });
     } catch (error) {
       console.error("Error updating screen hitCollection:", error);
@@ -261,7 +263,7 @@ export default class HitCollectionStore {
     }
   };
 
-  renameHitCollection = async (hitCollectionId, newName) => {
+  renameHitCollection = async (hitCollectionId, newName, hitCollectionType) => {
     this.isRenamingHitCollection = true;
 
     // Ensure hitCollectionId is not null, undefined, or empty
@@ -270,12 +272,16 @@ export default class HitCollectionStore {
     }
 
     try {
-      await HitCollectionAPI.rename(hitCollectionId, newName);
+      await HitCollectionAPI.rename(hitCollectionId, {
+        name: newName,
+        hitCollectionType: hitCollectionType,
+      });
       runInAction(() => {
-        // update name in hit collection registry
+        // update name and type in hit collection registry
         const hitCollection = this.hitCollectionRegistry.get(hitCollectionId);
         if (hitCollection) {
           hitCollection.name = newName;
+          hitCollection.hitCollectionType = hitCollectionType;
           this.hitCollectionRegistry.set(hitCollectionId, hitCollection);
 
           // update the same in selected hit collection
@@ -284,6 +290,7 @@ export default class HitCollectionStore {
             this.selectedHitCollection.id === hitCollectionId
           ) {
             this.selectedHitCollection.name = newName;
+            this.selectedHitCollection.hitCollectionType = hitCollectionType;
           }
         }
 
