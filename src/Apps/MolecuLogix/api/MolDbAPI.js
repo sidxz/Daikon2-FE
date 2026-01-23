@@ -56,6 +56,9 @@ const MolDbAPI = {
 
   explainNuisance: (nuisanceDto) =>
     axiosWithAuth.post("/v2/molecule/explain-nuisance", nuisanceDto),
+
+  predictNuisance: (nuisanceDto) =>
+    axiosWithAuth.post("/v2/molecule/predict-nuisance", nuisanceDto),
 };
 
 export default MolDbAPI;
