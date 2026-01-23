@@ -9,9 +9,9 @@ import { appColors } from "../../../constants/colors";
 import { STRINGS } from "../../../Customizations/strings";
 import SecHeading from "../../../Library/SecHeading/SecHeading";
 import { parseSeedParam } from "../../../Library/URLTools/base64URL";
-import MLRegistrationsStep3 from "./components/MLRegistrationsStep3";
 import MLRegistrationStep1 from "./components/MLRegistrationStep1";
 import MLRegistrationStep2 from "./components/MLRegistrationStep2";
+import MLRegistrationStep3 from "./components/MLRegistrationStep3";
 
 const MLogixRegistration = () => {
   const location = useLocation();
@@ -120,7 +120,7 @@ const MLogixRegistration = () => {
           <StepperPanel header="Registrations">
             <div className="flex flex-column">
               <div className="border-2 border-dashed surface-border border-round surface-ground p-2">
-                <MLRegistrationsStep3 inputs={inputs} />
+                <MLRegistrationStep3 inputs={inputs} />
               </div>
             </div>
             <div className="flex pt-4 justify-content-between">

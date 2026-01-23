@@ -18,6 +18,7 @@ import InputScientist from "../../../../Shared/InputEditors/InputScientist";
 import SmilesJsmeRowEditor from "../../../../Shared/TableRowEditors/SmilesJsmeRowEditor";
 import { AppOrgResolver } from "../../../../Shared/VariableResolvers/AppOrgResolver";
 import {
+  dedupeByName,
   enrichRowFactory,
   normalize,
   processInChunks,
@@ -223,10 +224,15 @@ const MLRegistrationStep1 = ({
       e.files = null;
       e.options?.clear?.();
 
+      const deduped = dedupeByName(raw);
+
       setInitialRowsInExcel(raw.length);
+      setProgressMsg(
+        `Removed ${raw.length - deduped.length} duplicate rows by name`,
+      );
 
       await processInChunks({
-        rows: raw,
+        rows: deduped,
         chunkSize: CHUNK_SIZE,
         normalizeFn: normalize,
         enrichRow,
@@ -361,6 +367,7 @@ const MLRegistrationStep1 = ({
 
       <div className="flex flex-column w-full h-full">
         <DataTable
+          stripedRows
           ref={tableRef}
           value={dataProcessed}
           dataKey="name"
@@ -384,27 +391,42 @@ const MLRegistrationStep1 = ({
             header="Structure"
             body={structureBody}
             editor={smilesEditor}
+            filter
           />
           <Column
             field="name"
             header="Molecule Name"
             style={{ minWidth: "14rem" }}
+            filter
+            sortable
           />
           <Column
             field="disclosureScientist"
             header="Disclosure Scientist"
             editor={scientistEditor}
+            filter
+            sortable
           />
           <Column
-            field="orgId"
+            field="disclosureOrgId"
             header="Disclosure Org"
-            body={(row) => getOrgAliasById(row.orgId)}
+            body={(row) => getOrgAliasById(row.disclosureOrgId)}
             editor={orgEditor}
+            filter
+            filterMatchMode="custom"
+            filterFunction={(value, filter) => {
+              const orgAlias = (getOrgAliasById(value) || "").toLowerCase();
+              const f = (filter || "").toLowerCase();
+              return orgAlias.includes(f);
+            }}
+            sortable
           />
           <Column
             field="disclosureStage"
             header="Disclosure Stage"
             editor={stageEditor}
+            filter
+            sortable
           />
           <Column
             field="disclosureReason"

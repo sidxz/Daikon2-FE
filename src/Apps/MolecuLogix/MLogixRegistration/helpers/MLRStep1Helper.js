@@ -17,11 +17,11 @@ export const enrichRowFactory = ({
 
     if (normalizeFn(row.disclosureOrg)) {
       const res = fuzzyMatchOrgByName?.(row.disclosureOrg);
-      if (res?.id) row.orgId = res.id;
+      if (res?.id) row.disclosureOrgId = res.id;
     }
 
-    if (!normalizeFn(row.orgId)) {
-      row.orgId = metaDataOrgID;
+    if (!normalizeFn(row.disclosureOrgId)) {
+      row.disclosureOrgId = metaDataOrgID;
     }
 
     return row;
@@ -76,4 +76,19 @@ export const processInChunks = async ({
   setBusy?.(false);
 
   return withIds;
+};
+
+export const dedupeByName = (rows) => {
+  const seen = new Set();
+  const deduped = [];
+
+  for (const r of rows) {
+    const key = normalize(r?.name).toLowerCase();
+    if (!key) continue; // skip empty names
+    if (seen.has(key)) continue; // drop duplicate
+    seen.add(key);
+    deduped.push(r);
+  }
+
+  return deduped;
 };

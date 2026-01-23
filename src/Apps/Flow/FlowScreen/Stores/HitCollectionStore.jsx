@@ -26,6 +26,9 @@ export default class HitCollectionStore {
       isDeletingHitCollection: observable,
       deleteHitCollection: action,
 
+      isRenamingHitCollection: observable,
+      renameHitCollection: action,
+
       invalidateHitCollectionCacheOfSelectedScreen: action,
 
       getHitCollection: action,
@@ -42,13 +45,14 @@ export default class HitCollectionStore {
   isUpdatingHitCollection = false;
   isAddingHitCollection = false;
   isDeletingHitCollection = false;
+  isRenamingHitCollection = false;
 
   // Actions
 
   invalidateHitCollectionCacheOfSelectedScreen = () => {
     this.hitCollectionRegistryCache.set(
       this.rootStore.screenStore.selectedScreen.id,
-      false
+      false,
     );
   };
 
@@ -59,7 +63,7 @@ export default class HitCollectionStore {
   fetchHitCollectionsOfScreen = async (
     screenId,
     inValidateCache = false,
-    preFetchCustomization = false
+    preFetchCustomization = false,
   ) => {
     // short circuit multiple requests
     if (this.isFetchingHitCollection) {
@@ -88,7 +92,7 @@ export default class HitCollectionStore {
       var hitCollections = await HitCollectionAPI.listByScreen(screenId);
       const moleculeIds = [
         ...new Set(
-          hitCollections.flatMap((hc) => hc.hits.map((hit) => hit.moleculeId))
+          hitCollections.flatMap((hc) => hc.hits.map((hit) => hit.moleculeId)),
         ),
       ];
 
@@ -96,7 +100,7 @@ export default class HitCollectionStore {
 
       // Step 3: Fetch molecule associations using MoleculeAssociationStore
       await this.rootStore.moleculeAssociationStore.fetchAssociationsForMolecules(
-        moleculeIds
+        moleculeIds,
       );
 
       runInAction(() => {
@@ -110,12 +114,12 @@ export default class HitCollectionStore {
             // Step 4: Attach relations from MoleculeAssociationStore
             hit.relations =
               this.rootStore.moleculeAssociationStore.associationsRegistry.get(
-                hit.moleculeId
+                hit.moleculeId,
               ) || [];
           });
           console.log(
             "selectedScreen",
-            this.rootStore.screenStore.selectedScreen
+            this.rootStore.screenStore.selectedScreen,
           );
           let screenType =
             this.rootStore.screenStore.selectedScreen.screenType || null;
@@ -125,7 +129,7 @@ export default class HitCollectionStore {
             console.log("Fetching table customization for target-based screen");
             this.rootStore.tableCustomizationStore.getCustomization(
               TbHitsTableType,
-              hitCollection.id
+              hitCollection.id,
             );
           }
 
@@ -144,7 +148,7 @@ export default class HitCollectionStore {
 
   hitCollectionOfScreen = (screenId) => {
     return Array.from(this.hitCollectionRegistry.values()).filter(
-      (hitCollection) => hitCollection.screenId === screenId
+      (hitCollection) => hitCollection.screenId === screenId,
     );
   };
 
@@ -152,7 +156,7 @@ export default class HitCollectionStore {
     // check if hitCollectionId is found in hitCollectionRegistry, if not fetch it
     if (!this.hitCollectionRegistry.has(hitCollectionId)) {
       this.fetchHitCollectionsOfScreen(
-        this.rootStore.screenStore.selectedScreen.id
+        this.rootStore.screenStore.selectedScreen.id,
       );
     }
     this.selectedHitCollection =
@@ -235,7 +239,7 @@ export default class HitCollectionStore {
     }
 
     try {
-      await HitCollectionAPI.delete(screenId, hitCollectionId);
+      await HitCollectionAPI.delete(hitCollectionId);
       runInAction(() => {
         // remove hitCollection from hit collection registry
         this.hitCollectionRegistry.delete(hitCollectionId);
@@ -246,13 +250,50 @@ export default class HitCollectionStore {
         this.selectedHitCollection =
           this.hitCollectionOfScreen(screenId)[0] || null;
 
-        toast.success("Gene hitCollection deleted successfully");
+        toast.success("Hit Collection deleted successfully");
       });
     } catch (error) {
       console.error("Error deleting screen hitCollection:", error);
     } finally {
       runInAction(() => {
         this.isDeletingHitCollection = false;
+      });
+    }
+  };
+
+  renameHitCollection = async (hitCollectionId, newName) => {
+    this.isRenamingHitCollection = true;
+
+    // Ensure hitCollectionId is not null, undefined, or empty
+    if (!hitCollectionId?.trim()) {
+      throw new Error("hitCollectionId is required and cannot be empty.");
+    }
+
+    try {
+      await HitCollectionAPI.rename(hitCollectionId, newName);
+      runInAction(() => {
+        // update name in hit collection registry
+        const hitCollection = this.hitCollectionRegistry.get(hitCollectionId);
+        if (hitCollection) {
+          hitCollection.name = newName;
+          this.hitCollectionRegistry.set(hitCollectionId, hitCollection);
+
+          // update the same in selected hit collection
+          if (
+            this.selectedHitCollection &&
+            this.selectedHitCollection.id === hitCollectionId
+          ) {
+            this.selectedHitCollection.name = newName;
+          }
+        }
+
+        toast.success("Hit Collection renamed successfully");
+      });
+    } catch (error) {
+      console.error("Error renaming screen hitCollection:", error);
+    } finally {
+      runInAction(() => {
+        this.isRenamingHitCollection = false;
       });
     }
   };

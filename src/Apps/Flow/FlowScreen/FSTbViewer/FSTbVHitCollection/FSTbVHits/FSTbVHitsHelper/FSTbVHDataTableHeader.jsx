@@ -1,3 +1,4 @@
+import { observer } from "mobx-react-lite";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { Divider } from "primereact/divider";
@@ -10,7 +11,11 @@ import { FcEmptyFilter } from "react-icons/fc";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import TableCustomization from "../../../../../../../Library/TableCustomization/TableCustomization";
+import { AppRoleResolver } from "../../../../../../../Shared/VariableResolvers/AppRoleResolver";
 import { MolecuLogixIcon } from "../../../../../../MolecuLogix/Icons/MolecuLogixIcon";
+import { ScreenAdminRoleName } from "../../../../constants/roles";
+import DeleteHitCollectionDialog from "../../../../shared/HitCollectionManagemnt/DeleteHitCollectionDialog/DeleteHitCollectionDialog";
+import RenameHitCollectionDialog from "../../../../shared/HitCollectionManagemnt/RenameHitCollectionDialog/RenameHitCollectionDialog";
 import FSTbVHExcelBulkImport from "./FSTbVHExcelBulkImport";
 import { ExportHitsToExcel } from "./FSTbVHExcelExport";
 import FSTbVHExcelImport from "./FSTbVHExcelImport";
@@ -21,7 +26,7 @@ import {
   TbHitsTableType,
 } from "./FSTbVHitsConstants";
 
-export const FSTbVHDataTableHeader = ({
+const FSTbVHDataTableHeader = ({
   showAddHitSideBar,
   selectedHitCollection,
   selectedScreen,
@@ -49,6 +54,11 @@ export const FSTbVHDataTableHeader = ({
   const [clusterCutOff, setClusterCutOff] = useState(0.85);
   const [showClusterDialog, setShowClusterDialog] = useState(false);
   const [showBulkUploadDialog, setShowBulkUploadDialog] = useState(false);
+  const [showDeleteHitCollectionDialog, setShowDeleteHitCollectionDialog] =
+    useState(false);
+  const [showRenameHitCollectionDialog, setShowRenameHitCollectionDialog] =
+    useState(false);
+  const { isUserInAnyOfRoles } = AppRoleResolver();
   if (selectedHitCollection === undefined) {
     console.log("selectedHitCollection is undefined");
   }
@@ -70,7 +80,7 @@ export const FSTbVHDataTableHeader = ({
     setIsOneClickVotingEnabled(!isOneClickVotingEnabled);
     console.log(
       "One Click Voting toggled to:",
-      isOneClickVotingEnabled ? "Disabled" : "Enabled"
+      isOneClickVotingEnabled ? "Disabled" : "Enabled",
     );
   };
 
@@ -162,7 +172,7 @@ export const FSTbVHDataTableHeader = ({
             ExportHitsToExcel(
               selectedHitCollection,
               selectedScreen,
-              DtFieldsToExcelColumnMapping
+              DtFieldsToExcelColumnMapping,
             ),
         },
         {
@@ -172,7 +182,7 @@ export const FSTbVHDataTableHeader = ({
             ExportTemplateExcel(
               selectedHitCollection,
               selectedScreen,
-              DtFieldsToExcelColumnMapping
+              DtFieldsToExcelColumnMapping,
             ),
         },
       ],
@@ -259,6 +269,25 @@ export const FSTbVHDataTableHeader = ({
     },
   ];
 
+  if (isUserInAnyOfRoles([ScreenAdminRoleName])) {
+    items.push({
+      label: "Admin",
+      icon: "pi pi-cog",
+      items: [
+        {
+          label: "Rename Hit Collection",
+          icon: "pi pi-pencil",
+          command: () => setShowRenameHitCollectionDialog(true),
+        },
+        {
+          label: "Delete Hit Collection",
+          icon: "pi pi-trash",
+          command: () => setShowDeleteHitCollectionDialog(true),
+        },
+      ],
+    });
+  }
+
   const start = (
     <div className="flex flex-column">
       <div className="flex flex-grow min-w-max w-full">
@@ -335,9 +364,26 @@ export const FSTbVHDataTableHeader = ({
         >
           {clusterDialogTemplate()}
         </Dialog>
+
+        <DeleteHitCollectionDialog
+          visible={showDeleteHitCollectionDialog}
+          setVisible={setShowDeleteHitCollectionDialog}
+          hitCollectionId={selectedHitCollection?.id}
+          hitCollectionName={selectedHitCollection?.name}
+          navigateToAfterDelete={`/wf/screen/viewer/tb/${selectedScreen?.id}/hits`}
+        />
+
+        <RenameHitCollectionDialog
+          visible={showRenameHitCollectionDialog}
+          setVisible={setShowRenameHitCollectionDialog}
+          hitCollectionId={selectedHitCollection?.id}
+          hitCollectionName={selectedHitCollection?.name}
+        />
       </div>
     );
   }
 
   return <p>Loading ...</p>;
 };
+
+export default observer(FSTbVHDataTableHeader);

@@ -18,7 +18,7 @@ import { ScreenAdminRoleName } from "../../../constants/roles";
 import { getUniqueMoleculeNames } from "../../../shared/SharedHelper";
 import Vote from "../../../shared/Vote/Vote";
 import FSTbVHAddHit from "./FSTbVHitsHelper/FSTbVHAddHit";
-import { FSTbVHDataTableHeader } from "./FSTbVHitsHelper/FSTbVHDataTableHeader";
+import FSTbVHDataTableHeader from "./FSTbVHitsHelper/FSTbVHDataTableHeader";
 import {
   DoseResponseBodyTemplate,
   StructureBodyTemplate,

@@ -21,7 +21,7 @@ const REJECTED_TAG = "Rejected (Not Returned in Preview)";
 const MLRegistrationStep2 = ({ inputs }) => {
   const [dryRunResults, setDryRunResults] = useState([]);
   const [loading, setLoading] = useState(false);
-  const { getOrgAliasById } = AppOrgResolver();
+  const { fuzzyMatchOrgByName, getOrgAliasById } = AppOrgResolver();
 
   useEffect(() => {
     let cancelled = false;
@@ -344,6 +344,7 @@ const MLRegistrationStep2 = ({ inputs }) => {
     <div className="flex flex-column w-full">
       <div className="flex flex-column w-full h-full">
         <DataTable
+          stripedRows
           loading={loading}
           value={dryRunResults}
           dataKey="id"
@@ -362,6 +363,8 @@ const MLRegistrationStep2 = ({ inputs }) => {
             field="previewStatus"
             header="Preview Status"
             body={previewStatusBody}
+            filter
+            sortable
           />
           <Column field="previewMessage" header="Preview Message" />
           <Column field="smiles" header="Structure" body={structureBody} />
@@ -369,14 +372,41 @@ const MLRegistrationStep2 = ({ inputs }) => {
             field="name"
             header="Molecule Name"
             style={{ minWidth: "14rem" }}
+            filter
+            sortable
           />
-          <Column field="disclosureScientist" header="Disclosure Scientist" />
           <Column
-            field="orgId"
+            field="synonyms"
+            header="Synonyms"
+            style={{ minWidth: "14rem" }}
+            filter
+            sortable
+          />
+          <Column
+            field="disclosureScientist"
+            header="Disclosure Scientist"
+            filter
+            sortable
+          />
+          <Column
+            field="disclosureOrgId"
             header="Disclosure Org"
             body={(row) => getOrgAliasById(row.disclosureOrgId)}
+            filter
+            filterMatchMode="custom"
+            filterFunction={(value, filter) => {
+              const orgAlias = (getOrgAliasById(value) || "").toLowerCase();
+              const f = (filter || "").toLowerCase();
+              return orgAlias.includes(f);
+            }}
+            sortable
           />
-          <Column field="disclosureStage" header="Disclosure Stage" />
+          <Column
+            field="disclosureStage"
+            header="Disclosure Stage"
+            filter
+            sortable
+          />
           <Column field="disclosureReason" header="Disclosure Reason" />
           <Column field="disclosureNotes" header="Disclosure Notes" />
           <Column field="literatureReferences" header="Literature References" />

@@ -18,7 +18,7 @@ import { DtFieldsToExcelColumnMapping } from "../MLogixRegistrationConstants";
 const EXPORT_TAG_FIELD = "previewTag";
 const REJECTED_TAG = "Rejected (Not Returned in Preview)";
 
-const MLRegistrationsStep3 = ({ inputs }) => {
+const MLRegistrationStep3 = ({ inputs }) => {
   const [registrationResults, setRegistrationResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const { getOrgAliasById } = AppOrgResolver();
@@ -363,6 +363,8 @@ const MLRegistrationsStep3 = ({ inputs }) => {
             field="previewStatus"
             header="Preview Status"
             body={registrationStatusBody}
+            filter
+            sortable
           />
 
           <Column field="smiles" header="Structure" body={structureBody} />
@@ -370,14 +372,41 @@ const MLRegistrationsStep3 = ({ inputs }) => {
             field="name"
             header="Molecule Name"
             style={{ minWidth: "14rem" }}
+            filter
+            sortable
           />
-          <Column field="disclosureScientist" header="Disclosure Scientist" />
           <Column
-            field="orgId"
+            field="synonyms"
+            header="Synonyms"
+            style={{ minWidth: "14rem" }}
+            filter
+            sortable
+          />
+          <Column
+            field="disclosureScientist"
+            header="Disclosure Scientist"
+            filter
+            sortable
+          />
+          <Column
+            field="disclosureOrgId"
             header="Disclosure Org"
             body={(row) => getOrgAliasById(row.disclosureOrgId)}
+            filter
+            filterMatchMode="custom"
+            filterFunction={(value, filter) => {
+              const orgAlias = (getOrgAliasById(value) || "").toLowerCase();
+              const f = (filter || "").toLowerCase();
+              return orgAlias.includes(f);
+            }}
+            sortable
           />
-          <Column field="disclosureStage" header="Disclosure Stage" />
+          <Column
+            field="disclosureStage"
+            header="Disclosure Stage"
+            filter
+            sortable
+          />
           <Column field="disclosureReason" header="Disclosure Reason" />
           <Column field="disclosureNotes" header="Disclosure Notes" />
           <Column field="literatureReferences" header="Literature References" />
@@ -387,4 +416,4 @@ const MLRegistrationsStep3 = ({ inputs }) => {
   );
 };
 
-export default observer(MLRegistrationsStep3);
+export default observer(MLRegistrationStep3);
