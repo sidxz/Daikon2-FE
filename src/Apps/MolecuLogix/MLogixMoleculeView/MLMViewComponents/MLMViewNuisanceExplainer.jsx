@@ -4,7 +4,10 @@ import { useEffect, useState } from "react";
 import { ML_GENERATED_TOOLTIP } from "../../../../constants/strings";
 import MolDbAPI from "../../api/MolDbAPI";
 
-const MLMViewNuisanceExplainer = ({ selectedMolecule }) => {
+const MLMViewNuisanceExplainer = ({
+  selectedMolecule,
+  saveResults = false,
+}) => {
   const [fetchingExplanation, setFetchingExplanation] = useState(true);
   const [explanationData, setExplanationData] = useState(null);
 
@@ -16,12 +19,25 @@ const MLMViewNuisanceExplainer = ({ selectedMolecule }) => {
     },
   };
 
+  const reRunDTO = {
+    plotAllAttention: true,
+    nuisanceRequestTuple: [
+      {
+        smiles: selectedMolecule.smilesCanonical,
+        id: selectedMolecule.id,
+      },
+    ],
+  };
+
   // fetch from api
   useEffect(() => {
     const fetchExplanation = async () => {
       try {
         // Call the API to get the explanation
-        const response = await MolDbAPI.explainNuisance(dto);
+        var nuisanceAPIToUse = saveResults
+          ? MolDbAPI.predictNuisance
+          : MolDbAPI.explainNuisance;
+        const response = await nuisanceAPIToUse(saveResults ? reRunDTO : dto);
 
         // Process the response as needed
         setExplanationData(response);
@@ -52,7 +68,7 @@ const MLMViewNuisanceExplainer = ({ selectedMolecule }) => {
   return (
     <div className="flex flex-column w-full">
       <div className="flex justify-content-center">
-        <div className="flex">
+        {/* <div className="flex">
           <Card className="w-full" title="Functional Group Prompt Attention">
             <img
               width={470}
@@ -60,7 +76,7 @@ const MLMViewNuisanceExplainer = ({ selectedMolecule }) => {
               alt="Attention Summary"
             />
           </Card>
-        </div>
+        </div> */}
         {/* <div className="flex">
           <Card className="w-full" title="Atom Graph Attention">
             <img

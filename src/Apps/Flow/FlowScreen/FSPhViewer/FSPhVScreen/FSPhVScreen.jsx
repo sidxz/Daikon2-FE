@@ -107,11 +107,11 @@ const FSPhVScreen = ({}) => {
             />
           </div>
 
-          <div className="flex w-full border-1 border-50 border-round-md mb-1">
-            <div className="flex m-1 p-1 text-color-secondary	">
+          {selectedScreen?.notes?.length > 0 && (
+            <div className="flex w-full border-1 border-50 border-round-md mb-1 m-1 p-1 text-color-secondary	text-lg">
               Notes: {selectedScreen.notes}
             </div>
-          </div>
+          )}
 
           <div className="flex w-full">
             <BlockUI
@@ -123,6 +123,7 @@ const FSPhVScreen = ({}) => {
               <DataTable
                 className="p-datatable-gridlines w-full"
                 size="small"
+                reorderableColumns
                 value={selectedScreen?.screenRuns}
                 showGridlines
                 editMode="row"
@@ -148,12 +149,14 @@ const FSPhVScreen = ({}) => {
                   field="library"
                   header="Library"
                   editor={(options) => TextRowEditor(options)}
+                  filter
                 />
 
                 <Column
                   field="librarySize"
                   header="Library Size"
                   editor={(options) => TextRowEditor(options)}
+                  sortable
                 />
 
                 <Column
@@ -163,9 +166,10 @@ const FSPhVScreen = ({}) => {
                   }
                   header={Helper.ProtocolHeaderTemplate(
                     isProtocolExpanded,
-                    setIsProtocolExpanded
+                    setIsProtocolExpanded,
                   )}
                   editor={(options) => TextRowEditor(options)}
+                  filter
                 />
 
                 <Column
@@ -173,12 +177,14 @@ const FSPhVScreen = ({}) => {
                   header="# Compounds Screened"
                   editor={(options) => TextRowEditor(options)}
                   //body={CompoundsScreenedTemplate}
+                  sortable
                 />
                 <Column
                   field="scientist"
                   header="Scientist"
                   editor={(options) => ScientistRowEditor(options)}
                   style={{ wordWrap: "break-word" }}
+                  filter
                 />
                 <Column
                   field="startDate"
@@ -198,6 +204,7 @@ const FSPhVScreen = ({}) => {
                   field="primaryHitCount"
                   header="# Initial Hits"
                   editor={(options) => TextRowEditor(options)}
+                  sortable
                   // body={UnverifiedHitCountTemplate}
                 />
 
@@ -206,6 +213,7 @@ const FSPhVScreen = ({}) => {
                   header="# Confirmed Hits"
                   editor={(options) => TextRowEditor(options)}
                   //body={ConfirmedHitCountTemplate}
+                  sortable
                 />
 
                 <Column
@@ -213,6 +221,7 @@ const FSPhVScreen = ({}) => {
                   header="Hit Rate"
                   editor={(options) => TextRowEditor(options)}
                   //body={ConfirmedHitCountTemplate}
+                  sortable
                 />
 
                 <Column
@@ -220,6 +229,7 @@ const FSPhVScreen = ({}) => {
                   header="Notes"
                   editor={(options) => TextRowEditor(options)}
                   //body={ConfirmedHitCountTemplate}
+                  filter
                 />
 
                 <Column

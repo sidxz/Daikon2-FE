@@ -221,6 +221,11 @@ export default class HitStore {
         }
       }
 
+      console.log("newHits", newHits);
+      console.log("updatedHits", updatedHits);
+
+      //return; // TEMP RETURN TO AVOID API CALLS DURING TESTING
+
       if (newHits.length > 0) {
         let newHitsRes = await HitAPI.createBatch(
           this.rootStore.hitCollectionStore.selectedHitCollection.id,

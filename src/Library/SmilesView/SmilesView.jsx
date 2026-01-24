@@ -11,6 +11,7 @@ import { AIDocumentIcon } from "../../Apps/Flow/icons/AIDocumentIcon";
 import { DiscloseIcon } from "../../Apps/MolecuLogix/Icons/DiscloseIcon";
 import { ML_GENERATED_TOOLTIP } from "../../constants/strings";
 import MoleculeStructure from "../RDKit/MoleculeStructure/MoleculeStructure";
+import { buildSeedParam } from "../URLTools/base64URL";
 const SmilesView = ({
   compound,
   smiles,
@@ -62,6 +63,12 @@ const SmilesView = ({
     },
   });
 
+  const disclose_row = {
+    name: compound?.name || requestedCompoundName,
+  };
+  const seed = buildSeedParam(disclose_row);
+  const disclose_url = `/moleculogix/register?seed=${seed}`;
+
   let undisclosedContextMenuItems = [
     {
       label: "Disclose Molecule",
@@ -71,9 +78,7 @@ const SmilesView = ({
         </div>
       ),
       command: () => {
-        navigate(
-          `/moleculogix/disclose/?inputName=${requestedCompoundName}&inputId=${compoundId}`
-        );
+        navigate(disclose_url);
       },
     },
   ];
@@ -142,7 +147,7 @@ const SmilesView = ({
             icon="pi pi-clock"
             data-pr-tooltip="The AI model is still analyzing this compound. Please check back later for the results."
           ></Tag>
-        </div>
+        </div>,
       );
     }
     if (
@@ -152,8 +157,8 @@ const SmilesView = ({
         MLGeneratedTag(
           "labelReactive",
           "Nuisance - Reactive",
-          "The AI model has identified this compound as potentially reactive."
-        )
+          "The AI model has identified this compound as potentially reactive.",
+        ),
       );
     }
 
@@ -164,8 +169,8 @@ const SmilesView = ({
         MLGeneratedTag(
           "labelAggregator",
           "Nuisance - Aggregator",
-          "The AI model has identified this compound as a potential aggregator."
-        )
+          "The AI model has identified this compound as a potential aggregator.",
+        ),
       );
     }
 
@@ -176,8 +181,8 @@ const SmilesView = ({
         MLGeneratedTag(
           "labelPromiscuous",
           "Nuisance - Promiscuous",
-          "The AI model has identified this compound as potentially promiscuous."
-        )
+          "The AI model has identified this compound as potentially promiscuous.",
+        ),
       );
     }
 
@@ -189,8 +194,8 @@ const SmilesView = ({
         MLGeneratedTag(
           "labelLuciferaseInhibitor",
           "Nuisance - LucF Inhibitor",
-          "The AI model has identified this compound as a potential luciferase inhibitor."
-        )
+          "The AI model has identified this compound as a potential luciferase inhibitor.",
+        ),
       );
     }
 

@@ -67,7 +67,7 @@ const FSTbVScreen = () => {
         accept,
       });
     },
-    [deleteScreenRun]
+    [deleteScreenRun],
   );
 
   // If data is still loading, show a loading component
@@ -126,11 +126,12 @@ const FSTbVScreen = () => {
               ]}
             />
           </div>
-          <div className="flex w-full border-1 border-50 border-round-md mb-1">
-            <div className="flex m-1 p-1 text-color-secondary	">
+
+          {selectedScreen?.notes?.length > 0 && (
+            <div className="flex w-full border-1 border-50 border-round-md mb-1 m-1 p-1 text-color-secondary	text-lg">
               Notes: {selectedScreen.notes}
             </div>
-          </div>
+          )}
 
           {/* DataTable Section */}
           <div className="flex w-full">
@@ -143,6 +144,7 @@ const FSTbVScreen = () => {
               <DataTable
                 className="p-datatable-gridlines w-full"
                 size="small"
+                reorderableColumns
                 value={selectedScreen.screenRuns}
                 showGridlines
                 editMode="row"
@@ -167,6 +169,7 @@ const FSTbVScreen = () => {
                   field="library"
                   header="Library"
                   editor={(options) => TextRowEditor(options)}
+                  filter
                 />
                 <Column
                   field="protocol"
@@ -175,25 +178,29 @@ const FSTbVScreen = () => {
                   }
                   header={Helper.ProtocolHeaderTemplate(
                     isProtocolExpanded,
-                    setIsProtocolExpanded
+                    setIsProtocolExpanded,
                   )}
                   editor={(options) => TextRowEditor(options)}
+                  filter
                 />
                 <Column
                   field="concentration"
                   header="Inhibitor C (µM)"
                   editor={(options) => TextRowEditor(options)}
+                  sortable
                 />
                 <Column
                   field="noOfCompoundsScreened"
                   header="No. of Compounds"
                   editor={(options) => TextRowEditor(options)}
+                  sortable
                 />
                 <Column
                   field="scientist"
                   header="Scientist"
                   editor={(options) => ScientistRowEditor(options)}
                   style={{ wordWrap: "break-word" }}
+                  filter
                 />
                 <Column
                   field="startDate"
@@ -213,16 +220,19 @@ const FSTbVScreen = () => {
                   field="primaryHitCount"
                   header="# Initial Hit"
                   editor={(options) => TextRowEditor(options)}
+                  sortable
                 />
                 <Column
                   field="confirmedHitCount"
                   header="# Confirmed Active Hit"
                   editor={(options) => TextRowEditor(options)}
+                  sortable
                 />
                 <Column
                   field="notes"
                   header="Notes"
                   editor={(options) => TextRowEditor(options)}
+                  filter
                 />
 
                 <Column

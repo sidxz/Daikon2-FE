@@ -15,6 +15,7 @@ import { appColors } from "../../../../../constants/colors";
 import { PortfolioIcon } from "../../../icons/PortfolioIcon";
 import * as Helper from "./FPVSettingsHelper";
 import FPVSettingsDates from "./components/FPVSettingsDates";
+import FPVSettingsDelete from "./components/FPVSettingsDelete";
 import FPVSettingsOrgs from "./components/FPVSettingsOrgs";
 import FPVSettingsRemove from "./components/FPVSettingsRemove";
 import FPVSettingsRename from "./components/FPVSettingsRename";
@@ -164,7 +165,7 @@ const FPVSettings = () => {
           }
           className="w-full bg-red-50 border-1 border-red-400"
         >
-          <p className="m-0">Project deletion is currently unavailable.</p>
+          <FPVSettingsDelete />
         </Fieldset>
       </div>
     </div>

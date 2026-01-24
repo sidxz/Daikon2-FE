@@ -34,10 +34,17 @@ const MolDbAPI = {
       molecules: molecules,
     }),
 
-  registerMoleculePreview: (molecules) =>
-    axiosWithAuth.post("/v2/molecule/register-molecule-preview", {
-      queries: molecules,
-    }),
+  registerMoleculePreview: (
+    commands,
+    options = {
+      previewMode: true,
+    },
+  ) => {
+    console.log("commands:", commands);
+    return axiosWithAuth.post("/v2/molecule/batch", commands, {
+      params: { previewMode: true },
+    });
+  },
 
   registerMoleculeBatch: (commands, options = {}) =>
     axiosWithAuth.post("/v2/molecule/batch", commands, options),
@@ -49,6 +56,9 @@ const MolDbAPI = {
 
   explainNuisance: (nuisanceDto) =>
     axiosWithAuth.post("/v2/molecule/explain-nuisance", nuisanceDto),
+
+  predictNuisance: (nuisanceDto) =>
+    axiosWithAuth.post("/v2/molecule/predict-nuisance", nuisanceDto),
 };
 
 export default MolDbAPI;

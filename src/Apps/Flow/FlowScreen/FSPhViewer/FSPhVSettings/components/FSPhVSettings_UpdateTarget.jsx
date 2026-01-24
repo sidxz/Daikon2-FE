@@ -2,7 +2,7 @@ import { useFormik } from "formik";
 import { observer } from "mobx-react-lite";
 import { Button } from "primereact/button";
 import { classNames } from "primereact/utils";
-import React, { useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import LoadingBlockUI from "../../../../../../Library/LoadingBlockUI/LoadingBlockUI";
 import { RootStoreContext } from "../../../../../../RootStore";
 import { AppOrgResolver } from "../../../../../../Shared/VariableResolvers/AppOrgResolver";
@@ -51,7 +51,7 @@ const FSPhVSettings_UpdateTarget = () => {
     onSubmit: (newScreen) => {
       var screenToSubmit = { ...selectedScreen, ...newScreen };
       const targetName = targetListRegistry.get(
-        screenToSubmit.targetToAssociate
+        screenToSubmit.targetToAssociate,
       ).name;
       screenToSubmit.associatedTargets = {
         [screenToSubmit.targetToAssociate]: targetName,
@@ -95,9 +95,11 @@ const FSPhVSettings_UpdateTarget = () => {
           </div>
 
           <Button
+            text
+            raised
             icon="icon icon-common icon-database-submit"
             type="submit"
-            label="Save"
+            label="Update"
             className="p-mt-2 w-2"
             loading={isUpdatingScreen}
           />
