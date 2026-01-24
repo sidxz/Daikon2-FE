@@ -3,7 +3,8 @@ import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { Message } from "primereact/message";
 import { Tag } from "primereact/tag";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import FDate from "../../../Library/FDate/FDate";
 import Loading from "../../../Library/Loading/Loading";
 import SecHeading from "../../../Library/SecHeading/SecHeading";
 import { appColors } from "../../../constants/colors";
@@ -34,13 +35,13 @@ const toServiceRows = (response) => {
   return Object.entries(servicesBody).map(([key, value]) => ({
     key,
     statusCode: value?.statusCode ?? value?.status ?? null,
-    service: value?.service ?? value?.name ?? "",
-    version: value?.version ?? "",
-    versionName: value?.versionName ?? value?.version_name ?? "",
-    environment: value?.environment ?? "",
-    timestamp: value?.timestamp ?? "",
-    uptime: value?.uptime ?? "",
-    lastCheckedUtc: value?.lastCheckedUtc ?? value?.lastCheckedUTC ?? "",
+    service: value?.body?.service ?? "",
+    version: value?.body?.version ?? "",
+    versionName: value?.body?.versionName ?? "",
+    environment: value?.body?.environment ?? "",
+    timestamp: value?.body?.timestamp ?? "",
+    uptime: value?.body?.uptime ?? "",
+    lastCheckedUtc: value?.lastCheckedUtc ?? "",
     error: value?.error ?? "",
   }));
 };
@@ -75,7 +76,7 @@ const AdminHealthServices = () => {
       const errMessage =
         typeof err === "string"
           ? err
-          : err?.message ?? "Failed to load health services.";
+          : (err?.message ?? "Failed to load health services.");
       setServices([]);
       setError(errMessage);
     } finally {
@@ -134,11 +135,11 @@ const AdminHealthServices = () => {
           dataKey="key"
           loading={loading}
           paginator
-          rows={25}
+          rows={50}
           rowsPerPageOptions={[10, 25, 50]}
           emptyMessage={loading ? "Loading services..." : "No services found."}
-          responsiveLayout="scroll"
         >
+          <Column header="#" body={(_, { rowIndex }) => rowIndex + 1} />
           <Column field="key" header="Key" sortable />
           <Column
             field="statusCode"
@@ -149,15 +150,23 @@ const AdminHealthServices = () => {
           <Column field="service" header="Service" sortable />
           <Column field="version" header="Version" sortable />
           <Column field="versionName" header="Version Name" sortable />
-          <Column field="environment" header="Environment" sortable />
-          <Column field="timestamp" header="Timestamp" sortable />
-          <Column field="uptime" header="Uptime" sortable />
-          <Column field="lastCheckedUtc" header="Last Checked" sortable />
           <Column
             field="error"
             header="Error"
             body={(rowData) => formatCell(rowData.error)}
           />
+
+          <Column field="uptime" header="Uptime" sortable />
+          <Column
+            field="lastCheckedUtc"
+            header="Last Checked"
+            sortable
+            body={(rowData) => (
+              <FDate timestamp={rowData.lastCheckedUtc} hideTime={false} />
+            )}
+          />
+
+          <Column field="environment" header="Environment" sortable />
         </DataTable>
       </div>
     </div>
