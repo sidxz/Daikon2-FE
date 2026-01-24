@@ -19,7 +19,7 @@ import { DoseResponseBodyTemplate } from "../../../FSTbViewer/FSTbVHitCollection
 import { getUniqueMoleculeNames } from "../../../shared/SharedHelper";
 import Vote from "../../../shared/Vote/Vote";
 import FSPhVHAddHit from "./FSPhVHitsHelper/FSPhVHAddHit";
-import { FSPhVHDataTableHeader } from "./FSPhVHitsHelper/FSPhVHDataTableHeader";
+import FSPhVHDataTableHeader from "./FSPhVHitsHelper/FSPhVHDataTableHeader";
 import { StructureBodyTemplate } from "./FSPhVHitsHelper/FSPhVHDataTableHelper";
 import FSPhVHExcelImport from "./FSPhVHitsHelper/FSPhVHExcelImport";
 import { PhHitsTableType } from "./FSPhVHitsHelper/FSPhVHitsConstants";
@@ -118,7 +118,7 @@ const FSPhVHits = ({ id }) => {
     ) {
       console.log(
         "useEffect : FSPhVHits: getCustomization",
-        selectedHitCollectionId
+        selectedHitCollectionId,
       );
       getCustomization(PhHitsTableType, selectedHitCollectionId);
       updateScrollHeight();
@@ -211,18 +211,21 @@ const FSPhVHits = ({ id }) => {
       header: "Library",
       editor: TextRowEditor,
       sortable: true,
+      filter: true,
     },
     {
       key: "librarySource",
       header: "Source",
       editor: TextRowEditor,
-      sortable: false,
+      sortable: true,
+      filter: true,
     },
     {
       key: "moleculeName",
       header: "Molecule Name",
       body: getUniqueMoleculeNames,
       sortable: true,
+      filter: true,
     },
 
     {
@@ -320,6 +323,7 @@ const FSPhVHits = ({ id }) => {
       header: "MIC90 Condition",
       editor: TextRowEditor,
       sortable: true,
+      filter: true,
     },
 
     {
@@ -339,6 +343,7 @@ const FSPhVHits = ({ id }) => {
       header: "MIC Condition",
       editor: TextRowEditor,
       sortable: true,
+      filter: true,
     },
 
     {
@@ -378,12 +383,14 @@ const FSPhVHits = ({ id }) => {
       header: "Cluster",
       editor: TextRowEditor,
       sortable: true,
+      filter: true,
     },
     {
       key: "assayType",
       header: "Assay Type",
       editor: TextRowEditor,
       sortable: true,
+      filter: true,
     },
     {
       key: "voteScore",
@@ -397,6 +404,7 @@ const FSPhVHits = ({ id }) => {
       header: "Notes",
       editor: TextRowEditor,
       sortable: true,
+      filter: true,
     },
     {
       key: "doseResponses",
@@ -431,6 +439,7 @@ const FSPhVHits = ({ id }) => {
             body={col.body}
             editor={col.editor ? (options) => col.editor(options) : undefined}
             sortable={col.sortable}
+            filter={col.filter}
           />
         );
       }
@@ -454,6 +463,12 @@ const FSPhVHits = ({ id }) => {
               ></ProgressBar>
             </div>
           )}
+          {selectedHitCollection?.notes?.length > 0 && (
+            <div className="flex m-1 p-1 text-color-secondary	text-lg">
+              Notes: {selectedHitCollection.notes}
+            </div>
+          )}
+
           <div className="flex w-full">
             <DataTable
               loading={
@@ -472,13 +487,13 @@ const FSPhVHits = ({ id }) => {
               value={(selectedHitCollection?.hits || [])
                 .filter(
                   (hit) =>
-                    !filterNotVoted || Object.keys(hit.voters).length === 0
+                    !filterNotVoted || Object.keys(hit.voters).length === 0,
                 )
                 .filter((hit) =>
                   filterDisclosed
                     ? hit.isStructureDisclosed === true ||
                       hit?.molecule?.smiles != null
-                    : true
+                    : true,
                 )}
               paginator
               scrollable
@@ -489,6 +504,7 @@ const FSPhVHits = ({ id }) => {
               resizableColumns
               columnResizeMode="fit"
               showGridlines
+              reorderableColumns
               header={
                 <FSPhVHDataTableHeader
                   showAddHitSideBar={() => setDisplayAddHitSideBar(true)}

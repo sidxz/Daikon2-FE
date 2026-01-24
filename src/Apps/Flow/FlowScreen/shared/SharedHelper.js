@@ -45,3 +45,12 @@ export function isSameMoleculeName(row, existing) {
     existingNames.some((en) => rn?.toLowerCase() === en?.toLowerCase())
   );
 }
+
+/* Check both molecule name and assay type to determine if two hits are the same, use above function */
+export function isSameMoleculeAndAssayType(row, existing) {
+  return (
+    isSameMoleculeName(row, existing) &&
+    row.assayType?.trim().toLowerCase() ===
+      existing.assayType?.trim().toLowerCase()
+  );
+}

@@ -50,14 +50,14 @@ const MLogixMenuBar = () => {
     },
     {
       label: "Register",
-      icon: "icon icon-common icon-plus-circle",
+      icon: <DiscloseIcon />,
       command: () => navigate("register/"),
     },
-    {
-      label: "Disclose",
-      icon: <DiscloseIcon />,
-      command: () => navigate("disclose/"),
-    },
+    // {
+    //   label: "Disclose",
+    //   icon: <DiscloseIcon />,
+    //   command: () => navigate("disclose/"),
+    // },
     {
       label: "Disclosure Report",
       icon: <FcHeatMap className="m-1" style={{ fontSize: "2rem" }} />,

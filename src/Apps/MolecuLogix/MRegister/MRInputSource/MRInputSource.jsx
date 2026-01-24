@@ -31,7 +31,7 @@ const MRInputSource = ({ onDataReady }) => {
   const tableRef = useRef();
 
   const [metaDataScientist] = useState(
-    `${user?.firstName || ""} ${user?.lastName || ""}`.trim()
+    `${user?.firstName || ""} ${user?.lastName || ""}`.trim(),
   );
   const [metaDataOrgID] = useState(user?.appOrgId || "");
 
@@ -143,7 +143,7 @@ const MRInputSource = ({ onDataReady }) => {
     const total = rows.length;
 
     // filter first in one pass (fast)
-    const filtered = rows.filter((r) => normalize(r.moleculeName));
+    const filtered = rows.filter((r) => normalize(r.name));
 
     for (let i = 0; i < filtered.length; i += CHUNK_SIZE) {
       const chunk = filtered.slice(i, i + CHUNK_SIZE);
@@ -158,7 +158,7 @@ const MRInputSource = ({ onDataReady }) => {
       const pct = Math.round(((i + chunk.length) / total) * 100);
       setProgress(pct);
       setProgressMsg(
-        `Processed ${Math.min(i + chunk.length, total)} of ${total} rows`
+        `Processed ${Math.min(i + chunk.length, total)} of ${total} rows`,
       );
     }
 
@@ -212,12 +212,12 @@ const MRInputSource = ({ onDataReady }) => {
   const header = useMemo(
     () => (
       <div className="flex justify-content-between align-items-center w-full">
-        <span className="text-sm text-color-secondary">
+        <span className="text-xl text-color-secondary">
           {totalRecords.toLocaleString()} rows loaded
         </span>
       </div>
     ),
-    [totalRecords]
+    [totalRecords],
   );
 
   return (
@@ -278,7 +278,7 @@ const MRInputSource = ({ onDataReady }) => {
           <Column header="#" body={(data, options) => options.rowIndex + 1} />
           <Column field="smiles" header="Structure" body={structureBody} />
           <Column
-            field="moleculeName"
+            field="name"
             header="Molecule Name"
             style={{ minWidth: "14rem" }}
           />

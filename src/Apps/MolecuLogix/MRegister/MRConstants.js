@@ -1,7 +1,7 @@
 export const DtFieldsToExcelColumnMapping =
   // Map Data fields to column names of excel sheet
   {
-    moleculeName: "Molecule Name",
+    name: "Molecule Name",
     smiles: "SMILES",
     disclosureScientist: "Scientist",
     disclosureOrg: "Org",

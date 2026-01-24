@@ -1,7 +1,5 @@
 import { Route, Routes } from "react-router";
 import { Navigate } from "react-router-dom";
-import MDisclose from "./MDisclose/MDisclose";
-import MPreDisclose from "./MDisclose/middleware/MPreDisclose";
 import MLogixComments from "./MLogixComments/MLogixComments";
 import MLogixDisclosureReport from "./MLogixDisclosureReport/MLogixDisclosureReport";
 import MLogixDocs from "./MLogixDocs/MLogixDocs";
@@ -9,8 +7,8 @@ import MLogixDraw from "./MLogixDraw/MLogixDraw";
 import MLogixMenuBar from "./MLogixMenuBar/MLogixMenuBar";
 import MLogixMoleculeEdit from "./MLogixMoleculeEdit/MLogixMoleculeEdit";
 import MLogixMoleculeView from "./MLogixMoleculeView/MLogixMoleculeView";
+import MLogixRegistration from "./MLogixRegistration/MLogixRegistration";
 import MLogixSearch from "./MLogixSearch/MLogixSearch";
-import MRegister from "./MRegister/MRegister";
 
 const MolecuLogix = () => {
   return (
@@ -26,10 +24,10 @@ const MolecuLogix = () => {
           <Route path="molecule/:id/discussion" element={<MLogixComments />} />
           <Route path="molecule/:id" element={<MLogixMoleculeView />} />
           <Route path="search/" element={<MLogixSearch />} />
-          <Route path="register/" element={<MRegister />} />
+          <Route path="register/" element={<MLogixRegistration />} />
           <Route path="draw/*" element={<MLogixDraw />} />
-          <Route path="disclose/pre/*" element={<MPreDisclose />} />
-          <Route path="disclose/*" element={<MDisclose />} />
+          {/* <Route path="disclose/pre/*" element={<MPreDisclose />} />
+          <Route path="disclose/*" element={<MDisclose />} /> */}
           <Route
             path="disclosure-report/*"
             element={<MLogixDisclosureReport />}

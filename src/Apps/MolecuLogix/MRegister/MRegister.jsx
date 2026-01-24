@@ -21,7 +21,7 @@ const MRegister = () => {
   const canProceedToValidation = (inputs?.length || 0) > 0;
   const okCount = useMemo(
     () => (previewResults || []).filter((r) => r?.isValid).length,
-    [previewResults]
+    [previewResults],
   );
   const canProceedToImport = okCount > 0;
 

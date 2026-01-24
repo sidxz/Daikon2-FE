@@ -18,6 +18,7 @@ import { PostPortfolioIcon } from "../../../icons/PostPortfolioIcon";
 
 import * as Helper from "./FPPVSettingsHelper";
 import FPPVSettingsDates from "./components/FPPVSettingsDates";
+import FPPVSettingsDelete from "./components/FPPVSettingsDelete";
 import FPPVSettingsOrgs from "./components/FPPVSettingsOrgs";
 import FPPVSettingsRemove from "./components/FPPVSettingsRemove";
 import FPPVSettingsRename from "./components/FPPVSettingsRename";
@@ -168,7 +169,7 @@ const FPPVSettings = () => {
           }
           className="w-full bg-red-50 border-1 border-red-400"
         >
-          <p className="m-0">Project deletion is currently unavailable.</p>
+          <FPPVSettingsDelete />
         </Fieldset>
       </div>
     </div>

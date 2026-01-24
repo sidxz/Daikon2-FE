@@ -8,7 +8,7 @@ import { STRINGS } from "../../../../Customizations/strings";
 import ImportFromExcel from "../../../../Shared/Excel/ImportFromExcel";
 const MDInput = ({ inputs, setInputs, moveToPreview }) => {
   const columns = [
-    { field: "name", header: "Name" },
+    { field: "name", header: "Molecule Name" },
     { field: "SMILES", header: "SMILES" },
     { field: "disclosureScientist", header: "Scientist" },
     { field: "disclosureReason", header: "Reason" },
@@ -30,13 +30,13 @@ const MDInput = ({ inputs, setInputs, moveToPreview }) => {
   };
 
   const DtFieldsToExcelColumnMapping = {
-    name: "Name",
+    name: "Molecule Name",
     SMILES: "SMILES",
     disclosureScientist: "Scientist",
-    disclosureReason: "Reason",
-    disclosureStage: "Stage",
-    disclosureNotes: "Notes",
-    literatureReferences: "Literature",
+    disclosureReason: "Disclosure Reason",
+    disclosureStage: "Disclosure Stage",
+    disclosureNotes: "Disclosure Notes",
+    literatureReferences: "Disclosure Literature",
   };
 
   let onUpload = async (e) => {

@@ -4,7 +4,7 @@ import { BlockUI } from "primereact/blockui";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { classNames } from "primereact/utils";
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { RootStoreContext } from "../../../../../../RootStore";
 import { AppOrgResolver } from "../../../../../../Shared/VariableResolvers/AppOrgResolver";
 import { GlobalValuesResolver } from "../../../../../../Shared/VariableResolvers/GlobalValuesResolver";
@@ -74,9 +74,11 @@ const FSPhVSettings_Rename = () => {
           </div>
 
           <Button
+            text
+            raised
             icon="icon icon-common icon-database-submit"
             type="submit"
-            label="Save"
+            label="Rename"
             className="p-mt-2 w-2"
             loading={isUpdatingScreen}
           />

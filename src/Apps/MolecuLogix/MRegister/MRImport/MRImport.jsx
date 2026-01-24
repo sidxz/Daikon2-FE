@@ -15,11 +15,11 @@ const csvEscape = (v) => {
   return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
 };
 const rowsToCSV = (rows) => {
-  const headers = ["moleculeName", "status", "message", "registrationId"];
+  const headers = ["name", "status", "message", "registrationId"];
   const lines = [headers.join(",")];
   for (const r of rows) {
     const row = [
-      csvEscape(r.moleculeName),
+      csvEscape(r.name),
       csvEscape(r.__status || ""),
       csvEscape(r.__message || ""),
       csvEscape(r.registrationId || ""),
@@ -52,7 +52,7 @@ const mapToRegisterCommand = (row) => {
   const cmd = {
     // id: (omit)
     // registrationId: (omit)
-    name: row.moleculeName ?? row.name ?? "",
+    name: row.name ?? row.name ?? "",
     smiles: row.smiles ?? row.SMILES ?? "",
     synonyms: row.synonyms ?? "",
     disclosureStage: row.disclosureStage ?? "",
@@ -81,17 +81,14 @@ const MRImport = ({ inputs = [], previewResults = [] }) => {
 
   // Valid names from preview
   const okNames = useMemo(
-    () =>
-      (previewResults || [])
-        .filter((r) => r?.isValid)
-        .map((r) => r.moleculeName),
-    [previewResults]
+    () => (previewResults || []).filter((r) => r?.isValid).map((r) => r.name),
+    [previewResults],
   );
 
-  // Full payload rows from inputs by moleculeName
+  // Full payload rows from inputs by name
   const rowsToImport = useMemo(() => {
     if (!inputs?.length || !okNames?.length) return [];
-    const byName = new Map(inputs.map((r) => [r?.moleculeName, r]));
+    const byName = new Map(inputs.map((r) => [r?.name, r]));
     return okNames.map((name) => byName.get(name)).filter(Boolean);
   }, [inputs, okNames]);
 
@@ -114,8 +111,9 @@ const MRImport = ({ inputs = [], previewResults = [] }) => {
       downloadCSV(
         `register-import_failures_${now}.csv`,
         importRows.filter(
-          (r) => r.__status !== "SUCCESS" && r.__status !== "ALREADY_REGISTERED"
-        )
+          (r) =>
+            r.__status !== "SUCCESS" && r.__status !== "ALREADY_REGISTERED",
+        ),
       );
     }
   };
@@ -157,8 +155,8 @@ const MRImport = ({ inputs = [], previewResults = [] }) => {
         setProgressMsg(
           `Importing rows ${idx * CHUNK_SIZE + 1}-${Math.min(
             (idx + 1) * CHUNK_SIZE,
-            allCommands.length
-          )}…`
+            allCommands.length,
+          )}…`,
         );
 
         try {
@@ -169,7 +167,7 @@ const MRImport = ({ inputs = [], previewResults = [] }) => {
 
           // Normalize using response; correlate by Name (server also returns RegistrationId we can log)
           const normalized = (resp || []).map((r) => ({
-            moleculeName: r?.name ?? "", // correlation by unique name
+            name: r?.name ?? "", // correlation by unique name
             registrationId: r?.registrationId ?? "", // server-generated
             __status: r?.wasAlreadyRegistered
               ? "ALREADY_REGISTERED"
@@ -179,7 +177,7 @@ const MRImport = ({ inputs = [], previewResults = [] }) => {
 
           success += normalized.filter(
             (x) =>
-              x.__status === "SUCCESS" || x.__status === "ALREADY_REGISTERED"
+              x.__status === "SUCCESS" || x.__status === "ALREADY_REGISTERED",
           ).length;
           setImportRows((prev) => [...prev, ...normalized]);
         } catch (err) {
@@ -187,7 +185,7 @@ const MRImport = ({ inputs = [], previewResults = [] }) => {
 
           // Entire chunk failed — mark each row as failed (correlate by name we sent)
           const failedRows = chunk.map((c) => ({
-            moleculeName: c.name,
+            name: c.name,
             registrationId: "",
             __status: "FAILED",
             __message: "import-failed-chunk",
@@ -196,7 +194,7 @@ const MRImport = ({ inputs = [], previewResults = [] }) => {
           setImportRows((prev) => [...prev, ...failedRows]);
 
           setImportError(
-            (p) => p || (err?.message ?? "One or more chunks failed")
+            (p) => p || (err?.message ?? "One or more chunks failed"),
           );
           console.error("Import chunk failed:", err);
         } finally {
@@ -249,7 +247,7 @@ const MRImport = ({ inputs = [], previewResults = [] }) => {
                 `register-import_${new Date()
                   .toISOString()
                   .replace(/[:.]/g, "-")}.csv`,
-                importRows
+                importRows,
               )
             }
             disabled={!importRows.length}
@@ -267,15 +265,15 @@ const MRImport = ({ inputs = [], previewResults = [] }) => {
                 importRows.filter(
                   (r) =>
                     r.__status !== "SUCCESS" &&
-                    r.__status !== "ALREADY_REGISTERED"
-                )
+                    r.__status !== "ALREADY_REGISTERED",
+                ),
               )
             }
             disabled={
               !importRows.some(
                 (r) =>
                   r.__status !== "SUCCESS" &&
-                  r.__status !== "ALREADY_REGISTERED"
+                  r.__status !== "ALREADY_REGISTERED",
               )
             }
           />
@@ -296,9 +294,9 @@ const MRImport = ({ inputs = [], previewResults = [] }) => {
       </div>
 
       <div className="text-color-secondary text-sm">
-        Import matches by <b>moleculeName</b> and omits any client-generated
-        IDs; the server assigns <code>Id</code> and <code>RegistrationId</code>.
-        Returned <code>registrationId</code> is captured in the CSV.
+        Import matches by <b>name</b> and omits any client-generated IDs; the
+        server assigns <code>Id</code> and <code>RegistrationId</code>. Returned{" "}
+        <code>registrationId</code> is captured in the CSV.
       </div>
     </div>
   );

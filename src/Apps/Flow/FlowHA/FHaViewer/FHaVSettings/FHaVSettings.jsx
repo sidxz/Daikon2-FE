@@ -1,6 +1,6 @@
 import { BreadCrumb } from "primereact/breadcrumb";
 import { Fieldset } from "primereact/fieldset";
-import React, { useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import {
   FcHighPriority,
   FcLowPriority,
@@ -13,6 +13,7 @@ import { appColors } from "../../../../../constants/colors";
 import { HAIcon } from "../../../icons/HAIcon";
 import * as Helper from "./FHaVSettingsHelper";
 import FHaVSettingsDates from "./components/FHaVSettingsDates";
+import FHaVSettingsDelete from "./components/FHaVSettingsDelete";
 import FHaVSettingsInformation from "./components/FHaVSettingsInformation";
 import FHaVSettingsOrgs from "./components/FHaVSettingsOrgs";
 import FHaVSettingsRemove from "./components/FHaVSettingsRemove";
@@ -145,7 +146,7 @@ const FHaVSettings = () => {
           }
           className="w-full bg-red-50 border-1 border-red-400"
         >
-          <p className="m-0">HA deletion is currently unavailable.</p>
+          <FHaVSettingsDelete />
         </Fieldset>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { observer } from "mobx-react-lite";
 import { Button } from "primereact/button";
@@ -27,7 +27,7 @@ const FPPVSettingsUpdateAssociation = () => {
   }, [isHaListCacheValid]);
 
   const [selectedHa, setSelectedHa] = useState(
-    () => haList.find((ha) => ha.id === selectedProject.haId) || null
+    () => haList.find((ha) => ha.id === selectedProject.haId) || null,
   );
 
   useEffect(() => {
@@ -42,13 +42,15 @@ const FPPVSettingsUpdateAssociation = () => {
   let submit = () => {
     var projectToSubmit = {};
     projectToSubmit.id = selectedProject.id;
-    projectToSubmit.haId = selectedHa.id;
-    projectToSubmit.compoundId = selectedHa.compoundEvoLatestMoleculeId;
-    projectToSubmit.compoundSMILES = selectedHa.compoundEvoLatestSMILES;
-    projectToSubmit.hitCompoundId = selectedHa.compoundId;
-    projectToSubmit.hitId = selectedHa.hitId;
+    if (selectedHa) {
+      projectToSubmit.haId = selectedHa.id;
+      projectToSubmit.compoundId = selectedHa.compoundEvoLatestMoleculeId;
+      projectToSubmit.compoundSMILES = selectedHa.compoundEvoLatestSMILES;
+      projectToSubmit.hitCompoundId = selectedHa.compoundId;
+      projectToSubmit.hitId = selectedHa.hitId;
+    }
 
-    //console.log(projectToSubmit);
+    console.log(projectToSubmit);
     updateProjectAssociation(projectToSubmit);
   };
 
@@ -68,6 +70,8 @@ const FPPVSettingsUpdateAssociation = () => {
           className="text-base text-color surface-overlay"
           loading={isUpdatingProject}
           readOnly={isUpdatingProject}
+          filter
+          showClear
         />
       </div>
 

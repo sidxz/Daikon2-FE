@@ -3,7 +3,6 @@ import { Button } from "primereact/button";
 import { Chart } from "primereact/chart";
 import { Dialog } from "primereact/dialog";
 import { Fieldset } from "primereact/fieldset";
-import { Tag } from "primereact/tag";
 import React from "react";
 import FDate from "../../../../Library/FDate/FDate";
 import { ML_GENERATED_TOOLTIP } from "../../../../constants/strings";
@@ -12,27 +11,8 @@ import MLMViewNuisanceExplainer from "./MLMViewNuisanceExplainer";
 const MLMViewNuisance = ({ selectedMolecule }) => {
   const [nuisanceExplainerModalVisible, setNuisanceExplainerModalVisible] =
     React.useState(false);
-
-  let painsFlags = [
-    {
-      name: "RDKit Pains Flag",
-      value: selectedMolecule?.pains?.rdKitPains,
-    },
-  ];
-
-  let painsLabel = [
-    {
-      name: "RDKit Pains Label",
-      value: selectedMolecule?.pains?.rdKitPainsLabels?.join(", "),
-    },
-  ];
-
-  let boolValueTemplate = (rowData) => {
-    if (rowData.value === true) {
-      return <Tag severity="danger" value="True"></Tag>;
-    }
-    return <Tag severity="success" value="False"></Tag>;
-  };
+  const [nuisanceRerunModalVisible, setNuisanceRerunModalVisible] =
+    React.useState(false);
 
   const renderLabelBoxes = (modelPred) => {
     const labels = [
@@ -124,11 +104,38 @@ const MLMViewNuisance = ({ selectedMolecule }) => {
           className="m-0 flex-grow-1 w-full"
           legend="AI/ML NUISANCE PREDICTIONS"
         >
-          <div className="flex flex-column w-full gap-2">
+          <div className="flex flex-column w-full gap-2 p-4 justify-content-center align-items-center surface-400 border-round-md border-1 border-400 text-white">
             The nuisance predictions are still being processed. Please check
             back later.
           </div>
+          <div className="flex flex-column w-full gap-2 p-4 justify-content-center align-items-center">
+            <Button
+              label="Rerun Nuisance Predictions"
+              severity="secondary"
+              size="small"
+              outlined
+              onClick={() => {
+                // Open modal with more explanation
+                console.log("Rerun Nuisance Predictions clicked");
+                setNuisanceRerunModalVisible(true);
+              }}
+            />
+          </div>
         </Fieldset>
+
+        <Dialog
+          header="Nuisance Prediction ReRun & Explanation (Beta)"
+          visible={nuisanceRerunModalVisible}
+          onHide={() => {
+            if (!nuisanceRerunModalVisible) return;
+            setNuisanceRerunModalVisible(false);
+          }}
+        >
+          <MLMViewNuisanceExplainer
+            selectedMolecule={selectedMolecule}
+            saveResults={true}
+          />
+        </Dialog>
       </div>
     );
   }
@@ -142,12 +149,12 @@ const MLMViewNuisance = ({ selectedMolecule }) => {
         <div className="flex flex-column w-full gap-2">
           <div className="flex align-items-center justify-content-center">
             {renderLabelBoxes(
-              selectedMolecule?.predictions?.nuisanceModelPredictions[0]
+              selectedMolecule?.predictions?.nuisanceModelPredictions[0],
             )}
           </div>
           <div className="flex align-items-center justify-content-center">
             {renderRadarChart(
-              selectedMolecule?.predictions?.nuisanceModelPredictions[0]
+              selectedMolecule?.predictions?.nuisanceModelPredictions[0],
             )}
           </div>
           <div className="flex gap-2">
@@ -194,6 +201,20 @@ const MLMViewNuisance = ({ selectedMolecule }) => {
         }}
       >
         <MLMViewNuisanceExplainer selectedMolecule={selectedMolecule} />
+      </Dialog>
+
+      <Dialog
+        header="Nuisance Prediction ReRun & Explanation (Beta)"
+        visible={nuisanceRerunModalVisible}
+        onHide={() => {
+          if (!nuisanceRerunModalVisible) return;
+          setNuisanceRerunModalVisible(false);
+        }}
+      >
+        <MLMViewNuisanceExplainer
+          selectedMolecule={selectedMolecule}
+          saveResults={true}
+        />
       </Dialog>
     </div>
   );

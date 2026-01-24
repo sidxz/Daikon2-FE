@@ -6,13 +6,19 @@ import { Calendar } from "primereact/calendar";
 import { Dropdown } from "primereact/dropdown";
 import { InputTextarea } from "primereact/inputtextarea";
 import { classNames } from "primereact/utils";
-import React, { useContext } from "react";
+import { useContext } from "react";
 import Loading from "../../../../../../Library/Loading/Loading";
 import { RootStoreContext } from "../../../../../../RootStore";
 import { DateInit } from "../../../../../../Shared/DateLib/DateInit";
 import InputOrg from "../../../../../../Shared/InputEditors/InputOrg";
 import { AppOrgResolver } from "../../../../../../Shared/VariableResolvers/AppOrgResolver";
 import { GlobalValuesResolver } from "../../../../../../Shared/VariableResolvers/GlobalValuesResolver";
+
+/*
+ * Component: FSPhVSettings_Basic
+ * Description: Form to update screen-level basic settings such as org, method, notes, and status date
+ */
+
 const FSPhVSettings_Basic = () => {
   const rootStore = useContext(RootStoreContext);
 
@@ -34,8 +40,6 @@ const FSPhVSettings_Basic = () => {
       primaryOrgId: selectedScreen.primaryOrgId,
       primaryOrgName: selectedScreen.primaryOrgName,
       latestStatusChangeDate: DateInit(selectedScreen.latestStatusChangeDate),
-
-      // participatingOrgsId: [],
     },
 
     validate: (values) => {
@@ -51,14 +55,8 @@ const FSPhVSettings_Basic = () => {
       var screenToSubmit = { ...selectedScreen, ...newScreen };
       screenToSubmit.primaryOrgName = getOrgNameById(newScreen.primaryOrgId);
       screenToSubmit.latestStatusChangeDate = DateInit(
-        screenToSubmit.latestStatusChangeDate
+        screenToSubmit.latestStatusChangeDate,
       );
-
-      // if (newScreen.participatingOrgsId.length > 0) {
-      //   newScreen.participatingOrgsId.forEach((orgId) => {
-      //     screenToSubmit.participatingOrgs[orgId] = getOrgNameById(orgId);
-      //   });
-      // }
 
       updateScreen(screenToSubmit);
     },
@@ -74,8 +72,12 @@ const FSPhVSettings_Basic = () => {
   return (
     <BlockUI blocked={isUpdatingScreen}>
       <div className="card w-full">
-        <form onSubmit={formik.handleSubmit} className="p-fluid">
-          <div className="field">
+        <form
+          onSubmit={formik.handleSubmit}
+          className="p-fluid p-formgrid grid"
+        >
+          {/* Primary Org */}
+          <div className="field col-12 md:col-6">
             <label
               htmlFor="primaryOrgName"
               className={classNames({
@@ -115,7 +117,8 @@ const FSPhVSettings_Basic = () => {
             {getErrorMessage("participatingOrgsId")}
           </div> */}
 
-          <div className="field">
+          {/* Method */}
+          <div className="field col-12 md:col-6">
             <label
               htmlFor="method"
               className={classNames({
@@ -143,7 +146,8 @@ const FSPhVSettings_Basic = () => {
             {getErrorMessage("method")}
           </div>
 
-          <div className="field">
+          {/* Notes */}
+          <div className="field col-12">
             <label
               htmlFor="notes"
               className={classNames({
@@ -163,43 +167,43 @@ const FSPhVSettings_Basic = () => {
             />
           </div>
 
-          <div className="field">
+          {/* Latest Status Change Date */}
+          <div className="field col-12 md:col-6">
             <label
               htmlFor="latestStatusChangeDate"
               className={classNames({
                 "p-error": isInvalid("latestStatusChangeDate"),
               })}
             >
-              @Override Latest Status Change Date
+              Override Latest Status Change Date
             </label>
-            <div className="flex gap-2 align-items-center">
-              <div className="flex">
-                <Calendar
-                  id="latestStatusChangeDate"
-                  value={formik.values?.latestStatusChangeDate}
-                  onChange={(e) =>
-                    formik.setFieldValue("latestStatusChangeDate", e.value)
-                  }
-                  className={classNames({
-                    "p-invalid": isInvalid("latestStatusChangeDate"),
-                  })}
-                  onKeyDown={(e) => {
-                    e.key === "Enter" && e.preventDefault();
-                  }}
-                />
-              </div>
-            </div>
-
+            <Calendar
+              id="latestStatusChangeDate"
+              value={formik.values?.latestStatusChangeDate}
+              onChange={(e) =>
+                formik.setFieldValue("latestStatusChangeDate", e.value)
+              }
+              className={classNames({
+                "p-invalid": isInvalid("latestStatusChangeDate"),
+              })}
+              onKeyDown={(e) => {
+                e.key === "Enter" && e.preventDefault();
+              }}
+            />
             {getErrorMessage("latestStatusChangeDate")}
           </div>
-
-          <Button
-            icon="icon icon-common icon-database-submit"
-            type="submit"
-            label="Save"
-            className="p-mt-2 w-2"
-            loading={isUpdatingScreen}
-          />
+          {/* Submit Button */}
+          <div className="field col-12 md:col-3 mt-5 align-items-center ">
+            <Button
+              text
+              raised
+              icon="icon icon-common icon-database-submit"
+              type="submit"
+              label="Save"
+              loading={isUpdatingScreen}
+              className="w-full"
+            />
+          </div>
         </form>
       </div>
     </BlockUI>

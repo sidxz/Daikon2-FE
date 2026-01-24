@@ -7,7 +7,7 @@ import SmilesView from "../../../../../../../Library/SmilesView/SmilesView";
 import { RootStoreContext } from "../../../../../../../RootStore";
 import ImportFromExcel from "../../../../../../../Shared/Excel/ImportFromExcel";
 import { GroupMolecules } from "../../../../shared/DataImportHelper";
-import { isSameMoleculeName } from "../../../../shared/SharedHelper";
+import { isSameMoleculeAndAssayType } from "../../../../shared/SharedHelper";
 import { DoseResponseBodyTemplate } from "./FSTbVHDataTableHelper";
 import {
   DoseResponsesFlattener,
@@ -125,6 +125,11 @@ const FSTbVHExcelImport = ({
               if (!row["clusterGroup"]) {
                 row["clusterGroup"] = 0;
               }
+
+              // if assayType is null or not set, set it to "Default"
+              if (!row["assayType"]) {
+                row["assayType"] = "";
+              }
               // row.hitCollectionId = selectedHitCollection.id;
               // output is in field 'smiles' in excel (template), but to create a hit, we need 'requestedSMILES'
               // row.requestedSMILES = row.smiles;
@@ -135,6 +140,18 @@ const FSTbVHExcelImport = ({
               //   ...row,
               // };
               // console.log("row", row);
+
+              // if id is missing, try to find it from existingData by moleculeName and assayType
+              if (!row["id"] || row["id"] === "") {
+                let existingHit = existingData.find(
+                  (hit) =>
+                    hit.moleculeName === row["moleculeName"] &&
+                    hit.assayType === row["assayType"]
+                );
+                if (existingHit) {
+                  row["id"] = existingHit["id"];
+                }
+              }
             });
             console.log("jsonData", jsonData);
 
@@ -151,7 +168,7 @@ const FSTbVHExcelImport = ({
           headerMap={DtFieldsGroupedColumnMapping}
           existingData={existingData}
           comparatorKey="id"
-          comparatorFn={isSameMoleculeName}
+          comparatorFn={isSameMoleculeAndAssayType}
           data={dataForPreview}
           visible={showDataPreviewDialog}
           onHide={() => {
