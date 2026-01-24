@@ -14,6 +14,8 @@ const AdminMenuBar = () => {
     if (location.pathname.includes("/user-management/")) setActiveIndex(0);
     // else if (location.pathname.includes("/api-management/")) setActiveIndex(1);
     else if (location.pathname.includes("/role-management/")) setActiveIndex(1);
+    else if (location.pathname.includes("/table-management/")) setActiveIndex(2);
+    else if (location.pathname.includes("/health-services")) setActiveIndex(3);
   }, [location, setActiveIndex]);
 
   const items = [
@@ -36,6 +38,11 @@ const AdminMenuBar = () => {
       label: "Table Management",
       icon: "pi pi-table",
       command: () => navigate("table-management/"),
+    },
+    {
+      label: "Health Services",
+      icon: "pi pi-heart",
+      command: () => navigate("health-services"),
     },
   ];
   return (
