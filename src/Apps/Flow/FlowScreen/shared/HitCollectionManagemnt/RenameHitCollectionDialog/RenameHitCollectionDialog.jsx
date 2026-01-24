@@ -1,11 +1,9 @@
 import { observer } from "mobx-react-lite";
 import { Button } from "primereact/button";
-import { Dropdown } from "primereact/dropdown";
 import { InputText } from "primereact/inputtext";
 import { Sidebar } from "primereact/sidebar";
 import React from "react";
 import { RootStoreContext } from "../../../../../../RootStore";
-import { hitCollectionTypeOptions } from "../../FSValues";
 const RenameHitCollectionDialog = ({
   visible,
   setVisible,
@@ -52,22 +50,6 @@ const RenameHitCollectionDialog = ({
             className="w-full"
             value={newName}
             onChange={(e) => setNewName(e.target.value)}
-          />
-        </div>
-
-        <div className="field">
-          <label htmlFor="hitCollectionType" className="font-bold mb-2 block">
-            Hit Collection Type *
-          </label>
-          <Dropdown
-            id="hitCollectionType"
-            value={hitCollectionType}
-            options={hitCollectionTypeOptions}
-            onChange={(e) => setHitCollectionType(e.value)}
-            placeholder="Select a Hit Collection Type"
-            optionLabel="name"
-            autoFocus
-            className="w-full"
           />
         </div>
 
