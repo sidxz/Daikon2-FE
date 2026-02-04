@@ -33,6 +33,14 @@ export const DtFieldsToExcelColumnMapping =
     pctInhibitionConcentration: "%Inh Conc",
     pctInhibitionConcentrationUnit: "%Inh Conc Unit",
 
+    cytotoxicity: "Cytotoxicity",
+    intramacrophageActivity: "Intramacrophage Activity",
+    selectivityIndex: "Selectivity Index",
+    qc: "QC",
+    targets: "#Targets",
+    wholeCellActive: "Whole Cell Active",
+    bindingAssessment: "Binding Assessment",
+
     notes: "Notes",
 
     response: "Response",
@@ -79,6 +87,14 @@ export const DtFieldsGroupedColumnMapping =
     pctInhibitionConcentration: "Concentration for % Inhibition",
     pctInhibitionConcentrationUnit: "Concentration Unit for % Inhibition",
 
+    cytotoxicity: "Cytotoxicity",
+    intramacrophageActivity: "Intramacrophage Activity",
+    selectivityIndex: "Selectivity Index",
+    qc: "QC",
+    targets: "#Targets",
+    wholeCellActive: "Whole Cell Active",
+    bindingAssessment: "Binding Assessment",
+
     moleculeName: "Molecule Name",
     smiles: "SMILES",
     notes: "Notes",
@@ -115,6 +131,13 @@ export const AllTbColumns = [
   "%Inh",
   "%Inh Conc",
   "%Inh Conc Unit",
+  "Cytotoxicity",
+  "Intramacrophage Activity",
+  "Selectivity Index",
+  "QC",
+  "#Targets",
+  "Whole Cell Active",
+  "Binding Assessment",
   "Molecule Name",
   "Notes",
   "Dose Response",

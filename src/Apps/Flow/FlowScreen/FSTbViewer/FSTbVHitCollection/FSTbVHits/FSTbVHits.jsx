@@ -601,28 +601,39 @@ const FSTbVHits = ({ id }) => {
               onSelectionChange={(e) => setSelectedHits(e.value)}
             >
               <Column
+                columnKey="rowIndex"
                 header="#"
                 body={(data, options) => options.rowIndex + 1}
+                reorderable={false}
               ></Column>
               {selectionEnabled && (
                 <Column
+                  columnKey="selection"
                   selectionMode="multiple"
                   headerStyle={{ width: "3em" }}
                   className="fadein"
+                  reorderable={false}
                 ></Column>
               )}
 
               {viewableColumns}
               {editMode && (
                 <Column
+                  columnKey="rowEditor"
                   rowEditor
                   header="Edit"
                   // headerStyle={{ width: "10%", minWidth: "8rem" }}
                   bodyStyle={{ textAlign: "center" }}
+                  reorderable={false}
                 />
               )}
               {isUserInAnyOfRoles([ScreenAdminRoleName]) && editMode && (
-                <Column body={deleteBodyTemplate} header="Delete" />
+                <Column
+                  columnKey="delete"
+                  body={deleteBodyTemplate}
+                  header="Delete"
+                  reorderable={false}
+                />
               )}
             </DataTable>
           </div>

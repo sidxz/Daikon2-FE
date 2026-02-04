@@ -17,6 +17,13 @@ export const ExportTemplateExcel = (
       iC50: "",
       mic: "",
       clusterGroup: "",
+      cytotoxicity: "",
+      intramacrophageActivity: "",
+      selectivityIndex: "",
+      qc: "",
+      targets: "",
+      wholeCellActive: "",
+      bindingAssessment: "",
       notes: "",
     },
   ]; // No data, just headers for the template
