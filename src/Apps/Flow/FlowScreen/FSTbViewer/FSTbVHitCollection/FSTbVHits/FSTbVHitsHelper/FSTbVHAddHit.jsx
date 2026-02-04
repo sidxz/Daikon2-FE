@@ -19,6 +19,17 @@ const concentrationUnits = [
   { label: "pM", value: "pM" },
 ];
 
+const yesNoOptions = [
+  { label: "Yes", value: "Yes" },
+  { label: "No", value: "No" },
+];
+
+const yesNoNotDeterminedOptions = [
+  { label: "Yes", value: "Yes" },
+  { label: "No", value: "No" },
+  { label: "Not Determined", value: "Not Determined" },
+];
+
 const FSTbVHAddHit = ({ hitCollectionId, closeSideBar }) => {
   const rootStore = useContext(RootStoreContext);
   const { isAddingHit, addHit } = rootStore.hitStore;
@@ -61,6 +72,14 @@ const FSTbVHAddHit = ({ hitCollectionId, closeSideBar }) => {
       pctInhibition: "",
       pctInhibitionConcentration: "",
       pctInhibitionConcentrationUnit: "",
+
+      cytotoxicity: "",
+      intramacrophageActivity: "",
+      selectivityIndex: "",
+      qc: "",
+      targets: "",
+      wholeCellActive: "",
+      bindingAssessment: "",
 
       notes: "",
     },
@@ -197,6 +216,19 @@ const FSTbVHAddHit = ({ hitCollectionId, closeSideBar }) => {
           "% Inh Conc Unit",
           concentrationUnits
         )}
+
+        <h4>Biology Summary</h4>
+        {renderField("cytotoxicity", "Cytotoxicity")}
+        {renderField("intramacrophageActivity", "Intramacrophage Activity")}
+        {renderField("selectivityIndex", "Selectivity Index")}
+        {renderDropdown("qc", "QC", yesNoOptions)}
+        {renderField("targets", "#Targets")}
+        {renderDropdown(
+          "wholeCellActive",
+          "Whole Cell Active",
+          yesNoNotDeterminedOptions
+        )}
+        {renderDropdown("bindingAssessment", "Binding Assessment", yesNoOptions)}
 
         <h4>Other Details</h4>
         {renderField("notes", "Notes")}
