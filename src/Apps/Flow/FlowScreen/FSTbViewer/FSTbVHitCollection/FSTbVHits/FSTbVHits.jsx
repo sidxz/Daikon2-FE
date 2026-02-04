@@ -4,6 +4,7 @@ import { Column } from "primereact/column";
 import { confirmDialog } from "primereact/confirmdialog";
 import { DataTable } from "primereact/datatable";
 import { Dialog } from "primereact/dialog";
+import { Dropdown } from "primereact/dropdown";
 import { ProgressBar } from "primereact/progressbar";
 import { Sidebar } from "primereact/sidebar";
 import { useContext, useEffect, useRef, useState } from "react";
@@ -193,6 +194,29 @@ const FSTbVHits = ({ id }) => {
         userId={user.id}
         isVotesHidden={isVotesHidden}
         isOneClickVotingEnabled={isOneClickVotingEnabled}
+      />
+    );
+  };
+
+  const yesNoOptions = [
+    { label: "Yes", value: "Yes" },
+    { label: "No", value: "No" },
+  ];
+
+  const yesNoNotDeterminedOptions = [
+    { label: "Yes", value: "Yes" },
+    { label: "No", value: "No" },
+    { label: "Not Determined", value: "Not Determined" },
+  ];
+
+  const dropdownRowEditor = (options, choices) => {
+    return (
+      <Dropdown
+        className="w-full"
+        value={options.value}
+        options={choices}
+        placeholder="Select"
+        onChange={(e) => options.editorCallback(e.value)}
       />
     );
   };
@@ -387,6 +411,49 @@ const FSTbVHits = ({ id }) => {
       editor: TextRowEditor,
       sortable: true,
       filter: true,
+    },
+    {
+      key: "cytotoxicity",
+      header: "Cytotoxicity",
+      editor: TextRowEditor,
+      sortable: true,
+    },
+    {
+      key: "intramacrophageActivity",
+      header: "Intramacrophage Activity",
+      editor: TextRowEditor,
+      sortable: true,
+    },
+    {
+      key: "selectivityIndex",
+      header: "Selectivity Index",
+      editor: TextRowEditor,
+      sortable: true,
+    },
+    {
+      key: "qc",
+      header: "QC",
+      editor: (options) => dropdownRowEditor(options, yesNoOptions),
+      sortable: true,
+    },
+    {
+      key: "targets",
+      header: "#Targets",
+      editor: TextRowEditor,
+      sortable: true,
+    },
+    {
+      key: "wholeCellActive",
+      header: "Whole Cell Active",
+      editor: (options) =>
+        dropdownRowEditor(options, yesNoNotDeterminedOptions),
+      sortable: true,
+    },
+    {
+      key: "bindingAssessment",
+      header: "Binding Assessment",
+      editor: (options) => dropdownRowEditor(options, yesNoOptions),
+      sortable: true,
     },
     {
       key: "voteScore",
