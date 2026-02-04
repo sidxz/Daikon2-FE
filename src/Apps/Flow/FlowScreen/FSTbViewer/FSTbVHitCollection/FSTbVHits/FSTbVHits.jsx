@@ -221,6 +221,24 @@ const FSTbVHits = ({ id }) => {
     );
   };
 
+  const dropdownFilterElement = (options, choices) => {
+    return (
+      <Dropdown
+        className="w-full"
+        value={options.value}
+        options={choices}
+        placeholder="Select Value"
+        onChange={(e) => {
+          if (options.filterApplyCallback) {
+            options.filterApplyCallback(e.value);
+          } else if (options.filterCallback) {
+            options.filterCallback(e.value);
+          }
+        }}
+      />
+    );
+  };
+
   const allColumnDefs = [
     {
       key: "structure",
@@ -417,30 +435,37 @@ const FSTbVHits = ({ id }) => {
       header: "Cytotoxicity",
       editor: TextRowEditor,
       sortable: true,
+      filter: true,
     },
     {
       key: "intramacrophageActivity",
       header: "Intramacrophage Activity",
       editor: TextRowEditor,
       sortable: true,
+      filter: true,
     },
     {
       key: "selectivityIndex",
       header: "Selectivity Index",
       editor: TextRowEditor,
       sortable: true,
+      filter: true,
     },
     {
       key: "qc",
       header: "QC",
       editor: (options) => dropdownRowEditor(options, yesNoOptions),
       sortable: true,
+      filter: true,
+      filterMatchMode: "equals",
+      filterElement: (options) => dropdownFilterElement(options, yesNoOptions),
     },
     {
       key: "targets",
       header: "#Targets",
       editor: TextRowEditor,
       sortable: true,
+      filter: true,
     },
     {
       key: "wholeCellActive",
@@ -448,12 +473,19 @@ const FSTbVHits = ({ id }) => {
       editor: (options) =>
         dropdownRowEditor(options, yesNoNotDeterminedOptions),
       sortable: true,
+      filter: true,
+      filterMatchMode: "equals",
+      filterElement: (options) =>
+        dropdownFilterElement(options, yesNoNotDeterminedOptions),
     },
     {
       key: "bindingAssessment",
       header: "Binding Assessment",
       editor: (options) => dropdownRowEditor(options, yesNoOptions),
       sortable: true,
+      filter: true,
+      filterMatchMode: "equals",
+      filterElement: (options) => dropdownFilterElement(options, yesNoOptions),
     },
     {
       key: "voteScore",
