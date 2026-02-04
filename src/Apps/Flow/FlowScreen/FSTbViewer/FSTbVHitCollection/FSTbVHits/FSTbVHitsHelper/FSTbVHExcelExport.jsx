@@ -82,5 +82,10 @@ export const ExportHitsToExcel = (
     jsonData,
     fileName,
     headerMap: headerMapper,
+    columnValidations: {
+      qc: ["Yes", "No"],
+      wholeCellActive: ["Yes", "No", "Not Determined"],
+      bindingAssessment: ["Yes", "No"],
+    },
   });
 };
