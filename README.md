@@ -37,6 +37,10 @@ These capabilities are linked longitudinally across time, around:
 -	outcomes
 This linkage preserves historical accuracy and enables continuity of scientific and portfolio context as discovery programs mature
 
+## Preview
+
+![Animated overview](./Tabs_animated.gif)
+
 **What DAIKON does NOT:**
 DAIKON explicitly does not aim to:
 -	Replace wet-lab execution systems (ELNs, LIMS, assay automation tools)
