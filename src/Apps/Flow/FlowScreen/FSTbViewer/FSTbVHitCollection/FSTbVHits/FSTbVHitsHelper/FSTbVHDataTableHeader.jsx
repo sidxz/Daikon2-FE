@@ -49,6 +49,8 @@ const FSTbVHDataTableHeader = ({
   setFilterNotVoted,
   filterDisclosed,
   setFilterDisclosed,
+  groupBySeries,
+  setGroupBySeries,
 }) => {
   const [showImportDialog, setShowImportDialog] = useState(false);
   const [showTableCustomization, setShowTableCustomization] = useState(false);
@@ -208,6 +210,13 @@ const FSTbVHDataTableHeader = ({
           label: filterNotVoted ? "Show All" : "Filter Not Voted",
           icon: filterNotVoted ? "pi pi-check-square" : "pi pi-filter-slash",
           command: () => setFilterNotVoted(!filterNotVoted),
+        },
+        {
+          label: groupBySeries
+            ? "Group By Series (Active)"
+            : "Group By Series (Inactive)",
+          icon: groupBySeries ? "pi pi-check-square" : "pi pi-list",
+          command: () => setGroupBySeries(!groupBySeries),
         },
       ],
     },

@@ -4,6 +4,7 @@ export const DtFieldsToExcelColumnMapping =
     moleculeName: "Molecule Name",
     smiles: "SMILES",
     library: "Library",
+    series: "Series",
     librarySource: "Source",
 
     assayType: "Assay Type",
@@ -75,6 +76,7 @@ export const DtFieldsGroupedColumnMapping =
     lD50Unit: "LD50 Unit",
 
     library: "Library",
+    series: "Series",
     librarySource: "Source",
     miC90: "MIC90",
     miC90Unit: "MIC90 Unit",
@@ -105,6 +107,7 @@ export const DtFieldsGroupedColumnMapping =
 export const AllTbColumns = [
   "Structure",
   "Library",
+  "Series",
   "Source",
   "Assay Type",
   "Cluster",
