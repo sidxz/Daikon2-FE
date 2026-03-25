@@ -4,6 +4,7 @@ import { Column } from "primereact/column";
 import { confirmDialog } from "primereact/confirmdialog";
 import { DataTable } from "primereact/datatable";
 import { Dialog } from "primereact/dialog";
+import { Dropdown } from "primereact/dropdown";
 import { ProgressBar } from "primereact/progressbar";
 import { Sidebar } from "primereact/sidebar";
 import { useContext, useEffect, useRef, useState } from "react";
@@ -135,14 +136,6 @@ const FSPhVHits = ({ id }) => {
   const [subStructureHighlight, setSubStructureHighlight] = useState("");
   const [showStructureEditor, setShowStructureEditor] = useState(false);
   const [editMode, setEditMode] = useState(false);
-  const [expandedRows, setExpandedRows] = useState(null);
-  const [groupBySeries, setGroupBySeries] = useState(false);
-
-  useEffect(() => {
-    if (!groupBySeries) {
-      setExpandedRows(null);
-    }
-  }, [groupBySeries]);
 
   if (
     isFetchingHitCollection ||
@@ -207,29 +200,45 @@ const FSPhVHits = ({ id }) => {
     );
   };
 
-  const seriesGroupHeaderTemplate = (data) => {
+  const yesNoOptions = [
+    { label: "Yes", value: "Yes" },
+    { label: "No", value: "No" },
+  ];
+
+  const yesNoNotDeterminedOptions = [
+    { label: "Yes", value: "Yes" },
+    { label: "No", value: "No" },
+    { label: "Not Determined", value: "Not Determined" },
+  ];
+
+  const dropdownRowEditor = (options, choices) => {
     return (
-      <span className="font-semibold">
-        Series: {data?.series?.trim() ? data.series : "Unassigned"}
-      </span>
+      <Dropdown
+        className="w-full"
+        value={options.value}
+        options={choices}
+        placeholder="Select"
+        onChange={(e) => options.editorCallback(e.value)}
+      />
     );
   };
 
-  const seriesGroupFooterTemplate = (data) => {
-    const groupSeries = data?.series?.trim() ? data.series : "";
-    const groupCount = (selectedHitCollection?.hits || [])
-      .filter(
-        (hit) => !filterNotVoted || Object.keys(hit.voters).length === 0,
-      )
-      .filter((hit) =>
-        filterDisclosed
-          ? hit.isStructureDisclosed === true || hit?.molecule?.smiles != null
-          : true,
-      )
-      .filter((hit) => (hit?.series?.trim() ? hit.series : "") === groupSeries)
-      .length;
-
-    return <span className="font-medium">Total hits: {groupCount}</span>;
+  const dropdownFilterElement = (options, choices) => {
+    return (
+      <Dropdown
+        className="w-full"
+        value={options.value}
+        options={choices}
+        placeholder="Select Value"
+        onChange={(e) => {
+          if (options.filterApplyCallback) {
+            options.filterApplyCallback(e.value);
+          } else if (options.filterCallback) {
+            options.filterCallback(e.value);
+          }
+        }}
+      />
+    );
   };
 
   const allColumnDefs = [
@@ -242,13 +251,6 @@ const FSPhVHits = ({ id }) => {
     {
       key: "library",
       header: "Library",
-      editor: TextRowEditor,
-      sortable: true,
-      filter: true,
-    },
-    {
-      key: "series",
-      header: "Series",
       editor: TextRowEditor,
       sortable: true,
       filter: true,
@@ -453,6 +455,63 @@ const FSPhVHits = ({ id }) => {
       sortable: false,
       body: (rowData) => DoseResponseBodyTemplate(rowData),
     },
+    {
+      key: "cytotoxicity",
+      header: "Cytotoxicity",
+      editor: TextRowEditor,
+      sortable: true,
+      filter: true,
+    },
+    {
+      key: "intramacrophageActivity",
+      header: "Intramacrophage Activity",
+      editor: TextRowEditor,
+      sortable: true,
+      filter: true,
+    },
+    {
+      key: "selectivityIndex",
+      header: "Selectivity Index",
+      editor: TextRowEditor,
+      sortable: true,
+      filter: true,
+    },
+    {
+      key: "qc",
+      header: "QC",
+      editor: (options) => dropdownRowEditor(options, yesNoOptions),
+      sortable: true,
+      filter: true,
+      filterMatchMode: "equals",
+      filterElement: (options) => dropdownFilterElement(options, yesNoOptions),
+    },
+    {
+      key: "targets",
+      header: "#Targets",
+      editor: TextRowEditor,
+      sortable: true,
+      filter: true,
+    },
+    {
+      key: "wholeCellActive",
+      header: "Whole Cell Active",
+      editor: (options) =>
+        dropdownRowEditor(options, yesNoNotDeterminedOptions),
+      sortable: true,
+      filter: true,
+      filterMatchMode: "equals",
+      filterElement: (options) =>
+        dropdownFilterElement(options, yesNoNotDeterminedOptions),
+    },
+    {
+      key: "bindingAssessment",
+      header: "Binding Assessment",
+      editor: (options) => dropdownRowEditor(options, yesNoOptions),
+      sortable: true,
+      filter: true,
+      filterMatchMode: "equals",
+      filterElement: (options) => dropdownFilterElement(options, yesNoOptions),
+    },
   ];
 
   if (
@@ -539,19 +598,8 @@ const FSPhVHits = ({ id }) => {
               scrollable
               rows={100}
               scrollHeight={scrollHeight}
-              {...(groupBySeries
-                ? {
-                    rowGroupMode: "subheader",
-                    groupRowsBy: "series",
-                    rowGroupHeaderTemplate: seriesGroupHeaderTemplate,
-                    rowGroupFooterTemplate: seriesGroupFooterTemplate,
-                    expandableRowGroups: true,
-                    expandedRows,
-                    onRowToggle: (e) => setExpandedRows(e.data),
-                  }
-                : {})}
               sortMode="single"
-              sortField={groupBySeries ? "series" : "clusterGroup"}
+              sortField="clusterGroup"
               sortOrder={1}
               resizableColumns
               columnResizeMode="fit"
@@ -581,8 +629,6 @@ const FSPhVHits = ({ id }) => {
                   setFilterNotVoted={setFilterNotVoted}
                   filterDisclosed={filterDisclosed}
                   setFilterDisclosed={setFilterDisclosed}
-                  groupBySeries={groupBySeries}
-                  setGroupBySeries={setGroupBySeries}
                 />
               }
               //globalFilter={globalFilter}

@@ -12,7 +12,6 @@ export const ExportTemplateExcel = (
     {
       smiles: "",
       library: "",
-      series: "",
       librarySource: "",
       moleculeName: "",
       iC50: "",

@@ -130,14 +130,6 @@ const FSTbVHits = ({ id }) => {
   const [subStructureHighlight, setSubStructureHighlight] = useState("");
   const [showStructureEditor, setShowStructureEditor] = useState(false);
   const [editMode, setEditMode] = useState(false);
-  const [expandedRows, setExpandedRows] = useState(null);
-  const [groupBySeries, setGroupBySeries] = useState(false);
-
-  useEffect(() => {
-    if (!groupBySeries) {
-      setExpandedRows(null);
-    }
-  }, [groupBySeries]);
 
   if (
     isFetchingHitCollection ||
@@ -247,31 +239,6 @@ const FSTbVHits = ({ id }) => {
     );
   };
 
-  const seriesGroupHeaderTemplate = (data) => {
-    return (
-      <span className="font-semibold">
-        Series: {data?.series?.trim() ? data.series : "Unassigned"}
-      </span>
-    );
-  };
-
-  const seriesGroupFooterTemplate = (data) => {
-    const groupSeries = data?.series?.trim() ? data.series : "";
-    const groupCount = (selectedHitCollection?.hits || [])
-      .filter(
-        (hit) => !filterNotVoted || Object.keys(hit.voters).length === 0,
-      )
-      .filter((hit) =>
-        filterDisclosed
-          ? hit.isStructureDisclosed === true || hit?.molecule?.smiles != null
-          : true,
-      )
-      .filter((hit) => (hit?.series?.trim() ? hit.series : "") === groupSeries)
-      .length;
-
-    return <span className="font-medium">Total hits: {groupCount}</span>;
-  };
-
   const allColumnDefs = [
     {
       key: "structure",
@@ -282,13 +249,6 @@ const FSTbVHits = ({ id }) => {
     {
       key: "library",
       header: "Library",
-      editor: TextRowEditor,
-      sortable: true,
-      filter: true,
-    },
-    {
-      key: "series",
-      header: "Series",
       editor: TextRowEditor,
       sortable: true,
       filter: true,
@@ -633,19 +593,8 @@ const FSTbVHits = ({ id }) => {
               scrollable
               rows={100}
               scrollHeight={scrollHeight}
-              {...(groupBySeries
-                ? {
-                    rowGroupMode: "subheader",
-                    groupRowsBy: "series",
-                    rowGroupHeaderTemplate: seriesGroupHeaderTemplate,
-                    rowGroupFooterTemplate: seriesGroupFooterTemplate,
-                    expandableRowGroups: true,
-                    expandedRows,
-                    onRowToggle: (e) => setExpandedRows(e.data),
-                  }
-                : {})}
               sortMode="single"
-              sortField={groupBySeries ? "series" : "clusterGroup"}
+              sortField="clusterGroup"
               sortOrder={1}
               resizableColumns
               columnResizeMode="fit"
@@ -677,8 +626,6 @@ const FSTbVHits = ({ id }) => {
                   setFilterNotVoted={setFilterNotVoted}
                   filterDisclosed={filterDisclosed}
                   setFilterDisclosed={setFilterDisclosed}
-                  groupBySeries={groupBySeries}
-                  setGroupBySeries={setGroupBySeries}
                 />
               }
               //globalFilter={globalFilter}

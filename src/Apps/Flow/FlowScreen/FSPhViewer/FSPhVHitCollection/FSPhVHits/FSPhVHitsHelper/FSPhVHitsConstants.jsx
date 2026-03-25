@@ -4,7 +4,6 @@ export const DtFieldsToExcelColumnMapping =
     moleculeName: "Molecule Name",
     smiles: "SMILES",
     library: "Library",
-    series: "Series",
     librarySource: "Source",
 
     assayType: "Assay Type",
@@ -33,6 +32,14 @@ export const DtFieldsToExcelColumnMapping =
     pctInhibition: "%Inh",
     pctInhibitionConcentration: "%Inh Conc",
     pctInhibitionConcentrationUnit: "%Inh Conc Unit",
+
+    cytotoxicity: "Cytotoxicity",
+    intramacrophageActivity: "Intramacrophage Activity",
+    selectivityIndex: "Selectivity Index",
+    qc: "QC",
+    targets: "#Targets",
+    wholeCellActive: "Whole Cell Active",
+    bindingAssessment: "Binding Assessment",
 
     notes: "Notes",
 
@@ -68,7 +75,6 @@ export const DtFieldsGroupedColumnMapping =
     lD50Unit: "LD50 Unit",
 
     library: "Library",
-    series: "Series",
     librarySource: "Source",
     miC90: "MIC90",
     miC90Unit: "MIC90 Unit",
@@ -81,6 +87,14 @@ export const DtFieldsGroupedColumnMapping =
     pctInhibitionConcentration: "Concentration for % Inhibition",
     pctInhibitionConcentrationUnit: "Concentration Unit for % Inhibition",
 
+    cytotoxicity: "Cytotoxicity",
+    intramacrophageActivity: "Intramacrophage Activity",
+    selectivityIndex: "Selectivity Index",
+    qc: "QC",
+    targets: "#Targets",
+    wholeCellActive: "Whole Cell Active",
+    bindingAssessment: "Binding Assessment",
+
     moleculeName: "Molecule Name",
     smiles: "SMILES",
     notes: "Notes",
@@ -91,7 +105,6 @@ export const DtFieldsGroupedColumnMapping =
 export const AllPhColumns = [
   "Structure",
   "Library",
-  "Series",
   "Source",
   "Assay Type",
   "Cluster",
@@ -118,6 +131,13 @@ export const AllPhColumns = [
   "%Inh",
   "%Inh Conc",
   "%Inh Conc Unit",
+  "Cytotoxicity",
+  "Intramacrophage Activity",
+  "Selectivity Index",
+  "QC",
+  "#Targets",
+  "Whole Cell Active",
+  "Binding Assessment",
   "Molecule Name",
   "Notes",
   "Dose Response",
