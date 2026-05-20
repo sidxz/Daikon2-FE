@@ -1,4 +1,5 @@
 import { observer } from "mobx-react-lite";
+import { TabMenu } from "primereact/tabmenu";
 import { Sidebar } from "primereact/sidebar";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -16,6 +17,11 @@ import FTDAddTarget from "./FTDAddTarget";
 import FTDDataTable from "./FTDDataTable/FTDDataTable";
 import FTDFilters from "./FTDFilters";
 import FTDTargetMap from "./FTDTargetMap/FTDTargetMap";
+import FTTargetsOfInterest from "./FTTargetsOfInterest/FTTargetsOfInterest";
+
+const TAB_ALL_TARGETS = 0;
+const TAB_TARGETS_OF_INTEREST = 1;
+
 const FTDashboard = () => {
   const rootStore = useContext(RootStoreContext);
   const {
@@ -26,6 +32,7 @@ const FTDashboard = () => {
   } = rootStore.targetStore;
 
   const [displayAddSideBar, setDisplayAddSideBar] = useState(false);
+  const [activeTabIndex, setActiveTabIndex] = useState(TAB_ALL_TARGETS);
   const navigate = useNavigate();
 
   const { isUserInAnyOfRoles } = AppRoleResolver();
@@ -70,6 +77,17 @@ const FTDashboard = () => {
     action: () => setDisplayAddSideBar(true),
   });
 
+  const tabItems = [
+    {
+      label: "All Targets",
+      icon: "pi pi-table",
+    },
+    {
+      label: "Targets of Interest",
+      icon: "pi pi-star",
+    },
+  ];
+
   return (
     <div className="flex flex-column min-w-full fadein animation-duration-500">
       <div className="flex w-full">
@@ -82,17 +100,35 @@ const FTDashboard = () => {
           customButtons={headingButtons}
         />
       </div>
-      <div className="flex w-full">
-        <FTDFilters />
+
+      <div className="flex w-full border-bottom-1 surface-border">
+        <TabMenu
+          model={tabItems}
+          activeIndex={activeTabIndex}
+          onTabChange={(e) => setActiveTabIndex(e.index)}
+          className="w-full"
+        />
       </div>
-      <div className="flex max-w-full p-1">
-        <div className="flex" style={{ width: "600px" }}>
-          <FTDTargetMap />
-        </div>
-        <div className="flex w-7">
-          <FTDDataTable />
-        </div>
-      </div>
+
+      {activeTabIndex === TAB_ALL_TARGETS && (
+        <>
+          <div className="flex w-full">
+            <FTDFilters />
+          </div>
+          <div className="flex max-w-full p-1">
+            <div className="flex" style={{ width: "600px" }}>
+              <FTDTargetMap />
+            </div>
+            <div className="flex w-7">
+              <FTDDataTable />
+            </div>
+          </div>
+        </>
+      )}
+
+      {activeTabIndex === TAB_TARGETS_OF_INTEREST && (
+        <FTTargetsOfInterest />
+      )}
 
       <Sidebar
         visible={displayAddSideBar}
