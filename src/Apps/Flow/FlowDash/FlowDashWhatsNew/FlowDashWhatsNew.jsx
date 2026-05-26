@@ -4,9 +4,20 @@ const FlowDashWhatsNew = () => {
   return (
     <div className="flex flex-column gap-1 pl-3 pr-3 pb-3">
       <div className="flex">
-        <p>We're excited to unveil some new additions to DAIKON 3.1</p>
+        <p>We're excited to unveil some new additions to DAIKON 3.2</p>
       </div>
       <div className="flex flex-column">
+        <div className="feature">
+          <span className="icon-activity" aria-label="activity-icon">
+            🔔
+          </span>
+          <strong> ADMET Property Predictions</strong>
+          <br />
+          Molecules in MolecuLogix now display predicted ADMET properties
+          (Absorption, Distribution, Metabolism, Excretion, and Toxicity) via
+          the ADMET-AI pipeline.
+        </div>
+        <Divider />
         <div className="feature">
           <span className="icon-activity" aria-label="activity-icon">
             🔔
