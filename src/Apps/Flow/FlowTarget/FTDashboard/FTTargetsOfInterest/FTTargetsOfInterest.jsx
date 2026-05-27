@@ -5,7 +5,7 @@ import { RootStoreContext } from "../../../../../RootStore";
 import "./FTTargetsOfInterest.css";
 import FTTOIActivePanel from "./FTTOIActivePanel";
 import FTTOIDetailDrawer from "./FTTOIDetailDrawer";
-import FTTOIRemovedPanel from "./FTTOIRemovedPanel";
+// import FTTOIRemovedPanel from "./FTTOIRemovedPanel";
 import FTTOIStatsBar from "./FTTOIStatsBar";
 import FTTOITimeline from "./FTTOITimeline";
 
@@ -69,12 +69,12 @@ const FTTargetsOfInterest = () => {
     dragTarget.current = target;
   };
 
-  const handleDropOnRemoved = () => {
-    if (!dragTarget.current) return;
-    setRemovalTarget(dragTarget.current);
-    setRemovalReason("");
-    dragTarget.current = null;
-  };
+  // const handleDropOnRemoved = () => {
+  //   if (!dragTarget.current) return;
+  //   setRemovalTarget(dragTarget.current);
+  //   setRemovalReason("");
+  //   dragTarget.current = null;
+  // };
 
   const handleRemovalSave = async () => {
     if (!removalReason.trim() || !removalTarget) return;
@@ -145,12 +145,12 @@ const FTTargetsOfInterest = () => {
           onDragStart={handleDragStart}
           onDrop={handleDropOnActive}
         />
-        <FTTOIRemovedPanel
+        {/* <FTTOIRemovedPanel
           onChipClick={handleChipClick}
           selectedTargetId={localSelectedTarget?.id}
           onDrop={handleDropOnRemoved}
           onDragStart={handleDragStart}
-        />
+        /> */}
       </div>
 
       {/* Detail drawer */}

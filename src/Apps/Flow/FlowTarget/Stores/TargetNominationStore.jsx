@@ -77,25 +77,41 @@ const PATHWAY_TARGET_MAP = [
   },
   {
     pathway: "tRNA biosynthesis",
-    retained: ["MetS", "PheRS"],
+    retained: ["MetRS", "PheRS"],
     nominated: ["AlaS", "GlyS"],
   },
 ];
 
-// Hardcoded until the backend returns isPriority on each NominationRecord.
-// Once the API is live, this set can be removed — the flag will come from the response directly.
-const PRIORITY_TARGETS = new Set(["mdh", "nadd", "glcb", "dape", "secy"]);
-
-// Build a flat lookup: normalised name → { pathway, eventType }
-const _buildPathwayLookup = () => {
-  const map = {};
-  PATHWAY_TARGET_MAP.forEach(({ pathway, retained, nominated }) => {
-    retained.forEach((n) => { map[n.toLowerCase()] = { pathway, eventType: "retained" }; });
-    nominated.forEach((n) => { map[n.toLowerCase()] = { pathway, eventType: "nominated" }; });
-  });
-  return map;
+// Per-cohort target tier assignments.
+// Tier 1 = Red  (Top 4  — most prioritised)
+// Tier 2 = Blue (Top 12 — ranks 5–12)
+// Tier 3 = Black (Top 25 — ranks 13–25)
+// Targets without an entry are unranked (shown with a neutral chip).
+const COHORT_TIERS = {
+  "Nov 2023": {
+    // Tier 1 — Top 4
+    "glcb": 1, "mdh": 1, "nadd": 1, "nade": 1,
+    // Tier 2 — Top 12 (ranks 5–12)
+    "ftsz": 2, "mtra": 2, "dxs1": 2, "mura": 2,
+    "seca1": 2, "sece1": 2, "metrs": 2, "phers": 2,
+    // Tier 3 — Top 25 (ranks 13–25)
+    "argb": 3, "dape": 3, "lysa": 3, "glft2": 3, "ubia": 3,
+    "arog": 3, "dnan": 3, "etfd": 3, "fole": 3, "pcka": 3,
+    "murx": 3, "secy": 3, "ribf": 3,
+  },
+  "Nov 2024": {
+    // Tier 1 — Top 4
+    "argb": 1, "dape": 1, "murx": 1, "phers": 1,
+    // Tier 2 — Top 12 (ranks 5–12)
+    "ftsz": 2, "mtra": 2, "ftsk": 2, "mura": 2,
+    "murg": 2, "seca1": 2, "sece1": 2, "metrs": 2,
+    // Tier 3 — Top 25 (ranks 13–25)
+    "lysa": 3, "glft2": 3, "ubia": 3,
+    "dnan": 3, "dnab": 3, "etfd": 3, "fole": 3, "dxs1": 3,
+    "secy": 3, "ribf": 3,
+  },
 };
-const PATHWAY_LOOKUP = _buildPathwayLookup();
+
 
 
 export default class TargetNominationStore {
@@ -196,10 +212,7 @@ export default class TargetNominationStore {
     try {
       const data = await TargetNominationAPI.getNominationsByCohort(cohort);
       runInAction(() => {
-        this.nominations = data.map((t) => ({
-          ...t,
-          isPriority: PRIORITY_TARGETS.has(t.name?.toLowerCase()),
-        }));
+        this.nominations = data;
       });
     } catch {
       // Build nominations from PATHWAY_TARGET_MAP as source of truth.
@@ -217,13 +230,11 @@ export default class TargetNominationStore {
         PATHWAY_TARGET_MAP.forEach(({ pathway, retained, nominated }) => {
           retained.forEach((name) => {
             const real = realByName[name.toLowerCase()];
-            if (!real) return;
             nominations.push({
-              id: real.id,
+              id: real?.id ?? `mock-${name.toLowerCase()}`,
               name,
               fullName: real?.fullName ?? "",
               pathway,
-              isPriority: PRIORITY_TARGETS.has(name.toLowerCase()),
               events: [
                 {
                   type: "nominated",
@@ -245,13 +256,11 @@ export default class TargetNominationStore {
 
           nominated.forEach((name) => {
             const real = realByName[name.toLowerCase()];
-            if (!real) return;
             nominations.push({
-              id: real.id,
+              id: real?.id ?? `mock-${name.toLowerCase()}`,
               name,
               fullName: real?.fullName ?? "",
               pathway,
-              isPriority: PRIORITY_TARGETS.has(name.toLowerCase()),
               events: [
                 {
                   type: "nominated",
@@ -324,10 +333,12 @@ export default class TargetNominationStore {
 
   get activeTargets() {
     if (!this.selectedCohort || !this.nominations.length) return [];
+    const tierMap = COHORT_TIERS[this.selectedCohort] ?? {};
     return this.nominations
       .map((target) => ({
         ...target,
         deltaType: this._getDeltaAtCohort(target, this.selectedCohort),
+        tier: tierMap[target.name?.toLowerCase()] ?? null,
       }))
       .filter((t) => t.deltaType === "nominated" || t.deltaType === "retained");
   }

@@ -43,7 +43,7 @@ const ActivityLog = ({ events, isLoading }) => {
   );
 };
 
-const AddNoteForm = ({ targetId }) => {
+/* const AddNoteForm = ({ targetId }) => {
   const rootStore = useContext(RootStoreContext);
   const { addTargetEvent, isAddingEvent } = rootStore.targetNominationStore;
   const { user, appVars } = rootStore.authStore;
@@ -84,7 +84,7 @@ const AddNoteForm = ({ targetId }) => {
       </button>
     </div>
   );
-};
+}; */
 
 const CollapsiblePanel = ({ title, defaultOpen, children }) => {
   const [open, setOpen] = useState(defaultOpen);
@@ -136,29 +136,19 @@ const FTTOIDetailDrawer = ({ target, onClose }) => {
       </div>
 
       <div className="ftoi-drawer-body">
-        {/* Left column */}
-        <div>
-          <CollapsiblePanel title="Horizon View" defaultOpen={true}>
-            <Horizon entryPoint={target.id} />
-            {!isFetchingHorizon && !selectedHorizon && (
-              <div className="ftoi-horizon-empty">No pipeline data available.</div>
-            )}
-          </CollapsiblePanel>
+        <CollapsiblePanel title="Horizon View" defaultOpen={true}>
+          <Horizon entryPoint={target.id} />
+          {!isFetchingHorizon && !selectedHorizon && (
+            <div className="ftoi-horizon-empty">No pipeline data available.</div>
+          )}
+        </CollapsiblePanel>
 
-          <CollapsiblePanel title="Activity Log" defaultOpen={false}>
-            <ActivityLog
-              events={targetEvents}
-              isLoading={isFetchingTargetEvents}
-            />
-          </CollapsiblePanel>
-        </div>
-
-        {/* Right column */}
-        <div>
-          <CollapsiblePanel title="Add Note / Decision" defaultOpen={true}>
-            <AddNoteForm targetId={target.id} />
-          </CollapsiblePanel>
-        </div>
+        <CollapsiblePanel title="Activity Log" defaultOpen={false}>
+          <ActivityLog
+            events={targetEvents}
+            isLoading={isFetchingTargetEvents}
+          />
+        </CollapsiblePanel>
       </div>
     </div>
   );

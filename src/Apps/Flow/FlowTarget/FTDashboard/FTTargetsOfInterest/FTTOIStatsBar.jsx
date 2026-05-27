@@ -20,10 +20,10 @@ const FTTOIStatsBar = () => {
         <span className="ftoi-stat-value">{stats.retained}</span>
         <span className="ftoi-stat-label">Retained</span>
       </div>
-      <div className="ftoi-stat-box removed">
+      {/* <div className="ftoi-stat-box removed">
         <span className="ftoi-stat-value">{stats.removed}</span>
         <span className="ftoi-stat-label">Removed</span>
-      </div>
+      </div> */}
     </div>
   );
 };
