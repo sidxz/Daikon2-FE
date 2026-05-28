@@ -400,24 +400,36 @@ const MLMViewADMET = ({ selectedMolecule }) => {
     labels: radarLabels,
     datasets: [
       {
-        label: "ADMET profile (outward = better)",
+        label: "ADMET-AI percentile vs DrugBank approved (outward = better)",
         data: radarValues,
         fill: true,
-        borderColor: "#3b82f6",
-        backgroundColor: "rgba(59, 130, 246, 0.2)",
-        pointBackgroundColor: "#3b82f6",
+        borderColor: "#e53935",
+        backgroundColor: "rgba(229, 57, 53, 0.2)",
+        pointBackgroundColor: "#e53935",
       },
     ],
   };
   const radarOptions = {
     responsive: true,
     maintainAspectRatio: false,
-    plugins: { legend: { display: false } },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          title: (items) => items[0]?.label ?? "",
+          label: (ctx) => {
+            const axis = RADAR_AXES[ctx.dataIndex];
+            const v = ctx.parsed?.r ?? ctx.raw;
+            return `${Number(v).toFixed(0)}%  —  ${axis?.description ?? ""}`;
+          },
+        },
+      },
+    },
     scales: {
       r: {
         min: 0,
-        max: 1,
-        ticks: { stepSize: 0.2, backdropColor: "transparent" },
+        max: 100,
+        ticks: { stepSize: 25, backdropColor: "transparent" },
         pointLabels: { font: { size: 11 } },
       },
     },

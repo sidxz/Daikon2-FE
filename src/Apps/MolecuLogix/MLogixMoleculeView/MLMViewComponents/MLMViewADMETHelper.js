@@ -21,9 +21,6 @@ export const worstSeverity = (severities) => {
   return worst;
 };
 
-// 0..1 normalizer used by the radar so every axis means "outward = better".
-const clamp01 = (v) => Math.max(0, Math.min(1, v));
-
 export const ADMET_BUCKETS = [
   { id: "drugLikeness", label: "Drug-likeness" },
   { id: "absorption", label: "Absorption" },
@@ -525,31 +522,49 @@ export const bucketVerdict = (bucketId, predictions) => {
 };
 
 // --- Radar ------------------------------------------------------------------
-// 8 axes, every one oriented "outward = better".
-// `score(predictions)` returns 0..1.
-// Short axis labels (long names clip on small radar containers).
+// Mirrors the canonical ADMET-AI summary radar: 5 axes, percentile vs the
+// ~2,579 DrugBank-approved drugs, scale 0–100. For lower-is-safer properties
+// (BBB, hERG, ClinTox) we plot 100 − percentile so outward always = better.
 export const RADAR_AXES = [
-  { label: "QED", score: (p) => clamp01(p?.QED ?? 0) },
-  { label: "Bioavail.", score: (p) => clamp01(p?.Bioavailability_Ma ?? 0) },
-  { label: "HIA", score: (p) => clamp01(p?.HIA_Hou ?? 0) },
   {
-    label: "Half-Life",
-    // map: 0h → 0, 8–24 h → 1, 48h → 0.5, 72h+ → 0
-    score: (p) => {
-      const t = p?.Half_Life_Obach;
-      if (t === undefined || t === null) return 0;
-      if (t <= 0) return 0;
-      if (t < 8) return clamp01(t / 8);
-      if (t <= 24) return 1;
-      if (t <= 72) return clamp01(1 - (t - 24) / 48);
-      return 0;
-    },
+    label: "Blood-Brain Barrier Safe",
+    key: "BBB_Martins_drugbank_approved_percentile",
+    invert: true,
+    description:
+      "Probability the molecule does not cross the blood-brain barrier (1 − BBB Penetration percentile).",
   },
-  { label: "Lipinski", score: (p) => clamp01((p?.Lipinski ?? 0) / 4) },
-  { label: "hERG", score: (p) => clamp01(1 - (p?.hERG ?? 1)) },
-  { label: "DILI", score: (p) => clamp01(1 - (p?.DILI ?? 1)) },
-  { label: "AMES", score: (p) => clamp01(1 - (p?.AMES ?? 1)) },
+  {
+    label: "hERG Safe",
+    key: "hERG_drugbank_approved_percentile",
+    invert: true,
+    description:
+      "Probability the molecule does not block the hERG channel (1 − hERG Blocking percentile).",
+  },
+  {
+    label: "Bioavailable",
+    key: "Bioavailability_Ma_drugbank_approved_percentile",
+    invert: false,
+    description:
+      "Probability the molecule is orally bioavailable (Oral Bioavailability percentile).",
+  },
+  {
+    label: "Soluble",
+    key: "Solubility_AqSolDB_drugbank_approved_percentile",
+    invert: false,
+    description: "Aqueous solubility of the molecule (Aqueous Solubility percentile).",
+  },
+  {
+    label: "Non-Toxic",
+    key: "ClinTox_drugbank_approved_percentile",
+    invert: true,
+    description:
+      "Probability the molecule would not show clinical toxicity (1 − ClinTox percentile).",
+  },
 ];
 
 export const radarSeries = (predictions) =>
-  RADAR_AXES.map((a) => Number(a.score(predictions).toFixed(3)));
+  RADAR_AXES.map((a) => {
+    const pct = predictions?.[a.key];
+    if (pct === undefined || pct === null || Number.isNaN(pct)) return 0;
+    return a.invert ? 100 - pct : pct;
+  });
