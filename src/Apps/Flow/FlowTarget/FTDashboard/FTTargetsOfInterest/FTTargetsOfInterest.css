@@ -1,0 +1,865 @@
+/* === FTTargetsOfInterest Design Tokens === */
+
+/* Timeline Slider */
+.ftoi-timeline-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 8px;
+  border: 1px solid rgba(77, 158, 168, 0.25);
+  width: 100%;
+}
+
+.ftoi-slider-wrap {
+  flex: 4;
+  position: relative;
+  padding-bottom: 22px;
+}
+
+.ftoi-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(to right, #8BA4B8, #6d8da6);
+  outline: none;
+  cursor: pointer;
+}
+
+.ftoi-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8BA4B8, #6d8da6);
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+.ftoi-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8BA4B8, #6d8da6);
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+.ftoi-ticks {
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.ftoi-tick {
+  font-family: Roboto, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #6b7c8d;
+  cursor: pointer;
+  transition: color 0.15s, font-weight 0.15s;
+  white-space: nowrap;
+}
+
+.ftoi-tick:hover {
+  color: #4D9EA8;
+}
+
+.ftoi-tick.active {
+  color: #6d8da6;
+  font-weight: 700;
+}
+
+/* === Stats Bar === */
+.ftoi-stats-bar {
+  flex: 1;
+  display: flex;
+  gap: 6px;
+  min-width: 0;
+}
+
+.ftoi-stat-box {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 4px;
+  border-radius: 8px;
+  border: 1px solid rgba(77, 158, 168, 0.35);
+  background: rgba(59, 74, 92, 0.75);
+  min-width: 52px;
+}
+
+.ftoi-stat-value {
+  font-family: Roboto, sans-serif;
+  font-size: 23px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.ftoi-stat-label {
+  font-family: Roboto, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-top: 2px;
+}
+
+.ftoi-stat-box.total .ftoi-stat-value,
+.ftoi-stat-box.total .ftoi-stat-label {
+  color: #d0ecff;
+}
+
+.ftoi-stat-box.nominated .ftoi-stat-value,
+.ftoi-stat-box.nominated .ftoi-stat-label {
+  color: #a8f0c8;
+}
+
+.ftoi-stat-box.retained .ftoi-stat-value,
+.ftoi-stat-box.retained .ftoi-stat-label {
+  color: #ffffff;
+}
+
+.ftoi-stat-box.removed .ftoi-stat-value,
+.ftoi-stat-box.removed .ftoi-stat-label {
+  color: #ffb8b8;
+}
+
+/* === Panels === */
+.ftoi-panels {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  min-height: 300px;
+}
+
+.ftoi-active-panel {
+  flex: 5;
+  border-radius: 8px;
+  border: 1px solid rgba(77, 158, 168, 0.25);
+  overflow: hidden;
+  min-width: 0;
+}
+
+.ftoi-active-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: rgba(208, 236, 255, 0.5);
+  border-bottom: 1px solid rgba(77, 158, 168, 0.2);
+}
+
+.ftoi-panel-title {
+  font-family: Roboto, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #2c3e50;
+}
+
+.ftoi-panel-subtitle {
+  font-family: Roboto, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #6b7c8d;
+  margin-top: 1px;
+}
+
+.ftoi-legend {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ftoi-legend-filter {
+  cursor: pointer;
+  border-radius: 14px;
+  padding: 3px 8px;
+  border: 1px solid rgba(42, 138, 110, 0.4);
+  transition: background 0.15s, border-color 0.15s;
+  user-select: none;
+}
+
+.ftoi-legend-filter:hover {
+  background: rgba(42, 138, 110, 0.08);
+  border-color: rgba(42, 138, 110, 0.7);
+}
+
+.ftoi-legend-filter.active {
+  background: rgba(42, 138, 110, 0.12);
+  border-color: #2a8a6e;
+}
+
+.ftoi-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: Roboto, sans-serif;
+  font-size: 13px;
+  color: #6b7c8d;
+}
+
+.ftoi-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid #dde3e8;
+  background: #fff;
+}
+
+.ftoi-legend-dot.tier-1 {
+  background: #e05555;
+  border-color: #c03030;
+}
+
+
+.ftoi-active-panel-body {
+  padding: 12px 14px;
+  background: #fff;
+}
+
+.ftoi-pathways-grid {
+  column-count: 2;
+  column-gap: 24px;
+}
+
+.ftoi-pathway-row {
+  break-inside: avoid;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 0;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.ftoi-pathway-row:last-child {
+  border-bottom: none;
+}
+
+.ftoi-pathway-label {
+  flex-shrink: 0;
+  width: 150px;
+  font-family: Roboto, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #4a5060;
+  padding-top: 6px;
+}
+
+.ftoi-chips-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* === Chips === */
+.ftoi-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 16px;
+  border-radius: 18px;
+  border: 1px solid #dde3e8;
+  background: #fff;
+  font-family: Roboto, sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  color: #2c3e50;
+  cursor: pointer;
+  transition: box-shadow 0.15s, transform 0.1s;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.ftoi-chip:hover {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+  transform: translateY(-1px);
+}
+
+/* Tier-based chip colours */
+.ftoi-chip.tier-1 {
+  background: #fff0f0;
+  border-color: #e05555;
+  color: #b52020;
+  font-weight: 700;
+}
+
+.ftoi-chip.removed {
+  background: #fce8e8;
+  border-color: #f0b8b8;
+}
+
+/* "NEW" badge shown on newly nominated chips */
+.ftoi-chip-new-badge {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: #2a8a6e;
+  color: #fff;
+  border-radius: 8px;
+  padding: 1px 5px;
+  margin-left: 6px;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+
+.ftoi-chip.selected {
+  box-shadow: 0 0 0 2px #4D9EA8;
+}
+
+/* === Removed Panel === */
+.ftoi-removed-panel {
+  flex: 2;
+  min-width: 280px;
+  border-radius: 8px;
+  border: 1px solid rgba(240, 184, 184, 0.5);
+  overflow: hidden;
+}
+
+.ftoi-removed-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: #f5e8e8;
+  border-bottom: 1px solid rgba(240, 184, 184, 0.4);
+}
+
+.ftoi-removed-panel-body {
+  padding: 12px 14px;
+  background: #fff;
+}
+
+.ftoi-empty-msg {
+  font-family: Roboto, sans-serif;
+  font-size: 14px;
+  color: #6b7c8d;
+  text-align: center;
+  padding: 20px 0;
+}
+
+/* === Detail Drawer === */
+.ftoi-drawer {
+  border-radius: 8px;
+  border: 1px solid rgba(77, 158, 168, 0.3);
+  background: #fff;
+  overflow: hidden;
+  margin-top: 10px;
+  animation: ftoi-drawer-in 0.2s ease;
+}
+
+@keyframes ftoi-drawer-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.ftoi-drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: rgba(208, 236, 255, 0.4);
+  border-bottom: 1px solid rgba(77, 158, 168, 0.2);
+}
+
+.ftoi-drawer-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ftoi-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-family: Roboto, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.ftoi-badge.nominated {
+  background: #e6f5ec;
+  color: #2a7a52;
+  border: 1px solid #a8dfc3;
+}
+
+.ftoi-badge.retained {
+  background: #e0f0ff;
+  color: #1a5a8a;
+  border: 1px solid #a0c8f0;
+}
+
+.ftoi-badge.removed {
+  background: #fce8e8;
+  color: #a02020;
+  border: 1px solid #f0b8b8;
+}
+
+.ftoi-drawer-target-name {
+  font-family: Roboto, sans-serif;
+  font-size: 17px;
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+.ftoi-drawer-target-fullname {
+  font-family: Roboto, sans-serif;
+  font-size: 14px;
+  color: #6b7c8d;
+}
+
+.ftoi-drawer-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #6b7c8d;
+  font-size: 19px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.ftoi-drawer-close:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.ftoi-drawer-body {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  padding: 16px;
+  align-items: flex-start;
+}
+
+.ftoi-drawer-body > .ftoi-collapsible:first-child {
+  flex: 5;
+  min-width: 0;
+}
+
+.ftoi-drawer-body > .ftoi-collapsible:last-child {
+  flex: 2;
+  min-width: 280px;
+}
+
+/* === Collapsible Panels in Drawer === */
+.ftoi-collapsible {
+  border: 1px solid #e8ecf0;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.ftoi-collapsible-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 14px;
+  background: #f7f9fb;
+  cursor: pointer;
+  user-select: none;
+  border-bottom: 1px solid #e8ecf0;
+}
+
+.ftoi-collapsible-title {
+  font-family: Roboto, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #4a5060;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.ftoi-collapsible-toggle {
+  font-size: 13px;
+  color: #6b7c8d;
+  transition: transform 0.2s;
+}
+
+.ftoi-collapsible-body {
+  padding: 14px;
+}
+
+/* === Horizon View === */
+.ftoi-horizon-empty {
+  font-family: Roboto, sans-serif;
+  font-size: 14px;
+  color: #6b7c8d;
+  text-align: center;
+  padding: 16px 0;
+}
+
+.ftoi-horizon-tree {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ftoi-horizon-branch {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.ftoi-horizon-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 110px;
+}
+
+.ftoi-horizon-node-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #e0e6ec;
+  background: #f8fafb;
+  min-width: 100px;
+  max-width: 130px;
+  text-align: center;
+}
+
+.ftoi-horizon-node-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+  font-size: 14px;
+  color: #fff;
+}
+
+.ftoi-horizon-node-icon.target { background: #7B5EA7; }
+.ftoi-horizon-node-icon.screen { background: #1E5B99; }
+.ftoi-horizon-node-icon.hit-collection { background: #4D9EA8; }
+.ftoi-horizon-node-icon.hit-assessment { background: #B8741A; }
+.ftoi-horizon-node-icon.project { background: #2a8a6e; }
+
+.ftoi-horizon-node-stage {
+  font-family: Roboto, sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #6b7c8d;
+  letter-spacing: 0.04em;
+  margin-bottom: 2px;
+}
+
+.ftoi-horizon-node-name {
+  font-family: Roboto, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #2c3e50;
+  word-break: break-word;
+}
+
+.ftoi-horizon-node-detail {
+  font-family: Roboto, sans-serif;
+  font-size: 12px;
+  color: #6b7c8d;
+  margin-top: 2px;
+}
+
+.ftoi-horizon-badge {
+  display: inline-block;
+  margin-top: 4px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.ftoi-horizon-badge.new { background: #ede8f5; color: #7B5EA7; }
+.ftoi-horizon-badge.validated { background: #ddeeff; color: #1E5B99; }
+.ftoi-horizon-badge.success { background: #e6f5ec; color: #2a8a6e; }
+.ftoi-horizon-badge.failed { background: #fce8e8; color: #a02020; }
+.ftoi-horizon-badge.active { background: #e6f5ec; color: #2a8a6e; }
+
+.ftoi-horizon-connector {
+  display: flex;
+  align-items: center;
+  padding-top: 20px;
+  color: #c0cad4;
+  font-size: 19px;
+  flex-shrink: 0;
+}
+
+/* === Activity Log === */
+.ftoi-activity-log {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.ftoi-log-entry {
+  display: flex;
+  gap: 10px;
+  position: relative;
+  padding-bottom: 14px;
+}
+
+.ftoi-log-entry:last-child {
+  padding-bottom: 0;
+}
+
+.ftoi-log-timeline {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  width: 16px;
+}
+
+.ftoi-log-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  flex-shrink: 0;
+  margin-top: 2px;
+  z-index: 1;
+}
+
+.ftoi-log-dot.nominated { background: #2a8a6e; }
+.ftoi-log-dot.retained { background: #1E5B99; }
+.ftoi-log-dot.removed { background: #c04040; }
+.ftoi-log-dot.note { background: #8a8a9a; }
+
+.ftoi-log-segment {
+  flex: 1;
+  width: 2px;
+  background: #e0e6ec;
+  margin-top: 2px;
+}
+
+.ftoi-log-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.ftoi-log-heading {
+  font-family: Roboto, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #2c3e50;
+  text-transform: capitalize;
+}
+
+.ftoi-log-meta {
+  font-family: Roboto, sans-serif;
+  font-size: 13px;
+  color: #6b7c8d;
+  margin-top: 2px;
+}
+
+.ftoi-log-reason {
+  font-family: Roboto, sans-serif;
+  font-size: 13px;
+  color: #4a5060;
+  margin-top: 3px;
+  line-height: 1.4;
+}
+
+/* === Add Note Form === */
+.ftoi-add-note {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ftoi-add-note select,
+.ftoi-add-note textarea {
+  width: 100%;
+  font-family: Roboto, sans-serif;
+  font-size: 14px;
+  color: #2c3e50;
+  border: 1px solid #d0d8e0;
+  border-radius: 6px;
+  padding: 8px 10px;
+  background: #fff;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.ftoi-add-note select:focus,
+.ftoi-add-note textarea:focus {
+  border-color: #4D9EA8;
+}
+
+.ftoi-add-note textarea {
+  min-height: 90px;
+}
+
+.ftoi-save-btn {
+  align-self: flex-start;
+  padding: 7px 20px;
+  border-radius: 6px;
+  border: none;
+  background: #4D9EA8;
+  color: #fff;
+  font-family: Roboto, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.ftoi-save-btn:hover {
+  background: #3d8a94;
+}
+
+.ftoi-save-btn:disabled {
+  background: #a0b8bc;
+  cursor: not-allowed;
+}
+
+/* === Top control row === */
+.ftoi-control-row {
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+  padding: 8px 0 4px 0;
+}
+
+.ftoi-control-row .ftoi-timeline-bar {
+  flex: 3;
+}
+
+.ftoi-control-row .ftoi-stats-bar {
+  flex: 1;
+}
+
+/* === Drag & Drop === */
+.ftoi-chip[draggable="true"] {
+  cursor: grab;
+}
+
+.ftoi-chip[draggable="true"]:active {
+  cursor: grabbing;
+  opacity: 0.6;
+}
+
+.ftoi-removed-panel.drag-over {
+  border: 2px dashed #e05555;
+  background: #fff5f5;
+  box-shadow: 0 0 0 3px rgba(224, 85, 85, 0.12);
+  transition: all 0.15s;
+}
+
+.ftoi-removed-panel.drag-over .ftoi-removed-panel-header {
+  background: #fce8e8;
+}
+
+.ftoi-active-panel.drag-over {
+  border: 2px dashed #4D9EA8;
+  background: #f0fbfc;
+  box-shadow: 0 0 0 3px rgba(77, 158, 168, 0.12);
+  transition: all 0.15s;
+}
+
+.ftoi-active-panel.drag-over .ftoi-active-panel-header {
+  background: rgba(208, 236, 255, 0.8);
+}
+
+/* === Removal Confirmation Dialog === */
+.ftoi-removal-dialog-desc {
+  font-family: Roboto, sans-serif;
+  font-size: 15px;
+  color: #4a5060;
+  margin: 0 0 12px 0;
+  line-height: 1.5;
+}
+
+.ftoi-removal-textarea {
+  width: 100%;
+  font-family: Roboto, sans-serif;
+  font-size: 14px;
+  color: #2c3e50;
+  border: 1px solid #d0d8e0;
+  border-radius: 6px;
+  padding: 8px 10px;
+  background: #fff;
+  resize: vertical;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.15s;
+}
+
+.ftoi-removal-textarea:focus {
+  border-color: #e05555;
+}
+
+.ftoi-removal-dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.ftoi-removal-btn {
+  padding: 7px 20px;
+  border-radius: 6px;
+  border: none;
+  font-family: Roboto, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.ftoi-removal-btn.cancel {
+  background: #f0f2f4;
+  color: #4a5060;
+}
+
+.ftoi-removal-btn.cancel:hover {
+  background: #e0e4e8;
+}
+
+.ftoi-removal-btn.confirm {
+  background: #e05555;
+  color: #fff;
+}
+
+.ftoi-removal-btn.confirm:hover {
+  background: #c04040;
+}
+
+.ftoi-removal-btn.confirm:disabled {
+  background: #e0a0a0;
+  cursor: not-allowed;
+}
+
+.ftoi-removal-btn.reinstate {
+  background: #4D9EA8;
+  color: #fff;
+}
+
+.ftoi-removal-btn.reinstate:hover {
+  background: #3d8a94;
+}
+
+.ftoi-removal-btn.reinstate:disabled {
+  background: #a0c8cc;
+  cursor: not-allowed;
+}
