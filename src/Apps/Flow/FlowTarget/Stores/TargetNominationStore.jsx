@@ -6,113 +6,45 @@ import {
   runInAction,
 } from "mobx";
 import TargetNominationAPI from "../api/TargetNominationAPI";
+import { decode } from "./targetNominationCodec";
+import { ENCODED_NOMINATIONS } from "./targetNominationData.encoded";
 
-// Hard-coded pathway map derived from the Nov 2024 semi-annual meeting slide.
-// "retained" = Top 25 (Nov 2023), still active.
-// "nominated" = newly added at Nov 2024.
-// Target names are matched case-insensitively against the real targetStore.
+// Offline fallback data for the Targets-of-Interest view, used only when the
+// backend nomination endpoints are unavailable. It is stored obfuscated
+// (XOR + base64) so the target list / tiers aren't plaintext in the repo — this
+// is casual-reader deterrence, not security. Edit via scripts/nominations.mjs.
+//
+// Decoded shape:
+//   cohorts:    string[]                          ordered timeline of review cohorts
+//   cohortMeta: { [cohort]: { date, author } }    per-cohort defaults for events
+//   targets:    { name, pathway, events[] }[]     events = [{ type, cohort }], chronological
+//   tiers:      { [cohort]: { [lcName]: 1|2|3 } } 1 = Top 4, 2 = Top 12, 3 = Top 25
+const FALLBACK = decode(ENCODED_NOMINATIONS);
+const MOCK_COHORTS = FALLBACK.cohorts;
+const COHORT_META = FALLBACK.cohortMeta;
+const COHORT_TIERS = FALLBACK.tiers;
+const FALLBACK_TARGETS = FALLBACK.targets;
+const DEFAULT_REASONS = FALLBACK.defaultReasons ?? {};
 
-const MOCK_COHORTS = ["Nov 2023", "Nov 2024"];
-
-const PATHWAY_TARGET_MAP = [
-  {
-    pathway: "Amino acid biosynthesis",
-    retained: ["ArgB", "AroG", "DapE", "LysA"],
-    nominated: ["MetA", "DapA", "Asd"],
-  },
-  {
-    pathway: "Arabinogalactan biosynthesis",
-    retained: ["GlfT2", "UbiA"],
-    nominated: ["Glf", "AftB", "DprE1"],
-  },
-  {
-    pathway: "Cell division",
-    retained: ["FtsZ", "MtrA"],
-    nominated: ["FtsK", "FtsW", "FtsQ"],
-  },
-  {
-    pathway: "DNA repair & replication",
-    retained: ["DnaN"],
-    nominated: ["DnaB"],
-  },
-  {
-    pathway: "Fatty acid catabolism",
-    retained: ["EtfD"],
-    nominated: [],
-  },
-  {
-    pathway: "Folate biosynthesis",
-    retained: ["FolE"],
-    nominated: [],
-  },
-  {
-    pathway: "Glyoxylate shunt / TCA cycle",
-    retained: ["GlcB", "Mdh"],
-    nominated: [],
-  },
-  {
-    pathway: "Isoprenoid biosynthesis",
-    retained: ["Dxs1"],
-    nominated: [],
-  },
-  {
-    pathway: "NAD(P) biosynthesis",
-    retained: ["NadE", "NadD"],
-    nominated: [],
-  },
-  {
-    pathway: "Peptidoglycan biosynthesis",
-    retained: ["MurA", "MurX"],
-    nominated: ["MurG", "MurC"],
-  },
-  {
-    pathway: "Protein secretion",
-    retained: ["SecA1", "SecE1"],
-    nominated: ["SecY"],
-  },
-  {
-    pathway: "Riboflavin biosynthesis",
-    retained: ["RibF"],
-    nominated: ["RibA2"],
-  },
-  {
-    pathway: "tRNA biosynthesis",
-    retained: ["MetRS", "PheRS"],
-    nominated: ["AlaS", "GlyS"],
-  },
-];
-
-// Per-cohort target tier assignments.
-// Tier 1 = Red  (Top 4  — most prioritised)
-// Tier 2 = Blue (Top 12 — ranks 5–12)
-// Tier 3 = Black (Top 25 — ranks 13–25)
-// Targets without an entry are unranked (shown with a neutral chip).
-const COHORT_TIERS = {
-  "Nov 2023": {
-    // Tier 1 — Top 4
-    "glcb": 1, "mdh": 1, "nadd": 1, "nade": 1,
-    // Tier 2 — Top 12 (ranks 5–12)
-    "ftsz": 2, "mtra": 2, "dxs1": 2, "mura": 2,
-    "seca1": 2, "sece1": 2, "metrs": 2, "phers": 2,
-    // Tier 3 — Top 25 (ranks 13–25)
-    "argb": 3, "dape": 3, "lysa": 3, "glft2": 3, "ubia": 3,
-    "arog": 3, "dnan": 3, "etfd": 3, "fole": 3, "pcka": 3,
-    "murx": 3, "secy": 3, "ribf": 3,
-  },
-  "Nov 2024": {
-    // Tier 1 — Top 4
-    "argb": 1, "dape": 1, "murx": 1, "phers": 1,
-    // Tier 2 — Top 12 (ranks 5–12)
-    "ftsz": 2, "mtra": 2, "ftsk": 2, "mura": 2,
-    "murg": 2, "seca1": 2, "sece1": 2, "metrs": 2,
-    // Tier 3 — Top 25 (ranks 13–25)
-    "lysa": 3, "glft2": 3, "ubia": 3,
-    "dnan": 3, "dnab": 3, "etfd": 3, "fole": 3, "dxs1": 3,
-    "secy": 3, "ribf": 3,
-  },
+// Default activity-log text per event type (a stored event may override via reason).
+const defaultReason = (type, cohort) => {
+  if (type === "retained") return DEFAULT_REASONS.retained ?? "";
+  if (type === "nominated") {
+    return MOCK_COHORTS.indexOf(cohort) === 0
+      ? DEFAULT_REASONS.founding ?? ""
+      : DEFAULT_REASONS.nominated ?? "";
+  }
+  return "";
 };
 
-
+// Expand a compact stored event into the full shape the UI / status logic expect.
+const expandEvent = (event) => ({
+  type: event.type,
+  cohort: event.cohort,
+  date: event.date ?? COHORT_META[event.cohort]?.date ?? "",
+  reason: event.reason ?? defaultReason(event.type, event.cohort),
+  author: event.author ?? COHORT_META[event.cohort]?.author ?? "",
+});
 
 export default class TargetNominationStore {
   rootStore;
@@ -215,9 +147,9 @@ export default class TargetNominationStore {
         this.nominations = data;
       });
     } catch {
-      // Build nominations from PATHWAY_TARGET_MAP as source of truth.
-      // For each hardcoded target name, try to find a real target in targetStore
-      // (case-insensitive). If not found, use the name itself as a placeholder id.
+      // Build nominations from the obfuscated fallback data. For each target,
+      // try to match a real target in targetStore (case-insensitive); if not
+      // found, use a placeholder id so the chip still renders.
       runInAction(() => {
         const realTargets = this.rootStore.targetStore.targetList;
         const realByName = {};
@@ -225,56 +157,16 @@ export default class TargetNominationStore {
           if (t.name) realByName[t.name.toLowerCase()] = t;
         });
 
-        const nominations = [];
-
-        PATHWAY_TARGET_MAP.forEach(({ pathway, retained, nominated }) => {
-          retained.forEach((name) => {
-            const real = realByName[name.toLowerCase()];
-            nominations.push({
-              id: real?.id ?? `mock-${name.toLowerCase()}`,
-              name,
-              fullName: real?.fullName ?? "",
-              pathway,
-              events: [
-                {
-                  type: "nominated",
-                  cohort: "Nov 2023",
-                  date: "2023-11-06",
-                  reason: "Added at semi-annual review.",
-                  author: "Consortium review",
-                },
-                {
-                  type: "retained",
-                  cohort: "Nov 2024",
-                  date: "2024-11-06",
-                  reason: "Retained at semi-annual review.",
-                  author: "Consortium review",
-                },
-              ],
-            });
-          });
-
-          nominated.forEach((name) => {
-            const real = realByName[name.toLowerCase()];
-            nominations.push({
-              id: real?.id ?? `mock-${name.toLowerCase()}`,
-              name,
-              fullName: real?.fullName ?? "",
-              pathway,
-              events: [
-                {
-                  type: "nominated",
-                  cohort: "Nov 2024",
-                  date: "2024-11-06",
-                  reason: "Newly added at semi-annual review.",
-                  author: "Consortium review",
-                },
-              ],
-            });
-          });
+        this.nominations = FALLBACK_TARGETS.map((target) => {
+          const real = realByName[target.name.toLowerCase()];
+          return {
+            id: real?.id ?? `mock-${target.name.toLowerCase()}`,
+            name: target.name,
+            fullName: real?.fullName ?? "",
+            pathway: target.pathway,
+            events: target.events.map(expandEvent),
+          };
         });
-
-        this.nominations = nominations;
       });
     } finally {
       runInAction(() => {
@@ -290,7 +182,7 @@ export default class TargetNominationStore {
   _getStatusAtCohort = (target, cohort) => {
     const cohortIndex = this.cohorts.indexOf(cohort);
     const eligibleEvents = target.events.filter(
-      (e) => this.cohorts.indexOf(e.cohort) <= cohortIndex
+      (e) => this.cohorts.indexOf(e.cohort) <= cohortIndex,
     );
     if (!eligibleEvents.length) return null;
     const lastEvent = eligibleEvents[eligibleEvents.length - 1];
@@ -308,7 +200,9 @@ export default class TargetNominationStore {
 
     const eventAtCohort = target.events.find((e) => e.cohort === cohort);
     const statusNow = this._getStatusAtCohort(target, cohort);
-    const statusPrev = prevCohort ? this._getStatusAtCohort(target, prevCohort) : null;
+    const statusPrev = prevCohort
+      ? this._getStatusAtCohort(target, prevCohort)
+      : null;
 
     if (statusNow === null) return null;
 
