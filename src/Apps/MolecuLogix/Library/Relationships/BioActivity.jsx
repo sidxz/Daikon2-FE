@@ -24,6 +24,16 @@ export const formatBioActivity = (bioActivity) => {
     },
   ];
 
+  const simpleFields = [
+    { field: "cytotoxicity", label: "Cytotoxicity" },
+    { field: "intramacrophageActivity", label: "Intramacrophage Activity" },
+    { field: "selectivityIndex", label: "Selectivity Index" },
+    { field: "qc", label: "QC" },
+    { field: "targets", label: "#Targets" },
+    { field: "wholeCellActive", label: "Whole Cell Active" },
+    { field: "bindingAssessment", label: "Binding Assessment" },
+  ];
+
   const formatted = [];
 
   for (const entry of fieldsWithUnits) {
@@ -47,6 +57,16 @@ export const formatBioActivity = (bioActivity) => {
       formatted.push({
         label: entry.label,
         value: formattedValue,
+      });
+    }
+  }
+
+  for (const entry of simpleFields) {
+    const value = bioActivity[entry.field];
+    if (value && value.toString().trim() !== "") {
+      formatted.push({
+        label: entry.label,
+        value: `${value}`,
       });
     }
   }

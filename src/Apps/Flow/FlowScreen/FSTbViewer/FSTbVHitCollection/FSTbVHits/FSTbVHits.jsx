@@ -4,6 +4,7 @@ import { Column } from "primereact/column";
 import { confirmDialog } from "primereact/confirmdialog";
 import { DataTable } from "primereact/datatable";
 import { Dialog } from "primereact/dialog";
+import { Dropdown } from "primereact/dropdown";
 import { ProgressBar } from "primereact/progressbar";
 import { Sidebar } from "primereact/sidebar";
 import { useContext, useEffect, useRef, useState } from "react";
@@ -193,6 +194,47 @@ const FSTbVHits = ({ id }) => {
         userId={user.id}
         isVotesHidden={isVotesHidden}
         isOneClickVotingEnabled={isOneClickVotingEnabled}
+      />
+    );
+  };
+
+  const yesNoOptions = [
+    { label: "Yes", value: "Yes" },
+    { label: "No", value: "No" },
+  ];
+
+  const yesNoNotDeterminedOptions = [
+    { label: "Yes", value: "Yes" },
+    { label: "No", value: "No" },
+    { label: "Not Determined", value: "Not Determined" },
+  ];
+
+  const dropdownRowEditor = (options, choices) => {
+    return (
+      <Dropdown
+        className="w-full"
+        value={options.value}
+        options={choices}
+        placeholder="Select"
+        onChange={(e) => options.editorCallback(e.value)}
+      />
+    );
+  };
+
+  const dropdownFilterElement = (options, choices) => {
+    return (
+      <Dropdown
+        className="w-full"
+        value={options.value}
+        options={choices}
+        placeholder="Select Value"
+        onChange={(e) => {
+          if (options.filterApplyCallback) {
+            options.filterApplyCallback(e.value);
+          } else if (options.filterCallback) {
+            options.filterCallback(e.value);
+          }
+        }}
       />
     );
   };
@@ -389,6 +431,63 @@ const FSTbVHits = ({ id }) => {
       filter: true,
     },
     {
+      key: "cytotoxicity",
+      header: "Cytotoxicity",
+      editor: TextRowEditor,
+      sortable: true,
+      filter: true,
+    },
+    {
+      key: "intramacrophageActivity",
+      header: "Intramacrophage Activity",
+      editor: TextRowEditor,
+      sortable: true,
+      filter: true,
+    },
+    {
+      key: "selectivityIndex",
+      header: "Selectivity Index",
+      editor: TextRowEditor,
+      sortable: true,
+      filter: true,
+    },
+    {
+      key: "qc",
+      header: "QC",
+      editor: (options) => dropdownRowEditor(options, yesNoOptions),
+      sortable: true,
+      filter: true,
+      filterMatchMode: "equals",
+      filterElement: (options) => dropdownFilterElement(options, yesNoOptions),
+    },
+    {
+      key: "targets",
+      header: "#Targets",
+      editor: TextRowEditor,
+      sortable: true,
+      filter: true,
+    },
+    {
+      key: "wholeCellActive",
+      header: "Whole Cell Active",
+      editor: (options) =>
+        dropdownRowEditor(options, yesNoNotDeterminedOptions),
+      sortable: true,
+      filter: true,
+      filterMatchMode: "equals",
+      filterElement: (options) =>
+        dropdownFilterElement(options, yesNoNotDeterminedOptions),
+    },
+    {
+      key: "bindingAssessment",
+      header: "Binding Assessment",
+      editor: (options) => dropdownRowEditor(options, yesNoOptions),
+      sortable: true,
+      filter: true,
+      filterMatchMode: "equals",
+      filterElement: (options) => dropdownFilterElement(options, yesNoOptions),
+    },
+    {
       key: "voteScore",
       field: "voteScore",
       header: "Vote",
@@ -494,6 +593,7 @@ const FSTbVHits = ({ id }) => {
               scrollable
               rows={100}
               scrollHeight={scrollHeight}
+              sortMode="single"
               sortField="clusterGroup"
               sortOrder={1}
               resizableColumns
@@ -534,28 +634,39 @@ const FSTbVHits = ({ id }) => {
               onSelectionChange={(e) => setSelectedHits(e.value)}
             >
               <Column
+                columnKey="rowIndex"
                 header="#"
                 body={(data, options) => options.rowIndex + 1}
+                reorderable={false}
               ></Column>
               {selectionEnabled && (
                 <Column
+                  columnKey="selection"
                   selectionMode="multiple"
                   headerStyle={{ width: "3em" }}
                   className="fadein"
+                  reorderable={false}
                 ></Column>
               )}
 
               {viewableColumns}
               {editMode && (
                 <Column
+                  columnKey="rowEditor"
                   rowEditor
                   header="Edit"
                   // headerStyle={{ width: "10%", minWidth: "8rem" }}
                   bodyStyle={{ textAlign: "center" }}
+                  reorderable={false}
                 />
               )}
               {isUserInAnyOfRoles([ScreenAdminRoleName]) && editMode && (
-                <Column body={deleteBodyTemplate} header="Delete" />
+                <Column
+                  columnKey="delete"
+                  body={deleteBodyTemplate}
+                  header="Delete"
+                  reorderable={false}
+                />
               )}
             </DataTable>
           </div>

@@ -4,6 +4,7 @@ export const DtFieldsToExcelColumnMapping =
     moleculeName: "Molecule Name",
     smiles: "SMILES",
     library: "Library",
+
     librarySource: "Source",
 
     assayType: "Assay Type",
@@ -32,6 +33,14 @@ export const DtFieldsToExcelColumnMapping =
     pctInhibition: "%Inh",
     pctInhibitionConcentration: "%Inh Conc",
     pctInhibitionConcentrationUnit: "%Inh Conc Unit",
+
+    cytotoxicity: "Cytotoxicity",
+    intramacrophageActivity: "Intramacrophage Activity",
+    selectivityIndex: "Selectivity Index",
+    qc: "QC",
+    targets: "#Targets",
+    wholeCellActive: "Whole Cell Active",
+    bindingAssessment: "Binding Assessment",
 
     notes: "Notes",
 
@@ -67,6 +76,7 @@ export const DtFieldsGroupedColumnMapping =
     lD50Unit: "LD50 Unit",
 
     library: "Library",
+
     librarySource: "Source",
     miC90: "MIC90",
     miC90Unit: "MIC90 Unit",
@@ -78,6 +88,14 @@ export const DtFieldsGroupedColumnMapping =
     pctInhibition: "% Inhibition",
     pctInhibitionConcentration: "Concentration for % Inhibition",
     pctInhibitionConcentrationUnit: "Concentration Unit for % Inhibition",
+
+    cytotoxicity: "Cytotoxicity",
+    intramacrophageActivity: "Intramacrophage Activity",
+    selectivityIndex: "Selectivity Index",
+    qc: "QC",
+    targets: "#Targets",
+    wholeCellActive: "Whole Cell Active",
+    bindingAssessment: "Binding Assessment",
 
     moleculeName: "Molecule Name",
     smiles: "SMILES",
@@ -115,6 +133,13 @@ export const AllTbColumns = [
   "%Inh",
   "%Inh Conc",
   "%Inh Conc Unit",
+  "Cytotoxicity",
+  "Intramacrophage Activity",
+  "Selectivity Index",
+  "QC",
+  "#Targets",
+  "Whole Cell Active",
+  "Binding Assessment",
   "Molecule Name",
   "Notes",
   "Dose Response",
@@ -127,6 +152,6 @@ export const DoseResponsesFlattener = (arr) =>
   arr
     .map(
       (dp) =>
-        `${dp.concentration} ${dp.concentrationUnit} /${dp.response} ${dp.responseUnit}`
+        `${dp.concentration} ${dp.concentrationUnit} /${dp.response} ${dp.responseUnit}`,
     )
     .join("; ");

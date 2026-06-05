@@ -19,6 +19,17 @@ const concentrationUnits = [
   { label: "pM", value: "pM" },
 ];
 
+const yesNoOptions = [
+  { label: "Yes", value: "Yes" },
+  { label: "No", value: "No" },
+];
+
+const yesNoNotDeterminedOptions = [
+  { label: "Yes", value: "Yes" },
+  { label: "No", value: "No" },
+  { label: "Not Determined", value: "Not Determined" },
+];
+
 const FSTbVHAddHit = ({ hitCollectionId, closeSideBar }) => {
   const rootStore = useContext(RootStoreContext);
   const { isAddingHit, addHit } = rootStore.hitStore;
@@ -62,6 +73,14 @@ const FSTbVHAddHit = ({ hitCollectionId, closeSideBar }) => {
       pctInhibitionConcentration: "",
       pctInhibitionConcentrationUnit: "",
 
+      cytotoxicity: "",
+      intramacrophageActivity: "",
+      selectivityIndex: "",
+      qc: "",
+      targets: "",
+      wholeCellActive: "",
+      bindingAssessment: "",
+
       notes: "",
     },
     validate: (values) => {
@@ -100,7 +119,7 @@ const FSTbVHAddHit = ({ hitCollectionId, closeSideBar }) => {
     </div>
   );
 
-  const renderDropdown = (id, label, options) => (
+  const renderDropdown = (id, label, options, placeholder = "Select Unit") => (
     <div className="field">
       <label htmlFor={id} className={classNames({ "p-error": isInvalid(id) })}>
         {label}
@@ -110,7 +129,7 @@ const FSTbVHAddHit = ({ hitCollectionId, closeSideBar }) => {
         value={formik.values[id]}
         options={options}
         onChange={(e) => formik.setFieldValue(id, e.value)}
-        placeholder="Select Unit"
+        placeholder={placeholder}
         className={classNames({ "p-invalid": isInvalid(id) })}
       />
       {getErrorMessage(id)}
@@ -196,6 +215,25 @@ const FSTbVHAddHit = ({ hitCollectionId, closeSideBar }) => {
           "pctInhibitionConcentrationUnit",
           "% Inh Conc Unit",
           concentrationUnits
+        )}
+
+        <h4>Biology Summary</h4>
+        {renderField("cytotoxicity", "Cytotoxicity")}
+        {renderField("intramacrophageActivity", "Intramacrophage Activity")}
+        {renderField("selectivityIndex", "Selectivity Index")}
+        {renderDropdown("qc", "QC", yesNoOptions, "Select Value")}
+        {renderField("targets", "#Targets")}
+        {renderDropdown(
+          "wholeCellActive",
+          "Whole Cell Active",
+          yesNoNotDeterminedOptions,
+          "Select Value"
+        )}
+        {renderDropdown(
+          "bindingAssessment",
+          "Binding Assessment",
+          yesNoOptions,
+          "Select Value"
         )}
 
         <h4>Other Details</h4>

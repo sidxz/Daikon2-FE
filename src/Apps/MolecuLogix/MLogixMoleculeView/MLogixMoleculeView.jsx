@@ -8,6 +8,7 @@ import PageInfoPanel from "../../../Library/PageInfoPanel/PageInfoPanel";
 import SecHeading from "../../../Library/SecHeading/SecHeading";
 import { RootStoreContext } from "../../../RootStore";
 import { appColors } from "../../../constants/colors";
+import MLMViewADMET from "./MLMViewComponents/MLMViewADMET";
 import MLMViewDisclosureInformation from "./MLMViewComponents/MLMViewDisclosureInformation";
 import MLMViewGeneralInfo from "./MLMViewComponents/MLMViewGeneralInfo";
 import MLMViewIdentifiers from "./MLMViewComponents/MLMViewIdentifiers/MLMViewIdentifiers";
@@ -94,6 +95,10 @@ const MLogixMoleculeView = () => {
             </div>
             <div className="flex gap-2">
               <MLMViewRelations selectedMolecule={selectedMolecule} />
+            </div>
+
+            <div className="flex gap-2">
+              <MLMViewADMET selectedMolecule={selectedMolecule} />
             </div>
 
             <div className="flex gap-2">

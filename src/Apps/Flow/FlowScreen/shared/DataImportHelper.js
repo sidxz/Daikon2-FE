@@ -37,6 +37,13 @@ export function GroupMolecules(data) {
         pctInhibition: "",
         pctInhibitionConcentration: "",
         pctInhibitionConcentrationUnit: "",
+        cytotoxicity: "",
+        intramacrophageActivity: "",
+        selectivityIndex: "",
+        qc: "",
+        targets: "",
+        wholeCellActive: "",
+        bindingAssessment: "",
         clusterGroup: 0,
         notes: "",
         doseResponses: [],
@@ -89,6 +96,18 @@ export function GroupMolecules(data) {
     )
       acc[key].pctInhibitionConcentrationUnit =
         item.pctInhibitionConcentrationUnit;
+    if (!acc[key].cytotoxicity && item.cytotoxicity)
+      acc[key].cytotoxicity = item.cytotoxicity;
+    if (!acc[key].intramacrophageActivity && item.intramacrophageActivity)
+      acc[key].intramacrophageActivity = item.intramacrophageActivity;
+    if (!acc[key].selectivityIndex && item.selectivityIndex)
+      acc[key].selectivityIndex = item.selectivityIndex;
+    if (!acc[key].qc && item.qc) acc[key].qc = item.qc;
+    if (!acc[key].targets && item.targets) acc[key].targets = item.targets;
+    if (!acc[key].wholeCellActive && item.wholeCellActive)
+      acc[key].wholeCellActive = item.wholeCellActive;
+    if (!acc[key].bindingAssessment && item.bindingAssessment)
+      acc[key].bindingAssessment = item.bindingAssessment;
 
     // Validate concentration and inhibition before pushing
     const concentration = item?.concentration

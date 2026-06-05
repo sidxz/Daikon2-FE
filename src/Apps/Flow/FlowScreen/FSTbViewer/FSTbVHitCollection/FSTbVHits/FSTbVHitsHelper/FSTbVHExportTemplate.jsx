@@ -17,6 +17,13 @@ export const ExportTemplateExcel = (
       iC50: "",
       mic: "",
       clusterGroup: "",
+      cytotoxicity: "",
+      intramacrophageActivity: "",
+      selectivityIndex: "",
+      qc: "",
+      targets: "",
+      wholeCellActive: "",
+      bindingAssessment: "",
       notes: "",
     },
   ]; // No data, just headers for the template
@@ -30,5 +37,10 @@ export const ExportTemplateExcel = (
     jsonData,
     fileName,
     headerMap: headerMapper,
+    columnValidations: {
+      qc: ["Yes", "No"],
+      wholeCellActive: ["Yes", "No", "Not Determined"],
+      bindingAssessment: ["Yes", "No"],
+    },
   });
 };

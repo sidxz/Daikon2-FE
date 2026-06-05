@@ -8,6 +8,7 @@ const exportToExcel = async ({
   sheetName = "Sheet1",
   headerMap = null,
   includeId = true,
+  columnValidations = null,
 }) => {
   // Exit function if no data is provided
   if (jsonData.length === 0) return;
@@ -35,6 +36,39 @@ const exportToExcel = async ({
       : Object.values(item);
     worksheet.addRow(row);
   });
+
+  if (columnValidations && effectiveHeaderMap) {
+    const toColumnLetter = (colIndex) => {
+      let dividend = colIndex;
+      let columnName = "";
+      while (dividend > 0) {
+        let modulo = (dividend - 1) % 26;
+        columnName = String.fromCharCode(65 + modulo) + columnName;
+        dividend = Math.floor((dividend - modulo) / 26);
+      }
+      return columnName;
+    };
+
+    const headerKeys = Object.keys(effectiveHeaderMap);
+    const lastRow = worksheet.rowCount;
+    if (lastRow >= 2) {
+      headerKeys.forEach((key, index) => {
+        const options = columnValidations[key];
+        if (!options || options.length === 0) return;
+        const columnLetter = toColumnLetter(index + 1);
+        const range = `${columnLetter}2:${columnLetter}${lastRow}`;
+        worksheet.dataValidations.add(range, {
+          type: "list",
+          allowBlank: true,
+          formulae: [`"${options.join(",")}"`],
+          showErrorMessage: true,
+          errorStyle: "warning",
+          errorTitle: "Invalid Value",
+          error: "Select a value from the list.",
+        });
+      });
+    }
+  }
 
   try {
     // Generate Excel file as a Blob and trigger download

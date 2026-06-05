@@ -23,6 +23,7 @@ import HitCollectionStore from "./Apps/Flow/FlowScreen/Stores/HitCollectionStore
 import HitStore from "./Apps/Flow/FlowScreen/Stores/HitStore";
 import ScreenRunStore from "./Apps/Flow/FlowScreen/Stores/ScreenRunStore";
 import ScreenStore from "./Apps/Flow/FlowScreen/Stores/ScreenStore";
+import TargetNominationStore from "./Apps/Flow/FlowTarget/Stores/TargetNominationStore";
 import TargetPQStore from "./Apps/Flow/FlowTarget/Stores/TargetPQStore";
 import TargetSafetyAssessmentStore from "./Apps/Flow/FlowTarget/Stores/TargetSafetyAssessmentStore";
 import TargetSourcingStore from "./Apps/Flow/FlowTarget/Stores/TargetSourcingStore";
@@ -84,6 +85,8 @@ export class RootStore {
   parsedDocStore;
 
   tableCustomizationStore;
+
+  targetNominationStore;
   constructor() {
     /* Auth */
     this.authStore = new AuthStore(this);
@@ -94,7 +97,7 @@ export class RootStore {
     this.geneEssentialityStore = new GeneEssentialityStore(this);
     this.geneProteinProductionStore = new GeneProteinProductionStore(this);
     this.geneProteinActivityAssayStore = new GeneProteinActivityAssayStore(
-      this
+      this,
     );
     this.geneHypomorphStore = new GeneHypomorphStore(this);
     this.geneCrispriStrainStore = new GeneCrispriStrainStore(this);
@@ -108,6 +111,7 @@ export class RootStore {
     this.targetSourcingStore = new TargetSourcingStore(this);
     this.targetPQStore = new TargetPQStore(this);
     this.targetSafetyAssessmentStore = new TargetSafetyAssessmentStore(this);
+    this.targetNominationStore = new TargetNominationStore(this);
 
     /* Screen */
     this.screenStore = new ScreenStore(this);
