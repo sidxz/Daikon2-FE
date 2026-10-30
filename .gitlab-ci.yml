@@ -18,10 +18,14 @@ stages:
 build:
   stage: build
   script:
-    # Lab image: bake the lab's settings in as /config.js. DAIKON_* env vars on the
-    # container override it; once the lab deployment sets them, drop this step.
+    # The generic image, identical to the public one: no deployment settings inside
+    - docker build -t daikon2-fe:generic .
+    # Lab image = generic image + the lab's /config.js, built from a context that holds
+    # only that file. DAIKON_* env vars on the container still override it; once the
+    # lab deployment sets them, push the generic image and drop these steps.
+    - mkdir -p .lab-config
     - |
-      cat > public/config.js <<EOF
+      cat > .lab-config/config.js <<EOF
       window.__DAIKON_CONFIG__ = {
         oidcAuthority: "${AUTHORITY}",
         oidcClientId: "${CLIENT_ID}",
@@ -29,8 +33,7 @@ build:
         apiUrl: "${BASE_URL}",
       };
       EOF
-    # Build the Docker image
-    - docker build -t $IMAGE_TAG .
+    - printf 'FROM daikon2-fe:generic\nCOPY config.js /usr/share/nginx/html/config.js\n' | docker build -t "$IMAGE_TAG" -f - .lab-config
   only:
     - lab-main
 

@@ -12,7 +12,8 @@ const TableRowBodyDVar = ({
     const { getOrgNameById } = AppOrgResolver();
     return <>{getOrgNameById(dVar?.value)}</>;
   }
-  if (isLink) {
+  // Only http(s) becomes a link: a stored "javascript:" value would run in our origin
+  if (isLink && /^https?:\/\//i.test(dVar?.value ?? "")) {
     return (
       <NavLink to={dVar?.value} target="_blank" rel="noopener noreferrer">
         <div className="flex gap-2 align-items-center">

@@ -53,6 +53,29 @@ jobs:
           exit-code: "1"
           skip-dirs: node_modules,dist
 
+  image-clean:
+    name: Image — no baked settings or secrets
+    # Every push and PR: the published image must stay deployment-neutral
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      # The Dockerfile itself fails if a config.js reaches dist/
+      - run: docker build -t daikon2-fe:ci .
+      - name: No /config.js in the image
+        run: |
+          if docker run --rm --entrypoint sh daikon2-fe:ci -c 'test -e /usr/share/nginx/html/config.js'; then
+            echo "::error::The image contains /config.js: deployment settings must come at runtime"
+            exit 1
+          fi
+      - uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          scan-type: image
+          image-ref: daikon2-fe:ci
+          scanners: secret
+          exit-code: "1"
+
   trivy-image:
     name: Trivy — container image
     # Image findings track the base image and the advisory feed, not the diff, so this sweeps

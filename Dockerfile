@@ -16,6 +16,14 @@ COPY . .
 # Build the application for production
 RUN npm run build
 
+# The image must be deployment-neutral: settings come from /config.js at runtime.
+# .dockerignore keeps public/config.js out; this catches anything that slips past it.
+RUN if [ -e dist/config.js ]; then \
+      echo "dist/config.js found: deployment settings would be baked into the image." >&2; \
+      echo "Remove it from public/ (see README, Deployment configuration)." >&2; \
+      exit 1; \
+    fi
+
 # Stage 2: Serve the app with Nginx
 FROM nginx:1.30-alpine
 

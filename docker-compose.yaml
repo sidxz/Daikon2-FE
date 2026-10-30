@@ -5,5 +5,12 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
+    # Runtime settings (README, "Deployment configuration"). Values come from your shell
+    # or a gitignored .env next to this file; never write them here.
     environment:
-      - NODE_ENV=production
+      - DAIKON_OIDC_AUTHORITY
+      - DAIKON_OIDC_CLIENT_ID
+      - DAIKON_OIDC_SCOPE
+      - DAIKON_API_UPSTREAM=${DAIKON_API_UPSTREAM:-http://host.docker.internal:8010}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

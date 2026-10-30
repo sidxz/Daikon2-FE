@@ -46,6 +46,12 @@ export default class AuthStore {
     this.userFetchServerError = null;
     try {
       const user = await AuthApi.validate();
+      // A 200 that isn't a user (a host serving index.html for /api) means /api isn't routed
+      if (!user || typeof user !== "object") {
+        throw Object.assign(new Error("Unexpected response for the user check"), {
+          code: "BAD_RESPONSE",
+        });
+      }
       runInAction(() => {
         //console.log("AuthStore -> fetchUser -> user", user);
         this.user = user;
@@ -55,15 +61,25 @@ export default class AuthStore {
     } catch (error) {
       // Message only: the error's config carries the Authorization header
       console.error("Error fetching user:", error?.message ?? error);
-      // No response or a 5xx means the server failed. 4xx (401/404: not a DAIKON
-      // user or locked) and cancelled duplicate GETs keep the "inactive" path.
+      // Server or routing failures: no response, a 5xx, a non-JSON 404 (the gateway
+      // answers unknown users with 401 and its 404s are JSON, so an HTML 404 means
+      // /api isn't routed to it), or a 200 that isn't a user. Other 4xx (401: not a
+      // DAIKON user or locked) and cancelled duplicate GETs keep the "inactive" path.
       const status = error?.response?.status;
+      const contentType = String(error?.response?.headers?.["content-type"] ?? "");
       if (
         status >= 500 ||
-        ["ERR_NETWORK", "ECONNABORTED", "ETIMEDOUT"].includes(error?.code)
+        (status === 404 && !contentType.includes("json")) ||
+        ["ERR_NETWORK", "ECONNABORTED", "ETIMEDOUT", "BAD_RESPONSE"].includes(
+          error?.code
+        )
       ) {
         runInAction(() => {
-          this.userFetchServerError = status ? `HTTP ${status}` : "no response";
+          this.userFetchServerError = status
+            ? `HTTP ${status}`
+            : error?.code === "BAD_RESPONSE"
+              ? "unexpected response"
+              : "no response";
         });
       }
     } finally {

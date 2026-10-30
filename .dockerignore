@@ -6,8 +6,15 @@
 **/npm-debug.log
 **/coverage
 **/.env
+**/.env.*
 **/.editorconfig
 **/.aws
 **/dist
-# Old build-time settings (now /config.js at runtime); never bake them into an image
+# Deployment settings and key material never go into an image. Settings are
+# supplied at runtime (README, "Deployment configuration"); the Dockerfile also
+# fails the build if a config.js reaches dist/.
 **/src/config
+**/public/config.js
+**/.lab-config
+**/*.pem
+**/*.key

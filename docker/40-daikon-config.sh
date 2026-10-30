@@ -1,8 +1,11 @@
 #!/bin/sh
 # Runs at container start (the nginx image runs /docker-entrypoint.d/*.sh).
 # Writes the app's runtime settings (/config.js) and the /api proxy from DAIKON_* env vars.
-# ponytail: writes into the image, so it needs a writable root filesystem; for
-# readOnlyRootFilesystem, mount emptyDirs on /usr/share/nginx/html and /etc/nginx/daikon.
+# ponytail: writes into the image, so DAIKON_OIDC_* needs a writable root filesystem.
+# With readOnlyRootFilesystem: mount config.js as a file (e.g. a ConfigMap subPath at
+# /usr/share/nginx/html/config.js) instead of DAIKON_OIDC_*, and writable emptyDirs on
+# /etc/nginx/daikon, /var/cache/nginx, /var/run and /var/log/nginx. Never mount an
+# emptyDir over /usr/share/nginx/html: it hides the app.
 set -eu
 
 html=/usr/share/nginx/html
@@ -64,6 +67,9 @@ if [ -n "${DAIKON_API_UPSTREAM:-}" ]; then
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header X-Forwarded-Proto $scheme;
     proxy_set_header X-Forwarded-Host $host;
+    # nginx.conf adds X-Frame-Options to every response; two different values make
+    # browsers ignore it, so drop the gateway's. Both CSPs stay: browsers enforce each.
+    proxy_hide_header X-Frame-Options;
     # Kestrel's default request body limit is ~28.6 MiB; don't be the tighter one
     client_max_body_size 30m;
     # Batch imports and registrations can run past nginx's 60 s default

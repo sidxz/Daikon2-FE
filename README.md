@@ -172,6 +172,20 @@ not secrets; every user's browser sees them. Never put secrets in them.
 In Entra ID, register the app as a Single-page application with these redirect URIs:
 `<origin>/auth/signin_redirect`, `<origin>/auth/silent_redirect` and `<origin>/auth/signout_redirect`.
 
+Set HSTS (`Strict-Transport-Security`) on your TLS terminator (ingress or load balancer);
+the container doesn't set it because it can't tell whether TLS is in front of it.
+
+### Keeping settings out of images and git
+The image must stay deployment-neutral, so it can be published and shared. These guards enforce it:
+
+- `public/config.js`, `.env.*`, `*.pem` and `*.key` are gitignored and excluded from the Docker
+  build context.
+- The Docker build fails if a `config.js` ends up in `dist/`.
+- CI fails if any of those files is committed, if the built image contains `/config.js`, or if
+  Trivy finds a secret in the image. gitleaks scans every push and pull request, and the whole
+  history weekly.
+- The GitLab lab image adds its `config.js` as a separate layer on top of the generic image.
+
 ### Local development
 Create `public/config.js` (gitignored):
 
