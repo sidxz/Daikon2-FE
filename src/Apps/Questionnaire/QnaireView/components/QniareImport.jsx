@@ -1,6 +1,7 @@
 import * as jsYaml from "js-yaml";
 import { FileUpload } from "primereact/fileupload";
 import { useContext } from "react";
+import { toast } from "react-toastify";
 import { RootStoreContext } from "../../../../RootStore";
 const QniareImport = () => {
   const rootStore = useContext(RootStoreContext);
@@ -34,7 +35,10 @@ const QniareImport = () => {
           const reader = new FileReader();
           reader.onload = (e) => {
             try {
-              const parsedYaml = jsYaml.load(e.target.result);
+              // js-yaml 5 dropped "<<" merge keys from the default schema; keep v4 behaviour
+              const parsedYaml = jsYaml.load(e.target.result, {
+                schema: jsYaml.CORE_SCHEMA.withTags(jsYaml.mergeTag),
+              });
               //console.log(parsedYaml);
               updateQuestionnaire(parsedYaml);
             } catch (error) {
