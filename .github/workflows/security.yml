@@ -1,0 +1,79 @@
+name: Security
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "23 6 * * 1" # Mondays 06:23 UTC — weekly rescan against the fresh CVE feed
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Same gates as Daikon-Core's security.yml, plus duar's weekly image sweep.
+# Accept a Trivy finding only by listing it in .trivyignore with a reason. For gitleaks,
+# false-positive patterns go in .gitleaks.toml and accepted findings in .gitleaksignore.
+jobs:
+  gitleaks:
+    # Push and pull request: the new commits. Schedule and workflow_dispatch: the whole history.
+    name: gitleaks
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read # on a pull request the action lists the PR's commits through the API
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0 # full history: commit ranges need their parents, scheduled runs scan everything
+      - uses: gitleaks/gitleaks-action@e0c47f4f8be36e29cdc102c57e68cb5cbf0e8d1e # v3.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # The action defaults to 8.24.3, which predates the [[allowlists]] syntax in
+          # .gitleaks.toml. Keep this equal to the local `gitleaks version` so the
+          # .gitleaksignore fingerprints match.
+          GITLEAKS_VERSION: 8.30.1
+
+  trivy-fs:
+    name: Trivy — lockfile & secrets
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          scanners: vuln,secret
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          exit-code: "1"
+          skip-dirs: node_modules,dist
+
+  trivy-image:
+    name: Trivy — container image
+    # Image findings track the base image and the advisory feed, not the diff, so this sweeps
+    # weekly (and on demand) instead of red-flagging unrelated pushes.
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      # src/config/ is gitignored (each deployment supplies its own); empty stubs build fine
+      - run: |
+          mkdir -p src/config
+          echo 'export const OIDCConfig = {};' > src/config/authConfig.jsx
+          echo 'export const AxiosConfig = {};' > src/config/axiosConfig.js
+      - run: docker build -t daikon2-fe:scan .
+      - uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          scan-type: image
+          image-ref: daikon2-fe:scan
+          scanners: vuln
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          exit-code: "1"

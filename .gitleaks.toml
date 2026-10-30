@@ -1,0 +1,7 @@
+# Secret scanning config (CI and local `gitleaks git .`). Allowlist known false positives only.
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "ADMET property keys (key: \"QED\", key: \"logP\", ...) match generic-api-key"
+paths = ['''^src/Apps/MolecuLogix/MLogixMoleculeView/MLMViewComponents/MLMViewADMETHelper\.js$''']

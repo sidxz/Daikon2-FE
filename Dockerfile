@@ -1,5 +1,5 @@
 # Stage 1: Build the React application
-FROM node:21 as builder
+FROM node:24 AS builder
 
 # Set the working directory
 WORKDIR /app
@@ -7,8 +7,8 @@ WORKDIR /app
 # Copy package.json and package-lock.json
 COPY package*.json ./
 
-# Install dependencies
-RUN npm install
+# Install exactly what package-lock.json pins
+RUN npm ci
 
 # Copy the rest of your application's code
 COPY . .
@@ -17,7 +17,10 @@ COPY . .
 RUN npm run build
 
 # Stage 2: Serve the app with Nginx
-FROM nginx:1.25.5-alpine
+FROM nginx:1.30-alpine
+
+# Pick up Alpine security fixes released after the base image was built
+RUN apk upgrade --no-cache
 
 # Copy the built assets from the builder stage
 COPY --from=builder /app/dist /usr/share/nginx/html

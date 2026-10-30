@@ -1,7 +1,7 @@
-image: docker:latest
+image: docker:29
 
 services:
-  - docker:dind
+  - docker:29-dind
 
 variables:
   DOCKER_DRIVER: overlay2
@@ -9,7 +9,7 @@ variables:
 
 before_script:
   - docker info
-  - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+  - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
 
 stages:
   - build
@@ -49,7 +49,7 @@ push:
   stage: push
   script:
     - docker info
-    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
     - docker push $IMAGE_TAG
   only:
     - lab-main
