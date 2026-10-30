@@ -4,11 +4,10 @@ import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { MeterGroup } from "primereact/metergroup";
 import { Tag } from "primereact/tag";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import SmilesView from "../../../../Library/SmilesView/SmilesView";
 import exportToExcel from "../../../../Shared/Excel/ExportToExcel";
 import { AppOrgResolver } from "../../../../Shared/VariableResolvers/AppOrgResolver";
-import MolDbAPI from "../../api/MolDbAPI";
 import {
   computeRejectedByNameOrSynonym,
   statusMeta,
@@ -18,48 +17,14 @@ import { DtFieldsToExcelColumnMapping } from "../MLogixRegistrationConstants";
 const EXPORT_TAG_FIELD = "previewTag";
 const REJECTED_TAG = "Rejected (Not Returned in Preview)";
 
-const MLRegistrationStep3 = ({ inputs }) => {
-  const [registrationResults, setRegistrationResults] = useState([]);
-  const [loading, setLoading] = useState(false);
+// Displays the result only. MLogixRegistration sends the registration from the
+// "Acknowledge Disclosure and Register Molecules" click, so mounting never writes.
+const MLRegistrationStep3 = ({
+  inputs,
+  results: registrationResults = [],
+  loading,
+}) => {
   const { getOrgAliasById } = AppOrgResolver();
-
-  useEffect(() => {
-    let cancelled = false;
-
-    const sendRegistrationRequest = async () => {
-      if (!inputs || inputs.length === 0) {
-        if (!cancelled) setRegistrationResults([]); // fix
-        return;
-      }
-
-      setLoading(true);
-      try {
-        const registrationResponse =
-          await MolDbAPI.registerMoleculeBatch(inputs);
-
-        const results =
-          registrationResponse?.results ??
-          registrationResponse?.items ??
-          registrationResponse ??
-          [];
-
-        if (!cancelled) {
-          setRegistrationResults(Array.isArray(results) ? results : [results]);
-        }
-      } catch (err) {
-        console.error("Error during dry run request:", err);
-        if (!cancelled) setRegistrationResults([]);
-      } finally {
-        if (!cancelled) setLoading(false);
-      }
-    };
-
-    sendRegistrationRequest();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [inputs]);
 
   console.log("Registration results:", registrationResults);
 

@@ -17,8 +17,9 @@ const HitAPI = {
   delete: (hitCollectionId, hitId) =>
     axiosWithAuth.delete(`/v2/hit-collection/${hitCollectionId}/hit/${hitId}`),
   deleteBatch: (hitCollectionId, hitIds) =>
+    // Backend takes List<DeleteHitCommand>: [{ hitId }, ...]
     axiosWithAuth.delete(`/v2/hit-collection/${hitCollectionId}/hit/batch`, {
-      data: { hitIds },
+      data: hitIds.map((hitId) => ({ hitId })),
     }),
   clusterHits: (hitCollectionId, clusterCutOff) =>
     axiosWithAuth.put(
