@@ -3,6 +3,8 @@
 # App Secrets
 /src/config.js
 /src/config/
+# Local dev runtime settings (see README, "Deployment configuration")
+/public/config.js
 
 # dependencies
 /node_modules

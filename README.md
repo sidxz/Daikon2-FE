@@ -140,19 +140,47 @@ deployment, or evaluation of the system.
 Detailed product context, scope, and user intent are described above.
 The sections below focus on configuration and runtime setup.
 
-## Configuration 
-Configuration must be placed in
-src/config.js
-Example
+## Deployment configuration
+Nothing deployment-specific is built into the app. It reads its settings at page load
+from `/config.js`, so one image serves any deployment.
+
+### Container
+Set these environment variables; the container writes `/config.js` and the `/api` proxy at start.
+
+| Variable | Required | Example |
+|---|---|---|
+| `DAIKON_OIDC_AUTHORITY` | yes | `https://login.microsoftonline.com/<tenant-id>/v2.0` |
+| `DAIKON_OIDC_CLIENT_ID` | yes | `<spa-app-client-id>` |
+| `DAIKON_OIDC_SCOPE` | yes | `openid profile api://<api-app-id>/access_as_user` |
+| `DAIKON_API_UPSTREAM` | for the built-in proxy | `http://simplegw-api:80`: the gateway as `http://host[:port]`, as this container reaches it. The name must resolve when the container starts. |
+| `DAIKON_API_URL` | no | Leave unset: the browser calls `/api` on the app's own origin. Set it only to call the gateway directly (needs CORS on the gateway). |
 
 ```
-export const appConfig = {
-  REACT_APP_MSAL_CLIENT_ID: "",
-  REACT_APP_WEB_API_BASE_URI: "",
-  REACT_APP_MSAL_CLIENT_SCOPE: "",
-  REACT_APP_MSAL_TENANT_AUTHORITY_URI: "",
-  REACT_APP_MSAL_CACHE_LOCATION: "",
-  REACT_APP_MSAL_AUTH_STATE_IN_COOKIE: "",
-  REACT_APP_MSAL_LOGIN_REDIRECT_URI: "",
+docker run -p 3000:3000 \
+  -e DAIKON_OIDC_AUTHORITY=https://login.microsoftonline.com/<tenant-id>/v2.0 \
+  -e DAIKON_OIDC_CLIENT_ID=<spa-app-client-id> \
+  -e DAIKON_OIDC_SCOPE="openid profile api://<api-app-id>/access_as_user" \
+  -e DAIKON_API_UPSTREAM=http://simplegw-api:80 \
+  daikon2-fe
+```
+
+Instead of `DAIKON_API_UPSTREAM`, the ingress can route `/api/` to the gateway, stripping the
+`/api` prefix. Instead of the `DAIKON_OIDC_*` variables, you can mount your own `config.js` at
+`/usr/share/nginx/html/config.js` (for example from a Kubernetes ConfigMap). These values are
+not secrets; every user's browser sees them. Never put secrets in them.
+
+In Entra ID, register the app as a Single-page application with these redirect URIs:
+`<origin>/auth/signin_redirect`, `<origin>/auth/silent_redirect` and `<origin>/auth/signout_redirect`.
+
+### Local development
+Create `public/config.js` (gitignored):
+
+```
+window.__DAIKON_CONFIG__ = {
+  oidcAuthority: "https://login.microsoftonline.com/<tenant-id>/v2.0",
+  oidcClientId: "<spa-app-client-id>",
+  oidcScope: "openid profile api://<api-app-id>/access_as_user",
 };
 ```
+
+`npm run dev` forwards `/api` to `http://localhost:8010`; set `DAIKON_API_UPSTREAM` to use another gateway.

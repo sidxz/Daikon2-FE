@@ -38,6 +38,8 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+    <!-- Deployment settings (window.__DAIKON_CONFIG__); must load before the app -->
+    <script src="/config.js"></script>
     <script src="/rdkit/RDKit_minimal.js"></script>
     <script type="module" src="/src/main.jsx"></script>
   </body>

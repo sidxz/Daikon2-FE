@@ -18,28 +18,17 @@ stages:
 build:
   stage: build
   script:
-    # Create the authConfig.jsx file using a here-document and environment variables
-    - mkdir -p src/config
+    # Lab image: bake the lab's settings in as /config.js. DAIKON_* env vars on the
+    # container override it; once the lab deployment sets them, drop this step.
     - |
-      echo "export const OIDCConfig = {
-        authority: \"${AUTHORITY}\",
-        client_id: \"${CLIENT_ID}\",
-        redirect_uri: window.location.origin + \"/auth/signin_redirect\",
-        response_type: \"code\",
-        scope: \"${SCOPE}\",
-        post_logout_redirect_uri: window.location.origin + \"/auth/signout_redirect\",
-        response_mode: \"query\", // or \"fragment\"
-        automaticSilentRenew: true,
-        silent_redirect_uri: window.location.origin + \"/auth/silent_redirect\",
-      };" > src/config/authConfig.jsx
-    - |
-      echo "export const AxiosConfig = {
-        baseURL: \"${BASE_URL}\",
-        headers: {
-          \"Content-Type\": \"application/json\",
-          \"Accept\": \"application/json\",
-        },
-      };" > src/config/axiosConfig.jsx
+      cat > public/config.js <<EOF
+      window.__DAIKON_CONFIG__ = {
+        oidcAuthority: "${AUTHORITY}",
+        oidcClientId: "${CLIENT_ID}",
+        oidcScope: "${SCOPE}",
+        apiUrl: "${BASE_URL}",
+      };
+      EOF
     # Build the Docker image
     - docker build -t $IMAGE_TAG .
   only:

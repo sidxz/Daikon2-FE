@@ -9,3 +9,5 @@
 **/.editorconfig
 **/.aws
 **/dist
+# Old build-time settings (now /config.js at runtime); never bake them into an image
+**/src/config

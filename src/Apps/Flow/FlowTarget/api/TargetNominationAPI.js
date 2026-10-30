@@ -1,5 +1,5 @@
 import axios from "axios";
-import { AxiosConfig } from "../../../../config/axiosConfig";
+import { AxiosConfig } from "../../../../runtimeConfig";
 import AppUserManager from "../../../../Auth/components/AppUserManager";
 
 // ─────────────────────────────────────────────────────────────────────────────

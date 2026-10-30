@@ -22,10 +22,5 @@ jobs:
         with:
           node-version: "24"
           cache: npm
-      # src/config/ is gitignored (each deployment supplies its own); empty stubs build fine
-      - run: |
-          mkdir -p src/config
-          echo 'export const OIDCConfig = {};' > src/config/authConfig.jsx
-          echo 'export const AxiosConfig = {};' > src/config/axiosConfig.js
       - run: npm ci
       - run: npm run build
