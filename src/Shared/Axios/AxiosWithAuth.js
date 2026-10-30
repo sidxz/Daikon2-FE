@@ -1,7 +1,7 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 import AppUserManager from "../../Auth/components/AppUserManager";
-import { AxiosConfig } from "../../config/axiosConfig";
+import { AxiosConfig } from "../../runtimeConfig";
 
 /** ------------------------------------------------------------------
  * Toast control: deduplicate by message + throttle (2 seconds)
@@ -188,7 +188,8 @@ class AxiosWithAuth {
 
     // Not the whole config: it carries the Authorization header
     console.error("Error Config:", error.config?.method, error.config?.url);
-    return Promise.reject(errorMessage);
+    // Callers that need the status opt in with { rejectWithError: true }; others get the message
+    return Promise.reject(error.config?.rejectWithError ? error : errorMessage);
   }
 
   formatResponse = (response) => {

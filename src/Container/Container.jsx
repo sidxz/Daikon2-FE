@@ -23,6 +23,7 @@ const Container = ({ userManager }) => {
   const { authStore } = useContext(RootStoreContext);
   const {
     user,
+    userFetchServerError,
     fetchUser,
     isFetchingUser,
     fetchAppVars,
@@ -72,7 +73,14 @@ const Container = ({ userManager }) => {
   if (isFetchingUser) return <Loading message={"Authorizing user..."} />;
   if (isFetchingAppVars || isFetchingGlobalValues)
     return <Loading message={"Fetching app data..."} />;
-  if (!user) return <UnauthorizedUser onSignOut={signOut} ssoUser={ssoUser} />;
+  if (!user)
+    return (
+      <UnauthorizedUser
+        onSignOut={signOut}
+        ssoUser={ssoUser}
+        serverError={userFetchServerError}
+      />
+    );
 
   // console.log("Container user", user);
   // console.log("Container appVars", appVars);

@@ -8,6 +8,7 @@ export default class AuthStore {
     this.rootStore = rootStore;
     makeObservable(this, {
       user: observable,
+      userFetchServerError: observable,
       isFetchingUser: observable,
       fetchUser: action,
       isOIDCLogged: observable,
@@ -26,6 +27,9 @@ export default class AuthStore {
 
   // Observables
   user = null;
+  // "HTTP 502" / "no response" when the user check failed because of the server,
+  // so the UI doesn't report that as an inactive account
+  userFetchServerError = null;
   isFetchingUser = false;
   isOIDCLogged = false;
   isUserValidated = false;
@@ -39,15 +43,29 @@ export default class AuthStore {
 
   fetchUser = async () => {
     this.isFetchingUser = true;
+    this.userFetchServerError = null;
     try {
       const user = await AuthApi.validate();
       runInAction(() => {
         //console.log("AuthStore -> fetchUser -> user", user);
         this.user = user;
         this.isUserValidated = true;
+        this.userFetchServerError = null;
       });
     } catch (error) {
-      console.error("Error fetching user:", error);
+      // Message only: the error's config carries the Authorization header
+      console.error("Error fetching user:", error?.message ?? error);
+      // No response or a 5xx means the server failed. 4xx (401/404: not a DAIKON
+      // user or locked) and cancelled duplicate GETs keep the "inactive" path.
+      const status = error?.response?.status;
+      if (
+        status >= 500 ||
+        ["ERR_NETWORK", "ECONNABORTED", "ETIMEDOUT"].includes(error?.code)
+      ) {
+        runInAction(() => {
+          this.userFetchServerError = status ? `HTTP ${status}` : "no response";
+        });
+      }
     } finally {
       runInAction(() => {
         this.isFetchingUser = false;
