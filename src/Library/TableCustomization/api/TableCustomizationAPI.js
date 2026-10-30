@@ -36,10 +36,11 @@ const TableCustomizationAPI = {
       "/v2/user-preferences/table-customization/set-user-customization",
       customization
     ),
+  // axios sends a DELETE body only from config.data
   removeUserCustomization: (customization) =>
     axiosWithAuth.delete(
       `/v2/user-preferences/table-customization/remove-user-customization`,
-      customization
+      { data: customization }
     ),
 };
 

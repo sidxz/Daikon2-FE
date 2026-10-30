@@ -1,0 +1,2 @@
+# The container runs this with /bin/sh; a CRLF checkout would make it fail at startup
+*.sh text eol=lf

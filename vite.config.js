@@ -13,6 +13,13 @@ export default defineConfig({
   },
   server: {
     port: 3000,
+    // Same shape as the container: /api/... goes to the gateway without the /api prefix
+    proxy: {
+      "/api": {
+        target: process.env.DAIKON_API_UPSTREAM ?? "http://localhost:8010",
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      },
+    },
   },
   optimizeDeps: {
     include: ["@rdkit/rdkit"],

@@ -3,7 +3,7 @@ import { ProgressSpinner } from "primereact/progressspinner";
 import { useEffect, useState } from "react";
 import "./UnauthorizedUser.css";
 
-const UnauthorizedUser = ({ onSignOut, ssoUser }) => {
+const UnauthorizedUser = ({ onSignOut, ssoUser, serverError }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -37,6 +37,24 @@ const UnauthorizedUser = ({ onSignOut, ssoUser }) => {
       <Button label="Logout" onClick={() => onSignOut()}></Button>
     </>
   );
+  // The user check failed because of the server (no response or 5xx), not the account
+  let serverUnavailableRender = (
+    <>
+      <h5>[SERVER UNAVAILABLE]</h5>
+      <p>
+        Hello {ssoUser?.profile?.email}, <br />
+        <br />
+        You are signed in, but the Daikon server is unavailable right now (
+        {serverError}). This is usually temporary, so please try again in a few
+        minutes. If it keeps happening, contact a Daikon administrator.
+      </p>
+      <br />
+      <div className="flex gap-3 justify-content-center">
+        <Button label="Try again" onClick={() => window.location.reload()} />
+        <Button label="Logout" onClick={() => onSignOut()} />
+      </div>
+    </>
+  );
 
   return (
     <div className="UserUnauthorized">
@@ -47,7 +65,11 @@ const UnauthorizedUser = ({ onSignOut, ssoUser }) => {
               <div>
                 <div className="LoginLoginBox" id="logoutButton">
                   <h1>D A I K O N</h1>
-                  {loading ? waitingRender : unauthorizedRender}
+                  {serverError
+                    ? serverUnavailableRender
+                    : loading
+                      ? waitingRender
+                      : unauthorizedRender}
                 </div>
               </div>
             </div>

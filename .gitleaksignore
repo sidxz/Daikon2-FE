@@ -1,0 +1,13 @@
+# Accepted gitleaks findings (commit:file:rule:line), each block with its reason.
+#
+# Credentials of a decommissioned 2023 Azure test deployment (resource group daikon-prd-rg),
+# in two workflow files deleted in 50ace13c. The services are gone and the credentials are
+# dead (confirmed 2026-10-29), so the history is kept instead of rewritten.
+15e8d86d5d02d0541eca93481db792450ad58202:.github/workflows/deploy-to-azure.yaml:generic-api-key:6
+42a445aba1b7260137d477544eae67ed10a61003:.github/workflows/deploy-to-azure.yaml:azure-ad-client-secret:49
+80201eb7f7c4a28d774f465cff4ce884bd558cdb:.github/workflows/deploy-to-azure.yaml:azure-ad-client-secret:6
+80201eb7f7c4a28d774f465cff4ce884bd558cdb:.github/workflows/deploy-to-azure.yaml:generic-api-key:10
+80201eb7f7c4a28d774f465cff4ce884bd558cdb:.github/workflows/deploy-to-azure.yaml:generic-api-key:11
+80201eb7f7c4a28d774f465cff4ce884bd558cdb:.github/workflows/deploy-to-azure.yaml:generic-api-key:9
+ad8b9c4d6fb3abb058acabf6ab29dded16f13ca8:.github/workflows/daikon-prd-frontend-manual-deploy:azure-ad-client-secret:5
+ad8b9c4d6fb3abb058acabf6ab29dded16f13ca8:.github/workflows/daikon-prd-frontend-manual-deploy:generic-api-key:6

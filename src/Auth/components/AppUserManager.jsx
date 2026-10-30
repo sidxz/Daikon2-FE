@@ -1,5 +1,5 @@
 import { UserManager, WebStorageStateStore } from "oidc-client-ts";
-import { OIDCConfig } from "../../config/authConfig";
+import { OIDCConfig } from "../../runtimeConfig";
 
 // const AppUserManager = new UserManager(OIDCConfig);
 

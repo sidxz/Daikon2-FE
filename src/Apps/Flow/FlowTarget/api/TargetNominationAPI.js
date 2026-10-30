@@ -1,5 +1,5 @@
 import axios from "axios";
-import { AxiosConfig } from "../../../../config/axiosConfig";
+import { AxiosConfig } from "../../../../runtimeConfig";
 import AppUserManager from "../../../../Auth/components/AppUserManager";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -40,8 +40,9 @@ import AppUserManager from "../../../../Auth/components/AppUserManager";
 //   Response: EventRecord[]   — same shape as above, newest first
 //
 // POST /v2/target/:targetId/events
-//   Request body: { type, reason, author }   — cohort & date injected by backend
-//   Response: EventRecord   — the newly created event (with cohort & date filled in)
+//   Request body: { type, reason }   — cohort, date & author injected by backend
+//                                      (author must come from the token, never the client)
+//   Response: EventRecord   — the newly created event (with cohort, date & author filled in)
 //
 // GET /v2/target/:targetId/horizon
 //   (Used by the Horizon component — see HorizonStore / TargetHorizonAPI for shape)
@@ -65,13 +66,17 @@ const TargetNominationAPI = {
   getCohorts: () => silent("get", "/v2/target/cohorts"),
 
   getTargetEvents: (targetId) =>
-    silent("get", `/v2/target/${targetId}/events`),
+    silent("get", `/v2/target/${encodeURIComponent(targetId)}/events`),
 
   getTargetHorizon: (targetId) =>
-    silent("get", `/v2/target/${targetId}/horizon`),
+    silent("get", `/v2/target/${encodeURIComponent(targetId)}/horizon`),
 
-  addTargetEvent: (targetId, event) =>
-    silent("post", `/v2/target/${targetId}/events`, event),
+  // event.author is kept for the local optimistic update only, not sent
+  addTargetEvent: (targetId, { type, reason }) =>
+    silent("post", `/v2/target/${encodeURIComponent(targetId)}/events`, {
+      type,
+      reason,
+    }),
 };
 
 export default TargetNominationAPI;

@@ -75,7 +75,8 @@ class AxiosGeneric {
         error.message || "An error occurred while setting up the request.";
     }
 
-    console.error("Error Config:", error.config);
+    // Not the whole config: it carries the Authorization header
+    console.error("Error Config:", error.config?.method, error.config?.url);
     return Promise.reject(errorMessage);
   }
 

@@ -9,9 +9,15 @@ import { appColors } from "../../../constants/colors";
 import { STRINGS } from "../../../Customizations/strings";
 import SecHeading from "../../../Library/SecHeading/SecHeading";
 import { parseSeedParam } from "../../../Library/URLTools/base64URL";
+import MolDbAPI from "../api/MolDbAPI";
 import MLRegistrationStep1 from "./components/MLRegistrationStep1";
 import MLRegistrationStep2 from "./components/MLRegistrationStep2";
 import MLRegistrationStep3 from "./components/MLRegistrationStep3";
+
+const toRows = (response) => {
+  const rows = response?.results ?? response?.items ?? response ?? [];
+  return Array.isArray(rows) ? rows : [rows];
+};
 
 const MLogixRegistration = () => {
   const location = useLocation();
@@ -37,6 +43,40 @@ const MLogixRegistration = () => {
   // Lifted state
   const [inputs, setInputs] = useState([]); // rows from MRInputSource
   const [previewResults, setPreviewResults] = useState([]);
+  const [isPreviewing, setIsPreviewing] = useState(false);
+  const [registrationResults, setRegistrationResults] = useState([]);
+  const [isRegistering, setIsRegistering] = useState(false);
+  const previewRun = useRef(0);
+
+  // Both requests run from the button clicks, not from the steps' mount effects:
+  // StrictMode mounts components twice in dev, which sent the registration (a write) twice.
+  const runPreview = async () => {
+    const run = ++previewRun.current; // a newer preview (Back, edit, re-run) wins
+    setIsPreviewing(true);
+    setPreviewResults([]);
+    try {
+      const response = await MolDbAPI.registerMoleculePreview(inputs);
+      if (run === previewRun.current) setPreviewResults(toRows(response));
+    } catch (err) {
+      console.error("Error during dry run request:", err);
+    } finally {
+      if (run === previewRun.current) setIsPreviewing(false);
+    }
+  };
+
+  const register = async () => {
+    setIsRegistering(true);
+    setRegistrationResults([]);
+    try {
+      setRegistrationResults(
+        toRows(await MolDbAPI.registerMoleculeBatch(inputs)),
+      );
+    } catch (err) {
+      console.error("Error during registration request:", err);
+    } finally {
+      setIsRegistering(false);
+    }
+  };
 
   const canProceedToValidation = (inputs?.length || 0) > 0;
   const okCount = useMemo(
@@ -60,8 +100,10 @@ const MLogixRegistration = () => {
       </div>
 
       <div className="flex justify-content-center w-full">
+        {/* linear: steps only advance through the buttons, which send the requests */}
         <Stepper
           ref={stepperRef}
+          linear
           className="w-full"
           style={{ minWidth: "60vw" }}
         >
@@ -80,7 +122,10 @@ const MLogixRegistration = () => {
                 label="Dry Run Validation"
                 icon="pi pi-arrow-right"
                 iconPos="right"
-                onClick={() => stepperRef.current.nextCallback()}
+                onClick={() => {
+                  runPreview();
+                  stepperRef.current.nextCallback();
+                }}
                 disabled={!canProceedToValidation}
               />
             </div>
@@ -90,7 +135,11 @@ const MLogixRegistration = () => {
           <StepperPanel header="Dry Run Validation">
             <div className="flex flex-column">
               <div className="border-2 border-dashed surface-border border-round surface-ground p-2">
-                <MLRegistrationStep2 inputs={inputs} />
+                <MLRegistrationStep2
+                  inputs={inputs}
+                  results={previewResults}
+                  loading={isPreviewing}
+                />
               </div>
             </div>
             <div className="flex pt-4 justify-content-between">
@@ -104,7 +153,11 @@ const MLogixRegistration = () => {
                 label="Acknowledge Disclosure and Register Molecules"
                 icon="pi pi-arrow-right"
                 iconPos="right"
-                onClick={() => stepperRef.current.nextCallback()}
+                onClick={() => {
+                  register();
+                  stepperRef.current.nextCallback();
+                }}
+                disabled={isRegistering}
                 // disabled={!canProceedToImport}
                 // tooltip={
                 //   !canProceedToImport
@@ -120,7 +173,11 @@ const MLogixRegistration = () => {
           <StepperPanel header="Registrations">
             <div className="flex flex-column">
               <div className="border-2 border-dashed surface-border border-round surface-ground p-2">
-                <MLRegistrationStep3 inputs={inputs} />
+                <MLRegistrationStep3
+                  inputs={inputs}
+                  results={registrationResults}
+                  loading={isRegistering}
+                />
               </div>
             </div>
             <div className="flex pt-4 justify-content-between">

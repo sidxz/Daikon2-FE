@@ -79,7 +79,15 @@ const ParsedDocTable = ({ docs }) => {
               aria-label="Download"
               rounded
               severity="info"
-              onClick={() => window.open(rowData?.externalPath, "_blank")}
+              // Only http(s): a stored "javascript:" path would run in our origin
+              disabled={!/^https?:\/\//i.test(rowData?.externalPath ?? "")}
+              onClick={() =>
+                window.open(
+                  rowData.externalPath,
+                  "_blank",
+                  "noopener,noreferrer"
+                )
+              }
               cursor="pointer"
             />
           </div>

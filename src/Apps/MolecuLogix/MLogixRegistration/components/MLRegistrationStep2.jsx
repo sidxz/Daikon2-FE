@@ -4,11 +4,10 @@ import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { MeterGroup } from "primereact/metergroup";
 import { Tag } from "primereact/tag";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import SmilesView from "../../../../Library/SmilesView/SmilesView";
 import exportToExcel from "../../../../Shared/Excel/ExportToExcel";
 import { AppOrgResolver } from "../../../../Shared/VariableResolvers/AppOrgResolver";
-import MolDbAPI from "../../api/MolDbAPI";
 import {
   computeRejectedByNameOrSynonym,
   statusMeta,
@@ -18,47 +17,9 @@ import { DtFieldsToExcelColumnMapping } from "../MLogixRegistrationConstants";
 const EXPORT_TAG_FIELD = "previewTag";
 const REJECTED_TAG = "Rejected (Not Returned in Preview)";
 
-const MLRegistrationStep2 = ({ inputs }) => {
-  const [dryRunResults, setDryRunResults] = useState([]);
-  const [loading, setLoading] = useState(false);
+// Displays the dry run; MLogixRegistration sends it from the "Dry Run Validation" click.
+const MLRegistrationStep2 = ({ inputs, results: dryRunResults = [], loading }) => {
   const { fuzzyMatchOrgByName, getOrgAliasById } = AppOrgResolver();
-
-  useEffect(() => {
-    let cancelled = false;
-
-    const sendDryRunRequest = async () => {
-      if (!inputs || inputs.length === 0) {
-        if (!cancelled) setDryRunResults([]); // fix
-        return;
-      }
-
-      setLoading(true);
-      try {
-        const previewResponse = await MolDbAPI.registerMoleculePreview(inputs);
-
-        const results =
-          previewResponse?.results ??
-          previewResponse?.items ??
-          previewResponse ??
-          [];
-
-        if (!cancelled) {
-          setDryRunResults(Array.isArray(results) ? results : [results]);
-        }
-      } catch (err) {
-        console.error("Error during dry run request:", err);
-        if (!cancelled) setDryRunResults([]);
-      } finally {
-        if (!cancelled) setLoading(false);
-      }
-    };
-
-    sendDryRunRequest();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [inputs]);
 
   console.log("Dry run results:", dryRunResults);
 

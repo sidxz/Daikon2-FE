@@ -3,6 +3,13 @@
 # App Secrets
 /src/config.js
 /src/config/
+# Local dev runtime settings (see README, "Deployment configuration")
+/public/config.js
+# Written by the GitLab lab build
+/.lab-config/
+.env.*
+*.pem
+*.key
 
 # dependencies
 /node_modules
@@ -24,7 +31,6 @@
 .env.test.local
 .env.production.local
 .eslintcache
-package-lock.json
 
 npm-debug.log*
 yarn-debug.log*

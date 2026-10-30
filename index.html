@@ -25,7 +25,9 @@
 
     <link
       rel="stylesheet"
-      href="//ebi.emblstatic.net/web_guidelines/EBI-Icon-fonts/v1.3/fonts.css"
+      href="https://ebi.emblstatic.net/web_guidelines/EBI-Icon-fonts/v1.3/fonts.css"
+      integrity="sha384-lN95YuiSfDgMOlNXquZbLbXnKknc2CMQnqADmFPmLjyA4sPfzckNHGvbwemMg1kd"
+      crossorigin="anonymous"
       type="text/css"
       media="all"
     />
@@ -36,6 +38,8 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+    <!-- Deployment settings (window.__DAIKON_CONFIG__); must load before the app -->
+    <script src="/config.js"></script>
     <script src="/rdkit/RDKit_minimal.js"></script>
     <script type="module" src="/src/main.jsx"></script>
   </body>
