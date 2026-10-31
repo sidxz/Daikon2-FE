@@ -3,7 +3,7 @@
 # App Secrets
 /src/config.js
 /src/config/
-# Local dev runtime settings (see README, "Deployment configuration")
+# Local dev runtime settings
 /public/config.js
 # Written by the GitLab lab build
 /.lab-config/
