@@ -61,12 +61,18 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      # The build imports the auth and API settings from src/config (gitignored)
+      - name: Placeholder settings
+        run: |
+          mkdir -p src/config
+          echo 'export const OIDCConfig = {};' > src/config/authConfig.jsx
+          echo 'export const AxiosConfig = {};' > src/config/axiosConfig.js
       # The Dockerfile itself fails if a config.js reaches dist/
       - run: docker build -t daikon2-fe:ci .
       - name: No /config.js in the image
         run: |
           if docker run --rm --entrypoint sh daikon2-fe:ci -c 'test -e /usr/share/nginx/html/config.js'; then
-            echo "::error::The image contains /config.js: deployment settings must come at runtime"
+            echo "::error::The image contains /config.js: public/config.js is not used and must not ship"
             exit 1
           fi
       - uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
@@ -86,6 +92,12 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      # The build imports the auth and API settings from src/config (gitignored)
+      - name: Placeholder settings
+        run: |
+          mkdir -p src/config
+          echo 'export const OIDCConfig = {};' > src/config/authConfig.jsx
+          echo 'export const AxiosConfig = {};' > src/config/axiosConfig.js
       - run: docker build -t daikon2-fe:scan .
       - uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:

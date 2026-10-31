@@ -1,7 +1,7 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 import AppUserManager from "../../Auth/components/AppUserManager";
-import { AxiosConfig } from "../../runtimeConfig";
+import { AxiosConfig } from "../../config/axiosConfig";
 
 /** ------------------------------------------------------------------
  * Toast control: deduplicate by message + throttle (2 seconds)

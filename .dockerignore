@@ -10,10 +10,9 @@
 **/.editorconfig
 **/.aws
 **/dist
-# Deployment settings and key material never go into an image. Settings are
-# supplied at runtime (README, "Deployment configuration"); the Dockerfile also
-# fails the build if a config.js reaches dist/.
-**/src/config
+# Key material never goes into an image. src/config is not excluded: the build reads
+# the auth and API settings from it (README, "Deployment configuration"). The
+# Dockerfile also fails the build if a config.js reaches dist/.
 **/public/config.js
 **/.lab-config
 **/*.pem
