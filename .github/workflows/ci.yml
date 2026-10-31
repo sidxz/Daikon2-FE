@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      # Deployment settings and keys are runtime-only (README, "Deployment configuration")
+      # Deployment settings and keys never go into git (README, "Deployment configuration")
       - name: No deployment settings or keys tracked in git
         run: |
           tracked=$(git ls-files -- 'public/config.js' 'src/config/*' '.lab-config/*' '*.env' '.env.*' '*.pem' '*.key')
@@ -31,4 +31,10 @@ jobs:
           node-version: "24"
           cache: npm
       - run: npm ci
+      # The build imports the auth and API settings from src/config (gitignored)
+      - name: Placeholder settings
+        run: |
+          mkdir -p src/config
+          echo 'export const OIDCConfig = {};' > src/config/authConfig.jsx
+          echo 'export const AxiosConfig = {};' > src/config/axiosConfig.js
       - run: npm run build

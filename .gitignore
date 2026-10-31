@@ -43,3 +43,6 @@ CLAUDE.local.md
 .claude/
 .claude.json
 .claude.json.backup
+
+# Internal notes and AI-workflow material, never committed
+internal-docs/

@@ -1,48 +1,17 @@
 #!/bin/sh
 # Runs at container start (the nginx image runs /docker-entrypoint.d/*.sh).
-# Writes the app's runtime settings (/config.js) and the /api proxy from DAIKON_* env vars.
-# ponytail: writes into the image, so DAIKON_OIDC_* needs a writable root filesystem.
-# With readOnlyRootFilesystem: mount config.js as a file (e.g. a ConfigMap subPath at
-# /usr/share/nginx/html/config.js) instead of DAIKON_OIDC_*, and writable emptyDirs on
-# /etc/nginx/daikon, /var/cache/nginx, /var/run and /var/log/nginx. Never mount an
-# emptyDir over /usr/share/nginx/html: it hides the app.
+# Writes the optional /api proxy from DAIKON_API_UPSTREAM. The auth and API settings
+# themselves are built into the app from src/config (README, "Deployment configuration").
+# ponytail: writes into /etc/nginx/daikon, so with readOnlyRootFilesystem mount writable
+# emptyDirs on /etc/nginx/daikon, /var/cache/nginx, /var/run and /var/log/nginx.
 set -eu
 
-html=/usr/share/nginx/html
 conf=/etc/nginx/daikon
 
 fail() {
   echo "daikon-config: $1" >&2
   exit 1
 }
-
-# Values are written into a JS string or an nginx directive, so only allow the
-# characters URLs, GUIDs and OIDC scopes need (no quotes, backslashes, ; { } or newlines)
-check() {
-  case "$2" in
-    *[!A-Za-z0-9:/._~%?=\&+\ -]*) fail "$1 contains characters that are not allowed" ;;
-  esac
-}
-
-if [ -n "${DAIKON_OIDC_AUTHORITY:-}${DAIKON_OIDC_CLIENT_ID:-}${DAIKON_OIDC_SCOPE:-}" ]; then
-  for name in DAIKON_OIDC_AUTHORITY DAIKON_OIDC_CLIENT_ID DAIKON_OIDC_SCOPE; do
-    eval "value=\${$name:-}"
-    [ -n "$value" ] || fail "$name is required when any DAIKON_OIDC_* is set"
-    check "$name" "$value"
-  done
-  check DAIKON_API_URL "${DAIKON_API_URL:-}"
-  cat > "$html/config.js" <<EOF
-window.__DAIKON_CONFIG__ = {
-  oidcAuthority: "$DAIKON_OIDC_AUTHORITY",
-  oidcClientId: "$DAIKON_OIDC_CLIENT_ID",
-  oidcScope: "$DAIKON_OIDC_SCOPE",
-  apiUrl: "${DAIKON_API_URL:-}",
-};
-EOF
-  echo "daikon-config: wrote $html/config.js"
-elif [ ! -f "$html/config.js" ]; then
-  echo "daikon-config: no DAIKON_OIDC_* settings and no mounted config.js; the app will show a setup message" >&2
-fi
 
 if [ -n "${DAIKON_API_UPSTREAM:-}" ]; then
   upstream=${DAIKON_API_UPSTREAM%/}

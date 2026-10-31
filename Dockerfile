@@ -16,8 +16,8 @@ COPY . .
 # Build the application for production
 RUN npm run build
 
-# The image must be deployment-neutral: settings come from /config.js at runtime.
-# .dockerignore keeps public/config.js out; this catches anything that slips past it.
+# Settings come from src/config at build time; public/config.js is not used and must
+# not ship. .dockerignore keeps it out; this catches anything that slips past it.
 RUN if [ -e dist/config.js ]; then \
       echo "dist/config.js found: deployment settings would be baked into the image." >&2; \
       echo "Remove it from public/ (see README, Deployment configuration)." >&2; \
@@ -36,7 +36,7 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 # Copy your custom nginx configuration
 COPY nginx.conf /etc/nginx/nginx.conf
 
-# Writes /config.js and the /api proxy from DAIKON_* env vars at container start
+# Writes the optional /api proxy from DAIKON_API_UPSTREAM at container start
 COPY --chmod=755 docker/40-daikon-config.sh /docker-entrypoint.d/
 RUN mkdir -p /etc/nginx/daikon
 
