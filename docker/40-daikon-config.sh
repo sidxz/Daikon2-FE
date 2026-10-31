@@ -1,7 +1,7 @@
 #!/bin/sh
 # Runs at container start (the nginx image runs /docker-entrypoint.d/*.sh).
 # Writes the optional /api proxy from DAIKON_API_UPSTREAM. The auth and API settings
-# themselves are built into the app from src/config (README, "Deployment configuration").
+# themselves are built into the app from src/config.
 # ponytail: writes into /etc/nginx/daikon, so with readOnlyRootFilesystem mount writable
 # emptyDirs on /etc/nginx/daikon, /var/cache/nginx, /var/run and /var/log/nginx.
 set -eu

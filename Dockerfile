@@ -20,7 +20,7 @@ RUN npm run build
 # not ship. .dockerignore keeps it out; this catches anything that slips past it.
 RUN if [ -e dist/config.js ]; then \
       echo "dist/config.js found: deployment settings would be baked into the image." >&2; \
-      echo "Remove it from public/ (see README, Deployment configuration)." >&2; \
+      echo "Remove it from public/." >&2; \
       exit 1; \
     fi
 

@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
-    # Auth and API settings are built in from src/config (README, "Deployment configuration").
+    # Auth and API settings are built in from src/config.
     # DAIKON_API_UPSTREAM is only used when src/config/axiosConfig.js sets baseURL "/api".
     environment:
       - DAIKON_API_UPSTREAM=${DAIKON_API_UPSTREAM:-http://host.docker.internal:8010}
