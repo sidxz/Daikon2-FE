@@ -25,7 +25,7 @@ RUN if [ -e dist/config.js ]; then \
     fi
 
 # Stage 2: Serve the app with Nginx
-FROM nginx:1.30-alpine
+FROM nginx:1.31-alpine
 
 # Pick up Alpine security fixes released after the base image was built
 RUN apk upgrade --no-cache
