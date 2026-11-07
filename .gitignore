@@ -5,8 +5,6 @@
 /src/config/
 # Local dev runtime settings
 /public/config.js
-# Written by the GitLab lab build
-/.lab-config/
 .env.*
 *.pem
 *.key

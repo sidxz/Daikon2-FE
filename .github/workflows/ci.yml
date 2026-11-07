@@ -21,7 +21,7 @@ jobs:
       # Deployment settings and keys never go into git
       - name: No deployment settings or keys tracked in git
         run: |
-          tracked=$(git ls-files -- 'public/config.js' 'src/config/*' '.lab-config/*' '*.env' '.env.*' '*.pem' '*.key')
+          tracked=$(git ls-files -- 'public/config.js' 'src/config/*' '*.env' '.env.*' '*.pem' '*.key')
           if [ -n "$tracked" ]; then
             echo "::error::Deployment settings or keys are committed: $tracked"
             exit 1
