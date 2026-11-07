@@ -3,11 +3,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    # Local only, behind the backend repo's Caddy (Daikon/src/docker-compose-with-caddy.yml).
+    # Caddy serves localhost:3000 (the Entra redirect origin) and routes the API path
+    # (baseURL, e.g. /simplegw) to the gateway and everything else to this container.
     ports:
-      - "3000:3000"
+      - "127.0.0.1:3005:3000"
     # Auth and API settings are built in from src/config.
-    # DAIKON_API_UPSTREAM is only used when src/config/axiosConfig.js sets baseURL "/api".
-    environment:
-      - DAIKON_API_UPSTREAM=${DAIKON_API_UPSTREAM:-http://host.docker.internal:8010}
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
