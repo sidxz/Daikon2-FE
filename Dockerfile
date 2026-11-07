@@ -36,11 +36,13 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 # Copy your custom nginx configuration
 COPY nginx.conf /etc/nginx/nginx.conf
 
-# Writes the optional /api proxy from DAIKON_API_UPSTREAM at container start
-COPY --chmod=755 docker/40-daikon-config.sh /docker-entrypoint.d/
-RUN mkdir -p /etc/nginx/daikon
+# Run unprivileged (the image's nginx user, uid 101). nginx writes only its temp files in
+# /var/cache/nginx and its pid in /tmp; drop the unused port-80 sample server.
+# ponytail: with readOnlyRootFilesystem, mount writable emptyDirs on /tmp and /var/cache/nginx.
+RUN chown -R nginx:nginx /var/cache/nginx && rm /etc/nginx/conf.d/default.conf
+USER nginx
 
-# Expose port 80
+# Unprivileged, so a port above 1024
 EXPOSE 3000
 
 # Start Nginx when the container launches
